@@ -1,0 +1,52 @@
+import type { UnitValue } from '../../libs';
+import type { SnakeStyleValue } from '../component-types';
+import type { SnakeFormSize } from '../../libs/internal/form';
+export type SnakeInputType = 'text' | 'number' | 'idcard' | 'digit' | 'password' | 'nickname';
+export type SnakeInputShape = 'square' | 'circle';
+export interface SnakeInputProps {
+    modelValue?: string | number;
+    type?: SnakeInputType;
+    password?: boolean;
+    placeholder?: string;
+    placeholderStyle?: string;
+    maxlength?: number;
+    clearable?: boolean;
+    showPassword?: boolean;
+    prefixIcon?: string;
+    suffixIcon?: string;
+    border?: 'none' | 'surround' | 'bottom';
+    shape?: SnakeInputShape;
+    size?: SnakeFormSize;
+    color?: string;
+    placeholderColor?: string;
+    disabled?: boolean;
+    readonly?: boolean;
+    disabledColor?: string;
+    fontSize?: UnitValue;
+    inputAlign?: 'left' | 'center' | 'right';
+    formatter?: (value: string) => string;
+    formatTrigger?: 'input' | 'blur';
+    trim?: boolean;
+    focus?: boolean;
+    cursor?: number;
+    selectionStart?: number;
+    selectionEnd?: number;
+    confirmType?: string;
+    confirmHold?: boolean;
+    adjustPosition?: boolean;
+    holdKeyboard?: boolean;
+    cursorSpacing?: number;
+    customClass?: string;
+    customStyle?: SnakeStyleValue;
+}
+export interface SnakeInputEmits {
+    'update:modelValue': [value: string];
+    input: [value: string];
+    change: [value: string];
+    focus: [event: unknown];
+    blur: [event: unknown];
+    confirm: [value: string, event: unknown];
+    clear: [];
+    click: [event: unknown];
+    keyboardheightchange: [event: unknown];
+}

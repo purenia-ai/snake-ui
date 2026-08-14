@@ -35,6 +35,21 @@ const popupVisible = ref(false);
 const overlayVisible = ref(false);
 const transitionVisible = ref(true);
 const scrollTop = ref(0);
+const formRef = ref<any>();
+const formModel = reactive({ name: '', intro: '', fruit: ['apple'], flavor: 'sweet', enabled: true });
+const formRules = {
+    name: [{ required: true, message: '请输入姓名', trigger: ['change', 'blur'] }],
+    intro: [{ min: 5, message: '简介至少输入 5 个字', trigger: 'blur' }]
+};
+const formMessage = ref('请填写并提交表单');
+const inputValue = ref('');
+const textareaValue = ref('Snake UI 表单组件');
+const checkboxValue = ref(true);
+const checkboxValues = ref<unknown[]>(['apple']);
+const radioStandalone = ref(false);
+const radioValue = ref<unknown>('sweet');
+const switchValue = ref(true);
+const sliderValue = ref(35);
 const viewportKinds = new Set(['snake-cms', 'filter-sorts', 'page-popup', 'suspension', 'overlay', 'popup', 'sticky']);
 const isViewportPreview = computed(() => viewportKinds.has(props.kind));
 const categoryLabel = computed(() => definition.value.category);
@@ -120,6 +135,20 @@ function updateDemoValue(key: string, value: DemoValue) {
 
 function selectActivity(item: { id: string }) {
     currentActivity.value = item.id;
+}
+
+async function submitForm() {
+    try {
+        await formRef.value?.validate();
+        formMessage.value = `校验通过：${formModel.name}`;
+    } catch {
+        formMessage.value = '请检查表单中的错误提示';
+    }
+}
+
+function resetForm() {
+    formRef.value?.resetFields();
+    formMessage.value = '表单已重置';
 }
 </script>
 
@@ -298,6 +327,111 @@ function selectActivity(item: { id: string }) {
                         ></view
                     ></snake-index-list
                 ></view
+            >
+            <view v-else-if="kind === 'form' || kind === 'form-item'" class="demo-form">
+                <snake-form
+                    ref="formRef"
+                    :model="formModel"
+                    :rules="formRules"
+                    :border-bottom="Boolean(demoState.formBorder)"
+                    :label-position="demoState.formTopLabel ? 'top' : 'left'"
+                >
+                    <snake-form-item
+                        label="姓名"
+                        prop="name"
+                        :required="Boolean(demoState.formRequired ?? true)"
+                        left-icon="info"
+                        ><snake-input v-model="formModel.name" placeholder="请输入姓名" clearable
+                    /></snake-form-item>
+                    <snake-form-item label="简介" prop="intro"
+                        ><snake-textarea v-model="formModel.intro" :maxlength="60" count height="150"
+                    /></snake-form-item>
+                    <snake-form-item label="水果" prop="fruit"
+                        ><snake-checkbox-group v-model="formModel.fruit"
+                            ><snake-checkbox name="apple">苹果</snake-checkbox
+                            ><snake-checkbox name="pear">雪梨</snake-checkbox></snake-checkbox-group
+                        ></snake-form-item
+                    >
+                    <snake-form-item label="味道" prop="flavor"
+                        ><snake-radio-group v-model="formModel.flavor"
+                            ><snake-radio name="sweet">鲜甜</snake-radio
+                            ><snake-radio name="spicy">香辣</snake-radio></snake-radio-group
+                        ></snake-form-item
+                    >
+                    <snake-form-item label="启用" prop="enabled"
+                        ><snake-switch v-model="formModel.enabled"
+                    /></snake-form-item>
+                </snake-form>
+                <view class="demo-form__actions"
+                    ><snake-button size="small" @click="submitForm">提交校验</snake-button
+                    ><snake-button size="small" plain @click="resetForm">重置</snake-button></view
+                >
+                <text class="demo-form__message">{{ formMessage }}</text>
+            </view>
+            <view v-else-if="kind === 'input'" class="demo-control-stack"
+                ><snake-input
+                    v-model="inputValue"
+                    border="surround"
+                    prefix-icon="search"
+                    :clearable="Boolean(demoState.inputClearable)"
+                    :disabled="Boolean(demoState.inputDisabled)"
+                    :placeholder="String(demoState.inputPlaceholder)"
+                /><snake-input
+                    v-model="inputValue"
+                    type="password"
+                    border="surround"
+                    show-password
+                    placeholder="密码输入"
+                /><text>当前值：{{ inputValue || '空' }}</text></view
+            >
+            <view v-else-if="kind === 'textarea'" class="demo-control-stack"
+                ><snake-textarea
+                    v-model="textareaValue"
+                    :count="Boolean(demoState.textareaCount)"
+                    :auto-height="Boolean(demoState.textareaAuto)"
+                    :maxlength="80"
+                /><text>已输入 {{ textareaValue.length }} 个字</text></view
+            >
+            <view v-else-if="kind === 'checkbox'" class="demo-control-stack"
+                ><snake-checkbox v-model="checkboxValue" :disabled="Boolean(demoState.choiceDisabled)"
+                    >同意用户协议</snake-checkbox
+                ><text>当前值：{{ checkboxValue }}</text></view
+            >
+            <view v-else-if="kind === 'checkbox-group'" class="demo-control-stack"
+                ><snake-checkbox-group
+                    v-model="checkboxValues"
+                    :placement="demoState.choiceColumn ? 'column' : 'row'"
+                    :max="2"
+                    ><snake-checkbox name="apple">苹果</snake-checkbox><snake-checkbox name="pear">雪梨</snake-checkbox
+                    ><snake-checkbox name="lemon">柠檬</snake-checkbox></snake-checkbox-group
+                ><text>已选：{{ checkboxValues.join('、') || '无' }}</text></view
+            >
+            <view v-else-if="kind === 'radio'" class="demo-control-stack"
+                ><snake-radio v-model="radioStandalone" :disabled="Boolean(demoState.choiceDisabled)"
+                    >默认地址</snake-radio
+                ><text>当前值：{{ radioStandalone }}</text></view
+            >
+            <view v-else-if="kind === 'radio-group'" class="demo-control-stack"
+                ><snake-radio-group v-model="radioValue" :placement="demoState.choiceColumn ? 'column' : 'row'"
+                    ><snake-radio name="sweet">鲜甜</snake-radio><snake-radio name="spicy">香辣</snake-radio
+                    ><snake-radio name="mild">清淡</snake-radio></snake-radio-group
+                ><text>已选：{{ radioValue }}</text></view
+            >
+            <view v-else-if="kind === 'switch'" class="demo-control-stack"
+                ><snake-switch
+                    v-model="switchValue"
+                    :loading="Boolean(demoState.switchLoading)"
+                    :disabled="Boolean(demoState.switchDisabled)"
+                /><text>当前值：{{ switchValue }}</text></view
+            >
+            <view v-else-if="kind === 'slider'" class="demo-control-stack"
+                ><snake-slider
+                    v-model="sliderValue"
+                    :step="Number(demoState.sliderStep)"
+                    :show-value="Boolean(demoState.sliderShowValue)"
+                    :disabled="Boolean(demoState.sliderDisabled)"
+                    show-edge-value
+                /><text>当前值：{{ sliderValue }}</text></view
             >
             <snake-cms
                 v-if="kind === 'snake-cms'"
@@ -483,6 +617,26 @@ function selectActivity(item: { id: string }) {
     border-bottom: 1rpx solid var(--snake-border);
     color: var(--snake-text-sub);
     background: var(--snake-bg-card);
+}
+.demo-form,
+.demo-control-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 28rpx;
+    padding: 24rpx;
+}
+.demo-form {
+    gap: 20rpx;
+}
+.demo-form__actions {
+    display: flex;
+    gap: 20rpx;
+    padding-top: 12rpx;
+}
+.demo-form__message,
+.demo-control-stack > text {
+    color: var(--snake-text-sub);
+    font-size: 24rpx;
 }
 
 .custom-card {

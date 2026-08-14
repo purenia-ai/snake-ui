@@ -5,7 +5,7 @@
 ## 特性
 
 - Vue 3 + uni-app，支持 H5、微信小程序、App
-- 17 个公开基础组件
+- 29 个公开基础与表单组件
 - 20 个商城 CMS 业务组件
 - 支持 npm / `uni_modules` 使用方式
 - 支持 easycom 自动注册
@@ -119,6 +119,10 @@ import { addUnit, navTo, sleep, toast } from 'snake-ui/libs';
 ### 基础组件
 
 `snake-button`、`snake-empty`、`snake-icon`、`snake-image`、`snake-lazy-image`、`snake-loadmore`、`snake-notice-bar`、`snake-overlay`、`snake-popup`、`snake-sticky`、`snake-swiper`、`snake-tabs`。
+
+### 表单组件
+
+`snake-form`、`snake-form-item`、`snake-input`、`snake-textarea`、`snake-checkbox`、`snake-checkbox-group`、`snake-radio`、`snake-radio-group`、`snake-switch`、`snake-slider`。
 
 ### CMS 组件
 

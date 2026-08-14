@@ -18,6 +18,7 @@ export * from './request';
 export * from './cms';
 export * from './unit';
 export * from './platform';
+export * from './form';
 export * from './adapters/request';
 export * from './adapters/cache';
 export * from './adapters/config';

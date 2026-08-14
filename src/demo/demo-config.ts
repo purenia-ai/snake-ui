@@ -35,18 +35,6 @@ const definitions: Record<string, DemoDefinition> = {
         description: '按钮用于触发即时操作，支持主题、朴素、禁用和加载状态。',
         controls: [
             {
-                key: 'emptyMode',
-                label: '空状态类型',
-                type: 'select',
-                defaultValue: 'data',
-                options: [
-                    { label: '暂无数据', value: 'data' },
-                    { label: '暂无内容', value: 'list' },
-                    { label: '网络异常', value: 'network' },
-                    { label: '搜索为空', value: 'search' }
-                ]
-            },
-            {
                 key: 'type',
                 label: '按钮主题',
                 type: 'select',
@@ -141,6 +129,18 @@ const definitions: Record<string, DemoDefinition> = {
         category: '反馈与浮层',
         description: '在没有数据时提供清晰的占位和下一步提示。',
         controls: [
+            {
+                key: 'emptyMode',
+                label: '空状态类型',
+                type: 'select',
+                defaultValue: 'data',
+                options: [
+                    { label: '暂无数据', value: 'data' },
+                    { label: '暂无内容', value: 'list' },
+                    { label: '网络异常', value: 'wifi' },
+                    { label: '搜索为空', value: 'search' }
+                ]
+            },
             {
                 key: 'text',
                 label: '提示文字',
@@ -423,6 +423,73 @@ const definitions: Record<string, DemoDefinition> = {
         category: '导航与布局',
         description: '索引锚点定义分组位置，需要放在 IndexList 内使用。',
         controls: [{ key: 'anchorPrefix', label: '分组前缀', type: 'input', defaultValue: '分组' }]
+    },
+    form: {
+        category: '表单组件',
+        description: '组合字段控件，完成规则校验、错误展示、提交和重置。',
+        controls: [
+            { key: 'formBorder', label: '显示分隔线', type: 'switch', defaultValue: true },
+            { key: 'formTopLabel', label: '标签置顶', type: 'switch', defaultValue: false }
+        ]
+    },
+    'form-item': {
+        category: '表单组件',
+        description: '连接标签、字段控件和校验错误。',
+        controls: [{ key: 'formRequired', label: '必填标识', type: 'switch', defaultValue: true }]
+    },
+    input: {
+        category: '表单组件',
+        description: '支持清空、密码、格式化和多种边框的单行输入。',
+        controls: [
+            { key: 'inputClearable', label: '允许清空', type: 'switch', defaultValue: true },
+            { key: 'inputDisabled', label: '禁用状态', type: 'switch', defaultValue: false },
+            { key: 'inputPlaceholder', label: '占位文字', type: 'input', defaultValue: '请输入用户名' }
+        ]
+    },
+    textarea: {
+        category: '表单组件',
+        description: '支持字数统计和自适应高度的多行文本输入。',
+        controls: [
+            { key: 'textareaCount', label: '显示字数', type: 'switch', defaultValue: true },
+            { key: 'textareaAuto', label: '高度自适应', type: 'switch', defaultValue: false }
+        ]
+    },
+    checkbox: {
+        category: '表单组件',
+        description: '可独立使用的复选框，也可放入 CheckboxGroup。',
+        controls: [{ key: 'choiceDisabled', label: '禁用状态', type: 'switch', defaultValue: false }]
+    },
+    'checkbox-group': {
+        category: '表单组件',
+        description: '管理多个复选框值和最大选择数。',
+        controls: [{ key: 'choiceColumn', label: '纵向排列', type: 'switch', defaultValue: false }]
+    },
+    radio: {
+        category: '表单组件',
+        description: '可独立使用的单选框，也可放入 RadioGroup。',
+        controls: [{ key: 'choiceDisabled', label: '禁用状态', type: 'switch', defaultValue: false }]
+    },
+    'radio-group': {
+        category: '表单组件',
+        description: '管理一组互斥的单选值。',
+        controls: [{ key: 'choiceColumn', label: '纵向排列', type: 'switch', defaultValue: false }]
+    },
+    switch: {
+        category: '表单组件',
+        description: '支持加载、禁用和自定义值的开关。',
+        controls: [
+            { key: 'switchLoading', label: '加载状态', type: 'switch', defaultValue: false },
+            { key: 'switchDisabled', label: '禁用状态', type: 'switch', defaultValue: false }
+        ]
+    },
+    slider: {
+        category: '表单组件',
+        description: '通过点击或触摸拖动选择范围内的数值。',
+        controls: [
+            { key: 'sliderStep', label: '步长', type: 'slider', defaultValue: 5, min: 1, max: 20, step: 1 },
+            { key: 'sliderShowValue', label: '显示数值', type: 'switch', defaultValue: true },
+            { key: 'sliderDisabled', label: '禁用状态', type: 'switch', defaultValue: false }
+        ]
     },
     'snake-cms': {
         category: 'CMS 内容',

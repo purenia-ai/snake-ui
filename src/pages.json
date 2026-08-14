@@ -37,7 +37,17 @@
                 { "path": "drop-menu", "style": { "navigationBarTitleText": "下拉菜单" } },
                 { "path": "drop-menu-item", "style": { "navigationBarTitleText": "下拉菜单项" } },
                 { "path": "index-list", "style": { "navigationBarTitleText": "索引列表" } },
-                { "path": "index-anchor", "style": { "navigationBarTitleText": "索引锚点" } }
+                { "path": "index-anchor", "style": { "navigationBarTitleText": "索引锚点" } },
+                { "path": "form", "style": { "navigationBarTitleText": "表单" } },
+                { "path": "form-item", "style": { "navigationBarTitleText": "表单项" } },
+                { "path": "input", "style": { "navigationBarTitleText": "输入框" } },
+                { "path": "textarea", "style": { "navigationBarTitleText": "文本域" } },
+                { "path": "checkbox", "style": { "navigationBarTitleText": "复选框" } },
+                { "path": "checkbox-group", "style": { "navigationBarTitleText": "复选框组" } },
+                { "path": "radio", "style": { "navigationBarTitleText": "单选框" } },
+                { "path": "radio-group", "style": { "navigationBarTitleText": "单选框组" } },
+                { "path": "switch", "style": { "navigationBarTitleText": "开关" } },
+                { "path": "slider", "style": { "navigationBarTitleText": "滑动选择器" } }
             ]
         },
         {

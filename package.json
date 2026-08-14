@@ -46,6 +46,7 @@
         "test:foundation": "node --test scripts/foundation.test.mjs",
         "test:foundation-parity": "node --test scripts/foundation-parity.test.mjs",
         "test:interaction-parity": "node --test scripts/interaction-parity.test.mjs",
+        "test:form-controls-parity": "node --experimental-strip-types --test scripts/form-controls-parity.test.mjs",
         "test:uview-dependency": "node --test scripts/uview-dependency.test.mjs",
         "test:dev-server-config": "node --test scripts/dev-server-config.test.mjs",
         "test:preview-structure": "node --test scripts/preview-structure.test.mjs",

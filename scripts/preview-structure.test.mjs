@@ -23,7 +23,17 @@ const foundationComponents = [
     'drop-menu',
     'drop-menu-item',
     'index-list',
-    'index-anchor'
+    'index-anchor',
+    'form',
+    'form-item',
+    'input',
+    'textarea',
+    'checkbox',
+    'checkbox-group',
+    'radio',
+    'radio-group',
+    'switch',
+    'slider'
 ];
 
 function exampleRoutes(pages) {
@@ -55,8 +65,8 @@ test('component docs and example routes remain one-to-one', async () => {
         if (match) previews.push(match[1]);
     }
 
-    assert.equal(routes.length, 39);
-    assert.equal(previews.length, 39);
+    assert.equal(routes.length, 49);
+    assert.equal(previews.length, 49);
     assert.deepEqual([...new Set(previews)].sort(), [...new Set(routes)].sort());
 });
 
@@ -84,11 +94,20 @@ test('component overview page covers every example route and directory layout', 
     );
     const routes = exampleRoutes(pages);
 
-    assert.equal(configuredPaths.length, 39);
+    assert.equal(configuredPaths.length, 49);
     assert.deepEqual([...configuredPaths].sort(), [...routes].sort());
-    assert.equal(groupA.filter(file => file.endsWith('.vue')).length, 19);
+    assert.equal(groupA.filter(file => file.endsWith('.vue')).length, 29);
     assert.equal(groupB.filter(file => file.endsWith('.vue')).length, 20);
-    for (const group of ['基础组件', '展示组件', '反馈与浮层', '导航与布局', 'CMS 内容', 'CMS 营销', '商品业务']) {
+    for (const group of [
+        '基础组件',
+        '表单组件',
+        '展示组件',
+        '反馈与浮层',
+        '导航与布局',
+        'CMS 内容',
+        'CMS 营销',
+        '商品业务'
+    ]) {
         assert.match(config, new RegExp(`groupName: '${group}'`));
     }
     assert.match(config, /cms:\s*true|cms\s*\n?\s*}/);
@@ -110,7 +129,7 @@ test('all example components declare an interactive demo configuration', async (
     const configuredKinds = [...config.matchAll(/^\s+(?:'([^']+)'|([a-z][\w-]*)):\s*\{\s*category:/gm)].map(
         match => match[1] || match[2]
     );
-    assert.equal(configuredKinds.length, 39);
+    assert.equal(configuredKinds.length, 49);
     assert.match(panel, /control\.type === 'select'/);
     assert.match(panel, /control\.type === 'switch'/);
     assert.match(panel, /control\.type === 'slider'/);

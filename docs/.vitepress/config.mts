@@ -26,6 +26,21 @@ const componentGroups = [
         ]
     },
     {
+        text: '表单组件',
+        items: [
+            { text: 'Form 表单', link: '/components/form' },
+            { text: 'Form Item 表单项', link: '/components/form-item' },
+            { text: 'Input 输入框', link: '/components/input' },
+            { text: 'Textarea 文本域', link: '/components/textarea' },
+            { text: 'Checkbox 复选框', link: '/components/checkbox' },
+            { text: 'Checkbox Group 复选框组', link: '/components/checkbox-group' },
+            { text: 'Radio 单选框', link: '/components/radio' },
+            { text: 'Radio Group 单选框组', link: '/components/radio-group' },
+            { text: 'Switch 开关', link: '/components/switch' },
+            { text: 'Slider 滑动选择器', link: '/components/slider' }
+        ]
+    },
+    {
         text: '容器',
         items: [
             { text: 'Snake CMS', link: '/components/snake-cms' },

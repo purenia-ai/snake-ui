@@ -45,6 +45,28 @@ const componentGroups: SnakeComponentGroup[] = [
         ]
     },
     {
+        groupName: '表单组件',
+        groupNameEn: 'Form',
+        icon: '✓',
+        list: [
+            item('/pages/componentsA/form', 'Form 表单', 'Form', '统一管理字段、规则校验、重置和错误状态。'),
+            item('/pages/componentsA/form-item', 'FormItem 表单项', 'FormItem', '连接标签、字段控件和校验结果。'),
+            item('/pages/componentsA/input', 'Input 输入框', 'Input', '单行输入，支持清空、密码和前后插槽。'),
+            item('/pages/componentsA/textarea', 'Textarea 文本域', 'Textarea', '多行输入，支持自适应高度和字数统计。'),
+            item('/pages/componentsA/checkbox', 'Checkbox 复选框', 'Checkbox', '独立或成组选择多个值。'),
+            item(
+                '/pages/componentsA/checkbox-group',
+                'CheckboxGroup 复选框组',
+                'CheckboxGroup',
+                '管理复选值和最大选择数。'
+            ),
+            item('/pages/componentsA/radio', 'Radio 单选框', 'Radio', '独立或成组选择单个值。'),
+            item('/pages/componentsA/radio-group', 'RadioGroup 单选框组', 'RadioGroup', '管理互斥单选值。'),
+            item('/pages/componentsA/switch', 'Switch 开关', 'Switch', '切换布尔值或自定义开关值。'),
+            item('/pages/componentsA/slider', 'Slider 滑动选择器', 'Slider', '通过点击或触摸拖动选择数值。')
+        ]
+    },
+    {
         groupName: '展示组件',
         groupNameEn: 'Display',
         icon: '▦',
