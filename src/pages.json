@@ -1,73 +1,76 @@
 {
-	"easycom": {
-		"autoscan": true,
-		"custom": {
-			"^snake-(.*)": "@/uni_modules/snake-ui/components/snake-$1/snake-$1.vue"
-		}
-	},
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		{
-			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": "Snake UI",
-				"navigationStyle": "custom"
-			}
-		}
-	],
-	"subPackages": [
-		{
-			"root": "pages/componentsA",
-			"pages": [
-				{ "path": "button", "style": { "navigationBarTitleText": "按钮" } },
-				{ "path": "empty", "style": { "navigationBarTitleText": "空状态" } },
-				{ "path": "icon", "style": { "navigationBarTitleText": "图标" } },
-				{ "path": "image", "style": { "navigationBarTitleText": "图片" } },
-				{ "path": "lazy-image", "style": { "navigationBarTitleText": "懒加载图片" } },
-				{ "path": "loadmore", "style": { "navigationBarTitleText": "加载更多" } },
-				{ "path": "notice-bar", "style": { "navigationBarTitleText": "通知栏" } },
-				{ "path": "overlay", "style": { "navigationBarTitleText": "遮罩层" } },
-				{ "path": "popup", "style": { "navigationBarTitleText": "弹出层" } },
-				{ "path": "sticky", "style": { "navigationBarTitleText": "吸顶" } },
-				{ "path": "swiper", "style": { "navigationBarTitleText": "轮播图" } },
-				{ "path": "tabs", "style": { "navigationBarTitleText": "标签页" } },
-				{ "path": "button-sort", "style": { "navigationBarTitleText": "排序按钮" } },
-				{ "path": "drop-menu", "style": { "navigationBarTitleText": "下拉菜单" } },
-				{ "path": "drop-menu-item", "style": { "navigationBarTitleText": "下拉菜单项" } },
-				{ "path": "index-list", "style": { "navigationBarTitleText": "索引列表" } },
-				{ "path": "index-anchor", "style": { "navigationBarTitleText": "索引锚点" } }
-			]
-		},
-		{
-			"root": "pages/componentsB",
-			"pages": [
-				{ "path": "snake-cms", "style": { "navigationBarTitleText": "Snake CMS" } },
-				{ "path": "custom-module", "style": { "navigationBarTitleText": "自定义模块" } },
-				{ "path": "images", "style": { "navigationBarTitleText": "图片展示" } },
-				{ "path": "picture-ads", "style": { "navigationBarTitleText": "轮播广告" } },
-				{ "path": "magic-cube", "style": { "navigationBarTitleText": "魔方布局" } },
-				{ "path": "videos", "style": { "navigationBarTitleText": "视频" } },
-				{ "path": "rich-text", "style": { "navigationBarTitleText": "富文本" } },
-				{ "path": "notice", "style": { "navigationBarTitleText": "公告" } },
-				{ "path": "auxiliary-segmentation", "style": { "navigationBarTitleText": "辅助分割线" } },
-				{ "path": "graphic-navigation", "style": { "navigationBarTitleText": "图文导航" } },
-				{ "path": "commodity-search", "style": { "navigationBarTitleText": "商品搜索" } },
-				{ "path": "suspension", "style": { "navigationBarTitleText": "悬浮入口" } },
-				{ "path": "page-popup", "style": { "navigationBarTitleText": "页面弹窗" } },
-				{ "path": "jump-applet", "style": { "navigationBarTitleText": "小程序跳转" } },
-				{ "path": "follow", "style": { "navigationBarTitleText": "关注" } },
-				{ "path": "goods-list", "style": { "navigationBarTitleText": "商品列表" } },
-				{ "path": "activity-list", "style": { "navigationBarTitleText": "活动列表" } },
-				{ "path": "filter-sorts", "style": { "navigationBarTitleText": "筛选排序" } },
-				{ "path": "list-switching", "style": { "navigationBarTitleText": "列表切换" } },
-				{ "path": "coupon", "style": { "navigationBarTitleText": "优惠券" } }
-			]
-		}
-	],
-	"globalStyle": {
-		"navigationStyle": "custom",
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "Snake UI",
-		"navigationBarBackgroundColor": "#FFFFFF",
-		"backgroundColor": "#FFFFFF"
-	}
+    "easycom": {
+        "autoscan": true,
+        "custom": {
+            "^snake-(.*)": "@/uni_modules/snake-ui/components/snake-$1/snake-$1.vue"
+        }
+    },
+    "pages": [
+        //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+        {
+            "path": "pages/index/index",
+            "style": {
+                "navigationBarTitleText": "Snake UI",
+                "navigationStyle": "custom"
+            }
+        }
+    ],
+    "subPackages": [
+        {
+            "root": "pages/componentsA",
+            "pages": [
+                { "path": "button", "style": { "navigationBarTitleText": "按钮" } },
+                { "path": "loading-icon", "style": { "navigationBarTitleText": "加载图标" } },
+                { "path": "transition", "style": { "navigationBarTitleText": "过渡动画" } },
+                { "path": "empty", "style": { "navigationBarTitleText": "空状态" } },
+                { "path": "icon", "style": { "navigationBarTitleText": "图标" } },
+                { "path": "image", "style": { "navigationBarTitleText": "图片" } },
+                { "path": "lazy-image", "style": { "navigationBarTitleText": "懒加载图片" } },
+                { "path": "loadmore", "style": { "navigationBarTitleText": "加载更多" } },
+                { "path": "notice-bar", "style": { "navigationBarTitleText": "通知栏" } },
+                { "path": "overlay", "style": { "navigationBarTitleText": "遮罩层" } },
+                { "path": "popup", "style": { "navigationBarTitleText": "弹出层" } },
+                { "path": "sticky", "style": { "navigationBarTitleText": "吸顶" } },
+                { "path": "swiper", "style": { "navigationBarTitleText": "轮播图" } },
+                { "path": "tabs", "style": { "navigationBarTitleText": "标签页" } },
+                { "path": "button-sort", "style": { "navigationBarTitleText": "排序按钮" } },
+                { "path": "drop-menu", "style": { "navigationBarTitleText": "下拉菜单" } },
+                { "path": "drop-menu-item", "style": { "navigationBarTitleText": "下拉菜单项" } },
+                { "path": "index-list", "style": { "navigationBarTitleText": "索引列表" } },
+                { "path": "index-anchor", "style": { "navigationBarTitleText": "索引锚点" } }
+            ]
+        },
+        {
+            "root": "pages/componentsB",
+            "pages": [
+                { "path": "snake-cms", "style": { "navigationBarTitleText": "Snake CMS" } },
+                { "path": "custom-module", "style": { "navigationBarTitleText": "自定义模块" } },
+                { "path": "images", "style": { "navigationBarTitleText": "图片展示" } },
+                { "path": "picture-ads", "style": { "navigationBarTitleText": "轮播广告" } },
+                { "path": "magic-cube", "style": { "navigationBarTitleText": "魔方布局" } },
+                { "path": "videos", "style": { "navigationBarTitleText": "视频" } },
+                { "path": "rich-text", "style": { "navigationBarTitleText": "富文本" } },
+                { "path": "notice", "style": { "navigationBarTitleText": "公告" } },
+                { "path": "auxiliary-segmentation", "style": { "navigationBarTitleText": "辅助分割线" } },
+                { "path": "graphic-navigation", "style": { "navigationBarTitleText": "图文导航" } },
+                { "path": "commodity-search", "style": { "navigationBarTitleText": "商品搜索" } },
+                { "path": "suspension", "style": { "navigationBarTitleText": "悬浮入口" } },
+                { "path": "page-popup", "style": { "navigationBarTitleText": "页面弹窗" } },
+                { "path": "jump-applet", "style": { "navigationBarTitleText": "小程序跳转" } },
+                { "path": "follow", "style": { "navigationBarTitleText": "关注" } },
+                { "path": "goods-list", "style": { "navigationBarTitleText": "商品列表" } },
+                { "path": "activity-list", "style": { "navigationBarTitleText": "活动列表" } },
+                { "path": "filter-sorts", "style": { "navigationBarTitleText": "筛选排序" } },
+                { "path": "list-switching", "style": { "navigationBarTitleText": "列表切换" } },
+                { "path": "coupon", "style": { "navigationBarTitleText": "优惠券" } }
+            ]
+        }
+    ],
+    "globalStyle": {
+        "navigationStyle": "custom",
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "Snake UI",
+        "navigationBarBackgroundColor": "#FFFFFF",
+        "backgroundColor": "#FFFFFF"
+    }
 }

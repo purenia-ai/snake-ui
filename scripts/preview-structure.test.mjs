@@ -6,6 +6,8 @@ import { resolve } from 'node:path';
 const root = resolve(import.meta.dirname, '..');
 const foundationComponents = [
     'button',
+    'loading-icon',
+    'transition',
     'empty',
     'icon',
     'image',
@@ -53,8 +55,8 @@ test('component docs and example routes remain one-to-one', async () => {
         if (match) previews.push(match[1]);
     }
 
-    assert.equal(routes.length, 37);
-    assert.equal(previews.length, 37);
+    assert.equal(routes.length, 39);
+    assert.equal(previews.length, 39);
     assert.deepEqual([...new Set(previews)].sort(), [...new Set(routes)].sort());
 });
 
@@ -77,19 +79,19 @@ test('component overview page covers every example route and directory layout', 
     const groupA = await readdir(resolve(root, 'src/pages/componentsA'));
     const groupB = await readdir(resolve(root, 'src/pages/componentsB'));
 
-    const configuredPaths = [...config.matchAll(/item\('(\/pages\/(?:components[AB])\/[^']+)'/g)].map(match =>
+    const configuredPaths = [...config.matchAll(/item\(\s*'(\/pages\/(?:components[AB])\/[^']+)'/g)].map(match =>
         match[1].replace(/^\//, '')
     );
     const routes = exampleRoutes(pages);
 
-    assert.equal(configuredPaths.length, 37);
+    assert.equal(configuredPaths.length, 39);
     assert.deepEqual([...configuredPaths].sort(), [...routes].sort());
-    assert.equal(groupA.filter(file => file.endsWith('.vue')).length, 17);
+    assert.equal(groupA.filter(file => file.endsWith('.vue')).length, 19);
     assert.equal(groupB.filter(file => file.endsWith('.vue')).length, 20);
     for (const group of ['基础组件', '展示组件', '反馈与浮层', '导航与布局', 'CMS 内容', 'CMS 营销', '商品业务']) {
         assert.match(config, new RegExp(`groupName: '${group}'`));
     }
-    assert.match(config, /cms: true|cms \}/);
+    assert.match(config, /cms:\s*true|cms\s*\n?\s*}/);
     assert.match(index, /DemoPage/);
     assert.match(index, /:nav-back="false"/);
     assert.match(index, /:nav-home="false"/);
@@ -105,10 +107,10 @@ test('all example components declare an interactive demo configuration', async (
     const panel = await readFile(resolve(root, 'src/demo/DemoControlPanel.vue'), 'utf8');
     const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
 
-    const configuredKinds = [...config.matchAll(/^\s{2}(?:'([^']+)'|([a-z][\w-]*)):\s*\{\s*category:/gm)].map(
+    const configuredKinds = [...config.matchAll(/^\s+(?:'([^']+)'|([a-z][\w-]*)):\s*\{\s*category:/gm)].map(
         match => match[1] || match[2]
     );
-    assert.equal(configuredKinds.length, 37);
+    assert.equal(configuredKinds.length, 39);
     assert.match(panel, /control\.type === 'select'/);
     assert.match(panel, /control\.type === 'switch'/);
     assert.match(panel, /control\.type === 'slider'/);

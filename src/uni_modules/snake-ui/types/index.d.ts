@@ -7,6 +7,8 @@ export * from '../locale';
 
 export * from '../components/component-types';
 export * from '../components/snake-button/types';
+export * from '../components/snake-loading-icon/types';
+export * from '../components/snake-transition/types';
 export * from '../components/snake-empty/types';
 export * from '../components/snake-icon/types';
 export * from '../components/snake-image/types';

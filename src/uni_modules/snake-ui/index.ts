@@ -31,6 +31,8 @@ export { default as SnakeRichText } from './components/snake-rich-text/snake-ric
 export { default as SnakeSuspension } from './components/snake-suspension/snake-suspension.vue';
 export { default as SnakeVideos } from './components/snake-videos/snake-videos.vue';
 export { default as SnakeButton } from './components/snake-button/snake-button.vue';
+export { default as SnakeLoadingIcon } from './components/snake-loading-icon/snake-loading-icon.vue';
+export { default as SnakeTransition } from './components/snake-transition/snake-transition.vue';
 export { default as SnakeEmpty } from './components/snake-empty/snake-empty.vue';
 export { default as SnakeIcon } from './components/snake-icon/snake-icon.vue';
 export { default as SnakeImage } from './components/snake-image/snake-image.vue';
@@ -50,6 +52,8 @@ export { default as SnakeIndexAnchor } from './components/snake-index-anchor/sna
 
 export * from './components/component-types';
 export * from './components/snake-button/types';
+export * from './components/snake-loading-icon/types';
+export * from './components/snake-transition/types';
 export * from './components/snake-empty/types';
 export * from './components/snake-icon/types';
 export * from './components/snake-image/types';

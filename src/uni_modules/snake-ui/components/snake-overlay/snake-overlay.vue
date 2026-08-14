@@ -1,10 +1,62 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import SnakeTransition from '../snake-transition/snake-transition.vue';
 import type { SnakeOverlayEmits, SnakeOverlayProps } from './types';
-const props = withDefaults(defineProps<SnakeOverlayProps>(), { modelValue: false, opacity: .5, zIndex: 10070, duration: 250, customStyle: '' });
+
+defineOptions({ name: 'SnakeOverlay', options: { virtualHost: true, styleIsolation: 'shared' } });
+
+const props = withDefaults(defineProps<SnakeOverlayProps>(), {
+    modelValue: false,
+    opacity: 0.5,
+    zIndex: 10070,
+    duration: 300,
+    lockScroll: true,
+    customClass: '',
+    customStyle: ''
+});
 const emit = defineEmits<SnakeOverlayEmits>();
-const style = computed(() => [{ backgroundColor: `rgba(0,0,0,${props.opacity})`, zIndex: props.zIndex, transitionDuration: `${props.duration}ms` }, props.customStyle]);
-function close(event: unknown){ emit('click', event); emit('update:modelValue', false); }
+const visible = computed(() => props.show ?? props.modelValue);
+const overlayStyle = computed(() => [
+    {
+        backgroundColor: `rgba(0, 0, 0, ${Math.min(1, Math.max(0, props.opacity))})`,
+        zIndex: props.zIndex
+    },
+    props.customStyle
+]);
+
+function click(event: unknown) {
+    emit('click', event);
+    emit('update:modelValue', false);
+    emit('update:show', false);
+}
+
+function stopTouchMove() {
+    // uni-app 通过空处理器阻止遮罩上的 touchmove 冒泡。
+}
 </script>
-<template><view v-if="modelValue" class="snake-overlay" :style="[$snakeThemeStyle, style]" @click="close"><slot /></view></template>
-<style scoped>.snake-overlay{position:fixed;inset:0;transition-property:opacity}</style>
+
+<template>
+    <snake-transition
+        :show="visible"
+        name="fade"
+        :duration="duration"
+        :custom-class="['snake-overlay', customClass].filter(Boolean).join(' ')"
+        :custom-style="[$snakeThemeStyle, overlayStyle]"
+        @click="click"
+        @after-enter="emit('opened')"
+        @after-leave="emit('closed')"
+        @touchmove.stop.prevent="lockScroll ? stopTouchMove() : undefined"
+    >
+        <slot />
+    </snake-transition>
+</template>
+
+<style>
+.snake-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+</style>
