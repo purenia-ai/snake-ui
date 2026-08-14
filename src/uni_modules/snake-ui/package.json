@@ -1,0 +1,100 @@
+{
+  "id": "snake-ui",
+  "name": "snake-ui",
+  "displayName": "Snake UI",
+  "version": "0.4.0",
+  "description": "面向 uni-app 商城与 CMS 场景的 Vue 组件库",
+  "type": "module",
+  "main": "index.ts",
+  "module": "index.ts",
+  "browser": "index.ts",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.ts",
+      "default": "./index.ts"
+    },
+    "./components/*": "./components/*",
+    "./libs": {
+      "types": "./libs/index.ts",
+      "import": "./libs/index.ts",
+      "default": "./libs/index.ts"
+    },
+    "./libs/*": "./libs/*",
+    "./types": "./types/index.d.ts",
+    "./locale": "./locale/index.ts",
+    "./index.scss": "./index.scss",
+    "./theme.scss": "./theme.scss",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "components",
+    "libs",
+    "locale",
+    "types",
+    "index.ts",
+    "index.d.ts",
+    "index.scss",
+    "theme.scss",
+    "THIRD_PARTY_NOTICES.md",
+    "readme.md",
+    "changelog.md"
+  ],
+  "keywords": ["snake-ui", "uni-app", "vue3", "cms"],
+  "engines": {
+    "uni-app": "*"
+  },
+  "dcloudext": {
+    "type": "component-vue"
+  },
+  "peerDependencies": {
+    "@dcloudio/uni-app": ">=3.0.0",
+    "vue": ">=3.4.0"
+  },
+  "uni_modules": {
+    "dependencies": [],
+    "encrypt": [],
+    "platforms": {
+      "cloud": {
+        "tcb": "-",
+        "aliyun": "-",
+        "alipay": "-"
+      },
+      "client": {
+        "uni-app": {
+          "vue": {
+            "vue2": "x",
+            "vue3": "√"
+          },
+          "web": {
+            "safari": "-",
+            "chrome": "-"
+          },
+          "app": {
+            "vue": "-",
+            "nvue": "x",
+            "android": "-",
+            "ios": "-",
+            "harmony": "-"
+          },
+          "mp": {
+            "weixin": "-",
+            "alipay": "-",
+            "toutiao": "-",
+            "baidu": "-",
+            "kuaishou": "-",
+            "jd": "-",
+            "harmony": "-",
+            "qq": "-",
+            "lark": "-"
+          },
+          "quickapp": {
+            "huawei": "-",
+            "union": "-"
+          }
+        }
+      }
+    }
+  }
+}

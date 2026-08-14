@@ -1,0 +1,101 @@
+<template>
+    <view :style="$snakeThemeStyle">
+        <view class="jumpApplet" v-if="datas.isButton">
+            <button
+                class="jumpAppletBtn"
+                :style="{ color: datas.textColor, backgroundColor: datas.btnColor }"
+                @click="jump"
+            >
+                {{ datas.title }}
+            </button>
+        </view>
+        <image v-else :src="datas.imageUrl" mode="widthFix" @click="jump"></image>
+    </view>
+</template>
+
+<script setup lang="ts">
+import { computed, onMounted } from 'vue';
+import { resolveSnakeCmsOptions } from '../../libs/cms';
+import { toast } from '../../libs/platform';
+import {
+    SnakeCmsError,
+    type SnakeCmsLinkAction,
+    type SnakeCmsLinkService,
+    type SnakeCmsPageInfo
+} from '../snake-cms/types';
+
+defineOptions({ name: 'SnakeJumpApplet' });
+
+const props = withDefaults(
+    defineProps<{
+        datas?: Record<string, any>;
+        linkService?: SnakeCmsLinkService;
+        pageInfo?: SnakeCmsPageInfo;
+    }>(),
+    { datas: () => ({}), linkService: undefined, pageInfo: () => ({}) }
+);
+const emit = defineEmits<{ error: [error: SnakeCmsError] }>();
+const service = computed(() => props.linkService || resolveSnakeCmsOptions().services?.link);
+
+async function jump(): Promise<void> {
+    if (!props.datas.path) {
+        toast('缺少跳转页面路径');
+        return;
+    }
+    if (!props.datas.isWeCom && !props.datas.appId) {
+        toast('缺少 appId');
+        return;
+    }
+    if (!service.value) {
+        const error = new SnakeCmsError('link', '未配置 CMS 跳转服务');
+        emit('error', error);
+        toast(error.message);
+        return;
+    }
+    let action: SnakeCmsLinkAction;
+    if (props.datas.isWeCom) {
+        action = { type: 'external', url: props.datas.path };
+    } else {
+        action = {
+            type: 'mini-program',
+            appId: props.datas.appId,
+            path: `${props.datas.path}${props.datas.query || ''}`,
+            extraData: props.datas.extraData || {},
+            envVersion: props.datas.envVersion
+        };
+        // #ifdef H5
+        action = {
+            type: 'scheme',
+            appId: props.datas.appId,
+            path: props.datas.path,
+            query: props.datas.query
+        };
+        // #endif
+    }
+    try {
+        await service.value.open(action, { pageInfo: props.pageInfo });
+    } catch (cause) {
+        const error = new SnakeCmsError('link', '页面跳转失败', cause);
+        emit('error', error);
+        toast(error.message);
+    }
+}
+
+onMounted(() => {
+    if (props.datas.isAuto) void jump();
+});
+</script>
+
+<style lang="scss" scoped>
+.jumpApplet {
+    margin: 10rpx 40rpx;
+}
+
+.jumpAppletBtn {
+    cursor: pointer;
+
+    &::after {
+        border: none;
+    }
+}
+</style>

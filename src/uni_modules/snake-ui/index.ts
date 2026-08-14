@@ -1,0 +1,71 @@
+import type { App } from 'vue';
+import { installSnakeUIFoundation, installSnakeUIRuntime, type SnakeUIOptions } from './libs';
+
+const SnakeUI = {
+    install(app: App, options: SnakeUIOptions = {}): void {
+        installSnakeUIFoundation(app, options);
+        installSnakeUIRuntime(app, options);
+    }
+};
+
+export default SnakeUI;
+
+export { default as SnakeActivityList } from './components/snake-activity-list/snake-activity-list.vue';
+export { default as SnakeAuxiliarySegmentation } from './components/snake-auxiliary-segmentation/snake-auxiliary-segmentation.vue';
+export { default as SnakeCms } from './components/snake-cms/snake-cms.vue';
+export { default as SnakeCommoditySearch } from './components/snake-commodity-search/snake-commodity-search.vue';
+export { default as SnakeCoupon } from './components/snake-coupon/snake-coupon.vue';
+export { default as SnakeCustomModule } from './components/snake-custom-module/snake-custom-module.vue';
+export { default as SnakeFilterSorts } from './components/snake-filter-sorts/snake-filter-sorts.vue';
+export { default as SnakeFollow } from './components/snake-follow/snake-follow.vue';
+export { default as SnakeGoodsList } from './components/snake-goods-list/snake-goods-list.vue';
+export { default as SnakeGraphicNavigation } from './components/snake-graphic-navigation/snake-graphic-navigation.vue';
+export { default as SnakeImages } from './components/snake-images/snake-images.vue';
+export { default as SnakeJumpApplet } from './components/snake-jump-applet/snake-jump-applet.vue';
+export { default as SnakeListSwitching } from './components/snake-list-switching/snake-list-switching.vue';
+export { default as SnakeMagicCube } from './components/snake-magic-cube/snake-magic-cube.vue';
+export { default as SnakeNotice } from './components/snake-notice/snake-notice.vue';
+export { default as SnakePagePopup } from './components/snake-page-popup/snake-page-popup.vue';
+export { default as SnakePictureAds } from './components/snake-picture-ads/snake-picture-ads.vue';
+export { default as SnakeRichText } from './components/snake-rich-text/snake-rich-text.vue';
+export { default as SnakeSuspension } from './components/snake-suspension/snake-suspension.vue';
+export { default as SnakeVideos } from './components/snake-videos/snake-videos.vue';
+export { default as SnakeButton } from './components/snake-button/snake-button.vue';
+export { default as SnakeEmpty } from './components/snake-empty/snake-empty.vue';
+export { default as SnakeIcon } from './components/snake-icon/snake-icon.vue';
+export { default as SnakeImage } from './components/snake-image/snake-image.vue';
+export { default as SnakeLazyImage } from './components/snake-lazy-image/snake-lazy-image.vue';
+export { default as SnakeLoadmore } from './components/snake-loadmore/snake-loadmore.vue';
+export { default as SnakeNoticeBar } from './components/snake-notice-bar/snake-notice-bar.vue';
+export { default as SnakeOverlay } from './components/snake-overlay/snake-overlay.vue';
+export { default as SnakePopup } from './components/snake-popup/snake-popup.vue';
+export { default as SnakeSticky } from './components/snake-sticky/snake-sticky.vue';
+export { default as SnakeSwiper } from './components/snake-swiper/snake-swiper.vue';
+export { default as SnakeTabs } from './components/snake-tabs/snake-tabs.vue';
+export { default as SnakeButtonSort } from './components/snake-button-sort/snake-button-sort.vue';
+export { default as SnakeDropMenu } from './components/snake-drop-menu/snake-drop-menu.vue';
+export { default as SnakeDropMenuItem } from './components/snake-drop-menu-item/snake-drop-menu-item.vue';
+export { default as SnakeIndexList } from './components/snake-index-list/snake-index-list.vue';
+export { default as SnakeIndexAnchor } from './components/snake-index-anchor/snake-index-anchor.vue';
+
+export * from './components/component-types';
+export * from './components/snake-button/types';
+export * from './components/snake-empty/types';
+export * from './components/snake-icon/types';
+export * from './components/snake-image/types';
+export * from './components/snake-lazy-image/types';
+export * from './components/snake-loadmore/types';
+export * from './components/snake-notice-bar/types';
+export * from './components/snake-overlay/types';
+export * from './components/snake-popup/types';
+export * from './components/snake-sticky/types';
+export * from './components/snake-swiper/types';
+export * from './components/snake-tabs/types';
+export * from './components/snake-button-sort/types';
+export * from './components/snake-drop-menu/types';
+export * from './components/snake-drop-menu-item/types';
+export * from './components/snake-index-list/types';
+export * from './components/snake-index-anchor/types';
+export * from './components/snake-cms/types';
+export * from './libs';
+export * from './locale';

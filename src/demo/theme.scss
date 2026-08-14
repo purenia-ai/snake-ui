@@ -1,0 +1,48 @@
+:root {
+  --snake-primary: #00a86f;
+  --snake-primary-deep: #008d5d;
+  --snake-primary-dark: #007c52;
+  --snake-primary-light: #23bd82;
+  --snake-primary-soft: #edf8f4;
+  --snake-primary-rgb: 0, 168, 111;
+  --snake-bg-page: #f5f6f8;
+  --snake-bg-card: #ffffff;
+  --snake-bg-soft: #f7f8fa;
+  --snake-text-main: #303133;
+  --snake-text-sub: #606266;
+  --snake-text-tips: #909399;
+  --snake-border: #ebeef5;
+  --snake-border-strong: #dcdfe6;
+  --snake-radius-lg: 12px;
+  --snake-radius-md: 8px;
+  --snake-radius-sm: 5px;
+  --snake-shadow-card: 0 2px 10px rgba(31, 47, 61, 0.04);
+  --snake-shadow-float: 0 10px 28px rgba(31, 47, 61, 0.1);
+  --snake-nav-height: 46px;
+}
+
+$snake-primary: var(--snake-primary);
+$snake-primary-deep: var(--snake-primary-deep);
+$snake-primary-dark: var(--snake-primary-dark);
+$snake-primary-light: var(--snake-primary-light);
+$snake-primary-soft: var(--snake-primary-soft);
+
+$snake-bg-page: var(--snake-bg-page);
+$snake-bg-card: var(--snake-bg-card);
+$snake-bg-soft: var(--snake-bg-soft);
+
+$snake-text-main: var(--snake-text-main);
+$snake-text-sub: var(--snake-text-sub);
+$snake-text-tips: var(--snake-text-tips);
+
+$snake-border: var(--snake-border);
+$snake-border-strong: var(--snake-border-strong);
+
+$snake-radius-lg: var(--snake-radius-lg);
+$snake-radius-md: var(--snake-radius-md);
+$snake-radius-sm: var(--snake-radius-sm);
+
+$snake-shadow-card: var(--snake-shadow-card);
+$snake-shadow-float: var(--snake-shadow-float);
+
+$snake-nav-height: var(--snake-nav-height);
