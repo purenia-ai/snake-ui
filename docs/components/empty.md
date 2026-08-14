@@ -4,48 +4,56 @@ preview: /pages/componentsA/empty
 
 # Empty 空状态
 
-用于列表、搜索结果或页面没有内容时提供统一反馈，可使用图片与文字，也可完全自定义提示区域。
+用于列表、搜索结果或异常页面没有内容时提供统一反馈。内置多种语义模式，也支持图片、图标和插槽定制。
 
 ## 平台兼容性
 
-| H5 | 微信小程序 | App |
-| :-: | :-: | :-: |
-| 支持 | 支持 | 支持 |
+|  H5  | 微信小程序 | App  |
+| :--: | :--------: | :--: |
+| 支持 |    支持    | 支持 |
 
 ## 基础用法
 
 ```vue
-<snake-empty icon="/static/empty.png" text="暂无相关内容" />
+<snake-empty mode="data" text="暂无相关内容" />
+<snake-empty mode="search" text="没有找到结果" />
 ```
 
-## 自定义内容
+## 自定义图片与操作区
 
 ```vue
-<snake-empty :custom-style="{ minHeight: '400rpx' }">
-  <view>还没有收藏，去逛逛吧</view>
+<snake-empty src="/static/empty.png" :icon-size="160" text="还没有收藏">
+  <template #bottom><snake-button size="small">去逛逛</snake-button></template>
 </snake-empty>
 ```
+
+`src` 和 `icon` 均可覆盖模式图标；`src` 更适合图片地址，`icon` 可传 SnakeIcon 名称。
 
 ## API
 
 ### Props
 
-| 参数 | 说明 | 类型 | 默认值 | 可选值 |
-| --- | --- | --- | --- | --- |
-| `icon` | 空状态图片地址 | `string` | `''` | - |
-| `text` | 提示文字 | `string` | `暂无数据` | - |
-| `textColor` | 默认文字颜色 | `string` | `#909399` | CSS 颜色 |
-| `customStyle` | 根容器样式 | `string \| object \| array` | `''` | - |
+| 参数                  | 说明                                                                                           | 类型                        | 默认值       |
+| --------------------- | ---------------------------------------------------------------------------------------------- | --------------------------- | ------------ |
+| `show`                | 是否显示                                                                                       | `boolean`                   | `true`       |
+| `mode`                | 语义模式：data/list/search/page/order/coupon/favor/permission/history/message/wifi/address/car | `string`                    | `data`       |
+| `src`                 | 自定义图片地址                                                                                 | `string`                    | `''`         |
+| `icon`                | 自定义图标名或图片地址                                                                         | `string`                    | `''`         |
+| `iconColor`           | 图标颜色                                                                                       | `string`                    | 主题弱文本色 |
+| `iconSize`            | 图标或图片尺寸                                                                                 | `string \| number`          | `120`        |
+| `text`                | 提示文字；为空时使用模式默认文案                                                               | `string`                    | `''`         |
+| `color` / `textColor` | 文字颜色，textColor 优先                                                                       | `string`                    | 主题弱文本色 |
+| `fontSize`            | 文字大小                                                                                       | `string \| number`          | `14`         |
+| `marginTop`           | 组件顶部外边距                                                                                 | `string \| number`          | `0`          |
+| `customClass`         | 自定义类名                                                                                     | `string`                    | `''`         |
+| `customStyle`         | 根容器样式                                                                                     | `string \| object \| array` | `''`         |
 
 ### Slots
 
-| 插槽名 | 说明 | 作用域参数 |
-| --- | --- | --- |
-| `default` | 替换默认文字，图片仍会显示 | - |
-
-## 注意事项
-
-- 组件不设置最小高度，居中范围由父容器决定。
-- 图标固定为 `200rpx × 200rpx`，当前没有独立尺寸参数。
+| 插槽名    | 说明                   |
+| --------- | ---------------------- |
+| `icon`    | 完全替换默认图片或图标 |
+| `default` | 替换默认提示文字       |
+| `bottom`  | 文字下方操作区         |
 
 源码：`src/uni_modules/snake-ui/components/snake-empty/snake-empty.vue`

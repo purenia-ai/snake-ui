@@ -4,43 +4,52 @@ preview: /pages/componentsA/loadmore
 
 # Loadmore 加载更多
 
-用于列表底部反馈当前分页状态，本身不发起请求，由父级根据加载过程更新 `status`。
+用于列表底部反馈分页状态。组件不直接请求数据，点击可加载状态时会派发 `loadmore`，由业务更新 `status`。
 
 ## 平台兼容性
 
-| H5 | 微信小程序 | App |
-| :-: | :-: | :-: |
-| 支持 | 支持 | 支持 |
+|  H5  | 微信小程序 | App  |
+| :--: | :--------: | :--: |
+| 支持 |    支持    | 支持 |
 
 ## 基础用法
 
 ```vue
-<snake-loadmore :status="loading ? 'loading' : finished ? 'nomore' : 'loadmore'" />
+<snake-loadmore :status="status" @loadmore="loadNextPage" />
 ```
 
-## 自定义文案
+## 动画与结束线
 
 ```vue
-<snake-loadmore status="nomore" nomore-text="已经到底啦" bg-color="#f6f8f7" :margin-bottom="20" />
+<snake-loadmore status="loading" icon-type="flower" icon-color="#00a86f" />
+<snake-loadmore status="nomore" is-dot nomore-text="已经到底啦" />
 ```
+
+`loadText` 可传字符串，也可传 `{ loadmore, loading, nomore }` 一次配置全部状态文案。
 
 ## API
 
 ### Props
 
-| 参数 | 说明 | 类型 | 默认值 | 可选值 |
-| --- | --- | --- | --- | --- |
-| `status` | 当前状态 | `string` | `loadmore` | `loadmore` / `loading` / `nomore` |
-| `loadText` | 待加载文案 | `string` | `加载更多` | - |
-| `loadingText` | 加载中文案 | `string` | `正在加载...` | - |
-| `nomoreText` | 无更多文案 | `string` | `没有更多了` | - |
-| `bgColor` | 背景色 | `string` | `transparent` | CSS 颜色 |
-| `marginBottom` | 底部外边距，数字按 px 处理 | `string \| number` | `0` | - |
-| `customStyle` | 自定义样式 | `string \| object \| array` | `''` | - |
+| 参数                             | 说明                       | 类型                        | 默认值        |
+| -------------------------------- | -------------------------- | --------------------------- | ------------- |
+| `status`                         | loadmore/loading/nomore    | `string`                    | `loadmore`    |
+| `loadText`                       | 待加载文案或三态文案对象   | `string \| object`          | `加载更多`    |
+| `loadingText`                    | 加载中文案                 | `string`                    | `正在加载...` |
+| `nomoreText`                     | 无更多文案                 | `string`                    | `没有更多了`  |
+| `icon`                           | 加载中是否显示动画         | `boolean`                   | `true`        |
+| `iconType`                       | circle/flower/spinner      | `string`                    | `circle`      |
+| `iconColor`                      | 动画颜色                   | `string`                    | 主题色        |
+| `isDot`                          | 无更多状态是否显示点状分隔 | `boolean`                   | `false`       |
+| `color` / `fontSize` / `bgColor` | 文字颜色、字号和背景       | `string \| number`          | 主题默认值    |
+| `marginTop` / `marginBottom`     | 上下外边距                 | `string \| number`          | `0`           |
+| `customClass` / `customStyle`    | 自定义类名和样式           | `string \| object \| array` | `''`          |
 
-## 注意事项
+### Events
 
-- 只有 `loading` 状态显示旋转图形。
-- 组件没有点击和触底事件，请在列表或页面生命周期中发起分页请求。
+| 事件名     | 触发时机           | 参数          |
+| ---------- | ------------------ | ------------- |
+| `loadmore` | 点击 loadmore 状态 | -             |
+| `click`    | 点击组件           | 当前 `status` |
 
 源码：`src/uni_modules/snake-ui/components/snake-loadmore/snake-loadmore.vue`

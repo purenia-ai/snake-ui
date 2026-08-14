@@ -158,7 +158,9 @@ function selectActivity(item: { id: string }) {
             >
             <view v-else-if="kind === 'empty'" class="demo-center"
                 ><snake-empty
+                    :mode="String(demoState.emptyMode)"
                     :icon="demoState.showIcon ? localImage : ''"
+                    :icon-size="Number(demoState.emptyIconSize)"
                     :text="String(demoState.text)"
                     :text-color="String(demoState.textColor)"
             /></view>
@@ -201,11 +203,15 @@ function selectActivity(item: { id: string }) {
                         :src="demoState.lazySource === 'error' ? '/static/not-found.png' : localImage" /></view
             ></view>
             <view v-else-if="kind === 'loadmore'" class="demo-stack"
-                ><snake-loadmore :status="String(demoState.loadStatus)"
+                ><snake-loadmore
+                    :status="String(demoState.loadStatus)"
+                    :icon-type="String(demoState.loadIcon)"
+                    :is-dot="Boolean(demoState.loadDot)"
             /></view>
             <view v-else-if="kind === 'notice-bar'" class="demo-stack"
                 ><snake-notice-bar
                     :volume-icon="Boolean(demoState.noticeIcon)"
+                    :more-icon="Boolean(demoState.noticeMore)"
                     :mode="demoState.noticeMode === 'vertical' ? 'vertical' : 'horizontal'"
                     :direction="demoState.noticeMode === 'vertical' ? 'column' : 'row'"
                     :text="demoState.noticeMode === 'vertical' ? '' : '欢迎使用 Snake UI'"
@@ -247,6 +253,8 @@ function selectActivity(item: { id: string }) {
                     :height="Number(demoState.swiperHeight)"
                     :radius="Number(demoState.radius)"
                     :indicator="Boolean(demoState.swiperIndicator)"
+                    :indicator-mode="String(demoState.swiperMode)"
+                    :effect3d="Boolean(demoState.swiperEffect3d)"
                     :show-title="Boolean(demoState.swiperTitle)"
                     :autoplay="Boolean(demoState.swiperAutoplay)"
             /></view>
@@ -280,9 +288,9 @@ function selectActivity(item: { id: string }) {
                 ><snake-index-list
                     :index-list="['A', 'B', 'C', 'D']"
                     :active-color="String(demoState.indexColor || '#00a86f')"
-                    ><view v-for="(letter, index) in ['A', 'B', 'C', 'D']" :key="letter"
+                    ><view v-for="letter in ['A', 'B', 'C', 'D']" :key="letter"
                         ><snake-index-anchor
-                            :index="index"
+                            :index="letter"
                             :text="kind === 'index-anchor' ? `${String(demoState.anchorPrefix)} ${letter}` : letter"
                             custom-style="height: 64rpx; padding: 0 20rpx"
                         /><view v-for="item in 3" :key="item" class="demo-index-row"

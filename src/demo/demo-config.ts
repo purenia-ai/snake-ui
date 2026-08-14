@@ -35,6 +35,18 @@ const definitions: Record<string, DemoDefinition> = {
         description: '按钮用于触发即时操作，支持主题、朴素、禁用和加载状态。',
         controls: [
             {
+                key: 'emptyMode',
+                label: '空状态类型',
+                type: 'select',
+                defaultValue: 'data',
+                options: [
+                    { label: '暂无数据', value: 'data' },
+                    { label: '暂无内容', value: 'list' },
+                    { label: '网络异常', value: 'network' },
+                    { label: '搜索为空', value: 'search' }
+                ]
+            },
+            {
                 key: 'type',
                 label: '按钮主题',
                 type: 'select',
@@ -138,6 +150,16 @@ const definitions: Record<string, DemoDefinition> = {
             },
             { key: 'showIcon', label: '显示图标', type: 'switch', defaultValue: true },
             {
+                key: 'emptyIconSize',
+                label: '图标大小',
+                type: 'slider',
+                defaultValue: 120,
+                min: 72,
+                max: 180,
+                step: 12,
+                unit: 'rpx'
+            },
+            {
                 key: 'textColor',
                 label: '文字颜色',
                 type: 'select',
@@ -223,7 +245,18 @@ const definitions: Record<string, DemoDefinition> = {
                     { label: '加载中', value: 'loading' },
                     { label: '没有更多', value: 'nomore' }
                 ]
-            }
+            },
+            {
+                key: 'loadIcon',
+                label: '加载动画',
+                type: 'select',
+                defaultValue: 'circle',
+                options: [
+                    { label: '圆环', value: 'circle' },
+                    { label: '花朵', value: 'flower' }
+                ]
+            },
+            { key: 'loadDot', label: '点状结束线', type: 'switch', defaultValue: false }
         ]
     },
     'notice-bar': {
@@ -241,6 +274,7 @@ const definitions: Record<string, DemoDefinition> = {
                 ]
             },
             { key: 'noticeIcon', label: '显示图标', type: 'switch', defaultValue: true },
+            { key: 'noticeMore', label: '显示更多', type: 'switch', defaultValue: true },
             {
                 key: 'noticeDuration',
                 label: '切换间隔',
@@ -300,6 +334,19 @@ const definitions: Record<string, DemoDefinition> = {
             { key: 'swiperIndicator', label: '显示指示器', type: 'switch', defaultValue: true },
             { key: 'swiperTitle', label: '显示标题', type: 'switch', defaultValue: true },
             { key: 'swiperAutoplay', label: '自动播放', type: 'switch', defaultValue: true },
+            {
+                key: 'swiperMode',
+                label: '指示器样式',
+                type: 'select',
+                defaultValue: 'round',
+                options: [
+                    { label: '圆角', value: 'round' },
+                    { label: '圆点', value: 'dot' },
+                    { label: '线条', value: 'line' },
+                    { label: '数字', value: 'number' }
+                ]
+            },
+            { key: 'swiperEffect3d', label: '3D 卡片', type: 'switch', defaultValue: false },
             {
                 key: 'swiperHeight',
                 label: '轮播高度',

@@ -1,38 +1,176 @@
-<template>
-  <view class="snake-drop-item" :style="$snakeThemeStyle">
-    <button class="snake-drop-item__trigger" type="button" @click="toggle">
-      <text>{{ title }}</text>
-      <text :class="['snake-drop-item__chevron', { 'is-open': isOpen }]">⌄</text>
-    </button>
-    <view v-if="isOpen" class="snake-drop-item__panel"><slot /></view>
-  </view>
-</template>
-
 <script setup lang="ts">
 import { computed, inject, onBeforeUnmount, watch } from 'vue';
+import { addUnit } from '../../libs';
 import { snakeDropMenuKey } from '../../libs/internal/drop-menu';
+import SnakeIcon from '../snake-icon/snake-icon.vue';
+import SnakeTransition from '../snake-transition/snake-transition.vue';
 import type { SnakeDropMenuItemEmits, SnakeDropMenuItemProps } from './types';
 
-defineOptions({ name: 'snake-drop-menu-item' });
-const props = withDefaults(defineProps<SnakeDropMenuItemProps>(), { title: '', beforeToggle: undefined });
+defineOptions({ name: 'SnakeDropMenuItem', options: { virtualHost: true, styleIsolation: 'shared' } });
+const props = withDefaults(defineProps<SnakeDropMenuItemProps>(), {
+    title: '',
+    options: () => [],
+    disabled: false,
+    height: 'auto',
+    beforeToggle: undefined,
+    customStyle: ''
+});
 const emit = defineEmits<SnakeDropMenuItemEmits>();
 const menu = inject(snakeDropMenuKey);
 const itemId = Symbol('snake-drop-menu-item');
-const isOpen = computed(() => menu?.activeItem.value === itemId);
-
-watch(isOpen, (current, previous) => { if (!current && previous) emit('close'); });
-function requestOpen(): Promise<boolean> {
-  if (!props.beforeToggle) return Promise.resolve(true);
-  return new Promise((resolve) => props.beforeToggle?.({ resolve }));
+const itemIndex = menu?.register(itemId) ?? -1;
+const isOpen = computed(() => menu?.activeItem.value === itemId || props.show === true);
+const selected = computed(() => props.options.find(option => option.value === props.modelValue));
+const displayTitle = computed(() => props.title || selected.value?.label || '请选择');
+const color = computed(() =>
+    isOpen.value || menu?.highlighted.value === itemIndex ? menu?.activeColor.value : menu?.inactiveColor.value
+);
+const panelStyle = computed(() => [
+    {
+        top: `${menu?.menuTop.value || 0}px`,
+        zIndex: (menu?.zIndex.value || 985) + 1,
+        maxHeight: props.height === 'auto' ? '70vh' : addUnit(props.height, 'rpx')
+    },
+    props.customStyle
+]);
+function requestOpen() {
+    if (!props.beforeToggle) return Promise.resolve(true);
+    return new Promise<boolean>(resolve => props.beforeToggle?.({ resolve }));
 }
 async function toggle() {
-  if (!menu) return;
-  if (isOpen.value) return menu.close();
-  if (await requestOpen()) menu.open(itemId);
+    if (!menu || props.disabled) return;
+    if (isOpen.value) {
+        if (menu.closeOnClickSelf.value) menu.close();
+        return;
+    }
+    if (await requestOpen()) {
+        await menu.updateRect();
+        menu.open(itemId);
+        emit('open');
+    }
 }
-onBeforeUnmount(() => { if (isOpen.value) menu?.close(); });
+function close() {
+    menu?.close();
+}
+function maskClick() {
+    if (menu?.closeOnClickMask.value) close();
+}
+function select(value: unknown, disabled?: boolean) {
+    if (disabled) return;
+    emit('update:modelValue', value);
+    emit('change', value);
+    close();
+}
+watch(isOpen, (value, previous) => {
+    if (previous && !value) emit('close');
+});
+onBeforeUnmount(() => menu?.unregister(itemId));
 </script>
 
-<style scoped>
-.snake-drop-item__trigger{display:flex;align-items:center;justify-content:center;gap:8rpx;width:100%;padding:0;color:var(--snake-color-text,#26273a);font-size:26rpx;line-height:1;background:transparent;border:0}.snake-drop-item__trigger::after{display:none}.snake-drop-item__chevron{color:var(--snake-color-text-muted,#8d909c);transition:transform 180ms ease}.snake-drop-item__chevron.is-open{color:var(--snake-color-primary,#00b77a);transform:rotate(180deg)}.snake-drop-item__panel{position:fixed;right:0;bottom:0;left:0;z-index:40;height:min(72vh,1100rpx);overflow:hidden;background:var(--snake-color-surface,#fff);border-top:1px solid var(--snake-color-divider,rgba(38,39,58,.08));box-shadow:0 -18rpx 48rpx var(--snake-color-shadow,rgba(38,39,58,.12))}
+<template>
+    <view class="snake-drop-item" :style="$snakeThemeStyle">
+        <button
+            class="snake-drop-item__trigger"
+            :disabled="disabled"
+            :style="{ color, fontSize: addUnit(menu?.titleSize.value || 14, 'rpx') }"
+            @click="toggle"
+        >
+            <text class="snake-drop-item__title">{{ displayTitle }}</text
+            ><snake-icon
+                :name="menu?.menuIcon.value || 'down'"
+                :size="menu?.menuIconSize.value || 13"
+                :class="{ 'is-open': isOpen }"
+            />
+        </button>
+        <view
+            v-if="isOpen"
+            class="snake-drop-item__mask"
+            :style="{ top: `${menu?.menuTop.value || 0}px`, zIndex: menu?.zIndex.value || 985 }"
+            @click="maskClick"
+        />
+        <snake-transition
+            :show="isOpen"
+            name="fade-down"
+            :duration="menu?.duration.value || 300"
+            custom-class="snake-drop-item__panel"
+            :custom-style="panelStyle"
+        >
+            <slot v-if="$slots.default" />
+            <scroll-view v-else class="snake-drop-item__options" scroll-y>
+                <view
+                    v-for="(option, index) in options"
+                    :key="index"
+                    class="snake-drop-item__option"
+                    :class="{ 'is-active': option.value === modelValue, 'is-disabled': option.disabled }"
+                    @click="select(option.value, option.disabled)"
+                    ><text>{{ option.label }}</text
+                    ><snake-icon v-if="option.value === modelValue" name="checkmark"
+                /></view>
+            </scroll-view>
+        </snake-transition>
+    </view>
+</template>
+
+<style>
+.snake-drop-item {
+    flex: 1;
+    min-width: 0;
+}
+.snake-drop-item__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8rpx;
+    width: 100%;
+    height: 100%;
+    padding: 0 12rpx;
+    line-height: 1;
+    background: transparent;
+    border: 0;
+}
+.snake-drop-item__trigger::after {
+    display: none;
+}
+.snake-drop-item__title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.snake-drop-item__trigger .is-open {
+    transform: rotate(180deg);
+}
+.snake-drop-item__mask {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.45);
+}
+.snake-drop-item__panel {
+    position: fixed;
+    right: 0;
+    left: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    background: var(--snake-color-surface, #fff);
+    box-shadow: 0 18rpx 48rpx var(--snake-color-shadow, rgba(15, 30, 24, 0.12));
+}
+.snake-drop-item__options {
+    max-height: 70vh;
+}
+.snake-drop-item__option {
+    display: flex;
+    min-height: 88rpx;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32rpx;
+    border-bottom: 1px solid var(--snake-color-divider, #e4e7ed);
+    color: var(--snake-color-text-secondary, #606266);
+}
+.snake-drop-item__option.is-active {
+    color: var(--snake-color-primary, #00a86f);
+}
+.snake-drop-item__option.is-disabled {
+    opacity: 0.45;
+}
 </style>

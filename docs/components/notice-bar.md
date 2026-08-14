@@ -4,13 +4,13 @@ preview: /pages/componentsA/notice-bar
 
 # Notice Bar 通知栏
 
-用于页面顶部公告、活动提示和多条消息轮换，可展示单行通知或定时切换列表。
+用于公告、活动提示和多条消息轮播，支持横向跑马灯、纵向轮播、关闭与更多操作。
 
 ## 平台兼容性
 
-| H5 | 微信小程序 | App |
-| :-: | :-: | :-: |
-| 支持 | 支持 | 支持 |
+|  H5  | 微信小程序 | App  |
+| :--: | :--------: | :--: |
+| 支持 |    支持    | 支持 |
 
 ## 基础用法
 
@@ -18,40 +18,49 @@ preview: /pages/componentsA/notice-bar
 <snake-notice-bar volume-icon text="欢迎使用 Snake UI" />
 ```
 
-## 多条轮换
+## 纵向轮播与操作
 
 ```vue
-<snake-notice-bar :list="['第一条公告', '第二条公告']" mode="vertical" :duration="3000" @change="onChange" />
+<snake-notice-bar
+    :list="['第一条公告', '第二条公告']"
+    mode="vertical"
+    more-icon
+    close-icon
+    :duration="3000"
+    @change="onChange"
+    @get-more="openNoticeList"
+/>
 ```
 
-当 `mode="vertical"` 或 `direction="column"` 且列表超过一项时，组件按 `duration` 定时切换。
+横向模式会根据 `speed` 生成跑马灯；设置 `play-state="paused"` 可暂停，纵向模式使用原生 swiper。
 
 ## API
 
 ### Props
 
-| 参数 | 说明 | 类型 | 默认值 | 可选值 |
-| --- | --- | --- | --- | --- |
-| `list` | 通知列表，优先于 text | `string[]` | `[]` | - |
-| `text` | 单条或多条通知 | `string \| string[]` | `''` | - |
-| `mode` | 展示模式 | `string` | `horizontal` | `horizontal` / `vertical` |
-| `direction` | 排列方向，同时影响是否轮换 | `string` | `row` | `row` / `column` |
-| `volumeIcon` | 是否显示提示字符 | `boolean` | `false` | `true` / `false` |
-| `bgColor` | 背景色 | `string` | `#fff8e6` | CSS 颜色 |
-| `color` | 文字颜色 | `string` | `#f9ae3d` | CSS 颜色 |
-| `duration` | 轮换间隔，单位 ms | `number` | `3000` | - |
-| `customStyle` | 自定义样式 | `string \| object \| array` | `''` | - |
+| 参数                                    | 说明                                     | 类型                        | 默认值               |
+| --------------------------------------- | ---------------------------------------- | --------------------------- | -------------------- |
+| `list` / `text`                         | 通知列表或单条文字                       | `string[] \| string`        | `[]` / `''`          |
+| `type`                                  | primary/success/warning/error/info 主题  | `string`                    | `warning`            |
+| `mode` / `direction`                    | horizontal/vertical；row/column 兼容写法 | `string`                    | `horizontal` / `row` |
+| `show` / `autoplay`                     | 是否显示、是否自动播放                   | `boolean`                   | `true`               |
+| `volumeIcon` / `moreIcon` / `closeIcon` | 左侧提示、更多、关闭图标                 | `boolean`                   | `false`              |
+| `bgColor` / `color` / `fontSize`        | 背景、文字颜色和字号                     | `string \| number`          | 主题默认值           |
+| `duration`                              | 纵向轮播间隔，ms                         | `number`                    | `3000`               |
+| `speed`                                 | 横向滚动速度                             | `number`                    | `80`                 |
+| `isCircular` / `playState`              | 是否循环、play/paused                    | `boolean \| string`         | `true` / `play`      |
+| `disableTouch`                          | 纵向轮播是否禁用手势                     | `boolean`                   | `true`               |
+| `borderRadius` / `padding`              | 圆角和内边距                             | `string \| number`          | `0` / 默认内边距     |
+| `noListHidden`                          | 没有内容时是否隐藏                       | `boolean`                   | `true`               |
+| `customClass` / `customStyle`           | 自定义类名和样式                         | `string \| object \| array` | `''`                 |
 
 ### Events
 
-| 事件名 | 触发时机 | 回调参数 |
-| --- | --- | --- |
-| `click` | 点击通知栏 | 当前索引 `index` |
-| `change` | 自动切换后 | 当前索引 `index` |
-
-## 注意事项
-
-- `mode` 和 `direction` 只控制轮换条件，当前没有滚动动画。
-- list 或 duration 改变时定时器会重启，卸载时自动清理。
+| 事件名    | 触发时机     | 参数     |
+| --------- | ------------ | -------- |
+| `click`   | 点击当前通知 | 当前索引 |
+| `change`  | 纵向通知切换 | 当前索引 |
+| `close`   | 点击关闭图标 | -        |
+| `getMore` | 点击更多图标 | -        |
 
 源码：`src/uni_modules/snake-ui/components/snake-notice-bar/snake-notice-bar.vue`

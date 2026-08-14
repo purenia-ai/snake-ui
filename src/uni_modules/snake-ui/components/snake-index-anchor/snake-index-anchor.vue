@@ -1,14 +1,12 @@
-<template><view :id="anchorId" class="snake-index-anchor" :style="[$snakeThemeStyle, customStyle]"><text>{{ text }}</text></view></template>
-
 <script setup lang="ts">
-import { computed, inject } from 'vue';
+import { computed, inject, type CSSProperties } from 'vue';
+import { addUnit } from '../../libs';
 import { snakeIndexListKey } from '../../libs/internal/index-list';
 import type { SnakeIndexAnchorProps } from './types';
-
-defineOptions({ name: 'snake-index-anchor' });
-const props = withDefaults(defineProps<SnakeIndexAnchorProps>(), { text: '', customStyle: '' });
-const list = inject(snakeIndexListKey);
-const anchorId = computed(() => list?.anchorId(props.index) ?? `snake-index-anchor-${props.index}`);
+defineOptions({ name: 'SnakeIndexAnchor', options: { virtualHost: true, styleIsolation: 'shared' } });
+const props = withDefaults(defineProps<SnakeIndexAnchorProps>(), { text: '', useSlot: false, customClass: '', customStyle: '' });
+const list = inject(snakeIndexListKey); const anchorId = computed(() => list?.anchorId(props.index) ?? `snake-index-anchor-${props.index}`);
+const style = computed(() => [{ position: list?.sticky.value ? 'sticky' : 'relative', top: list?.sticky.value ? addUnit(list.offsetTop.value, 'rpx') : 'auto', zIndex: list?.zIndex.value } as CSSProperties, props.customStyle]);
 </script>
-
-<style scoped>.snake-index-anchor{display:flex;align-items:center;color:var(--snake-color-text,#26273a);font-size:24rpx;font-weight:600;background:var(--snake-color-background,#f4f6f8)}</style>
+<template><view :id="anchorId" class="snake-index-anchor" :class="customClass" :style="[$snakeThemeStyle, style]"><slot v-if="useSlot" /><text v-else>{{ text || index }}</text></view></template>
+<style scoped>.snake-index-anchor { display: flex; box-sizing: border-box; min-height: 64rpx; align-items: center; padding: 0 20rpx; color: var(--snake-color-text, #303133); font-size: 24rpx; font-weight: 600; background: var(--snake-color-background, #f5f6f8); }</style>

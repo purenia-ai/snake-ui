@@ -4,13 +4,13 @@ preview: /pages/componentsA/tabs
 
 # Tabs 标签页
 
-用于分类导航与内容切换，支持字符串列表和对象列表，由父级维护当前选中索引。
+用于分类导航和状态筛选，支持滚动定位、禁用项、数量或圆点徽标及自定义指示线。
 
 ## 平台兼容性
 
-| H5 | 微信小程序 | App |
-| :-: | :-: | :-: |
-| 支持 | 支持 | 支持 |
+|  H5  | 微信小程序 | App  |
+| :--: | :--------: | :--: |
+| 支持 |    支持    | 支持 |
 
 ## 基础用法
 
@@ -18,55 +18,51 @@ preview: /pages/componentsA/tabs
 <snake-tabs :list="['推荐', '新品', '热门']" :current="current" @change="current = $event" />
 ```
 
-## 对象列表与样式
+## 对象列表与徽标
 
 ```vue
 <snake-tabs
-  :list="[{ label: '全部' }, { label: '待付款' }]"
-  name="label"
-  line-color="#ff5a5f"
-  active-color="#17221d"
-  inactive-color="#87928c"
-  :active-item-style="{ fontWeight: 700 }"
-  :bar-style="{ width: '56rpx' }"
+    :list="[
+        { name: '全部', count: 12 },
+        { name: '待付款', count: 2 },
+        { name: '已关闭', disabled: true }
+    ]"
+    count="count"
+    :current="current"
+    :is-dot="false"
+    @change="current = $event"
 />
 ```
 
-## 配合吸顶
-
-```vue
-<snake-sticky bg-color="#fff"><snake-tabs :list="list" :current="current" @change="current = $event" /></snake-sticky>
-```
+组件由父级控制 `current`；当前项变化时会自动滚到可视区域。
 
 ## API
 
 ### Props
 
-| 参数 | 说明 | 类型 | 默认值 | 可选值 |
-| --- | --- | --- | --- | --- |
-| `list` | 字符串或对象标签列表 | `Array<string \| object>` | `[]` | - |
-| `current` | 当前索引 | `number` | `0` | - |
-| `name` | 对象标题字段名 | `string` | `name` | - |
-| `lineColor` | 指示线颜色 | `string` | `#06d290` | CSS 颜色 |
-| `activeColor` | 激活文字颜色 | `string` | `#303133` | CSS 颜色 |
-| `inactiveColor` | 未激活文字颜色 | `string` | `#606266` | CSS 颜色 |
-| `fontSize` | 文字大小，数字按 px 处理 | `string \| number` | `28rpx` | - |
-| `activeItemStyle` | 激活项附加样式 | `object` | `{}` | - |
-| `barStyle` | 指示线附加样式 | `object` | `{}` | - |
-| `bgColor` | 背景色 | `string` | `transparent` | CSS 颜色 |
-| `scrollable` | 滚动配置，当前为兼容预留 | `boolean` | `true` | `true` / `false` |
+| 参数                                          | 说明                              | 类型                        | 默认值                    |
+| --------------------------------------------- | --------------------------------- | --------------------------- | ------------------------- |
+| `list`                                        | 字符串或对象标签列表              | `Array<string \| object>`   | `[]`                      |
+| `current`                                     | 当前索引                          | `number \| string`          | `0`                       |
+| `name` / `count`                              | 对象标题和徽标字段名              | `string`                    | `name` / `count`          |
+| `scrollable` / `isScroll`                     | 是否横向滚动，isScroll 为兼容别名 | `boolean`                   | `true`                    |
+| `height` / `fontSize` / `gutter`              | 高度、字号、项目间距              | `string \| number`          | `44` / `14` / `0`         |
+| `duration`                                    | 指示线动画时长，ms                | `number \| string`          | `300`                     |
+| `lineColor` / `activeColor` / `inactiveColor` | 指示线、激活、未激活颜色          | `string`                    | 主题默认值                |
+| `barWidth` / `barHeight`                      | 指示线宽高                        | `string \| number`          | `20` / `3`                |
+| `offset`                                      | 徽标偏移 `[x, y]`                 | `[number, number]`          | `[0, 0]`                  |
+| `isDot` / `bold` / `showBar`                  | 圆点徽标、激活加粗、显示指示线    | `boolean`                   | `false` / `true` / `true` |
+| `itemWidth`                                   | 单项宽度或 auto                   | `string \| number`          | `auto`                    |
+| `activeItemStyle` / `barStyle`                | 激活项和指示线附加样式            | `string \| object \| array` | `''`                      |
+| `bgColor` / `customClass` / `customStyle`     | 背景与自定义样式                  | `string \| object \| array` | 主题默认值                |
+
+对象项设置 `disabled: true` 后不可切换。
 
 ### Events
 
-| 事件名 | 触发时机 | 回调参数 |
-| --- | --- | --- |
-| `click` | 点击任意标签 | `{ index, item }` |
-| `change` | 点击的索引与 `current` 不同 | `index: number` |
-
-## 注意事项
-
-- 组件不在内部修改 `current`，父级必须在 `change` 后更新它。
-- 当前 `scrollable` 未参与模板逻辑，滚动容器始终启用横向滚动。
-- 当前不支持徽标、禁用项和右侧插槽。
+| 事件名   | 触发时机                | 参数              |
+| -------- | ----------------------- | ----------------- |
+| `click`  | 点击可用标签            | `{ index, item }` |
+| `change` | 点击索引与 current 不同 | `index`           |
 
 源码：`src/uni_modules/snake-ui/components/snake-tabs/snake-tabs.vue`

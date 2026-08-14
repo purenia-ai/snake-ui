@@ -4,13 +4,13 @@ preview: /pages/componentsA/swiper
 
 # Swiper 轮播图
 
-封装 uni-app `swiper`，用于广告、Banner 和图片内容轮播，支持字符串与对象两种数据源。
+基于 uni-app swiper 封装，支持图片或对象数据、自定义指示器、标题和 3D 卡片效果。
 
 ## 平台兼容性
 
-| H5 | 微信小程序 | App |
-| :-: | :-: | :-: |
-| 支持 | 支持 | 支持 |
+|  H5  | 微信小程序 | App  |
+| :--: | :--------: | :--: |
+| 支持 |    支持    | 支持 |
 
 ## 基础用法
 
@@ -18,68 +18,56 @@ preview: /pages/componentsA/swiper
 <snake-swiper :list="['/static/a.png', '/static/b.png']" :height="360" indicator />
 ```
 
-## 对象数据与标题
+## 指示器与 3D 卡片
 
 ```vue
 <snake-swiper
-  :list="[{ image: '/static/a.png', title: '新品上市' }]"
-  name="image"
-  show-title
-  :autoplay="false"
-  :radius="16"
-  @change="current = $event.current"
-  @click="openBanner"
+    :list="banners"
+    name="image"
+    mode="number"
+    indicator-pos="bottomRight"
+    effect3d
+    show-title
+    @change="onChange"
+    @click="openBanner"
 />
 ```
 
-对象图片地址优先读取 `name` 指定字段，随后回退到 `src` 和 `url`；标题读取 `title` 或 `text`。
-
-## 卡片间距与自定义指示器
-
-```vue
-<snake-swiper :list="list" previous-margin="30px" next-margin="30px">
-  <template #indicator><text>{{ current + 1 }}/{{ list.length }}</text></template>
-</snake-swiper>
-```
+对象图片依次读取 `name` 指定字段、`src`、`url`；标题读取 `title` 或 `text`。
 
 ## API
 
 ### Props
 
-| 参数 | 说明 | 类型 | 默认值 | 可选值 |
-| --- | --- | --- | --- | --- |
-| `list` | 图片字符串或对象列表 | `Array<string \| object>` | `[]` | - |
-| `current` | 当前索引 | `number` | `0` | - |
-| `height` | 轮播高度，数字按 rpx 处理 | `string \| number` | `300` | - |
-| `autoplay` | 是否自动播放 | `boolean` | `true` | `true` / `false` |
-| `interval` | 自动切换间隔，单位 ms | `number` | `3000` | - |
-| `duration` | 切换动画时长，单位 ms | `number` | `300` | - |
-| `circular` | 是否循环播放 | `boolean` | `true` | `true` / `false` |
-| `indicator` | 是否显示原生指示点 | `boolean` | `false` | `true` / `false` |
-| `name` | 对象图片字段名 | `string` | `url` | - |
-| `radius` | 容器圆角，数字按 rpx 处理 | `string \| number` | `0` | - |
-| `previousMargin` | 前边距 | `string` | `0px` | - |
-| `nextMargin` | 后边距 | `string` | `0px` | - |
-| `imgMode` | 图片裁剪模式 | `string` | `aspectFill` | uni-app image mode |
-| `showTitle` | 是否显示对象标题 | `boolean` | `false` | `true` / `false` |
+| 参数                                              | 说明                                                           | 类型                        | 默认值                           |
+| ------------------------------------------------- | -------------------------------------------------------------- | --------------------------- | -------------------------------- |
+| `list`                                            | 图片地址或对象列表                                             | `Array<string \| object>`   | `[]`                             |
+| `current` / `height`                              | 当前索引、轮播高度                                             | `number \| string`          | `0` / `300`                      |
+| `autoplay` / `interval` / `duration` / `circular` | 自动播放、间隔、动画时长、循环                                 | `boolean \| number`         | `true` / `3000` / `300` / `true` |
+| `indicator`                                       | 是否显示自定义指示器；也兼容配置对象                           | `boolean \| object`         | `false`                          |
+| `mode`                                            | round/dot/line/number                                          | `string`                    | `round`                          |
+| `indicatorPos`                                    | topLeft/topCenter/topRight/bottomLeft/bottomCenter/bottomRight | `string`                    | `bottomCenter`                   |
+| `indicatorColor` / `indicatorActiveColor`         | 普通和激活指示器颜色                                           | `string`                    | 半透明白 / 白色                  |
+| `name`                                            | 对象图片字段                                                   | `string`                    | `url`                            |
+| `radius` / `borderRadius`                         | 圆角，borderRadius 优先                                        | `string \| number`          | `0`                              |
+| `previousMargin` / `nextMargin`                   | 前后边距                                                       | `string`                    | `0px`                            |
+| `effect3d` / `effect3dPreviousMargin`             | 3D 卡片及露出边距                                              | `boolean \| UnitValue`      | `false` / `50`                   |
+| `imgMode`                                         | 图片裁剪模式                                                   | `string`                    | `aspectFill`                     |
+| `showTitle` / `title` / `titleStyle`              | 标题显示、兼容别名和样式                                       | `boolean \| style`          | `false`                          |
+| `bgColor` / `customClass` / `customStyle`         | 背景与自定义样式                                               | `string \| object \| array` | 主题默认值                       |
 
 ### Events
 
-| 事件名 | 触发时机 | 回调参数 |
-| --- | --- | --- |
-| `change` | 自动或手动切换后 | `{ current: number }` |
-| `click` | 点击某个轮播项 | `index: number` |
+| 事件名            | 触发时机   | 参数                   |
+| ----------------- | ---------- | ---------------------- |
+| `change`          | 当前项变化 | `{ current, source? }` |
+| `animationfinish` | 动画结束   | `{ current, source? }` |
+| `click`           | 点击轮播项 | `(index, item)`        |
 
 ### Slots
 
-| 插槽名 | 说明 | 作用域参数 |
-| --- | --- | --- |
-| `indicator` | 自定义指示器内容 | - |
-
-## 注意事项
-
-- 当前只渲染图片，不支持视频项、加载态和自动类型识别。
-- 自定义指示器插槽不提供当前索引，需要监听 `change` 自行维护。
-- `indicator` 控制原生指示点，可与自定义插槽分别使用。
+| 插槽名      | 说明           |
+| ----------- | -------------- |
+| `indicator` | 替换内置指示器 |
 
 源码：`src/uni_modules/snake-ui/components/snake-swiper/snake-swiper.vue`
