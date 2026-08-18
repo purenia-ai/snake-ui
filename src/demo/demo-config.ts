@@ -530,6 +530,22 @@ const definitions: Record<string, DemoDefinition> = {
             }
         ]
     },
+    hotzone: {
+        category: 'CMS 内容',
+        description: '在背景图上按百分比热区点击跳转，热区与链接由装修编辑器配置。',
+        controls: [
+            {
+                key: 'hotzoneLinkType',
+                label: '链接类型',
+                type: 'select',
+                defaultValue: 10,
+                options: [
+                    { label: '内部链接', value: 10 },
+                    { label: '外部链接', value: 11 }
+                ]
+            }
+        ]
+    },
     'picture-ads': {
         category: 'CMS 营销',
         description: '用于焦点广告轮播，支持间距、圆角和播放间隔。',

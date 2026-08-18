@@ -4,6 +4,7 @@ export type SnakeCmsBuiltinComponent =
     | 'richtext'
     | 'graphicnavigation'
     | 'images'
+    | 'hotzone'
     | 'pictureads'
     | 'magiccube'
     | 'videos'

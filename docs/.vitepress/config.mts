@@ -51,6 +51,7 @@ const componentGroups = [
         text: '内容展示',
         items: [
             { text: '图片展示', link: '/components/images' },
+            { text: '热区图', link: '/components/hotzone' },
             { text: '轮播广告', link: '/components/picture-ads' },
             { text: '魔方布局', link: '/components/magic-cube' },
             { text: '视频', link: '/components/videos' },
@@ -118,7 +119,8 @@ export default defineConfig({
                         { text: '快速开始', link: '/guide/getting-started' },
                         { text: '全局配置与底座', link: '/guide/foundation' },
                         { text: '运行环境', link: '/guide/compatibility' },
-                        { text: '组件数据约定', link: '/guide/component-data' }
+                        { text: '组件数据约定', link: '/guide/component-data' },
+                        { text: '装修编辑器数据对接', link: '/guide/sanke-editor' }
                     ]
                 }
             ],

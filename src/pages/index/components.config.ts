@@ -179,6 +179,13 @@ const componentGroups: SnakeComponentGroup[] = [
                 'CustomModule',
                 '通过命名插槽接入业务自定义内容。',
                 true
+            ),
+            item(
+                '/pages/componentsB/hotzone',
+                'Hotzone 热区图',
+                'Hotzone',
+                '在背景图上按百分比热区点击跳转，链接由装修编辑器配置。',
+                true
             )
         ]
     },

@@ -56,6 +56,7 @@
                 { "path": "snake-cms", "style": { "navigationBarTitleText": "Snake CMS" } },
                 { "path": "custom-module", "style": { "navigationBarTitleText": "自定义模块" } },
                 { "path": "images", "style": { "navigationBarTitleText": "图片展示" } },
+                { "path": "hotzone", "style": { "navigationBarTitleText": "热区图" } },
                 { "path": "picture-ads", "style": { "navigationBarTitleText": "轮播广告" } },
                 { "path": "magic-cube", "style": { "navigationBarTitleText": "魔方布局" } },
                 { "path": "videos", "style": { "navigationBarTitleText": "视频" } },

@@ -65,8 +65,8 @@ test('component docs and example routes remain one-to-one', async () => {
         if (match) previews.push(match[1]);
     }
 
-    assert.equal(routes.length, 49);
-    assert.equal(previews.length, 49);
+    assert.equal(routes.length, 50);
+    assert.equal(previews.length, 50);
     assert.deepEqual([...new Set(previews)].sort(), [...new Set(routes)].sort());
 });
 
@@ -94,10 +94,10 @@ test('component overview page covers every example route and directory layout', 
     );
     const routes = exampleRoutes(pages);
 
-    assert.equal(configuredPaths.length, 49);
+    assert.equal(configuredPaths.length, 50);
     assert.deepEqual([...configuredPaths].sort(), [...routes].sort());
     assert.equal(groupA.filter(file => file.endsWith('.vue')).length, 29);
-    assert.equal(groupB.filter(file => file.endsWith('.vue')).length, 20);
+    assert.equal(groupB.filter(file => file.endsWith('.vue')).length, 21);
     for (const group of [
         '基础组件',
         '表单组件',
@@ -129,7 +129,7 @@ test('all example components declare an interactive demo configuration', async (
     const configuredKinds = [...config.matchAll(/^\s+(?:'([^']+)'|([a-z][\w-]*)):\s*\{\s*category:/gm)].map(
         match => match[1] || match[2]
     );
-    assert.equal(configuredKinds.length, 49);
+    assert.equal(configuredKinds.length, 50);
     assert.match(panel, /control\.type === 'select'/);
     assert.match(panel, /control\.type === 'switch'/);
     assert.match(panel, /control\.type === 'slider'/);

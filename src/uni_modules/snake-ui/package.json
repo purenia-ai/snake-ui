@@ -2,7 +2,7 @@
   "id": "snake-ui",
   "name": "snake-ui",
   "displayName": "Snake UI",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "面向 uni-app 商城与 CMS 场景的 Vue 组件库",
   "type": "module",
   "main": "index.ts",

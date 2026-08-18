@@ -29,6 +29,7 @@ const cms = [
     'snake-cms',
     'custom-module',
     'images',
+    'hotzone',
     'picture-ads',
     'magic-cube',
     'videos',

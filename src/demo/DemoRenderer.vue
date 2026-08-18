@@ -13,6 +13,7 @@ import {
     foundationSwiperData,
     foundationTabs,
     goods,
+    hotzoneData,
     imageData,
     jumpAppletData,
     listSwitchingData,
@@ -75,6 +76,13 @@ const demoImageData = computed(() => ({
     platformOptions: imageData.platformOptions.map(item => ({
         ...item,
         imgs: { ...item.imgs, paddingLR: Number(demoState.contentMargin ?? 20) }
+    }))
+}));
+const demoHotzoneData = computed(() => ({
+    ...hotzoneData,
+    hotzoneList: hotzoneData.hotzoneList.map(zone => ({
+        ...zone,
+        httpType: Number(demoState.hotzoneLinkType ?? 10)
     }))
 }));
 const demoPictureAdsData = computed(() => ({
@@ -443,6 +451,7 @@ function resetForm() {
                 ><view class="custom-card">{{ demoState.moduleText }}</view></snake-custom-module
             >
             <snake-images v-else-if="kind === 'images'" :datas="demoImageData" />
+            <snake-hotzone v-else-if="kind === 'hotzone'" :datas="demoHotzoneData" />
             <snake-picture-ads v-else-if="kind === 'picture-ads'" :datas="demoPictureAdsData" />
             <snake-magic-cube v-else-if="kind === 'magic-cube'" :datas="magicCubeData" />
             <snake-videos v-else-if="kind === 'videos'" :datas="videoData" />

@@ -20,6 +20,7 @@ export { default as SnakeFilterSorts } from './components/snake-filter-sorts/sna
 export { default as SnakeFollow } from './components/snake-follow/snake-follow.vue';
 export { default as SnakeGoodsList } from './components/snake-goods-list/snake-goods-list.vue';
 export { default as SnakeGraphicNavigation } from './components/snake-graphic-navigation/snake-graphic-navigation.vue';
+export { default as SnakeHotzone } from './components/snake-hotzone/snake-hotzone.vue';
 export { default as SnakeImages } from './components/snake-images/snake-images.vue';
 export { default as SnakeJumpApplet } from './components/snake-jump-applet/snake-jump-applet.vue';
 export { default as SnakeListSwitching } from './components/snake-list-switching/snake-list-switching.vue';
@@ -78,6 +79,7 @@ export * from './components/snake-tabs/types';
 export * from './components/snake-button-sort/types';
 export * from './components/snake-drop-menu/types';
 export * from './components/snake-drop-menu-item/types';
+export * from './components/snake-hotzone/types';
 export * from './components/snake-index-list/types';
 export * from './components/snake-index-anchor/types';
 export * from './components/snake-form/types';

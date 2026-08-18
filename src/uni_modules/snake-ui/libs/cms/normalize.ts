@@ -14,6 +14,7 @@ export const snakeCmsBuiltinComponents = new Set<SnakeCmsBuiltinComponent>([
     'richtext',
     'graphicnavigation',
     'images',
+    'hotzone',
     'pictureads',
     'magiccube',
     'videos',

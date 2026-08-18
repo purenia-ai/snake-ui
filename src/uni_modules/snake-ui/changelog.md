@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.1 - 2026-08-18
+
+- 新增 `snake-hotzone` 热区图组件：背景图 `widthFix` 自适应，按百分比渲染装修编辑器配置的热区并点击跳转。
+- 内部链接走 `navTo`（自动降级 `switchTab`），外部链接通过注入的 CMS link-service 打开（legacy 宿主由其导向 web-view 页面）。
+- `snake-cms` 渲染分发器新增 `hotzone` 内置组件分支，并透传 link-service 与页面信息。
+
 ## 0.4.0 - 2026-08-14
 
 - 新增单一 `snake-cms` 门面、公开 CMS 类型、诊断事件和跨端静态扩展插槽。
