@@ -1,4 +1,5 @@
 import type { SnakeUIOptions } from "../uni_modules/snake-ui";
+import snakeThemePresets from "../snake-ui.theme";
 
 interface CacheEntry {
   expiresAt?: number;
@@ -27,6 +28,11 @@ function responseFor(url: string) {
 }
 
 export const mockSnakeUIOptions: SnakeUIOptions = {
+  theme: {
+    themes: snakeThemePresets,
+    defaultTheme: "snake",
+    defaultDarkMode: "light",
+  },
   config: {
     baseUrl: "",
     preview: true,

@@ -2,7 +2,15 @@
 import { computed, ref } from 'vue';
 import DemoPage from '../../demo/DemoPage.vue';
 import rawGroups from './components.config';
-import { currentSnakeLocale, isSnakeDarkMode, setSnakeLocale, toggleSnakeDarkMode } from '../../uni_modules/snake-ui';
+import {
+    currentSnakeLocale,
+    currentSnakeTheme,
+    isSnakeDarkMode,
+    setSnakeLocale,
+    setSnakeTheme,
+    snakeThemes,
+    toggleSnakeDarkMode
+} from '../../uni_modules/snake-ui';
 
 const groups = ref(rawGroups);
 const searchText = ref('');
@@ -47,6 +55,17 @@ const switchLocale = () => {
 <template>
     <DemoPage title="Snake UI" desc="面向 uni-app 商城与 CMS 场景的组件库" :nav-back="false" :nav-home="false">
         <view class="overview">
+            <view class="theme-switcher">
+                <view
+                    v-for="theme in snakeThemes"
+                    :key="theme.name"
+                    :class="['theme-dot', { 'theme-dot--active': currentSnakeTheme?.name === theme.name }]"
+                    @click="setSnakeTheme(theme.name)"
+                >
+                    <view class="theme-dot__color" :style="{ background: theme.color?.primary }" />
+                    <text class="theme-dot__label">{{ theme.label || theme.name }}</text>
+                </view>
+            </view>
             <view class="foundation-actions">
                 <text class="foundation-actions__hint">主题与语言</text>
                 <button class="foundation-actions__button" @click="toggleSnakeDarkMode">{{ themeLabel }}</button>
@@ -106,6 +125,44 @@ const switchLocale = () => {
 
 .overview {
     padding: 0 4px 28px;
+}
+.theme-switcher {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+.theme-dot {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px 6px 8px;
+    border: 1px solid var(--snake-color-divider);
+    border-radius: 999px;
+    background: var(--snake-color-surface);
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+.theme-dot--active {
+    border-color: var(--snake-color-primary);
+    background: var(--snake-color-primary-light);
+    box-shadow: 0 0 0 3px rgba(var(--snake-color-primary-rgb), 0.16);
+}
+.theme-dot__color {
+    width: 16px;
+    height: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 50%;
+}
+.theme-dot__label {
+    color: var(--snake-color-text-secondary);
+    font-size: 12px;
+}
+.theme-dot--active .theme-dot__label {
+    color: var(--snake-demo-accent-text);
+    font-weight: 600;
 }
 .foundation-actions {
     display: flex;

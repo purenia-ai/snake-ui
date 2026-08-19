@@ -123,6 +123,10 @@ export default defineConfig({
                         { text: '组件数据约定', link: '/guide/component-data' },
                         { text: '装修编辑器数据对接', link: '/guide/sanke-editor' }
                     ]
+                },
+                {
+                    text: '自定义',
+                    items: [{ text: '多主题与暗黑模式', link: '/guide/multi-theme' }]
                 }
             ],
             '/components/': componentGroups
