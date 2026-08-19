@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, getCurrentInstance, ref, watch } from 'vue';
 import { addUnit } from '../../libs';
 import SnakeIcon from '../snake-icon/snake-icon.vue';
 import SnakeOverlay from '../snake-overlay/snake-overlay.vue';
@@ -31,8 +31,12 @@ const props = withDefaults(defineProps<SnakePopupProps>(), {
     customStyle: ''
 });
 const emit = defineEmits<SnakePopupEmits>();
-const localShow = ref(props.show ?? props.modelValue);
-const externalShow = computed(() => props.show ?? props.modelValue);
+// Vue 3 对未传递的 Boolean prop 做 boolean casting（值为 false 而非 undefined），
+// 不能用空值合并把 show 兜底到 modelValue：未绑定 show 时 v-model 通道会被 false 短路。
+// 这里在 setup 时检测父组件是否真的绑定了 show，绑定则 show 优先，否则走 v-model(modelValue)。
+const showBound = 'show' in (getCurrentInstance()?.vnode?.props ?? {});
+const externalShow = computed(() => (showBound ? props.show : props.modelValue));
+const localShow = ref(externalShow.value);
 watch(externalShow, value => {
     if (localShow.value === value) return;
     localShow.value = value;

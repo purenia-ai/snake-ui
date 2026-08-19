@@ -52,14 +52,18 @@ const palette = computed(() => {
     if (props.color) return { main: props.color, light: props.color, disabled: props.color };
     const name = props.type === 'default' ? 'primary' : props.type;
     return {
-        main: `var(--snake-color-${name}, ${props.type === 'default' ? '#00a86f' : '#909399'})`,
+        main: `var(--snake-color-${name}, ${props.type === 'default' ? '#06D290' : '#909399'})`,
         light: `var(--snake-color-${name}-light, #f4f4f5)`,
         disabled: `var(--snake-color-${name}-disabled, #c8c9cc)`
     };
 });
 const buttonStyle = computed(() => [
     {
-        color: props.plain ? palette.value.main : 'var(--snake-color-white, #fff)',
+        color: props.plain
+            ? palette.value.main
+            : props.type === 'default' || props.type === 'primary'
+              ? 'var(--snake-color-primary-ink, #003D2A)'
+              : 'var(--snake-color-white, #fff)',
         backgroundColor: props.plain ? palette.value.light : palette.value.main,
         borderColor: props.disabled ? palette.value.disabled : palette.value.main,
         opacity: props.disabled ? 0.65 : 1,

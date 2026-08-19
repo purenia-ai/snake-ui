@@ -16,7 +16,7 @@ preview: /pages/componentsA/loading-icon
 
 ```vue
 <snake-loading-icon />
-<snake-loading-icon mode="spinner" color="#00a86f" :size="28" text="加载中" />
+<snake-loading-icon mode="spinner" color="#06D290" :size="28" text="加载中" />
 <snake-loading-icon vertical text="正在提交" />
 ```
 

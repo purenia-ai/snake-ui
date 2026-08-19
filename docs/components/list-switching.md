@@ -32,7 +32,7 @@ cms: true
     commoditylisttypetab: [],
     commoditycorner: true,
     commoditycornertype: 0,
-    commodityTagColor: '#00a86f',
+    commodityTagColor: '#06D290',
     tagPosition: 0,
   }"
 />

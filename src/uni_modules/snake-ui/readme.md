@@ -40,7 +40,7 @@ const data = await snakeHttp.get('/goods');
 
 :root,
 page {
-    --snake-color-primary: #00a86f;
+    --snake-color-primary: #06D290;
 }
 ```
 

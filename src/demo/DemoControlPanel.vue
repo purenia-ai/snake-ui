@@ -3,22 +3,6 @@ import type { DemoControl, DemoValue } from './demo-config';
 
 defineProps<{ controls: DemoControl[]; values: Record<string, DemoValue> }>();
 const emit = defineEmits<{ change: [key: string, value: DemoValue] }>();
-
-function eventValue(event: unknown): unknown {
-    return (event as { detail?: { value?: unknown } })?.detail?.value;
-}
-
-function updateSwitch(control: DemoControl, event: unknown) {
-    emit('change', control.key, Boolean(eventValue(event)));
-}
-
-function updateSlider(control: DemoControl, event: unknown) {
-    emit('change', control.key, Number(eventValue(event)));
-}
-
-function updateInput(control: DemoControl, event: unknown) {
-    emit('change', control.key, String(eventValue(event) ?? ''));
-}
 </script>
 
 <template>
@@ -29,6 +13,12 @@ function updateInput(control: DemoControl, event: unknown) {
                 <text v-if="control.type === 'slider'" class="demo-control__value"
                     >{{ values[control.key] }}{{ control.unit }}</text
                 >
+                <snake-switch
+                    v-else-if="control.type === 'switch'"
+                    :model-value="Boolean(values[control.key])"
+                    :size="22"
+                    @update:model-value="emit('change', control.key, Boolean($event))"
+                />
             </view>
 
             <view v-if="control.type === 'select'" class="demo-control__options">
@@ -41,35 +31,23 @@ function updateInput(control: DemoControl, event: unknown) {
                 >
             </view>
 
-            <switch
-                v-else-if="control.type === 'switch'"
-                class="demo-control__switch"
-                color="#06d290"
-                :checked="Boolean(values[control.key])"
-                @change="updateSwitch(control, $event)"
-            />
-
-            <slider
+            <snake-slider
                 v-else-if="control.type === 'slider'"
                 class="demo-control__slider"
-                active-color="#06d290"
-                background-color="#dce9e2"
-                :value="Number(values[control.key])"
+                :model-value="Number(values[control.key])"
                 :min="control.min"
                 :max="control.max"
                 :step="control.step"
-                :show-value="false"
-                @changing="updateSlider(control, $event)"
-                @change="updateSlider(control, $event)"
+                @update:model-value="emit('change', control.key, Number($event))"
             />
 
-            <input
-                v-else
-                class="demo-control__input"
-                :value="String(values[control.key] ?? '')"
-                :placeholder="control.placeholder || `请输入${control.label}`"
-                @input="updateInput(control, $event)"
-            />
+            <view v-else class="demo-control__input">
+                <snake-input
+                    :model-value="String(values[control.key] ?? '')"
+                    :placeholder="control.placeholder || `请输入${control.label}`"
+                    @update:model-value="emit('change', control.key, String($event ?? ''))"
+                />
+            </view>
         </view>
     </view>
 </template>
@@ -78,78 +56,80 @@ function updateInput(control: DemoControl, event: unknown) {
 @import './theme.scss';
 
 .demo-controls {
-    margin: -4px 0;
+    margin: -8rpx 0;
 }
 .demo-control {
-    position: relative;
-    min-height: 44px;
-    padding: 16px 0;
-    border-bottom: 1px solid $snake-border;
+    padding: 28rpx 0;
+    border-bottom: 1rpx solid var(--snake-color-divider);
 }
 .demo-control:last-child {
     border-bottom: 0;
 }
 .demo-control__head {
     display: flex;
-    min-height: 24px;
+    min-height: 48rpx;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: 24rpx;
 }
 .demo-control__label {
-    color: $snake-text-main;
-    font-size: 14px;
+    position: relative;
+    padding-left: 20rpx;
+    color: var(--snake-color-text);
+    font-size: 28rpx;
     font-weight: 600;
+    line-height: 1.2;
+}
+.demo-control__label::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 8rpx;
+    height: 26rpx;
+    border-radius: 4rpx;
+    background: var(--snake-color-primary);
+    transform: translateY(-50%);
 }
 .demo-control__value {
-    color: $snake-primary-dark;
-    font-size: 12px;
+    color: var(--snake-demo-accent-text);
+    font-size: 24rpx;
     font-weight: 600;
 }
 .demo-control__options {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 12px;
+    gap: 16rpx;
+    margin-top: 24rpx;
 }
 .demo-option {
     box-sizing: border-box;
-    min-width: 68px;
-    min-height: 40px;
-    padding: 10px 12px;
-    border: 1px solid $snake-border;
-    border-radius: 5px;
-    background: $snake-bg-card;
-    color: $snake-text-sub;
-    font-size: 12px;
+    min-width: 128rpx;
+    min-height: 64rpx;
+    padding: 14rpx 28rpx;
+    border: 1rpx solid transparent;
+    border-radius: 999rpx;
+    background: var(--snake-color-surface-muted);
+    color: var(--snake-color-text-secondary);
+    font-size: 24rpx;
     text-align: center;
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 .demo-option--active {
-    border-color: $snake-primary;
-    background: $snake-primary-soft;
-    color: $snake-primary-dark;
+    border-color: rgba(var(--snake-color-primary-rgb), 0.5);
+    background: var(--snake-color-primary-light);
+    color: var(--snake-demo-accent-text);
     font-weight: 600;
-}
-.demo-control__switch {
-    position: absolute;
-    top: 12px;
-    right: 0;
-    transform: scale(0.78);
-    transform-origin: right center;
+    box-shadow: 0 4rpx 12rpx rgba(var(--snake-color-primary-rgb), 0.18);
 }
 .demo-control__slider {
-    margin: 10px -6px -5px;
+    margin-top: 20rpx;
 }
 .demo-control__input {
-    box-sizing: border-box;
-    width: 100%;
-    height: 44px;
-    margin-top: 12px;
-    padding: 0 12px;
-    border: 1px solid $snake-border-strong;
-    border-radius: 5px;
-    background: $snake-bg-card;
-    color: $snake-text-main;
-    font-size: 13px;
+    margin-top: 20rpx;
 }
 </style>

@@ -168,7 +168,7 @@ onBeforeUnmount(() => menu?.unregister(itemId));
     color: var(--snake-color-text-secondary, #606266);
 }
 .snake-drop-item__option.is-active {
-    color: var(--snake-color-primary, #00a86f);
+    color: var(--snake-color-primary, #06D290);
 }
 .snake-drop-item__option.is-disabled {
     opacity: 0.45;

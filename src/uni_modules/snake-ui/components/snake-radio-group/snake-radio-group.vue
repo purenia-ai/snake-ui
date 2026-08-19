@@ -8,7 +8,7 @@ const props = withDefaults(defineProps<SnakeRadioGroupProps>(), {
     disabled: false,
     direction: 'row',
     size: 'default',
-    activeColor: 'var(--snake-color-primary,#00a86f)',
+    activeColor: 'var(--snake-color-primary,#06D290)',
     inactiveColor: 'var(--snake-color-border,#c0c4cc)',
     iconSize: 20,
     labelSize: 14,

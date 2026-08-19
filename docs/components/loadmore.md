@@ -21,7 +21,7 @@ preview: /pages/componentsA/loadmore
 ## 动画与结束线
 
 ```vue
-<snake-loadmore status="loading" icon-type="flower" icon-color="#00a86f" />
+<snake-loadmore status="loading" icon-type="flower" icon-color="#06D290" />
 <snake-loadmore status="nomore" is-dot nomore-text="已经到底啦" />
 ```
 

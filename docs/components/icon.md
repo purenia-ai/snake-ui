@@ -15,7 +15,7 @@ preview: /pages/componentsA/icon
 ## 基础用法
 
 ```vue
-<snake-icon name="search" color="#00a86f" :size="28" />
+<snake-icon name="search" color="#06D290" :size="28" />
 <snake-icon name="star-fill" label="收藏" label-pos="bottom" />
 <snake-icon name="https://example.com/icon.png" width="40rpx" height="40rpx" />
 <snake-icon name="cart" custom-prefix="my-icon" />

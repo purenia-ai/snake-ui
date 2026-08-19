@@ -6,10 +6,13 @@ const THEME_STORAGE_KEY = 'snake-ui-theme';
 const DARK_MODE_STORAGE_KEY = 'snake-ui-dark-mode';
 
 export const snakeLightPalette: SnakeThemeColor = {
-    primary: '#00a86f',
-    primaryDark: '#008d5d',
-    primaryDisabled: '#9ad9c3',
-    primaryLight: '#e8f8f2',
+    primary: '#06D290',
+    primaryDark: '#05BD81',
+    primaryDeep: '#00805A',
+    primaryDeeper: '#006B4A',
+    primaryDisabled: '#A6EBD3',
+    primaryLight: '#E6FBF3',
+    primaryInk: '#003D2A',
     success: '#19be6b',
     successDark: '#18a45f',
     successDisabled: '#9bd8b6',
@@ -44,10 +47,13 @@ export const snakeLightPalette: SnakeThemeColor = {
 };
 
 export const snakeDarkPalette: SnakeThemeColor = {
-    primary: '#38d49b',
-    primaryDark: '#20bf85',
-    primaryDisabled: '#285f4c',
-    primaryLight: '#15382c',
+    primary: '#2EE6A8',
+    primaryDark: '#3BEFB8',
+    primaryDeep: '#01513B',
+    primaryDeeper: '#013527',
+    primaryDisabled: '#1E4A3A',
+    primaryLight: '#0B2A20',
+    primaryInk: '#003D2A',
     success: '#4ade80',
     successDark: '#22b862',
     successDisabled: '#2f4d3d',
@@ -103,8 +109,11 @@ let lastCssKeys: string[] = [];
 const tokenNames: Record<keyof SnakeThemeColor, string> = {
     primary: '--snake-color-primary',
     primaryDark: '--snake-color-primary-dark',
+    primaryDeep: '--snake-color-primary-deep',
+    primaryDeeper: '--snake-color-primary-deeper',
     primaryDisabled: '--snake-color-primary-disabled',
     primaryLight: '--snake-color-primary-light',
+    primaryInk: '--snake-color-primary-ink',
     success: '--snake-color-success',
     successDark: '--snake-color-success-dark',
     successDisabled: '--snake-color-success-disabled',
@@ -215,12 +224,23 @@ function activeMode(): 'light' | 'dark' {
     return snakeDarkMode.value;
 }
 
+function toRgbTriplet(value: string): string | undefined {
+    const match = /^#([0-9a-f]{6})$/i.exec(value.trim());
+    if (!match) return undefined;
+    const hex = Number.parseInt(match[1], 16);
+    return `${(hex >> 16) & 255}, ${(hex >> 8) & 255}, ${hex & 255}`;
+}
+
 function createCssVars(theme: SnakeTheme, mode: 'light' | 'dark'): Record<string, string> {
     const palette = (mode === 'dark' ? theme.darkColor : theme.color) as SnakeThemeColor;
     const result: Record<string, string> = { '--snake-theme-mode': mode };
     Object.entries(palette).forEach(([key, value]) => {
         const name = tokenNames[key as keyof SnakeThemeColor];
-        if (name && value != null) result[name] = String(value);
+        if (name && value != null) {
+            result[name] = String(value);
+            const rgb = toRgbTriplet(String(value));
+            if (rgb) result[`${name}-rgb`] = rgb;
+        }
     });
     Object.assign(result, mode === 'dark' ? theme.darkCss : theme.css);
     return result;

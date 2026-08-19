@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<SnakeSwitchProps>(), {
     inactiveValue: false,
     loading: false,
     disabled: false,
-    activeColor: 'var(--snake-color-primary,#00a86f)',
+    activeColor: 'var(--snake-color-primary,#06D290)',
     inactiveColor: 'var(--snake-color-border,#dcdfe6)',
     space: 2,
     vibrateShort: false,

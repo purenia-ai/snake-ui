@@ -1,8 +1,8 @@
 :root {
-    --vp-c-brand-1: #00a86f;
-    --vp-c-brand-2: #06c884;
-    --vp-c-brand-3: #008d5d;
-    --vp-c-brand-soft: rgba(0, 168, 111, 0.1);
+    --vp-c-brand-1: #00805a;
+    --vp-c-brand-2: #06a97a;
+    --vp-c-brand-3: #06d290;
+    --vp-c-brand-soft: rgba(6, 210, 144, 0.12);
     --vp-c-bg: #ffffff;
     --vp-c-bg-alt: #f7f8fa;
     --vp-c-bg-soft: #f5f7f8;
@@ -18,10 +18,10 @@
 }
 
 .dark {
-    --vp-c-brand-1: #38d49b;
-    --vp-c-brand-2: #20bf85;
-    --vp-c-brand-3: #65e1b3;
-    --vp-c-brand-soft: rgba(56, 212, 155, 0.12);
+    --vp-c-brand-1: #2ee6a8;
+    --vp-c-brand-2: #06d290;
+    --vp-c-brand-3: #3befb8;
+    --vp-c-brand-soft: rgba(46, 230, 168, 0.14);
     --vp-c-bg: #151918;
     --vp-c-bg-alt: #101312;
     --vp-c-bg-soft: #1d2321;
@@ -280,12 +280,19 @@ body {
     border-color: var(--vp-c-brand-1) !important;
 }
 
+/*
+ * 手机壳恒定 395px 机身宽(iframe 逻辑宽 375px,与主流真机一致,uni-app 1rpx=0.5px),
+ * 视口空间不足时由 PreviewFrame.vue 计算并写入 --preview-scale 等比缩放,
+ * 缩放只影响视觉尺寸,不改变 iframe 内部布局宽度。
+ */
 .preview-panel {
     position: fixed;
     z-index: 15;
     top: max(72px, calc((100vh - var(--preview-phone-height, 548px)) / 2 + 28px));
     right: 20px;
-    width: var(--preview-phone-width, 270px);
+    --preview-phone-width: calc(395px * var(--preview-scale, 0.8));
+    --preview-phone-height: calc(395px * var(--preview-scale, 0.8) * 143.6 / 70.9 + 26px);
+    width: var(--preview-phone-width);
 }
 
 .preview-panel__header {
@@ -318,13 +325,18 @@ body {
     position: relative;
     box-sizing: border-box;
     aspect-ratio: 70.9 / 143.6;
-    width: 100%;
-    padding: 34px 9px 17px;
+    width: 395px;
+    transform: scale(var(--preview-scale, 0.8));
+    transform-origin: top left;
+    padding: 24px 9px 18px;
     overflow: hidden;
-    border: 1px solid #303332;
+    border: 1px solid #454b4d;
     border-radius: 38px;
-    background: #111514;
-    box-shadow: 0 14px 32px rgba(15, 30, 24, 0.16);
+    background: linear-gradient(150deg, #3a4042 0%, #14171a 34%, #0f1214 58%, #2c3234 100%);
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.09),
+        inset 0 0 0 2px rgba(0, 0, 0, 0.55),
+        0 16px 36px rgba(15, 30, 24, 0.2);
 }
 
 .preview-phone::after {
@@ -335,20 +347,22 @@ body {
     width: 54px;
     height: 3px;
     border-radius: 99px;
-    background: #4e5351;
+    background: #565c5a;
     transform: translateX(-50%);
 }
 
-.preview-phone__speaker {
+.preview-phone__island {
     position: absolute;
     z-index: 2;
-    top: 15px;
+    top: 11px;
     left: 50%;
-    width: 42px;
-    height: 4px;
+    width: 56px;
+    height: 17px;
     border-radius: 99px;
-    background: #454b48;
+    background: #05070a;
+    box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.05);
     transform: translateX(-50%);
+    pointer-events: none;
 }
 
 .preview-phone iframe,
@@ -366,7 +380,7 @@ body {
 
 .preview-phone__status {
     position: absolute;
-    inset: 34px 9px 17px;
+    inset: 24px 9px 18px;
     box-sizing: border-box;
     display: grid;
     width: auto;
@@ -399,7 +413,7 @@ body {
 
 @media (min-width: 1280px) {
     .snake-preview-layout {
-        --preview-reserved-space: 306px;
+        --preview-reserved-space: calc(395px * var(--preview-scale, 0.78) + 40px);
     }
 
     .snake-preview-layout .VPContent.has-sidebar {
@@ -425,27 +439,21 @@ body {
     .snake-preview-layout .VPDoc.has-aside .content-container {
         max-width: 680px;
     }
-
-    .preview-panel {
-        --preview-phone-width: min(270px, calc((100vh - 118px) * 70.9 / 143.6));
-        --preview-phone-height: calc(var(--preview-phone-width) * 143.6 / 70.9 + 26px);
-    }
 }
 
 @media (min-width: 1450px) {
     .snake-preview-layout {
-        --preview-reserved-space: 346px;
+        --preview-reserved-space: calc(395px * var(--preview-scale, 0.88) + 70px);
     }
 
     .preview-panel {
         right: 30px;
-        --preview-phone-width: min(300px, calc((100vh - 118px) * 70.9 / 143.6));
     }
 }
 
 @media (min-width: 1680px) {
     .snake-preview-layout {
-        --preview-reserved-space: calc(346px + max(0px, calc((100vw - 1680px) / 2)));
+        --preview-reserved-space: calc(395px * var(--preview-scale, 1) + 40px + max(0px, calc((100vw - 1680px) / 2)));
     }
 
     .preview-panel {

@@ -23,7 +23,7 @@ const disabled = computed(() => props.disabled || Boolean(group?.disabled.value)
 const shape = computed(() => props.shape || group?.shape.value || 'circle');
 const size = computed(() => props.size || group?.size.value || 'default');
 const activeColor = computed(
-    () => props.activeColor || group?.activeColor.value || 'var(--snake-color-primary,#00a86f)'
+    () => props.activeColor || group?.activeColor.value || 'var(--snake-color-primary,#06D290)'
 );
 const inactiveColor = computed(
     () => props.inactiveColor || group?.inactiveColor.value || 'var(--snake-color-border,#c0c4cc)'

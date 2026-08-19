@@ -241,7 +241,7 @@ export default {
             return item => {
                 const style = {};
                 if (!item.activityInfo?.myPrice) {
-                    style.backgroundColor = 'var(--snake-color-primary, #00a86f)';
+                    style.backgroundColor = 'var(--snake-color-primary, #06D290)';
                     style.color = 'var(--snake-color-white, #fff)';
                 }
 
@@ -499,10 +499,10 @@ export default {
     font-family: PingFangSC-Medium;
     font-size: 26rpx;
     font-weight: 500;
-    color: var(--snake-color-primary, #00a86f);
+    color: var(--snake-color-primary, #06D290);
     text-align: center;
     // line-height: 44rpx;
-    border: 2rpx solid var(--snake-color-primary, #00a86f);
+    border: 2rpx solid var(--snake-color-primary, #06D290);
     border-radius: 2rpx;
 }
 

@@ -127,7 +127,7 @@ function onBlur(event: any) {
     border-radius: 0;
 }
 .snake-textarea.is-focused {
-    border-color: var(--snake-color-primary, #00a86f);
+    border-color: var(--snake-color-primary, #06D290);
 }
 .snake-textarea.is-error {
     border-color: var(--snake-color-error, #ef4444);

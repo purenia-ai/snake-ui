@@ -71,7 +71,7 @@ export const pictureAdsData = {
   backgroundColor: "#ffffff",
   interval: 3000,
   pagingType: "bullets",
-  indicatorColor: "#00a86f",
+  indicatorColor: "#06D290",
 };
 
 export const navigationData = {
@@ -89,7 +89,7 @@ export const navigationData = {
 export const popupData = { popupMode: "center", image: localImage, url: "" };
 export const suspensionData = { uid: "service", src: localImage, url: "", width: 96, height: 96, right: 0, bottom: 20 };
 export const couponData = { modeType: "page", couponId: "preview", beforeImage: localImage, afterImage: localImage, type: "10", afterUrl: "" };
-export const jumpAppletData = { isButton: true, title: "打开小程序", textColor: "#ffffff", btnColor: "#00a86f", appId: "", path: "", query: "", isAuto: false, isWeCom: false };
+export const jumpAppletData = { isButton: true, title: "打开小程序", textColor: "#ffffff", btnColor: "#06D290", appId: "", path: "", query: "", isAuto: false, isWeCom: false };
 
 export const activities = [
   { id: "001", name: "正在热拍", subtitle: "限时竞价", squareImage: localImage, startTime: Date.now() - 3600000, endTime: Date.now() + 3600000 },
@@ -117,7 +117,7 @@ export const listSwitchingData = {
   commoditylisttypetab: [],
   commoditycorner: true,
   commoditycornertype: 0,
-  commodityTagColor: "#00a86f",
+  commodityTagColor: "#06D290",
   tagPosition: 0,
 };
 

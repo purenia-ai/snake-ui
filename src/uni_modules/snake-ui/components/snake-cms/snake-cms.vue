@@ -207,7 +207,7 @@ const activeTabStyle = { color: 'var(--snake-color-text, #303133)', fontWeight: 
 const activeBarStyle = {
     width: '25px',
     height: '8rpx',
-    backgroundColor: 'var(--snake-color-primary, #00a86f)',
+    backgroundColor: 'var(--snake-color-primary, #06D290)',
     borderRadius: '2rpx'
 };
 

@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<SnakeSliderProps>(), {
     step: 1,
     height: 4,
     blockWidth: 24,
-    activeColor: 'var(--snake-color-primary,#00a86f)',
+    activeColor: 'var(--snake-color-primary,#06D290)',
     inactiveColor: 'var(--snake-color-divider,#e4e7ed)',
     blockColor: '#fff',
     blockStyle: '',

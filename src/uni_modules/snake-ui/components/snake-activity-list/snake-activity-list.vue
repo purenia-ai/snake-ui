@@ -186,7 +186,7 @@ export default {
       width: 195rpx;
       min-width: 195rpx;
       height: 195rpx;
-      border: 4rpx solid var(--snake-color-primary, #00a86f);
+      border: 4rpx solid var(--snake-color-primary, #06D290);
       border-radius: 4rpx;
       // box-shadow: 0 6rpx 16rpx rgba(45, 87, 231, 0.3);
       transform: translateY(-4rpx);

@@ -130,7 +130,7 @@ export default {
   left: 0;
   height: 32rpx;
   content: '';
-  border-left: 4px solid var(--snake-color-primary, #00a86f);
+  border-left: 4px solid var(--snake-color-primary, #06D290);
 }
 
 .right-box {

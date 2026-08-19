@@ -1,4 +1,12 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import {
+    snakeColor,
+    snakeDarkMode,
+    snakeSystemDark,
+    snakeThemeStyle
+} from '../uni_modules/snake-ui';
+
 withDefaults(
     defineProps<{
         title?: string;
@@ -10,6 +18,21 @@ withDefaults(
     }>(),
     { title: '', eyebrow: '', desc: '', viewport: false, navBack: true, navHome: true }
 );
+
+/*
+ * 外壳组合变量必须内联到页面根节点:uni-app H5 会把 `page` 选择器编译成
+ * uni-page-body,自定义属性在定义处完成 var() 代换后按字面值继承,
+ * 仅写在 :root / .snake-theme-dark 上的深色覆写无法穿透到页面内容。
+ * 内联绑定同时覆盖小程序端(无 document)的主题切换。
+ */
+const isDark = computed(() =>
+    snakeDarkMode.value === 'auto' ? snakeSystemDark.value : snakeDarkMode.value === 'dark'
+);
+const shellThemeStyle = computed(() => ({
+    ...snakeThemeStyle.value,
+    '--snake-demo-nav-gradient': `linear-gradient(120deg, ${snakeColor.primaryDeeper}, ${snakeColor.primaryDeep})`,
+    '--snake-demo-accent-text': isDark.value ? snakeColor.primary : snakeColor.primaryDeep
+}));
 
 function goBack() {
     if (getCurrentPages().length > 1) {
@@ -25,31 +48,34 @@ function goHome() {
 </script>
 
 <template>
-    <view :class="['demo-page', { 'demo-page--viewport': viewport }]">
+    <view :class="['demo-page', { 'demo-page--viewport': viewport }]" :style="shellThemeStyle">
         <template v-if="!viewport">
             <view class="demo-nav">
-                <view
-                    class="demo-nav__side demo-nav__side--left"
-                    hover-class="demo-nav__side--hover"
-                    @click="navBack && goBack()"
-                >
-                    <text v-if="navBack" class="demo-nav__back">‹</text>
+                <view class="demo-nav__side" :class="{ 'demo-nav__side--hidden': !navBack }">
+                    <view
+                        v-if="navBack"
+                        class="demo-nav__hit"
+                        hover-class="demo-nav__hit--hover"
+                        @click="goBack()"
+                    >
+                        <text class="demo-nav__back">‹</text>
+                    </view>
                 </view>
                 <text class="demo-nav__title">{{ title }}</text>
-                <view
-                    class="demo-nav__side demo-nav__side--right"
-                    hover-class="demo-nav__side--hover"
-                    @click="navHome && goHome()"
-                >
-                    <text v-if="navHome" class="demo-nav__home">首页</text>
+                <view class="demo-nav__side" :class="{ 'demo-nav__side--hidden': !navHome }">
+                    <view
+                        v-if="navHome"
+                        class="demo-nav__hit"
+                        hover-class="demo-nav__hit--hover"
+                        @click="goHome()"
+                    >
+                        <text class="demo-nav__home">首页</text>
+                    </view>
                 </view>
             </view>
 
-            <view class="demo-page-header">
-                <view class="demo-page-header__title-row">
-                    <view class="demo-page-header__title">{{ title }}</view>
-                    <view v-if="eyebrow" class="demo-page-header__category">{{ eyebrow }}</view>
-                </view>
+            <view v-if="eyebrow || desc" class="demo-page-header">
+                <view v-if="eyebrow" class="demo-page-header__category">{{ eyebrow }}</view>
                 <view v-if="desc" class="demo-page-header__desc">{{ desc }}</view>
             </view>
 
@@ -67,13 +93,15 @@ function goHome() {
 .demo-page {
     box-sizing: border-box;
     min-height: 100vh;
-    background: $snake-bg-page;
-    color: $snake-text-main;
+    background-color: var(--snake-color-background);
+    background-image: $snake-page-tint;
+    background-repeat: no-repeat;
+    color: var(--snake-color-text);
     -webkit-font-smoothing: antialiased;
 }
 
 .demo-page--viewport {
-    background: #ffffff;
+    background: var(--snake-color-surface);
 }
 
 .demo-nav {
@@ -83,87 +111,88 @@ function goHome() {
     display: flex;
     align-items: center;
     height: $snake-nav-height;
-    padding: 0 6px;
-    border-bottom: 1px solid $snake-border;
-    background: $snake-bg-card;
+    padding: 0 12rpx;
+    background: $snake-nav-gradient;
+    box-shadow: 0 4rpx 16rpx rgba(0, 107, 74, 0.25);
 }
 
 .demo-nav__side {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 56px;
+    width: 96rpx;
     height: 100%;
-    border-radius: 5px;
-    color: $snake-primary;
+
+    &--hidden {
+        visibility: hidden;
+    }
+}
+
+.demo-nav__hit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 72rpx;
+    height: 64rpx;
+    padding: 0 12rpx;
+    border-radius: 12rpx;
     transition: background-color 0.2s ease;
 }
 
-.demo-nav__side--hover {
-    background: $snake-primary-soft;
+.demo-nav__hit--hover {
+    background: rgba(255, 255, 255, 0.16);
 }
 
 .demo-nav__back {
-    padding-bottom: 3px;
-    font-size: 30px;
+    padding-bottom: 6rpx;
+    color: #ffffff;
+    font-size: 56rpx;
     line-height: 1;
 }
 
 .demo-nav__title {
     flex: 1;
     overflow: hidden;
-    color: $snake-text-main;
-    font-size: 16px;
-    font-weight: 500;
+    color: #ffffff;
+    font-size: 32rpx;
+    font-weight: 600;
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .demo-nav__home {
-    font-size: 13px;
-    color: $snake-primary;
+    color: #ffffff;
+    font-size: 26rpx;
     font-weight: 500;
 }
 
 .demo-page-header {
     max-width: 760px;
     margin: 0 auto;
-    padding: 22px 16px 14px;
-    border-bottom: 1px solid $snake-border;
-    background: $snake-bg-card;
-}
-
-.demo-page-header__title-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-}
-
-.demo-page-header__title {
-    color: $snake-text-main;
-    font-size: 21px;
-    font-weight: 600;
-    line-height: 1.3;
+    padding: 28rpx 32rpx 8rpx;
 }
 
 .demo-page-header__category {
-    flex: none;
-    color: $snake-primary;
-    font-size: 11px;
+    display: inline-block;
+    padding: 6rpx 20rpx;
+    border-radius: 999rpx;
+    color: var(--snake-demo-accent-text);
+    background: var(--snake-color-primary-light);
+    font-size: 22rpx;
+    font-weight: 600;
 }
 
 .demo-page-header__desc {
-    margin-top: 8px;
-    color: $snake-text-sub;
-    font-size: 13px;
-    line-height: 1.6;
+    margin-top: 14rpx;
+    color: var(--snake-color-text-muted);
+    font-size: 26rpx;
+    line-height: 1.7;
 }
 
 .demo-body {
     max-width: 760px;
     margin: 0 auto;
-    padding: 16px 12px 40px;
+    padding: 24rpx 24rpx 56rpx;
 }
 </style>

@@ -4,8 +4,11 @@ export type SnakeDebugLevel = 'log' | 'warn' | 'error';
 export interface SnakeThemeColor {
     primary: string;
     primaryDark: string;
+    primaryDeep: string;
+    primaryDeeper: string;
     primaryDisabled: string;
     primaryLight: string;
+    primaryInk: string;
     success: string;
     successDark: string;
     successDisabled: string;

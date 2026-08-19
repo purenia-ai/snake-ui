@@ -26,7 +26,7 @@ cms: true
     isButton: true,
     title: '打开小程序',
     textColor: '#ffffff',
-    btnColor: '#00a86f',
+    btnColor: '#06D290',
     appId: 'wx0000000000000000',
     path: 'pages/home/index',
     query: '?source=cms',

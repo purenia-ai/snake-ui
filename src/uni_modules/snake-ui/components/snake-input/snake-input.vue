@@ -198,7 +198,7 @@ function confirm(event: any) {
     min-height: 92rpx;
 }
 .snake-input.is-focused {
-    border-color: var(--snake-color-primary, #00a86f);
+    border-color: var(--snake-color-primary, #06D290);
 }
 .snake-input.is-error {
     border-color: var(--snake-color-error, #ef4444);

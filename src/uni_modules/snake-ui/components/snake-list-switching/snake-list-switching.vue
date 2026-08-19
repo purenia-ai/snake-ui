@@ -710,7 +710,7 @@ export default {
             active1: 0,
             active: 0,
             listSwitchName: null,
-            tagColor: 'var(--snake-color-primary, #00a86f)',
+            tagColor: 'var(--snake-color-primary, #06D290)',
             styleString: {},
             scrollTop: 0 //tab标题的滚动条位置
         };

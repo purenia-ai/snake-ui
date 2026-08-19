@@ -1,13 +1,26 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useData } from 'vitepress'
 
-defineProps<{ mobile?: boolean }>()
+const props = defineProps<{ mobile?: boolean }>()
 
 const { frontmatter, title } = useData()
 const loaded = ref(false)
 const timedOut = ref(false)
 let timer: ReturnType<typeof setTimeout> | undefined
+
+// 手机壳机身恒定 395px(iframe 逻辑宽 375px,对齐真机),视口空间不足时按断点+高度等比缩放。
+// CSS 无法做长度除法,缩放系数在此计算后写入 --preview-scale 供 custom.css 消费。
+const PHONE_WIDTH = 395
+const PHONE_HEIGHT = (395 * 143.6) / 70.9
+
+function updateScale() {
+  if (typeof window === 'undefined') return
+  const budgetWidth = window.innerWidth >= 1680 ? 430 : window.innerWidth >= 1450 ? 350 : 310
+  const budgetHeight = window.innerHeight - 130
+  const scale = Math.max(0.5, Math.min(budgetWidth / PHONE_WIDTH, budgetHeight / PHONE_HEIGHT, 1))
+  document.documentElement.style.setProperty('--preview-scale', scale.toFixed(3))
+}
 
 const previewRoute = computed(() => frontmatter.value.preview as string | undefined)
 const previewUrl = computed(() => {
@@ -43,7 +56,15 @@ function markLoaded() {
 }
 
 watch(previewUrl, armTimeout, { immediate: true })
-onBeforeUnmount(() => timer && clearTimeout(timer))
+onMounted(() => {
+  if (props.mobile) return
+  updateScale()
+  window.addEventListener('resize', updateScale)
+})
+onBeforeUnmount(() => {
+  if (timer) clearTimeout(timer)
+  if (!props.mobile && typeof window !== 'undefined') window.removeEventListener('resize', updateScale)
+})
 </script>
 
 <template>
@@ -56,7 +77,7 @@ onBeforeUnmount(() => timer && clearTimeout(timer))
       <a :href="previewUrl" target="_blank" rel="noreferrer">新窗口 ↗</a>
     </header>
     <div class="preview-phone">
-      <div class="preview-phone__speaker" />
+      <div class="preview-phone__island" />
       <iframe
         :key="previewUrl"
         :src="previewUrl"

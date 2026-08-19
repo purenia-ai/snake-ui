@@ -6,7 +6,7 @@ import type { SnakeTabItem, SnakeTabsEmits, SnakeTabsProps } from './types';
 defineOptions({ name: 'SnakeTabs', options: { virtualHost: true, styleIsolation: 'shared' } });
 const props = withDefaults(defineProps<SnakeTabsProps>(), {
   list: () => [], current: 0, name: 'name', count: 'count', scrollable: true, height: 40, fontSize: 15,
-  duration: 0.3, lineColor: 'var(--snake-color-primary, #00a86f)', activeColor: 'var(--snake-color-text, #303133)',
+  duration: 0.3, lineColor: 'var(--snake-color-primary, #06D290)', activeColor: 'var(--snake-color-text, #303133)',
   inactiveColor: 'var(--snake-color-text-secondary, #606266)', barWidth: 20, barHeight: 3, gutter: 15,
   bgColor: 'transparent', offset: () => [5, 10], isDot: false, bold: true, activeItemStyle: '', showBar: true,
   barStyle: '', itemWidth: 'auto', customClass: '', customStyle: '',

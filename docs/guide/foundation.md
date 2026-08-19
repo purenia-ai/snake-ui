@@ -68,7 +68,7 @@ app.use(SnakeUI, {
             {
                 name: 'brand',
                 label: '品牌主题',
-                color: { primary: '#00a86f' },
+                color: { primary: '#06D290' },
                 darkColor: { primary: '#38d49b' }
             }
         ]

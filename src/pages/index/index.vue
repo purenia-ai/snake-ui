@@ -115,18 +115,19 @@ const switchLocale = () => {
 }
 .foundation-actions__hint {
     margin-right: auto;
-    color: var(--snake-color-text-muted, $snake-text-tips);
+    color: var(--snake-color-text-muted);
     font-size: 12px;
 }
 .foundation-actions__button {
     min-width: 52px;
     margin: 0;
     padding: 0 10px;
-    color: var(--snake-color-primary, $snake-primary);
+    color: var(--snake-demo-accent-text);
     font-size: 12px;
+    font-weight: 600;
     line-height: 28px;
-    background: var(--snake-color-primary-light, $snake-primary-soft);
-    border: 1px solid var(--snake-color-primary, $snake-primary);
+    background: var(--snake-color-primary-light);
+    border: 1px solid rgba(var(--snake-color-primary-rgb), 0.4);
     border-radius: 5px;
 }
 .foundation-actions__button::after {
@@ -138,30 +139,30 @@ const switchLocale = () => {
     height: 44px;
     margin-bottom: 22px;
     padding: 0 14px;
-    border: 1px solid $snake-border-strong;
+    border: 1px solid var(--snake-color-border);
     border-radius: 6px;
-    background: $snake-bg-card;
+    background: var(--snake-color-surface);
     transition:
         border-color 0.18s ease,
         box-shadow 0.18s ease;
 }
 .search-box:focus-within {
-    border-color: $snake-primary;
-    box-shadow: 0 0 0 2px rgba(0, 168, 111, 0.08);
+    border-color: var(--snake-color-primary);
+    box-shadow: 0 0 0 4rpx rgba(var(--snake-color-primary-rgb), 0.16);
 }
 .search-box__icon {
     margin-right: 9px;
-    color: $snake-text-tips;
+    color: var(--snake-color-text-muted);
     font-size: 17px;
 }
 .search-box__input {
     flex: 1;
     height: 100%;
-    color: $snake-text-main;
+    color: var(--snake-color-text);
     font-size: 14px;
 }
 .search-box__placeholder {
-    color: $snake-text-tips;
+    color: var(--snake-color-text-muted);
 }
 .search-box__clear {
     display: flex;
@@ -169,18 +170,18 @@ const switchLocale = () => {
     height: 28px;
     align-items: center;
     justify-content: center;
-    color: $snake-text-tips;
+    color: var(--snake-color-text-muted);
     font-size: 17px;
 }
 .search-result {
     display: flex;
     justify-content: space-between;
     margin: -12px 2px 20px;
-    color: $snake-text-tips;
+    color: var(--snake-color-text-muted);
     font-size: 12px;
 }
 .search-result text:last-child {
-    color: $snake-primary;
+    color: var(--snake-color-primary);
 }
 .overview__empty {
     padding: 64px 0;
@@ -194,18 +195,18 @@ const switchLocale = () => {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: $snake-primary-soft;
-    color: $snake-primary;
+    background: var(--snake-color-primary-light);
+    color: var(--snake-color-primary);
     font-size: 23px;
 }
 .empty-title {
-    color: $snake-text-main;
+    color: var(--snake-color-text);
     font-size: 15px;
     font-weight: 600;
 }
 .empty-desc {
     margin-top: 6px;
-    color: $snake-text-tips;
+    color: var(--snake-color-text-muted);
     font-size: 12px;
 }
 .group-section {
@@ -216,22 +217,22 @@ const switchLocale = () => {
     align-items: center;
     margin-bottom: 10px;
     padding-bottom: 8px;
-    border-bottom: 1px solid $snake-border;
+    border-bottom: 1px solid var(--snake-color-divider);
 }
 .group-title__name {
-    color: $snake-text-main;
+    color: var(--snake-color-text);
     font-size: 16px;
     font-weight: 600;
 }
 .group-title__en {
     margin-left: 8px;
-    color: $snake-text-tips;
+    color: var(--snake-color-text-muted);
     font-size: 11px;
     text-transform: uppercase;
 }
 .group-title__count {
     margin-left: auto;
-    color: $snake-text-tips;
+    color: var(--snake-color-text-muted);
     font-size: 11px;
 }
 .cards {
@@ -246,19 +247,19 @@ const switchLocale = () => {
     min-height: 72px;
     padding: 13px 12px;
     align-items: center;
-    border: 1px solid $snake-border;
+    border: 1px solid var(--snake-color-divider);
     border-radius: 7px;
-    background: $snake-bg-card;
+    background: var(--snake-color-surface);
     transition:
         border-color 0.18s ease,
         background-color 0.18s ease;
 }
 .card--hover {
-    border-color: $snake-primary;
-    background: $snake-primary-soft;
+    border-color: var(--snake-color-primary);
+    background: var(--snake-color-primary-light);
 }
 .card--cms {
-    border-left: 2px solid $snake-primary;
+    border-left: 2px solid var(--snake-color-primary);
 }
 .card__body {
     min-width: 0;
@@ -272,7 +273,7 @@ const switchLocale = () => {
 }
 .card__title {
     overflow: hidden;
-    color: $snake-text-main;
+    color: var(--snake-color-text);
     font-size: 14px;
     font-weight: 600;
     text-overflow: ellipsis;
@@ -281,9 +282,9 @@ const switchLocale = () => {
 .card__cms {
     flex: none;
     padding: 1px 4px;
-    border: 1px solid rgba(0, 168, 111, 0.35);
+    border: 1px solid rgba(var(--snake-color-primary-rgb), 0.35);
     border-radius: 3px;
-    color: $snake-primary;
+    color: var(--snake-color-primary);
     font-size: 8px;
     line-height: 13px;
 }
@@ -291,7 +292,7 @@ const switchLocale = () => {
     display: block;
     overflow: hidden;
     margin-top: 6px;
-    color: $snake-text-sub;
+    color: var(--snake-color-text-secondary);
     font-size: 12px;
     line-height: 1.4;
     text-overflow: ellipsis;
@@ -300,7 +301,7 @@ const switchLocale = () => {
 .card__arrow {
     flex: none;
     margin-left: 7px;
-    color: $snake-text-tips;
+    color: var(--snake-color-text-muted);
     font-size: 18px;
 }
 

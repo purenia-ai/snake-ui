@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, getCurrentInstance } from 'vue';
 import SnakeTransition from '../snake-transition/snake-transition.vue';
 import type { SnakeOverlayEmits, SnakeOverlayProps } from './types';
 
@@ -15,7 +15,9 @@ const props = withDefaults(defineProps<SnakeOverlayProps>(), {
     customStyle: ''
 });
 const emit = defineEmits<SnakeOverlayEmits>();
-const visible = computed(() => props.show ?? props.modelValue);
+// 与 snake-popup 同理：未绑定 show 时 Boolean casting 会让 `??` 失效，需检测实际绑定来源。
+const showBound = 'show' in (getCurrentInstance()?.vnode?.props ?? {});
+const visible = computed(() => (showBound ? props.show : props.modelValue));
 const overlayStyle = computed(() => [
     {
         backgroundColor: `rgba(0, 0, 0, ${Math.min(1, Math.max(0, props.opacity))})`,

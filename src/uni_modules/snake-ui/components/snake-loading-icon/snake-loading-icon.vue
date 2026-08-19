@@ -8,7 +8,7 @@ defineOptions({ name: 'SnakeLoadingIcon', options: { virtualHost: true, styleIso
 const props = withDefaults(defineProps<SnakeLoadingIconProps>(), {
     show: true,
     mode: 'circle',
-    color: 'var(--snake-color-primary, #00a86f)',
+    color: 'var(--snake-color-primary, #06D290)',
     inactiveColor: 'var(--snake-color-border, #dcdfe6)',
     size: 20,
     text: '',

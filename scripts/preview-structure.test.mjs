@@ -156,8 +156,8 @@ test('compact layout preserves the native page outline and dimensions', async ()
     assert.doesNotMatch(layout, /#aside-top><PreviewFrame\s*\/><\/template>/);
     assert.match(css, /--vp-sidebar-width:\s*240px/);
     assert.match(css, /max-width:\s*680px/);
-    assert.match(css, /--preview-phone-width:\s*min\(270px/);
-    assert.match(css, /--preview-phone-width:\s*min\(300px/);
+    assert.match(css, /--preview-phone-width:\s*calc\(395px/);
+    assert.match(css, /transform:\s*scale\(var\(--preview-scale/);
 });
 
 test('desktop phone preview is fixed to the outer page edge like uView2', async () => {

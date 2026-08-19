@@ -115,7 +115,7 @@ const demoPopupData = computed(() => ({ ...popupData, popupMode: String(demoStat
 const demoJumpAppletData = computed(() => ({
     ...jumpAppletData,
     title: String(demoState.appletTitle ?? '打开小程序'),
-    btnColor: String(demoState.appletColor ?? '#00a86f')
+    btnColor: String(demoState.appletColor ?? '#06D290')
 }));
 const demoActivities = computed(() => (demoState.activityScene === 'single' ? activities.slice(0, 1) : activities));
 const demoListSwitchingData = computed(() => ({
@@ -278,7 +278,7 @@ function resetForm() {
             <view v-else-if="kind === 'sticky'" class="demo-scroll"
                 ><view class="demo-scroll-hero">向下滚动查看吸顶效果</view
                 ><snake-sticky
-                    bg-color="#00a86f"
+                    bg-color="#06D290"
                     :disabled="Boolean(demoState.stickyDisabled)"
                     :offset-top="Number(demoState.stickyOffset)"
                     ><view class="demo-sticky">我会固定在手机预览顶部</view></snake-sticky
@@ -324,7 +324,7 @@ function resetForm() {
             <view v-else-if="kind === 'index-list' || kind === 'index-anchor'" class="demo-index"
                 ><snake-index-list
                     :index-list="['A', 'B', 'C', 'D']"
-                    :active-color="String(demoState.indexColor || '#00a86f')"
+                    :active-color="String(demoState.indexColor || '#06D290')"
                     ><view v-for="letter in ['A', 'B', 'C', 'D']" :key="letter"
                         ><snake-index-anchor
                             :index="letter"
@@ -523,16 +523,16 @@ function resetForm() {
     gap: 16rpx;
     padding: 28rpx 12rpx;
     border-radius: 16rpx;
-    background: var(--snake-bg-soft);
-    color: var(--snake-text-sub);
+    background: var(--snake-color-surface-muted);
+    color: var(--snake-color-text-secondary);
     font-size: 22rpx;
 }
 .demo-image-box {
     width: 100%;
     height: 300rpx;
-    border: 1rpx solid var(--snake-border);
+    border: 1rpx solid var(--snake-color-divider);
     border-radius: 16rpx;
-    background: var(--snake-bg-soft);
+    background: var(--snake-color-surface-muted);
 }
 .demo-transition-card {
     display: flex;
@@ -541,7 +541,7 @@ function resetForm() {
     justify-content: center;
     border-radius: 20rpx;
     color: #fff;
-    background: linear-gradient(135deg, #00a86f, #173b2c);
+    background: linear-gradient(135deg, var(--snake-color-primary-deep), var(--snake-color-primary-deeper));
 }
 .demo-trigger {
     padding: 48rpx 24rpx;
@@ -556,25 +556,25 @@ function resetForm() {
 }
 .demo-popup {
     padding: 40rpx 32rpx calc(40rpx + env(safe-area-inset-bottom));
-    color: var(--snake-text-sub);
+    color: var(--snake-color-text-secondary);
 }
 .demo-popup__title {
     display: block;
     margin-bottom: 16rpx;
-    color: var(--snake-text-main);
+    color: var(--snake-color-text);
     font-size: 34rpx;
     font-weight: 700;
 }
 .demo-scroll {
     min-height: 150vh;
-    background: var(--snake-bg-soft);
+    background: var(--snake-color-surface-muted);
 }
 .demo-scroll-hero {
     display: flex;
     height: 360rpx;
     align-items: center;
     justify-content: center;
-    color: var(--snake-text-sub);
+    color: var(--snake-color-text-secondary);
 }
 .demo-sticky {
     padding: 24rpx;
@@ -584,26 +584,26 @@ function resetForm() {
 .demo-row {
     margin: 20rpx 24rpx;
     padding: 32rpx;
-    border: 1rpx solid var(--snake-border);
+    border: 1rpx solid var(--snake-color-divider);
     border-radius: 14rpx;
-    background: var(--snake-bg-card);
+    background: var(--snake-color-surface);
     box-shadow: 0 6rpx 18rpx rgba(16, 84, 56, 0.04);
 }
 .demo-tab-content {
     padding: 64rpx 24rpx;
     border-radius: 16rpx;
-    background: var(--snake-bg-soft);
-    color: var(--snake-primary-dark);
+    background: var(--snake-color-surface-muted);
+    color: var(--snake-demo-accent-text);
     text-align: center;
 }
 .demo-follow {
     padding: 24rpx;
     border-radius: 16rpx;
-    background: var(--snake-bg-soft);
+    background: var(--snake-color-surface-muted);
 }
 .demo-follow--strong {
-    border: 2rpx solid var(--snake-primary);
-    background: var(--snake-primary-soft);
+    border: 2rpx solid var(--snake-color-primary);
+    background: var(--snake-color-primary-light);
 }
 .demo-menu {
     min-height: 320rpx;
@@ -615,17 +615,17 @@ function resetForm() {
 }
 .demo-menu-panel {
     padding: 48rpx 28rpx;
-    color: var(--snake-text-sub);
-    background: var(--snake-bg-card);
+    color: var(--snake-color-text-secondary);
+    background: var(--snake-color-surface);
 }
 .demo-index {
     height: 620rpx;
 }
 .demo-index-row {
     padding: 28rpx 20rpx;
-    border-bottom: 1rpx solid var(--snake-border);
-    color: var(--snake-text-sub);
-    background: var(--snake-bg-card);
+    border-bottom: 1rpx solid var(--snake-color-divider);
+    color: var(--snake-color-text-secondary);
+    background: var(--snake-color-surface);
 }
 .demo-form,
 .demo-control-stack {
@@ -644,7 +644,7 @@ function resetForm() {
 }
 .demo-form__message,
 .demo-control-stack > text {
-    color: var(--snake-text-sub);
+    color: var(--snake-color-text-secondary);
     font-size: 24rpx;
 }
 
@@ -653,7 +653,7 @@ function resetForm() {
     padding: 48rpx 28rpx;
     border-radius: 20rpx;
     color: #eafff4;
-    background: linear-gradient(135deg, #123e29, var(--snake-primary-deep));
+    background: linear-gradient(135deg, var(--snake-color-primary-deeper), var(--snake-color-primary-deep));
     font-weight: 700;
 }
 </style>

@@ -166,7 +166,7 @@ const definitions: Record<string, DemoDefinition> = {
                 defaultValue: '#7b8d84',
                 options: [
                     { label: '灰色', value: '#7b8d84' },
-                    { label: '品牌绿', value: '#00a86f' }
+                    { label: '品牌绿', value: '#06D290' }
                 ]
             }
         ]
@@ -179,9 +179,9 @@ const definitions: Record<string, DemoDefinition> = {
                 key: 'iconColor',
                 label: '图标颜色',
                 type: 'select',
-                defaultValue: '#00a86f',
+                defaultValue: '#06D290',
                 options: [
-                    { label: '品牌绿', value: '#00a86f' },
+                    { label: '品牌绿', value: '#06D290' },
                     { label: '深色', value: '#173b2c' },
                     { label: '警示色', value: '#f59e0b' }
                 ]
@@ -369,9 +369,9 @@ const definitions: Record<string, DemoDefinition> = {
                 key: 'tabsColor',
                 label: '活动颜色',
                 type: 'select',
-                defaultValue: '#00a86f',
+                defaultValue: '#06D290',
                 options: [
-                    { label: '品牌绿', value: '#00a86f' },
+                    { label: '品牌绿', value: '#06D290' },
                     { label: '蓝色', value: '#2563eb' },
                     { label: '橙色', value: '#f59e0b' }
                 ]
@@ -411,9 +411,9 @@ const definitions: Record<string, DemoDefinition> = {
                 key: 'indexColor',
                 label: '活动颜色',
                 type: 'select',
-                defaultValue: '#00a86f',
+                defaultValue: '#06D290',
                 options: [
-                    { label: '品牌绿', value: '#00a86f' },
+                    { label: '品牌绿', value: '#06D290' },
                     { label: '蓝色', value: '#2563eb' }
                 ]
             }
@@ -673,7 +673,7 @@ const definitions: Record<string, DemoDefinition> = {
                 defaultValue: '#24342c',
                 options: [
                     { label: '深色', value: '#24342c' },
-                    { label: '品牌绿', value: '#00a86f' }
+                    { label: '品牌绿', value: '#06D290' }
                 ]
             }
         ]
@@ -736,9 +736,9 @@ const definitions: Record<string, DemoDefinition> = {
                 key: 'appletColor',
                 label: '按钮颜色',
                 type: 'select',
-                defaultValue: '#00a86f',
+                defaultValue: '#06D290',
                 options: [
-                    { label: '品牌绿', value: '#00a86f' },
+                    { label: '品牌绿', value: '#06D290' },
                     { label: '深色', value: '#173b2c' }
                 ]
             }

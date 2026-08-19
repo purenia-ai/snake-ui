@@ -446,7 +446,7 @@ export default {
   width: calc(100vw - 188rpx - 50rpx);
   min-width: 100%;
   overflow-y: unset !important;
-  color: var(--snake-color-primary, #00a86f);
+  color: var(--snake-color-primary, #06D290);
 }
 
 .tooltip::before {
@@ -502,7 +502,7 @@ export default {
       &.active {
         font-family: PingFangSC-Medium;
         font-weight: 500;
-        color: var(--snake-color-primary, #00a86f);
+        color: var(--snake-color-primary, #06D290);
       }
     }
 
@@ -557,9 +557,9 @@ export default {
       .tabs-item--active {
         font-family: PingFangSC-Medium;
         font-weight: 500;
-        color: var(--snake-color-primary, #00a86f);
+        color: var(--snake-color-primary, #06D290);
         background: var(--snake-color-primary-light, #e8f8f2);
-        border: 1px solid var(--snake-color-primary, #00a86f);
+        border: 1px solid var(--snake-color-primary, #06D290);
       }
     }
   }

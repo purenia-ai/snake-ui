@@ -35,7 +35,7 @@ cms: true
     backgroundColor: '#ffffff',
     interval: 3000,
     pagingType: 'bullets',
-    indicatorColor: '#00a86f',
+    indicatorColor: '#06D290',
   }"
 />
 ```

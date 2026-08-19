@@ -6,7 +6,7 @@ import type { SnakeDropMenuEmits, SnakeDropMenuExpose, SnakeDropMenuProps } from
 
 defineOptions({ name: 'SnakeDropMenu', options: { virtualHost: true, styleIsolation: 'shared' } });
 const props = withDefaults(defineProps<SnakeDropMenuProps>(), {
-    activeColor: 'var(--snake-color-primary, #00a86f)',
+    activeColor: 'var(--snake-color-primary, #06D290)',
     inactiveColor: 'var(--snake-color-text-secondary, #606266)',
     closeOnClickMask: true,
     closeOnClickSelf: true,
