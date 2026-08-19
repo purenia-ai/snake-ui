@@ -1,36 +1,171 @@
+/*
+ * 布局工具类(对齐 uView 生态的 common 布局预设)
+ * 保留原有 snake-flex-center / snake-line / snake-hover-class 等类以兼容旧用法。
+ */
+
+.snake-relative,
+.snake-rela {
+    position: relative;
+}
+
+.snake-absolute,
+.snake-abso {
+    position: absolute;
+}
+
+// 字号档位(rpx)
+.snake-font-xs {
+    font-size: 22rpx;
+}
+
+.snake-font-sm {
+    font-size: 26rpx;
+}
+
+.snake-font-md {
+    font-size: 28rpx;
+}
+
+.snake-font-lg {
+    font-size: 30rpx;
+}
+
+.snake-font-xl {
+    font-size: 34rpx;
+}
+
+// ===== flex 族(对齐 u-flex 语义:row + 垂直居中) =====
 .snake-flex {
-  display: flex;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .snake-flex-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.snake-relative {
-  position: relative;
+.snake-flex-col {
+    display: flex;
+    flex-direction: column;
 }
 
-.snake-line-1 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.snake-flex-wrap {
+    flex-wrap: wrap;
 }
 
-.snake-line-2 {
-  display: -webkit-box;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+.snake-flex-nowrap {
+    flex-wrap: nowrap;
 }
 
-.snake-hover-class {
-  opacity: 0.78;
+.snake-col-center {
+    align-items: center;
 }
 
-.snake-safe-area-inset-bottom {
-  padding-bottom: constant(safe-area-inset-bottom);
-  padding-bottom: env(safe-area-inset-bottom);
+.snake-col-top {
+    align-items: flex-start;
 }
 
+.snake-col-bottom {
+    align-items: flex-end;
+}
+
+.snake-row-center {
+    justify-content: center;
+}
+
+.snake-row-left {
+    justify-content: flex-start;
+}
+
+.snake-row-right {
+    justify-content: flex-end;
+}
+
+.snake-row-between {
+    justify-content: space-between;
+}
+
+.snake-row-around {
+    justify-content: space-around;
+}
+
+.snake-text-left {
+    text-align: left;
+}
+
+.snake-text-center {
+    text-align: center;
+}
+
+.snake-text-right {
+    text-align: right;
+}
+
+.snake-hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+// 定义flex等分
+@for $i from 0 through 12 {
+    .snake-flex-#{$i} {
+        flex: $i;
+    }
+}
+
+// 定义字体(px)单位，小于20都为px单位字体
+@for $i from 9 to 20 {
+    .snake-font-#{$i} {
+        font-size: $i + px;
+    }
+}
+
+// 定义字体(rpx)单位，大于或等于20的都为rpx单位字体
+@for $i from 20 through 40 {
+    .snake-font-#{$i} {
+        font-size: $i + rpx;
+    }
+}
+
+// 定义内外边距，历遍1-80
+@for $i from 0 through 80 {
+    // 只要双数和能被5除尽的数
+    @if $i % 2 == 0 or $i % 5 == 0 {
+        // 得出：snake-margin-30 或者 snake-m-30
+        .snake-margin-#{$i},
+        .snake-m-#{$i} {
+            margin: $i + rpx !important;
+        }
+
+        // 得出：snake-padding-30 或者 snake-p-30
+        .snake-padding-#{$i},
+        .snake-p-#{$i} {
+            padding: $i + rpx !important;
+        }
+
+        @each $short, $long in l left, t top, r right, b bottom {
+            // 缩写版，结果如：snake-m-l-30
+            .snake-m-#{$short}-#{$i} {
+                margin-#{$long}: $i + rpx !important;
+            }
+
+            // 定义内边距
+            .snake-p-#{$short}-#{$i} {
+                padding-#{$long}: $i + rpx !important;
+            }
+
+            // 完整版，结果如：snake-margin-left-30
+            .snake-margin-#{$long}-#{$i} {
+                margin-#{$long}: $i + rpx !important;
+            }
+
+            // 定义内边距
+            .snake-padding-#{$long}-#{$i} {
+                padding-#{$long}: $i + rpx !important;
+            }
+        }
+    }
+}

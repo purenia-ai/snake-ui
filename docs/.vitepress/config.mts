@@ -4,6 +4,7 @@ const componentGroups = [
     {
         text: '基础组件',
         items: [
+            { text: 'Config Provider 主题包装器', link: '/components/config-provider' },
             { text: 'Button 按钮', link: '/components/button' },
             { text: 'Loading Icon 加载', link: '/components/loading-icon' },
             { text: 'Transition 动画', link: '/components/transition' },

@@ -14,6 +14,7 @@ export { default as SnakeActivityList } from './components/snake-activity-list/s
 export { default as SnakeAuxiliarySegmentation } from './components/snake-auxiliary-segmentation/snake-auxiliary-segmentation.vue';
 export { default as SnakeCms } from './components/snake-cms/snake-cms.vue';
 export { default as SnakeCommoditySearch } from './components/snake-commodity-search/snake-commodity-search.vue';
+export { default as SnakeConfigProvider } from './components/snake-config-provider/snake-config-provider.vue';
 export { default as SnakeCoupon } from './components/snake-coupon/snake-coupon.vue';
 export { default as SnakeCustomModule } from './components/snake-custom-module/snake-custom-module.vue';
 export { default as SnakeFilterSorts } from './components/snake-filter-sorts/snake-filter-sorts.vue';
@@ -93,5 +94,6 @@ export * from './components/snake-radio-group/types';
 export * from './components/snake-switch/types';
 export * from './components/snake-slider/types';
 export * from './components/snake-cms/types';
+export * from './components/snake-config-provider/types';
 export * from './libs';
 export * from './locale';

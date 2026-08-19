@@ -29,6 +29,7 @@ import type { SnakeRadioGroupEmits, SnakeRadioGroupProps } from './components/sn
 import type { SnakeSwitchEmits, SnakeSwitchProps } from './components/snake-switch/types';
 import type { SnakeSliderEmits, SnakeSliderProps } from './components/snake-slider/types';
 import type { SnakeCmsEmits, SnakeCmsProps } from './components/snake-cms/types';
+import type { SnakeConfigProviderEmits, SnakeConfigProviderProps } from './components/snake-config-provider/types';
 
 export * from './components/component-types';
 export * from './components/snake-button/types';
@@ -62,6 +63,7 @@ export * from './components/snake-radio-group/types';
 export * from './components/snake-switch/types';
 export * from './components/snake-slider/types';
 export * from './components/snake-cms/types';
+export * from './components/snake-config-provider/types';
 export * from './libs';
 export * from './locale';
 
@@ -82,6 +84,7 @@ type SnakeComponent<Props = Record<string, unknown>, Emits extends object = {}> 
 export const SnakeActivityList: SnakeComponent;
 export const SnakeAuxiliarySegmentation: SnakeComponent;
 export const SnakeCms: SnakeComponent<SnakeCmsProps, SnakeCmsEmits>;
+export const SnakeConfigProvider: SnakeComponent<SnakeConfigProviderProps, SnakeConfigProviderEmits>;
 export const SnakeCommoditySearch: SnakeComponent;
 export const SnakeCoupon: SnakeComponent;
 export const SnakeCustomModule: SnakeComponent;

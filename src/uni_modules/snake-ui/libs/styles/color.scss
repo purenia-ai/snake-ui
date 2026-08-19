@@ -1,0 +1,105 @@
+/*
+ * 功能色工具类(对齐 uView 生态的 color 预设)
+ * 全部走 $snake-color-* SCSS 别名(= var(--snake-color-*)),随主题/暗黑模式换肤。
+ */
+
+// ===== primary(7 档) =====
+.snake-primary {
+    color: $snake-color-primary;
+}
+
+.snake-primary-bg {
+    background-color: $snake-color-primary;
+}
+
+.snake-primary-light {
+    color: $snake-color-primary-light;
+}
+
+.snake-primary-light-bg {
+    background-color: $snake-color-primary-light;
+}
+
+.snake-primary-dark {
+    color: $snake-color-primary-dark;
+}
+
+.snake-primary-dark-bg {
+    background-color: $snake-color-primary-dark;
+}
+
+.snake-primary-deep {
+    color: $snake-color-primary-deep;
+}
+
+.snake-primary-deep-bg {
+    background-color: $snake-color-primary-deep;
+}
+
+.snake-primary-deeper {
+    color: $snake-color-primary-deeper;
+}
+
+.snake-primary-deeper-bg {
+    background-color: $snake-color-primary-deeper;
+}
+
+.snake-primary-disabled {
+    color: $snake-color-primary-disabled;
+}
+
+.snake-primary-ink {
+    color: $snake-color-primary-ink;
+}
+
+// ===== success / warning / error / info(4 档) =====
+@each $type in success, warning, error, info {
+    .snake-#{$type} {
+        color: var(--snake-color-#{$type});
+    }
+
+    .snake-#{$type}-bg {
+        background-color: var(--snake-color-#{$type});
+    }
+
+    .snake-#{$type}-light {
+        color: var(--snake-color-#{$type}-light);
+    }
+
+    .snake-#{$type}-light-bg {
+        background-color: var(--snake-color-#{$type}-light);
+    }
+
+    .snake-#{$type}-dark {
+        color: var(--snake-color-#{$type}-dark);
+    }
+
+    .snake-#{$type}-dark-bg {
+        background-color: var(--snake-color-#{$type}-dark);
+    }
+
+    .snake-#{$type}-disabled {
+        color: var(--snake-color-#{$type}-disabled);
+    }
+
+    .snake-#{$type}-disabled-bg {
+        background-color: var(--snake-color-#{$type}-disabled);
+    }
+}
+
+// ===== 文字 4 级 =====
+.snake-text {
+    color: $snake-color-text;
+}
+
+.snake-text-secondary {
+    color: $snake-color-text-secondary;
+}
+
+.snake-text-muted {
+    color: $snake-color-text-muted;
+}
+
+.snake-text-light {
+    color: $snake-color-text-light;
+}

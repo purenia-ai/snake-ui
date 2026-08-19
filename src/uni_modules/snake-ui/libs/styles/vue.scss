@@ -1,0 +1,140 @@
+/*
+ * vue 页面通用工具类(对齐 uView 生态的 vue 工具类预设)
+ * line-clamp / 1px retina 边框 / safe-area / reset-button / hover 等。
+ */
+
+// icon图标外层套一个view，让其达到更好的垂直居中的效果
+.snake-icon-wrap {
+    display: flex;
+    align-items: center;
+}
+
+// ===== iPhoneX 安全区 =====
+@each $d in top, right, bottom, left {
+    .snake-safe-area-inset-#{$d} {
+        padding-#{$d}: 0;
+        padding-#{$d}: constant(safe-area-inset-#{$d});
+        padding-#{$d}: env(safe-area-inset-#{$d});
+    }
+}
+
+// ===== hover 点击反馈 =====
+.snake-hover-class {
+    opacity: 0.78;
+}
+
+.snake-cell-hover {
+    background-color: $snake-color-surface-muted !important;
+}
+
+// ===== 文本行数限制(1-5 行省略) =====
+@for $i from 1 through 5 {
+    .snake-line-#{$i} {
+        @if $i == 1 {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        } @else {
+            display: -webkit-box;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
+            -webkit-line-clamp: $i;
+            -webkit-box-orient: vertical;
+        }
+    }
+}
+
+.snake-line-force {
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+}
+
+// ===== Retina 屏幕下的 1px 边框 =====
+.snake-border,
+.snake-border-bottom,
+.snake-border-left,
+.snake-border-right,
+.snake-border-top,
+.snake-border-top-bottom {
+    position: relative;
+}
+
+.snake-border-bottom:after,
+.snake-border-left:after,
+.snake-border-right:after,
+.snake-border-top-bottom:after,
+.snake-border-top:after,
+.snake-border:after {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+    box-sizing: border-box;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+    // 多加0.1%，能解决有时候边框缺失的问题
+    width: 199.8%;
+    height: 199.7%;
+    transform: scale(0.5, 0.5);
+    border: 0 solid $snake-color-border;
+    z-index: 2;
+}
+
+.snake-border-top:after {
+    border-top-width: 1px;
+}
+
+.snake-border-left:after {
+    border-left-width: 1px;
+}
+
+.snake-border-right:after {
+    border-right-width: 1px;
+}
+
+.snake-border-bottom:after {
+    border-bottom-width: 1px;
+}
+
+.snake-border-top-bottom:after {
+    border-width: 1px 0;
+}
+
+.snake-border:after {
+    border-width: 1px;
+}
+
+// ===== clearfix =====
+.snake-clearfix:after,
+.clearfix:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+// ===== 去除button的所有默认样式，让其表现跟普通的view、text元素一样 =====
+.snake-reset-button {
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+}
+
+.snake-reset-button::after {
+    border: none;
+}
+
+// ===== 提升H5端uni.toast()的层级，避免被组件库的modal等遮盖 =====
+/* #ifdef H5 */
+uni-toast {
+    z-index: 10090;
+}
+
+uni-toast .uni-toast {
+    z-index: 10090;
+}
+/* #endif */

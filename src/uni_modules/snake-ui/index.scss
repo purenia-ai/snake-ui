@@ -1,5 +1,26 @@
+// 主题 token 单一事实来源(CSS 变量 + SCSS 桥接)
 @import './theme.scss';
-@import './libs/styles/common.scss';
-@import './libs/styles/h5.scss';
-@import './libs/styles/mp.scss';
 
+// 页面级主题应用(page 基础色 / 暗色选择器 / color-scheme / picker-view 修正)
+@import './libs/styles/theme-page.scss';
+
+// 布局与间距工具类(flex / 字号 / 0-80 margin-padding 循环)
+@import './libs/styles/common.scss';
+
+// 功能色与文字色工具类
+@import './libs/styles/color.scss';
+
+// vue 页面通用工具类(line-clamp / 1px 边框 / safe-area / reset-button)
+/* #ifndef APP-NVUE */
+@import './libs/styles/vue.scss';
+/* #endif */
+
+// 小程序特有的样式
+/* #ifdef MP */
+@import './libs/styles/mp.scss';
+/* #endif */
+
+// H5特有的样式
+/* #ifdef H5 */
+@import './libs/styles/h5.scss';
+/* #endif */

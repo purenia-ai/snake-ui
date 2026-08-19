@@ -1,0 +1,70 @@
+/*
+ * 页面级主题应用(对齐 uView 生态的页面级主题预设)
+ * - H5 下 html 会由 applySnakeTheme() 加 snake-theme-dark class 与 data-snake-theme-mode
+ * - 页面根部由 snake-config-provider 携带同名 class(snake-theme-dark / data-snake-theme-mode)
+ */
+
+/* #ifdef H5 */
+:root {
+    color-scheme: light;
+}
+
+:root.snake-theme-dark,
+:root[data-snake-theme-mode='dark'] {
+    color-scheme: dark;
+}
+/* #endif */
+
+page {
+    color: $snake-color-text;
+    background-color: $snake-color-background;
+    font-size: 28rpx;
+}
+
+page.snake-theme-dark,
+:root.snake-theme-dark page,
+:root[data-snake-theme-mode='dark'] page {
+    background-color: $snake-color-background;
+    color: $snake-color-text;
+}
+
+.snake-config-provider {
+    color: $snake-color-text;
+    background-color: var(--snake-color-surface, #ffffff);
+}
+
+.snake-config-provider.snake-theme-dark {
+    background-color: var(--snake-color-surface, #151918);
+    color: $snake-color-text;
+}
+
+// picker-view遮罩层背景色
+.snake-picker-view-mask,
+.uni-picker-view-mask {
+    background-image:
+        linear-gradient(
+            180deg,
+            rgba(var(--snake-color-surface-rgb, 255, 255, 255), 0.95),
+            rgba(var(--snake-color-surface-rgb, 255, 255, 255), 0.6)
+        ),
+        linear-gradient(
+            0deg,
+            rgba(var(--snake-color-surface-rgb, 255, 255, 255), 0.95),
+            rgba(var(--snake-color-surface-rgb, 255, 255, 255), 0.6)
+        ) !important;
+}
+
+.snake-picker-view-indicator {
+    border: rgba(var(--snake-color-surface-rgb, 255, 255, 255), 0.6) !important;
+}
+
+// picker-view指示器边框色
+.snake-picker-view-indicator::before,
+.uni-picker-view-indicator::before {
+    border-top: 1px solid var(--snake-color-border, #dcdfe6) !important;
+}
+
+.snake-picker-view-indicator::after,
+.uni-picker-view-indicator::after {
+    border-bottom: 1px solid var(--snake-color-border, #dcdfe6) !important;
+}
