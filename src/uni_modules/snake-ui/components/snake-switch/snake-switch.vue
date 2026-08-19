@@ -61,7 +61,7 @@ function toggle(event: unknown) {
             ><snake-loading-icon
                 v-if="loading"
                 :size="numericSize * 0.55"
-                :color="checked ? activeColor : '#909399'" /></view
+                :color="checked ? activeColor : '#707184'" /></view
     ></view>
 </template>
 <style scoped>

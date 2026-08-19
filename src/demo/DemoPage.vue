@@ -23,14 +23,13 @@ withDefaults(
  * 外壳组合变量必须内联到页面根节点:uni-app H5 会把 `page` 选择器编译成
  * uni-page-body,自定义属性在定义处完成 var() 代换后按字面值继承,
  * 仅写在 :root / .snake-theme-dark 上的深色覆写无法穿透到页面内容。
- * 内联绑定同时覆盖小程序端(无 document)的主题切换。
+ * 导航渐变使用 demo/theme.scss 中的纯字面值(绿色,不随主题切换),不受代换影响。
  */
 const isDark = computed(() =>
     snakeDarkMode.value === 'auto' ? snakeSystemDark.value : snakeDarkMode.value === 'dark'
 );
 const shellThemeStyle = computed(() => ({
     ...snakeThemeStyle.value,
-    '--snake-demo-nav-gradient': `linear-gradient(120deg, ${snakeColor.primaryDeeper}, ${snakeColor.primaryDeep})`,
     '--snake-demo-accent-text': isDark.value ? snakeColor.primary : snakeColor.primaryDeep
 }));
 

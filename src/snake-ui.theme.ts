@@ -1,104 +1,104 @@
 import { defaultSnakeTheme, type SnakeTheme } from './uni_modules/snake-ui';
 
 /**
- * snake-ui 主题预设(对齐 uView 生态的多主题机制)。
+ * snake-ui 主题预设(色板基于 PURESNAKE 品牌体系推导)。
  * 每套主题只需覆盖 primary 家族 7 档,其余功能色/文字/背景与默认色板深度合并
  * (见 libs/config/theme.ts 的 normalizeTheme)。对比度规则:
  * - deep 白字 >= 4.5:1,deeper(渐变深端)>= 5.5:1
- * - ink 为实心主色上的文字,取与 base 对比更高的一侧;紫色基色偏暗,亮色取白字、暗色取深字
+ * - ink 为实心主色上的文字,取与 base 对比更高的一侧;暗色统一墨蓝 #26273A
  */
 export const snakeThemePresets: SnakeTheme[] = [
     defaultSnakeTheme,
     {
-        name: 'purple',
-        label: '紫',
-        description: '雾紫主题',
+        name: 'pupple',
+        label: '潮玩紫',
+        description: '潮玩 / 活动 / 专家鉴别',
         color: {
-            primary: '#7C3AED',
-            primaryDark: '#6D33D1',
-            primaryDeep: '#5D2CB2',
-            primaryDeeper: '#442082',
-            primaryDisabled: '#C7B7E3',
-            primaryLight: '#F3EFF9',
+            primary: '#7A3BFF',
+            primaryDark: '#6B34E0',
+            primaryDeep: '#5C2CBF',
+            primaryDeeper: '#43208C',
+            primaryDisabled: '#C9BAE6',
+            primaryLight: '#F3F0FA',
             primaryInk: '#FFFFFF'
         },
         darkColor: {
-            primary: '#CBB0F8',
-            primaryDark: '#D7C4FA',
-            primaryDeep: '#31196B',
-            primaryDeeper: '#23124E',
-            primaryDisabled: '#3A2A5E',
-            primaryLight: '#150F1F',
-            primaryInk: '#2A1050'
-        }
-    },
-    {
-        name: 'orange',
-        label: '橙',
-        description: '活力橙主题',
-        color: {
-            primary: '#FF6B35',
-            primaryDark: '#E05E2F',
-            primaryDeep: '#BF5028',
-            primaryDeeper: '#8C3B1D',
-            primaryDisabled: '#E8C3B5',
-            primaryLight: '#FAF2EF',
-            primaryInk: '#4F2110'
-        },
-        darkColor: {
-            primary: '#FFA686',
-            primaryDark: '#FFBB9F',
-            primaryDeep: '#57200F',
-            primaryDeeper: '#3D160A',
-            primaryDisabled: '#5E301F',
-            primaryLight: '#20130F',
-            primaryInk: '#4F2110'
+            primary: '#D0BAFF',
+            primaryDark: '#D6C2FF',
+            primaryDeep: '#311866',
+            primaryDeeper: '#25124D',
+            primaryDisabled: '#2F2446',
+            primaryLight: '#151020',
+            primaryInk: '#26273A'
         }
     },
     {
         name: 'blue',
-        label: '蓝',
-        description: '经典蓝主题',
+        label: '鉴别蓝',
+        description: '次要链接 / Info / 机器鉴别',
         color: {
-            primary: '#2979FF',
-            primaryDark: '#246AE0',
-            primaryDeep: '#1F5BBF',
-            primaryDeeper: '#17438C',
-            primaryDisabled: '#B3C6E8',
-            primaryLight: '#EEF2FA',
-            primaryInk: '#061226'
+            primary: '#2D57E7',
+            primaryDark: '#284DCB',
+            primaryDeep: '#2241AD',
+            primaryDeeper: '#19307F',
+            primaryDisabled: '#B2BBDB',
+            primaryLight: '#EEF0F7',
+            primaryInk: '#FFFFFF'
         },
         darkColor: {
-            primary: '#94BCFF',
-            primaryDark: '#AFCEFF',
-            primaryDeep: '#0D2C5C',
-            primaryDeeper: '#091F42',
-            primaryDisabled: '#1D3560',
-            primaryLight: '#0E1520',
-            primaryInk: '#061226'
+            primary: '#B5C4F7',
+            primaryDark: '#BECBF8',
+            primaryDeep: '#12235C',
+            primaryDeeper: '#0E1A45',
+            primaryDisabled: '#1D243E',
+            primaryLight: '#0D111C',
+            primaryInk: '#26273A'
         }
     },
     {
-        name: 'rose',
-        label: '玫红',
-        description: '玫红主题',
+        name: 'red',
+        label: '品牌红',
+        description: 'KV / 节日 / 价格红',
         color: {
-            primary: '#F43F5E',
-            primaryDark: '#D73753',
-            primaryDeep: '#B72F47',
-            primaryDeeper: '#862334',
-            primaryDisabled: '#E4B7BF',
-            primaryLight: '#F9EFF1',
-            primaryInk: '#380E16'
+            primary: '#FF3367',
+            primaryDark: '#E02D5B',
+            primaryDeep: '#BF264D',
+            primaryDeeper: '#8C1C39',
+            primaryDisabled: '#E4B7C2',
+            primaryLight: '#F9EFF2',
+            primaryInk: '#4D0F1F'
         },
         darkColor: {
-            primary: '#FA9FAF',
-            primaryDark: '#FBB7C3',
-            primaryDeep: '#4F101D',
-            primaryDeeper: '#380A14',
-            primaryDisabled: '#5E2630',
-            primaryLight: '#1F0F12',
-            primaryInk: '#380E16'
+            primary: '#FFA3BB',
+            primaryDark: '#FFAEC3',
+            primaryDeep: '#661429',
+            primaryDeeper: '#4D0F1F',
+            primaryDisabled: '#45212A',
+            primaryLight: '#1F0F13',
+            primaryInk: '#26273A'
+        }
+    },
+    {
+        name: 'orange',
+        label: '警示橙',
+        description: '待处理 / 待鉴别',
+        color: {
+            primary: '#FF6A0C',
+            primaryDark: '#E05D0B',
+            primaryDeep: '#BF5009',
+            primaryDeeper: '#8C3A07',
+            primaryDisabled: '#E2C0AB',
+            primaryLight: '#F9F1EC',
+            primaryInk: '#4D2004'
+        },
+        darkColor: {
+            primary: '#FFAD79',
+            primaryDark: '#FFB789',
+            primaryDeep: '#662A05',
+            primaryDeeper: '#4D2004',
+            primaryDisabled: '#432818',
+            primaryLight: '#1E120B',
+            primaryInk: '#26273A'
         }
     }
 ];

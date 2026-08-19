@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<SnakeIndexListProps>(), {
     sticky: true,
     offsetTop: 0,
     activeColor: 'var(--snake-color-primary, #06D290)',
-    inactiveColor: 'var(--snake-color-text-muted, #909399)',
+    inactiveColor: 'var(--snake-color-text-muted, #707184)',
     railStyle: '',
     customClass: '',
     customStyle: ''

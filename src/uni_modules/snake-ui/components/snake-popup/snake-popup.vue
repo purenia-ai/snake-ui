@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<SnakePopupProps>(), {
     zoom: true,
     closeable: false,
     closeIcon: 'close',
-    closeIconColor: 'var(--snake-color-text-muted, #909399)',
+    closeIconColor: 'var(--snake-color-text-muted, #707184)',
     closeIconSize: 20,
     closeIconPos: 'top-right',
     closeOnClickOverlay: true,

@@ -183,7 +183,7 @@ const definitions: Record<string, DemoDefinition> = {
                 options: [
                     { label: '品牌绿', value: '#06D290' },
                     { label: '深色', value: '#173b2c' },
-                    { label: '警示色', value: '#f59e0b' }
+                    { label: '警示色', value: '#FF6A0C' }
                 ]
             },
             {
@@ -373,7 +373,7 @@ const definitions: Record<string, DemoDefinition> = {
                 options: [
                     { label: '品牌绿', value: '#06D290' },
                     { label: '蓝色', value: '#2563eb' },
-                    { label: '橙色', value: '#f59e0b' }
+                    { label: '橙色', value: '#FF6A0C' }
                 ]
             },
             {

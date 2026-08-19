@@ -30,7 +30,7 @@
     <snake-popup v-model="show" mode="center" @close="show = false">
       <view class="w-100vw h-100vh flex-items-center bg-#000" v-if="show" @click.stop="show = false">
         <view class="pos-absolute top-60rpx right-50rpx">
-          <snake-icon name="close" color="#909399" size="30rpx" bold></snake-icon>
+          <snake-icon name="close" color="#707184" size="30rpx" bold></snake-icon>
         </view>
         <video
           class="videos"

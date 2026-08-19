@@ -38,6 +38,6 @@ function select(item: SnakeTabItem, index: number) { emit('click', { index, item
 <style scoped>
 .snake-tabs { width: 100%; white-space: nowrap; }.snake-tabs__track { display: flex; min-width: 100%; height: 100%; }.snake-tabs__track.is-scrollable { display: inline-flex; }
 .snake-tabs__item { position: relative; box-sizing: border-box; display: flex; height: 100%; align-items: center; justify-content: center; transition: color .2s ease; }
-.snake-tabs__label { position: relative; display: inline-flex; align-items: center; height: 100%; }.snake-tabs__badge { position: absolute; min-width: 28rpx; height: 28rpx; padding: 0 7rpx; border-radius: 14rpx; color: #fff; font-size: 18rpx; line-height: 28rpx; text-align: center; background: var(--snake-color-error, #ef4444); transform: translate(100%, -30%); }.snake-tabs__badge.is-dot { min-width: 12rpx; width: 12rpx; height: 12rpx; padding: 0; }
+.snake-tabs__label { position: relative; display: inline-flex; align-items: center; height: 100%; }.snake-tabs__badge { position: absolute; min-width: 28rpx; height: 28rpx; padding: 0 7rpx; border-radius: 14rpx; color: #fff; font-size: 18rpx; line-height: 28rpx; text-align: center; background: var(--snake-color-error, #FE0832); transform: translate(100%, -30%); }.snake-tabs__badge.is-dot { min-width: 12rpx; width: 12rpx; height: 12rpx; padding: 0; }
 .snake-tabs__line { position: absolute; bottom: 0; left: 50%; border-radius: 999px; transform: translateX(-50%); transition-property: width, background-color; }
 </style>

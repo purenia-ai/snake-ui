@@ -130,7 +130,7 @@ function onBlur(event: any) {
     border-color: var(--snake-color-primary, #06D290);
 }
 .snake-textarea.is-error {
-    border-color: var(--snake-color-error, #ef4444);
+    border-color: var(--snake-color-error, #FE0832);
 }
 .snake-textarea.is-disabled {
     background: var(--snake-color-disabled-bg, #f5f7fa);
@@ -146,7 +146,7 @@ function onBlur(event: any) {
     position: absolute;
     right: 18rpx;
     bottom: 12rpx;
-    color: var(--snake-color-text-muted, #909399);
+    color: var(--snake-color-text-muted, #707184);
     font-size: 22rpx;
 }
 </style>

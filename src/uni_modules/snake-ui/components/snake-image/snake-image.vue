@@ -123,7 +123,7 @@ function click(event: unknown) {
     align-items: center;
     justify-content: center;
     min-height: 120rpx;
-    color: var(--snake-color-text-muted, #909399);
+    color: var(--snake-color-text-muted, #707184);
 }
 .snake-image__status--error {
     flex-direction: column;

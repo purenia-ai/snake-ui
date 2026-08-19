@@ -216,7 +216,7 @@ defineExpose<SnakeSliderExpose>({ update });
     top: 22rpx;
 }
 .snake-slider__edge {
-    color: var(--snake-color-text-muted, #909399);
+    color: var(--snake-color-text-muted, #707184);
     font-size: 24rpx;
 }
 </style>

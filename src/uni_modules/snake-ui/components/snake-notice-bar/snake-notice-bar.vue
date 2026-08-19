@@ -39,7 +39,7 @@ const items = computed(() =>
 const vertical = computed(() => props.mode === 'vertical' || props.direction === 'column');
 const visible = computed(() => props.show && (!props.noListHidden || items.value.length > 0));
 const themeColor = computed(
-    () => props.color || `var(--snake-color-${props.type}, var(--snake-color-notice, #f59e0b))`
+    () => props.color || `var(--snake-color-${props.type}, var(--snake-color-notice, #FF6A0C))`
 );
 const themeBg = computed(
     () => props.bgColor || `var(--snake-color-${props.type}-light, var(--snake-color-notice-background, #fff8e6))`

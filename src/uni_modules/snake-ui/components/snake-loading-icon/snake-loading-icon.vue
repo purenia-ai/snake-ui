@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<SnakeLoadingIconProps>(), {
     inactiveColor: 'var(--snake-color-border, #dcdfe6)',
     size: 20,
     text: '',
-    textColor: 'var(--snake-color-text-muted, #909399)',
+    textColor: 'var(--snake-color-text-muted, #707184)',
     textSize: 14,
     vertical: false,
     timingFunction: 'linear',

@@ -8,12 +8,8 @@ page {
     --snake-demo-nav-height: 88rpx;
     /* 浅底强调文字:亮色下取深绿保证对比,暗色由下方覆写取亮薄荷 */
     --snake-demo-accent-text: var(--snake-color-primary-deep, #00805a);
-    /* 导航深玉绿渐变:两端均可安全承载白字 */
-    --snake-demo-nav-gradient: linear-gradient(
-        120deg,
-        var(--snake-color-primary-deeper, #006b4a),
-        var(--snake-color-primary-deep, #00805a)
-    );
+    /* 导航绿色渐变:两端均可安全承载白字(纯字面值,不随主题切换) */
+    --snake-demo-nav-gradient: linear-gradient(120deg, #006b4a, #00805a);
     /* 页面极淡品牌晕染 */
     --snake-demo-page-tint: linear-gradient(
         165deg,
@@ -24,14 +20,10 @@ page {
     --snake-demo-card-shadow: 0 2rpx 16rpx var(--snake-color-shadow, rgba(15, 30, 24, 0.12));
 }
 
-/* 暗色模式(runtime 在 html 上加 snake-theme-dark class):导航转深玉绿,强调文字转亮薄荷 */
+/* 暗色模式(runtime 在 html 上加 snake-theme-dark class):导航取更深绿,强调文字转亮绿 */
 .snake-theme-dark {
-    --snake-demo-accent-text: var(--snake-color-primary, #2ee6a8);
-    --snake-demo-nav-gradient: linear-gradient(
-        120deg,
-        var(--snake-color-primary-deeper, #013527),
-        var(--snake-color-primary-deep, #01513b)
-    );
+    --snake-demo-accent-text: var(--snake-color-primary, #06d290);
+    --snake-demo-nav-gradient: linear-gradient(120deg, #013527, #01513b);
 }
 
 /* 供 @import 消费的 SCSS 桥接别名(仅结构组合类) */

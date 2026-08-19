@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<SnakeEmptyProps>(), {
     iconSize: 120,
     text: '',
     color: '',
-    textColor: 'var(--snake-color-text-muted, #909399)',
+    textColor: 'var(--snake-color-text-muted, #707184)',
     fontSize: 14,
     marginTop: 0,
     customClass: '',

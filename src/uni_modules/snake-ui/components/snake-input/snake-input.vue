@@ -201,7 +201,7 @@ function confirm(event: any) {
     border-color: var(--snake-color-primary, #06D290);
 }
 .snake-input.is-error {
-    border-color: var(--snake-color-error, #ef4444);
+    border-color: var(--snake-color-error, #FE0832);
 }
 .snake-input.is-disabled {
     opacity: 0.72;
@@ -214,6 +214,6 @@ function confirm(event: any) {
 .snake-input__icon,
 .snake-input__action {
     flex: none;
-    color: var(--snake-color-text-muted, #909399);
+    color: var(--snake-color-text-muted, #707184);
 }
 </style>
