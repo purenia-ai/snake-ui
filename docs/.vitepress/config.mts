@@ -126,7 +126,10 @@ export default defineConfig({
                 },
                 {
                     text: '自定义',
-                    items: [{ text: '多主题与暗黑模式', link: '/guide/multi-theme' }]
+                    items: [
+                        { text: '多主题与暗黑模式', link: '/guide/multi-theme' },
+                        { text: '主题生成器', link: '/guide/theme-generate' }
+                    ]
                 }
             ],
             '/components/': componentGroups

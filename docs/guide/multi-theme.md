@@ -2,6 +2,10 @@
 
 Snake UI 支持单主题、多主题切换与暗黑模式,主题通过 CSS 变量驱动,切换即时生效且持久化。
 
+::: tip 可视化配置
+需要可视化配置色值并导出主题文件时,可以使用 [主题生成器](/guide/theme-generate)。
+:::
+
 ## 核心能力
 
 - **声明式注册**:在应用入口 `app.use(SnakeUI, { theme: ... })` 一次注入,支持多套主题。
@@ -12,13 +16,13 @@ Snake UI 支持单主题、多主题切换与暗黑模式,主题通过 CSS 变�
 
 ## 内置主题预设
 
-| name     | 名称   | 主色      | 品牌语境                 |
-| -------- | ------ | --------- | ------------------------ |
-| `snake`  | 蛇绿   | `#06D290` | 主 CTA / 成功 / 鉴别通过 |
-| `pupple` | 潮玩紫 | `#7A3BFF` | 潮玩 / 活动 / 专家鉴别   |
+| name     | 名称   | 主色      | 品牌语境                   |
+| -------- | ------ | --------- | -------------------------- |
+| `snake`  | 蛇绿   | `#06D290` | 主 CTA / 成功 / 鉴别通过   |
+| `pupple` | 潮玩紫 | `#7A3BFF` | 潮玩 / 活动 / 专家鉴别     |
 | `blue`   | 鉴别蓝 | `#2D57E7` | 次要链接 / Info / 机器鉴别 |
-| `red`    | 品牌红 | `#FF3367` | KV / 节日 / 价格红       |
-| `orange` | 警示橙 | `#FF6A0C` | 待处理 / 待鉴别          |
+| `red`    | 品牌红 | `#FF3367` | KV / 节日 / 价格红         |
+| `orange` | 警示橙 | `#FF6A0C` | 待处理 / 待鉴别            |
 
 色板基于 PURESNAKE 品牌体系推导:品牌绿承载确认感,深墨蓝 `#26273A` 承载深底与主文字,绿底主 CTA 按品牌规范使用白字。预设文件见 demo 工程 `src/snake-ui.theme.ts`,可按需删改。
 
@@ -37,7 +41,7 @@ export function createApp() {
     const app = createSSRApp(App);
     app.use(SnakeUI, {
         theme: {
-            themes,            // 主题数组
+            themes, // 主题数组
             defaultTheme: 'snake', // 默认主题
             defaultDarkMode: 'light' // 默认暗黑模式:light | dark | auto
         }
@@ -69,23 +73,23 @@ app.use(SnakeUI, {
 import type { SnakeTheme } from './uni_modules/snake-ui';
 
 const myTheme: SnakeTheme = {
-    name: 'purple',          // 唯一标识(setSnakeTheme 用)
-    label: '紫',              // 展示名
+    name: 'purple', // 唯一标识(setSnakeTheme 用)
+    label: '紫', // 展示名
     description: '雾紫主题',
     color: {
-        primary: '#7C3AED',       // 主色(实心/图形)
-        primaryDark: '#6D33D1',   // hover/按压
-        primaryDeep: '#5D2CB2',   // 白字安全锚点(白字 >= 4.5:1)
+        primary: '#7C3AED', // 主色(实心/图形)
+        primaryDark: '#6D33D1', // hover/按压
+        primaryDeep: '#5D2CB2', // 白字安全锚点(白字 >= 4.5:1)
         primaryDeeper: '#442082', // 渐变深端
         primaryDisabled: '#C7B7E3',
-        primaryLight: '#F3EFF9',  // 浅底
-        primaryInk: '#FFFFFF'     // 主色实心上的文字(取对比更高一侧)
+        primaryLight: '#F3EFF9', // 浅底
+        primaryInk: '#FFFFFF' // 主色实心上的文字(取对比更高一侧)
         // 其余键省略,自动继承默认色板
     },
     darkColor: {
-        primary: '#CBB0F8',       // 暗色模式主色(亮化)
+        primary: '#CBB0F8', // 暗色模式主色(亮化)
         primaryDeep: '#31196B',
-        primaryLight: '#150F1F'   // 暗色浅底(深色微 tint)
+        primaryLight: '#150F1F' // 暗色浅底(深色微 tint)
         // 省略键自动继承默认暗色板
     }
 };
@@ -133,15 +137,15 @@ SCSS 与 CSS 变量随时可用(切换主题即变):
 
 ## 主题 API
 
-| API | 说明 |
-| --- | --- |
-| `setSnakeTheme(name)` | 切换主题,持久化;返回是否成功 |
-| `currentSnakeTheme` | 当前主题 ref(name/label/color/darkColor) |
-| `snakeThemes` | 已注册主题列表 ref |
-| `setSnakeDarkMode(mode)` | 设置暗黑策略 `light` / `dark` / `auto` |
-| `toggleSnakeDarkMode()` | 亮暗快速切换 |
-| `isSnakeDarkMode()` | 当前是否处于暗黑渲染 |
-| `snakeColor` | 响应式色板对象,JS 中取实时色值 |
+| API                      | 说明                                     |
+| ------------------------ | ---------------------------------------- |
+| `setSnakeTheme(name)`    | 切换主题,持久化;返回是否成功             |
+| `currentSnakeTheme`      | 当前主题 ref(name/label/color/darkColor) |
+| `snakeThemes`            | 已注册主题列表 ref                       |
+| `setSnakeDarkMode(mode)` | 设置暗黑策略 `light` / `dark` / `auto`   |
+| `toggleSnakeDarkMode()`  | 亮暗快速切换                             |
+| `isSnakeDarkMode()`      | 当前是否处于暗黑渲染                     |
+| `snakeColor`             | 响应式色板对象,JS 中取实时色值           |
 
 ## 构建主题切换 UI
 
