@@ -1,6 +1,6 @@
 # Snake UI
 
-面向 uni-app 商城与 CMS 场景的 Vue 3 组件库，支持 H5、微信小程序和 App。Snake UI 不依赖 uView Pro，基础组件和运行时工具均由本项目提供。
+面向 uni-app 商城与 CMS 场景的 Vue 3 组件库，支持 H5、微信小程序和 App。基础组件和运行时工具均由本项目提供。
 
 ## 特性
 

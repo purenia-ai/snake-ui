@@ -1,6 +1,6 @@
 # 全局配置与底座
 
-Snake UI 的通用底座包含主题、国际化、HTTP、路由与常用工具。API 统一使用 `snake` 命名，不需要安装 uView Pro，也不会向 `uni.$u` 写入内容。
+Snake UI 的通用底座包含主题、国际化、HTTP、路由与常用工具。API 统一使用 `snake` 命名，运行时完全自包含。
 
 ## 安装配置
 
@@ -141,7 +141,7 @@ await snakeHttp.post(
 import { deepMerge, debounce, queryParams, useSnakeEmitter, useSnakeRouter, useSnakeToast } from 'snake-ui';
 ```
 
-这些工具只依赖 Vue 和 uni-app 运行时，不会引入 uView 组件。
+这些工具只依赖 Vue 和 uni-app 运行时。
 
 ## 样式入口
 

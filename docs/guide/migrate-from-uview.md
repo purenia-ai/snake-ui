@@ -1,6 +1,6 @@
 # 从 uView Pro 迁移
 
-Snake UI 已内置当前业务所需的基础组件，不再依赖 uView Pro。
+Snake UI 已内置当前业务所需的基础组件。
 
 ## 删除旧配置
 

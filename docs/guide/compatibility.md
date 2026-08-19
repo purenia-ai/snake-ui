@@ -8,7 +8,7 @@
 
 ## Snake UI 基础能力
 
-组件库已经内置 `snake-image`、`snake-icon`、`snake-popup`、`snake-notice-bar`、`snake-sticky`、`snake-tabs`、`snake-loadmore`、`snake-empty`、`snake-button` 和 `snake-overlay` 等基础组件，不依赖 uView Pro。
+组件库已经内置 `snake-image`、`snake-icon`、`snake-popup`、`snake-notice-bar`、`snake-sticky`、`snake-tabs`、`snake-loadmore`、`snake-empty`、`snake-button` 和 `snake-overlay` 等基础组件。
 
 插件安装后会注册 Snake UI 自有的 `uni.$snake` 和模板 `$snake`，其中包括：
 
