@@ -45,9 +45,15 @@ export default defineConfig({
                 {
                     text: '开始',
                     items: [
+                        { text: '介绍', link: '/guide/intro' },
                         { text: '快速开始', link: '/guide/getting-started' },
+                        { text: '运行环境与能力边界', link: '/guide/compatibility' }
+                    ]
+                },
+                {
+                    text: '核心概念',
+                    items: [
                         { text: '全局配置与底座', link: '/guide/foundation' },
-                        { text: '运行环境', link: '/guide/compatibility' },
                         { text: '组件数据约定', link: '/guide/component-data' },
                         { text: '装修编辑器数据对接', link: '/guide/sanke-editor' }
                     ]
@@ -57,6 +63,13 @@ export default defineConfig({
                     items: [
                         { text: '多主题与暗黑模式', link: '/guide/multi-theme' },
                         { text: '主题生成器', link: '/guide/theme-generate' }
+                    ]
+                },
+                {
+                    text: '迁移与排错',
+                    items: [
+                        { text: '从 uView Pro 迁移', link: '/guide/migrate-from-uview' },
+                        { text: '常见问题', link: '/guide/troubleshooting' }
                     ]
                 }
             ],

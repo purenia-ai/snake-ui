@@ -1,67 +1,80 @@
 # 组件数据约定
 
-## `datas` 配置对象
+Snake UI 同时使用普通 Props 和 CMS 配置对象。基础组件通常直接传 Props；装修组件常把编辑器产出的复杂配置放在 `datas` 或 `setStyle` 中。
 
-多数展示组件将复杂配置集中在名为 `datas` 的对象 Prop 中。字段由页面装修数据直接驱动：
+## 普通 Props 与 `datas`
 
-```js
-const componentConfig = {
-  component: 'notice',
-  setStyle: {
-    direction: 'row',
-    noticeText: '今日上新',
-    textList: [],
-    backColor: '#f2fff8',
-    textColor: '#133b2b',
-    pageMargin: 24,
-  },
-}
+```vue
+<!-- 基础组件：直接传 Props -->
+<snake-button type="primary">确定</snake-button>
+
+<!-- 装修组件：datas 接收配置对象 -->
+<snake-notice :datas="noticeConfig" />
 ```
 
-文档按组件列出源码读取的字段。调用方仍应在接口层验证数据，特别是数组索引、嵌套对象、颜色、尺寸和跳转地址。
+各组件文档的 API 表描述公开 Props；`datas` 字段表描述源码实际读取的配置键。字段表不是后端完整响应协议，接口数据仍需在业务层校验。
 
 ## CMS 页面数据
 
-`snake-cms` 接收两组主要数据：
+`snake-cms` 主要接收：
 
-| 参数 | 作用 |
-| --- | --- |
-| `pageInfo` | 页面标识、页面级配置和业务查询上下文 |
-| `pageComponents` | 按顺序排列的装修组件配置 |
+| 参数              | 作用                               |
+| ----------------- | ---------------------------------- |
+| `pageInfo`        | 页面标识与业务查询上下文           |
+| `pageComponents`  | 按渲染顺序排列的装修组件配置       |
+| `scrollTop`       | 吸顶、悬浮等组件使用的页面滚动距离 |
+| `stickyOffsetTop` | 吸顶区域的顶部偏移                 |
 
-`pageComponents` 的基本形态如下：
+最小数据结构：
 
-```js
+```ts
+const pageInfo = { pageId: 'home' };
+
 const pageComponents = [
-  {
-    component: 'images',
-    setStyle: {
-      src: 'https://example.com/banner.png',
-      url: '/pages/activity/index',
-    },
-  },
-]
+    {
+        id: 'banner-1',
+        component: 'images',
+        setStyle: {
+            src: 'https://example.com/banner.png',
+            url: '/pages/activity/index'
+        }
+    }
+];
 ```
 
-## 事件命名
+`component` 决定渲染哪个模块，`setStyle` 会作为该模块的配置数据。`visible === false` 或 `setStyle.showComponent === false` 时，CMS 会跳过该项。
 
-现有源码的事件命名并未完全统一，例如同时存在 `item-click` 和 `handlerOffer`。文档保留源码中的实际名称，调用时不要自行转换大小写。
+## 在业务层规范化
 
-## 防御性处理
+接口数据可能缺少数组或嵌套对象。建议在进入组件前集中补齐，而不是在多个页面重复处理：
 
-当前部分组件会直接读取深层字段或数组。接入方应在传值前补齐稳定的默认结构：
-
-```js
-const safeDatas = {
-  textList: [],
-  imageList: [],
-  tabslist: [],
-  ...apiDatas,
+```ts
+function normalizeNotice(input: Record<string, unknown> = {}) {
+    return {
+        textList: [],
+        imageList: [],
+        ...input
+    };
 }
 ```
 
-这类默认值应放在业务数据适配层，不建议在多个页面中重复拼装。
+重点校验数组、枚举、颜色、尺寸、链接和深层对象。不要仅依靠 TypeScript 类型信任远端 JSON。
 
-## 数据来源
+## 事件与诊断
 
-装修数据由 SankeEditor 编辑器产出并经后端存储，字段契约与组件标识对照见[装修编辑器数据对接](./sanke-editor.md)。
+历史业务组件的事件命名并未完全统一，例如同时存在 kebab-case 和驼峰名称。组件文档保留源码真实事件名，调用时不要自行转换。
+
+`snake-cms` 会通过 `diagnostic` 报告无效组件、未知组件、规范化失败、重复商品区域和 legacy 适配器等情况：
+
+```vue
+<snake-cms
+    :page-info="pageInfo"
+    :page-components="pageComponents"
+    @diagnostic="reportDiagnostic"
+    @error="reportError"
+/>
+```
+
+## 数据从哪里来
+
+装修数据通常由 SankeEditor 生成，经后端保存后交给 C 端。字段存储、组件标识和扩展方式见[装修编辑器数据对接](/guide/sanke-editor)。

@@ -1,47 +1,54 @@
-# 运行环境
+# 运行环境与能力边界
 
-## uni-app 基础能力
+Snake UI 运行在 uni-app Vue 3 环境中。基础组件开箱即用；商城和 CMS 组件可能需要宿主项目提供业务服务。
 
-组件模板广泛使用 `<view>`、`<image>`、`<scroll-view>`、`<swiper>` 等 uni-app 内置组件，并通过 `uni` 访问导航、存储、动画、加载提示、节点查询和小程序跳转能力。
+## 基础要求
 
-普通 Vue Web 工程即使能够编译 `.vue` 文件，也不等同于完整的 uni-app 运行环境。
+| 项目     | 要求                                     |
+| -------- | ---------------------------------------- |
+| Vue      | Vue 3，包清单声明 `>= 3.4.0`             |
+| uni-app  | 包清单声明 `>= 3.0.0`                    |
+| 组件格式 | Vue 单文件组件，可处理 SCSS 与 `rpx`     |
+| 运行时   | 可使用 `uni`、uni-app 内置组件和条件编译 |
 
-## Snake UI 基础能力
+普通 Vue Web 工程即使能编译 `.vue`，也不等同于完整的 uni-app 环境。
 
-组件库已经内置 `snake-image`、`snake-icon`、`snake-popup`、`snake-notice-bar`、`snake-sticky`、`snake-tabs`、`snake-loadmore`、`snake-empty`、`snake-button` 和 `snake-overlay` 等基础组件。
+## 内置能力
 
-插件安装后会注册 Snake UI 自有的 `uni.$snake` 和模板 `$snake`，其中包括：
+插件安装后会提供：
 
-- `navTo`
-- `toast`
-- `sleep`
-- `guid`
-- `getRect`
-- `sys`
-- `pxToRpx`
-- `getQueryParams`
+- Snake UI 基础组件与独立样式。
+- 模板和 Options API 中的 `$snake`。
+- 脚本中的 `uni.$snake`。
+- 可从 `snake-ui` 或 `snake-ui/libs` 按需导入的工具。
 
-组件库内部和宿主工程均不应继续访问 `uni.$u`。模块化代码也可以从 `snake-ui` 或 `snake-ui/libs` 按需导入这些工具。
+组件库内部和宿主项目不应继续依赖 `uni.$u`。
 
-## 业务工程依赖
+## 按需提供的业务能力
 
-业务能力通过安装选项注入，不再直接引入宿主工程的 `@/utils` 或 `@/config`：
+| 配置           | 何时需要                         | 缺失时的表现                                  |
+| -------------- | -------------------------------- | --------------------------------------------- |
+| `request`      | 使用旧版 CMS 请求兼容层          | 对应能力抛出 `SnakeUIRuntimeError` 或产生诊断 |
+| `cache`        | 商品列表等需要缓存的业务流程     | 不缓存或由对应逻辑报告错误                    |
+| `config`       | 旧版服务地址、外链等业务配置     | 对应能力无法解析配置                          |
+| `cms.services` | 商品、优惠券、外链的正式接入方式 | 相关组件无法完成业务动作                      |
 
-| 适配器             | 用途           | 使用位置                      |
-| ------------------ | -------------- | ----------------------------- |
-| `request` / `http` | 业务 HTTP 请求 | Snake CMS、优惠券、小程序跳转 |
-| `cache`            | 缓存读写       | Snake CMS、筛选面板           |
-| `config`           | 服务和业务配置 | 优惠券、小程序跳转            |
-
-基础组件不要求这些适配器；使用相应业务组件时，应通过 `app.use(SnakeUI, options)` 配置。缺少必要能力时会抛出带组件名的 `SnakeUIRuntimeError`。
-
-## 全局组件和样式
-
-源码还会使用 `snake-suspension`、`snake-drop-menu-item` 等全局组件，以及大量工具类。若页面结构正常但样式缺失，应检查宿主项目的全局组件注册、公共样式和原子类配置。
+纯展示组件不需要这些配置。CMS 的推荐服务接口见[装修编辑器数据对接](/guide/sanke-editor)。
 
 ## 平台差异
 
-- `uni.navigateToMiniProgram` 只在支持该 API 的目标平台有效。
-- 某些逻辑直接访问 `window.location.href`，只适用于 H5 分支。
-- `styleIsolation`、`virtualHost` 等选项主要与小程序组件样式和节点结构相关。
-- 使用页面滚动与节点查询的组件必须在正确的页面/组件上下文中运行。
+- `uni.navigateToMiniProgram` 只在支持该 API 的小程序环境有效。
+- H5 外链可能访问 `window.location.href`，小程序外链通常需要 web-view 承载页。
+- `uni.onThemeChange`、系统主题和节点查询能力受目标平台及基础库版本影响。
+- `styleIsolation`、`virtualHost` 等主要影响小程序组件样式和节点结构。
+- 页面滚动、吸顶和节点测量组件必须在正确的页面或组件上下文中运行。
+
+::: tip 验证建议
+仓库清单列出的平台表示具备构建目标，不代表所有业务组件都已在所有版本和机型完成验证。发布前至少在实际目标端检查导航、弹层、滚动、主题和业务 API。
+:::
+
+## 选择下一篇
+
+- 第一次接入：[快速开始](/guide/getting-started)
+- 配置通用能力：[全局配置与底座](/guide/foundation)
+- 排查运行问题：[常见问题](/guide/troubleshooting)

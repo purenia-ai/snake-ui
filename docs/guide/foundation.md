@@ -1,94 +1,66 @@
 # 全局配置与底座
 
-Snake UI 的通用底座包含主题、国际化、HTTP、路由与常用工具。API 统一使用 `snake` 命名，运行时完全自包含。
+Snake UI 插件统一初始化主题、国际化、HTTP、CMS 和全局工具。所有选项均为可选；只使用基础组件时，`app.use(SnakeUI)` 已经足够。
 
-## 安装配置
+## 完整配置结构
 
 ```ts
-import { createSSRApp } from 'vue';
-import App from './App.vue';
 import SnakeUI from 'snake-ui';
 
-export function createApp() {
-    const app = createSSRApp(App);
-
-    app.use(SnakeUI, {
-        debugMode: import.meta.env.DEV ? 'warn' : false,
-        theme: {
-            defaultTheme: 'snake',
-            defaultDarkMode: 'auto' // light | dark | auto
+app.use(SnakeUI, {
+    debugMode: import.meta.env.DEV ? 'warn' : false,
+    theme: {
+        defaultTheme: 'snake',
+        defaultDarkMode: 'auto'
+    },
+    locale: {
+        defaultLocale: 'zh-CN'
+    },
+    http: {
+        config: {
+            baseUrl: '/api',
+            timeout: 20_000
         },
-        locale: {
-            defaultLocale: 'zh-CN'
-        },
-        http: {
-            config: {
-                baseUrl: '/api',
-                timeout: 20_000
+        interceptor: {
+            request(options) {
+                return options;
             },
-            interceptor: {
-                request(config) {
-                    return config;
-                },
-                response(data) {
-                    return data;
-                }
+            response(data) {
+                return data;
             }
         }
-    });
-
-    return { app };
-}
+    },
+    cms: {
+        services: {
+            commerce,
+            coupon,
+            link
+        }
+    }
+});
 ```
 
-全局能力可通过 `uni.$snake` 使用；在模块代码中也可以按需导入，便于类型推导和单元测试。
+旧项目还可以传入 `request`、`cache` 和 `config` 适配器。它们用于既有业务组件和 CMS legacy 兼容路径，不是基础安装的必选项。
 
 ## 主题与暗色模式
 
-默认主题使用 Snake 绿色，并提供 light、dark、auto 三种模式。H5 会监听 `prefers-color-scheme`，微信小程序和 App 在平台支持时监听 `uni.onThemeChange`。用户选择会写入本地存储。
+默认提供 Snake 主题，暗色策略支持 `light`、`dark` 和 `auto`：
 
 ```ts
 import { setSnakeDarkMode, setSnakeTheme, setSnakeThemeColor, toggleSnakeDarkMode, useSnakeTheme } from 'snake-ui';
 
 setSnakeDarkMode('auto');
-toggleSnakeDarkMode();
-setSnakeTheme('snake');
 setSnakeThemeColor({ primary: '#00b77a' });
+setSnakeTheme('snake');
 
 const { color, darkMode, isDark, setDarkMode } = useSnakeTheme();
 ```
 
-注册自定义主题：
-
-```ts
-app.use(SnakeUI, {
-    theme: {
-        defaultTheme: 'brand',
-        themes: [
-            {
-                name: 'brand',
-                label: '品牌主题',
-                color: { primary: '#06D290' },
-                darkColor: { primary: '#38d49b' }
-            }
-        ]
-    }
-});
-```
-
-组件使用 `--snake-color-*` 变量。业务样式可直接复用，例如：
-
-```scss
-.price {
-    color: var(--snake-color-primary);
-    background: var(--snake-color-surface);
-    border-color: var(--snake-color-border);
-}
-```
+需要注册多套主题或全局注入 CSS 变量时，查看[多主题与暗黑模式](/guide/multi-theme)。
 
 ## 国际化
 
-内置 `zh-CN` 和 `en-US`。空状态、加载状态、图片错误及 HTTP 提示会跟随当前语言变化。
+内置 `zh-CN` 和 `en-US`。缺失词条按“当前语言 → 中文 → key”回退。
 
 ```ts
 import { setSnakeLocale, snakeTranslate, useSnakeLocale } from 'snake-ui';
@@ -99,7 +71,7 @@ snakeTranslate('common.confirm'); // Confirm
 const { locale, setLocale, t } = useSnakeLocale();
 ```
 
-可以追加语言，也可以用同名语言覆盖部分词条；缺失词条按“当前语言 → 中文 → key”回退。
+追加或局部覆盖语言：
 
 ```ts
 app.use(SnakeUI, {
@@ -116,7 +88,9 @@ app.use(SnakeUI, {
 });
 ```
 
-## HTTP 请求
+## HTTP
+
+`snakeHttp` 默认使用 `uni.request`。2xx 响应返回 `data`；非 2xx、网络失败和拦截器取消都会拒绝 Promise。
 
 ```ts
 import { snakeHttp } from 'snake-ui';
@@ -131,24 +105,40 @@ await snakeHttp.post(
 );
 ```
 
-默认传输层使用 `uni.request`，2xx 返回响应的 `data`；非 2xx、网络失败、拦截器取消都会拒绝 Promise，并抛出 `SnakeHttpError`。`meta.originalData` 可保留完整响应。已有项目传入的旧 `request: { get, post }` 适配器仍然兼容。
+设置 `meta.originalData: true` 可保留完整响应。也可以通过 `http.transport` 替换传输层。
 
-## 常用能力
+## 全局工具与按需导入
 
-底座同时导出颜色转换、深拷贝与合并、防抖节流、查询参数、时间格式、事件总线、路由、Toast、Modal、节点测量等能力：
+插件会把 `$snake` 注入 Vue 全局属性，并在 uni-app 环境写入 `uni.$snake`：
 
 ```ts
-import { deepMerge, debounce, queryParams, useSnakeEmitter, useSnakeRouter, useSnakeToast } from 'snake-ui';
+uni.$snake.toast('操作完成');
+uni.$snake.navTo('/pages/index/index');
+await uni.$snake.sleep(300);
 ```
 
-这些工具只依赖 Vue 和 uni-app 运行时。
+可复用模块更推荐按需导入：
+
+```ts
+import { debounce, deepMerge, navTo, queryParams, useSnakeEmitter, useSnakeRouter, useSnakeToast } from 'snake-ui';
+```
+
+这样类型推导、测试和依赖分析更直接。
 
 ## 样式入口
 
-应用入口已可直接导入完整样式：
-
 ```scss
+// 完整组件样式
 @import 'snake-ui/index.scss';
+
+// 只使用 SCSS 主题变量
+@import 'snake-ui/theme.scss';
 ```
 
-如果只需要 SCSS 变量，可导入 `snake-ui/theme.scss`。第三方来源与 MIT 许可说明见包内 `THIRD_PARTY_NOTICES.md`。
+npm 与 `uni_modules` 的具体路径见[快速开始](/guide/getting-started)。第三方来源与许可证说明见包内 `THIRD_PARTY_NOTICES.md`。
+
+## 下一步
+
+- CMS 服务和数据流：[装修编辑器数据对接](/guide/sanke-editor)
+- 品牌主题：[多主题与暗黑模式](/guide/multi-theme)
+- 配置不生效：[常见问题](/guide/troubleshooting)

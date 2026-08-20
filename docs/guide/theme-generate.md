@@ -1,53 +1,24 @@
 # 主题生成器
 
-Snake UI 提供多主题与暗黑模式配置工具，交互方式与 uView Pro 的多主题配置工具一致：在打开的颜色拾取器中输入或选择颜色，再点「确定」按钮即可；配置完成后在底部填写主题元信息，可加入导出队列导出多套主题。
+主题生成器用于可视化配置一套或多套 Snake UI 主题，并导出可直接注册的 `snake-ui.theme.ts`。
 
-基于以下配置工具可以配置多套主题！
+## 生成步骤
 
-## 配置教程
-
-- 在打开的颜色拾取器中输入或者选择颜色，再点「确定」按钮即可；
-- 颜色配置完后，在页面底部填写主题元信息（name/label/description）后，点击导出；
-- 如果是导出多主题，可以配置好一套主题后添加到导出队列，再次配置其他主题，最终都添加到导出队列中，再点击导出；
-- 最终导出会得到一个名为 `snake-ui.theme.ts` 的文件。
+1. 选择或输入主题颜色，并确认颜色选择器。
+2. 填写唯一的 `name`，按需补充 `label` 和 `description`。
+3. 单主题可直接导出；多主题先逐套加入导出队列。
+4. 下载 `snake-ui.theme.ts` 并放入宿主项目。
 
 ## 配置工具
 
-提示：该工具支持单主题、多主题配置，支持智能生成颜色值、暗黑色值，随机主题颜色等。配置完成后点击导出，即可得到主题配置文件。
-
 <ThemeGenerate />
 
-## 导出文件
-
-导出的文件与 demo 工程 `src/snake-ui.theme.ts` 结构一致，可直接覆盖使用：
+## 注册导出结果
 
 ```ts
-import { defaultSnakeTheme, type SnakeTheme } from './uni_modules/snake-ui';
+import SnakeUI from 'snake-ui';
+import snakeThemePresets from './snake-ui.theme';
 
-export const snakeThemePresets: SnakeTheme[] = [
-    defaultSnakeTheme,
-    {
-        name: 'purple',
-        label: '雾紫主题',
-        description: '电商 / 活动 / 品牌',
-        color: {
-            primary: '#7C3AED',
-            primaryDark: '#6D33D1'
-            // 与默认色板一致的令牌会被省略，运行时自动继承默认值
-        },
-        darkColor: {
-            primary: '#CBB0F8'
-            // ...
-        }
-    }
-];
-
-export default snakeThemePresets;
-```
-
-覆盖后，在应用入口通过主题配置注册即可（见 [多主题与暗黑模式](/guide/multi-theme)）：
-
-```ts
 app.use(SnakeUI, {
     theme: {
         themes: snakeThemePresets,
@@ -57,9 +28,17 @@ app.use(SnakeUI, {
 });
 ```
 
-## 注意事项
+导出文件只保留相对默认色板发生变化的令牌，运行时会自动补齐其余颜色。
 
-- `name` 不能与内置主题（`snake`）或队列内主题重复，否则导出会被拦截。
-- 未加入队列直接导出时，会导出当前配置的这一套主题。
-- 暗黑值生成是启发式的，复杂品牌色建议在预览中核对后再导出。
-- 工具配置会自动保存到本地浏览器，下次打开自动读取上次配置。
+## 导出后检查
+
+- 每套主题的 `name` 唯一，且 `defaultTheme` 能找到对应主题。
+- 主按钮文字与实心主色有足够对比度。
+- 浅色、暗色下的文字、边框、背景和禁用状态都可辨识。
+- 在实际 H5、小程序或 App 页面检查，而不只依赖生成器预览。
+
+::: warning 暗色生成
+暗色值由启发式规则生成。复杂品牌色、无障碍要求或关键交易页面应由设计与前端共同复核。
+:::
+
+工具会在浏览器本地保存当前配置。主题结构和运行时切换方式见[多主题与暗黑模式](/guide/multi-theme)。
