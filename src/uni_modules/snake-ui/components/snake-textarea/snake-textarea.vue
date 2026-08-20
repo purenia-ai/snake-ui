@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<SnakeTextareaProps>(), {
     border: 'surround',
     color: 'var(--snake-color-text,#303133)',
     placeholderColor: 'var(--snake-color-text-light,#c0c4cc)',
-    fontSize: 14,
+    fontSize: 28,
     focus: false,
     cursor: -1,
     selectionStart: -1,

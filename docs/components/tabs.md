@@ -46,10 +46,10 @@ preview: /pages/componentsA/tabs
 | `current`                                     | 当前索引                          | `number \| string`          | `0`                       |
 | `name` / `count`                              | 对象标题和徽标字段名              | `string`                    | `name` / `count`          |
 | `scrollable` / `isScroll`                     | 是否横向滚动，isScroll 为兼容别名 | `boolean`                   | `true`                    |
-| `height` / `fontSize` / `gutter`              | 高度、字号、项目间距              | `string \| number`          | `44` / `14` / `0`         |
+| `height` / `fontSize` / `gutter`              | 高度、字号、项目间距              | `string \| number`          | `80` / `30` / `30`        |
 | `duration`                                    | 指示线动画时长，ms                | `number \| string`          | `300`                     |
 | `lineColor` / `activeColor` / `inactiveColor` | 指示线、激活、未激活颜色          | `string`                    | 主题默认值                |
-| `barWidth` / `barHeight`                      | 指示线宽高                        | `string \| number`          | `20` / `3`                |
+| `barWidth` / `barHeight`                      | 指示线宽高                        | `string \| number`          | `40` / `6`                |
 | `offset`                                      | 徽标偏移 `[x, y]`                 | `[number, number]`          | `[0, 0]`                  |
 | `isDot` / `bold` / `showBar`                  | 圆点徽标、激活加粗、显示指示线    | `boolean`                   | `false` / `true` / `true` |
 | `itemWidth`                                   | 单项宽度或 auto                   | `string \| number`          | `auto`                    |

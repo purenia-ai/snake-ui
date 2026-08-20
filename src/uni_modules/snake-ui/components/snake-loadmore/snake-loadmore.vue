@@ -9,7 +9,7 @@ defineOptions({ name: 'SnakeLoadmore', options: { virtualHost: true, styleIsolat
 const props = withDefaults(defineProps<SnakeLoadmoreProps>(), {
   status: 'loadmore', loadText: '', loadingText: '', nomoreText: '', bgColor: 'transparent', icon: true,
   iconType: 'circle', iconColor: 'var(--snake-color-text-light, #c0c4cc)', isDot: false,
-  color: 'var(--snake-color-text-secondary, #606266)', fontSize: 14, marginTop: 0, marginBottom: 0,
+  color: 'var(--snake-color-text-secondary, #606266)', fontSize: 28, marginTop: 0, marginBottom: 0,
   customClass: '', customStyle: '',
 });
 const emit = defineEmits<SnakeLoadmoreEmits>();

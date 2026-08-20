@@ -120,6 +120,21 @@ test('input controls notify forms and slider supports touch measurement', async 
     assert.match(toggle, /inactiveValue/);
 });
 
+test('form controls keep readable rpx size defaults', async () => {
+    const [checkbox, checkboxGroup, radio, radioGroup, toggle, slider] = await Promise.all([
+        read('components/snake-checkbox/snake-checkbox.vue'),
+        read('components/snake-checkbox-group/snake-checkbox-group.vue'),
+        read('components/snake-radio/snake-radio.vue'),
+        read('components/snake-radio-group/snake-radio-group.vue'),
+        read('components/snake-switch/snake-switch.vue'),
+        read('components/snake-slider/snake-slider.vue')
+    ]);
+    for (const source of [checkbox, checkboxGroup, radio, radioGroup]) assert.match(source, /iconSize[^\n]*34/);
+    assert.match(toggle, /size === 'small' \? 40 : size === 'large' \? 60 : size === 'default' \? 50/);
+    assert.match(slider, /height: 6,/);
+    assert.match(slider, /blockWidth: 30,/);
+});
+
 test('third parity batch remains independent from uView and async-validator', async () => {
     const source = (await Promise.all(components.map(name => read(`components/snake-${name}/snake-${name}.vue`)))).join(
         '\n'

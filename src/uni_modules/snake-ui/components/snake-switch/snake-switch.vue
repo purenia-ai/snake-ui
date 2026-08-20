@@ -22,10 +22,10 @@ const emit = defineEmits<SnakeSwitchEmits>();
 const formItem = inject(snakeFormItemKey, null);
 const checked = computed(() => Object.is(props.modelValue, props.activeValue));
 const resolvedSize = computed(() => {
-    const size = props.size || formItem?.size.value || 24;
-    return size === 'small' ? 20 : size === 'large' ? 28 : size === 'default' ? 24 : size;
+    const size = props.size || formItem?.size.value || 50;
+    return size === 'small' ? 40 : size === 'large' ? 60 : size === 'default' ? 50 : size;
 });
-const numericSize = computed(() => Number.parseFloat(String(resolvedSize.value)) || 24);
+const numericSize = computed(() => Number.parseFloat(String(resolvedSize.value)) || 50);
 const numericSpace = computed(() => Number.parseFloat(String(props.space)) || 0);
 const trackStyle = computed(() => ({
     width: addUnit(numericSize.value * 1.8, 'rpx'),

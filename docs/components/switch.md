@@ -28,7 +28,7 @@ preview: /pages/componentsA/switch
 | `modelValue`                    | 当前值           | `boolean \| string \| number` | `false`          |
 | `activeValue` / `inactiveValue` | 开启和关闭值     | 同 modelValue                 | `true` / `false` |
 | `loading` / `disabled`          | 加载和禁用       | `boolean`                     | `false`          |
-| `size` / `space`                | 开关尺寸和内边距 | `UnitValue`                   | `24` / `2`       |
+| `size` / `space`                | 开关尺寸和内边距 | `UnitValue`                   | `50` / `2`       |
 | `activeColor` / `inactiveColor` | 开启和关闭颜色   | `string`                      | 主题默认值       |
 | `vibrateShort`                  | 切换时尝试短震动 | `boolean`                     | `false`          |
 | `customClass` / `customStyle`   | 自定义类名和样式 | `string \| style`             | `''`             |

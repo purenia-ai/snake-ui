@@ -43,7 +43,7 @@ preview: /pages/componentsA/empty
 | `iconSize`            | 图标或图片尺寸                                                                                 | `string \| number`          | `120`        |
 | `text`                | 提示文字；为空时使用模式默认文案                                                               | `string`                    | `''`         |
 | `color` / `textColor` | 文字颜色，textColor 优先                                                                       | `string`                    | 主题弱文本色 |
-| `fontSize`            | 文字大小                                                                                       | `string \| number`          | `14`         |
+| `fontSize`            | 文字大小                                                                                       | `string \| number`          | `26`         |
 | `marginTop`           | 组件顶部外边距                                                                                 | `string \| number`          | `0`          |
 | `customClass`         | 自定义类名                                                                                     | `string`                    | `''`         |
 | `customStyle`         | 根容器样式                                                                                     | `string \| object \| array` | `''`         |

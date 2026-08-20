@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<SnakeNoticeBarProps>(), {
     closeIcon: false,
     bgColor: '',
     color: '',
-    fontSize: 13,
+    fontSize: 28,
     duration: 3000,
     speed: 80,
     isCircular: true,

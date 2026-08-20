@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<SnakeInputProps>(), {
     disabled: false,
     readonly: false,
     disabledColor: 'var(--snake-color-disabled-bg,#f5f7fa)',
-    fontSize: 14,
+    fontSize: 28,
     inputAlign: 'left',
     formatTrigger: 'input',
     trim: false,

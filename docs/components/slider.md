@@ -31,7 +31,7 @@ preview: /pages/componentsA/slider
 | 参数                                           | 说明                       | 类型                | 默认值                  |
 | ---------------------------------------------- | -------------------------- | ------------------- | ----------------------- |
 | `modelValue` / `min` / `max` / `step`          | 当前值、范围和步长         | `number \| string`  | `0` / `0` / `100` / `1` |
-| `height` / `blockWidth`                        | 轨道高度和滑块尺寸         | `UnitValue`         | `4` / `24`              |
+| `height` / `blockWidth`                        | 轨道高度和滑块尺寸         | `UnitValue`         | `6` / `30`              |
 | `activeColor` / `inactiveColor` / `blockColor` | 状态颜色                   | `string`            | 主题默认值              |
 | `blockStyle`                                   | 滑块附加样式               | `style`             | `''`                    |
 | `disabled` / `useSlot`                         | 禁用和使用自定义滑块       | `boolean`           | `false`                 |

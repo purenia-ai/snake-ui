@@ -72,7 +72,7 @@ onBeforeUnmount(() => menu?.unregister(itemId));
         <button
             class="snake-drop-item__trigger"
             :disabled="disabled"
-            :style="{ color, fontSize: addUnit(menu?.titleSize.value || 14, 'rpx') }"
+            :style="{ color, fontSize: addUnit(menu?.titleSize.value || 28, 'rpx') }"
             @click="toggle"
         >
             <text class="snake-drop-item__title">{{ displayTitle }}</text

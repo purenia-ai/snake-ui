@@ -30,7 +30,7 @@ preview: /pages/componentsA/checkbox
 | `disabled` / `labelDisabled`                  | 禁用全部或仅禁用标签点击 | `boolean`           | `false`     |
 | `shape` / `size`                              | square/circle 与组件尺寸 | `string`            | 继承 Group  |
 | `activeColor` / `inactiveColor` / `iconColor` | 选中、未选中和勾选颜色   | `string`            | 主题默认值  |
-| `iconSize` / `labelSize`                      | 图标和文字大小           | `UnitValue`         | `20` / `14` |
+| `iconSize` / `labelSize`                      | 图标和文字大小           | `UnitValue`         | `34` / `28` |
 | `customClass` / `customStyle`                 | 自定义类名和样式         | `string \| style`   | `''`        |
 
 ### Events

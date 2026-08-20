@@ -178,7 +178,7 @@ function goHome() {
     border-radius: 999rpx;
     color: var(--snake-demo-accent-text);
     background: var(--snake-color-primary-light);
-    font-size: 22rpx;
+    font-size: 24rpx;
     font-weight: 600;
 }
 

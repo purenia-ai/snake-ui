@@ -5,10 +5,10 @@ import type { SnakeTabItem, SnakeTabsEmits, SnakeTabsProps } from './types';
 
 defineOptions({ name: 'SnakeTabs', options: { virtualHost: true, styleIsolation: 'shared' } });
 const props = withDefaults(defineProps<SnakeTabsProps>(), {
-  list: () => [], current: 0, name: 'name', count: 'count', scrollable: true, height: 40, fontSize: 15,
+  list: () => [], current: 0, name: 'name', count: 'count', scrollable: true, height: 80, fontSize: 30,
   duration: 0.3, lineColor: 'var(--snake-color-primary, #06D290)', activeColor: 'var(--snake-color-text, #303133)',
-  inactiveColor: 'var(--snake-color-text-secondary, #606266)', barWidth: 20, barHeight: 3, gutter: 15,
-  bgColor: 'transparent', offset: () => [5, 10], isDot: false, bold: true, activeItemStyle: '', showBar: true,
+  inactiveColor: 'var(--snake-color-text-secondary, #606266)', barWidth: 40, barHeight: 6, gutter: 30,
+  bgColor: 'transparent', offset: () => [5, 20], isDot: false, bold: true, activeItemStyle: '', showBar: true,
   barStyle: '', itemWidth: 'auto', customClass: '', customStyle: '',
 });
 const emit = defineEmits<SnakeTabsEmits>();

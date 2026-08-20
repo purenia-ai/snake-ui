@@ -380,8 +380,8 @@ const definitions: Record<string, DemoDefinition> = {
                 key: 'tabsSize',
                 label: '文字尺寸',
                 type: 'slider',
-                defaultValue: 28,
-                min: 22,
+                defaultValue: 30,
+                min: 24,
                 max: 36,
                 step: 2,
                 unit: 'rpx'

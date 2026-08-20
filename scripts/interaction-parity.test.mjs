@@ -12,8 +12,10 @@ test('feedback components expose complete states and interactions', async () => 
 });
 
 test('tabs and swiper expose navigation and indicator contracts', async () => {
-  const [tabs, swiper] = await Promise.all([read('components/snake-tabs/types.ts'), read('components/snake-swiper/types.ts')]);
+  const [tabs, tabsSource, swiper] = await Promise.all([read('components/snake-tabs/types.ts'), read('components/snake-tabs/snake-tabs.vue'), read('components/snake-swiper/types.ts')]);
   for (const name of ['barWidth', 'barHeight', 'gutter', 'isDot', 'showBar', 'itemWidth']) assert.match(tabs, new RegExp(`${name}\\?`));
+  assert.match(tabsSource, /height: 80, fontSize: 30/);
+  assert.match(tabsSource, /barWidth: 40, barHeight: 6, gutter: 30/);
   for (const name of ['indicatorPos', 'effect3d', 'animationfinish', 'titleStyle']) assert.match(swiper, new RegExp(name));
 });
 

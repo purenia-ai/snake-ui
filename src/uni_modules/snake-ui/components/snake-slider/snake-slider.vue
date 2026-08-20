@@ -9,8 +9,8 @@ const props = withDefaults(defineProps<SnakeSliderProps>(), {
     min: 0,
     max: 100,
     step: 1,
-    height: 4,
-    blockWidth: 24,
+    height: 6,
+    blockWidth: 30,
     activeColor: 'var(--snake-color-primary,#06D290)',
     inactiveColor: 'var(--snake-color-divider,#e4e7ed)',
     blockColor: '#fff',
@@ -57,7 +57,7 @@ const percent = computed(() =>
     maxValue.value === minValue.value ? 0 : ((current.value - minValue.value) / (maxValue.value - minValue.value)) * 100
 );
 const rootStyle = computed(() => [
-    { padding: `${addUnit((Number.parseFloat(String(props.blockWidth)) || 24) / 2, 'rpx')} 0` },
+    { padding: `${addUnit((Number.parseFloat(String(props.blockWidth)) || 30) / 2, 'rpx')} 0` },
     props.customStyle
 ]);
 const activeStyle = computed(() => ({ width: `${percent.value}%`, backgroundColor: props.activeColor }));

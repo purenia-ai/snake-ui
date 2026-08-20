@@ -12,8 +12,8 @@ const props = withDefaults(defineProps<SnakeCheckboxGroupProps>(), {
     size: 'default',
     activeColor: 'var(--snake-color-primary,#06D290)',
     inactiveColor: 'var(--snake-color-border,#c0c4cc)',
-    iconSize: 20,
-    labelSize: 14,
+    iconSize: 34,
+    labelSize: 28,
     shape: 'square',
     customClass: '',
     customStyle: ''

@@ -525,7 +525,7 @@ function resetForm() {
     border-radius: 16rpx;
     background: var(--snake-color-surface-muted);
     color: var(--snake-color-text-secondary);
-    font-size: 22rpx;
+    font-size: 26rpx;
 }
 .demo-image-box {
     width: 100%;
@@ -645,7 +645,7 @@ function resetForm() {
 .demo-form__message,
 .demo-control-stack > text {
     color: var(--snake-color-text-secondary);
-    font-size: 24rpx;
+    font-size: 26rpx;
 }
 
 .custom-card {

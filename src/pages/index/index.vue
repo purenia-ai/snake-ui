@@ -158,7 +158,7 @@ const switchLocale = () => {
 }
 .theme-dot__label {
     color: var(--snake-color-text-secondary);
-    font-size: 12px;
+    font-size: 13px;
 }
 .theme-dot--active .theme-dot__label {
     color: var(--snake-demo-accent-text);
@@ -173,14 +173,14 @@ const switchLocale = () => {
 .foundation-actions__hint {
     margin-right: auto;
     color: var(--snake-color-text-muted);
-    font-size: 12px;
+    font-size: 13px;
 }
 .foundation-actions__button {
     min-width: 52px;
     margin: 0;
     padding: 0 10px;
     color: var(--snake-demo-accent-text);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     line-height: 28px;
     background: var(--snake-color-primary-light);
@@ -235,7 +235,7 @@ const switchLocale = () => {
     justify-content: space-between;
     margin: -12px 2px 20px;
     color: var(--snake-color-text-muted);
-    font-size: 12px;
+    font-size: 13px;
 }
 .search-result text:last-child {
     color: var(--snake-color-primary);
@@ -264,7 +264,7 @@ const switchLocale = () => {
 .empty-desc {
     margin-top: 6px;
     color: var(--snake-color-text-muted);
-    font-size: 12px;
+    font-size: 13px;
 }
 .group-section {
     margin-bottom: 26px;
@@ -284,13 +284,13 @@ const switchLocale = () => {
 .group-title__en {
     margin-left: 8px;
     color: var(--snake-color-text-muted);
-    font-size: 11px;
+    font-size: 12px;
     text-transform: uppercase;
 }
 .group-title__count {
     margin-left: auto;
     color: var(--snake-color-text-muted);
-    font-size: 11px;
+    font-size: 12px;
 }
 .cards {
     display: flex;
@@ -342,15 +342,15 @@ const switchLocale = () => {
     border: 1px solid rgba(var(--snake-color-primary-rgb), 0.35);
     border-radius: 3px;
     color: var(--snake-color-primary);
-    font-size: 8px;
-    line-height: 13px;
+    font-size: 10px;
+    line-height: 15px;
 }
 .card__desc {
     display: block;
     overflow: hidden;
     margin-top: 6px;
     color: var(--snake-color-text-secondary);
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.4;
     text-overflow: ellipsis;
     white-space: nowrap;

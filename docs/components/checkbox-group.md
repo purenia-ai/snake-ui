@@ -32,7 +32,7 @@ preview: /pages/componentsA/checkbox-group
 | `direction` / `placement`       | row/column 布局，placement 优先 | `string`            | `row`                |
 | `size` / `shape`                | 子项尺寸和 square/circle        | `string`            | `default` / `square` |
 | `activeColor` / `inactiveColor` | 选中和未选中颜色                | `string`            | 主题默认值           |
-| `iconSize` / `labelSize`        | 子项图标和文字大小              | `UnitValue`         | `20` / `14`          |
+| `iconSize` / `labelSize`        | 子项图标和文字大小              | `UnitValue`         | `34` / `28`          |
 | `customClass` / `customStyle`   | 自定义类名和样式                | `string \| style`   | `''`                 |
 
 ### Events

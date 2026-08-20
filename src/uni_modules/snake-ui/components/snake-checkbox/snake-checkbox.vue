@@ -30,8 +30,8 @@ const activeColor = computed(
 const inactiveColor = computed(
     () => props.inactiveColor || group?.inactiveColor.value || 'var(--snake-color-border,#c0c4cc)'
 );
-const iconSize = computed(() => props.iconSize || group?.iconSize.value || 20);
-const labelSize = computed(() => props.labelSize || group?.labelSize.value || 14);
+const iconSize = computed(() => props.iconSize || group?.iconSize.value || 34);
+const labelSize = computed(() => props.labelSize || group?.labelSize.value || 28);
 const iconStyle = computed(() => ({
     width: addUnit(iconSize.value, 'rpx'),
     height: addUnit(iconSize.value, 'rpx'),
