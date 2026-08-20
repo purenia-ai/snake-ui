@@ -2,7 +2,7 @@
 preview: /pages/componentsA/loading-icon
 ---
 
-# Loading Icon 加载图标
+# LoadingIcon 加载图标
 
 统一的加载状态组件，供 Button、Image 以及业务页面复用，支持圆环和花朵两种形态。
 

@@ -59,7 +59,7 @@ app.use(SnakeUI, {
 
 ## 让主题覆盖所有页面
 
-需要在页面根部注入主题变量时，使用 [Config Provider](/components/config-provider)。本地 `uni_modules` 示例：
+需要在页面根部注入主题变量时，使用 [ConfigProvider](/components/config-provider)。本地 `uni_modules` 示例：
 
 ```vue
 <script setup lang="ts">

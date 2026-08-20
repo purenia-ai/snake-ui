@@ -4,17 +4,18 @@ cms: true
 ---
 
 # 商品列表 <span class="cms-badge">CMS</span>
+
 以自适应卡片网格展示直购、新品或拍卖商品，包含库存、价格、标签和出价状态。
 
 ## 运行前提
 
-依赖 Snake UI Lazy Image、uni-app 基础组件和运行时图片处理逻辑。部分状态图使用源码内置 CDN 地址。
+依赖 Snake UI LazyImage、uni-app 基础组件和运行时图片处理逻辑。部分状态图使用源码内置 CDN 地址。
 
 ## 平台兼容性
 
-| H5 | 微信小程序 | App |
-| :-: | :-: | :-: |
-| 支持 | 支持 | 支持 |
+|  H5  | 微信小程序 | App  |
+| :--: | :--------: | :--: |
+| 支持 |    支持    | 支持 |
 
 > 表格表示组件可通过当前工程编译。涉及跳转、开放能力、原生媒体或业务接口的功能，仍需按下文条件在目标平台验证。
 
@@ -22,13 +23,13 @@ cms: true
 
 ```vue
 <snake-goods-list
-  :goods-list="goods"
-  list-type="sale"
-  :commodity-type="0"
-  :page-margin="10"
-  :image-margin="10"
-  @item-click="openDetail"
-  @handlerOffer="openOffer"
+    :goods-list="goods"
+    list-type="sale"
+    :commodity-type="0"
+    :page-margin="10"
+    :image-margin="10"
+    @item-click="openDetail"
+    @handlerOffer="openOffer"
 />
 ```
 
@@ -40,21 +41,21 @@ cms: true
 
 ### Props
 
-| 参数 | 说明 | 类型 | 默认值 | 可选值 |
-| --- | --- | --- | --- | --- |
-| `goodsList` | 商品数据 | `Array` | `[]` | - |
-| `bgColor` | 列表背景色 | `String` | `'#F6F6F6'` | - |
-| `listType` | 展示类型；模板重点处理 `sale`、`new`、`auction` | `String` | `'goods'` | - |
-| `pageMargin` | 页面边距 | `Number` | `10` | - |
-| `imageMargin` | 卡片间距 | `Number` | `10` | - |
-| `commodityType` | 参与计算每行卡片数量和宽度 | `Number` | `0` | - |
-| `attendanceShow` | 是否显示拍卖参与人数 | `Boolean` | `true` | - |
+| 参数             | 说明                                            | 类型      | 默认值      | 可选值 |
+| ---------------- | ----------------------------------------------- | --------- | ----------- | ------ |
+| `goodsList`      | 商品数据                                        | `Array`   | `[]`        | -      |
+| `bgColor`        | 列表背景色                                      | `String`  | `'#F6F6F6'` | -      |
+| `listType`       | 展示类型；模板重点处理 `sale`、`new`、`auction` | `String`  | `'goods'`   | -      |
+| `pageMargin`     | 页面边距                                        | `Number`  | `10`        | -      |
+| `imageMargin`    | 卡片间距                                        | `Number`  | `10`        | -      |
+| `commodityType`  | 参与计算每行卡片数量和宽度                      | `Number`  | `0`         | -      |
+| `attendanceShow` | 是否显示拍卖参与人数                            | `Boolean` | `true`      | -      |
 
 ### Events
 
-| 事件名 | 触发时机 | 回调参数 |
-| --- | --- | --- |
-| `item-click` | 点击整个商品卡片 | `(item, index)` |
+| 事件名         | 触发时机                               | 回调参数        |
+| -------------- | -------------------------------------- | --------------- |
+| `item-click`   | 点击整个商品卡片                       | `(item, index)` |
 | `handlerOffer` | 点击拍卖出价按钮；事件名保持源码大小写 | `(item, index)` |
 
 ### 主要商品字段

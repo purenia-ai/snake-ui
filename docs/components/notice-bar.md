@@ -2,7 +2,7 @@
 preview: /pages/componentsA/notice-bar
 ---
 
-# Notice Bar 通知栏
+# NoticeBar 通知栏
 
 用于公告、活动提示和多条消息轮播，支持横向跑马灯、纵向轮播、关闭与更多操作。
 

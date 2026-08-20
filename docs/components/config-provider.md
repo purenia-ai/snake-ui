@@ -1,6 +1,6 @@
-# Config Provider 主题包装器
+# ConfigProvider 全局配置
 
-把主题引擎的 CSS 变量内联到所在节点并携带暗色 class,配合 `vite-plugin-snake-root`(见 `src/uni_modules/snake-ui/plugins/root/README.md`)包裹到每个页面根部后,明暗主题切换对全页内容生效,H5 与小程序行为一致。
+`snake-config-provider` 是 Snake UI 主题系统的页面入口组件，负责把当前主题的 CSS 变量注入页面，并根据主题模式附加明亮或暗黑类名。将它与 `SnakeRoot` 插件配合使用，可以让主题配置自动作用于每个页面，无需逐页添加组件。
 
 ## 平台兼容性
 
@@ -8,11 +8,28 @@
 | :--: | :--------: | :--: |
 | 支持 |    支持    | 支持 |
 
-## 基础用法
+## 基本用法
 
-在应用的 `src/App.root.vue` 中包裹插槽(由 root 插件自动注入到每个页面):
+直接包裹页面内容后，内部组件即可使用当前主题的 CSS 变量：
 
 ```vue
+<script setup lang="ts">
+import SnakeConfigProvider from './uni_modules/snake-ui/components/snake-config-provider/snake-config-provider.vue';
+</script>
+
+<template>
+    <SnakeConfigProvider>
+        <view class="page">页面内容</view>
+    </SnakeConfigProvider>
+</template>
+```
+
+## 配合虚拟根组件
+
+uni-app 没有可直接包裹所有页面的应用级根组件。推荐在 `src/App.root.vue` 中保留页面插槽，再通过 `SnakeRoot` 插件为每个页面自动注入全局根组件。
+
+```vue
+<!-- src/App.root.vue -->
 <script setup lang="ts">
 import SnakeConfigProvider from './uni_modules/snake-ui/components/snake-config-provider/snake-config-provider.vue';
 </script>
@@ -24,40 +41,87 @@ import SnakeConfigProvider from './uni_modules/snake-ui/components/snake-config-
 </template>
 ```
 
-也可以声明式固定初始主题与模式:
+在 `vite.config.ts` 中启用插件：
+
+```ts
+import { defineConfig } from 'vite';
+import Uni from '@dcloudio/vite-plugin-uni';
+import { SnakeRoot } from './src/uni_modules/snake-ui/plugins';
+
+export default defineConfig({
+    plugins: [SnakeRoot(), Uni()]
+});
+```
+
+`<slot />` 是页面内容的渲染位置，必须保留。配置完成后需要重新启动开发服务，插件会在构建阶段完成根组件注册和页面包裹。
+
+## 指定主题与暗黑模式
+
+组件默认只注入主题变量，不会改变当前主题。需要由外层控制主题时，可以传入已注册的主题名和暗黑模式：
 
 ```vue
-<SnakeConfigProvider current-theme="snake" dark-mode="auto">
+<SnakeConfigProvider current-theme="brand" dark-mode="auto">
     <slot />
 </SnakeConfigProvider>
 ```
 
-## 说明
+`current-theme` 必须对应通过 `app.use(SnakeUI, { theme })` 注册的主题名。`dark-mode="auto"` 会在平台支持时跟随系统主题。
 
-- 组件挂载及 props 变化时,若 `current-theme` / `dark-mode` 与主题引擎当前状态不同,会同步到引擎(含 storage 持久化),并触发 `theme-change` / `mode-change` 事件。
-- 不传 props 时组件只做变量注入,不改变当前主题。
-- 根节点会附加 `snake-theme-light` / `snake-theme-dark` class 与 `data-snake-theme-mode` 属性,可用于自定义样式适配。
+## 监听配置同步
+
+当 `current-theme` 或 `dark-mode` props 促使组件切换主题时，会分别触发 `theme-change` 和 `mode-change`：
+
+```vue
+<SnakeConfigProvider
+    :current-theme="themeName"
+    :dark-mode="darkMode"
+    @theme-change="name => console.log('主题已切换', name)"
+    @mode-change="mode => console.log('当前渲染模式', mode)"
+>
+    <slot />
+</SnakeConfigProvider>
+```
+
+这两个事件描述的是组件对 props 的同步结果。通过 `setSnakeTheme()`、`setSnakeDarkMode()` 或 `useSnakeTheme()` 在组件外部切换主题时，请直接监听对应的响应式状态。
+
+## 工作原理
+
+- 组件把主题引擎生成的 CSS 变量以内联样式写入根节点，确保变量在 H5 和小程序中都能向页面内容传递。
+- 根节点会附加 `snake-theme-light` 或 `snake-theme-dark` 类名，以及 `data-snake-theme-mode` 属性，便于编写模式相关样式。
+- `current-theme` 和 `dark-mode` 变化时，组件会把新值同步到主题引擎并持久化。
+- 不传控制 props 时，组件只负责变量注入，主题状态仍由全局主题 API 管理。
+
+## 常见场景
+
+- **应用全局主题**：在 `App.root.vue` 中使用一次，并配合 `SnakeRoot` 自动覆盖所有页面。
+- **独立页面入口**：不启用根组件插件时，在需要主题变量的页面外层显式包裹。
+- **受控主题设置**：由设置页维护主题名和暗黑模式，通过 props 同步到主题引擎。
+- **局部样式扩展**：使用 `custom-class` 或 `custom-style` 补充根节点布局，同时继续继承主题变量。
+
+::: tip 主题状态
+组件负责让主题变量进入页面。注册主题、主动切换主题以及读取响应式色板，请使用 [`useSnakeTheme()` 和主题 API](/guide/multi-theme)。
+:::
 
 ## API
 
 ### Props
 
-| 参数           | 说明                                        | 类型                             | 默认值 |
-| -------------- | ------------------------------------------- | -------------------------------- | ------ |
-| `darkMode`     | 暗黑模式,变化时同步主题引擎                 | `'light' \| 'dark' \| 'auto'`    | —      |
-| `currentTheme` | 主题名(需已通过 `app.use` 注册)             | `string`                         | —      |
-| `customClass`  | 自定义根节点 class                          | `string`                         | `''`   |
-| `customStyle`  | 自定义根节点 style                          | `string \| Record<string,string>` | `''`  |
+| 参数           | 说明                                         | 类型                               | 默认值 |
+| -------------- | -------------------------------------------- | ---------------------------------- | ------ |
+| `darkMode`     | 暗黑模式；变化时同步到主题引擎               | `'light' \| 'dark' \| 'auto'`      | —      |
+| `currentTheme` | 已通过 `app.use` 注册的主题名                | `string`                           | `''`   |
+| `customClass`  | 添加到根节点的自定义类名                     | `string`                           | `''`   |
+| `customStyle`  | 添加到根节点的自定义样式，与主题变量样式合并 | `string \| Record<string, string>` | `''`   |
 
 ### Events
 
-| 事件名          | 说明                   | 回调参数                 |
-| --------------- | ---------------------- | ------------------------ |
-| `theme-change`  | 主题切换成功时触发     | `(themeName: string)`    |
-| `mode-change`   | 暗黑模式切换时触发     | `(mode: 'light' \| 'dark')` |
+| 事件名         | 说明                               | 回调参数                    |
+| -------------- | ---------------------------------- | --------------------------- |
+| `theme-change` | `currentTheme` prop 成功同步时触发 | `(themeName: string)`       |
+| `mode-change`  | `darkMode` prop 成功同步时触发     | `(mode: 'light' \| 'dark')` |
 
 ### Slots
 
-| 插槽名 | 说明           |
-| ------ | -------------- |
-| —      | 页面/业务内容  |
+| 插槽名 | 说明                       |
+| ------ | -------------------------- |
+| —      | 需要应用主题变量的页面内容 |

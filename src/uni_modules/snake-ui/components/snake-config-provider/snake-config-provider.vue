@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 /**
- * snake-config-provider 主题包装器(对齐 uView 生态的 config-provider 设计)
+ * snake-config-provider 全局主题配置入口(对齐 uView 生态的 config-provider 设计)
  *
  * 把主题引擎的 CSS 变量内联到页面根部并携带暗色 class:
  * - uni-app H5 会把 `page` 选择器编译为 uni-page-body,自定义属性在声明处
@@ -22,13 +22,7 @@
  * (含 storage 持久化),便于在 App.root.vue 中声明式固定初始主题。
  */
 import { computed, onMounted, watch } from 'vue';
-import {
-    currentSnakeTheme,
-    setSnakeDarkMode,
-    setSnakeTheme,
-    snakeDarkMode,
-    snakeSystemDark
-} from '../../libs';
+import { currentSnakeTheme, setSnakeDarkMode, setSnakeTheme, snakeDarkMode, snakeSystemDark } from '../../libs';
 import type { SnakeConfigProviderEmits, SnakeConfigProviderProps } from './types';
 
 defineOptions({ name: 'SnakeConfigProvider', options: { virtualHost: true, styleIsolation: 'shared' } });
