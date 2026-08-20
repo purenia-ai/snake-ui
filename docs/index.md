@@ -14,7 +14,7 @@ hero:
           link: /guide/getting-started
         - theme: alt
           text: 浏览组件
-          link: /components/snake-cms
+          link: /components/intro
 
 features:
     - icon: ◫

@@ -1,12 +1,14 @@
-import DefaultTheme from 'vitepress/theme'
-import Layout from './Layout.vue'
-import ThemeGenerate from '../components/ThemeGenerate.vue'
-import './custom.css'
+import DefaultTheme from 'vitepress/theme';
+import Layout from './Layout.vue';
+import ComponentOverview from '../components/ComponentOverview.vue';
+import ThemeGenerate from '../components/ThemeGenerate.vue';
+import './custom.css';
 
 export default {
-  extends: DefaultTheme,
-  Layout,
-  enhanceApp({ app }) {
-    app.component('ThemeGenerate', ThemeGenerate)
-  },
-}
+    extends: DefaultTheme,
+    Layout,
+    enhanceApp({ app }) {
+        app.component('ComponentOverview', ComponentOverview);
+        app.component('ThemeGenerate', ThemeGenerate);
+    }
+};
