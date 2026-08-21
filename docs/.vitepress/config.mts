@@ -28,7 +28,7 @@ export default defineConfig({
         }
     },
     head: [
-        ['meta', { name: 'theme-color', content: '#00805a' }],
+        ['meta', { name: 'theme-color', content: '#06D290' }],
         ['meta', { name: 'color-scheme', content: 'light dark' }]
     ],
     themeConfig: {

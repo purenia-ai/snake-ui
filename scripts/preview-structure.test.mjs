@@ -150,18 +150,22 @@ test('desktop phone preview keeps an uncropped internal viewport', async () => {
 
 test('compact layout preserves the native page outline and dimensions', async () => {
     const layout = await readFile(resolve(root, 'docs/.vitepress/theme/Layout.vue'), 'utf8');
+    const frame = await readFile(resolve(root, 'docs/.vitepress/theme/PreviewFrame.vue'), 'utf8');
     const css = await readFile(resolve(root, 'docs/.vitepress/theme/custom.css'), 'utf8');
 
     assert.match(layout, /#layout-bottom><PreviewFrame\s*\/><\/template>/);
     assert.doesNotMatch(layout, /#aside-top><PreviewFrame\s*\/><\/template>/);
     assert.match(css, /--vp-sidebar-width:\s*240px/);
     assert.match(css, /max-width:\s*680px/);
-    assert.match(css, /--preview-phone-width:\s*calc\(395px/);
+    assert.match(css, /--preview-phone-width:\s*calc\(375px/);
     assert.match(css, /transform:\s*scale\(var\(--preview-scale/);
+    assert.match(frame, /const PHONE_WIDTH = 375/);
+    assert.match(frame, /window\.innerWidth >= 1680 \? 375 : window\.innerWidth >= 1450 \? 320 : 300/);
 });
 
 test('desktop phone preview is fixed to the outer page edge like uView2', async () => {
     const layout = await readFile(resolve(root, 'docs/.vitepress/theme/Layout.vue'), 'utf8');
+    const frame = await readFile(resolve(root, 'docs/.vitepress/theme/PreviewFrame.vue'), 'utf8');
     const css = await readFile(resolve(root, 'docs/.vitepress/theme/custom.css'), 'utf8');
 
     assert.match(layout, /#layout-bottom><PreviewFrame\s*\/><\/template>/);
@@ -175,6 +179,7 @@ test('desktop phone preview is fixed to the outer page edge like uView2', async 
 
 test('preview pages keep independent content, outline, and phone columns', async () => {
     const layout = await readFile(resolve(root, 'docs/.vitepress/theme/Layout.vue'), 'utf8');
+    const frame = await readFile(resolve(root, 'docs/.vitepress/theme/PreviewFrame.vue'), 'utf8');
     const css = await readFile(resolve(root, 'docs/.vitepress/theme/custom.css'), 'utf8');
 
     assert.match(layout, /useData\(\)/);
@@ -205,4 +210,31 @@ test('development preview follows the docs host for LAN access', async () => {
     assert.match(frame, /window\.location\.protocol/);
     assert.match(frame, /localhost'\s*\?\s*'127\.0\.0\.1'/);
     assert.doesNotMatch(frame, /http:\/\/localhost:5173\/preview\//);
+});
+test('docs and preview shell use the approved brand green system', async () => {
+    const config = await readFile(resolve(root, 'docs/.vitepress/config.mts'), 'utf8');
+    const frame = await readFile(resolve(root, 'docs/.vitepress/theme/PreviewFrame.vue'), 'utf8');
+    const css = await readFile(resolve(root, 'docs/.vitepress/theme/custom.css'), 'utf8');
+    const demoTheme = await readFile(resolve(root, 'src/demo/theme.scss'), 'utf8');
+    const demoPage = await readFile(resolve(root, 'src/demo/DemoPage.vue'), 'utf8');
+
+    assert.match(config, /theme-color[^\n]+#06D290/);
+    assert.match(css, /--snake-brand-fill:\s*#06d290/i);
+    assert.match(css, /--snake-brand-hover:\s*#05be83/i);
+    assert.match(css, /--snake-brand-active:\s*#04a873/i);
+    assert.match(css, /--snake-brand-text:\s*#007a55/i);
+    assert.match(css, /--snake-brand-ink:\s*#073b2a/i);
+    assert.match(css, /\.preview-phone\s*{[^}]*linear-gradient\([^}]*#f8fffc/is);
+    assert.match(css, /\.preview-panel__header i\s*{[^}]*animation:\s*preview-live-pulse/is);
+    assert.match(css, /@keyframes preview-live-pulse/);
+    assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
+    assert.match(frame, /preview-phone__system-status/);
+    assert.match(frame, /preview-phone__battery/);
+    assert.match(frame, /<svg class="preview-phone__wifi" viewBox="0 0 16 16"/);
+    assert.match(css, /\.preview-phone__island\s*{[^}]*top:\s*31px/s);
+    assert.match(css, /\.preview-phone\s*{[^}]*padding:\s*54px 9px 18px/s);
+    assert.match(css, /\.preview-phone iframe,\s*\.preview-phone__status\s*{[^}]*border-radius:\s*0 0 25px 25px/s);
+    assert.match(demoTheme, /linear-gradient\(120deg,\s*#06d290,\s*#35e7ad\)/i);
+    assert.match(demoTheme, /--snake-demo-nav-text:\s*#073b2a/i);
+    assert.match(demoPage, /color:\s*var\(--snake-demo-nav-text\)/);
 });

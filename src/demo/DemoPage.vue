@@ -112,7 +112,7 @@ function goHome() {
     height: $snake-nav-height;
     padding: 0 12rpx;
     background: $snake-nav-gradient;
-    box-shadow: 0 4rpx 16rpx rgba(0, 107, 74, 0.25);
+    box-shadow: 0 4rpx 18rpx rgba(4, 168, 115, 0.24);
 }
 
 .demo-nav__side {
@@ -139,12 +139,12 @@ function goHome() {
 }
 
 .demo-nav__hit--hover {
-    background: rgba(255, 255, 255, 0.16);
+    background: var(--snake-demo-nav-hover);
 }
 
 .demo-nav__back {
     padding-bottom: 6rpx;
-    color: #ffffff;
+    color: var(--snake-demo-nav-text);
     font-size: 56rpx;
     line-height: 1;
 }
@@ -152,7 +152,7 @@ function goHome() {
 .demo-nav__title {
     flex: 1;
     overflow: hidden;
-    color: #ffffff;
+    color: var(--snake-demo-nav-text);
     font-size: 32rpx;
     font-weight: 600;
     text-align: center;
@@ -161,7 +161,7 @@ function goHome() {
 }
 
 .demo-nav__home {
-    color: #ffffff;
+    color: var(--snake-demo-nav-text);
     font-size: 26rpx;
     font-weight: 500;
 }

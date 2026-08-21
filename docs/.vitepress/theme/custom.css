@@ -1,16 +1,22 @@
 :root {
-    --vp-c-brand-1: #00805a;
-    --vp-c-brand-2: #06a97a;
-    --vp-c-brand-3: #06d290;
+    --snake-brand-fill: #06d290;
+    --snake-brand-hover: #05be83;
+    --snake-brand-active: #04a873;
+    --snake-brand-text: #007a55;
+    --snake-brand-ink: #073b2a;
+    --vp-c-brand-1: var(--snake-brand-text);
+    --vp-c-brand-2: var(--snake-brand-hover);
+    --vp-c-brand-3: var(--snake-brand-fill);
     --vp-c-brand-soft: rgba(6, 210, 144, 0.12);
     --vp-c-bg: #ffffff;
-    --vp-c-bg-alt: #f6f6f6;
-    --vp-c-bg-soft: #f6f6f6;
+    --vp-c-bg-alt: #f4fbf8;
+    --vp-c-bg-soft: #f2faf7;
     --vp-c-divider: #dbdce2;
     --vp-c-border: #e8e8e8;
     --vp-c-text-1: #0f1113;
     --vp-c-text-2: #404155;
     --vp-c-text-3: #707184;
+    --vp-sidebar-bg-color: #ffffff;
     --vp-sidebar-width: 240px;
     --vp-nav-height: 58px;
     --vp-font-family-base: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Microsoft YaHei', sans-serif;
@@ -18,9 +24,9 @@
 }
 
 .dark {
-    --vp-c-brand-1: #06d290;
-    --vp-c-brand-2: #2ee6a8;
-    --vp-c-brand-3: #3befb8;
+    --vp-c-brand-1: #35e7ad;
+    --vp-c-brand-2: #18d99a;
+    --vp-c-brand-3: #06d290;
     --vp-c-brand-soft: rgba(6, 210, 144, 0.14);
     --vp-c-bg: #1b1d24;
     --vp-c-bg-alt: #111111;
@@ -30,6 +36,7 @@
     --vp-c-text-1: #ffffff;
     --vp-c-text-2: #d6d8e8;
     --vp-c-text-3: #9ca0b8;
+    --vp-sidebar-bg-color: var(--vp-c-bg);
 }
 
 html,
@@ -49,7 +56,7 @@ body {
 .VPNavBar,
 .VPNavBar.has-sidebar .content,
 .VPNavBar:not(.home) {
-    background: color-mix(in srgb, var(--vp-c-bg) 96%, transparent) !important;
+    background: color-mix(in srgb, var(--vp-c-bg) 94%, rgba(6, 210, 144, 0.08)) !important;
     backdrop-filter: blur(12px);
 }
 
@@ -64,9 +71,21 @@ body {
     font-size: 14px;
 }
 
+@media (min-width: 768px) {
+    .DocSearch-Button,
+    .DocSearch-Button:hover {
+        background: #f3f4f6;
+    }
+}
+
+.dark .DocSearch-Button,
+.dark .DocSearch-Button:hover {
+    background: #282a32;
+}
+
 .VPSidebar {
     border-right: 1px solid var(--vp-c-divider);
-    background: var(--vp-c-bg);
+    background: var(--vp-sidebar-bg-color);
     scrollbar-width: thin;
 }
 
@@ -278,10 +297,60 @@ body {
 
 .VPFeature:hover {
     border-color: var(--vp-c-brand-1) !important;
+    box-shadow: 0 12px 30px rgba(4, 168, 115, 0.09) !important;
+    transform: translateY(-2px);
+}
+
+.VPHome {
+    background:
+        radial-gradient(circle at 77% 12%, rgba(6, 210, 144, 0.13), transparent 27rem),
+        linear-gradient(180deg, rgba(6, 210, 144, 0.035), transparent 34rem);
+}
+
+.VPButton.brand {
+    border-color: var(--snake-brand-fill) !important;
+    color: var(--snake-brand-ink) !important;
+    background: var(--snake-brand-fill) !important;
+    box-shadow: 0 8px 22px rgba(4, 168, 115, 0.2);
+}
+
+.VPButton.brand:hover {
+    border-color: var(--snake-brand-hover) !important;
+    background: var(--snake-brand-hover) !important;
+}
+
+.VPButton.brand:active {
+    border-color: var(--snake-brand-active) !important;
+    background: var(--snake-brand-active) !important;
+}
+
+.VPButton.alt:hover,
+.VPFeature,
+.vp-doc div[class*='language-'] {
+    transition:
+        border-color 180ms ease,
+        box-shadow 180ms ease,
+        transform 180ms ease;
+}
+
+:where(a, button, [role='button'], input, select, textarea):focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--snake-brand-fill) 62%, transparent);
+    outline-offset: 3px;
+}
+
+.vp-doc div[class*='language-'] {
+    border-color: color-mix(in srgb, var(--snake-brand-text) 14%, var(--vp-c-divider));
+    box-shadow: inset 3px 0 0 rgba(6, 210, 144, 0.45);
+}
+
+.dark .VPHome {
+    background:
+        radial-gradient(circle at 78% 10%, rgba(6, 210, 144, 0.08), transparent 27rem),
+        var(--vp-c-bg);
 }
 
 /*
- * 手机壳恒定 395px 机身宽(iframe 逻辑宽 375px,与主流真机一致,uni-app 1rpx=0.5px),
+ * 手机壳以 375px 为最大视觉宽度,并保持真机纵横比,
  * 视口空间不足时由 PreviewFrame.vue 计算并写入 --preview-scale 等比缩放,
  * 缩放只影响视觉尺寸,不改变 iframe 内部布局宽度。
  */
@@ -290,8 +359,8 @@ body {
     z-index: 15;
     top: max(72px, calc((100vh - var(--preview-phone-height, 548px)) / 2 + 28px));
     right: 20px;
-    --preview-phone-width: calc(395px * var(--preview-scale, 0.8));
-    --preview-phone-height: calc(395px * var(--preview-scale, 0.8) * 143.6 / 70.9 + 26px);
+    --preview-phone-width: calc(375px * var(--preview-scale, 0.8));
+    --preview-phone-height: calc(375px * var(--preview-scale, 0.8) * 143.6 / 70.9 + 26px);
     width: var(--preview-phone-width);
 }
 
@@ -314,7 +383,9 @@ body {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--vp-c-brand-1);
+    background: var(--snake-brand-fill);
+    box-shadow: 0 0 0 0 rgba(6, 210, 144, 0.45);
+    animation: preview-live-pulse 2.2s ease-out infinite;
 }
 
 .preview-panel__header a {
@@ -325,18 +396,19 @@ body {
     position: relative;
     box-sizing: border-box;
     aspect-ratio: 70.9 / 143.6;
-    width: 395px;
+    width: 375px;
     transform: scale(var(--preview-scale, 0.8));
     transform-origin: top left;
-    padding: 24px 9px 18px;
+    padding: 54px 9px 18px;
     overflow: hidden;
-    border: 1px solid #454b4d;
+    border: 1px solid rgba(4, 168, 115, 0.48);
     border-radius: 38px;
-    background: linear-gradient(150deg, #3a4042 0%, #14171a 34%, #0f1214 58%, #2c3234 100%);
+    background: linear-gradient(145deg, #f8fffc 0%, #dff8ee 28%, #ffffff 52%, #c9efdf 100%);
     box-shadow:
-        inset 0 0 0 1px rgba(255, 255, 255, 0.09),
-        inset 0 0 0 2px rgba(0, 0, 0, 0.55),
-        0 16px 36px rgba(15, 30, 24, 0.2);
+        inset 0 0 0 1px rgba(255, 255, 255, 0.92),
+        inset 0 0 0 2px rgba(6, 210, 144, 0.16),
+        -5px -3px 18px rgba(255, 255, 255, 0.9),
+        0 20px 48px rgba(7, 59, 42, 0.22);
 }
 
 .preview-phone::after {
@@ -347,14 +419,14 @@ body {
     width: 54px;
     height: 3px;
     border-radius: 99px;
-    background: #565c5a;
+    background: linear-gradient(90deg, #88cbb2, #04a873, #88cbb2);
     transform: translateX(-50%);
 }
 
 .preview-phone__island {
     position: absolute;
     z-index: 2;
-    top: 11px;
+    top: 31px;
     left: 50%;
     width: 56px;
     height: 17px;
@@ -365,12 +437,84 @@ body {
     pointer-events: none;
 }
 
+.preview-phone__system-status {
+    position: absolute;
+    z-index: 2;
+    top: 24px;
+    right: 9px;
+    left: 9px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 30px;
+    padding: 0 17px;
+    border-radius: 25px 25px 0 0;
+    color: var(--snake-brand-ink);
+    background: linear-gradient(120deg, #06d290, #35e7ad);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    pointer-events: none;
+}
+
+.preview-phone__indicators {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.preview-phone__signal {
+    width: 14px;
+    height: 9px;
+    background:
+        linear-gradient(currentColor 0 0) 0 6px / 2px 3px no-repeat,
+        linear-gradient(currentColor 0 0) 4px 4px / 2px 5px no-repeat,
+        linear-gradient(currentColor 0 0) 8px 2px / 2px 7px no-repeat,
+        linear-gradient(currentColor 0 0) 12px 0 / 2px 9px no-repeat;
+}
+
+.preview-phone__wifi {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+}
+
+.preview-phone__battery {
+    position: relative;
+    box-sizing: border-box;
+    width: 19px;
+    height: 9px;
+    padding: 1px;
+    border: 1px solid currentColor;
+    border-radius: 3px;
+}
+
+.preview-phone__battery::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    right: -3px;
+    width: 2px;
+    height: 3px;
+    border-radius: 0 2px 2px 0;
+    background: currentColor;
+}
+
+.preview-phone__battery > i {
+    display: block;
+    width: 78%;
+    height: 100%;
+    border-radius: 1px;
+    background: currentColor;
+}
+
 .preview-phone iframe,
 .preview-phone__status {
     width: 100%;
     height: 100%;
     border: 0;
-    border-radius: 25px;
+    border-radius: 0 0 25px 25px;
     background: #f6f7f8;
 }
 
@@ -380,7 +524,7 @@ body {
 
 .preview-phone__status {
     position: absolute;
-    inset: 24px 9px 18px;
+    inset: 54px 9px 18px;
     box-sizing: border-box;
     display: grid;
     width: auto;
@@ -394,8 +538,35 @@ body {
 }
 
 .preview-phone__status--error {
-    color: #a35146;
+    color: #8f3f36;
     background: #fff5f3;
+}
+
+@keyframes preview-live-pulse {
+    0%,
+    100% {
+        opacity: 0.85;
+        box-shadow: 0 0 0 0 rgba(6, 210, 144, 0.38);
+    }
+
+    50% {
+        opacity: 1;
+        box-shadow: 0 0 0 6px rgba(6, 210, 144, 0);
+    }
+}
+
+.dark .preview-phone {
+    border-color: rgba(53, 231, 173, 0.38);
+    background: linear-gradient(145deg, #164b3b 0%, #082b21 35%, #061c16 62%, #123f32 100%);
+    box-shadow:
+        inset 0 0 0 1px rgba(185, 248, 223, 0.1),
+        inset 0 0 0 2px rgba(6, 210, 144, 0.12),
+        0 20px 48px rgba(0, 8, 6, 0.55);
+}
+
+.dark .preview-phone__system-status {
+    color: #b9f8df;
+    background: linear-gradient(120deg, #013527, #01513b);
 }
 
 .preview-mobile-link {
@@ -413,7 +584,7 @@ body {
 
 @media (min-width: 1280px) {
     .snake-preview-layout {
-        --preview-reserved-space: calc(395px * var(--preview-scale, 0.78) + 40px);
+        --preview-reserved-space: calc(375px * var(--preview-scale, 0.8) + 40px);
     }
 
     .snake-preview-layout .VPContent.has-sidebar {
@@ -443,7 +614,7 @@ body {
 
 @media (min-width: 1450px) {
     .snake-preview-layout {
-        --preview-reserved-space: calc(395px * var(--preview-scale, 0.88) + 70px);
+        --preview-reserved-space: calc(375px * var(--preview-scale, 0.853) + 70px);
     }
 
     .preview-panel {
@@ -453,7 +624,7 @@ body {
 
 @media (min-width: 1680px) {
     .snake-preview-layout {
-        --preview-reserved-space: calc(395px * var(--preview-scale, 1) + 40px + max(0px, calc((100vw - 1680px) / 2)));
+        --preview-reserved-space: calc(375px * var(--preview-scale, 1) + 40px + max(0px, calc((100vw - 1680px) / 2)));
     }
 
     .preview-panel {
@@ -466,7 +637,12 @@ body {
         display: none;
     }
 
-    .preview-mobile-link {
+    .dark .preview-phone__system-status {
+    color: #b9f8df;
+    background: linear-gradient(120deg, #013527, #01513b);
+}
+
+.preview-mobile-link {
         display: block;
     }
 }

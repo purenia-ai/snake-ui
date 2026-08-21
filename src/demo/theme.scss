@@ -7,9 +7,11 @@
 page {
     --snake-demo-nav-height: 88rpx;
     /* 浅底强调文字:亮色下取深绿保证对比,暗色由下方覆写取亮薄荷 */
-    --snake-demo-accent-text: var(--snake-color-primary-deep, #00805a);
-    /* 导航绿色渐变:两端均可安全承载白字(纯字面值,不随主题切换) */
-    --snake-demo-nav-gradient: linear-gradient(120deg, #006b4a, #00805a);
+    --snake-demo-accent-text: var(--snake-color-primary-deep, #007a55);
+    --snake-demo-nav-text: #073b2a;
+    --snake-demo-nav-hover: rgba(7, 59, 42, 0.12);
+    /* 文档 Demo 私有品牌渐变:亮色承载深绿字,暗色由下方覆盖 */
+    --snake-demo-nav-gradient: linear-gradient(120deg, #06d290, #35e7ad);
     /* 页面极淡品牌晕染 */
     --snake-demo-page-tint: linear-gradient(
         165deg,
@@ -23,6 +25,8 @@ page {
 /* 暗色模式(runtime 在 html 上加 snake-theme-dark class):导航取更深绿,强调文字转亮绿 */
 .snake-theme-dark {
     --snake-demo-accent-text: var(--snake-color-primary, #06d290);
+    --snake-demo-nav-text: #b9f8df;
+    --snake-demo-nav-hover: rgba(6, 210, 144, 0.14);
     --snake-demo-nav-gradient: linear-gradient(120deg, #013527, #01513b);
 }
 
