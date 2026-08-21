@@ -75,6 +75,15 @@
                 { "path": "list-switching", "style": { "navigationBarTitleText": "列表切换" } },
                 { "path": "coupon", "style": { "navigationBarTitleText": "优惠券" } }
             ]
+        },
+        {
+            "root": "pages/tools",
+            "pages": [
+                { "path": "http", "style": { "navigationBarTitleText": "HTTP 请求" } },
+                { "path": "debounce-throttle", "style": { "navigationBarTitleText": "节流与防抖" } },
+                { "path": "route", "style": { "navigationBarTitleText": "路由跳转" } },
+                { "path": "theme-locale", "style": { "navigationBarTitleText": "主题与语言" } }
+            ]
         }
     ],
     "globalStyle": {

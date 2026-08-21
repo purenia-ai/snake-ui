@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitepress';
 import { componentGroups } from './component-groups';
+import { toolGroups } from './tool-groups';
 
 const componentSidebar = [
     { text: '组件总览', link: '/components/intro' },
@@ -39,7 +40,7 @@ export default defineConfig({
         nav: [
             { text: '指南', link: '/guide/getting-started', activeMatch: '^/guide/(?!tools)' },
             { text: '组件', link: '/components/intro', activeMatch: '/components/' },
-            { text: '工具', link: '/guide/tools', activeMatch: '/guide/tools' }
+            { text: '工具', link: '/tools/intro', activeMatch: '/tools/' }
         ],
         sidebar: {
             '/guide/': [
@@ -55,7 +56,6 @@ export default defineConfig({
                     text: '核心概念',
                     items: [
                         { text: '全局配置与底座', link: '/guide/foundation' },
-                        { text: '工具', link: '/guide/tools' },
                         { text: '组件数据约定', link: '/guide/component-data' },
                         { text: '装修编辑器数据对接', link: '/guide/sanke-editor' }
                     ]
@@ -75,7 +75,8 @@ export default defineConfig({
                     ]
                 }
             ],
-            '/components/': componentSidebar
+            '/components/': componentSidebar,
+            '/tools/': toolGroups
         },
         outline: { level: [2, 3], label: '本页内容' },
         docFooter: { prev: '上一页', next: '下一页' },

@@ -23,7 +23,17 @@ const foundation = [
     'drop-menu',
     'drop-menu-item',
     'index-list',
-    'index-anchor'
+    'index-anchor',
+    'form',
+    'form-item',
+    'input',
+    'textarea',
+    'checkbox',
+    'checkbox-group',
+    'radio',
+    'radio-group',
+    'switch',
+    'slider'
 ];
 const cms = [
     'snake-cms',

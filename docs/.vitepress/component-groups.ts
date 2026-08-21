@@ -16,19 +16,34 @@ export const componentGroups: ComponentGroup[] = [
         items: [
             { name: 'ConfigProvider', title: '全局配置', link: '/components/config-provider' },
             { name: 'Button', title: '按钮', link: '/components/button' },
-            { name: 'LoadingIcon', title: '加载图标', link: '/components/loading-icon' },
-            { name: 'Transition', title: '过渡动画', link: '/components/transition' },
             { name: 'Icon', title: '图标', link: '/components/icon' },
             { name: 'Image', title: '图片', link: '/components/image' },
             { name: 'LazyImage', title: '懒加载图片', link: '/components/lazy-image' },
+            { name: 'LoadingIcon', title: '加载图标', link: '/components/loading-icon' },
+            { name: 'Transition', title: '过渡动画', link: '/components/transition' }
+        ]
+    },
+    {
+        title: '数据展示',
+        items: [
             { name: 'Swiper', title: '轮播图', link: '/components/swiper' },
-            { name: 'Tabs', title: '标签页', link: '/components/tabs' },
-            { name: 'NoticeBar', title: '通知栏', link: '/components/notice-bar' },
             { name: 'Loadmore', title: '加载更多', link: '/components/loadmore' },
-            { name: 'Empty', title: '空状态', link: '/components/empty' },
+            { name: 'Empty', title: '空状态', link: '/components/empty' }
+        ]
+    },
+    {
+        title: '反馈组件',
+        items: [
+            { name: 'NoticeBar', title: '通知栏', link: '/components/notice-bar' },
             { name: 'Overlay', title: '遮罩层', link: '/components/overlay' },
-            { name: 'Popup', title: '弹出层', link: '/components/popup' },
+            { name: 'Popup', title: '弹出层', link: '/components/popup' }
+        ]
+    },
+    {
+        title: '布局与导航',
+        items: [
             { name: 'Sticky', title: '吸顶', link: '/components/sticky' },
+            { name: 'Tabs', title: '标签页', link: '/components/tabs' },
             { name: 'ButtonSort', title: '排序按钮', link: '/components/button-sort' },
             { name: 'DropMenu', title: '下拉菜单', link: '/components/drop-menu' },
             { name: 'DropMenuItem', title: '下拉菜单项', link: '/components/drop-menu-item' },
@@ -52,14 +67,14 @@ export const componentGroups: ComponentGroup[] = [
         ]
     },
     {
-        title: '容器',
+        title: 'CMS 容器',
         items: [
             { name: 'SnakeCms', title: 'CMS 页面容器', link: '/components/snake-cms', cms: true },
             { name: 'CustomModule', title: '自定义模块', link: '/components/custom-module', cms: true }
         ]
     },
     {
-        title: '内容展示',
+        title: 'CMS 内容',
         items: [
             { name: 'Images', title: '图片展示', link: '/components/images', cms: true },
             { name: 'Hotzone', title: '热区图', link: '/components/hotzone', cms: true },
@@ -77,7 +92,7 @@ export const componentGroups: ComponentGroup[] = [
         ]
     },
     {
-        title: '导航与互动',
+        title: 'CMS 导航互动',
         items: [
             { name: 'GraphicNavigation', title: '图文导航', link: '/components/graphic-navigation', cms: true },
             { name: 'CommoditySearch', title: '商品搜索', link: '/components/commodity-search', cms: true },
@@ -88,7 +103,7 @@ export const componentGroups: ComponentGroup[] = [
         ]
     },
     {
-        title: '商品',
+        title: 'CMS 商品',
         items: [
             { name: 'GoodsList', title: '商品列表', link: '/components/goods-list', cms: true },
             { name: 'ActivityList', title: '活动列表', link: '/components/activity-list', cms: true },
