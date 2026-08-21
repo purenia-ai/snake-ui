@@ -867,6 +867,23 @@ export function getDemoDefinition(kind: string): DemoDefinition {
     return definitions[kind] ?? { category: '组件', description: '查看组件的实时演示与参数配置。', controls: [] };
 }
 
+export function localizeDemoDefinition(
+    definition: DemoDefinition,
+    translate: (value: string) => string
+): DemoDefinition {
+    return {
+        ...definition,
+        category: translate(definition.category),
+        description: translate(definition.description),
+        controls: definition.controls.map(control => ({
+            ...control,
+            label: translate(control.label),
+            placeholder: control.placeholder ? translate(control.placeholder) : undefined,
+            options: control.options?.map(option => ({ ...option, label: translate(option.label) }))
+        }))
+    };
+}
+
 export function createDemoState(kind: string): Record<string, DemoValue> {
     return Object.fromEntries(getDemoDefinition(kind).controls.map(control => [control.key, control.defaultValue]));
 }

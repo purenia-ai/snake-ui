@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import DemoPage from '../../demo/DemoPage.vue';
+import { demoText, useDemoLocale } from '../../demo/demo-i18n';
 import rawGroups from './components.config';
 import {
-    currentSnakeLocale,
     currentSnakeTheme,
     isSnakeDarkMode,
-    setSnakeLocale,
     setSnakeTheme,
     snakeThemes,
     toggleSnakeDarkMode
@@ -40,20 +39,23 @@ const filteredGroups = computed(() => {
 });
 
 const resultCount = computed(() => filteredGroups.value.reduce((sum, group) => sum + group.list.length, 0));
-const themeLabel = computed(() => (isSnakeDarkMode() ? '浅色' : '深色'));
-const localeLabel = computed(() => (currentSnakeLocale.value.name === 'zh-CN' ? 'EN' : '中文'));
+const { localeName, nextLocaleLabel, switchLocale, text } = useDemoLocale();
+const isEnglish = computed(() => localeName.value === 'en-US');
+const themeLabel = computed(() => text(isSnakeDarkMode() ? '浅色' : '深色'));
 const chineseTitle = (title: string, titleEn: string) => title.replace(titleEn, '').trim();
 const openComponent = (path: string) => uni.navigateTo({ url: path });
 const clearSearch = () => {
     searchText.value = '';
 };
-const switchLocale = () => {
-    setSnakeLocale(currentSnakeLocale.value.name === 'zh-CN' ? 'en-US' : 'zh-CN');
-};
 </script>
 
 <template>
-    <DemoPage title="Snake UI" desc="面向 uni-app 商城与 CMS 场景的组件库" :nav-back="false" :nav-home="false">
+    <DemoPage
+        title="Snake UI"
+        :desc="text('面向 uni-app 商城与 CMS 场景的组件库')"
+        :nav-back="false"
+        :nav-home="false"
+    >
         <view class="overview">
             <view class="theme-switcher">
                 <view
@@ -63,38 +65,39 @@ const switchLocale = () => {
                     @click="setSnakeTheme(theme.name)"
                 >
                     <view class="theme-dot__color" :style="{ background: theme.color?.primary }" />
-                    <text class="theme-dot__label">{{ theme.label || theme.name }}</text>
+                    <text class="theme-dot__label">{{ text(theme.label || theme.name) }}</text>
                 </view>
             </view>
             <view class="foundation-actions">
-                <text class="foundation-actions__hint">主题与语言</text>
+                <text class="foundation-actions__hint">{{ text('主题与语言') }}</text>
                 <button class="foundation-actions__button" @click="toggleSnakeDarkMode">{{ themeLabel }}</button>
-                <button class="foundation-actions__button" @click="switchLocale">{{ localeLabel }}</button>
+                <button class="foundation-actions__button" @click="switchLocale">{{ nextLocaleLabel }}</button>
             </view>
             <view class="search-box">
                 <text class="search-box__icon">⌕</text>
                 <input
                     v-model="searchText"
                     class="search-box__input"
-                    placeholder="搜索组件"
+                    :placeholder="text('搜索组件')"
                     placeholder-class="search-box__placeholder"
                     confirm-type="search"
                 />
                 <text v-if="searchText" class="search-box__clear" @click="clearSearch">×</text>
             </view>
             <view v-if="searchText" class="search-result">
-                <text>找到 {{ resultCount }} 个组件</text><text @click="clearSearch">清空</text>
+                <text>{{ text('找到') }} {{ resultCount }} {{ text('个组件') }}</text
+                ><text @click="clearSearch">{{ text('清空') }}</text>
             </view>
 
             <view v-if="searchText && resultCount === 0" class="overview__empty">
-                <view class="empty-icon">⌕</view><view class="empty-title">没有找到相关组件</view
-                ><view class="empty-desc">换个关键词试试</view>
+                <view class="empty-icon">⌕</view><view class="empty-title">{{ text('没有找到相关组件') }}</view
+                ><view class="empty-desc">{{ text('换个关键词试试') }}</view>
             </view>
 
             <view v-for="group in filteredGroups" :key="group.groupName" class="group-section">
                 <view class="group-title">
-                    <text class="group-title__name">{{ group.groupName }}</text>
-                    <text class="group-title__en">{{ group.groupNameEn }}</text>
+                    <text class="group-title__name">{{ isEnglish ? group.groupNameEn : group.groupName }}</text>
+                    <text class="group-title__en">{{ isEnglish ? group.groupName : group.groupNameEn }}</text>
                     <text class="group-title__count">{{ group.list.length }}</text>
                 </view>
                 <view class="cards">
@@ -110,7 +113,9 @@ const switchLocale = () => {
                                 ><text class="card__title">{{ item.titleEn }}</text
                                 ><text v-if="item.cms" class="card__cms">CMS</text></view
                             >
-                            <text class="card__desc">{{ chineseTitle(item.title, item.titleEn) || item.desc }}</text>
+                            <text class="card__desc">{{
+                                isEnglish ? demoText(item.desc) : chineseTitle(item.title, item.titleEn) || item.desc
+                            }}</text>
                         </view>
                         <text class="card__arrow">›</text>
                     </view>

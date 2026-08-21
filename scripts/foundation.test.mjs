@@ -79,6 +79,7 @@ test('locale uses current language, Chinese fallback, and replacements', () => {
     locale.resetSnakeLocale();
     locale.initSnakeLocale([{ name: 'test', messages: { greeting: 'Hello {name}' } }]);
     assert.equal(locale.setSnakeLocale('test'), true);
+    assert.equal(storage.get('snake-ui-locale'), 'test');
     assert.equal(locale.snakeTranslate('greeting', { name: 'Snake' }), 'Hello Snake');
     assert.equal(locale.snakeTranslate('common.confirm'), '确定');
     assert.equal(locale.snakeTranslate('missing.key'), 'missing.key');

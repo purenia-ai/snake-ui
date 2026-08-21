@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type { DemoControl, DemoValue } from './demo-config';
+import { useDemoLocale } from './demo-i18n';
 
 defineProps<{ controls: DemoControl[]; values: Record<string, DemoValue> }>();
 const emit = defineEmits<{ change: [key: string, value: DemoValue] }>();
+const { text } = useDemoLocale();
 </script>
 
 <template>
@@ -44,7 +46,7 @@ const emit = defineEmits<{ change: [key: string, value: DemoValue] }>();
             <view v-else class="demo-control__input">
                 <snake-input
                     :model-value="String(values[control.key] ?? '')"
-                    :placeholder="control.placeholder || `请输入${control.label}`"
+                    :placeholder="control.placeholder || `${text('请输入')}${control.label}`"
                     @update:model-value="emit('change', control.key, String($event ?? ''))"
                 />
             </view>

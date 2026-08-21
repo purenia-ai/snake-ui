@@ -209,7 +209,17 @@ test('development preview follows the docs host for LAN access', async () => {
     assert.match(frame, /window\.location\.hostname/);
     assert.match(frame, /window\.location\.protocol/);
     assert.match(frame, /localhost'\s*\?\s*'127\.0\.0\.1'/);
+    assert.match(frame, /:5173\/snake-ui\/h5\//);
     assert.doesNotMatch(frame, /http:\/\/localhost:5173\/preview\//);
+});
+
+test('production preview is emitted below the documentation base path', async () => {
+    const frame = await readFile(resolve(root, 'docs/.vitepress/theme/PreviewFrame.vue'), 'utf8');
+    const buildScript = await readFile(resolve(root, 'scripts/build-docs-preview.cjs'), 'utf8');
+
+    assert.match(frame, /\/snake-ui\/h5\/#\//);
+    assert.match(buildScript, /docs\/\.vitepress\/dist\/h5/);
+    assert.doesNotMatch(buildScript, /docs\/\.vitepress\/dist\/preview/);
 });
 test('docs and preview shell use the approved brand green system', async () => {
     const config = await readFile(resolve(root, 'docs/.vitepress/config.mts'), 'utf8');
@@ -236,5 +246,35 @@ test('docs and preview shell use the approved brand green system', async () => {
     assert.match(css, /\.preview-phone iframe,\s*\.preview-phone__status\s*{[^}]*border-radius:\s*0 0 25px 25px/s);
     assert.match(demoTheme, /linear-gradient\(120deg,\s*#06d290,\s*#35e7ad\)/i);
     assert.match(demoTheme, /--snake-demo-nav-text:\s*#073b2a/i);
+
     assert.match(demoPage, /color:\s*var\(--snake-demo-nav-text\)/);
+});
+
+test('mobile preview and locale guide expose one persistent bilingual experience', async () => {
+    const demoLocale = await readFile(resolve(root, 'src/demo/demo-i18n.ts'), 'utf8');
+    const demoPage = await readFile(resolve(root, 'src/demo/DemoPage.vue'), 'utf8');
+    const demoConfig = await readFile(resolve(root, 'src/demo/demo-config.ts'), 'utf8');
+    const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
+    const indexPage = await readFile(resolve(root, 'src/pages/index/index.vue'), 'utf8');
+    const localePage = await readFile(resolve(root, 'src/pages/tools/theme-locale.vue'), 'utf8');
+    const localeGuide = await readFile(resolve(root, 'docs/tools/use-locale.md'), 'utf8');
+
+    assert.match(demoLocale, /currentSnakeLocale/);
+    assert.match(demoLocale, /setSnakeLocale/);
+    assert.match(demoLocale, /nextLocaleLabel/);
+    assert.match(demoLocale, /button:\s*'Button'/);
+    assert.match(demoPage, /@click="switchLocale"/);
+    assert.match(demoPage, /\{\{ nextLocaleLabel \}\}/);
+    assert.match(demoConfig, /export function localizeDemoDefinition/);
+    assert.match(renderer, /localizeDemoDefinition/);
+    assert.match(indexPage, /useDemoLocale/);
+    assert.match(localePage, /text\('切换语言'\)/);
+    assert.match(localeGuide, /defaultLocale/);
+    assert.match(localeGuide, /useSnakeLocale/);
+    assert.match(localeGuide, /snakeTranslate/);
+    assert.match(localeGuide, /自定义或覆盖语言包/);
+    assert.match(localeGuide, /当前语言。/);
+    assert.match(localeGuide, /简体中文/);
+    assert.match(localeGuide, /原始 key/);
+    assert.match(localeGuide, /uni\.setStorageSync/);
 });

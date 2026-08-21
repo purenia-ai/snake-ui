@@ -1,22 +1,24 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import DemoPage from '../../demo/DemoPage.vue';
+import { useDemoLocale } from '../../demo/demo-i18n';
 import { useSnakeLocale, useSnakeTheme } from '../../uni_modules/snake-ui';
 
 const { currentTheme, darkMode, color, toggleDarkMode } = useSnakeTheme();
 const { currentLocale, t, setLocale } = useSnakeLocale();
 const nextLocale = computed(() => (currentLocale.value.name === 'zh-CN' ? 'en-US' : 'zh-CN'));
+const { text } = useDemoLocale();
 </script>
 
 <template>
-    <DemoPage title="主题与语言" desc="响应式 Hooks 实时切换">
+    <DemoPage :title="text('主题与语言')" :desc="text('响应式 Hooks 实时切换')">
         <view class="card">
             <view class="swatch" :style="{ backgroundColor: color.primary }" />
             <view class="body"
-                ><text class="title">{{ currentTheme.label }}</text
+                ><text class="title">{{ text(currentTheme.label) }}</text
                 ><text class="meta">darkMode: {{ darkMode }}</text></view
             >
-            <snake-button size="mini" @click="toggleDarkMode">切换明暗</snake-button>
+            <snake-button size="mini" @click="toggleDarkMode">{{ text('切换明暗') }}</snake-button>
         </view>
         <view class="card">
             <view class="locale">{{ currentLocale.name.slice(0, 2).toUpperCase() }}</view>
@@ -24,7 +26,7 @@ const nextLocale = computed(() => (currentLocale.value.name === 'zh-CN' ? 'en-US
                 ><text class="title">{{ t('common.confirm') }}</text
                 ><text class="meta">{{ currentLocale.label }}</text></view
             >
-            <snake-button size="mini" plain @click="setLocale(nextLocale)">切换语言</snake-button>
+            <snake-button size="mini" plain @click="setLocale(nextLocale)">{{ text('切换语言') }}</snake-button>
         </view>
     </DemoPage>
 </template>

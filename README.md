@@ -205,7 +205,7 @@ pnpm docs:dev:preview
 
 默认端口：
 
-- H5 预览：http://localhost:5173/preview/
+- H5 预览：http://localhost:5173/snake-ui/h5/
 - VitePress 文档：http://localhost:5174/
 
 局域网访问时使用运行电脑的局域网 IP，例如 `http://192.168.1.10:5174/`。文档 iframe 会自动使用当前文档主机连接 H5 预览。

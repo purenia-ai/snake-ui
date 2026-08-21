@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import {
-    snakeColor,
-    snakeDarkMode,
-    snakeSystemDark,
-    snakeThemeStyle
-} from '../uni_modules/snake-ui';
+import { snakeColor, snakeDarkMode, snakeSystemDark, snakeThemeStyle } from '../uni_modules/snake-ui';
+import { useDemoLocale } from './demo-i18n';
 
 withDefaults(
     defineProps<{
@@ -32,6 +28,7 @@ const shellThemeStyle = computed(() => ({
     ...snakeThemeStyle.value,
     '--snake-demo-accent-text': isDark.value ? snakeColor.primary : snakeColor.primaryDeep
 }));
+const { nextLocaleLabel, switchLocale, text } = useDemoLocale();
 
 function goBack() {
     if (getCurrentPages().length > 1) {
@@ -51,24 +48,21 @@ function goHome() {
         <template v-if="!viewport">
             <view class="demo-nav">
                 <view class="demo-nav__side" :class="{ 'demo-nav__side--hidden': !navBack }">
-                    <view
-                        v-if="navBack"
-                        class="demo-nav__hit"
-                        hover-class="demo-nav__hit--hover"
-                        @click="goBack()"
-                    >
+                    <view v-if="navBack" class="demo-nav__hit" hover-class="demo-nav__hit--hover" @click="goBack()">
                         <text class="demo-nav__back">‹</text>
                     </view>
                 </view>
                 <text class="demo-nav__title">{{ title }}</text>
-                <view class="demo-nav__side" :class="{ 'demo-nav__side--hidden': !navHome }">
+                <view class="demo-nav__actions">
                     <view
-                        v-if="navHome"
-                        class="demo-nav__hit"
+                        class="demo-nav__hit demo-nav__locale"
                         hover-class="demo-nav__hit--hover"
-                        @click="goHome()"
+                        @click="switchLocale"
                     >
-                        <text class="demo-nav__home">首页</text>
+                        <text>{{ nextLocaleLabel }}</text>
+                    </view>
+                    <view v-if="navHome" class="demo-nav__hit" hover-class="demo-nav__hit--hover" @click="goHome()">
+                        <text class="demo-nav__home">{{ text('首页') }}</text>
                     </view>
                 </view>
             </view>
@@ -125,6 +119,21 @@ function goHome() {
     &--hidden {
         visibility: hidden;
     }
+}
+
+.demo-nav__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 96rpx;
+    height: 100%;
+}
+
+.demo-nav__locale {
+    min-width: 58rpx;
+    color: var(--snake-demo-nav-text);
+    font-size: 24rpx;
+    font-weight: 650;
 }
 
 .demo-nav__hit {

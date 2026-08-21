@@ -14,6 +14,7 @@ const componentSidebar = [
 ];
 
 export default defineConfig({
+    base: '/snake-ui/',
     lang: 'zh-CN',
     title: 'Snake UI',
     description: '面向 uni-app 商城场景的 CMS 组件文档',
@@ -57,6 +58,7 @@ export default defineConfig({
                     items: [
                         { text: '全局配置与底座', link: '/guide/foundation' },
                         { text: '组件数据约定', link: '/guide/component-data' },
+                        { text: 'CMS 快速接入', link: '/guide/cms-usage' },
                         { text: '装修编辑器数据对接', link: '/guide/sanke-editor' }
                     ]
                 },

@@ -3,7 +3,8 @@ import { computed, reactive, ref, watch } from 'vue';
 import DemoPage from './DemoPage.vue';
 import DemoSection from './DemoSection.vue';
 import DemoControlPanel from './DemoControlPanel.vue';
-import { createDemoState, getDemoDefinition, type DemoValue } from './demo-config';
+import { createDemoState, getDemoDefinition, localizeDemoDefinition, type DemoValue } from './demo-config';
+import { demoText, demoTitle, useDemoLocale } from './demo-i18n';
 import {
     activities,
     auxiliaryData,
@@ -27,7 +28,16 @@ import {
 } from './fixtures';
 
 const props = defineProps<{ kind: string; title: string }>();
-const definition = computed(() => getDemoDefinition(props.kind));
+const { localeName, text } = useDemoLocale();
+const definition = computed(() => {
+    localeName.value;
+    return localizeDemoDefinition(getDemoDefinition(props.kind), demoText);
+});
+const localizedTitle = computed(() => {
+    localeName.value;
+    return demoTitle(props.kind, props.title);
+});
+const isEnglish = computed(() => localeName.value === 'en-US');
 const demoState = reactive<Record<string, DemoValue>>(createDemoState(props.kind));
 const currentActivity = ref('001');
 const currentTab = ref(0);
@@ -161,8 +171,8 @@ function resetForm() {
 </script>
 
 <template>
-    <DemoPage :title="title" :eyebrow="categoryLabel" :desc="previewDescription" :viewport="isViewportPreview">
-        <DemoSection :bare="isViewportPreview" title="演示效果">
+    <DemoPage :title="localizedTitle" :eyebrow="categoryLabel" :desc="previewDescription" :viewport="isViewportPreview">
+        <DemoSection :bare="isViewportPreview" :title="text('演示效果')">
             <view v-if="kind === 'button'" class="demo-stack">
                 <snake-button
                     :type="String(demoState.type)"
@@ -171,7 +181,7 @@ function resetForm() {
                     :plain="Boolean(demoState.plain)"
                     :disabled="Boolean(demoState.disabled)"
                     :loading="Boolean(demoState.loading)"
-                    loading-text="处理中"
+                    :loading-text="isEnglish ? 'Processing' : '处理中'"
                     icon="checkmark"
                     ripple
                     >Snake Button</snake-button
@@ -182,10 +192,12 @@ function resetForm() {
                     :mode="demoState.loadingMode as any"
                     :size="Number(demoState.loadingSize)"
                     :vertical="Boolean(demoState.loadingVertical)"
-                    text="加载中"
+                    :text="isEnglish ? 'Loading' : '加载中'"
             /></view>
             <view v-else-if="kind === 'transition'" class="demo-stack"
-                ><snake-button size="small" @click="transitionVisible = !transitionVisible">切换显示</snake-button
+                ><snake-button size="small" @click="transitionVisible = !transitionVisible">{{
+                    isEnglish ? 'Toggle' : '切换显示'
+                }}</snake-button
                 ><snake-transition
                     :show="transitionVisible"
                     :name="demoState.transitionName as any"
@@ -251,38 +263,57 @@ function resetForm() {
                     :more-icon="Boolean(demoState.noticeMore)"
                     :mode="demoState.noticeMode === 'vertical' ? 'vertical' : 'horizontal'"
                     :direction="demoState.noticeMode === 'vertical' ? 'column' : 'row'"
-                    :text="demoState.noticeMode === 'vertical' ? '' : '欢迎使用 Snake UI'"
-                    :list="['基础组件已就绪', '支持 H5、小程序和 App']"
+                    :text="
+                        demoState.noticeMode === 'vertical'
+                            ? ''
+                            : isEnglish
+                              ? 'Welcome to Snake UI'
+                              : '欢迎使用 Snake UI'
+                    "
+                    :list="
+                        isEnglish
+                            ? ['Foundation components are ready', 'Supports H5, mini programs and apps']
+                            : ['基础组件已就绪', '支持 H5、小程序和 App']
+                    "
                     :duration="Number(demoState.noticeDuration)"
             /></view>
             <view v-else-if="kind === 'overlay'" class="demo-trigger"
-                ><snake-button @click="overlayVisible = true">打开遮罩</snake-button
+                ><snake-button @click="overlayVisible = true">{{
+                    isEnglish ? 'Open overlay' : '打开遮罩'
+                }}</snake-button
                 ><snake-overlay v-model="overlayVisible"
                     ><view class="demo-overlay-tip">{{ demoState.overlayTip }}</view></snake-overlay
                 ></view
             >
             <view v-else-if="kind === 'popup'" class="demo-trigger"
-                ><snake-button @click="popupVisible = true">打开弹窗</snake-button
+                ><snake-button @click="popupVisible = true">{{ isEnglish ? 'Open popup' : '打开弹窗' }}</snake-button
                 ><snake-popup
                     v-model="popupVisible"
                     :mode="demoState.popupMode as any"
                     :close-on-click-overlay="Boolean(demoState.closeOverlay)"
                     ><view class="demo-popup"
-                        ><text class="demo-popup__title">Snake Popup</text><text>这是一个可交互的弹出层。</text
-                        ><snake-button custom-style="margin-top: 32rpx" @click="popupVisible = false"
-                            >关闭</snake-button
-                        ></view
+                        ><text class="demo-popup__title">Snake Popup</text
+                        ><text>{{ isEnglish ? 'This is an interactive popup.' : '这是一个可交互的弹出层。' }}</text
+                        ><snake-button custom-style="margin-top: 32rpx" @click="popupVisible = false">{{
+                            isEnglish ? 'Close' : '关闭'
+                        }}</snake-button></view
                     ></snake-popup
                 ></view
             >
             <view v-else-if="kind === 'sticky'" class="demo-scroll"
-                ><view class="demo-scroll-hero">向下滚动查看吸顶效果</view
+                ><view class="demo-scroll-hero">{{
+                    isEnglish ? 'Scroll down to see the sticky behavior' : '向下滚动查看吸顶效果'
+                }}</view
                 ><snake-sticky
                     bg-color="#06D290"
                     :disabled="Boolean(demoState.stickyDisabled)"
                     :offset-top="Number(demoState.stickyOffset)"
-                    ><view class="demo-sticky">我会固定在手机预览顶部</view></snake-sticky
-                ><view v-for="item in 12" :key="item" class="demo-row">滚动内容 {{ item }}</view></view
+                    ><view class="demo-sticky">{{
+                        isEnglish ? 'I stay at the top of the preview' : '我会固定在手机预览顶部'
+                    }}</view></snake-sticky
+                ><view v-for="item in 12" :key="item" class="demo-row"
+                    >{{ isEnglish ? 'Scroll item' : '滚动内容' }} {{ item }}</view
+                ></view
             >
             <view v-else-if="kind === 'swiper'" class="demo-stack"
                 ><snake-swiper
@@ -304,20 +335,29 @@ function resetForm() {
                     :active-color="String(demoState.tabsColor)"
                     :font-size="Number(demoState.tabsSize)"
                     @change="currentTab = $event"
-                /><view class="demo-tab-content">当前选中：{{ foundationTabs[currentTab] }}</view></view
+                /><view class="demo-tab-content"
+                    >{{ isEnglish ? 'Selected: ' : '当前选中：' }}{{ foundationTabs[currentTab] }}</view
+                ></view
             >
             <view v-else-if="kind === 'button-sort'" class="demo-stack"
                 ><snake-button-sort :title="String(demoState.sortTitle)" @change="sortValue = $event.value" /><view
                     class="demo-tab-content"
-                    >当前状态：{{ sortValue || '默认' }}</view
+                    >{{ isEnglish ? 'Current state: ' : '当前状态：'
+                    }}{{ sortValue || (isEnglish ? 'Default' : '默认') }}</view
                 ></view
             >
             <view v-else-if="kind === 'drop-menu' || kind === 'drop-menu-item'" class="demo-menu"
                 ><snake-drop-menu
                     ><snake-drop-menu-item :title="String(demoState.menuTitle)"
-                        ><view class="demo-menu-panel">这里可以放筛选项或其他业务内容</view></snake-drop-menu-item
-                    ><snake-drop-menu-item title="排序方式"
-                        ><view class="demo-menu-panel">综合排序 · 最新发布 · 价格优先</view></snake-drop-menu-item
+                        ><view class="demo-menu-panel">{{
+                            isEnglish
+                                ? 'Place filters or other business content here'
+                                : '这里可以放筛选项或其他业务内容'
+                        }}</view></snake-drop-menu-item
+                    ><snake-drop-menu-item :title="isEnglish ? 'Sort by' : '排序方式'"
+                        ><view class="demo-menu-panel">{{
+                            isEnglish ? 'Recommended · Latest · Price' : '综合排序 · 最新发布 · 价格优先'
+                        }}</view></snake-drop-menu-item
                     ></snake-drop-menu
                 ></view
             >
@@ -331,7 +371,7 @@ function resetForm() {
                             :text="kind === 'index-anchor' ? `${String(demoState.anchorPrefix)} ${letter}` : letter"
                             custom-style="height: 64rpx; padding: 0 20rpx"
                         /><view v-for="item in 3" :key="item" class="demo-index-row"
-                            >{{ letter }} 类内容 {{ item }}</view
+                            >{{ letter }} {{ isEnglish ? 'item' : '类内容' }} {{ item }}</view
                         ></view
                     ></snake-index-list
                 ></view
@@ -345,34 +385,45 @@ function resetForm() {
                     :label-position="demoState.formTopLabel ? 'top' : 'left'"
                 >
                     <snake-form-item
-                        label="姓名"
+                        :label="isEnglish ? 'Name' : '姓名'"
                         prop="name"
                         :required="Boolean(demoState.formRequired ?? true)"
                         left-icon="info"
-                        ><snake-input v-model="formModel.name" placeholder="请输入姓名" clearable
+                        ><snake-input
+                            v-model="formModel.name"
+                            :placeholder="isEnglish ? 'Enter your name' : '请输入姓名'"
+                            clearable
                     /></snake-form-item>
-                    <snake-form-item label="简介" prop="intro"
+                    <snake-form-item :label="isEnglish ? 'Bio' : '简介'" prop="intro"
                         ><snake-textarea v-model="formModel.intro" :maxlength="60" count height="150"
                     /></snake-form-item>
-                    <snake-form-item label="水果" prop="fruit"
+                    <snake-form-item :label="isEnglish ? 'Fruit' : '水果'" prop="fruit"
                         ><snake-checkbox-group v-model="formModel.fruit"
-                            ><snake-checkbox name="apple">苹果</snake-checkbox
-                            ><snake-checkbox name="pear">雪梨</snake-checkbox></snake-checkbox-group
+                            ><snake-checkbox name="apple">{{ isEnglish ? 'Apple' : '苹果' }}</snake-checkbox
+                            ><snake-checkbox name="pear">{{
+                                isEnglish ? 'Pear' : '雪梨'
+                            }}</snake-checkbox></snake-checkbox-group
                         ></snake-form-item
                     >
-                    <snake-form-item label="味道" prop="flavor"
+                    <snake-form-item :label="isEnglish ? 'Flavor' : '味道'" prop="flavor"
                         ><snake-radio-group v-model="formModel.flavor"
-                            ><snake-radio name="sweet">鲜甜</snake-radio
-                            ><snake-radio name="spicy">香辣</snake-radio></snake-radio-group
+                            ><snake-radio name="sweet">{{ isEnglish ? 'Sweet' : '鲜甜' }}</snake-radio
+                            ><snake-radio name="spicy">{{
+                                isEnglish ? 'Spicy' : '香辣'
+                            }}</snake-radio></snake-radio-group
                         ></snake-form-item
                     >
-                    <snake-form-item label="启用" prop="enabled"
+                    <snake-form-item :label="isEnglish ? 'Enabled' : '启用'" prop="enabled"
                         ><snake-switch v-model="formModel.enabled"
                     /></snake-form-item>
                 </snake-form>
                 <view class="demo-form__actions"
-                    ><snake-button size="small" @click="submitForm">提交校验</snake-button
-                    ><snake-button size="small" plain @click="resetForm">重置</snake-button></view
+                    ><snake-button size="small" @click="submitForm">{{
+                        isEnglish ? 'Validate' : '提交校验'
+                    }}</snake-button
+                    ><snake-button size="small" plain @click="resetForm">{{
+                        isEnglish ? 'Reset' : '重置'
+                    }}</snake-button></view
                 >
                 <text class="demo-form__message">{{ formMessage }}</text>
             </view>
@@ -389,8 +440,11 @@ function resetForm() {
                     type="password"
                     border="surround"
                     show-password
-                    placeholder="密码输入"
-                /><text>当前值：{{ inputValue || '空' }}</text></view
+                    :placeholder="isEnglish ? 'Password' : '密码输入'"
+                /><text
+                    >{{ isEnglish ? 'Current value: ' : '当前值：'
+                    }}{{ inputValue || (isEnglish ? 'Empty' : '空') }}</text
+                ></view
             >
             <view v-else-if="kind === 'textarea'" class="demo-control-stack"
                 ><snake-textarea
@@ -398,39 +452,50 @@ function resetForm() {
                     :count="Boolean(demoState.textareaCount)"
                     :auto-height="Boolean(demoState.textareaAuto)"
                     :maxlength="80"
-                /><text>已输入 {{ textareaValue.length }} 个字</text></view
+                /><text>{{
+                    isEnglish ? `${textareaValue.length} characters` : `已输入 ${textareaValue.length} 个字`
+                }}</text></view
             >
             <view v-else-if="kind === 'checkbox'" class="demo-control-stack"
-                ><snake-checkbox v-model="checkboxValue" :disabled="Boolean(demoState.choiceDisabled)"
-                    >同意用户协议</snake-checkbox
-                ><text>当前值：{{ checkboxValue }}</text></view
+                ><snake-checkbox v-model="checkboxValue" :disabled="Boolean(demoState.choiceDisabled)">{{
+                    isEnglish ? 'Accept the user agreement' : '同意用户协议'
+                }}</snake-checkbox
+                ><text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ checkboxValue }}</text></view
             >
             <view v-else-if="kind === 'checkbox-group'" class="demo-control-stack"
                 ><snake-checkbox-group
                     v-model="checkboxValues"
                     :placement="demoState.choiceColumn ? 'column' : 'row'"
                     :max="2"
-                    ><snake-checkbox name="apple">苹果</snake-checkbox><snake-checkbox name="pear">雪梨</snake-checkbox
-                    ><snake-checkbox name="lemon">柠檬</snake-checkbox></snake-checkbox-group
-                ><text>已选：{{ checkboxValues.join('、') || '无' }}</text></view
+                    ><snake-checkbox name="apple">{{ isEnglish ? 'Apple' : '苹果' }}</snake-checkbox
+                    ><snake-checkbox name="pear">{{ isEnglish ? 'Pear' : '雪梨' }}</snake-checkbox
+                    ><snake-checkbox name="lemon">{{
+                        isEnglish ? 'Lemon' : '柠檬'
+                    }}</snake-checkbox></snake-checkbox-group
+                ><text
+                    >{{ isEnglish ? 'Selected: ' : '已选：'
+                    }}{{ checkboxValues.join(isEnglish ? ', ' : '、') || (isEnglish ? 'None' : '无') }}</text
+                ></view
             >
             <view v-else-if="kind === 'radio'" class="demo-control-stack"
-                ><snake-radio v-model="radioStandalone" :disabled="Boolean(demoState.choiceDisabled)"
-                    >默认地址</snake-radio
-                ><text>当前值：{{ radioStandalone }}</text></view
+                ><snake-radio v-model="radioStandalone" :disabled="Boolean(demoState.choiceDisabled)">{{
+                    isEnglish ? 'Default address' : '默认地址'
+                }}</snake-radio
+                ><text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ radioStandalone }}</text></view
             >
             <view v-else-if="kind === 'radio-group'" class="demo-control-stack"
                 ><snake-radio-group v-model="radioValue" :placement="demoState.choiceColumn ? 'column' : 'row'"
-                    ><snake-radio name="sweet">鲜甜</snake-radio><snake-radio name="spicy">香辣</snake-radio
-                    ><snake-radio name="mild">清淡</snake-radio></snake-radio-group
-                ><text>已选：{{ radioValue }}</text></view
+                    ><snake-radio name="sweet">{{ isEnglish ? 'Sweet' : '鲜甜' }}</snake-radio
+                    ><snake-radio name="spicy">{{ isEnglish ? 'Spicy' : '香辣' }}</snake-radio
+                    ><snake-radio name="mild">{{ isEnglish ? 'Mild' : '清淡' }}</snake-radio></snake-radio-group
+                ><text>{{ isEnglish ? 'Selected: ' : '已选：' }}{{ radioValue }}</text></view
             >
             <view v-else-if="kind === 'switch'" class="demo-control-stack"
                 ><snake-switch
                     v-model="switchValue"
                     :loading="Boolean(demoState.switchLoading)"
                     :disabled="Boolean(demoState.switchDisabled)"
-                /><text>当前值：{{ switchValue }}</text></view
+                /><text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ switchValue }}</text></view
             >
             <view v-else-if="kind === 'slider'" class="demo-control-stack"
                 ><snake-slider
@@ -439,7 +504,7 @@ function resetForm() {
                     :show-value="Boolean(demoState.sliderShowValue)"
                     :disabled="Boolean(demoState.sliderDisabled)"
                     show-edge-value
-                /><text>当前值：{{ sliderValue }}</text></view
+                /><text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ sliderValue }}</text></view
             >
             <snake-cms
                 v-if="kind === 'snake-cms'"
@@ -493,7 +558,7 @@ function resetForm() {
             <snake-list-switching v-else-if="kind === 'list-switching'" :datas="demoListSwitchingData" />
             <snake-coupon v-else-if="kind === 'coupon'" :datas="demoCouponData" />
         </DemoSection>
-        <DemoSection v-if="definition.controls.length" title="参数配置">
+        <DemoSection v-if="definition.controls.length" :title="text('参数配置')">
             <DemoControlPanel :controls="definition.controls" :values="demoState" @change="updateDemoValue" />
         </DemoSection>
     </DemoPage>
