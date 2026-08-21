@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import test from 'node:test'
@@ -9,9 +9,15 @@ const testRoot = await mkdtemp(join(tmpdir(), 'snake-ui-runtime-'))
 await Promise.all(['unit.ts', 'platform.ts'].map(async (file) => {
   await writeFile(join(testRoot, file), await readFile(join(sourceRoot, file)))
 }))
+await mkdir(join(testRoot, 'functions'))
+const functionsSource = (await readFile(join(sourceRoot, 'functions/index.ts'), 'utf8'))
+  .replace("from '../unit'", "from '../unit.ts'")
+  .replaceAll("from '../platform'", "from '../platform.ts'")
+await writeFile(join(testRoot, 'functions/index.ts'), functionsSource)
 const runtimeSource = (await readFile(join(sourceRoot, 'runtime.ts'), 'utf8'))
   .replace("from './unit'", "from './unit.ts'")
   .replace("from './platform'", "from './platform.ts'")
+  .replace("from './functions'", "from './functions/index.ts'")
 await writeFile(join(testRoot, 'runtime.ts'), runtimeSource)
 
 const {
@@ -20,6 +26,7 @@ const {
   requireSnakeCache,
   requireSnakeRequest,
   resetSnakeUIRuntime,
+  snake,
   SnakeUIRuntimeError,
 } = await import(`${new URL(`file:///${join(testRoot, 'runtime.ts').replaceAll('\\', '/')}`)}?test=${Date.now()}`)
 
@@ -42,6 +49,9 @@ test('runtime exposes configured adapters', async () => {
   assert.equal(requireSnakeCache('test'), cache)
   assert.equal(getSnakeConfig('test').baseUrl, '/api')
   assert.deepEqual(await requireSnakeRequest('test').get('/health'), { ok: true })
+  assert.equal(typeof snake.route, 'function')
+  assert.equal(typeof snake.queryParams, 'function')
+  assert.equal(typeof snake.timeFrom, 'function')
 })
 
 test('runtime reports a missing capability with component context', () => {

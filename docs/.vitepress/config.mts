@@ -37,8 +37,9 @@ export default defineConfig({
             alt: 'Snake UI'
         },
         nav: [
-            { text: '指南', link: '/guide/getting-started', activeMatch: '/guide/' },
-            { text: '组件', link: '/components/intro', activeMatch: '/components/' }
+            { text: '指南', link: '/guide/getting-started', activeMatch: '^/guide/(?!tools)' },
+            { text: '组件', link: '/components/intro', activeMatch: '/components/' },
+            { text: '工具', link: '/guide/tools', activeMatch: '/guide/tools' }
         ],
         sidebar: {
             '/guide/': [
@@ -54,6 +55,7 @@ export default defineConfig({
                     text: '核心概念',
                     items: [
                         { text: '全局配置与底座', link: '/guide/foundation' },
+                        { text: '工具', link: '/guide/tools' },
                         { text: '组件数据约定', link: '/guide/component-data' },
                         { text: '装修编辑器数据对接', link: '/guide/sanke-editor' }
                     ]

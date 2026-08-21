@@ -2,7 +2,8 @@ import type { App, InjectionKey } from 'vue';
 import type { SnakeDebugLevel, SnakeHttpSetup, SnakeLocaleOption, SnakeThemeOption } from './config/types';
 import type { SnakeCmsOptions } from '../components/snake-cms/types';
 import { addUnit, pxToRpx } from './unit';
-import { formatTime, getQueryParams, getRect, getSystemInfo, guid, navTo, sleep, toast } from './platform';
+import { formatTime, getQueryParams, getRect, getSystemInfo, guid, navTo, route, sleep, toast } from './platform';
+import { queryParams, timeFormat, timeFrom } from './functions';
 
 export interface SnakeRequestAdapter {
     get<T = unknown>(url: string, params?: Record<string, unknown>): Promise<T>;
@@ -107,8 +108,12 @@ export const snake = {
     guid,
     navTo,
     pxToRpx,
+    queryParams,
+    route,
     sleep,
     sys: getSystemInfo,
+    timeFormat,
+    timeFrom,
     toast,
     get options(): Readonly<SnakeUIOptions> {
         return getSnakeUIOptions();

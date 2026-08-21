@@ -1,4 +1,39 @@
 export type SelectorRect = UniApp.NodeInfo & { width: number; height: number; top: number; left: number };
+export type SnakeRouteType =
+  | 'navigateTo'
+  | 'to'
+  | 'redirect'
+  | 'redirectTo'
+  | 'switchTab'
+  | 'tab'
+  | 'reLaunch'
+  | 'navigateBack'
+  | 'back';
+export type SnakeRouteParamValue = string | number | boolean | null | undefined;
+export type SnakeRouteParams = Record<string, SnakeRouteParamValue | readonly SnakeRouteParamValue[]>;
+
+export interface SnakeRouteOptions {
+  type?: SnakeRouteType;
+  url?: string;
+  params?: SnakeRouteParams;
+  delta?: number;
+  animationType?: string;
+  animationDuration?: number;
+}
+
+type SnakeNavigationMethod = 'navigateTo' | 'redirectTo' | 'switchTab' | 'reLaunch' | 'navigateBack';
+
+const routeTypeMap: Record<SnakeRouteType, SnakeNavigationMethod> = {
+  navigateTo: 'navigateTo',
+  to: 'navigateTo',
+  redirect: 'redirectTo',
+  redirectTo: 'redirectTo',
+  switchTab: 'switchTab',
+  tab: 'switchTab',
+  reLaunch: 'reLaunch',
+  navigateBack: 'navigateBack',
+  back: 'navigateBack',
+};
 
 export function sleep(delay = 0): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, delay));
@@ -42,12 +77,67 @@ export function navTo(url?: string): void {
   uni.navigateTo({ url, fail: () => uni.switchTab({ url }) });
 }
 
+function appendQueryParams(url: string, params?: SnakeRouteParams): string {
+  if (!params) return url;
+  const entries: string[] = [];
+  Object.entries(params).forEach(([key, rawValue]) => {
+    const values = Array.isArray(rawValue) ? rawValue : [rawValue];
+    values.forEach(value => {
+      if (value === null || value === undefined) return;
+      entries.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`);
+    });
+  });
+  if (!entries.length) return url;
+  const hashIndex = url.indexOf('#');
+  const path = hashIndex >= 0 ? url.slice(0, hashIndex) : url;
+  const hash = hashIndex >= 0 ? url.slice(hashIndex) : '';
+  const separator = path.includes('?') ? (path.endsWith('?') || path.endsWith('&') ? '' : '&') : '?';
+  return `${path}${separator}${entries.join('&')}${hash}`;
+}
+
+function routeError(message: string): Error {
+  return new Error(`[Snake UI] ${message}`);
+}
+
+export function route(url: string, params?: SnakeRouteParams): Promise<void>;
+export function route(options: SnakeRouteOptions): Promise<void>;
+export function route(input: string | SnakeRouteOptions, params?: SnakeRouteParams): Promise<void> {
+  const options: SnakeRouteOptions = typeof input === 'string' ? { url: input, params } : input || {};
+  const requestedType = options.type || 'navigateTo';
+  const method = routeTypeMap[requestedType];
+  if (!method) return Promise.reject(routeError(`Unsupported route type: ${String(requestedType)}.`));
+
+  const platformMethod = (uni as unknown as Record<string, unknown>)[method];
+  if (typeof platformMethod !== 'function') return Promise.reject(routeError(`${method} is unavailable on this platform.`));
+
+  let navigationOptions: Record<string, unknown>;
+  if (method === 'navigateBack') {
+    navigationOptions = { delta: Math.max(1, Math.trunc(Number(options.delta) || 1)) };
+  } else {
+    const url = String(options.url || '').trim();
+    if (!url) return Promise.reject(routeError(`${method} requires a non-empty url.`));
+    navigationOptions = { url: method === 'switchTab' ? url : appendQueryParams(url, options.params) };
+    if (method === 'navigateTo' || method === 'redirectTo') {
+      if (options.animationType !== undefined) navigationOptions.animationType = options.animationType;
+      if (options.animationDuration !== undefined) navigationOptions.animationDuration = options.animationDuration;
+    }
+  }
+
+  return new Promise((resolve, reject) => {
+    (platformMethod as (options: Record<string, unknown>) => void)({
+      ...navigationOptions,
+      success: () => resolve(),
+      fail: (error: { errMsg?: string }) => reject(routeError(error?.errMsg || `${method} failed.`)),
+    });
+  });
+}
+
 export function getQueryParams(url: string): Record<string, string> {
   const query = url.split('?')[1]?.split('#')[0] || '';
   return query.split('&').reduce<Record<string, string>>((result, part) => {
     if (!part) return result;
     const [key, value = ''] = part.split('=');
-    result[decodeURIComponent(key)] = decodeURIComponent(value.replace(/\+/g, ' '));
+    result[decodeURIComponent(key.replace(/\+/g, ' '))] = decodeURIComponent(value.replace(/\+/g, ' '));
     return result;
   }, {});
 }

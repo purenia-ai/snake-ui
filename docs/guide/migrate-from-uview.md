@@ -40,15 +40,24 @@ uview-pro/theme.scss
 原先的 `uni.$u` 工具优先改为按需导入：
 
 ```ts
-import { addUnit, formatTime, getRect, guid, navTo, sleep, toast } from 'snake-ui/libs';
+import { addUnit, formatTime, getRect, guid, route, sleep, toast } from 'snake-ui';
 ```
 
 安装插件后，也可以使用 `uni.$snake` 或模板 `$snake`：
 
 ```ts
 uni.$snake.toast('迁移完成');
-uni.$snake.navTo('/pages/index/index');
+await uni.$snake.route('/pages/index/index');
 ```
+
+`uni.$u.route()` 可以直接迁移为 `route()`，字符串简写和对象形式均兼容：
+
+```ts
+await route('/pages/goods/detail', { id: 1 });
+await route({ type: 'redirect', url: '/pages/login' });
+```
+
+完整的别名、参数编码与平台限制见[工具](/guide/tools)。
 
 ## 分阶段替换
 

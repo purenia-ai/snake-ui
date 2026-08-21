@@ -12,7 +12,7 @@ import {
     snakeThemes,
     toggleSnakeDarkMode
 } from '../config/theme';
-import { debounce, getRect, navTo, snakeEmitter, throttle, toast } from '../functions';
+import { debounce, getRect, navTo, route, snakeEmitter, throttle, toast } from '../functions';
 import { currentSnakeLocale, initSnakeLocale, setSnakeLocale, snakeLocales, snakeTranslate } from '../../locale';
 
 export function useSnakeTheme() {
@@ -49,7 +49,7 @@ export function useSnakeLocale(namespace?: string) {
 }
 
 export function useSnakeRouter() {
-    return { route: navTo };
+    return { route, navTo };
 }
 
 export function useSnakeRect(instance?: unknown) {

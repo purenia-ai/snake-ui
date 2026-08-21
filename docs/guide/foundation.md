@@ -125,6 +125,8 @@ import { debounce, deepMerge, navTo, queryParams, useSnakeEmitter, useSnakeRoute
 
 这样类型推导、测试和依赖分析更直接。
 
+路由、查询参数、时间和其他函数的完整说明见[工具](/guide/tools)。
+
 ## 样式入口
 
 ```scss

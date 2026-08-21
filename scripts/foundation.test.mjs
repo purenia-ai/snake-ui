@@ -5,6 +5,21 @@ import test, { after } from 'node:test';
 import { createServer } from 'vite';
 
 const storage = new Map();
+const navigationCalls = [];
+let failNextNavigateTo = false;
+
+function recordNavigation(method) {
+    return options => {
+        navigationCalls.push({ method, options: { ...options, success: undefined, fail: undefined } });
+        if (method === 'navigateTo' && failNextNavigateTo) {
+            failNextNavigateTo = false;
+            options.fail?.({ errMsg: 'navigateTo:fail' });
+            return;
+        }
+        options.success?.({ errMsg: `${method}:ok` });
+    };
+}
+
 globalThis.uni = {
     getStorageSync: key => storage.get(key),
     setStorageSync: (key, value) => storage.set(key, value),
@@ -12,7 +27,12 @@ globalThis.uni = {
     onThemeChange: () => {},
     showLoading: () => {},
     hideLoading: () => {},
-    showToast: () => {}
+    showToast: () => {},
+    navigateTo: recordNavigation('navigateTo'),
+    redirectTo: recordNavigation('redirectTo'),
+    switchTab: recordNavigation('switchTab'),
+    reLaunch: recordNavigation('reLaunch'),
+    navigateBack: recordNavigation('navigateBack')
 };
 
 const server = await createServer({
@@ -75,6 +95,93 @@ test('foundation utilities clone, merge, style, and color values', () => {
     });
     assert.equal(functions.toStyle({ backgroundColor: '#fff' }, 'color:#000'), 'background-color:#fff;color:#000');
     assert.equal(functions.colorToRgba('#00a86f', 0.5), 'rgba(0, 168, 111, 0.5)');
+});
+
+test('route supports uView Pro aliases and URL parameter encoding', async () => {
+    navigationCalls.length = 0;
+    await functions.route('/pages/detail?source=home#summary', {
+        id: 1,
+        enabled: true,
+        keyword: '蛇 UI',
+        tag: ['new', 'hot'],
+        omitted: undefined
+    });
+    await functions.route({ type: 'redirect', url: '/pages/login' });
+    await functions.route({ type: 'tab', url: '/pages/index/index', params: { ignored: true } });
+    await functions.route({ type: 'reLaunch', url: '/pages/start' });
+    await functions.route({ type: 'back', delta: 2 });
+
+    assert.deepEqual(
+        navigationCalls.map(call => ({ method: call.method, options: call.options })),
+        [
+            {
+                method: 'navigateTo',
+                options: {
+                    url: '/pages/detail?source=home&id=1&enabled=true&keyword=%E8%9B%87%20UI&tag=new&tag=hot#summary',
+                    success: undefined,
+                    fail: undefined
+                }
+            },
+            {
+                method: 'redirectTo',
+                options: { url: '/pages/login', success: undefined, fail: undefined }
+            },
+            {
+                method: 'switchTab',
+                options: { url: '/pages/index/index', success: undefined, fail: undefined }
+            },
+            {
+                method: 'reLaunch',
+                options: { url: '/pages/start', success: undefined, fail: undefined }
+            },
+            {
+                method: 'navigateBack',
+                options: { delta: 2, success: undefined, fail: undefined }
+            }
+        ]
+    );
+});
+
+test('route validates navigation input and reports platform failures', async () => {
+    await assert.rejects(functions.route({ type: 'navigateTo' }), /requires a non-empty url/);
+    await assert.rejects(functions.route({ type: 'unknown', url: '/pages/index' }), /Unsupported route type/);
+
+    const navigateBack = uni.navigateBack;
+    delete uni.navigateBack;
+    await assert.rejects(functions.route({ type: 'back' }), /navigateBack is unavailable/);
+    uni.navigateBack = navigateBack;
+
+    const redirectTo = uni.redirectTo;
+    uni.redirectTo = options => options.fail?.({ errMsg: 'redirectTo:fail blocked' });
+    await assert.rejects(functions.route({ type: 'redirectTo', url: '/blocked' }), /redirectTo:fail blocked/);
+    uni.redirectTo = redirectTo;
+});
+
+test('navTo preserves navigateTo to switchTab fallback', () => {
+    navigationCalls.length = 0;
+    failNextNavigateTo = true;
+    functions.navTo('/pages/index/index');
+    assert.deepEqual(
+        navigationCalls.map(call => call.method),
+        ['navigateTo', 'switchTab']
+    );
+});
+
+test('query and time helpers handle encoded and normalized values', () => {
+    assert.deepEqual(functions.getQueryParams('/page?name=Snake+UI&empty=&encoded=%E8%9B%87'), {
+        name: 'Snake UI',
+        empty: '',
+        encoded: '蛇'
+    });
+
+    const now = new Date('2026-08-20T12:00:00Z').getTime();
+    assert.equal(functions.timeFrom((now - 30_000) / 1000, now), '刚刚');
+    assert.equal(functions.timeFrom(now - 5 * 60_000, now), '5分钟前');
+    assert.equal(functions.timeFrom(new Date(now - 2 * 3_600_000), now), '2小时前');
+    assert.equal(functions.timeFrom(now - 3 * 86_400_000, now), '3天前');
+    assert.equal(functions.timeFrom(now + 60_000, now), '刚刚');
+    assert.equal(functions.timeFrom('not-a-date', now), '');
+    assert.equal(functions.timeFrom((now - 31 * 86_400_000) / 1000, now), '2026-07-20');
 });
 
 test('http keeps legacy adapter support and rejects interceptor cancellation', async () => {
