@@ -5,7 +5,7 @@ import { useDemoLocale } from '../../demo/demo-i18n';
 defineOptions({ name: 'SnakeExampleAbout' });
 
 const { text } = useDemoLocale();
-const docsUrl = 'https://r2nd.github.io/snake-ui/';
+const docsUrl = 'https://m.puresnake.com/snake-ui/';
 const capabilities = [
     'Vue 3 与 uni-app 跨端',
     '商城与 CMS 组件',

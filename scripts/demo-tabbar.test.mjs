@@ -50,6 +50,8 @@ test('primary pages share the custom themed tabbar', async () => {
     assert.match(components, /current-tab=['"]components['"]/);
     assert.match(tools, /current-tab=['"]tools['"]/);
     assert.match(about, /current-tab=['"]about['"]/);
+    assert.match(about, /https:\/\/m\.puresnake\.com\/snake-ui\//);
+    assert.doesNotMatch(about, /r2nd\.github\.io/);
 });
 
 test('tool overview uses semantic detail directories', async () => {

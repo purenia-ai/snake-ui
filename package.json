@@ -52,6 +52,7 @@
         "test:preview-structure": "node --test scripts/preview-structure.test.mjs",
         "test:component-docs": "node --test scripts/component-docs.test.mjs",
         "test:docs-structure": "node --test scripts/docs-structure.test.mjs",
+        "test:docs-homepage": "node --test scripts/docs-homepage.test.mjs",
         "test:component-contracts": "node --test scripts/component-contracts.test.mjs",
         "test:cms": "node --test scripts/cms.test.mjs",
         "docs:dev": "npm --prefix docs run docs:dev",
