@@ -50,5 +50,5 @@ Snake UI 运行在 uni-app Vue 3 环境中。基础组件开箱即用；商城�
 ## 选择下一篇
 
 - 第一次接入：[快速开始](/guide/getting-started)
-- 配置通用能力：[全局配置与底座](/guide/foundation)
+- 配置通用能力：[全局配置总览](/guide/foundation)
 - 排查运行问题：[常见问题](/guide/troubleshooting)

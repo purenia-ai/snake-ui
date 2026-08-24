@@ -110,4 +110,4 @@ app.use(SnakeUI, {
 
 因此英文包缺少 `checkout.submit` 时会显示中文词条；中文也缺少时会直接显示 `checkout.submit`，不会渲染空文本。
 
-语言和主题可以在右侧手机预览中直接切换。完整插件配置参见[全局配置与底座](/guide/foundation)。
+语言和主题可以在右侧手机预览中直接切换。应用级接入、语言包组织和业务国际化协同方式见[国际化指南](/guide/internationalization)，完整插件配置参见[全局配置总览](/guide/foundation)。

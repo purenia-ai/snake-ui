@@ -57,7 +57,7 @@ await route('/pages/goods/detail', { id: 1 });
 await route({ type: 'redirect', url: '/pages/login' });
 ```
 
-完整的别名、参数编码与平台限制见[工具](/guide/tools)。
+完整的别名、参数编码与平台限制见[工具介绍](/tools/intro)。
 
 ## 分阶段替换
 

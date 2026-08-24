@@ -3,7 +3,17 @@ import { componentGroups } from './component-groups';
 import { toolGroups } from './tool-groups';
 
 const componentSidebar = [
-    { text: '组件总览', link: '/components/intro' },
+    {
+        text: '起步',
+        items: [
+            { text: '组件总览', link: '/components/intro' },
+            { text: '安装', link: '/components/install' },
+            { text: '配置', link: '/components/setting' },
+            { text: '快速上手', link: '/components/quickstart' },
+            { text: '内置样式', link: '/components/common' },
+            { text: '组件使用注意事项', link: '/components/note' }
+        ]
+    },
     ...componentGroups.map(group => ({
         text: group.title,
         items: group.items.map(item => ({
@@ -50,23 +60,26 @@ export default defineConfig({
                     items: [
                         { text: '介绍', link: '/guide/intro' },
                         { text: '快速开始', link: '/guide/getting-started' },
-                        { text: '运行环境与能力边界', link: '/guide/compatibility' }
+                        { text: '运行环境与能力边界', link: '/guide/compatibility' },
+                        { text: '设计理念', link: '/guide/design-principles' }
                     ]
                 },
                 {
-                    text: '核心概念',
+                    text: '配置与自定义',
                     items: [
-                        { text: '全局配置与底座', link: '/guide/foundation' },
-                        { text: '组件数据约定', link: '/guide/component-data' },
-                        { text: 'CMS 快速接入', link: '/guide/cms-usage' },
-                        { text: '装修编辑器数据对接', link: '/guide/sanke-editor' }
-                    ]
-                },
-                {
-                    text: '自定义',
-                    items: [
+                        { text: '全局配置总览', link: '/guide/foundation' },
+                        { text: '国际化', link: '/guide/internationalization' },
                         { text: '多主题与暗黑模式', link: '/guide/multi-theme' },
-                        { text: '主题生成器', link: '/guide/theme-generate' }
+                        { text: '主题生成器', link: '/guide/theme-generate' },
+                        { text: '自定义样式', link: '/guide/custom-style' }
+                    ]
+                },
+                {
+                    text: '商城与 CMS',
+                    items: [
+                        { text: 'CMS 快速接入', link: '/guide/cms-usage' },
+                        { text: '组件数据约定', link: '/guide/component-data' },
+                        { text: '装修编辑器数据对接', link: '/guide/sanke-editor' }
                     ]
                 },
                 {

@@ -2,6 +2,8 @@
 
 本页带你完成 Snake UI 的最小接入：安装组件库、注册插件、引入样式、配置 easycom，并显示第一个按钮。
 
+如果你只关心组件接入，也可以按组件文档中的[安装](/components/install)、[配置](/components/setting)和[快速上手](/components/quickstart)逐步完成。
+
 ## 开始之前
 
 你需要一个可正常运行的 uni-app Vue 3 项目。Snake UI 的包清单声明 `vue >= 3.4.0` 与 `@dcloudio/uni-app >= 3.0.0` 为 peer dependencies。
@@ -110,6 +112,7 @@ function handleClick() {
 
 ## 下一步
 
-- 配置主题、语言或 HTTP：[全局配置与底座](/guide/foundation)
+- 配置主题、语言或 HTTP：[全局配置总览](/guide/foundation)
+- 添加或切换语言：[国际化](/guide/internationalization)
 - 确认平台和业务依赖：[运行环境](/guide/compatibility)
-- 渲染装修页面：[组件数据约定](/guide/component-data)
+- 渲染装修页面：[CMS 快速接入](/guide/cms-usage)

@@ -118,4 +118,6 @@ console.log(snakeColor.primary);
 
 需要可视化配置色板、生成暗色值并导出多套主题时，使用[主题生成器](/guide/theme-generate)。
 
+需要覆盖页面或单个组件的布局、颜色和状态样式时，查看[自定义样式](/guide/custom-style)。
+
 主题未覆盖、颜色未变化等问题见[常见问题](/guide/troubleshooting)。

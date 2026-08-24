@@ -1,4 +1,4 @@
-# 全局配置与底座
+# 全局配置总览
 
 Snake UI 插件统一初始化主题、国际化、HTTP、CMS 和全局工具。所有选项均为可选；只使用基础组件时，`app.use(SnakeUI)` 已经足够。
 
@@ -60,7 +60,7 @@ const { color, darkMode, isDark, setDarkMode } = useSnakeTheme();
 
 ## 国际化
 
-内置 `zh-CN` 和 `en-US`。缺失词条按“当前语言 → 中文 → key”回退。
+内置 `zh-CN` 和 `en-US`。语言选择会持久化，缺失词条按“当前语言 → 中文 → key”回退。
 
 ```ts
 import { setSnakeLocale, snakeTranslate, useSnakeLocale } from 'snake-ui';
@@ -87,6 +87,8 @@ app.use(SnakeUI, {
     }
 });
 ```
+
+添加语言、运行时切换、插值和业务国际化协同方式见[国际化](/guide/internationalization)。
 
 ## HTTP
 
@@ -125,7 +127,7 @@ import { debounce, deepMerge, navTo, queryParams, useSnakeEmitter, useSnakeRoute
 
 这样类型推导、测试和依赖分析更直接。
 
-路由、查询参数、时间和其他函数的完整说明见[工具](/guide/tools)。
+路由、查询参数、时间和其他函数的完整说明见[工具介绍](/tools/intro)。
 
 ## 样式入口
 
@@ -142,5 +144,6 @@ npm 与 `uni_modules` 的具体路径见[快速开始](/guide/getting-started)�
 ## 下一步
 
 - CMS 服务和数据流：[装修编辑器数据对接](/guide/sanke-editor)
+- 语言包和运行时切换：[国际化](/guide/internationalization)
 - 品牌主题：[多主题与暗黑模式](/guide/multi-theme)
 - 配置不生效：[常见问题](/guide/troubleshooting)

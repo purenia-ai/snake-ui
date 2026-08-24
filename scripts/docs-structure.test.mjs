@@ -9,6 +9,44 @@ async function text(path) {
     return readFile(resolve(root, path), 'utf8');
 }
 
+test('component navigation exposes a complete getting-started group', async () => {
+    const config = await text('docs/.vitepress/config.mts');
+    const pages = ['intro', 'install', 'setting', 'quickstart', 'common', 'note'];
+
+    assert.match(config, /const componentSidebar = \[\s*\{\s*text: '起步'/);
+    for (const page of pages) {
+        assert.ok(config.includes('/components/' + page));
+        await access(resolve(root, 'docs/components', page + '.md'));
+    }
+});
+
+test('component getting-started pages remain connected', async () => {
+    const intro = await text('docs/components/intro.md');
+    const setting = await text('docs/components/setting.md');
+    const quickstart = await text('docs/components/quickstart.md');
+
+    assert.ok(intro.includes('[安装](/components/install)'));
+    assert.ok(setting.includes('[快速上手](/components/quickstart)'));
+    assert.ok(quickstart.includes('[组件总览](/components/intro)'));
+});
+
+test('guide navigation exposes dedicated task groups', async () => {
+    const config = await text('docs/.vitepress/config.mts');
+    assert.match(config, /text: '配置与自定义'/);
+    assert.match(config, /text: '商城与 CMS'/);
+    assert.match(config, /text: '迁移与排错'/);
+    assert.doesNotMatch(config, /text: '核心概念'/);
+});
+
+test('dedicated guide pages remain connected', async () => {
+    const config = await text('docs/.vitepress/config.mts');
+    for (const page of ['design-principles', 'internationalization', 'custom-style']) {
+        assert.ok(config.includes('/guide/' + page));
+        await access(resolve(root, 'docs/guide', page + '.md'));
+    }
+    assert.match(await text('docs/guide/foundation.md'), /^# 全局配置总览$/m);
+});
+
 test('top navigation owns independent guide, component, and tool domains', async () => {
     const config = await text('docs/.vitepress/config.mts');
     assert.ok(config.includes("{ text: '指南', link: '/guide/getting-started'"));
