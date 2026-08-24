@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsB/snake-cms
+preview: /pages/componentsB/snakeCms/index
 cms: true
 ---
 

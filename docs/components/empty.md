@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/empty
+preview: /pages/componentsA/empty/index
 ---
 
 # Empty 空状态

@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/checkbox-group
+preview: /pages/componentsA/checkboxGroup/index
 ---
 
 # CheckboxGroup 复选框组

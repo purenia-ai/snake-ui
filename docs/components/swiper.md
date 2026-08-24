@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/swiper
+preview: /pages/componentsA/swiper/index
 ---
 
 # Swiper 轮播图

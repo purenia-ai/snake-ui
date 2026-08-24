@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsB/picture-ads
+preview: /pages/componentsB/pictureAds/index
 cms: true
 ---
 

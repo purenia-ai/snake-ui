@@ -1,5 +1,5 @@
 ---
-preview: /pages/tools/route
+preview: /pages/library/route/index
 ---
 
 # 路由跳转

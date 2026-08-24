@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsB/auxiliary-segmentation
+preview: /pages/componentsB/auxiliarySegmentation/index
 cms: true
 ---
 

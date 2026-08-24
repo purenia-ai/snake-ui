@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/index-anchor
+preview: /pages/componentsA/indexAnchor/index
 ---
 
 # IndexAnchor 索引锚点

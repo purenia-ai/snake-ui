@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsB/notice
+preview: /pages/componentsB/notice/index
 cms: true
 ---
 

@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsB/suspension
+preview: /pages/componentsB/suspension/index
 cms: true
 ---
 

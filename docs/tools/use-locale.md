@@ -1,5 +1,5 @@
 ---
-preview: /pages/tools/theme-locale
+preview: /pages/other/themeLocale/index
 ---
 
 # 多语言

@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsB/graphic-navigation
+preview: /pages/componentsB/graphicNavigation/index
 cms: true
 ---
 

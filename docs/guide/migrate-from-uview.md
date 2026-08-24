@@ -47,7 +47,7 @@ import { addUnit, formatTime, getRect, guid, route, sleep, toast } from 'snake-u
 
 ```ts
 uni.$snake.toast('迁移完成');
-await uni.$snake.route('/pages/index/index');
+await uni.$snake.route('/pages/example/components');
 ```
 
 `uni.$u.route()` 可以直接迁移为 `route()`，字符串简写和对象形式均兼容：

@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/checkbox
+preview: /pages/componentsA/checkbox/index
 ---
 
 # Checkbox 复选框

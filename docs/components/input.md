@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/input
+preview: /pages/componentsA/input/index
 ---
 
 # Input 输入框

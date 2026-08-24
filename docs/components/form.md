@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/form
+preview: /pages/componentsA/form/index
 ---
 
 # Form 表单

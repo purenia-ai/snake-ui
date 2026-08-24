@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/popup
+preview: /pages/componentsA/popup/index
 ---
 
 # Popup 弹出层

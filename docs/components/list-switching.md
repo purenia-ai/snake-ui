@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsB/list-switching
+preview: /pages/componentsB/listSwitching/index
 cms: true
 ---
 

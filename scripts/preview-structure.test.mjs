@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFile, readdir } from 'node:fs/promises';
+import { access, readFile, readdir } from 'node:fs/promises';
 import test from 'node:test';
 import { resolve } from 'node:path';
 
@@ -42,6 +42,8 @@ function exampleRoutes(pages) {
     );
 }
 
+const componentRouteName = name => name.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
+
 test('preview renderer uses an uncropped viewport root', async () => {
     const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
     const page = await readFile(resolve(root, 'src/demo/DemoPage.vue'), 'utf8');
@@ -75,17 +77,18 @@ test('all public foundation components have docs, routes, and renderer branches'
     const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
 
     for (const name of foundationComponents) {
+        const routeName = componentRouteName(name);
         const markdown = await readFile(resolve(root, 'docs/components', `${name}.md`), 'utf8');
-        assert.match(markdown, new RegExp(`^preview:\\s*/pages/componentsA/${name}$`, 'm'));
-        assert.match(pages, new RegExp(`"path":\\s*"${name}"`));
+        assert.match(markdown, new RegExp(`^preview:\\s*/pages/componentsA/${routeName}/index$`, 'm'));
+        assert.match(pages, new RegExp(`"path":\\s*"${routeName}/index"`));
         assert.match(renderer, new RegExp(`kind === ['"]${name}['"]`));
     }
 });
 
 test('component overview page covers every example route and directory layout', async () => {
     const pages = await readFile(resolve(root, 'src/pages.json'), 'utf8');
-    const config = await readFile(resolve(root, 'src/pages/index/components.config.ts'), 'utf8');
-    const index = await readFile(resolve(root, 'src/pages/index/index.vue'), 'utf8');
+    const config = await readFile(resolve(root, 'src/pages/example/components.config.ts'), 'utf8');
+    const index = await readFile(resolve(root, 'src/pages/example/components.vue'), 'utf8');
     const groupA = await readdir(resolve(root, 'src/pages/componentsA'));
     const groupB = await readdir(resolve(root, 'src/pages/componentsB'));
 
@@ -96,8 +99,14 @@ test('component overview page covers every example route and directory layout', 
 
     assert.equal(configuredPaths.length, 50);
     assert.deepEqual([...configuredPaths].sort(), [...routes].sort());
-    assert.equal(groupA.filter(file => file.endsWith('.vue')).length, 29);
-    assert.equal(groupB.filter(file => file.endsWith('.vue')).length, 21);
+    assert.equal(groupA.length, 29);
+    assert.equal(groupB.length, 21);
+    for (const directory of [
+        ...groupA.map(name => ['componentsA', name]),
+        ...groupB.map(name => ['componentsB', name])
+    ]) {
+        await access(resolve(root, 'src/pages', directory[0], directory[1], 'index.vue'));
+    }
     for (const group of [
         '基础组件',
         '表单组件',
@@ -114,7 +123,7 @@ test('component overview page covers every example route and directory layout', 
     assert.match(index, /DemoPage/);
     assert.match(index, /:nav-back="false"/);
     assert.match(index, /:nav-home="false"/);
-    assert.match(pages, /"path":\s*"pages\/index\/index"/);
+    assert.match(pages, /"path":\s*"pages\/example\/components"/);
     assert.match(pages, /"subPackages"/);
     assert.match(pages, /"root":\s*"pages\/componentsA"/);
     assert.match(pages, /"root":\s*"pages\/componentsB"/);
@@ -255,8 +264,8 @@ test('mobile preview and locale guide expose one persistent bilingual experience
     const demoPage = await readFile(resolve(root, 'src/demo/DemoPage.vue'), 'utf8');
     const demoConfig = await readFile(resolve(root, 'src/demo/demo-config.ts'), 'utf8');
     const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
-    const indexPage = await readFile(resolve(root, 'src/pages/index/index.vue'), 'utf8');
-    const localePage = await readFile(resolve(root, 'src/pages/tools/theme-locale.vue'), 'utf8');
+    const indexPage = await readFile(resolve(root, 'src/pages/example/components.vue'), 'utf8');
+    const localePage = await readFile(resolve(root, 'src/pages/other/themeLocale/index.vue'), 'utf8');
     const localeGuide = await readFile(resolve(root, 'docs/tools/use-locale.md'), 'utf8');
 
     assert.match(demoLocale, /currentSnakeLocale/);

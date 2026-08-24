@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsB/coupon
+preview: /pages/componentsB/coupon/index
 cms: true
 ---
 

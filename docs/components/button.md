@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/button
+preview: /pages/componentsA/button/index
 ---
 
 # Button 按钮

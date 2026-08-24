@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/lazy-image
+preview: /pages/componentsA/lazyImage/index
 ---
 
 # LazyImage 懒加载图片

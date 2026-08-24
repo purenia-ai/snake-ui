@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/radio-group
+preview: /pages/componentsA/radioGroup/index
 ---
 
 # RadioGroup 单选框组

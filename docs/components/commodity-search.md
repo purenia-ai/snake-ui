@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsB/commodity-search
+preview: /pages/componentsB/commoditySearch/index
 cms: true
 ---
 

@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/radio
+preview: /pages/componentsA/radio/index
 ---
 
 # Radio 单选框

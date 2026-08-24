@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/tabs
+preview: /pages/componentsA/tabs/index
 ---
 
 # Tabs 标签页

@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsB/activity-list
+preview: /pages/componentsB/activityList/index
 cms: true
 ---
 

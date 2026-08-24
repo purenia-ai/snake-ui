@@ -136,7 +136,7 @@ CMS 组件依赖业务数据结构或宿主项目适配器。请以对应文档�
 import { snake } from 'snake-ui/libs';
 
 snake.toast('保存成功');
-snake.navTo('/pages/index/index');
+snake.navTo('/pages/example/components');
 snake.sleep(300);
 snake.addUnit(24);
 ```
@@ -256,9 +256,11 @@ src/uni_modules/snake-ui/
 
 docs/              # VitePress 组件文档
 src/demo/          # H5 预览数据与渲染器
-src/pages/index       # 组件总览页与分组配置（components.config.ts）
-src/pages/componentsA  # 基础组件示例页面
-src/pages/componentsB  # CMS 组件示例页面
+src/pages/example/     # 组件、工具、关于三个一级示例页
+src/pages/componentsA/ # 基础组件示例（组件名/index.vue）
+src/pages/componentsB/ # CMS 组件示例（组件名/index.vue）
+src/pages/library/     # 工具函数示例
+src/pages/other/       # 主题、语言等基础能力示例
 ```
 
 ## License

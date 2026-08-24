@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/switch
+preview: /pages/componentsA/switch/index
 ---
 
 # Switch 开关

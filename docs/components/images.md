@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsB/images
+preview: /pages/componentsB/images/index
 cms: true
 ---
 

@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/image
+preview: /pages/componentsA/image/index
 ---
 
 # Image 图片

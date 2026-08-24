@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/loadmore
+preview: /pages/componentsA/loadmore/index
 ---
 
 # Loadmore 加载更多

@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/loading-icon
+preview: /pages/componentsA/loadingIcon/index
 ---
 
 # LoadingIcon 加载图标

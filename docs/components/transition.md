@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/transition
+preview: /pages/componentsA/transition/index
 ---
 
 # Transition 过渡动画

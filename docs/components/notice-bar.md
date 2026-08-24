@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/notice-bar
+preview: /pages/componentsA/noticeBar/index
 ---
 
 # NoticeBar 通知栏

@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsB/hotzone
+preview: /pages/componentsB/hotzone/index
 cms: true
 ---
 

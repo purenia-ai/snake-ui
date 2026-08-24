@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/textarea
+preview: /pages/componentsA/textarea/index
 ---
 
 # Textarea 文本域

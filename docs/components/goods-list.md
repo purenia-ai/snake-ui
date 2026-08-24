@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsB/goods-list
+preview: /pages/componentsB/goodsList/index
 cms: true
 ---
 

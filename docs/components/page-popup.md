@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsB/page-popup
+preview: /pages/componentsB/pagePopup/index
 cms: true
 ---
 

@@ -115,7 +115,7 @@ await snakeHttp.post(
 
 ```ts
 uni.$snake.toast('操作完成');
-uni.$snake.navTo('/pages/index/index');
+uni.$snake.navTo('/pages/example/components');
 await uni.$snake.sleep(300);
 ```
 

@@ -1,5 +1,5 @@
 ---
-preview: /pages/tools/debounce-throttle
+preview: /pages/library/debounceThrottle/index
 ---
 
 # 节流与防抖

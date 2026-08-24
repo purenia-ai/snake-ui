@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsB/rich-text
+preview: /pages/componentsB/richText/index
 cms: true
 ---
 

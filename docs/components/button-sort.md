@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/button-sort
+preview: /pages/componentsA/buttonSort/index
 ---
 
 # ButtonSort 排序按钮

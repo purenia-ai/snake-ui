@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsB/custom-module
+preview: /pages/componentsB/customModule/index
 cms: true
 ---
 

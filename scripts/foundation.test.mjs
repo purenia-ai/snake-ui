@@ -108,7 +108,7 @@ test('route supports uView Pro aliases and URL parameter encoding', async () => 
         omitted: undefined
     });
     await functions.route({ type: 'redirect', url: '/pages/login' });
-    await functions.route({ type: 'tab', url: '/pages/index/index', params: { ignored: true } });
+    await functions.route({ type: 'tab', url: '/pages/example/components', params: { ignored: true } });
     await functions.route({ type: 'reLaunch', url: '/pages/start' });
     await functions.route({ type: 'back', delta: 2 });
 
@@ -129,7 +129,7 @@ test('route supports uView Pro aliases and URL parameter encoding', async () => 
             },
             {
                 method: 'switchTab',
-                options: { url: '/pages/index/index', success: undefined, fail: undefined }
+                options: { url: '/pages/example/components', success: undefined, fail: undefined }
             },
             {
                 method: 'reLaunch',
@@ -161,7 +161,7 @@ test('route validates navigation input and reports platform failures', async () 
 test('navTo preserves navigateTo to switchTab fallback', () => {
     navigationCalls.length = 0;
     failNextNavigateTo = true;
-    functions.navTo('/pages/index/index');
+    functions.navTo('/pages/example/components');
     assert.deepEqual(
         navigationCalls.map(call => call.method),
         ['navigateTo', 'switchTab']

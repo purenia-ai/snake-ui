@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsB/jump-applet
+preview: /pages/componentsB/jumpApplet/index
 cms: true
 ---
 

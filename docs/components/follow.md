@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsB/follow
+preview: /pages/componentsB/follow/index
 cms: true
 ---
 

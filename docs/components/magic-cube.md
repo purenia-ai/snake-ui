@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsB/magic-cube
+preview: /pages/componentsB/magicCube/index
 cms: true
 ---
 

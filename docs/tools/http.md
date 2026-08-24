@@ -1,5 +1,5 @@
 ---
-preview: /pages/tools/http
+preview: /pages/library/http/index
 ---
 
 # HTTP 请求

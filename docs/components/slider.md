@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/slider
+preview: /pages/componentsA/slider/index
 ---
 
 # Slider 滑动选择器

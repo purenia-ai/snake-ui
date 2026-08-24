@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/sticky
+preview: /pages/componentsA/sticky/index
 ---
 
 # Sticky 吸顶

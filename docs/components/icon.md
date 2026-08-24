@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/icon
+preview: /pages/componentsA/icon/index
 ---
 
 # Icon 图标

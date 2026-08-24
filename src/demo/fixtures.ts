@@ -55,9 +55,9 @@ export const imageData = {
 export const hotzoneData = {
   image: localImage,
   hotzoneList: [
-    { id: "hotzone-demo-1", top: 8, left: 6, width: 42, height: 36, httpType: 10, http: "/pages/componentsB/images" },
-    { id: "hotzone-demo-2", top: 8, left: 52, width: 42, height: 36, httpType: 10, http: "/pages/componentsB/magic-cube" },
-    { id: "hotzone-demo-3", top: 52, left: 6, width: 88, height: 34, httpType: 10, http: "/pages/componentsB/picture-ads" },
+    { id: "hotzone-demo-1", top: 8, left: 6, width: 42, height: 36, httpType: 10, http: "/pages/componentsB/images/index" },
+    { id: "hotzone-demo-2", top: 8, left: 52, width: 42, height: 36, httpType: 10, http: "/pages/componentsB/magicCube/index" },
+    { id: "hotzone-demo-3", top: 52, left: 6, width: 88, height: 34, httpType: 10, http: "/pages/componentsB/pictureAds/index" },
   ],
 };
 

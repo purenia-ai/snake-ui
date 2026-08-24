@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsB/filter-sorts
+preview: /pages/componentsB/filterSorts/index
 cms: true
 ---
 

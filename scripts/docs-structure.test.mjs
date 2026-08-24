@@ -104,16 +104,18 @@ test('legacy tool page points to the new domain', async () => {
 test('key tool docs and demo routes remain connected', async () => {
     const pages = await text('src/pages.json');
     const previews = new Map([
-        ['docs/tools/http.md', '/pages/tools/http'],
-        ['docs/tools/debounce-throttle.md', '/pages/tools/debounce-throttle'],
-        ['docs/tools/route.md', '/pages/tools/route'],
-        ['docs/tools/use-theme.md', '/pages/tools/theme-locale'],
-        ['docs/tools/use-locale.md', '/pages/tools/theme-locale']
+        ['docs/tools/http.md', '/pages/library/http/index'],
+        ['docs/tools/debounce-throttle.md', '/pages/library/debounceThrottle/index'],
+        ['docs/tools/route.md', '/pages/library/route/index'],
+        ['docs/tools/use-theme.md', '/pages/other/themeLocale/index'],
+        ['docs/tools/use-locale.md', '/pages/other/themeLocale/index']
     ]);
 
     for (const [file, route] of previews) {
         assert.match(await text(file), new RegExp(`^preview: ${route}$`, 'm'));
-        assert.match(pages, new RegExp(`"path": "${route.split('/').at(-1)}"`));
+        const [, , rootName, ...pagePath] = route.split('/');
+        assert.match(pages, new RegExp(`"root": "pages/${rootName}"`));
+        assert.match(pages, new RegExp(`"path": "${pagePath.join('/')}"`));
         await access(resolve(root, 'src', `${route.slice(1)}.vue`));
     }
 });

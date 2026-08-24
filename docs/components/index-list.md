@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/index-list
+preview: /pages/componentsA/indexList/index
 ---
 
 # IndexList 索引列表

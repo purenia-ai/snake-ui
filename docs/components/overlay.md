@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/overlay
+preview: /pages/componentsA/overlay/index
 ---
 
 # Overlay 遮罩层

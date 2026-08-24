@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { snakeColor, snakeDarkMode, snakeSystemDark, snakeThemeStyle } from '../uni_modules/snake-ui';
+import DemoTabbar from './DemoTabbar.vue';
+import type { DemoTab } from './demo-tabbar';
 import { useDemoLocale } from './demo-i18n';
 
 withDefaults(
@@ -11,8 +13,19 @@ withDefaults(
         viewport?: boolean;
         navBack?: boolean;
         navHome?: boolean;
+        tabbar?: boolean;
+        currentTab?: DemoTab;
     }>(),
-    { title: '', eyebrow: '', desc: '', viewport: false, navBack: true, navHome: true }
+    {
+        title: '',
+        eyebrow: '',
+        desc: '',
+        viewport: false,
+        navBack: true,
+        navHome: true,
+        tabbar: false,
+        currentTab: 'components'
+    }
 );
 
 /*
@@ -34,12 +47,12 @@ function goBack() {
     if (getCurrentPages().length > 1) {
         uni.navigateBack();
     } else {
-        uni.reLaunch({ url: '/pages/index/index' });
+        uni.reLaunch({ url: '/pages/example/components' });
     }
 }
 
 function goHome() {
-    uni.reLaunch({ url: '/pages/index/index' });
+    uni.reLaunch({ url: '/pages/example/components' });
 }
 </script>
 
@@ -74,6 +87,7 @@ function goHome() {
 
             <view class="demo-body">
                 <slot />
+                <DemoTabbar v-if="tabbar" :current="currentTab" />
             </view>
         </template>
         <slot v-else />

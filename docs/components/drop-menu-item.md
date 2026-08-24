@@ -1,5 +1,5 @@
 ---
-preview: /pages/componentsA/drop-menu-item
+preview: /pages/componentsA/dropMenuItem/index
 ---
 
 # DropMenuItem 下拉菜单项
