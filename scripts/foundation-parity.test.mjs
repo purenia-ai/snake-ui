@@ -36,6 +36,26 @@ test('button has full state and native capability contract', async () => {
     assert.match(source, /SnakeLoadingIcon/);
 });
 
+test('subsection exposes animated button and outlined selection modes', async () => {
+    const [entry, declarations, types, source] = await Promise.all([
+        read('index.ts'),
+        read('index.d.ts'),
+        read('components/snake-subsection/types.ts'),
+        read('components/snake-subsection/snake-subsection.vue')
+    ]);
+
+    assert.match(entry, /export \{ default as SnakeSubsection \}/);
+    assert.match(declarations, /export const SnakeSubsection:/);
+    for (const prop of ['list', 'current', 'mode', 'activeColor', 'inactiveColor', 'animation', 'buttonColor']) {
+        assert.match(types, new RegExp(`${prop}\\?`));
+    }
+    assert.match(source, /snake-subsection--\$\{mode\}/);
+    assert.match(source, /translateX\(\$\{activeIndex\.value \* 100\}%\)/);
+    assert.match(source, /emit\('update:current', index\)/);
+    assert.match(source, /emit\('change', index\)/);
+    assert.doesNotMatch(source, /uni\.\$u|uview-pro|<u-/);
+});
+
 test('image, overlay, popup and sticky expose behavioral APIs', async () => {
     const [image, overlay, popup, sticky] = await Promise.all([
         read('components/snake-image/types.ts'),

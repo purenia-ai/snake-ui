@@ -32,7 +32,7 @@ withDefaults(
  * 外壳组合变量必须内联到页面根节点:uni-app H5 会把 `page` 选择器编译成
  * uni-page-body,自定义属性在定义处完成 var() 代换后按字面值继承,
  * 仅写在 :root / .snake-theme-dark 上的深色覆写无法穿透到页面内容。
- * 导航渐变使用 demo/theme.scss 中的纯字面值(绿色,不随主题切换),不受代换影响。
+ * 导航纯色使用 demo/theme.scss 中的私有变量,不受代换影响。
  */
 const isDark = computed(() =>
     snakeDarkMode.value === 'auto' ? snakeSystemDark.value : snakeDarkMode.value === 'dark'
@@ -81,7 +81,8 @@ function goHome() {
             </view>
 
             <view v-if="eyebrow || desc" class="demo-page-header">
-                <view v-if="eyebrow" class="demo-page-header__category">{{ eyebrow }}</view>
+                <text v-if="eyebrow" class="demo-page-header__category">{{ eyebrow }}</text>
+                <text class="demo-page-header__title">{{ title }}</text>
                 <view v-if="desc" class="demo-page-header__desc">{{ desc }}</view>
             </view>
 
@@ -101,8 +102,6 @@ function goHome() {
     box-sizing: border-box;
     min-height: 100vh;
     background-color: var(--snake-color-background);
-    background-image: $snake-page-tint;
-    background-repeat: no-repeat;
     color: var(--snake-color-text);
     -webkit-font-smoothing: antialiased;
 }
@@ -119,8 +118,8 @@ function goHome() {
     align-items: center;
     height: $snake-nav-height;
     padding: 0 12rpx;
-    background: $snake-nav-gradient;
-    box-shadow: 0 4rpx 18rpx rgba(4, 168, 115, 0.24);
+    background: $snake-nav-background;
+    border-bottom: 1rpx solid rgba(7, 59, 42, 0.12);
 }
 
 .demo-nav__side {
@@ -192,21 +191,27 @@ function goHome() {
 .demo-page-header {
     max-width: 760px;
     margin: 0 auto;
-    padding: 28rpx 32rpx 8rpx;
+    padding: 32rpx 32rpx 10rpx;
 }
 
 .demo-page-header__category {
-    display: inline-block;
-    padding: 6rpx 20rpx;
-    border-radius: 999rpx;
-    color: var(--snake-demo-accent-text);
-    background: var(--snake-color-primary-light);
+    display: block;
+    margin-bottom: 10rpx;
+    color: var(--snake-color-text-muted);
     font-size: 24rpx;
-    font-weight: 600;
+    line-height: 1.4;
+}
+
+.demo-page-header__title {
+    display: block;
+    color: var(--snake-color-text);
+    font-size: 38rpx;
+    font-weight: 700;
+    line-height: 1.35;
 }
 
 .demo-page-header__desc {
-    margin-top: 14rpx;
+    margin-top: 10rpx;
     color: var(--snake-color-text-muted);
     font-size: 26rpx;
     line-height: 1.7;
@@ -215,6 +220,6 @@ function goHome() {
 .demo-body {
     max-width: 760px;
     margin: 0 auto;
-    padding: 24rpx 24rpx 56rpx;
+    padding: 22rpx 24rpx 56rpx;
 }
 </style>

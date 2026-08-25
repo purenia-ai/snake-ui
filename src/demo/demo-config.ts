@@ -388,6 +388,35 @@ const definitions: Record<string, DemoDefinition> = {
             }
         ]
     },
+    subsection: {
+        category: '导航与布局',
+        description: '在少量互斥选项之间快速切换，支持按钮和描边分段模式。',
+        controls: [
+            {
+                key: 'subsectionMode',
+                label: '显示模式',
+                type: 'select',
+                defaultValue: 'button',
+                options: [
+                    { label: '按钮', value: 'button' },
+                    { label: '分段', value: 'subsection' }
+                ]
+            },
+            {
+                key: 'subsectionCurrent',
+                label: '当前选项',
+                type: 'select',
+                defaultValue: 0,
+                options: [
+                    { label: '待付款', value: 0 },
+                    { label: '待发货', value: 1 },
+                    { label: '待收货', value: 2 }
+                ]
+            },
+            { key: 'subsectionBold', label: '激活项加粗', type: 'switch', defaultValue: true },
+            { key: 'subsectionAnimation', label: '滑块动画', type: 'switch', defaultValue: true }
+        ]
+    },
     'button-sort': {
         category: '导航与布局',
         description: '点击后在默认、升序和降序状态之间循环切换。',

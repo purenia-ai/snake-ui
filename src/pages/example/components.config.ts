@@ -139,6 +139,12 @@ const componentGroups: SnakeComponentGroup[] = [
             item('/pages/componentsA/sticky/index', 'Sticky 吸顶', 'Sticky', '滚动时将重要内容固定在页面顶部。'),
             item('/pages/componentsA/tabs/index', 'Tabs 标签页', 'Tabs', '在同层级内容之间快速切换。'),
             item(
+                '/pages/componentsA/subsection/index',
+                'Subsection 分段选择器',
+                'Subsection',
+                '在少量互斥选项之间快速切换。'
+            ),
+            item(
                 '/pages/componentsA/buttonSort/index',
                 'ButtonSort 排序按钮',
                 'ButtonSort',

@@ -19,6 +19,7 @@ const foundation = [
     'sticky',
     'swiper',
     'tabs',
+    'subsection',
     'button-sort',
     'drop-menu',
     'drop-menu-item',

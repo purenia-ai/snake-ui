@@ -134,6 +134,15 @@ const englishMessages: Record<string, string> = {
     允许横向滚动: 'Allow horizontal scrolling',
     活动颜色: 'Active color',
     文字尺寸: 'Text size',
+    显示模式: 'Display mode',
+    按钮: 'Button',
+    分段: 'Outlined',
+    当前选项: 'Current option',
+    待付款: 'Pending payment',
+    待发货: 'To ship',
+    待收货: 'To receive',
+    激活项加粗: 'Bold active option',
+    滑块动画: 'Slider animation',
     按钮文字: 'Button text',
     菜单标题: 'Menu title',
     分组前缀: 'Group prefix',
@@ -203,6 +212,8 @@ Object.assign(englishMessages, {
     '用于图片或内容轮播，支持自动播放、标题和指示器。':
         'A carousel with autoplay, titles and multiple indicator styles.',
     '标签页用于在同层级内容之间快速切换。': 'Tabs switch quickly between peer content sections.',
+    '在少量互斥选项之间快速切换，支持按钮和描边分段模式。':
+        'Switches between a few exclusive options in button or outlined mode.',
     '点击后在默认、升序和降序状态之间循环切换。': 'Cycles through default, ascending and descending states.',
     '下拉菜单容器保证同一时间只展开一个菜单项。': 'The menu container keeps only one dropdown open at a time.',
     '下拉菜单项提供触发按钮、内容面板和关闭事件。':
@@ -260,6 +271,7 @@ const demoTitles: Record<string, string> = {
     sticky: 'Sticky',
     swiper: 'Swiper',
     tabs: 'Tabs',
+    subsection: 'Subsection',
     'button-sort': 'Sort Button',
     'drop-menu': 'Dropdown Menu',
     'drop-menu-item': 'Dropdown Menu Item',

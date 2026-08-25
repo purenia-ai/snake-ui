@@ -2,9 +2,18 @@
 import type { DemoControl, DemoValue } from './demo-config';
 import { useDemoLocale } from './demo-i18n';
 
-defineProps<{ controls: DemoControl[]; values: Record<string, DemoValue> }>();
+const props = defineProps<{ controls: DemoControl[]; values: Record<string, DemoValue> }>();
 const emit = defineEmits<{ change: [key: string, value: DemoValue] }>();
 const { text } = useDemoLocale();
+
+function selectedIndex(control: DemoControl): number {
+    return Math.max(0, control.options?.findIndex(option => option.value === props.values[control.key]) ?? 0);
+}
+
+function selectOption(control: DemoControl, index: number) {
+    const option = control.options?.[index];
+    if (option) emit('change', control.key, option.value);
+}
 </script>
 
 <template>
@@ -23,15 +32,13 @@ const { text } = useDemoLocale();
                 />
             </view>
 
-            <view v-if="control.type === 'select'" class="demo-control__options">
-                <view
-                    v-for="option in control.options"
-                    :key="String(option.value)"
-                    :class="['demo-option', { 'demo-option--active': values[control.key] === option.value }]"
-                    @click="emit('change', control.key, option.value)"
-                    >{{ option.label }}</view
-                >
-            </view>
+            <snake-subsection
+                v-if="control.type === 'select'"
+                class="demo-control__options"
+                :list="control.options?.map(option => option.label)"
+                :current="selectedIndex(control)"
+                @change="selectOption(control, $event)"
+            />
 
             <snake-slider
                 v-else-if="control.type === 'slider'"
@@ -43,7 +50,7 @@ const { text } = useDemoLocale();
                 @update:model-value="emit('change', control.key, Number($event))"
             />
 
-            <view v-else class="demo-control__input">
+            <view v-else-if="control.type === 'input'" class="demo-control__input">
                 <snake-input
                     :model-value="String(values[control.key] ?? '')"
                     :placeholder="control.placeholder || `${text('请输入')}${control.label}`"
@@ -58,10 +65,10 @@ const { text } = useDemoLocale();
 @import './theme.scss';
 
 .demo-controls {
-    margin: -8rpx 0;
+    margin: 0;
 }
 .demo-control {
-    padding: 28rpx 0;
+    padding: 30rpx 8rpx;
     border-bottom: 1rpx solid var(--snake-color-divider);
 }
 .demo-control:last-child {
@@ -75,23 +82,10 @@ const { text } = useDemoLocale();
     gap: 24rpx;
 }
 .demo-control__label {
-    position: relative;
-    padding-left: 20rpx;
     color: var(--snake-color-text);
     font-size: 28rpx;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1.2;
-}
-.demo-control__label::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 8rpx;
-    height: 26rpx;
-    border-radius: 4rpx;
-    background: var(--snake-color-primary);
-    transform: translateY(-50%);
 }
 .demo-control__value {
     color: var(--snake-demo-accent-text);
@@ -99,34 +93,7 @@ const { text } = useDemoLocale();
     font-weight: 600;
 }
 .demo-control__options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16rpx;
-    margin-top: 24rpx;
-}
-.demo-option {
-    box-sizing: border-box;
-    min-width: 128rpx;
-    min-height: 64rpx;
-    padding: 14rpx 28rpx;
-    border: 1rpx solid transparent;
-    border-radius: 999rpx;
-    background: var(--snake-color-surface-muted);
-    color: var(--snake-color-text-secondary);
-    font-size: 24rpx;
-    text-align: center;
-    transition:
-        color 0.2s ease,
-        background-color 0.2s ease,
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-}
-.demo-option--active {
-    border-color: rgba(var(--snake-color-primary-rgb), 0.5);
-    background: var(--snake-color-primary-light);
-    color: var(--snake-demo-accent-text);
-    font-weight: 600;
-    box-shadow: 0 4rpx 12rpx rgba(var(--snake-color-primary-rgb), 0.18);
+    margin-top: 20rpx;
 }
 .demo-control__slider {
     margin-top: 20rpx;

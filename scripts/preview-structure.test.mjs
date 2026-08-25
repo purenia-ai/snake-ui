@@ -19,6 +19,7 @@ const foundationComponents = [
     'sticky',
     'swiper',
     'tabs',
+    'subsection',
     'button-sort',
     'drop-menu',
     'drop-menu-item',
@@ -67,8 +68,8 @@ test('component docs and example routes remain one-to-one', async () => {
         if (match) previews.push(match[1]);
     }
 
-    assert.equal(routes.length, 50);
-    assert.equal(previews.length, 50);
+    assert.equal(routes.length, 51);
+    assert.equal(previews.length, 51);
     assert.deepEqual([...new Set(previews)].sort(), [...new Set(routes)].sort());
 });
 
@@ -97,9 +98,9 @@ test('component overview page covers every example route and directory layout', 
     );
     const routes = exampleRoutes(pages);
 
-    assert.equal(configuredPaths.length, 50);
+    assert.equal(configuredPaths.length, 51);
     assert.deepEqual([...configuredPaths].sort(), [...routes].sort());
-    assert.equal(groupA.length, 29);
+    assert.equal(groupA.length, 30);
     assert.equal(groupB.length, 21);
     for (const directory of [
         ...groupA.map(name => ['componentsA', name]),
@@ -138,12 +139,34 @@ test('all example components declare an interactive demo configuration', async (
     const configuredKinds = [...config.matchAll(/^\s+(?:'([^']+)'|([a-z][\w-]*)):\s*\{\s*category:/gm)].map(
         match => match[1] || match[2]
     );
-    assert.equal(configuredKinds.length, 50);
+    assert.equal(configuredKinds.length, 51);
     assert.match(panel, /control\.type === 'select'/);
     assert.match(panel, /control\.type === 'switch'/);
     assert.match(panel, /control\.type === 'slider'/);
     assert.match(panel, /demo-control__input/);
     assert.match(renderer, /<DemoControlPanel/);
+});
+
+test('component demos use one restrained shared presentation system', async () => {
+    const theme = await readFile(resolve(root, 'src/demo/theme.scss'), 'utf8');
+    const page = await readFile(resolve(root, 'src/demo/DemoPage.vue'), 'utf8');
+    const section = await readFile(resolve(root, 'src/demo/DemoSection.vue'), 'utf8');
+    const panel = await readFile(resolve(root, 'src/demo/DemoControlPanel.vue'), 'utf8');
+    const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
+
+    assert.match(theme, /--snake-demo-nav-background:\s*var\(--snake-color-primary/);
+    assert.doesNotMatch(theme, /snake-demo-nav-gradient|snake-demo-page-tint|snake-demo-card-shadow/);
+    assert.match(page, /demo-page-header__title/);
+    assert.match(page, /background:\s*\$snake-nav-background/);
+    assert.doesNotMatch(page, /background-image:\s*\$snake-page-tint/);
+    assert.match(section, /DemoSectionVariant = 'default' \| 'preview' \| 'controls'/);
+    assert.match(section, /demo-section--preview[^}]*border-bottom:\s*1rpx dashed/s);
+    assert.match(panel, /<snake-subsection/);
+    assert.match(panel, /:current="selectedIndex\(control\)"/);
+    assert.match(panel, /@change="selectOption\(control, \$event\)"/);
+    assert.match(panel, /v-else-if="control\.type === 'input'"/);
+    assert.match(renderer, /variant="preview"/);
+    assert.match(renderer, /definition\.controls\.length[^>]*variant="controls"/);
 });
 test('desktop phone preview keeps an uncropped internal viewport', async () => {
     const frame = await readFile(resolve(root, 'docs/.vitepress/theme/PreviewFrame.vue'), 'utf8');
@@ -253,7 +276,7 @@ test('docs and preview shell use the approved brand green system', async () => {
     assert.match(css, /\.preview-phone__island\s*{[^}]*top:\s*31px/s);
     assert.match(css, /\.preview-phone\s*{[^}]*padding:\s*54px 9px 18px/s);
     assert.match(css, /\.preview-phone iframe,\s*\.preview-phone__status\s*{[^}]*border-radius:\s*0 0 25px 25px/s);
-    assert.match(demoTheme, /linear-gradient\(120deg,\s*#06d290,\s*#35e7ad\)/i);
+    assert.match(demoTheme, /--snake-demo-nav-background:\s*var\(--snake-color-primary,\s*#06d290\)/i);
     assert.match(demoTheme, /--snake-demo-nav-text:\s*#073b2a/i);
 
     assert.match(demoPage, /color:\s*var\(--snake-demo-nav-text\)/);

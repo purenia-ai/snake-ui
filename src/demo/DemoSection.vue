@@ -1,9 +1,15 @@
 <script setup lang="ts">
-withDefaults(defineProps<{ title?: string; bare?: boolean }>(), { title: '', bare: false });
+type DemoSectionVariant = 'default' | 'preview' | 'controls';
+
+withDefaults(defineProps<{ title?: string; bare?: boolean; variant?: DemoSectionVariant }>(), {
+    title: '',
+    bare: false,
+    variant: 'default'
+});
 </script>
 
 <template>
-    <view v-if="!bare" class="demo-section">
+    <view v-if="!bare" :class="['demo-section', `demo-section--${variant}`]">
         <view v-if="title" class="demo-section__head">
             <text class="demo-section__title">{{ title }}</text>
         </view>
@@ -20,9 +26,7 @@ withDefaults(defineProps<{ title?: string; bare?: boolean }>(), { title: '', bar
 .demo-section {
     overflow: hidden;
     margin-bottom: 28rpx;
-    border-radius: 20rpx;
     background: var(--snake-color-surface);
-    box-shadow: $snake-card-shadow;
 }
 
 .demo-section:last-child {
@@ -30,31 +34,42 @@ withDefaults(defineProps<{ title?: string; bare?: boolean }>(), { title: '', bar
 }
 
 .demo-section__head {
-    padding: 28rpx 32rpx 20rpx;
+    padding: 24rpx 24rpx 20rpx;
+    text-align: center;
 }
 
 .demo-section__title {
-    position: relative;
-    padding-left: 20rpx;
     color: var(--snake-color-text);
     font-size: 30rpx;
     font-weight: 600;
 }
 
-.demo-section__title::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 8rpx;
-    height: 28rpx;
-    border-radius: 4rpx;
-    background: var(--snake-color-primary);
-    transform: translateY(-50%);
-}
-
 .demo-section__wrap {
     padding: 32rpx 28rpx;
     background: var(--snake-color-surface);
+}
+
+.demo-section--default,
+.demo-section--preview {
+    border: 1rpx dashed var(--snake-color-divider);
+    border-radius: 10rpx;
+}
+
+.demo-section--preview .demo-section__head {
+    border-bottom: 1rpx dashed var(--snake-color-divider);
+}
+
+.demo-section--controls {
+    background: transparent;
+}
+
+.demo-section--controls .demo-section__head {
+    padding-top: 16rpx;
+    border-bottom: 1rpx solid var(--snake-color-divider);
+}
+
+.demo-section--controls .demo-section__wrap {
+    padding: 0 8rpx;
+    background: transparent;
 }
 </style>

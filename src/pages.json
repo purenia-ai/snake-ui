@@ -47,6 +47,7 @@
                 { "path": "sticky/index", "style": { "navigationBarTitleText": "吸顶" } },
                 { "path": "swiper/index", "style": { "navigationBarTitleText": "轮播图" } },
                 { "path": "tabs/index", "style": { "navigationBarTitleText": "标签页" } },
+                { "path": "subsection/index", "style": { "navigationBarTitleText": "分段选择器" } },
                 { "path": "buttonSort/index", "style": { "navigationBarTitleText": "排序按钮" } },
                 { "path": "dropMenu/index", "style": { "navigationBarTitleText": "下拉菜单" } },
                 { "path": "dropMenuItem/index", "style": { "navigationBarTitleText": "下拉菜单项" } },
@@ -100,9 +101,7 @@
         },
         {
             "root": "pages/other",
-            "pages": [
-                { "path": "themeLocale/index", "style": { "navigationBarTitleText": "主题与语言" } }
-            ]
+            "pages": [{ "path": "themeLocale/index", "style": { "navigationBarTitleText": "主题与语言" } }]
         }
     ],
     "globalStyle": {

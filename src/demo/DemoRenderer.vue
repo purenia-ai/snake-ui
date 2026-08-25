@@ -172,7 +172,7 @@ function resetForm() {
 
 <template>
     <DemoPage :title="localizedTitle" :eyebrow="categoryLabel" :desc="previewDescription" :viewport="isViewportPreview">
-        <DemoSection :bare="isViewportPreview" :title="text('演示效果')">
+        <DemoSection :bare="isViewportPreview" variant="preview" :title="text('演示效果')">
             <view v-if="kind === 'button'" class="demo-stack">
                 <snake-button
                     :type="String(demoState.type)"
@@ -339,6 +339,15 @@ function resetForm() {
                     >{{ isEnglish ? 'Selected: ' : '当前选中：' }}{{ foundationTabs[currentTab] }}</view
                 ></view
             >
+            <view v-else-if="kind === 'subsection'" class="demo-stack"
+                ><snake-subsection
+                    :list="isEnglish ? ['Pending payment', 'To ship', 'To receive'] : ['待付款', '待发货', '待收货']"
+                    :current="Number(demoState.subsectionCurrent)"
+                    :mode="demoState.subsectionMode as any"
+                    :bold="Boolean(demoState.subsectionBold)"
+                    :animation="Boolean(demoState.subsectionAnimation)"
+                    @change="demoState.subsectionCurrent = $event"
+            /></view>
             <view v-else-if="kind === 'button-sort'" class="demo-stack"
                 ><snake-button-sort :title="String(demoState.sortTitle)" @change="sortValue = $event.value" /><view
                     class="demo-tab-content"
@@ -558,7 +567,7 @@ function resetForm() {
             <snake-list-switching v-else-if="kind === 'list-switching'" :datas="demoListSwitchingData" />
             <snake-coupon v-else-if="kind === 'coupon'" :datas="demoCouponData" />
         </DemoSection>
-        <DemoSection v-if="definition.controls.length" :title="text('参数配置')">
+        <DemoSection v-if="definition.controls.length" variant="controls" :title="text('参数配置')">
             <DemoControlPanel :controls="definition.controls" :values="demoState" @change="updateDemoValue" />
         </DemoSection>
     </DemoPage>

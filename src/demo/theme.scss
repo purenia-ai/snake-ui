@@ -1,37 +1,25 @@
 /*
  * Demo 外壳私有结构 token。
  * 颜色单一事实来源:snake-ui/theme.scss 的 --snake-color-* 体系,
- * 此处仅保留 demo 外壳的布局/渐变/阴影组合变量,随库主题自动换肤。
+ * 此处仅保留 demo 外壳的布局与导航组合变量,随库主题自动换肤。
  */
 :root,
 page {
     --snake-demo-nav-height: 88rpx;
-    /* 浅底强调文字:亮色下取深绿保证对比,暗色由下方覆写取亮薄荷 */
     --snake-demo-accent-text: var(--snake-color-primary-deep, #007a55);
     --snake-demo-nav-text: #073b2a;
     --snake-demo-nav-hover: rgba(7, 59, 42, 0.12);
-    /* 文档 Demo 私有品牌渐变:亮色承载深绿字,暗色由下方覆盖 */
-    --snake-demo-nav-gradient: linear-gradient(120deg, #06d290, #35e7ad);
-    /* 页面极淡品牌晕染 */
-    --snake-demo-page-tint: linear-gradient(
-        165deg,
-        rgba(var(--snake-color-primary-rgb, 6, 210, 144), 0.05) 0%,
-        rgba(var(--snake-color-primary-rgb, 6, 210, 144), 0.02) 30%,
-        rgba(var(--snake-color-primary-rgb, 6, 210, 144), 0) 55%
-    );
-    --snake-demo-card-shadow: 0 2rpx 16rpx var(--snake-color-shadow, rgba(15, 30, 24, 0.12));
+    --snake-demo-nav-background: var(--snake-color-primary, #06d290);
 }
 
-/* 暗色模式(runtime 在 html 上加 snake-theme-dark class):导航取更深绿,强调文字转亮绿 */
+/* 暗色模式(runtime 在 html 上加 snake-theme-dark class):保持单一品牌绿与足够对比。 */
 .snake-theme-dark {
     --snake-demo-accent-text: var(--snake-color-primary, #06d290);
-    --snake-demo-nav-text: #b9f8df;
-    --snake-demo-nav-hover: rgba(6, 210, 144, 0.14);
-    --snake-demo-nav-gradient: linear-gradient(120deg, #013527, #01513b);
+    --snake-demo-nav-text: #073b2a;
+    --snake-demo-nav-hover: rgba(7, 59, 42, 0.16);
+    --snake-demo-nav-background: var(--snake-color-primary, #06d290);
 }
 
-/* 供 @import 消费的 SCSS 桥接别名(仅结构组合类) */
+/* 供 @import 消费的 SCSS 桥接别名。 */
 $snake-nav-height: var(--snake-demo-nav-height);
-$snake-nav-gradient: var(--snake-demo-nav-gradient);
-$snake-page-tint: var(--snake-demo-page-tint);
-$snake-card-shadow: var(--snake-demo-card-shadow);
+$snake-nav-background: var(--snake-demo-nav-background);

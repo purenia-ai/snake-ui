@@ -46,6 +46,7 @@ export { default as SnakePopup } from './components/snake-popup/snake-popup.vue'
 export { default as SnakeSticky } from './components/snake-sticky/snake-sticky.vue';
 export { default as SnakeSwiper } from './components/snake-swiper/snake-swiper.vue';
 export { default as SnakeTabs } from './components/snake-tabs/snake-tabs.vue';
+export { default as SnakeSubsection } from './components/snake-subsection/snake-subsection.vue';
 export { default as SnakeButtonSort } from './components/snake-button-sort/snake-button-sort.vue';
 export { default as SnakeDropMenu } from './components/snake-drop-menu/snake-drop-menu.vue';
 export { default as SnakeDropMenuItem } from './components/snake-drop-menu-item/snake-drop-menu-item.vue';
@@ -77,6 +78,7 @@ export * from './components/snake-popup/types';
 export * from './components/snake-sticky/types';
 export * from './components/snake-swiper/types';
 export * from './components/snake-tabs/types';
+export * from './components/snake-subsection/types';
 export * from './components/snake-button-sort/types';
 export * from './components/snake-drop-menu/types';
 export * from './components/snake-drop-menu-item/types';
