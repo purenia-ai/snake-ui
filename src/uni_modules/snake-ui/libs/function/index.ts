@@ -1,0 +1,20 @@
+export * from './unit';
+export * from './platform';
+export * from './timeFrom';
+export * from './color';
+export * from './deepClone';
+export * from './deepMerge';
+export * from './debounce';
+export * from './throttle';
+export * from './random';
+export * from './randomArray';
+export * from './trim';
+export * from './test';
+export * from './style';
+export * from './format';
+export * from './clipboard';
+export * from './system';
+export * from './type2icon';
+export * from './emitter';
+
+export { getQueryParams as queryParams, formatTime as timeFormat } from './platform';

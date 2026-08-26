@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { resolveSnakeCmsOptions } from '../../libs/cms';
-import { navTo, toast } from '../../libs/platform';
+import { navTo, toast } from '../../libs/function/platform';
 import { SnakeCmsError, type SnakeCmsLinkService, type SnakeCmsPageInfo } from '../snake-cms/types';
 import type { SnakeHotzoneItem } from './types';
 

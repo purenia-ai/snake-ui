@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { addUnit } from '../../libs';
+import { addUnit } from '../../libs/function/unit';
 import type { SnakeSubsectionEmits, SnakeSubsectionItem, SnakeSubsectionOption, SnakeSubsectionProps } from './types';
 
 defineOptions({

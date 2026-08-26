@@ -1,6 +1,6 @@
 import type { InjectionKey, Ref } from 'vue';
 import type { SnakeFormError, SnakeFormRules, SnakeFormTrigger } from '../form';
-import type { SnakeStyleValue } from '../../components/component-types';
+import type { SnakeStyleValue } from '../../types/global';
 
 export type SnakeFormSize = 'small' | 'default' | 'large';
 export type SnakeFormLabelPosition = 'left' | 'top';

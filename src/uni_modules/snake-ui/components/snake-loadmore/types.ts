@@ -1,5 +1,5 @@
-import type { UnitValue } from '../../libs';
-import type { SnakeStyleValue } from '../component-types';
+import type { UnitValue } from '../../libs/function/unit';
+import type { SnakeStyleValue } from '../../types/global';
 
 export type SnakeLoadmoreStatus = 'loadmore' | 'loading' | 'nomore';
 export interface SnakeLoadmoreText { loadmore?: string; loading?: string; nomore?: string; }

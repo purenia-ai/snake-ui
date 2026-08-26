@@ -31,7 +31,7 @@
 </template>
 <script lang="ts" setup>
 import { getCurrentInstance, onMounted, ref } from 'vue';
-import filterPage from './filter-page.vue';
+import filterPage from './components/filter-page.vue';
 import InternalButtonSort from '../snake-button-sort/snake-button-sort.vue';
 import InternalDropMenu from '../snake-drop-menu/snake-drop-menu.vue';
 import InternalDropMenuItem from '../snake-drop-menu-item/snake-drop-menu-item.vue';

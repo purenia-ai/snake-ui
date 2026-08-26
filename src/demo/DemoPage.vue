@@ -59,26 +59,32 @@ function goHome() {
 <template>
     <view :class="['demo-page', { 'demo-page--viewport': viewport }]" :style="shellThemeStyle">
         <template v-if="!viewport">
-            <view class="demo-nav">
-                <view class="demo-nav__side" :class="{ 'demo-nav__side--hidden': !navBack }">
-                    <view v-if="navBack" class="demo-nav__hit" hover-class="demo-nav__hit--hover" @click="goBack()">
-                        <text class="demo-nav__back">‹</text>
+            <snake-navbar
+                :title="title"
+                :is-back="navBack"
+                :fixed="false"
+                :custom-back="goBack"
+                :background="'var(--snake-demo-nav-background)'"
+                title-color="var(--snake-demo-nav-text)"
+                back-icon-color="var(--snake-demo-nav-text)"
+                :border-bottom="false"
+                title-bold
+            >
+                <template #right>
+                    <view class="demo-nav__actions">
+                        <view
+                            class="demo-nav__hit demo-nav__locale"
+                            hover-class="demo-nav__hit--hover"
+                            @click="switchLocale"
+                        >
+                            <text>{{ nextLocaleLabel }}</text>
+                        </view>
+                        <view v-if="navHome" class="demo-nav__hit" hover-class="demo-nav__hit--hover" @click="goHome()">
+                            <text class="demo-nav__home">{{ text('首页') }}</text>
+                        </view>
                     </view>
-                </view>
-                <text class="demo-nav__title">{{ title }}</text>
-                <view class="demo-nav__actions">
-                    <view
-                        class="demo-nav__hit demo-nav__locale"
-                        hover-class="demo-nav__hit--hover"
-                        @click="switchLocale"
-                    >
-                        <text>{{ nextLocaleLabel }}</text>
-                    </view>
-                    <view v-if="navHome" class="demo-nav__hit" hover-class="demo-nav__hit--hover" @click="goHome()">
-                        <text class="demo-nav__home">{{ text('首页') }}</text>
-                    </view>
-                </view>
-            </view>
+                </template>
+            </snake-navbar>
 
             <view v-if="eyebrow || desc" class="demo-page-header">
                 <text v-if="eyebrow" class="demo-page-header__category">{{ eyebrow }}</text>
@@ -101,37 +107,13 @@ function goHome() {
 .demo-page {
     box-sizing: border-box;
     min-height: 100vh;
-    background-color: var(--snake-color-background);
+    background-color: var(--snake-color-surface);
     color: var(--snake-color-text);
     -webkit-font-smoothing: antialiased;
 }
 
 .demo-page--viewport {
     background: var(--snake-color-surface);
-}
-
-.demo-nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    height: $snake-nav-height;
-    padding: 0 12rpx;
-    background: $snake-nav-background;
-    border-bottom: 1rpx solid rgba(7, 59, 42, 0.12);
-}
-
-.demo-nav__side {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 96rpx;
-    height: 100%;
-
-    &--hidden {
-        visibility: hidden;
-    }
 }
 
 .demo-nav__actions {
@@ -162,24 +144,6 @@ function goHome() {
 
 .demo-nav__hit--hover {
     background: var(--snake-demo-nav-hover);
-}
-
-.demo-nav__back {
-    padding-bottom: 6rpx;
-    color: var(--snake-demo-nav-text);
-    font-size: 56rpx;
-    line-height: 1;
-}
-
-.demo-nav__title {
-    flex: 1;
-    overflow: hidden;
-    color: var(--snake-demo-nav-text);
-    font-size: 32rpx;
-    font-weight: 600;
-    text-align: center;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 .demo-nav__home {

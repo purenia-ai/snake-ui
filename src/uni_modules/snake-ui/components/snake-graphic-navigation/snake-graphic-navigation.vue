@@ -1,4 +1,4 @@
-﻿<template>
+<template>
     <view v-if="imageList.length" class="graphicnavigation" :style="$snakeThemeStyle">
         <!-- 鍥哄畾鍒楄〃 -->
         <block v-if="datas.imgStyle === 0">
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { pxToRpx } from '../../libs/unit';
+import { pxToRpx } from '../../libs/function/unit';
 
 export default {
     name: 'snake-graphic-navigation',

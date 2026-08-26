@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue';
 import { resolveSnakeCmsOptions } from '../../libs/cms';
-import { toast } from '../../libs/platform';
+import { toast } from '../../libs/function/platform';
 import {
     SnakeCmsError,
     type SnakeCmsLinkAction,

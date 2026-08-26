@@ -1,5 +1,5 @@
 import type { SnakeDarkMode } from '../../libs/config/types';
-import type { SnakeStyleValue } from '../component-types';
+import type { SnakeStyleValue } from '../../types/global';
 
 export interface SnakeConfigProviderProps {
     /** 初始化/切换暗黑模式(light | dark | auto),不传则沿用当前引擎状态 */

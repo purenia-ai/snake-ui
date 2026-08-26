@@ -1,4 +1,4 @@
-import type { SnakeStyleValue } from '../component-types';
+import type { SnakeStyleValue } from '../../types/global';
 
 export type SnakePopupMode = 'center' | 'top' | 'right' | 'bottom' | 'left';
 export type SnakePopupCloseIconPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';

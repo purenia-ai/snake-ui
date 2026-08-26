@@ -1,4 +1,4 @@
-import { deepClone } from '../functions';
+import { deepClone } from '../function';
 import type {
     SnakeCmsBuiltinComponent,
     SnakeCmsComponentConfig,

@@ -330,7 +330,7 @@
 
 <script>
 import SnakePictureAds from '../snake-picture-ads/snake-picture-ads.vue';
-import { pxToRpx } from '../../libs/unit';
+import { pxToRpx } from '../../libs/function/unit';
 
 export default {
   name: 'snake-magic-cube',

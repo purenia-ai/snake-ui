@@ -22,7 +22,7 @@
  * (含 storage 持久化),便于在 App.root.vue 中声明式固定初始主题。
  */
 import { computed, onMounted, watch } from 'vue';
-import { currentSnakeTheme, setSnakeDarkMode, setSnakeTheme, snakeDarkMode, snakeSystemDark } from '../../libs';
+import { currentSnakeTheme, setSnakeDarkMode, setSnakeTheme, snakeDarkMode, snakeSystemDark } from '../../libs/config/theme';
 import type { SnakeConfigProviderEmits, SnakeConfigProviderProps } from './types';
 
 defineOptions({ name: 'SnakeConfigProvider', options: { virtualHost: true, styleIsolation: 'shared' } });

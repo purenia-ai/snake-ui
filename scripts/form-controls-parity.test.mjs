@@ -61,8 +61,8 @@ test('form control components expose independent contracts', async () => {
 test('form controls are exported from runtime and declaration entries', async () => {
     const [runtime, declaration, types] = await Promise.all([
         read('index.ts'),
-        read('index.d.ts'),
-        read('types/index.d.ts')
+        read('types/components.d.ts'),
+        read('types/components.d.ts')
     ]);
     for (const name of [
         'Form',
@@ -140,4 +140,15 @@ test('third parity batch remains independent from uView and async-validator', as
         '\n'
     );
     assert.doesNotMatch(source, /uni\.\$u|uview-pro|async-validator|<u-/);
+});
+
+test('radio and checkbox use the compact iconfont checkmark', async () => {
+    const [checkbox, radio] = await Promise.all([
+        read('components/snake-checkbox/snake-checkbox.vue'),
+        read('components/snake-radio/snake-radio.vue')
+    ]);
+    for (const source of [checkbox, radio]) {
+        assert.ok(source.includes('Number(iconSize) * (20 / 34)'));
+        assert.ok(!source.includes('name="checkmark"\n                :color="iconColor"\n                bold'));
+    }
 });

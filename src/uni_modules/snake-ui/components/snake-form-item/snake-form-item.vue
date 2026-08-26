@@ -1,13 +1,7 @@
 <script setup lang="ts">
 import { computed, inject, onBeforeUnmount, onMounted, provide, ref } from 'vue';
-import {
-    addUnit,
-    cloneFormValue,
-    getPathValue,
-    setPathValue,
-    validateFormValue,
-    type SnakeFormTrigger
-} from '../../libs';
+import { addUnit } from '../../libs/function/unit';
+import { cloneFormValue, getPathValue, setPathValue, validateFormValue, type SnakeFormTrigger } from '../../libs/form';
 import { snakeFormKey, type SnakeFormField } from '../../libs/internal/form';
 import { snakeFormItemKey } from '../../libs/internal/form-item';
 import SnakeIcon from '../snake-icon/snake-icon.vue';

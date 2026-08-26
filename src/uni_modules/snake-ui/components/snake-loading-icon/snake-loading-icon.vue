@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, type CSSProperties } from 'vue';
-import { addUnit } from '../../libs';
+import { addUnit } from '../../libs/function/unit';
 import type { SnakeLoadingIconProps } from './types';
 
 defineOptions({ name: 'SnakeLoadingIcon', options: { virtualHost: true, styleIsolation: 'shared' } });

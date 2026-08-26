@@ -13,6 +13,7 @@ const components = [
     'snake-lazy-image',
     'snake-loadmore',
     'snake-notice-bar',
+    'snake-navbar',
     'snake-overlay',
     'snake-popup',
     'snake-sticky',
@@ -35,7 +36,7 @@ test('public foundation components use independent type contracts', async () => 
 });
 
 test('package entry exposes precise foundation component props', async () => {
-    const declarations = await readFile(new URL('index.d.ts', root), 'utf8');
+    const declarations = await readFile(new URL('types/components.d.ts', root), 'utf8');
     for (const component of [
         'Button',
         'LoadingIcon',
@@ -46,6 +47,7 @@ test('package entry exposes precise foundation component props', async () => {
         'LazyImage',
         'Loadmore',
         'NoticeBar',
+        'Navbar',
         'Overlay',
         'Popup',
         'Sticky',
@@ -79,6 +81,31 @@ test('popup and overlay resolve visibility from the actually bound channel', asy
             /props\.show\s*\?\?\s*props\.modelValue/,
             `${component} 不能用 ?? 在 show 与 modelValue 间穿透（Boolean casting 下失效）`
         );
-        assert.match(source, /'show' in \(getCurrentInstance\(\)\?\.vnode\?\.props/, `${component} 需检测父组件实际绑定的通道`);
+        assert.match(
+            source,
+            /'show' in \(getCurrentInstance\(\)\?\.vnode\?\.props/,
+            `${component} 需检测父组件实际绑定的通道`
+        );
+    }
+});
+
+test('icon uses the bundled Snake UI font for stable common glyphs', async () => {
+    const source = await readFile(new URL('components/snake-icon/snake-icon.vue', root), 'utf8');
+    const types = await readFile(new URL('components/snake-icon/types.ts', root), 'utf8');
+    const stylesheet = await readFile(new URL('iconfont.css', root), 'utf8');
+    const font = await readFile(new URL('iconfont.woff2', root));
+    assert.ok(source.includes("@import '../../iconfont.css'"));
+    assert.ok(source.includes("checkmark: 'checkbox-mark'"));
+    assert.ok(stylesheet.includes("font-family: 'snake-iconfont'"));
+    assert.ok(stylesheet.includes('.sicon-checkbox-mark::before'));
+    assert.ok(stylesheet.includes("content: '\\e628'"));
+    assert.ok(stylesheet.includes("url('./iconfont.woff2')"));
+    assert.ok(font.length > 0);
+    assert.ok(types.includes("'left' | 'right' | 'top' | 'bottom'"));
+    assert.ok(source.includes("props.labelPos === 'left'"));
+    assert.ok(source.includes("props.labelPos === 'top'"));
+    for (const icon of ['search', 'success', 'warning', 'eye-outline', 'arrow-right']) {
+        assert.ok(stylesheet.includes(`.sicon-${icon}::before`), `${icon}: missing bundled glyph`);
+        assert.ok(source.includes(`'${icon}'`), `${icon}: missing component mapping`);
     }
 });

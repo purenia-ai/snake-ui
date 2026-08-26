@@ -41,6 +41,7 @@ export { default as SnakeImage } from './components/snake-image/snake-image.vue'
 export { default as SnakeLazyImage } from './components/snake-lazy-image/snake-lazy-image.vue';
 export { default as SnakeLoadmore } from './components/snake-loadmore/snake-loadmore.vue';
 export { default as SnakeNoticeBar } from './components/snake-notice-bar/snake-notice-bar.vue';
+export { default as SnakeNavbar } from './components/snake-navbar/snake-navbar.vue';
 export { default as SnakeOverlay } from './components/snake-overlay/snake-overlay.vue';
 export { default as SnakePopup } from './components/snake-popup/snake-popup.vue';
 export { default as SnakeSticky } from './components/snake-sticky/snake-sticky.vue';
@@ -63,7 +64,7 @@ export { default as SnakeRadioGroup } from './components/snake-radio-group/snake
 export { default as SnakeSwitch } from './components/snake-switch/snake-switch.vue';
 export { default as SnakeSlider } from './components/snake-slider/snake-slider.vue';
 
-export * from './components/component-types';
+export type { SnakeImageMode, SnakeStyleValue } from './types/global';
 export * from './components/snake-button/types';
 export * from './components/snake-loading-icon/types';
 export * from './components/snake-transition/types';
@@ -73,6 +74,7 @@ export * from './components/snake-image/types';
 export * from './components/snake-lazy-image/types';
 export * from './components/snake-loadmore/types';
 export * from './components/snake-notice-bar/types';
+export * from './components/snake-navbar/types';
 export * from './components/snake-overlay/types';
 export * from './components/snake-popup/types';
 export * from './components/snake-sticky/types';

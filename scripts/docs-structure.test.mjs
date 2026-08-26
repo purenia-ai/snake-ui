@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { access, readFile } from 'node:fs/promises';
+import { access, readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import test from 'node:test';
 
@@ -79,15 +79,13 @@ test('tool registry covers every documented public utility and composable', asyn
     const apis = apiGroups.flatMap(([, body]) => [...body.matchAll(/'([^']+)'/g)].map(match => match[1]));
     assert.equal(new Set(apis).size, apis.length, 'documented API names must be unique');
 
+    const functionFiles = await readdir(resolve(root, 'src/uni_modules/snake-ui/libs/function'));
     const sources = (
-        await Promise.all(
-            [
-                'src/uni_modules/snake-ui/libs/functions/index.ts',
-                'src/uni_modules/snake-ui/libs/hooks/index.ts',
-                'src/uni_modules/snake-ui/libs/platform.ts',
-                'src/uni_modules/snake-ui/libs/request/index.ts'
-            ].map(text)
-        )
+        await Promise.all([
+            ...functionFiles.filter(file => file.endsWith('.ts')).map(file => text(`src/uni_modules/snake-ui/libs/function/${file}`)),
+            text('src/uni_modules/snake-ui/libs/hooks/index.ts'),
+            text('src/uni_modules/snake-ui/libs/request/index.ts')
+        ])
     ).join('\n');
 
     for (const api of apis) {

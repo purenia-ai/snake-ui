@@ -133,9 +133,9 @@
 </template>
 
 <script>
-import { createCacheClient } from '../../libs';
-import InternalIndexAnchor from '../snake-index-anchor/snake-index-anchor.vue';
-import InternalIndexList from '../snake-index-list/snake-index-list.vue';
+import { createCacheClient } from '../../../libs/adapters/cache';
+import InternalIndexAnchor from '../../snake-index-anchor/snake-index-anchor.vue';
+import InternalIndexList from '../../snake-index-list/snake-index-list.vue';
 const cacheManager = createCacheClient('snake-filter-sorts');
 export default {
   options: {

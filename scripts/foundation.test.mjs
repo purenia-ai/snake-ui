@@ -50,7 +50,7 @@ after(async () => {
 
 const theme = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/config/theme.ts');
 const locale = await server.ssrLoadModule('/src/uni_modules/snake-ui/locale/index.ts');
-const functions = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/functions/index.ts');
+const functions = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/function/index.ts');
 const request = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/request/index.ts');
 
 test('theme initializes Snake tokens and switches dark mode reactively', () => {

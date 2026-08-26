@@ -1,4 +1,4 @@
-import type { SnakeStyleValue } from '../component-types';
+import type { SnakeStyleValue } from '../../types/global';
 
 export type SnakeButtonType = 'default' | 'primary' | 'success' | 'info' | 'warning' | 'error' | (string & {});
 export type SnakeButtonSize = 'large' | 'default' | 'medium' | 'small' | 'mini';

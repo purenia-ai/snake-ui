@@ -1,4 +1,4 @@
-import type { SnakeStyleValue } from '../component-types';
+import type { SnakeStyleValue } from '../../types/global';
 
 export interface SnakeOverlayProps {
     modelValue?: boolean;

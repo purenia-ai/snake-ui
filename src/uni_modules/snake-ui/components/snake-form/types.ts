@@ -1,4 +1,4 @@
-import type { SnakeStyleValue } from '../component-types';
+import type { SnakeStyleValue } from '../../types/global';
 import type { SnakeFormError, SnakeFormRules } from '../../libs/form';
 import type {
     SnakeFormErrorType,

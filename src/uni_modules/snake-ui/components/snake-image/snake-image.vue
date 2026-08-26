@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { addUnit } from '../../libs';
+import { addUnit } from '../../libs/function/unit';
 import SnakeIcon from '../snake-icon/snake-icon.vue';
 import SnakeLoadingIcon from '../snake-loading-icon/snake-loading-icon.vue';
 import type { SnakeImageEmits, SnakeImageProps } from './types';

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, inject } from 'vue';
-import { addUnit } from '../../libs';
+import { addUnit } from '../../libs/function/unit';
 import { snakeFormItemKey } from '../../libs/internal/form-item';
 import SnakeLoadingIcon from '../snake-loading-icon/snake-loading-icon.vue';
 import type { SnakeSwitchEmits, SnakeSwitchProps } from './types';

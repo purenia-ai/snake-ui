@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, inject } from 'vue';
-import { addUnit } from '../../libs';
+import { addUnit } from '../../libs/function/unit';
 import { snakeRadioGroupKey } from '../../libs/internal/radio';
 import { snakeFormItemKey } from '../../libs/internal/form-item';
 import SnakeIcon from '../snake-icon/snake-icon.vue';
@@ -57,8 +57,7 @@ function select(event: unknown, fromLabel = false) {
                 v-if="checked"
                 name="checkmark"
                 :color="iconColor"
-                :size="Number(iconSize) * 0.72"
-                bold /></view
+                :size="Number(iconSize) * (20 / 34)" /></view
         ><view class="snake-radio__label" :style="{ fontSize: addUnit(labelSize, 'rpx') }" @click="select($event, true)"
             ><slot>{{ label }}</slot></view
         ></view

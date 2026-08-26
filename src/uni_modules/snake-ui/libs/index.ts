@@ -12,12 +12,10 @@ export {
 export type { SnakeCacheAdapter, SnakeRequestAdapter, SnakeUIConfig, SnakeUIOptions } from './runtime';
 export * from './foundation';
 export * from './config';
-export * from './functions';
+export * from './function';
 export * from './hooks';
 export * from './request';
 export * from './cms';
-export * from './unit';
-export * from './platform';
 export * from './form';
 export * from './adapters/request';
 export * from './adapters/cache';

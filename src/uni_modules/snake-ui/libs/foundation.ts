@@ -15,7 +15,7 @@ import {
     snakeThemes,
     toggleSnakeDarkMode
 } from './config/theme';
-import * as functions from './functions';
+import * as functions from './function';
 import * as hooks from './hooks';
 import { currentSnakeLocale, initSnakeLocale, setSnakeLocale, snakeLocales, snakeTranslate } from '../locale';
 import { configureSnakeHttp, snakeHttp } from './request';

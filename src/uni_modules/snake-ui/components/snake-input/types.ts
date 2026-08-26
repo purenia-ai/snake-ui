@@ -1,5 +1,5 @@
-import type { UnitValue } from '../../libs';
-import type { SnakeStyleValue } from '../component-types';
+import type { UnitValue } from '../../libs/function/unit';
+import type { SnakeStyleValue } from '../../types/global';
 import type { SnakeFormSize } from '../../libs/internal/form';
 export type SnakeInputType = 'text' | 'number' | 'idcard' | 'digit' | 'password' | 'nickname';
 export type SnakeInputShape = 'square' | 'circle';

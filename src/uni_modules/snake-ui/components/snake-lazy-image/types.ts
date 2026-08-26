@@ -1,5 +1,5 @@
-import type { UnitValue } from '../../libs';
-import type { SnakeImageMode, SnakeStyleValue } from '../component-types';
+import type { UnitValue } from '../../libs/function/unit';
+import type { SnakeImageMode, SnakeStyleValue } from '../../types/global';
 
 export interface SnakeLazyImageProps {
     src?: string;

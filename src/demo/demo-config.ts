@@ -173,7 +173,7 @@ const definitions: Record<string, DemoDefinition> = {
     },
     icon: {
         category: '基础组件',
-        description: '展示 Snake UI 内置图标，可调整尺寸和主题颜色。',
+        description: '浏览 Snake UI 自有字体图标，并实时调整尺寸、颜色和标签。',
         controls: [
             {
                 key: 'iconColor',
@@ -183,7 +183,7 @@ const definitions: Record<string, DemoDefinition> = {
                 options: [
                     { label: '品牌绿', value: '#06D290' },
                     { label: '深色', value: '#173b2c' },
-                    { label: '警示色', value: '#FF6A0C' }
+                    { label: '中性灰', value: '#7b8d84' }
                 ]
             },
             {
@@ -195,6 +195,20 @@ const definitions: Record<string, DemoDefinition> = {
                 max: 44,
                 step: 2,
                 unit: 'px'
+            },
+            { key: 'iconBold', label: '图标加粗', type: 'switch', defaultValue: false },
+            { key: 'iconLabel', label: '标签文字', type: 'input', defaultValue: '搜索', placeholder: '留空则隐藏标签' },
+            {
+                key: 'iconLabelPos',
+                label: '标签位置',
+                type: 'select',
+                defaultValue: 'right',
+                options: [
+                    { label: '右侧', value: 'right' },
+                    { label: '左侧', value: 'left' },
+                    { label: '下方', value: 'bottom' },
+                    { label: '上方', value: 'top' }
+                ]
             }
         ]
     },
@@ -308,6 +322,16 @@ const definitions: Record<string, DemoDefinition> = {
                 ]
             },
             { key: 'closeOverlay', label: '点击遮罩关闭', type: 'switch', defaultValue: true }
+        ]
+    },
+    navbar: {
+        category: '导航与布局',
+        description: '用于页面顶部导航，支持返回操作、安全区、标题和左右插槽。',
+        controls: [
+            { key: 'navbarTitle', label: '导航标题', type: 'input', defaultValue: '订单详情' },
+            { key: 'navbarBack', label: '显示返回', type: 'switch', defaultValue: true },
+            { key: 'navbarBorder', label: '底部分隔线', type: 'switch', defaultValue: true },
+            { key: 'navbarBold', label: '标题加粗', type: 'switch', defaultValue: false }
         ]
     },
     sticky: {

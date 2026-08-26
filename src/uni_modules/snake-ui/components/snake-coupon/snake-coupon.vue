@@ -48,7 +48,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
 import { resolveSnakeCmsOptions } from '../../libs/cms';
-import { sleep, toast } from '../../libs/platform';
+import { sleep, toast } from '../../libs/function/platform';
 import {
     SnakeCmsError,
     type SnakeCmsCouponService,

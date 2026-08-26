@@ -1,4 +1,4 @@
-import { deepMerge } from '../functions';
+import { deepMerge } from '../function';
 import type { SnakeCmsOptions } from '../../components/snake-cms/types';
 
 const DEFAULT_CMS_OPTIONS: SnakeCmsOptions = {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, ref, watch } from 'vue';
-import { addUnit } from '../../libs';
+import { addUnit } from '../../libs/function/unit';
 import { snakeFormItemKey } from '../../libs/internal/form-item';
 import SnakeIcon from '../snake-icon/snake-icon.vue';
 import type { SnakeInputEmits, SnakeInputProps } from './types';

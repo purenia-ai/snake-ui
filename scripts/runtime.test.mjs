@@ -1,23 +1,26 @@
 import assert from 'node:assert/strict'
-import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
+import { cp, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import test from 'node:test'
 
 const sourceRoot = resolve(import.meta.dirname, '../src/uni_modules/snake-ui/libs')
 const testRoot = await mkdtemp(join(tmpdir(), 'snake-ui-runtime-'))
-await Promise.all(['unit.ts', 'platform.ts'].map(async (file) => {
-  await writeFile(join(testRoot, file), await readFile(join(sourceRoot, file)))
-}))
-await mkdir(join(testRoot, 'functions'))
-const functionsSource = (await readFile(join(sourceRoot, 'functions/index.ts'), 'utf8'))
-  .replace("from '../unit'", "from '../unit.ts'")
-  .replaceAll("from '../platform'", "from '../platform.ts'")
-await writeFile(join(testRoot, 'functions/index.ts'), functionsSource)
+const functionRoot = join(testRoot, 'function')
+await cp(join(sourceRoot, 'function'), functionRoot, { recursive: true })
+for (const file of await readdir(functionRoot)) {
+  if (!file.endsWith('.ts')) continue
+  const path = join(functionRoot, file)
+  const source = (await readFile(path, 'utf8')).replace(
+    /(from |export \* from )'(\.\/[^']+)'/g,
+    "$1'$2.ts'",
+  )
+  await writeFile(path, source)
+}
 const runtimeSource = (await readFile(join(sourceRoot, 'runtime.ts'), 'utf8'))
-  .replace("from './unit'", "from './unit.ts'")
-  .replace("from './platform'", "from './platform.ts'")
-  .replace("from './functions'", "from './functions/index.ts'")
+  .replace("from './function/unit'", "from './function/unit.ts'")
+  .replace("from './function/platform'", "from './function/platform.ts'")
+  .replace("from './function'", "from './function/index.ts'")
 await writeFile(join(testRoot, 'runtime.ts'), runtimeSource)
 
 const {

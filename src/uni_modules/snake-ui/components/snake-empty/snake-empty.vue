@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { addUnit } from '../../libs';
+import { addUnit } from '../../libs/function/unit';
 import { snakeTranslate } from '../../locale';
 import SnakeIcon from '../snake-icon/snake-icon.vue';
 import type { SnakeEmptyProps } from './types';

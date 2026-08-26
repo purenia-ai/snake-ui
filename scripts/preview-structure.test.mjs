@@ -48,6 +48,7 @@ const componentRouteName = name => name.replace(/-([a-z])/g, (_, letter) => lett
 test('preview renderer uses an uncropped viewport root', async () => {
     const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
     const page = await readFile(resolve(root, 'src/demo/DemoPage.vue'), 'utf8');
+    assert.ok(page.includes('background-color: var(--snake-color-surface)'));
 
     assert.doesNotMatch(renderer, /DemoShell/);
     assert.doesNotMatch(renderer, /overflow:\s*hidden/);
@@ -68,8 +69,8 @@ test('component docs and example routes remain one-to-one', async () => {
         if (match) previews.push(match[1]);
     }
 
-    assert.equal(routes.length, 51);
-    assert.equal(previews.length, 51);
+    assert.equal(routes.length, 52);
+    assert.equal(previews.length, 52);
     assert.deepEqual([...new Set(previews)].sort(), [...new Set(routes)].sort());
 });
 
@@ -98,9 +99,9 @@ test('component overview page covers every example route and directory layout', 
     );
     const routes = exampleRoutes(pages);
 
-    assert.equal(configuredPaths.length, 51);
+    assert.equal(configuredPaths.length, 52);
     assert.deepEqual([...configuredPaths].sort(), [...routes].sort());
-    assert.equal(groupA.length, 30);
+    assert.equal(groupA.length, 31);
     assert.equal(groupB.length, 21);
     for (const directory of [
         ...groupA.map(name => ['componentsA', name]),
@@ -139,7 +140,7 @@ test('all example components declare an interactive demo configuration', async (
     const configuredKinds = [...config.matchAll(/^\s+(?:'([^']+)'|([a-z][\w-]*)):\s*\{\s*category:/gm)].map(
         match => match[1] || match[2]
     );
-    assert.equal(configuredKinds.length, 51);
+    assert.equal(configuredKinds.length, 52);
     assert.match(panel, /control\.type === 'select'/);
     assert.match(panel, /control\.type === 'switch'/);
     assert.match(panel, /control\.type === 'slider'/);
@@ -157,7 +158,7 @@ test('component demos use one restrained shared presentation system', async () =
     assert.match(theme, /--snake-demo-nav-background:\s*var\(--snake-color-primary/);
     assert.doesNotMatch(theme, /snake-demo-nav-gradient|snake-demo-page-tint|snake-demo-card-shadow/);
     assert.match(page, /demo-page-header__title/);
-    assert.match(page, /background:\s*\$snake-nav-background/);
+    assert.ok(page.includes('--snake-demo-nav-background'));
     assert.doesNotMatch(page, /background-image:\s*\$snake-page-tint/);
     assert.match(section, /DemoSectionVariant = 'default' \| 'preview' \| 'controls'/);
     assert.match(section, /demo-section--preview[^}]*border-bottom:\s*1rpx dashed/s);
@@ -309,4 +310,17 @@ test('mobile preview and locale guide expose one persistent bilingual experience
     assert.match(localeGuide, /简体中文/);
     assert.match(localeGuide, /原始 key/);
     assert.match(localeGuide, /uni\.setStorageSync/);
+});
+
+test('icon preview exposes the bundled glyph set with a restrained interactive grid', async () => {
+    const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
+    const config = await readFile(resolve(root, 'src/demo/demo-config.ts'), 'utf8');
+
+    assert.match(renderer, /const selectedIcon = ref\('search'\)/);
+    assert.match(renderer, /const iconNames = \[/);
+    assert.match(renderer, /grid-template-columns: repeat\(3, minmax\(0, 1fr\)\)/);
+    assert.match(renderer, /'demo-icon-item--active': selectedIcon === name/);
+    assert.match(renderer, /@click="selectedIcon = name"/);
+    assert.match(config, /key: 'iconLabelPos'/);
+    assert.match(config, /key: 'iconBold'/);
 });

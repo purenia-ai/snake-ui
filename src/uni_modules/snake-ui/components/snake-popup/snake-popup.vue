@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, getCurrentInstance, ref, watch } from 'vue';
-import { addUnit } from '../../libs';
+import { addUnit } from '../../libs/function/unit';
 import SnakeIcon from '../snake-icon/snake-icon.vue';
 import SnakeOverlay from '../snake-overlay/snake-overlay.vue';
 import SnakeTransition from '../snake-transition/snake-transition.vue';

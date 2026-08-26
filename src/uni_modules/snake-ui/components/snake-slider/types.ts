@@ -1,5 +1,5 @@
-import type { UnitValue } from '../../libs';
-import type { SnakeStyleValue } from '../component-types';
+import type { UnitValue } from '../../libs/function/unit';
+import type { SnakeStyleValue } from '../../types/global';
 export type SnakeSliderValuePosition = 'top' | 'bottom';
 export interface SnakeSliderProps {
     modelValue?: number | string;

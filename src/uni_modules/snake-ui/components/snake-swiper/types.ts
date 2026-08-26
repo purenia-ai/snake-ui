@@ -1,5 +1,5 @@
-import type { UnitValue } from '../../libs';
-import type { SnakeImageMode, SnakeStyleValue } from '../component-types';
+import type { UnitValue } from '../../libs/function/unit';
+import type { SnakeImageMode, SnakeStyleValue } from '../../types/global';
 export type SnakeSwiperItem = string | Record<string, unknown>;
 export type SnakeSwiperIndicatorMode = 'round' | 'dot' | 'line' | 'number';
 export type SnakeSwiperIndicatorPosition = 'topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight';

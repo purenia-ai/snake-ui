@@ -8,7 +8,7 @@ const read = path => readFile(new URL(path, root), 'utf8');
 test('first parity batch exposes reusable transition and loading foundations', async () => {
     const [entry, declarations, transition, loading] = await Promise.all([
         read('index.ts'),
-        read('index.d.ts'),
+        read('types/components.d.ts'),
         read('components/snake-transition/snake-transition.vue'),
         read('components/snake-loading-icon/snake-loading-icon.vue')
     ]);
@@ -39,7 +39,7 @@ test('button has full state and native capability contract', async () => {
 test('subsection exposes animated button and outlined selection modes', async () => {
     const [entry, declarations, types, source] = await Promise.all([
         read('index.ts'),
-        read('index.d.ts'),
+        read('types/components.d.ts'),
         read('components/snake-subsection/types.ts'),
         read('components/snake-subsection/snake-subsection.vue')
     ]);

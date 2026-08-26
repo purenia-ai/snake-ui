@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { addUnit } from '../../libs';
+import { addUnit } from '../../libs/function/unit';
 import { snakeTranslate } from '../../locale';
 import SnakeLoadingIcon from '../snake-loading-icon/snake-loading-icon.vue';
 import type { SnakeLoadmoreEmits, SnakeLoadmoreProps } from './types';

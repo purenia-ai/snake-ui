@@ -209,6 +209,8 @@ Object.assign(englishMessages, {
     '弹出层支持从页面不同方向出现并承载业务内容。':
         'Popups can enter from different directions and host custom content.',
     '页面滚动时将重要内容固定在指定顶部位置。': 'Keeps important content fixed at a chosen top offset while scrolling.',
+    '用于页面顶部导航，支持返回操作、安全区、标题和左右插槽。':
+        'A top navigation bar with back actions, safe areas, titles and side slots.',
     '用于图片或内容轮播，支持自动播放、标题和指示器。':
         'A carousel with autoplay, titles and multiple indicator styles.',
     '标签页用于在同层级内容之间快速切换。': 'Tabs switch quickly between peer content sections.',
@@ -269,6 +271,7 @@ const demoTitles: Record<string, string> = {
     overlay: 'Overlay',
     popup: 'Popup',
     sticky: 'Sticky',
+    navbar: 'Navbar',
     swiper: 'Swiper',
     tabs: 'Tabs',
     subsection: 'Subsection',

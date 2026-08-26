@@ -5,7 +5,6 @@
  */
 :root,
 page {
-    --snake-demo-nav-height: 88rpx;
     --snake-demo-accent-text: var(--snake-color-primary-deep, #007a55);
     --snake-demo-nav-text: #073b2a;
     --snake-demo-nav-hover: rgba(7, 59, 42, 0.12);
@@ -21,5 +20,3 @@ page {
 }
 
 /* 供 @import 消费的 SCSS 桥接别名。 */
-$snake-nav-height: var(--snake-demo-nav-height);
-$snake-nav-background: var(--snake-demo-nav-background);

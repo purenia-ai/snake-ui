@@ -1,6 +1,6 @@
 import type { SnakeUIOptions } from '../runtime';
 import { getSnakeUIOptions, SnakeUIRuntimeError } from '../runtime';
-import { getQueryParams, navTo } from '../platform';
+import { getQueryParams, navTo } from '../function/platform';
 import type {
     SnakeCmsCommerceService,
     SnakeCmsCouponService,

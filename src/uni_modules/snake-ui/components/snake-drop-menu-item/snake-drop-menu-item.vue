@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, onBeforeUnmount, watch } from 'vue';
-import { addUnit } from '../../libs';
+import { addUnit } from '../../libs/function/unit';
 import { snakeDropMenuKey } from '../../libs/internal/drop-menu';
 import SnakeIcon from '../snake-icon/snake-icon.vue';
 import SnakeTransition from '../snake-transition/snake-transition.vue';

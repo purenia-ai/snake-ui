@@ -1,5 +1,5 @@
-import type { UnitValue } from '../../libs';
-import type { SnakeImageMode, SnakeStyleValue } from '../component-types';
+import type { UnitValue } from '../../libs/function/unit';
+import type { SnakeImageMode, SnakeStyleValue } from '../../types/global';
 
 export interface SnakeIconProps {
     name?: string;
@@ -8,7 +8,7 @@ export interface SnakeIconProps {
     bold?: boolean;
     index?: number | string;
     label?: number | string;
-    labelPos?: 'right' | 'bottom';
+    labelPos?: 'left' | 'right' | 'top' | 'bottom';
     labelColor?: string;
     labelSize?: UnitValue;
     space?: UnitValue;

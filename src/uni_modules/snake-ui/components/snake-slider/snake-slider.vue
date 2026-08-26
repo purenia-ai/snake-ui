@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, getCurrentInstance, inject, onMounted, ref, watch } from 'vue';
-import { addUnit } from '../../libs';
+import { addUnit } from '../../libs/function/unit';
 import { snakeFormItemKey } from '../../libs/internal/form-item';
 import type { SnakeSliderEmits, SnakeSliderExpose, SnakeSliderProps } from './types';
 defineOptions({ name: 'SnakeSlider', options: { virtualHost: true, styleIsolation: 'shared' } });

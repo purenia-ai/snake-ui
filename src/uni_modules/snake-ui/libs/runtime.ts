@@ -1,9 +1,9 @@
 import type { App, InjectionKey } from 'vue';
 import type { SnakeDebugLevel, SnakeHttpSetup, SnakeLocaleOption, SnakeThemeOption } from './config/types';
-import type { SnakeCmsOptions } from '../components/snake-cms/types';
-import { addUnit, pxToRpx } from './unit';
-import { formatTime, getQueryParams, getRect, getSystemInfo, guid, navTo, route, sleep, toast } from './platform';
-import { queryParams, timeFormat, timeFrom } from './functions';
+import type { SnakeCmsOptions } from './cms/types';
+import { addUnit, pxToRpx } from './function/unit';
+import { formatTime, getQueryParams, getRect, getSystemInfo, guid, navTo, route, sleep, toast } from './function/platform';
+import { queryParams, timeFormat, timeFrom } from './function';
 
 export interface SnakeRequestAdapter {
     get<T = unknown>(url: string, params?: Record<string, unknown>): Promise<T>;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { addUnit } from '../../libs';
+import { addUnit } from '../../libs/function/unit';
 import type { SnakeTabItem, SnakeTabsEmits, SnakeTabsProps } from './types';
 
 defineOptions({ name: 'SnakeTabs', options: { virtualHost: true, styleIsolation: 'shared' } });

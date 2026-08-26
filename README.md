@@ -248,20 +248,27 @@ pnpm docs:build:preview
 
 ```text
 src/uni_modules/snake-ui/
-├── components/    # 组件源码
-├── libs/          # 运行时、单位、平台和适配器
-├── index.ts       # 插件与公开组件导出
-├── index.d.ts     # TypeScript 声明
-└── package.json   # uni_modules / npm 元数据
-
-docs/              # VitePress 组件文档
-src/demo/          # H5 预览数据与渲染器
-src/pages/example/     # 组件、工具、关于三个一级示例页
-src/pages/componentsA/ # 基础组件示例（组件名/index.vue）
-src/pages/componentsB/ # CMS 组件示例（组件名/index.vue）
-src/pages/library/     # 工具函数示例
-src/pages/other/       # 主题、语言等基础能力示例
+├─ components/        # easycom 组件入口，固定为 snake-x/snake-x.vue
+├─ libs/
+│  ├─ function/       # 单职责工具模块，index.ts 只聚合导出
+│  ├─ hooks/          # useSnakeX hooks
+│  ├─ css/            # 主题与平台样式
+│  ├─ config/         # 配置、主题状态与类型
+│  ├─ request/        # HTTP 客户端
+│  ├─ adapters/       # 宿主能力适配器
+│  ├─ cms/            # CMS 运行时与服务协议
+│  ├─ form/           # 表单校验能力
+│  └─ internal/       # 仅组件库内部使用的关系协议
+├─ locale/            # 国际化资源
+├─ plugins/           # Vite 插件
+├─ types/             # components/global/uni-app 声明入口
+├─ index.ts           # 插件与公开运行时导出
+├─ index.d.ts         # TypeScript 薄入口
+├─ index.scss         # 全量样式入口
+└─ theme.scss         # 可选主题变量
 ```
+
+组件内部应从具体的 `libs/function`、`libs/config`、`libs/form` 等模块导入依赖，不应从 `../../libs` 聚合入口反向导入。对外稳定入口为包根、`snake-ui/libs`、`snake-ui/plugins`、`snake-ui/types`、`snake-ui/locale`、样式入口和 easycom 组件路径；`snake-ui/libs/*` 深层路径属于内部实现。
 
 ## License
 

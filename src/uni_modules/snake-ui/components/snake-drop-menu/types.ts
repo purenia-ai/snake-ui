@@ -1,5 +1,5 @@
-import type { UnitValue } from '../../libs';
-import type { SnakeStyleValue } from '../component-types';
+import type { UnitValue } from '../../libs/function/unit';
+import type { SnakeStyleValue } from '../../types/global';
 export interface SnakeDropMenuProps {
   activeColor?: string; inactiveColor?: string; closeOnClickMask?: boolean; closeOnClickSelf?: boolean;
   duration?: number; height?: UnitValue; borderBottom?: boolean; titleSize?: UnitValue; menuIcon?: string;

@@ -1,6 +1,6 @@
 import type { InjectionKey, Ref } from 'vue';
 import type { SnakeFormSize } from './form';
-import type { UnitValue } from '../unit';
+import type { UnitValue } from '../function/unit';
 
 export type SnakeChoiceDirection = 'row' | 'column';
 export interface SnakeCheckboxGroupContext {

@@ -1,5 +1,5 @@
 import type { SnakeRequestAdapter } from '../runtime';
-import { deepMerge } from '../functions';
+import { deepMerge } from '../function';
 import { snakeTranslate } from '../../locale';
 import type {
     SnakeHttpConfig,

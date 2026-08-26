@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { addUnit } from '../../libs';
+import { addUnit } from '../../libs/function/unit';
 import type { SnakeSwiperEmits, SnakeSwiperItem, SnakeSwiperProps } from './types';
 
 defineOptions({ name: 'SnakeSwiper', options: { virtualHost: true, styleIsolation: 'shared' } });

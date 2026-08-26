@@ -21,8 +21,13 @@
       "import": "./libs/index.ts",
       "default": "./libs/index.ts"
     },
-    "./libs/*": "./libs/*",
-    "./types": "./types/index.d.ts",
+"./types": "./types/index.d.ts",
+    "./types/*": "./types/*.d.ts",
+    "./plugins": {
+      "types": "./plugins/index.ts",
+      "import": "./plugins/index.ts",
+      "default": "./plugins/index.ts"
+    },
     "./locale": "./locale/index.ts",
     "./index.scss": "./index.scss",
     "./theme.scss": "./theme.scss",
@@ -32,11 +37,14 @@
     "components",
     "libs",
     "locale",
+    "plugins",
     "types",
     "index.ts",
     "index.d.ts",
     "index.scss",
     "theme.scss",
+    "iconfont.css",
+    "iconfont.woff2",
     "THIRD_PARTY_NOTICES.md",
     "readme.md",
     "changelog.md"

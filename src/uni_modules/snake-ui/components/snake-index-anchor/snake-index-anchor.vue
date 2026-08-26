@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, type CSSProperties } from 'vue';
-import { addUnit } from '../../libs';
+import { addUnit } from '../../libs/function/unit';
 import { snakeIndexListKey } from '../../libs/internal/index-list';
 import type { SnakeIndexAnchorProps } from './types';
 defineOptions({ name: 'SnakeIndexAnchor', options: { virtualHost: true, styleIsolation: 'shared' } });

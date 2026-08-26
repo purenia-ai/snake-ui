@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getCurrentInstance, onMounted, provide, ref, toRef, watch } from 'vue';
-import { addUnit } from '../../libs';
+import { addUnit } from '../../libs/function/unit';
 import { snakeDropMenuKey } from '../../libs/internal/drop-menu';
 import type { SnakeDropMenuEmits, SnakeDropMenuExpose, SnakeDropMenuProps } from './types';
 

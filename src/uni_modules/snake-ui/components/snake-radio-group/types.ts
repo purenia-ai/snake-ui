@@ -1,5 +1,5 @@
-import type { UnitValue } from '../../libs';
-import type { SnakeStyleValue } from '../component-types';
+import type { UnitValue } from '../../libs/function/unit';
+import type { SnakeStyleValue } from '../../types/global';
 import type { SnakeChoiceDirection } from '../../libs/internal/checkbox';
 import type { SnakeFormSize } from '../../libs/internal/form';
 export interface SnakeRadioGroupProps {

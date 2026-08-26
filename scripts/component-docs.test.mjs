@@ -14,6 +14,7 @@ const foundation = [
     'lazy-image',
     'loadmore',
     'notice-bar',
+    'navbar',
     'overlay',
     'popup',
     'sticky',
@@ -102,4 +103,18 @@ test('component docs describe the Snake UI runtime instead of removed uView APIs
             `${name}: removed uView runtime reference`
         );
     }
+});
+
+test('icon documentation renders the bundled glyph gallery inline', async () => {
+    const markdown = await document('icon');
+    const gallery = await readFile(resolve(root, 'docs/.vitepress/components/IconGallery.vue'), 'utf8');
+    const theme = await readFile(resolve(root, 'docs/.vitepress/theme/index.ts'), 'utf8');
+    const config = await readFile(resolve(root, 'docs/.vitepress/config.mts'), 'utf8');
+
+    assert.match(markdown, /## 图标集\s+<IconGallery \/>/);
+    assert.match(theme, /app\.component\('IconGallery', IconGallery\)/);
+    assert.match(gallery, /src\/uni_modules\/snake-ui\/iconfont\.css/);
+    assert.match(gallery, /navigator\.clipboard\.writeText\(name\)/);
+    assert.match(gallery, /v-for="name in iconNames"/);
+    assert.match(config, /fs:\s*{\s*allow: \['\.\.'\]/);
 });

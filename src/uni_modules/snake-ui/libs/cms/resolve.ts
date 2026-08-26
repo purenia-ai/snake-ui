@@ -1,4 +1,4 @@
-import { deepMerge } from '../functions';
+import { deepMerge } from '../function';
 import { isSnakeDebugMode } from '../config/state';
 import { getSnakeUIOptions } from '../runtime';
 import type { SnakeCmsDiagnostic, SnakeCmsOptions } from '../../components/snake-cms/types';
