@@ -5,7 +5,16 @@ export const foundationSwiperData = [
   { url: localImage, title: "跨端实时预览" },
 ];
 
-export const foundationTabs = ["推荐", "新品", "热门", "分类"];
+export const foundationTabs = [
+  { name: "推荐", count: 12 },
+  { name: "新品", count: 3 },
+  { name: "热门" },
+  { name: "限时活动", count: 8 },
+  { name: "隐藏分类", hidden: true },
+  { name: "品牌馆" },
+  { name: "会员专享", count: 1 },
+  { name: "暂未开放", disabled: true },
+];
 
 export const noticeData = {
   direction: "column",

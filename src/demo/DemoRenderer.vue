@@ -41,6 +41,10 @@ const isEnglish = computed(() => localeName.value === 'en-US');
 const demoState = reactive<Record<string, DemoValue>>(createDemoState(props.kind));
 const currentActivity = ref('001');
 const currentTab = ref(0);
+const currentTabLabel = computed(() => {
+    const item = foundationTabs[currentTab.value];
+    return typeof item === 'string' ? item : String(item?.name ?? '');
+});
 const sortValue = ref('');
 const popupVisible = ref(false);
 const overlayVisible = ref(false);
@@ -383,9 +387,10 @@ function resetForm() {
                     :line-color="String(demoState.tabsColor)"
                     :active-color="String(demoState.tabsColor)"
                     :font-size="Number(demoState.tabsSize)"
+                    :is-dot="Boolean(demoState.tabsDot)"
                     @change="currentTab = $event"
                 /><view class="demo-tab-content"
-                    >{{ isEnglish ? 'Selected: ' : '当前选中：' }}{{ foundationTabs[currentTab] }}</view
+                    >{{ isEnglish ? 'Selected: ' : '当前选中：' }}{{ currentTabLabel }}</view
                 ></view
             >
             <view v-else-if="kind === 'subsection'" class="demo-stack"

@@ -767,7 +767,7 @@ export default {
             this.$emit('item-click', item);
         },
         // 类型二
-        changeTabs(itme = {}, index) {
+        changeTabs(index) {
             this.active1 = index;
         },
         // 类型三

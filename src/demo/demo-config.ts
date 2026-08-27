@@ -409,7 +409,8 @@ const definitions: Record<string, DemoDefinition> = {
                 max: 36,
                 step: 2,
                 unit: 'rpx'
-            }
+            },
+            { key: 'tabsDot', label: '使用圆点徽标', type: 'switch', defaultValue: false }
         ]
     },
     subsection: {

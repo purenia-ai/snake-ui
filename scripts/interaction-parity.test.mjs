@@ -14,8 +14,17 @@ test('feedback components expose complete states and interactions', async () => 
 test('tabs and swiper expose navigation and indicator contracts', async () => {
   const [tabs, tabsSource, swiper] = await Promise.all([read('components/snake-tabs/types.ts'), read('components/snake-tabs/snake-tabs.vue'), read('components/snake-swiper/types.ts')]);
   for (const name of ['barWidth', 'barHeight', 'gutter', 'isDot', 'showBar', 'itemWidth']) assert.match(tabs, new RegExp(`${name}\\?`));
-  assert.match(tabsSource, /height: 80, fontSize: 30/);
-  assert.match(tabsSource, /barWidth: 40, barHeight: 6, gutter: 30/);
+  for (const name of ['hidden', 'disabled']) assert.match(tabs, new RegExp(`${name}\\?`));
+  assert.match(tabsSource, /height:\s*80,[\s\S]*fontSize:\s*30/);
+  assert.match(tabsSource, /barWidth:\s*40,[\s\S]*barHeight:\s*6,[\s\S]*gutter:\s*30/);
+  assert.match(tabsSource, /createSelectorQuery\(\)\.in\(instance\?\.proxy/);
+  assert.match(tabsSource, /const scrollLeft = ref\(0\)/);
+  assert.match(tabsSource, /contentCenter - viewportWidth \/ 2/);
+  assert.match(tabsSource, /defineExpose\(\{ init, scrollByIndex \}\)/);
+  assert.doesNotMatch(tabsSource, /scroll-into-view/);
+  assert.equal((tabsSource.match(/class="snake-tabs__line"/g) || []).length, 1);
+  const listSwitching = await read('components/snake-list-switching/snake-list-switching.vue');
+  assert.match(listSwitching, /changeTabs\(index\)\s*{\s*this\.active1 = index/);
   for (const name of ['indicatorPos', 'effect3d', 'animationfinish', 'titleStyle']) assert.match(swiper, new RegExp(name));
 });
 
