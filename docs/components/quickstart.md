@@ -6,19 +6,19 @@
 
 ```vue
 <template>
-    <view class=page>
-        <text class=title>Snake UI 已准备好</text>
-        <snake-button type=primary @click=handleClick>显示提示</snake-button>
+    <view class="page">
+        <text class="title">Snake UI 已准备好</text>
+        <snake-button type="primary" @click="handleClick">显示提示</snake-button>
     </view>
 </template>
 
-<script setup lang=ts>
+<script setup lang="ts">
 function handleClick() {
     uni.$snake.toast('操作成功');
 }
 </script>
 
-<style lang=scss scoped>
+<style lang="scss" scoped>
 .page {
     padding: 32rpx;
 }

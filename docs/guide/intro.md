@@ -36,7 +36,7 @@ Snake UI 要求 Vue 3 和 uni-app 运行时。仓库中的目标平台均可编�
 
 ## 建议阅读顺序
 
-1. 从[快速开始](/guide/getting-started)完成安装并渲染首个组件。
+1. 从[安装](/components/install)与[快速上手](/components/quickstart)完成接入并渲染首个组件。
 2. 在[运行环境](/guide/compatibility)确认平台和业务依赖。
 3. 通过[全局配置总览](/guide/foundation)了解主题、语言、HTTP 和全局工具。
 4. CMS 项目继续阅读[CMS 快速接入](/cms/getting-started)和[装修编辑器数据对接](/cms/sanke-editor)。

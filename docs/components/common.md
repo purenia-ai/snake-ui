@@ -9,8 +9,8 @@ Snake UI 的 `index.scss` 内置了一组常用布局工具类，适合页面中
 ## 定位
 
 ```html
-<view class=snake-relative>
-    <view class=snake-absolute>绝对定位内容</view>
+<view class="snake-relative">
+    <view class="snake-absolute">绝对定位内容</view>
 </view>
 ```
 
@@ -29,8 +29,9 @@ Snake UI 的 `index.scss` 内置了一组常用布局工具类，适合页面中
 - `snake-font-20` 至 `snake-font-40` 使用 `rpx`。
 
 ```html
-<text class=snake-font-sm>辅助文字</text>
-<text class=snake-font-32>标题文字</text>
+<text class="snake-font-sm">辅助文字</text>
+<text class="snake-font-32">标题文字</text>
+```
 
 ## Flex 布局
 
@@ -61,4 +62,3 @@ Snake UI 的 `index.scss` 内置了一组常用布局工具类，适合页面中
 - 指定方向内边距：`snake-padding-top-20`、`snake-p-t-20`。
 
 方向缩写为 `l`、`t`、`r`、`b`。大面积视觉定制应使用主题变量或业务类名，参见[自定义样式](/guide/custom-style)。
-```

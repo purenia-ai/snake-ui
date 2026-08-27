@@ -70,7 +70,7 @@ export default defineConfig({
             alt: 'Snake UI'
         },
         nav: [
-            { text: '指南', link: '/guide/getting-started', activeMatch: '^/guide/(?!tools)' },
+            { text: '指南', link: '/guide/intro', activeMatch: '^/guide/' },
             { text: '组件', link: '/components/intro', activeMatch: '/components/' },
             { text: 'CMS', link: '/cms/getting-started', activeMatch: '/cms/' },
             { text: '工具', link: '/tools/intro', activeMatch: '/tools/' }
@@ -81,7 +81,6 @@ export default defineConfig({
                     text: '开始',
                     items: [
                         { text: '介绍', link: '/guide/intro' },
-                        { text: '快速开始', link: '/guide/getting-started' },
                         { text: '运行环境与能力边界', link: '/guide/compatibility' },
                         { text: '设计理念', link: '/guide/design-principles' }
                     ]

@@ -45,11 +45,14 @@ test('dedicated guide pages remain connected', async () => {
         await access(resolve(root, 'docs/guide', page + '.md'));
     }
     assert.match(await text('docs/guide/foundation.md'), /^# 全局配置总览$/m);
+    const legacyStart = await text('docs/guide/getting-started.md');
+    assert.match(legacyStart, /^# 快速开始已迁移$/m);
+    assert.ok(legacyStart.includes('[安装](/components/install)'));
 });
 
 test('top navigation owns independent guide, component, CMS, and tool domains', async () => {
     const config = await text('docs/.vitepress/config.mts');
-    assert.ok(config.includes("{ text: '指南', link: '/guide/getting-started'"));
+    assert.ok(config.includes("{ text: '指南', link: '/guide/intro'"));
     assert.ok(config.includes("{ text: '组件', link: '/components/intro'"));
     assert.ok(config.includes("{ text: 'CMS', link: '/cms/getting-started', activeMatch: '/cms/' }"));
     assert.ok(config.includes("{ text: '工具', link: '/tools/intro', activeMatch: '/tools/' }"));

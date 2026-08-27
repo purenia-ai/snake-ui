@@ -41,13 +41,13 @@ export function createApp() {
 ::: code-group
 
 ```vue [npm]
-<style lang=scss>
+<style lang="scss">
 @import '@puresnake/snake-ui/index.scss';
 </style>
 ```
 
 ```vue [uni_modules]
-<style lang=scss>
+<style lang="scss">
 @import './uni_modules/snake-ui/index.scss';
 </style>
 ```
@@ -64,10 +64,10 @@ export function createApp() {
 
 ```json [npm]
 {
-    easycom: {
-        autoscan: true,
-        custom: {
-            ^snake-(.*): snake-ui/components/snake-$1/snake-$1.vue
+    "easycom": {
+        "autoscan": true,
+        "custom": {
+            "^snake-(.*)": "@puresnake/snake-ui/components/snake-$1/snake-$1.vue"
         }
     }
 }
@@ -75,10 +75,10 @@ export function createApp() {
 
 ```json [uni_modules]
 {
-    easycom: {
-        autoscan: true,
-        custom: {
-            ^snake-(.*): @/uni_modules/snake-ui/components/snake-$1/snake-$1.vue
+    "easycom": {
+        "autoscan": true,
+        "custom": {
+            "^snake-(.*)": "@/uni_modules/snake-ui/components/snake-$1/snake-$1.vue"
         }
     }
 }
@@ -94,7 +94,7 @@ export function createApp() {
 
 ```vue
 <template>
-    <snake-button type=primary>确定</snake-button>
+    <snake-button type="primary">确定</snake-button>
 </template>
 ```
 

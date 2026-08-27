@@ -61,7 +61,7 @@ await route({ type: 'redirect', url: '/pages/login' });
 
 ## 分阶段替换
 
-1. 按[快速开始](/guide/getting-started)接入 Snake UI，暂时保留 uView Pro。
+1. 按[安装](/components/install)与[配置](/components/setting)接入 Snake UI，暂时保留 uView Pro。
 2. 逐页替换已覆盖的组件，并核对 Props、事件和插槽差异。
 3. 替换 `uni.$u`、`$u` 与工具导入。
 4. 将主题色和业务样式迁移到 Snake UI 变量。
