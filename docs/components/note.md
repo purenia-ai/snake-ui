@@ -30,7 +30,7 @@
 
 纯展示 CMS 组件可以直接接收数据。商品、优惠券、外链和小程序跳转等业务动作可能需要宿主应用注入 `cms.services`。
 
-这些服务不会由基础安装自动提供。接入方式见[CMS 快速接入](/guide/cms-usage)和[装修编辑器数据对接](/guide/sanke-editor)。
+这些服务不会由基础安装自动提供。接入方式见[CMS 快速接入](/cms/getting-started)和[装修编辑器数据对接](/cms/sanke-editor)。
 
 ## 遇到问题
 

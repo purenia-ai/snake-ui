@@ -115,4 +115,4 @@ function handleClick() {
 - 配置主题、语言或 HTTP：[全局配置总览](/guide/foundation)
 - 添加或切换语言：[国际化](/guide/internationalization)
 - 确认平台和业务依赖：[运行环境](/guide/compatibility)
-- 渲染装修页面：[CMS 快速接入](/guide/cms-usage)
+- 渲染装修页面：[CMS 快速接入](/cms/getting-started)

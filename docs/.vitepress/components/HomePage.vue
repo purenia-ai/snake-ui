@@ -55,7 +55,7 @@ const features = [
         eyebrow: 'Schema first',
         title: 'CMS 配置驱动',
         details: '用 pageComponents 配置串联内容、导航、营销与商品模块，让页面装修有清晰的数据边界。',
-        link: '/guide/cms-usage'
+        link: '/cms/getting-started'
     },
     {
         eyebrow: '50+ components',
@@ -67,7 +67,7 @@ const features = [
         eyebrow: 'Contract driven',
         title: '真实源码契约',
         details: 'Props、事件与数据字段均依据当前源码整理，让文档、示例与运行时保持一致。',
-        link: '/guide/component-data'
+        link: '/cms/component-data'
     },
     {
         eyebrow: 'Theme system',

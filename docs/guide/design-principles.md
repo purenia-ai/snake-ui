@@ -34,5 +34,5 @@ Snake UI 提供部分 uView Pro 组件、Props、事件和工具的迁移路径�
 
 - 首次接入：[快速开始](/guide/getting-started)
 - 查看配置入口：[全局配置总览](/guide/foundation)
-- 理解 CMS 数据流：[CMS 快速接入](/guide/cms-usage)
+- 理解 CMS 数据流：[CMS 快速接入](/cms/getting-started)
 - 查看迁移范围：[从 uView Pro 迁移](/guide/migrate-from-uview)

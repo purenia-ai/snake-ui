@@ -143,7 +143,7 @@ npm 与 `uni_modules` 的具体路径见[快速开始](/guide/getting-started)�
 
 ## 下一步
 
-- CMS 服务和数据流：[装修编辑器数据对接](/guide/sanke-editor)
+- CMS 服务和数据流：[装修编辑器数据对接](/cms/sanke-editor)
 - 语言包和运行时切换：[国际化](/guide/internationalization)
 - 品牌主题：[多主题与暗黑模式](/guide/multi-theme)
 - 配置不生效：[常见问题](/guide/troubleshooting)

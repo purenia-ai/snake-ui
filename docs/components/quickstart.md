@@ -41,5 +41,5 @@ function handleClick() {
 
 - 查找可用组件：[组件总览](/components/intro)
 - 配置主题、语言或 HTTP：[全局配置总览](/guide/foundation)
-- 使用装修组件：[CMS 快速接入](/guide/cms-usage)
+- 使用装修组件：[CMS 快速接入](/cms/getting-started)
 - 接入异常：[常见问题](/guide/troubleshooting)

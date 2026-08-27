@@ -1,6 +1,18 @@
 <script setup lang="ts">
+import { withBase } from 'vitepress';
 import { computed, ref } from 'vue';
 import { componentCount, componentGroups, type ComponentGroup, type ComponentItem } from '../component-groups';
+
+type ComponentScope = 'all' | 'cms';
+
+const props = withDefaults(
+    defineProps<{
+        scope?: ComponentScope;
+    }>(),
+    {
+        scope: 'all'
+    }
+);
 
 interface FilteredGroup extends ComponentGroup {
     items: ComponentItem[];
@@ -8,11 +20,22 @@ interface FilteredGroup extends ComponentGroup {
 
 const query = ref('');
 
-const normalizedQuery = computed(() => query.value.trim().toLocaleLowerCase());
-const filteredGroups = computed<FilteredGroup[]>(() => {
-    if (!normalizedQuery.value) return componentGroups;
+const availableGroups = computed<FilteredGroup[]>(() => {
+    if (props.scope === 'all') return componentGroups;
 
     return componentGroups
+        .map(group => ({
+            ...group,
+            items: group.items.filter(item => item.cms)
+        }))
+        .filter(group => group.items.length > 0);
+});
+const availableCount = computed(() => availableGroups.value.reduce((total, group) => total + group.items.length, 0));
+const normalizedQuery = computed(() => query.value.trim().toLocaleLowerCase());
+const filteredGroups = computed<FilteredGroup[]>(() => {
+    if (!normalizedQuery.value) return availableGroups.value;
+
+    return availableGroups.value
         .map(group => ({
             ...group,
             items: group.items.filter(item => {
@@ -33,7 +56,9 @@ function clearQuery() {
 <template>
     <div class="component-overview">
         <div class="component-search">
-            <label class="component-search__label" for="component-search-input">搜索全部组件</label>
+            <label class="component-search__label" for="component-search-input">
+                {{ props.scope === 'cms' ? '搜索 CMS 组件' : '搜索全部组件' }}
+            </label>
             <div class="component-search__control">
                 <svg aria-hidden="true" viewBox="0 0 24 24">
                     <path d="m21 21-4.35-4.35m2.35-5.15a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z" />
@@ -49,6 +74,7 @@ function clearQuery() {
             </div>
             <p class="component-search__meta" aria-live="polite">
                 <template v-if="normalizedQuery">找到 {{ resultCount }} 个组件</template>
+                <template v-else-if="props.scope === 'cms'">共 {{ availableCount }} 个 CMS 组件</template>
                 <template v-else>共 {{ componentCount }} 个组件，包含商城与 CMS 业务模块</template>
             </p>
         </div>
@@ -60,7 +86,7 @@ function clearQuery() {
                     <span>{{ group.items.length }}</span>
                 </header>
                 <div class="component-grid">
-                    <a v-for="item in group.items" :key="item.link" class="component-card" :href="item.link">
+                    <a v-for="item in group.items" :key="item.link" class="component-card" :href="withBase(item.link)">
                         <span class="component-card__copy">
                             <strong>{{ item.name }}</strong>
                             <span>{{ item.title }}</span>

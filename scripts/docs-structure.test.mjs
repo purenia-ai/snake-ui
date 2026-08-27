@@ -33,8 +33,8 @@ test('component getting-started pages remain connected', async () => {
 test('guide navigation exposes dedicated task groups', async () => {
     const config = await text('docs/.vitepress/config.mts');
     assert.match(config, /text: '配置与自定义'/);
-    assert.match(config, /text: '商城与 CMS'/);
     assert.match(config, /text: '迁移与排错'/);
+    assert.doesNotMatch(config, /text: '商城与 CMS'/);
     assert.doesNotMatch(config, /text: '核心概念'/);
 });
 
@@ -47,13 +47,41 @@ test('dedicated guide pages remain connected', async () => {
     assert.match(await text('docs/guide/foundation.md'), /^# 全局配置总览$/m);
 });
 
-test('top navigation owns independent guide, component, and tool domains', async () => {
+test('top navigation owns independent guide, component, CMS, and tool domains', async () => {
     const config = await text('docs/.vitepress/config.mts');
     assert.ok(config.includes("{ text: '指南', link: '/guide/getting-started'"));
     assert.ok(config.includes("{ text: '组件', link: '/components/intro'"));
+    assert.ok(config.includes("{ text: 'CMS', link: '/cms/getting-started', activeMatch: '/cms/' }"));
     assert.ok(config.includes("{ text: '工具', link: '/tools/intro', activeMatch: '/tools/' }"));
+    assert.ok(config.includes("'/cms/': cmsSidebar"));
     assert.ok(config.includes("'/tools/': toolGroups"));
     assert.ok(!config.includes("text: '工具', link: '/guide/tools'"));
+});
+
+test('CMS domain exposes guides, component discovery, and legacy entry points', async () => {
+    const config = await text('docs/.vitepress/config.mts');
+    const pages = ['getting-started', 'component-data', 'sanke-editor', 'components'];
+
+    for (const page of pages) {
+        assert.ok(config.includes('/cms/' + page));
+        await access(resolve(root, 'docs/cms', page + '.md'));
+    }
+
+    const overview = await text('docs/.vitepress/components/ComponentOverview.vue');
+    assert.match(overview, /type ComponentScope = 'all' \| 'cms'/);
+    assert.match(overview, /items\.filter\(item => item\.cms\)/);
+    assert.match(overview, /:href="withBase\(item\.link\)"/);
+    assert.ok((await text('docs/cms/components.md')).includes('<ComponentOverview scope="cms" />'));
+
+    const legacyPages = new Map([
+        ['cms-usage', '/cms/getting-started'],
+        ['component-data', '/cms/component-data'],
+        ['sanke-editor', '/cms/sanke-editor']
+    ]);
+    for (const [page, destination] of legacyPages) {
+        const legacy = await text('docs/guide/' + page + '.md');
+        assert.ok(legacy.includes(destination));
+    }
 });
 
 test('every tool navigation entry resolves to a dedicated document', async () => {

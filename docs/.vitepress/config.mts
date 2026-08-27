@@ -23,6 +23,24 @@ const componentSidebar = [
     }))
 ];
 
+const cmsSidebar = [
+    {
+        text: '开始',
+        items: [{ text: 'CMS 快速接入', link: '/cms/getting-started' }]
+    },
+    {
+        text: '数据与编辑器',
+        items: [
+            { text: '组件数据约定', link: '/cms/component-data' },
+            { text: '装修编辑器数据对接', link: '/cms/sanke-editor' }
+        ]
+    },
+    {
+        text: '组件参考',
+        items: [{ text: 'CMS 组件总览', link: '/cms/components' }]
+    }
+];
+
 export default defineConfig({
     base: '/snake-ui/',
     lang: 'zh-CN',
@@ -54,6 +72,7 @@ export default defineConfig({
         nav: [
             { text: '指南', link: '/guide/getting-started', activeMatch: '^/guide/(?!tools)' },
             { text: '组件', link: '/components/intro', activeMatch: '/components/' },
+            { text: 'CMS', link: '/cms/getting-started', activeMatch: '/cms/' },
             { text: '工具', link: '/tools/intro', activeMatch: '/tools/' }
         ],
         sidebar: {
@@ -78,14 +97,6 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '商城与 CMS',
-                    items: [
-                        { text: 'CMS 快速接入', link: '/guide/cms-usage' },
-                        { text: '组件数据约定', link: '/guide/component-data' },
-                        { text: '装修编辑器数据对接', link: '/guide/sanke-editor' }
-                    ]
-                },
-                {
                     text: '迁移与排错',
                     items: [
                         { text: '从 uView Pro 迁移', link: '/guide/migrate-from-uview' },
@@ -93,6 +104,7 @@ export default defineConfig({
                     ]
                 }
             ],
+            '/cms/': cmsSidebar,
             '/components/': componentSidebar,
             '/tools/': toolGroups
         },
