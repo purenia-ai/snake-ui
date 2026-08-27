@@ -139,7 +139,7 @@ import { debounce, deepMerge, navTo, queryParams, useSnakeEmitter, useSnakeRoute
 @import '@puresnake/snake-ui/theme.scss';
 ```
 
-npm 与 `uni_modules` 的具体路径见[快速开始](/guide/getting-started)。第三方来源与许可证说明见包内 `THIRD_PARTY_NOTICES.md`。
+npm 与 `uni_modules` 的具体路径见[安装](/components/install)与[配置](/components/setting)。
 
 ## 下一步
 
