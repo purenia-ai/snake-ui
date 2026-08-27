@@ -73,10 +73,6 @@ onBeforeUnmount(() => {
     在新窗口打开实时预览
   </a>
   <section v-else-if="previewUrl" class="preview-panel" aria-label="组件实时预览">
-    <header class="preview-panel__header">
-      <span><i /> LIVE PREVIEW</span>
-      <a :href="previewUrl" target="_blank" rel="noreferrer">新窗口 ↗</a>
-    </header>
     <div class="preview-phone">
       <div class="preview-phone__system-status" aria-hidden="true">
         <span class="preview-phone__time">9:41</span>

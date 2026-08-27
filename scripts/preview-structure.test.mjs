@@ -268,8 +268,8 @@ test('docs and preview shell use the approved brand green system', async () => {
     assert.match(css, /--snake-brand-text:\s*#007a55/i);
     assert.match(css, /--snake-brand-ink:\s*#073b2a/i);
     assert.match(css, /\.preview-phone\s*{[^}]*linear-gradient\([^}]*#f8fffc/is);
-    assert.match(css, /\.preview-panel__header i\s*{[^}]*animation:\s*preview-live-pulse/is);
-    assert.match(css, /@keyframes preview-live-pulse/);
+    assert.doesNotMatch(frame, /preview-panel__header/);
+    assert.doesNotMatch(css, /preview-panel__header|preview-live-pulse/);
     assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
     assert.match(frame, /preview-phone__system-status/);
     assert.match(frame, /preview-phone__battery/);
