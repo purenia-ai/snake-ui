@@ -5,7 +5,7 @@
 ## 剪贴板、提示与等待
 
 ```ts
-import { clipboard, sleep, toast } from 'snake-ui';
+import { clipboard, sleep, toast } from '@puresnake/snake-ui';
 
 await clipboard('SNK-2026');
 toast('复制成功');
@@ -17,7 +17,7 @@ await sleep(300);
 ## 系统信息
 
 ```ts
-import { getSystemInfo, os, sys } from 'snake-ui';
+import { getSystemInfo, os, sys } from '@puresnake/snake-ui';
 
 const info = getSystemInfo();
 sys(); // getSystemInfo 的便捷入口
@@ -27,7 +27,7 @@ os(); // 小写 platform 字符串
 ## 状态图标
 
 ```ts
-import { type2icon } from 'snake-ui';
+import { type2icon } from '@puresnake/snake-ui';
 
 type2icon('success'); // checkmark-circle
 ```

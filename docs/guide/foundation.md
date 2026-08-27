@@ -5,7 +5,7 @@ Snake UI 插件统一初始化主题、国际化、HTTP、CMS 和全局工具。
 ## 完整配置结构
 
 ```ts
-import SnakeUI from 'snake-ui';
+import SnakeUI from '@puresnake/snake-ui';
 
 app.use(SnakeUI, {
     debugMode: import.meta.env.DEV ? 'warn' : false,
@@ -47,7 +47,7 @@ app.use(SnakeUI, {
 默认提供 Snake 主题，暗色策略支持 `light`、`dark` 和 `auto`：
 
 ```ts
-import { setSnakeDarkMode, setSnakeTheme, setSnakeThemeColor, toggleSnakeDarkMode, useSnakeTheme } from 'snake-ui';
+import { setSnakeDarkMode, setSnakeTheme, setSnakeThemeColor, toggleSnakeDarkMode, useSnakeTheme } from '@puresnake/snake-ui';
 
 setSnakeDarkMode('auto');
 setSnakeThemeColor({ primary: '#00b77a' });
@@ -63,7 +63,7 @@ const { color, darkMode, isDark, setDarkMode } = useSnakeTheme();
 内置 `zh-CN` 和 `en-US`。语言选择会持久化，缺失词条按“当前语言 → 中文 → key”回退。
 
 ```ts
-import { setSnakeLocale, snakeTranslate, useSnakeLocale } from 'snake-ui';
+import { setSnakeLocale, snakeTranslate, useSnakeLocale } from '@puresnake/snake-ui';
 
 setSnakeLocale('en-US');
 snakeTranslate('common.confirm'); // Confirm
@@ -95,7 +95,7 @@ app.use(SnakeUI, {
 `snakeHttp` 默认使用 `uni.request`。2xx 响应返回 `data`；非 2xx、网络失败和拦截器取消都会拒绝 Promise。
 
 ```ts
-import { snakeHttp } from 'snake-ui';
+import { snakeHttp } from '@puresnake/snake-ui';
 
 const list = await snakeHttp.get('/goods', { page: 1 });
 await snakeHttp.post(
@@ -122,7 +122,7 @@ await uni.$snake.sleep(300);
 可复用模块更推荐按需导入：
 
 ```ts
-import { debounce, deepMerge, navTo, queryParams, useSnakeEmitter, useSnakeRouter, useSnakeToast } from 'snake-ui';
+import { debounce, deepMerge, navTo, queryParams, useSnakeEmitter, useSnakeRouter, useSnakeToast } from '@puresnake/snake-ui';
 ```
 
 这样类型推导、测试和依赖分析更直接。
@@ -133,10 +133,10 @@ import { debounce, deepMerge, navTo, queryParams, useSnakeEmitter, useSnakeRoute
 
 ```scss
 // 完整组件样式
-@import 'snake-ui/index.scss';
+@import '@puresnake/snake-ui/index.scss';
 
 // 只使用 SCSS 主题变量
-@import 'snake-ui/theme.scss';
+@import '@puresnake/snake-ui/theme.scss';
 ```
 
 npm 与 `uni_modules` 的具体路径见[快速开始](/guide/getting-started)。第三方来源与许可证说明见包内 `THIRD_PARTY_NOTICES.md`。

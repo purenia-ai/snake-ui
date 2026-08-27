@@ -3,7 +3,7 @@
 ## 价格
 
 ```ts
-import { formatPrice } from 'snake-ui';
+import { formatPrice } from '@puresnake/snake-ui';
 
 formatPrice(12345.6, 2); // 12,345.60
 formatPrice(12345.6, 2, ',', '.'); // 12.345,60
@@ -14,7 +14,7 @@ formatPrice(12345.6, 2, ',', '.'); // 12.345,60
 ## 姓名脱敏
 
 ```ts
-import { formatName } from 'snake-ui';
+import { formatName } from '@puresnake/snake-ui';
 
 formatName('张三'); // 张*
 formatName('欧阳小明'); // 欧**明

@@ -3,7 +3,7 @@
 Snake UI 的 `index.scss` 内置了一组常用布局工具类，适合页面中的少量、重复性布局。组件功能本身不依赖你主动使用这些类。
 
 ::: tip
-使用 npm 时引入 `snake-ui/index.scss`；使用 `uni_modules` 时引入项目内对应的 `index.scss`。具体配置见[配置](/components/setting)。
+使用 npm 时引入 `@puresnake/snake-ui/index.scss`；使用 `uni_modules` 时引入项目内对应的 `index.scss`。具体配置见[配置](/components/setting)。
 :::
 
 ## 定位

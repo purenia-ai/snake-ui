@@ -3,7 +3,7 @@
 `deepClone<T>(value)` 创建独立副本，支持普通对象、数组、`Date`、`Map`、`Set`、Symbol 键和循环引用。
 
 ```ts
-import { deepClone } from 'snake-ui';
+import { deepClone } from '@puresnake/snake-ui';
 
 const source = { profile: { name: 'Snake' }, tags: new Set(['new']) };
 const copy = deepClone(source);

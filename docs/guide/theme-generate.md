@@ -1,13 +1,13 @@
 # 主题生成器
 
-主题生成器用于可视化配置一套或多套 Snake UI 主题，并导出可直接注册的 `snake-ui.theme.ts`。
+主题生成器用于可视化配置一套或多套 Snake UI 主题，并导出可直接注册的 `@puresnake/snake-ui.theme.ts`。
 
 ## 生成步骤
 
 1. 选择或输入主题颜色，并确认颜色选择器。
 2. 填写唯一的 `name`，按需补充 `label` 和 `description`。
 3. 单主题可直接导出；多主题先逐套加入导出队列。
-4. 下载 `snake-ui.theme.ts` 并放入宿主项目。
+4. 下载 `@puresnake/snake-ui.theme.ts` 并放入宿主项目。
 
 ## 配置工具
 
@@ -16,7 +16,7 @@
 ## 注册导出结果
 
 ```ts
-import SnakeUI from 'snake-ui';
+import SnakeUI from '@puresnake/snake-ui';
 import snakeThemePresets from './snake-ui.theme';
 
 app.use(SnakeUI, {

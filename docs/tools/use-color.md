@@ -4,7 +4,7 @@
 
 ```vue
 <script setup lang="ts">
-import { useSnakeColor } from 'snake-ui';
+import { useSnakeColor } from '@puresnake/snake-ui';
 
 const { color, setColor } = useSnakeColor();
 

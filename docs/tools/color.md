@@ -5,7 +5,7 @@
 ## 格式转换
 
 ```ts
-import { colorToRgba, hexToRgb, rgbToHex } from 'snake-ui';
+import { colorToRgba, hexToRgb, rgbToHex } from '@puresnake/snake-ui';
 
 hexToRgb('#06d290'); // { r: 6, g: 210, b: 144 }
 rgbToHex(6, 210, 144); // #06d290
@@ -17,7 +17,7 @@ colorToRgba('#06d290', 0.5); // rgba(6, 210, 144, 0.5)
 ## 颜色渐变
 
 ```ts
-import { colorGradient } from 'snake-ui';
+import { colorGradient } from '@puresnake/snake-ui';
 
 colorGradient('#000000', '#ffffff', 3);
 // ['#000000', '#808080', '#ffffff']

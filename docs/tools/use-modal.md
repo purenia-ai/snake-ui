@@ -4,7 +4,7 @@
 
 ```vue
 <script setup lang="ts">
-import { useSnakeModal } from 'snake-ui';
+import { useSnakeModal } from '@puresnake/snake-ui';
 
 const { show } = useSnakeModal();
 

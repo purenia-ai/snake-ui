@@ -21,7 +21,7 @@ app.use(SnakeUI, {
 ## 注册多套主题
 
 ```ts
-import SnakeUI, { type SnakeTheme } from 'snake-ui';
+import SnakeUI, { type SnakeTheme } from '@puresnake/snake-ui';
 
 const themes: SnakeTheme[] = [
     {
@@ -90,7 +90,7 @@ import SnakeConfigProvider from './uni_modules/snake-ui/components/snake-config-
 ```
 
 ```ts
-import { snakeColor } from 'snake-ui';
+import { snakeColor } from '@puresnake/snake-ui';
 
 console.log(snakeColor.primary);
 ```
@@ -112,7 +112,7 @@ console.log(snakeColor.primary);
 
 ## 暗色跟随与持久化
 
-`auto` 会在平台支持时跟随系统主题。主题名和暗色策略分别保存在 `snake-ui-theme` 与 `snake-ui-dark-mode`，重新进入应用后自动恢复。
+`auto` 会在平台支持时跟随系统主题。主题名和暗色策略分别保存在 `@puresnake/snake-ui-theme` 与 `@puresnake/snake-ui-dark-mode`，重新进入应用后自动恢复。
 
 ## 使用主题生成器
 

@@ -4,7 +4,7 @@
 
 ```ts
 import type { InjectionKey, Ref } from 'vue';
-import { useSnakeCompRelation } from 'snake-ui';
+import { useSnakeCompRelation } from '@puresnake/snake-ui';
 
 interface GroupContext {
     current: Ref<string>;

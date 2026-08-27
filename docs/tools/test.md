@@ -3,7 +3,7 @@
 `test` 提供常用的轻量类型与格式判断。
 
 ```ts
-import { test } from 'snake-ui';
+import { test } from '@puresnake/snake-ui';
 
 test.email('dev@example.com');
 test.mobile('13800138000');

@@ -13,7 +13,7 @@
 ## 方式一：npm 安装
 
 ```bash
-pnpm add snake-ui
+pnpm add @puresnake/snake-ui
 ```
 
 在 `main.ts` 安装插件：
@@ -21,7 +21,7 @@ pnpm add snake-ui
 ```ts
 import { createSSRApp } from 'vue';
 import App from './App.vue';
-import SnakeUI from 'snake-ui';
+import SnakeUI from '@puresnake/snake-ui';
 
 export function createApp() {
     const app = createSSRApp(App);
@@ -34,7 +34,7 @@ export function createApp() {
 
 ```vue
 <style lang="scss">
-@import 'snake-ui/index.scss';
+@import '@puresnake/snake-ui/index.scss';
 </style>
 ```
 
@@ -45,7 +45,7 @@ export function createApp() {
     "easycom": {
         "autoscan": true,
         "custom": {
-            "^snake-(.*)": "snake-ui/components/snake-$1/snake-$1.vue"
+            "^snake-(.*)": "@puresnake/snake-ui/components/snake-$1/snake-$1.vue"
         }
     }
 }

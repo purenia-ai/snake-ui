@@ -8,7 +8,7 @@ preview: /pages/other/themeLocale/index
 
 ```vue
 <script setup lang="ts">
-import { useSnakeTheme } from 'snake-ui';
+import { useSnakeTheme } from '@puresnake/snake-ui';
 
 const {
     currentTheme,

@@ -3,7 +3,7 @@
 `getRect(selector, instance?)` 使用 uni-app selector query 获取首个节点的位置与尺寸。
 
 ```ts
-import { getRect } from 'snake-ui';
+import { getRect } from '@puresnake/snake-ui';
 
 const rect = await getRect('.goods-card', instance);
 console.log(rect.width, rect.top);

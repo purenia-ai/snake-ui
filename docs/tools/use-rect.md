@@ -5,7 +5,7 @@
 ```vue
 <script setup lang="ts">
 import { getCurrentInstance, nextTick } from 'vue';
-import { useSnakeRect } from 'snake-ui';
+import { useSnakeRect } from '@puresnake/snake-ui';
 
 const { proxy } = getCurrentInstance()!;
 const { getRect } = useSnakeRect(proxy);

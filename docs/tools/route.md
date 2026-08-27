@@ -9,7 +9,7 @@ preview: /pages/library/route/index
 ## 基础使用
 
 ```ts
-import { route } from 'snake-ui';
+import { route } from '@puresnake/snake-ui';
 
 await route('/pages/goods/detail', { id: 1, source: 'home' });
 

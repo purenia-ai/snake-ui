@@ -1,9 +1,23 @@
 {
   "id": "snake-ui",
-  "name": "snake-ui",
+  "name": "@puresnake/snake-ui",
   "displayName": "Snake UI",
   "version": "0.4.1",
   "description": "面向 uni-app 商城与 CMS 场景的 Vue 组件库",
+  "license": "MIT",
+  "author": "PURESNAKE",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zwbcode/snake-ui.git",
+    "directory": "src/uni_modules/snake-ui"
+  },
+  "bugs": {
+    "url": "https://github.com/zwbcode/snake-ui/issues"
+  },
+  "homepage": "https://github.com/zwbcode/snake-ui#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "main": "index.ts",
   "module": "index.ts",
@@ -21,7 +35,7 @@
       "import": "./libs/index.ts",
       "default": "./libs/index.ts"
     },
-"./types": "./types/index.d.ts",
+    "./types": "./types/index.d.ts",
     "./types/*": "./types/*.d.ts",
     "./plugins": {
       "types": "./plugins/index.ts",
@@ -45,11 +59,17 @@
     "theme.scss",
     "iconfont.css",
     "iconfont.woff2",
+    "LICENSE",
     "THIRD_PARTY_NOTICES.md",
     "readme.md",
     "changelog.md"
   ],
-  "keywords": ["snake-ui", "uni-app", "vue3", "cms"],
+  "keywords": [
+    "snake-ui",
+    "uni-app",
+    "vue3",
+    "cms"
+  ],
   "engines": {
     "uni-app": "*"
   },

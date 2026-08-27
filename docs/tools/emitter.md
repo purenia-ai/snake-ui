@@ -3,7 +3,7 @@
 `createSnakeEmitter()` 创建隔离的同步事件总线；`snakeEmitter` 是框架提供的共享实例。
 
 ```ts
-import { createSnakeEmitter } from 'snake-ui';
+import { createSnakeEmitter } from '@puresnake/snake-ui';
 
 const emitter = createSnakeEmitter();
 const off = emitter.on<{ id: number }>('order:updated', payload => {

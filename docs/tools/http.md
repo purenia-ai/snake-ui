@@ -9,7 +9,7 @@ preview: /pages/library/http/index
 ## 基础使用
 
 ```ts
-import { snakeHttp } from 'snake-ui';
+import { snakeHttp } from '@puresnake/snake-ui';
 
 interface Goods {
     id: number;
@@ -25,7 +25,7 @@ await snakeHttp.post('/orders', { goodsId: goods[0].id });
 ## 全局配置
 
 ```ts
-import SnakeUI from 'snake-ui';
+import SnakeUI from '@puresnake/snake-ui';
 
 app.use(SnakeUI, {
     http: {
@@ -51,7 +51,7 @@ await snakeHttp.post('/login', form, {
 ## 拦截器
 
 ```ts
-import { configureSnakeHttp } from 'snake-ui';
+import { configureSnakeHttp } from '@puresnake/snake-ui';
 
 configureSnakeHttp({
     interceptor: {
@@ -75,7 +75,7 @@ configureSnakeHttp({
 默认情况下，2xx 响应返回 `response.data`；`meta.originalData: true` 返回完整响应。非 2xx、传输失败、拦截器失败和取消都会拒绝 Promise。
 
 ```ts
-import { SnakeHttpError, snakeHttp } from 'snake-ui';
+import { SnakeHttpError, snakeHttp } from '@puresnake/snake-ui';
 
 try {
     await snakeHttp.get('/profile');
@@ -91,7 +91,7 @@ try {
 ## 多实例与自定义传输
 
 ```ts
-import { SnakeRequest } from 'snake-ui';
+import { SnakeRequest } from '@puresnake/snake-ui';
 
 const analytics = new SnakeRequest();
 analytics.setConfig({ baseUrl: 'https://events.example.com' });
@@ -108,7 +108,7 @@ analytics.setTransport(async options => ({
 
 ```ts
 // api/goods.ts
-import { snakeHttp } from 'snake-ui';
+import { snakeHttp } from '@puresnake/snake-ui';
 
 export const getGoods = (page: number) => snakeHttp.get<Goods[]>('/goods', { page });
 ```

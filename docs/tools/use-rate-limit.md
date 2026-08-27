@@ -5,7 +5,7 @@
 ```vue
 <script setup lang="ts">
 import { onBeforeUnmount } from 'vue';
-import { useSnakeDebounce, useSnakeThrottle } from 'snake-ui';
+import { useSnakeDebounce, useSnakeThrottle } from '@puresnake/snake-ui';
 
 const save = useSnakeDebounce(persist, 500);
 const measure = useSnakeThrottle(updateLayout, 200);

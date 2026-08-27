@@ -3,7 +3,7 @@
 `guid(prefix = 'snake')` 生成带前缀的客户端标识符。
 
 ```ts
-import { guid } from 'snake-ui';
+import { guid } from '@puresnake/snake-ui';
 
 guid(); // snake-...
 guid('order'); // order-...

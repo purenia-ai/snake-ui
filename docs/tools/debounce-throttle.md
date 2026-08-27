@@ -9,7 +9,7 @@ preview: /pages/library/debounceThrottle/index
 ## 防抖
 
 ```ts
-import { debounce } from 'snake-ui';
+import { debounce } from '@puresnake/snake-ui';
 
 const search = debounce((keyword: string) => {
     loadSuggestions(keyword);
@@ -28,7 +28,7 @@ debounce(callback, (wait = 300), (immediate = false));
 ## 节流
 
 ```ts
-import { throttle } from 'snake-ui';
+import { throttle } from '@puresnake/snake-ui';
 
 const measure = throttle(() => {
     console.log('重新计算布局');
@@ -45,7 +45,7 @@ throttle(callback, (wait = 300));
 
 ```ts
 import { onBeforeUnmount } from 'vue';
-import { debounce } from 'snake-ui';
+import { debounce } from '@puresnake/snake-ui';
 
 const save = debounce(persist, 600);
 onBeforeUnmount(save.cancel);

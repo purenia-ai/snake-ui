@@ -20,7 +20,7 @@ Snake UI 运行在 uni-app Vue 3 环境中。基础组件开箱即用；商城�
 - Snake UI 基础组件与独立样式。
 - 模板和 Options API 中的 `$snake`。
 - 脚本中的 `uni.$snake`。
-- 可从 `snake-ui` 或 `snake-ui/libs` 按需导入的工具。
+- 可从 `@puresnake/snake-ui` 或 `@puresnake/snake-ui/libs` 按需导入的工具。
 
 组件库内部和宿主项目不应继续依赖 `uni.$u`。
 

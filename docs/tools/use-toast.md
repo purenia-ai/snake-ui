@@ -4,7 +4,7 @@
 
 ```vue
 <script setup lang="ts">
-import { useSnakeToast } from 'snake-ui';
+import { useSnakeToast } from '@puresnake/snake-ui';
 
 const { show } = useSnakeToast();
 show('保存成功', 1800);

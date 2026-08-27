@@ -13,7 +13,7 @@ Snake UI 只负责渲染和调度。商品、优惠券和跳转等业务能力�
 CMS 页面由页面信息和有序组件数组组成。每个组件至少要有一个字符串类型的 `component`，`setStyle` 保存对应装修组件的配置。
 
 ```ts
-import type { SnakeCmsComponentConfig, SnakeCmsPageInfo } from 'snake-ui';
+import type { SnakeCmsComponentConfig, SnakeCmsPageInfo } from '@puresnake/snake-ui';
 
 const pageInfo: SnakeCmsPageInfo = {
     pageId: 'home',
@@ -69,7 +69,7 @@ import type {
     SnakeCmsError,
     SnakeCmsExposed,
     SnakeCmsPageInfo
-} from 'snake-ui';
+} from '@puresnake/snake-ui';
 import { api } from '@/services/api';
 
 const cmsRef = ref<SnakeCmsExposed>();
@@ -134,7 +134,7 @@ function reportError(error: SnakeCmsError) {
 服务应在 `main.ts` 中集中配置。下面只接入商品列表；接口字段不同的项目，也在这里转换成 Snake CMS 需要的结果结构：
 
 ```ts
-import SnakeUI, { type SnakeCmsCommerceService } from 'snake-ui';
+import SnakeUI, { type SnakeCmsCommerceService } from '@puresnake/snake-ui';
 import { api } from '@/services/api';
 
 const commerce: SnakeCmsCommerceService = {

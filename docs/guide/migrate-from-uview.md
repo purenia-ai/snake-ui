@@ -40,7 +40,7 @@ uview-pro/theme.scss
 原先的 `uni.$u` 工具优先改为按需导入：
 
 ```ts
-import { addUnit, formatTime, getRect, guid, route, sleep, toast } from 'snake-ui';
+import { addUnit, formatTime, getRect, guid, route, sleep, toast } from '@puresnake/snake-ui';
 ```
 
 安装插件后，也可以使用 `uni.$snake` 或模板 `$snake`：

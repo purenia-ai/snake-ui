@@ -5,7 +5,7 @@
 ```vue
 <script setup lang="ts">
 import { onBeforeUnmount } from 'vue';
-import { useSnakeEmitter } from 'snake-ui';
+import { useSnakeEmitter } from '@puresnake/snake-ui';
 
 const emitter = useSnakeEmitter();
 const off = emitter.on('cart:changed', refreshCart);

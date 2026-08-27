@@ -21,20 +21,20 @@ Snake UI 支持 npm 包和 `uni_modules` 两种安装方式。请选择一种方
 ::: code-group
 
 ```bash [pnpm]
-pnpm add snake-ui
+pnpm add @puresnake/snake-ui
 ```
 
 ```bash [npm]
-npm install snake-ui
+npm install @puresnake/snake-ui
 ```
 
 ```bash [yarn]
-yarn add snake-ui
+yarn add @puresnake/snake-ui
 ```
 
 :::
 
-npm 方式的插件、样式和组件路径都以 `snake-ui` 开头。
+npm 方式的插件、样式和组件路径都以 `@puresnake/snake-ui` 开头。
 
 ## uni_modules 安装
 

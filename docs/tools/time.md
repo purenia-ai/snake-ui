@@ -5,7 +5,7 @@ Snake UI 提供绝对时间格式化和相对时间描述。`timeFormat` 是 `fo
 ## 绝对时间
 
 ```ts
-import { formatTime, timeFormat } from 'snake-ui';
+import { formatTime, timeFormat } from '@puresnake/snake-ui';
 
 formatTime(Date.now(), 'yyyy-mm-dd hh:MM:ss');
 timeFormat(new Date(), 'yyyy/mm/dd');
@@ -23,7 +23,7 @@ timeFormat(new Date(), 'yyyy/mm/dd');
 ## 相对时间
 
 ```ts
-import { timeFrom } from 'snake-ui';
+import { timeFrom } from '@puresnake/snake-ui';
 
 timeFrom(Date.now() - 5 * 60 * 1000); // 5分钟前
 ```

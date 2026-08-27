@@ -9,7 +9,7 @@
 ```ts [npm]
 import { createSSRApp } from 'vue';
 import App from './App.vue';
-import SnakeUI from 'snake-ui';
+import SnakeUI from '@puresnake/snake-ui';
 
 export function createApp() {
     const app = createSSRApp(App);
@@ -42,7 +42,7 @@ export function createApp() {
 
 ```vue [npm]
 <style lang=scss>
-@import 'snake-ui/index.scss';
+@import '@puresnake/snake-ui/index.scss';
 </style>
 ```
 
@@ -101,7 +101,7 @@ export function createApp() {
 如果不使用 easycom，也可以从包入口手动导入公开组件：
 
 ```ts
-import { SnakeButton, SnakePopup } from 'snake-ui';
+import { SnakeButton, SnakePopup } from '@puresnake/snake-ui';
 ```
 
 接下来用[快速上手](/components/quickstart)检查组件和全局工具是否都已生效。

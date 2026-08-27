@@ -5,7 +5,7 @@
 ## 单位补全
 
 ```ts
-import { addUnit } from 'snake-ui';
+import { addUnit } from '@puresnake/snake-ui';
 
 addUnit(24); // 24rpx
 addUnit('1rem'); // 1rem
@@ -14,7 +14,7 @@ addUnit('1rem'); // 1rem
 ## 样式转换
 
 ```ts
-import { addStyle, kebabCase, toStyle } from 'snake-ui';
+import { addStyle, kebabCase, toStyle } from '@puresnake/snake-ui';
 
 kebabCase('backgroundColor'); // background-color
 addStyle('color:red;font-size:12px');

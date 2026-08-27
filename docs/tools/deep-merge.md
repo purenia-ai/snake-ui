@@ -3,7 +3,7 @@
 `deepMerge(target, ...sources)` 递归合并普通对象，并返回新对象，不修改输入值。数组、日期和其他值由后一个来源整体替换。
 
 ```ts
-import { deepMerge } from 'snake-ui';
+import { deepMerge } from '@puresnake/snake-ui';
 
 const config = deepMerge(
     { header: { locale: 'zh-CN' }, tags: ['base'] },

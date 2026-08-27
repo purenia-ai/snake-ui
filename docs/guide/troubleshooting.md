@@ -7,7 +7,7 @@
 **现象：** 控制台提示无法解析 `snake-*`，页面显示为空。
 
 1. 确认 `pages.json` 已开启 `easycom.autoscan`。
-2. npm 安装使用 `snake-ui/components/...`，本地安装使用 `@/uni_modules/snake-ui/components/...`。
+2. npm 安装使用 `@puresnake/snake-ui/components/...`，本地安装使用 `@/uni_modules/snake-ui/components/...`。
 3. 确认组件目录和文件名均为 `snake-组件名`。
 4. 修改 `pages.json` 后重启开发服务。
 
@@ -17,7 +17,7 @@
 
 ```scss
 // npm
-@import 'snake-ui/index.scss';
+@import '@puresnake/snake-ui/index.scss';
 
 // 或 uni_modules
 @import './uni_modules/snake-ui/index.scss';
@@ -32,7 +32,7 @@
 模块代码也可以绕过全局属性，直接按需导入：
 
 ```ts
-import { navTo, toast } from 'snake-ui/libs';
+import { navTo, toast } from '@puresnake/snake-ui/libs';
 ```
 
 ## 主题切换没有覆盖页面

@@ -5,13 +5,13 @@ Snake UI 是面向 uni-app 商城与 CMS 场景的 Vue 3 组件库，支持 H5�
 ## 安装
 
 ```bash
-pnpm add snake-ui
+pnpm add @puresnake/snake-ui
 ```
 
 在 `main.ts` 安装组件库，并按业务需要传入适配器：
 
 ```ts
-import SnakeUI from 'snake-ui';
+import SnakeUI from '@puresnake/snake-ui';
 
 app.use(SnakeUI, {
     theme: { defaultDarkMode: 'auto' },
@@ -26,7 +26,7 @@ app.use(SnakeUI, {
 Snake UI 不依赖其他 UI 组件库，不需要额外导入第三方主题样式。底座内置 Snake 绿色明暗主题、`zh-CN` / `en-US`、基于 `uni.request` 的 HTTP 客户端和常用 hooks / 工具。
 
 ```ts
-import { setSnakeDarkMode, setSnakeLocale, snakeHttp } from 'snake-ui';
+import { setSnakeDarkMode, setSnakeLocale, snakeHttp } from '@puresnake/snake-ui';
 
 setSnakeDarkMode('auto');
 setSnakeLocale('en-US');
@@ -36,7 +36,7 @@ const data = await snakeHttp.get('/goods');
 如需统一覆盖品牌色、文字色和圆角，可在应用入口导入可选主题变量：
 
 ```scss
-@import 'snake-ui/theme.scss';
+@import '@puresnake/snake-ui/theme.scss';
 
 :root,
 page {
@@ -51,7 +51,7 @@ page {
     "easycom": {
         "autoscan": true,
         "custom": {
-            "^snake-(.*)": "snake-ui/components/snake-$1/snake-$1.vue"
+            "^snake-(.*)": "@puresnake/snake-ui/components/snake-$1/snake-$1.vue"
         }
     }
 }
@@ -65,9 +65,9 @@ page {
 ## 手动导入
 
 ```ts
-import { SnakeButton, SnakePopup, SnakeGoodsList } from 'snake-ui';
-import type { SnakeButtonProps, SnakePopupMode } from 'snake-ui';
-import { addUnit, navTo, sleep, toast } from 'snake-ui/libs';
+import { SnakeButton, SnakePopup, SnakeGoodsList } from '@puresnake/snake-ui';
+import type { SnakeButtonProps, SnakePopupMode } from '@puresnake/snake-ui';
+import { addUnit, navTo, sleep, toast } from '@puresnake/snake-ui/libs';
 ```
 
 ## 公开基础组件

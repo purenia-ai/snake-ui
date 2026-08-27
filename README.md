@@ -16,7 +16,7 @@
 ## 安装
 
 ```bash
-pnpm add snake-ui
+pnpm add @puresnake/snake-ui
 ```
 
 也可以将 `src/uni_modules/snake-ui` 复制到项目的 `src/uni_modules` 目录中使用。
@@ -28,7 +28,7 @@ pnpm add snake-ui
 ```ts
 import { createSSRApp } from 'vue';
 import App from './App.vue';
-import SnakeUI from 'snake-ui';
+import SnakeUI from '@puresnake/snake-ui';
 
 export function createApp() {
     const app = createSSRApp(App);
@@ -58,7 +58,7 @@ export function createApp() {
 主题、国际化和 HTTP 也支持直接调用：
 
 ```ts
-import { setSnakeDarkMode, setSnakeLocale, snakeHttp } from 'snake-ui';
+import { setSnakeDarkMode, setSnakeLocale, snakeHttp } from '@puresnake/snake-ui';
 
 setSnakeDarkMode('auto');
 setSnakeLocale('en-US');
@@ -91,7 +91,7 @@ interface SnakeCacheAdapter {
     "easycom": {
         "autoscan": true,
         "custom": {
-            "^snake-(.*)": "snake-ui/components/snake-$1/snake-$1.vue"
+            "^snake-(.*)": "@puresnake/snake-ui/components/snake-$1/snake-$1.vue"
         }
     }
 }
@@ -109,9 +109,9 @@ interface SnakeCacheAdapter {
 ## 手动导入
 
 ```ts
-import { SnakeButton, SnakePopup, SnakeGoodsList } from 'snake-ui';
+import { SnakeButton, SnakePopup, SnakeGoodsList } from '@puresnake/snake-ui';
 
-import { addUnit, navTo, sleep, toast } from 'snake-ui/libs';
+import { addUnit, navTo, sleep, toast } from '@puresnake/snake-ui/libs';
 ```
 
 ## 组件分类
@@ -133,7 +133,7 @@ CMS 组件依赖业务数据结构或宿主项目适配器。请以对应文档�
 ## 使用运行时工具
 
 ```ts
-import { snake } from 'snake-ui/libs';
+import { snake } from '@puresnake/snake-ui/libs';
 
 snake.toast('保存成功');
 snake.navTo('/pages/example/components');
@@ -268,7 +268,7 @@ src/uni_modules/snake-ui/
 └─ theme.scss         # 可选主题变量
 ```
 
-组件内部应从具体的 `libs/function`、`libs/config`、`libs/form` 等模块导入依赖，不应从 `../../libs` 聚合入口反向导入。对外稳定入口为包根、`snake-ui/libs`、`snake-ui/plugins`、`snake-ui/types`、`snake-ui/locale`、样式入口和 easycom 组件路径；`snake-ui/libs/*` 深层路径属于内部实现。
+组件内部应从具体的 `libs/function`、`libs/config`、`libs/form` 等模块导入依赖，不应从 `../../libs` 聚合入口反向导入。对外稳定入口为包根、`@puresnake/snake-ui/libs`、`@puresnake/snake-ui/plugins`、`@puresnake/snake-ui/types`、`@puresnake/snake-ui/locale`、样式入口和 easycom 组件路径；`@puresnake/snake-ui/libs/*` 深层路径属于内部实现。
 
 ## License
 

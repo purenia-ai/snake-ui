@@ -4,7 +4,7 @@
 
 ```vue
 <script setup lang="ts">
-import { useSnakeRouter } from 'snake-ui';
+import { useSnakeRouter } from '@puresnake/snake-ui';
 
 const { route, navTo } = useSnakeRouter();
 

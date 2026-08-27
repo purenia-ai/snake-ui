@@ -11,7 +11,7 @@ Snake UI 内置简体中文 `zh-CN` 和英文 `en-US`。语言状态是响应式
 安装插件时可指定默认语言：
 
 ```ts
-import SnakeUI from 'snake-ui';
+import SnakeUI from '@puresnake/snake-ui';
 
 app.use(SnakeUI, {
     locale: {
@@ -29,7 +29,7 @@ app.use(SnakeUI, {
 ```vue
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useSnakeLocale } from 'snake-ui';
+import { useSnakeLocale } from '@puresnake/snake-ui';
 
 const { currentLocale, locales, t, setLocale } = useSnakeLocale();
 const nextLocale = computed(() => (currentLocale.value.name === 'zh-CN' ? 'en-US' : 'zh-CN'));
@@ -45,7 +45,7 @@ const nextLocale = computed(() => (currentLocale.value.name === 'zh-CN' ? 'en-US
 也可以在组件外直接切换：
 
 ```ts
-import { setSnakeLocale } from 'snake-ui';
+import { setSnakeLocale } from '@puresnake/snake-ui';
 
 setSnakeLocale('en-US');
 ```
@@ -57,7 +57,7 @@ setSnakeLocale('en-US');
 直接使用 `snakeTranslate()`，或者通过 `useSnakeLocale()` 获取 `t()`：
 
 ```ts
-import { snakeTranslate, useSnakeLocale } from 'snake-ui';
+import { snakeTranslate, useSnakeLocale } from '@puresnake/snake-ui';
 
 snakeTranslate('common.confirm'); // 当前为 en-US 时返回 Confirm
 

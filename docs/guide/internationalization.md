@@ -5,7 +5,7 @@ Snake UI 内置简体中文 `zh-CN` 和英文 `en-US`，用于管理组件库自
 ## 核心行为
 
 - 通过 `setSnakeLocale()` 或 `useSnakeLocale()` 响应式切换。
-- 用户选择自动保存在 `snake-ui-locale`。
+- 用户选择自动保存在 `@puresnake/snake-ui-locale`。
 - 同名语言包与内置词条深度合并。
 - 缺失词条按“当前语言 → `zh-CN` → 原始 key”回退。
 - 支持 `{name}` 和 `{0}` 形式的参数插值。
@@ -13,7 +13,7 @@ Snake UI 内置简体中文 `zh-CN` 和英文 `en-US`，用于管理组件库自
 ## 在应用入口配置
 
 ```ts
-import SnakeUI from 'snake-ui';
+import SnakeUI from '@puresnake/snake-ui';
 
 app.use(SnakeUI, {
     locale: {
@@ -27,7 +27,7 @@ app.use(SnakeUI, {
 ## 运行时切换
 
 ```ts
-import { setSnakeLocale } from 'snake-ui';
+import { setSnakeLocale } from '@puresnake/snake-ui';
 
 const changed = setSnakeLocale('en-US');
 ```
@@ -69,7 +69,7 @@ app.use(SnakeUI, {
 ## 翻译和参数插值
 
 ```ts
-import { snakeTranslate, useSnakeLocale } from 'snake-ui';
+import { snakeTranslate, useSnakeLocale } from '@puresnake/snake-ui';
 
 snakeTranslate('common.confirm');
 snakeTranslate('checkout.welcome', { name: 'Snake' });

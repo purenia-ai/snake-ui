@@ -17,13 +17,13 @@ Snake UI 支持从主题令牌、页面作用域样式和组件根节点三个�
 npm 安装时在 `App.vue` 引入完整样式：
 
 ```scss
-@import 'snake-ui/index.scss';
+@import '@puresnake/snake-ui/index.scss';
 ```
 
 只需要 SCSS 主题变量时使用：
 
 ```scss
-@import 'snake-ui/theme.scss';
+@import '@puresnake/snake-ui/theme.scss';
 ```
 
 `uni_modules` 安装应改用对应的本地相对路径。两种安装方式不要同时引入。

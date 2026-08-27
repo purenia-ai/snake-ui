@@ -3,7 +3,7 @@
 `getQueryParams(url)` 解析 URL 查询参数，`queryParams` 是兼容别名。
 
 ```ts
-import { getQueryParams, queryParams } from 'snake-ui';
+import { getQueryParams, queryParams } from '@puresnake/snake-ui';
 
 getQueryParams('/pages/search?q=Snake+UI&page=2');
 // { q: 'Snake UI', page: '2' }

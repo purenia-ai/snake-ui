@@ -15,7 +15,7 @@ Snake UI 把网络请求、通用函数、uni-app 平台封装和组合式函数
 可复用模块优先按需导入，类型提示最完整，也更容易测试：
 
 ```ts
-import { debounce, deepMerge, route } from 'snake-ui';
+import { debounce, deepMerge, route } from '@puresnake/snake-ui';
 ```
 
 安装 Snake UI 后，模板、Options API 和迁移代码也可以使用 `$snake`：

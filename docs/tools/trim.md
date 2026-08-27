@@ -3,7 +3,7 @@
 `trim(value, position = 'both')` 按指定位置移除空白。
 
 ```ts
-import { trim } from 'snake-ui';
+import { trim } from '@puresnake/snake-ui';
 
 trim('  Snake UI  '); // 'Snake UI'
 trim('  Snake', 'left'); // 'Snake'

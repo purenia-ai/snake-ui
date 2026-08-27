@@ -3,7 +3,7 @@
 `randomArray<T>(values)` 使用 Fisher–Yates 算法返回乱序副本，不修改原数组。
 
 ```ts
-import { randomArray } from 'snake-ui';
+import { randomArray } from '@puresnake/snake-ui';
 
 const source = [1, 2, 3, 4];
 const result = randomArray(source);
