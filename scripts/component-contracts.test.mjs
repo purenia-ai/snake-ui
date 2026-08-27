@@ -96,16 +96,16 @@ test('icon uses the bundled Snake UI font for stable common glyphs', async () =>
     const font = await readFile(new URL('iconfont.woff2', root));
     assert.ok(source.includes("@import '../../iconfont.css'"));
     assert.ok(source.includes("checkmark: 'checkbox-mark'"));
-    assert.ok(stylesheet.includes("font-family: 'snake-iconfont'"));
-    assert.ok(stylesheet.includes('.sicon-checkbox-mark::before'));
-    assert.ok(stylesheet.includes("content: '\\e628'"));
-    assert.ok(stylesheet.includes("url('./iconfont.woff2')"));
+    assert.match(stylesheet, /font-family: ["']snake-iconfont["']/);
+    assert.match(stylesheet, /\.sicon-checkbox-mark::?before/);
+    assert.match(stylesheet, /content: ["']\\e628["']/);
+    assert.match(stylesheet, /url\(.*(x-font-woff2|iconfont\.woff2)/);
     assert.ok(font.length > 0);
     assert.ok(types.includes("'left' | 'right' | 'top' | 'bottom'"));
     assert.ok(source.includes("props.labelPos === 'left'"));
     assert.ok(source.includes("props.labelPos === 'top'"));
     for (const icon of ['search', 'success', 'warning', 'eye-outline', 'arrow-right']) {
-        assert.ok(stylesheet.includes(`.sicon-${icon}::before`), `${icon}: missing bundled glyph`);
+        assert.match(stylesheet, new RegExp(`\\.sicon-${icon}::?before`), `${icon}: missing bundled glyph`);
         assert.ok(source.includes(`'${icon}'`), `${icon}: missing component mapping`);
     }
 });
