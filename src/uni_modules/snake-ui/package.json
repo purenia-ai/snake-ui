@@ -2,7 +2,7 @@
   "id": "snake-ui",
   "name": "@puresnake/snake-ui",
   "displayName": "Snake UI",
-  "version": "0.4.1",
+  "version": "0.1.0",
   "description": "面向 uni-app 商城与 CMS 场景的 Vue 组件库",
   "license": "MIT",
   "author": "PURESNAKE",
