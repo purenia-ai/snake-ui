@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
 import test from 'node:test';
+import ts from 'typescript';
 
 const root = new URL('../src/uni_modules/snake-ui/', import.meta.url);
 const components = [
@@ -49,6 +50,56 @@ test('every public component exposes an independent type contract', async () => 
             new RegExp(`export \\* from '../components/${component}/types'`),
             `${component}: missing declaration export`
         );
+    }
+});
+
+test('every public type contract is documented for IDE consumers', async () => {
+    const componentRoot = new URL('components/', root);
+    const directories = (await readdir(componentRoot, { withFileTypes: true }))
+        .filter(entry => entry.isDirectory() && entry.name.startsWith('snake-'))
+        .map(entry => entry.name)
+        .sort();
+
+    for (const component of directories) {
+        const path = `components/${component}/types.ts`;
+        const source = await readFile(new URL(path, root), 'utf8');
+        const sourceFile = ts.createSourceFile(path, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+        const hasDocs = node => Boolean(node.jsDoc?.length);
+
+        for (const statement of sourceFile.statements) {
+            const exported = statement.modifiers?.some(modifier => modifier.kind === ts.SyntaxKind.ExportKeyword);
+            if (!exported) continue;
+            if (ts.isInterfaceDeclaration(statement) || ts.isTypeAliasDeclaration(statement)) {
+                assert.ok(hasDocs(statement), `${component}: ${statement.name.text} 缺少 JSDoc`);
+                if (ts.isInterfaceDeclaration(statement)) {
+                    for (const member of statement.members) {
+                        assert.ok(
+                            hasDocs(member),
+                            `${component}: ${statement.name.text}.${member.name?.getText(sourceFile)} 缺少 JSDoc`
+                        );
+                    }
+                }
+            }
+            if (ts.isVariableStatement(statement)) {
+                for (const declaration of statement.declarationList.declarations) {
+                    if (!ts.isIdentifier(declaration.name) || !declaration.name.text.endsWith('Props')) continue;
+                    assert.ok(hasDocs(statement), `${component}: ${declaration.name.text} 缺少 JSDoc`);
+                    const initializer = declaration.initializer;
+                    if (
+                        initializer &&
+                        ts.isAsExpression(initializer) &&
+                        ts.isObjectLiteralExpression(initializer.expression)
+                    ) {
+                        for (const property of initializer.expression.properties) {
+                            assert.ok(
+                                hasDocs(property),
+                                `${component}: ${declaration.name.text}.${property.name?.getText(sourceFile)} 缺少 JSDoc`
+                            );
+                        }
+                    }
+                }
+            }
+        }
     }
 });
 

@@ -1,5 +1,6 @@
 /** 热区项(与装修编辑器 sanke-editor 产出的 hotzoneList 元素一致) */
 export interface SnakeHotzoneItem {
+    /** 数据唯一标识。 */
     id?: string;
     /** 热区顶部偏移,百分比 0-100 */
     top?: number;

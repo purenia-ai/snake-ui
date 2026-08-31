@@ -1,13 +1,20 @@
+/** SnakeButtonSortValue 类型定义。 */
 export type SnakeButtonSortValue = '' | 'asc' | 'desc';
 
+/** SnakeButtonSort 组件的公开属性。 */
 export interface SnakeButtonSortProps {
-  title?: string;
+    /** 标题文本。 */
+    title?: string;
 }
 
+/** SnakeButtonSortChange 事件详情。 */
 export interface SnakeButtonSortChangeDetail {
-  value: SnakeButtonSortValue;
+    /** 当前值。 */
+    value: SnakeButtonSortValue;
 }
 
+/** SnakeButtonSort 组件的事件契约。 */
 export interface SnakeButtonSortEmits {
-  change: [payload: SnakeButtonSortChangeDetail];
+    /** change 事件携带的参数。 */
+    change: [payload: SnakeButtonSortChangeDetail];
 }
