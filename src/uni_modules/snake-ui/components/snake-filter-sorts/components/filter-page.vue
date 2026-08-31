@@ -133,6 +133,12 @@
 </template>
 
 <script>
+/**
+ * @component FilterPage
+ * @description 筛选排序组件内部使用的条件选择面板，负责选项联动、默认值恢复和结果确认。
+ * @see /components/filter-sorts
+ */
+
 import { createCacheClient } from '../../../libs/adapters/cache';
 import InternalIndexAnchor from '../../snake-index-anchor/snake-index-anchor.vue';
 import InternalIndexList from '../../snake-index-list/snake-index-list.vue';

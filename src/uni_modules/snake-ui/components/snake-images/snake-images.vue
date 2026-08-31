@@ -21,6 +21,12 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * @component SnakeImages
+ * @description 根据当前运行平台选择图片配置，并支持点击跳转。
+ * @see /components/images
+ */
+
 import { computed } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import { navTo } from '../../libs/function/platform';

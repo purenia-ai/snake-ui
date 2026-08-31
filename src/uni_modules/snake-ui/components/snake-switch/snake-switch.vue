@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeSwitch
+ * @description 切换 boolean、字符串或数字状态，支持加载、禁用、自定义值和短震动反馈。
+ * @see /components/switch
+ */
+
 import { computed, inject } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import { snakeFormItemKey } from '../../libs/internal/form-item';

@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeIndexList
+ * @description 通过右侧索引快速定位分组内容，与 `IndexAnchor` 配合使用。支持点击、触摸滑动、当前分组同步和吸顶锚点。
+ * @see /components/index-list
+ */
+
 import { getCurrentInstance, onMounted, provide, ref, toRef, watch } from 'vue';
 import { snakeIndexListKey } from '../../libs/internal/index-list';
 import type { SnakeIndexListEmits, SnakeIndexListProps, SnakeIndexValue } from './types';

@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeLoadmore
+ * @description 用于列表底部反馈分页状态。组件不直接请求数据，点击可加载状态时会派发 `loadmore`，由业务更新 `status`。
+ * @see /components/loadmore
+ */
+
 import { computed } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import { snakeTranslate } from '../../locale';

@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeCheckboxGroup
+ * @description 管理一组 Checkbox 的数组值、禁用状态、最大选择数和布局。
+ * @see /components/checkbox-group
+ */
+
 import { computed, inject, provide, toRef } from 'vue';
 import { snakeCheckboxGroupKey } from '../../libs/internal/checkbox';
 import { snakeFormItemKey } from '../../libs/internal/form-item';

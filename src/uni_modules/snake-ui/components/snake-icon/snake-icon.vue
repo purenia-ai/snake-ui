@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeIcon
+ * @description 图标组件支持 Snake UI 自有字体图标、图片地址和项目自定义图标字体，可同时显示四个方向的标签。
+ * @see /components/icon
+ */
+
 import { computed, type CSSProperties } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import type { SnakeIconEmits, SnakeIconProps } from './types';

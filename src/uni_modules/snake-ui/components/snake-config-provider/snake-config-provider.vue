@@ -10,6 +10,12 @@
 
 <script setup lang="ts">
 /**
+ * @component SnakeConfigProvider
+ * @description `snake-config-provider` 是 Snake UI 主题系统的页面入口组件，负责把当前主题的 CSS 变量注入页面，并根据主题模式附加明亮或暗黑类名。将它与 `SnakeRoot` 插件配合使用，可以让主题配置自动作用于每个页面，无需逐页添加组件。
+ * @see /components/config-provider
+ */
+
+/**
  * snake-config-provider 全局主题配置入口(对齐 uView 生态的 config-provider 设计)
  *
  * 把主题引擎的 CSS 变量内联到页面根部并携带暗色 class:

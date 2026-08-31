@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeDropMenu
+ * @description 负责多个 `DropMenuItem` 的布局、互斥展开和弹层定位。面板打开前会真实测量菜单底部位置，适用于普通布局和吸顶布局。
+ * @see /components/drop-menu
+ */
+
 import { getCurrentInstance, onMounted, provide, ref, toRef, watch } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import { snakeDropMenuKey } from '../../libs/internal/drop-menu';

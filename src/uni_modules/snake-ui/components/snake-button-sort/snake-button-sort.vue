@@ -9,6 +9,12 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * @component SnakeButtonSort
+ * @description 用于在默认、升序和降序状态之间循环切换。
+ * @see /components/button-sort
+ */
+
 import { ref } from 'vue';
 import type { SnakeButtonSortEmits, SnakeButtonSortProps, SnakeButtonSortValue } from './types';
 

@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeDropMenuItem
+ * @description 提供菜单触发器、遮罩和内容面板，必须作为 `DropMenu` 的直接子组件使用。可通过 options 快速生成选项，也可完全自定义内容。
+ * @see /components/drop-menu-item
+ */
+
 import { computed, inject, onBeforeUnmount, watch } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import { snakeDropMenuKey } from '../../libs/internal/drop-menu';

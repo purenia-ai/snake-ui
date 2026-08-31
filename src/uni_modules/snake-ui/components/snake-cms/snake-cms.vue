@@ -134,6 +134,12 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * @component SnakeCms
+ * @description `snake-cms` 是 Snake UI 的页面装修门面。内容组件只负责渲染；商品、活动、筛选、优惠券和跳转统一由宿主应用通过 CMS 服务注入。组件支持 H5、微信小程序和 App，不使用小程序不支持的动态组件。
+ * @see /components/snake-cms
+ */
+
 import { computed, onBeforeUnmount, watch } from 'vue';
 import SnakeActivityList from '../snake-activity-list/snake-activity-list.vue';
 import SnakeAuxiliarySegmentation from '../snake-auxiliary-segmentation/snake-auxiliary-segmentation.vue';
@@ -200,6 +206,7 @@ const emit = defineEmits<{
 }>();
 
 const options = computed(() => resolveSnakeCmsOptions(props.cmsOptions));
+// 先规范化别名、扩展组件和重复商品区，模板只消费稳定的静态组件映射。
 const normalized = computed(() => normalizeSnakeCmsComponents(props.pageComponents, props.pageInfo, options.value));
 const components = computed(() => normalized.value.components);
 const commerceComponent = computed(() => components.value.find(item => item.component === 'goodslist'));
@@ -246,6 +253,7 @@ const {
     refreshQuotePay
 } = commerce;
 
+// 页面配置变化会开启一轮新的初始化；commerce 控制器负责让旧请求失效，避免跨页面回写。
 watch(
     normalized,
     async result => {

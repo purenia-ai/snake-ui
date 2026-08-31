@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeNoticeBar
+ * @description 用于公告、活动提示和多条消息轮播，支持横向跑马灯、纵向轮播、关闭与更多操作。
+ * @see /components/notice-bar
+ */
+
 import { computed, ref } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import SnakeIcon from '../snake-icon/snake-icon.vue';

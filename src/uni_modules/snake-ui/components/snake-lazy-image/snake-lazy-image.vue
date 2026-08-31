@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeLazyImage
+ * @description 图片进入视口阈值后才设置真实地址，适合商品长列表。组件优先使用 `uni.createIntersectionObserver`，不支持时安全降级为立即加载。
+ * @see /components/lazy-image
+ */
+
 import { getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue';
 import SnakeImage from '../snake-image/snake-image.vue';
 import type { SnakeLazyImageEmits, SnakeLazyImageProps } from './types';

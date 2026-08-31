@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeNavbar
+ * @description 用于页面顶部导航，支持状态栏安全区、返回操作、固定定位、标题及左右插槽。
+ * @see /components/navbar
+ */
+
 import { computed } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import SnakeIcon from '../snake-icon/snake-icon.vue';

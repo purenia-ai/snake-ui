@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeSwiper
+ * @description 基于 uni-app swiper 封装，支持图片或对象数据、自定义指示器、标题和 3D 卡片效果。
+ * @see /components/swiper
+ */
+
 import { computed, ref, watch } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import type { SnakeSwiperEmits, SnakeSwiperItem, SnakeSwiperProps } from './types';

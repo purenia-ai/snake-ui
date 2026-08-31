@@ -17,6 +17,12 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * @component SnakeHotzone
+ * @description 在一张背景图上按百分比布局多个可点击热区，热区范围与跳转链接由装修编辑器（sanke-editor）配置。
+ * @see /components/hotzone
+ */
+
 import { computed } from 'vue';
 import { resolveSnakeCmsOptions } from '../../libs/cms';
 import { navTo, toast } from '../../libs/function/platform';

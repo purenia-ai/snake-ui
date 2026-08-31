@@ -45,6 +45,12 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * @component SnakeVideos
+ * @description 显示视频首帧封面，点击后在全屏弹层中播放视频。
+ * @see /components/videos
+ */
+
 import { ref } from 'vue';
 import type { SnakeVideosProps } from './types';
 

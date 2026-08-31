@@ -329,6 +329,12 @@
 </template>
 
 <script>
+/**
+ * @component SnakeMagicCube
+ * @description 按照预设类型将多张图片组合成 CMS 魔方区域，并支持按星期和每日时间段筛选素材。
+ * @see /components/magic-cube
+ */
+
 import SnakePictureAds from '../snake-picture-ads/snake-picture-ads.vue';
 import { pxToRpx } from '../../libs/function/unit';
 

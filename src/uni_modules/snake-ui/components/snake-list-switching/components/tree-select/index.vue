@@ -18,6 +18,12 @@
 </template>
 
 <script>
+/**
+ * @component TreeSelect
+ * @description 列表切换组件内部使用的树形分类选择器，负责节点测量、滚动定位和分类切换。
+ * @see /components/list-switching
+ */
+
 export default {
   name: 'tree-select',
   emits: ['click-nav'],
@@ -48,22 +54,26 @@ export default {
     },
   },
   methods: {
-    async swichMenu(item, index) {
-      // 做限制 处于当前选项 不用重新请求接口
+        /** 切换分类并将激活项滚动到左侧菜单中部。 */
+        async swichMenu(item, index) {
+            // 当前分类不重复触发业务请求。
       if (this.currentIndex === index) {
         return;
       }
-      // 如果为0，意味着尚未初始化
+            // 首次交互可能早于节点测量，按需获取真实尺寸。
       if (this.menuHeight == 0 || this.menuItemHeight == 0) {
         await this.getElRect('menu-scroll-view', 'menuHeight');
         await this.getElRect('tab-item', 'menuItemHeight');
       }
-      // 将菜单菜单活动item垂直居中
+            // 让激活项中心与可视区域中心对齐。
       this.scrollTop = index * this.menuItemHeight + this.menuItemHeight / 2 - this.menuHeight / 2;
       this.$emit('click-nav', item, index);
     },
-    // 获取一个目标元素的高度
-    getElRect(elClass, dataVal) {
+        /**
+         * 获取目标节点尺寸；节点尚未挂载时短暂重试。
+         * Promise 必须等到成功测量后再完成，调用方才能安全计算滚动位置。
+         */
+        getElRect(elClass, dataVal) {
       return new Promise((resolve) => {
         const query = uni.createSelectorQuery().in(this);
         query
@@ -73,7 +83,7 @@ export default {
               size: true,
             },
             (res) => {
-              // 如果节点尚未生成，res值为null，循环调用执行
+                            // 条件渲染下节点查询可能暂时为空，延迟到下一轮重试。
               if (!res) {
                 setTimeout(() => {
                   this.getElRect(elClass, dataVal).then(resolve);

@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeTransition
+ * @description 跨端内容进出场动画，Overlay 和 Popup 均使用该组件。离场完成前节点会继续保留，因此不会出现弹层瞬间消失的问题。
+ * @see /components/transition
+ */
+
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
 import type { SnakeTransitionDuration, SnakeTransitionEmits, SnakeTransitionProps } from './types';
 

@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeRadioGroup
+ * @description 管理一组 Radio 的互斥值、禁用状态、颜色与横纵布局。
+ * @see /components/radio-group
+ */
+
 import { computed, inject, provide, toRef } from 'vue';
 import { snakeRadioGroupKey } from '../../libs/internal/radio';
 import { snakeFormItemKey } from '../../libs/internal/form-item';

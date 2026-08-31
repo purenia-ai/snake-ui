@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeRadio
+ * @description 可独立绑定 boolean，也可在 RadioGroup 中通过 `name` 参与互斥选择。
+ * @see /components/radio
+ */
+
 import { computed, inject } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import { snakeRadioGroupKey } from '../../libs/internal/radio';

@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeTextarea
+ * @description 用于多行文本输入，支持固定或自适应高度、字数统计和 Form 校验联动。
+ * @see /components/textarea
+ */
+
 import { computed, inject, ref, watch } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import { snakeFormItemKey } from '../../libs/internal/form-item';

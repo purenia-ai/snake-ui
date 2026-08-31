@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeSlider
+ * @description 通过轨道点击或触摸拖动选择数值，支持步长、数值气泡、边界值与自定义滑块。
+ * @see /components/slider
+ */
+
 import { computed, getCurrentInstance, inject, onMounted, ref, watch } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import { snakeFormItemKey } from '../../libs/internal/form-item';

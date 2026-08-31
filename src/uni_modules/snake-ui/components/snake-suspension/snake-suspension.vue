@@ -18,6 +18,12 @@
     </view>
 </template>
 <script setup lang="ts">
+/**
+ * @component SnakeSuspension
+ * @description 在页面右侧显示可关闭的悬浮图片；页面滚动时暂时向屏幕外收起，停止后恢复。
+ * @see /components/suspension
+ */
+
 import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import type { SnakeSuspensionProps } from './types';
 

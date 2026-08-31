@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeCheckbox
+ * @description 可独立绑定 boolean，也可放入 CheckboxGroup，通过 `name` 管理数组值。
+ * @see /components/checkbox
+ */
+
 import { computed, inject } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import { snakeCheckboxGroupKey } from '../../libs/internal/checkbox';

@@ -103,6 +103,26 @@ test('every public type contract is documented for IDE consumers', async () => {
     }
 });
 
+test('every Vue component explains its role and documentation entry', async () => {
+    const componentRoot = new URL('components/', root);
+    const directories = (await readdir(componentRoot, { withFileTypes: true }))
+        .filter(entry => entry.isDirectory() && entry.name.startsWith('snake-'))
+        .map(entry => entry.name)
+        .sort();
+    const files = directories.map(component => `components/${component}/${component}.vue`);
+    files.push(
+        'components/snake-filter-sorts/components/filter-page.vue',
+        'components/snake-list-switching/components/tree-select/index.vue'
+    );
+
+    for (const path of files) {
+        const source = await readFile(new URL(path, root), 'utf8');
+        assert.match(source, /\/\*\*[\s\S]*@component (?:Snake\w+|FilterPage|TreeSelect)/, `${path}: 缺少组件说明`);
+        assert.match(source, /@description \S+/, `${path}: 缺少用途说明`);
+        assert.match(source, /@see \/components\/[\w-]+/, `${path}: 缺少文档入口`);
+    }
+});
+
 test('public foundation components use independent type contracts', async () => {
     for (const component of components) {
         const types = await readFile(new URL(`components/${component}/types.ts`, root), 'utf8');

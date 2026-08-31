@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeSticky
+ * @description 通过节点测量和页面滚动状态实现跨端吸顶，不再只依赖浏览器 CSS sticky。
+ * @see /components/sticky
+ */
+
 import { onPageScroll } from '@dcloudio/uni-app';
 import { computed, getCurrentInstance, nextTick, onMounted, ref, watch, type CSSProperties } from 'vue';
 import type { SnakeStickyEmits, SnakeStickyProps } from './types';

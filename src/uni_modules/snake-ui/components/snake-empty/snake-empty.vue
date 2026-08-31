@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeEmpty
+ * @description 用于列表、搜索结果或异常页面没有内容时提供统一反馈。内置多种语义模式，也支持图片、图标和插槽定制。
+ * @see /components/empty
+ */
+
 import { computed } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import { snakeTranslate } from '../../locale';

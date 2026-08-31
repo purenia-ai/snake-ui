@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeImage
+ * @description 封装 uni-app `image`，提供加载、失败、淡入、圆角、圆形、WebP、长按菜单和图片预览能力。`src` 变化时会自动重置状态。
+ * @see /components/image
+ */
+
 import { computed, ref, watch } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import SnakeIcon from '../snake-icon/snake-icon.vue';

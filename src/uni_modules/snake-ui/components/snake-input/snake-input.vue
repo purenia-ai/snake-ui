@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeInput
+ * @description 基于 uni-app input，支持清空、密码显示、格式化、前后插槽和 Form 校验联动。
+ * @see /components/input
+ */
+
 import { computed, inject, ref, watch } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import { snakeFormItemKey } from '../../libs/internal/form-item';

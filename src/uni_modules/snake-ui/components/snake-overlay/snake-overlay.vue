@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeOverlay
+ * @description 带完整淡入淡出动画的全屏遮罩，可锁定遮罩区域滚动并承载自定义内容。
+ * @see /components/overlay
+ */
+
 import { computed, getCurrentInstance } from 'vue';
 import SnakeTransition from '../snake-transition/snake-transition.vue';
 import type { SnakeOverlayEmits, SnakeOverlayProps } from './types';

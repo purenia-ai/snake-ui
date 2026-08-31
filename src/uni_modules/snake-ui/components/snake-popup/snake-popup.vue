@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakePopup
+ * @description 基于 Overlay 与 Transition 的正式弹层，支持中心和四边弹出、圆角、关闭图标、安全区以及完整生命周期。
+ * @see /components/popup
+ */
+
 import { computed, getCurrentInstance, ref, watch } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import SnakeIcon from '../snake-icon/snake-icon.vue';

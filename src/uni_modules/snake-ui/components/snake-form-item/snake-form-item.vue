@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeFormItem
+ * @description 连接标签、模型字段、输入控件和校验结果。推荐放在 `Form` 内，也可以作为普通布局容器使用。
+ * @see /components/form-item
+ */
+
 import { computed, inject, onBeforeUnmount, onMounted, provide, ref } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import { cloneFormValue, getPathValue, setPathValue, validateFormValue, type SnakeFormTrigger } from '../../libs/form';
@@ -44,6 +50,10 @@ const mergedLabelStyle = computed(() => [
     props.labelStyle
 ]);
 
+/**
+ * 执行当前字段校验。
+ * runId 用于丢弃较早完成的异步规则结果，避免旧错误覆盖用户的新输入。
+ */
 async function validate(trigger?: SnakeFormTrigger) {
     if (!form || !props.prop) return [];
     const current = ++runId.value;

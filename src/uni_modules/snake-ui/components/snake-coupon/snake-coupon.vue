@@ -46,6 +46,12 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * @component SnakeCoupon
+ * @description 检查领取资格，以页面图片或弹窗形式展示优惠券，并在领取后执行内部或外部跳转。
+ * @see /components/coupon
+ */
+
 import { computed, onMounted, ref, watch } from 'vue';
 import { resolveSnakeCmsOptions } from '../../libs/cms';
 import { sleep, toast } from '../../libs/function/platform';

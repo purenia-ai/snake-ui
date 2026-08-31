@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeSubsection
+ * @description 用于在少量互斥选项之间快速切换，支持按钮式滑块和描边分段两种模式。
+ * @see /components/subsection
+ */
+
 import { computed } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import type { SnakeSubsectionEmits, SnakeSubsectionItem, SnakeSubsectionOption, SnakeSubsectionProps } from './types';

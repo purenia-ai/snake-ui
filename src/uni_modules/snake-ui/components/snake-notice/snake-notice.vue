@@ -16,6 +16,12 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * @component SnakeNotice
+ * @description 使用 Snake UI NoticeBar 展示单条横向公告或多条纵向轮播公告。
+ * @see /components/notice
+ */
+
 import { computed } from 'vue';
 import { navTo } from '../../libs/function/platform';
 import type { SnakeNoticeProps } from './types';

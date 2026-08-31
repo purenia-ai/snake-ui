@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeTabs
+ * @description 用于分类导航和状态筛选。标签较多时，激活项会自动滚动到容器中间；同时支持隐藏或禁用标签、数量或圆点徽标及自定义指示线。
+ * @see /components/tabs
+ */
+
 import { computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import type { SnakeTabItem, SnakeTabsEmits, SnakeTabsProps } from './types';
@@ -145,6 +151,10 @@ function finishFirstLayout() {
     }, 16);
 }
 
+/**
+ * 在视图更新后批量测量容器、轨道和标签位置。
+ * layoutVersion 保证快速连续刷新时，较早返回的节点查询不会覆盖最新布局。
+ */
 async function init() {
     const version = ++layoutVersion;
     await nextTick();
@@ -193,6 +203,7 @@ async function scrollByIndex() {
     await init();
 }
 
+/** 合并同一轮中的多次列表或尺寸变化，避免重复执行节点测量。 */
 function scheduleInit() {
     if (layoutTimer) clearTimeout(layoutTimer);
     layoutTimer = setTimeout(() => {

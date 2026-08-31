@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeIndexAnchor
+ * @description 定义 `IndexList` 中的分组位置，并根据父组件配置提供吸顶效果。
+ * @see /components/index-anchor
+ */
+
 import { computed, inject, type CSSProperties } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import { snakeIndexListKey } from '../../libs/internal/index-list';

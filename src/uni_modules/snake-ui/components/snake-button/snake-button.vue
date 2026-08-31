@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @component SnakeButton
+ * @description 正式操作按钮，支持多主题、尺寸、胶囊形态、加载、图标、水波纹、点击节流、表单行为和小程序开放能力。
+ * @see /components/button
+ */
+
 import { computed, ref } from 'vue';
 import SnakeIcon from '../snake-icon/snake-icon.vue';
 import SnakeLoadingIcon from '../snake-loading-icon/snake-loading-icon.vue';
