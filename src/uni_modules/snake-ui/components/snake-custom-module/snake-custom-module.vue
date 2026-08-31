@@ -5,13 +5,12 @@
   </view>
 </template>
 
-<script>
-export default {
-  name: 'snake-custom-module',
-  props: {
-    datas: Object,
-  },
-};
+<script setup lang="ts">
+import type { SnakeCustomModuleProps, SnakeCustomModuleSlots } from './types';
+
+defineOptions({ name: 'SnakeCustomModule' });
+withDefaults(defineProps<SnakeCustomModuleProps>(), { datas: () => ({}) });
+defineSlots<SnakeCustomModuleSlots>();
 </script>
 
 <style scoped lang="scss">

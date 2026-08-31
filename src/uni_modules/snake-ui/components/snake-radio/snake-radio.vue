@@ -4,17 +4,10 @@ import { addUnit } from '../../libs/function/unit';
 import { snakeRadioGroupKey } from '../../libs/internal/radio';
 import { snakeFormItemKey } from '../../libs/internal/form-item';
 import SnakeIcon from '../snake-icon/snake-icon.vue';
-import type { SnakeRadioEmits, SnakeRadioProps } from './types';
+import { snakeRadioProps } from './types';
+import type { SnakeRadioEmits } from './types';
 defineOptions({ name: 'SnakeRadio', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = withDefaults(defineProps<SnakeRadioProps>(), {
-    modelValue: false,
-    label: '',
-    disabled: false,
-    labelDisabled: false,
-    iconColor: '#fff',
-    customClass: '',
-    customStyle: ''
-});
+const props = defineProps(snakeRadioProps);
 const emit = defineEmits<SnakeRadioEmits>();
 const group = inject(snakeRadioGroupKey, null);
 const formItem = inject(snakeFormItemKey, null);
@@ -50,8 +43,14 @@ function select(event: unknown, fromLabel = false) {
 <template>
     <view
         class="snake-radio"
+        role="radio"
+        :aria-checked="checked"
+        :aria-disabled="disabled"
+        :tabindex="disabled ? -1 : 0"
         :class="[customClass, `snake-radio--${size}`, { 'is-disabled': disabled }]"
         :style="[$snakeThemeStyle, customStyle]"
+        @keydown.enter.prevent="select($event)"
+        @keydown.space.prevent="select($event)"
         ><view class="snake-radio__icon" :class="`is-${shape}`" :style="iconStyle" @click="select($event)"
             ><snake-icon
                 v-if="checked"
@@ -70,6 +69,10 @@ function select(event: unknown, fromLabel = false) {
     gap: 12rpx;
     color: var(--snake-color-text, #303133);
 }
+.snake-radio:focus-visible {
+    outline: 2px solid var(--snake-color-primary, #06d290);
+    outline-offset: 4rpx;
+}
 .snake-radio.is-disabled {
     opacity: 0.45;
 }
@@ -80,7 +83,15 @@ function select(event: unknown, fromLabel = false) {
     align-items: center;
     justify-content: center;
     border: 1px solid;
-    transition: all 0.2s;
+    transition:
+        border-color 0.2s,
+        background-color 0.2s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .snake-radio__icon {
+        transition: none;
+    }
 }
 .snake-radio__icon.is-square {
     border-radius: 6rpx;

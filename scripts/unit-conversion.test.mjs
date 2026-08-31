@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
-import { addUnit, pxToRpx } from '../src/uni_modules/snake-ui/libs/unit.ts';
+import { addUnit, pxToRpx } from '../src/uni_modules/snake-ui/libs/function/unit.ts';
 
 test('addUnit preserves explicit units and applies a default to numeric values', () => {
     assert.equal(addUnit(12), '12px');

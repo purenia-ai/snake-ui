@@ -20,21 +20,16 @@ import { toast } from '../../libs/function/platform';
 import {
     SnakeCmsError,
     type SnakeCmsLinkAction,
-    type SnakeCmsLinkService,
-    type SnakeCmsPageInfo
 } from '../snake-cms/types';
+import type { SnakeJumpAppletEmits, SnakeJumpAppletProps } from './types';
 
 defineOptions({ name: 'SnakeJumpApplet' });
 
 const props = withDefaults(
-    defineProps<{
-        datas?: Record<string, any>;
-        linkService?: SnakeCmsLinkService;
-        pageInfo?: SnakeCmsPageInfo;
-    }>(),
+    defineProps<SnakeJumpAppletProps>(),
     { datas: () => ({}), linkService: undefined, pageInfo: () => ({}) }
 );
-const emit = defineEmits<{ error: [error: SnakeCmsError] }>();
+const emit = defineEmits<SnakeJumpAppletEmits>();
 const service = computed(() => props.linkService || resolveSnakeCmsOptions().services?.link);
 
 async function jump(): Promise<void> {

@@ -3,6 +3,7 @@ import type { SnakeImageMode, SnakeStyleValue } from '../../types/global';
 
 export interface SnakeImageProps {
     src?: string;
+    alt?: string;
     mode?: SnakeImageMode;
     width?: UnitValue;
     height?: UnitValue | 'auto';

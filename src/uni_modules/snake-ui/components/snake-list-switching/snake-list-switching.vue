@@ -6,13 +6,13 @@
     >
         <!-- 类型一 -->
         <!-- 没有数据展示默认 -->
-        <section
+        <view
             v-if="!datas.imageList[0] && datas.commoditylisttype === 0"
             :class="[
                 datas.commodityType === 5 ? 'defaultcommodityList5' : '',
                 datas.commodityType === 1 ? 'defaultcommodityListFlex' : ''
             ]"
-            class="defaultcommodity"
+            class="commodity-section defaultcommodity"
             :style="{
                 'padding-top': datas.commodityMargin + 'px',
                 'padding-left': datas.pageMargin + 'px',
@@ -49,6 +49,7 @@
                 <!-- 图片 -->
                 <view class="bg-pic">
                     <image
+                        class="commodity-image"
                         src="https://s.qiuxietang.com/images/1672886064118/CdkQmBXNCs.png"
                         :style="[radiusStyle('img')]"
                         mode="aspectFill"
@@ -100,41 +101,47 @@
                     ]"
                 >
                     <!-- 视频名称 -->
-                    <h5
+                    <text
+                        class="commodity-title"
                         :style="{
                             'font-weight': datas.textWeight,
                             'text-align': datas.positions === 'center' ? 'center' : ''
                         }"
                     >
                         这里显示商品名称，最多显示1行
-                    </h5>
+                    </text>
                     <!-- 视频描述 -->
-                    <p :style="{ 'text-align': datas.positions === 'center' ? 'center' : '' }">
+                    <text
+                        class="commodity-description"
+                        :style="{ 'text-align': datas.positions === 'center' ? 'center' : '' }"
+                    >
                         这里显示商品描述，最多显示1行
-                    </p>
+                    </text>
                     <view class="mony">
-                        <span v-show="datas.priceofcommodity">
-                            <i>￥</i>
+                        <text class="commodity-price" v-show="datas.priceofcommodity">
+                            <text class="commodity-currency">￥</text>
                             99
-                        </span>
+                        </text>
                         <view v-show="datas.purchasebutton">
                             <!-- <snake-icon name="" size="23" v-show="datas.purchasebuttonType === 0" />
 							<snake-icon name="" size="23" v-show="datas.purchasebuttonType === 1" />
 							<snake-icon name="" size="23" v-show="datas.purchasebuttonType === 2" />
 							<snake-icon name="" size="23" v-show="datas.purchasebuttonType === 3" /> -->
-                            <em v-if="[4, 5, 6, 7].includes(datas.purchasebuttonType)">{{ datas.purchase }}</em>
+                            <text class="commodity-action" v-if="[4, 5, 6, 7].includes(datas.purchasebuttonType)">{{
+                                datas.purchase
+                            }}</text>
                         </view>
                     </view>
                 </view>
             </view>
-        </section>
-        <section
+        </view>
+        <view
             v-show="datas.imageList[0] && datas.commoditylisttype === 0"
             :class="[
                 datas.commodityType === 5 ? 'defaultcommodityList5' : '',
                 datas.commodityType === 1 ? 'defaultcommodityListFlex' : ''
             ]"
-            class="defaultcommodity defaultcommodityListFlex"
+            class="commodity-section defaultcommodity defaultcommodityListFlex"
             :style="{
                 'padding-top': datas.commodityMargin + 'px',
                 'padding-left': datas.pageMargin + 'px',
@@ -171,7 +178,12 @@
             >
                 <!-- 图片 -->
                 <view class="bg-pic">
-                    <image :src="imageFilter(item)" mode="aspectFit" :style="[radiusStyle('img')]"></image>
+                    <image
+                        class="commodity-image"
+                        :src="imageFilter(item)"
+                        mode="aspectFit"
+                        :style="[radiusStyle('img')]"
+                    ></image>
                     <!-- 标签 -->
                     <view
                         :style="[styleString]"
@@ -211,18 +223,23 @@
                     ]"
                 >
                     <!-- 商品名称 -->
-                    <h5
+                    <text
+                        class="commodity-title"
                         :style="{
                             'font-weight': datas.textWeight,
                             'text-align': datas.positions === 'center' ? 'center' : ''
                         }"
                     >
                         {{ item.name }}
-                    </h5>
+                    </text>
                     <!-- 商品描述 -->
-                    <p :style="{ 'text-align': datas.positions === 'center' ? 'center' : '' }" v-if="item.introduce">
+                    <text
+                        class="commodity-description"
+                        :style="{ 'text-align': datas.positions === 'center' ? 'center' : '' }"
+                        v-if="item.introduce"
+                    >
                         {{ item.introduce }}
-                    </p>
+                    </text>
                     <view class="mony" v-if="datas.priceofcommodity || datas.purchasebutton">
                         <view v-if="datas.priceofcommodity">
                             <text>￥</text>
@@ -233,12 +250,14 @@
 							<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 1" />
 							<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 2" />
 							<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 3" /> -->
-                            <em v-if="[4, 5, 6, 7].includes(datas.purchasebuttonType)">{{ datas.purchase }}</em>
+                            <text class="commodity-action" v-if="[4, 5, 6, 7].includes(datas.purchasebuttonType)">{{
+                                datas.purchase
+                            }}</text>
                         </view>
                     </view>
                 </view>
             </view>
-        </section>
+        </view>
 
         <!-- 类型二 -->
         <view class="tab-type2" v-if="datas.commoditylisttype == 1">
@@ -249,10 +268,10 @@
                 @change="changeTabs"
             ></snake-tabs>
             <!-- 无数据默认展示 -->
-            <section
+            <view
                 v-show="!datas.commoditylisttypetab[active1].imageList[0] && datas.commoditylisttype === 1"
                 :class="[datas.commodityType === 5 ? 'defaultcommodityList5' : '']"
-                class="defaultcommodity defaultcommodityListFlex"
+                class="commodity-section defaultcommodity defaultcommodityListFlex"
                 :style="{
                     'padding-top': datas.commodityMargin + 'px',
                     'padding-left': datas.pageMargin + 'px',
@@ -289,6 +308,7 @@
                     <!-- 视频图片 -->
                     <view class="bg-pic">
                         <image
+                            class="commodity-image"
                             src="https://s.qiuxietang.com/images/1672886064118/CdkQmBXNCs.png"
                             :style="[radiusStyle('img')]"
                         ></image>
@@ -334,38 +354,44 @@
                         ]"
                     >
                         <!-- 视频名称 -->
-                        <h5
+                        <text
+                            class="commodity-title"
                             :style="{
                                 'font-weight': datas.textWeight,
                                 'text-align': datas.positions === 'center' ? 'center' : ''
                             }"
                         >
                             这里显示商品名称，最多显示1行
-                        </h5>
+                        </text>
                         <!-- 视频描述 -->
-                        <p :style="{ 'text-align': datas.positions === 'center' ? 'center' : '' }">
+                        <text
+                            class="commodity-description"
+                            :style="{ 'text-align': datas.positions === 'center' ? 'center' : '' }"
+                        >
                             这里显示商品描述，最多显示1行
-                        </p>
+                        </text>
                         <view class="mony">
-                            <span v-if="datas.priceofcommodity">
-                                <i>￥</i>
+                            <text class="commodity-price" v-if="datas.priceofcommodity">
+                                <text class="commodity-currency">￥</text>
                                 99
-                            </span>
+                            </text>
                             <view v-if="datas.purchasebutton">
                                 <!-- <snake-icon name="" size="23" v-if="datas.purchasebuttonType === 0" />
 								<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 1" />
 								<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 2" />
 								<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 3" /> -->
-                                <em v-if="[4, 5, 6, 7].includes(datas.purchasebuttonType)">{{ datas.purchase }}</em>
+                                <text class="commodity-action" v-if="[4, 5, 6, 7].includes(datas.purchasebuttonType)">{{
+                                    datas.purchase
+                                }}</text>
                             </view>
                         </view>
                     </view>
                 </view>
-            </section>
-            <section
+            </view>
+            <view
                 v-show="datas.commoditylisttypetab[active1].imageList[0] && datas.commoditylisttype === 1"
                 :class="[datas.commodityType === 5 ? 'defaultcommodityList5' : '']"
-                class="defaultcommodity"
+                class="commodity-section defaultcommodity"
                 :style="{
                     'padding-top': datas.commodityMargin + 'px',
                     'padding-left': datas.pageMargin + 'px',
@@ -402,7 +428,12 @@
                 >
                     <!-- 视频图片 -->
                     <view class="bg-pic">
-                        <image :src="item.image" mode="aspectFit" :style="[radiusStyle('img')]"></image>
+                        <image
+                            class="commodity-image"
+                            :src="item.image"
+                            mode="aspectFit"
+                            :style="[radiusStyle('img')]"
+                        ></image>
                         <!-- 标签 -->
                         <view
                             :style="[styleString]"
@@ -445,34 +476,40 @@
                         ]"
                     >
                         <!-- 视频名称 -->
-                        <h5
+                        <text
+                            class="commodity-title"
                             :style="{
                                 'font-weight': datas.textWeight,
                                 'text-align': datas.positions === 'center' ? 'center' : ''
                             }"
                         >
                             {{ item.name }}
-                        </h5>
+                        </text>
                         <!-- 视频描述 -->
-                        <p :style="{ 'text-align': datas.positions === 'center' ? 'center' : '' }">
+                        <text
+                            class="commodity-description"
+                            :style="{ 'text-align': datas.positions === 'center' ? 'center' : '' }"
+                        >
                             {{ item.introduce }}
-                        </p>
+                        </text>
                         <view class="mony" v-if="datas.priceofcommodity || datas.purchasebutton">
-                            <span v-if="datas.priceofcommodity">
-                                <i>￥</i>
+                            <text class="commodity-price" v-if="datas.priceofcommodity">
+                                <text class="commodity-currency">￥</text>
                                 {{ item.price }}
-                            </span>
+                            </text>
                             <view v-if="datas.purchasebutton">
                                 <!-- <snake-icon name="" size="23" v-if="datas.purchasebuttonType === 0" />
 								<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 1" />
 								<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 2" />
 								<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 3" /> -->
-                                <em v-if="[4, 5, 6, 7].includes(datas.purchasebuttonType)">{{ datas.purchase }}</em>
+                                <text class="commodity-action" v-if="[4, 5, 6, 7].includes(datas.purchasebuttonType)">{{
+                                    datas.purchase
+                                }}</text>
                             </view>
                         </view>
                     </view>
                 </view>
-            </section>
+            </view>
         </view>
 
         <!-- 类型三 -->
@@ -482,11 +519,11 @@
 				更多》
 			</view> -->
             <tree-select :items="datas.commoditylisttypetab" :current="active" @click-nav="treeSelect" class="type3">
-                <template v-slot:content>
+                <template #content>
                     <view style="width: 100%">
-                        <section
+                        <view
                             v-if="!datas.commoditylisttypetab[active].imageList[0]"
-                            class="defaultcommodity"
+                            class="commodity-section defaultcommodity"
                             :style="{
                                 'padding-top': datas.commodityMargin + 'px',
                                 'padding-left': datas.pageMargin + 'px',
@@ -507,6 +544,7 @@
                                 <!-- 视频图片 -->
                                 <view class="bg-pic">
                                     <image
+                                        class="commodity-image"
                                         src="https://s.qiuxietang.com/images/1672886064118/CdkQmBXNCs.png"
                                         :style="[radiusStyle('img')]"
                                     ></image>
@@ -555,39 +593,45 @@
                                     ]"
                                 >
                                     <!-- 视频名称 -->
-                                    <h5
+                                    <text
+                                        class="commodity-title"
                                         :style="{
                                             'font-weight': datas.textWeight,
                                             'text-align': datas.positions === 'center' ? 'center' : ''
                                         }"
                                     >
                                         这里显示商品名称，最多显示1行
-                                    </h5>
+                                    </text>
                                     <!-- 视频描述 -->
-                                    <p :style="{ 'text-align': datas.positions === 'center' ? 'center' : '' }">
+                                    <text
+                                        class="commodity-description"
+                                        :style="{ 'text-align': datas.positions === 'center' ? 'center' : '' }"
+                                    >
                                         这里显示商品描述，最多显示1行
-                                    </p>
+                                    </text>
                                     <view class="mony">
-                                        <span v-if="datas.priceofcommodity">
-                                            <i>￥</i>
+                                        <text class="commodity-price" v-if="datas.priceofcommodity">
+                                            <text class="commodity-currency">￥</text>
                                             99
-                                        </span>
+                                        </text>
                                         <view v-if="datas.purchasebutton">
                                             <!-- <snake-icon name="" size="23" v-if="datas.purchasebuttonType === 0" />
 											<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 1" />
 											<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 2" />
 											<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 3" /> -->
-                                            <em v-if="[4, 5, 6, 7].includes(datas.purchasebuttonType)">{{
-                                                datas.purchase
-                                            }}</em>
+                                            <text
+                                                class="commodity-action"
+                                                v-if="[4, 5, 6, 7].includes(datas.purchasebuttonType)"
+                                                >{{ datas.purchase }}</text
+                                            >
                                         </view>
                                     </view>
                                 </view>
                             </view>
-                        </section>
-                        <section
+                        </view>
+                        <view
                             v-if="datas.commoditylisttypetab[active].imageList[0]"
-                            class="defaultcommodity"
+                            class="commodity-section defaultcommodity"
                             :style="{
                                 'padding-top': datas.commodityMargin + 'px',
                                 'padding-left': datas.pageMargin + 'px',
@@ -608,7 +652,11 @@
                             >
                                 <!-- 图片 -->
                                 <view class="bg-pic">
-                                    <image :src="item.image" :style="[radiusStyle('img')]"></image>
+                                    <image
+                                        class="commodity-image"
+                                        :src="item.image"
+                                        :style="[radiusStyle('img')]"
+                                    ></image>
                                     <!-- 标签 -->
                                     <view
                                         class="marks"
@@ -654,39 +702,43 @@
                                     ]"
                                 >
                                     <!-- 视频名称 -->
-                                    <h5
+                                    <text
+                                        class="commodity-title"
                                         :style="{
                                             'font-weight': datas.textWeight,
                                             'text-align': datas.positions === 'center' ? 'center' : ''
                                         }"
                                     >
                                         {{ item.name }}
-                                    </h5>
+                                    </text>
                                     <!-- 视频描述 -->
-                                    <p
+                                    <text
+                                        class="commodity-description"
                                         :style="{ 'text-align': datas.positions === 'center' ? 'center' : '' }"
                                         v-if="item.introduce"
                                     >
                                         {{ item.introduce }}
-                                    </p>
+                                    </text>
                                     <view class="mony" v-if="datas.priceofcommodity || datas.purchasebutton">
-                                        <span v-show="datas.priceofcommodity">
-                                            <i>￥</i>
+                                        <text class="commodity-price" v-show="datas.priceofcommodity">
+                                            <text class="commodity-currency">￥</text>
                                             {{ item.price }}
-                                        </span>
+                                        </text>
                                         <view v-show="datas.purchasebutton">
                                             <!-- 	<snake-icon name="" size="23" v-show="datas.purchasebuttonType === 0" />
 											<snake-icon name="" size="23" v-show="datas.purchasebuttonType === 1" />
 											<snake-icon name="" size="23" v-show="datas.purchasebuttonType === 2" />
 											<snake-icon name="" size="23" v-show="datas.purchasebuttonType === 3" /> -->
-                                            <em v-if="[4, 5, 6, 7].includes(datas.purchasebuttonType)">{{
-                                                datas.purchase
-                                            }}</em>
+                                            <text
+                                                class="commodity-action"
+                                                v-if="[4, 5, 6, 7].includes(datas.purchasebuttonType)"
+                                                >{{ datas.purchase }}</text
+                                            >
                                         </view>
                                     </view>
                                 </view>
                             </view>
-                        </section>
+                        </view>
                     </view>
                 </template>
             </tree-select>
@@ -935,30 +987,30 @@ export default {
                 }
 
                 .text {
-                    h5 {
+                    .commodity-title {
                         font-size: 12px !important;
                     }
 
-                    p {
+                    .commodity-description {
                         font-size: 10px !important;
                     }
 
                     .mony {
-                        span {
+                        .commodity-price {
                             display: flex;
                             flex-direction: row;
                             font-size: 12px !important;
 
-                            i {
+                            .commodity-currency {
                                 font-size: 12px !important;
                             }
                         }
 
-                        i {
+                        .commodity-currency {
                             font-size: 14px !important;
                         }
 
-                        em {
+                        .commodity-action {
                             padding: 1px 5px !important;
                             font-size: 5px !important;
                         }
@@ -1034,30 +1086,30 @@ export default {
                 }
 
                 .text {
-                    h5 {
+                    .commodity-title {
                         font-size: 12px !important;
                     }
 
-                    p {
+                    .commodity-description {
                         font-size: 10px !important;
                     }
 
                     .mony {
-                        span {
+                        .commodity-price {
                             display: flex;
                             flex-direction: row;
                             font-size: 12px !important;
 
-                            i {
+                            .commodity-currency {
                                 font-size: 12px !important;
                             }
                         }
 
-                        i {
+                        .commodity-currency {
                             font-size: 14px !important;
                         }
 
-                        em {
+                        .commodity-action {
                             padding: 1px 5px !important;
                             font-size: 5px !important;
                         }
@@ -1070,7 +1122,7 @@ export default {
                 }
             }
 
-            image {
+            .bg-pic > .commodity-image {
                 width: 100%;
                 height: 100%;
             }
@@ -1083,7 +1135,7 @@ export default {
                 // height: 100%;
 
                 /* 商品名称 */
-                h5 {
+                .commodity-title {
                     display: -webkit-box;
                     margin: 0 0 5px;
                     overflow: hidden;
@@ -1097,7 +1149,7 @@ export default {
                 }
 
                 /* 商品描述 */
-                p {
+                .commodity-description {
                     height: 16px;
                     overflow: hidden;
                     text-overflow: ellipsis;
@@ -1115,31 +1167,31 @@ export default {
                     // height: 44px;
                     width: 100%;
 
-                    view {
+                    > * {
                         display: flex;
                         align-items: center;
                         font-size: 16px;
                         color: var(--snake-color-primary, #65c4aa);
                     }
 
-                    span {
+                    .commodity-price {
                         display: flex;
                         align-items: center;
                         font-size: 16px;
                         color: var(--snake-color-primary, #65c4aa);
 
-                        i {
+                        .commodity-currency {
                             font-size: 12px;
                         }
                     }
 
-                    i {
+                    .commodity-currency {
                         font-size: 16px;
                         line-height: 44px;
                         color: var(--snake-color-primary, #65c4aa);
                     }
 
-                    em {
+                    .commodity-action {
                         padding: 2px 7px;
                         font-size: 12px;
                         font-style: normal;
@@ -1192,28 +1244,28 @@ export default {
             }
 
             .text {
-                h5 {
+                .commodity-title {
                     font-size: 12px !important;
                 }
 
-                p {
+                .commodity-description {
                     font-size: 10px !important;
                 }
 
                 .mony {
-                    span {
+                    .commodity-price {
                         font-size: 12px !important;
 
-                        i {
+                        .commodity-currency {
                             font-size: 12px !important;
                         }
                     }
 
-                    i {
+                    .commodity-currency {
                         font-size: 14px !important;
                     }
 
-                    em {
+                    .commodity-action {
                         padding: 1px 5px !important;
                         font-size: 5px !important;
                     }

@@ -198,7 +198,6 @@ test('compact layout preserves the native page outline and dimensions', async ()
 
 test('desktop phone preview is fixed to the outer page edge like uView2', async () => {
     const layout = await readFile(resolve(root, 'docs/.vitepress/theme/Layout.vue'), 'utf8');
-    const frame = await readFile(resolve(root, 'docs/.vitepress/theme/PreviewFrame.vue'), 'utf8');
     const css = await readFile(resolve(root, 'docs/.vitepress/theme/custom.css'), 'utf8');
 
     assert.match(layout, /#layout-bottom><PreviewFrame\s*\/><\/template>/);
@@ -212,7 +211,6 @@ test('desktop phone preview is fixed to the outer page edge like uView2', async 
 
 test('preview pages keep independent content, outline, and phone columns', async () => {
     const layout = await readFile(resolve(root, 'docs/.vitepress/theme/Layout.vue'), 'utf8');
-    const frame = await readFile(resolve(root, 'docs/.vitepress/theme/PreviewFrame.vue'), 'utf8');
     const css = await readFile(resolve(root, 'docs/.vitepress/theme/custom.css'), 'utf8');
 
     assert.match(layout, /useData\(\)/);

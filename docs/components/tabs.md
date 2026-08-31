@@ -6,6 +6,11 @@ preview: /pages/componentsA/tabs/index
 
 用于分类导航和状态筛选。标签较多时，激活项会自动滚动到容器中间；同时支持隐藏或禁用标签、数量或圆点徽标及自定义指示线。
 
+## 何时使用
+
+- 用于同一页面内并列内容的快速切换，例如推荐、新品和热门。
+- 标签表达的是页面层级导航时，应改用 Navbar 或页面路由，避免把 Tabs 当成全局导航。
+
 ## 平台兼容性
 
 |  H5  | 微信小程序 | App  |
@@ -113,5 +118,13 @@ const tabs = ['推荐', '新品', '热门'];
 | `scrollByIndex()` | 按当前 `current` 重新计算滚动位置，行为等同 init |
 
 当 Tabs 初始位于隐藏容器中，容器显示后调用 `init()` 即可重新获取正确宽度。
+
+## 无障碍
+
+标签支持键盘聚焦，并使用 `tab` / `aria-selected` 表达当前状态。禁用项不会触发切换；业务侧应为纯图标或缩写标签提供可理解的文字名称。
+
+## 类型定义
+
+Props、事件和实例方法类型从包根导出，可使用 `SnakeTabsProps`、`SnakeTabsEmits` 与 `SnakeTabsExpose`，无需从组件内部路径导入。
 
 源码：`src/uni_modules/snake-ui/components/snake-tabs/snake-tabs.vue`

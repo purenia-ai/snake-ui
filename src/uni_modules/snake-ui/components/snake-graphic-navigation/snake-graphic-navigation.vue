@@ -130,7 +130,7 @@ export default {
             height: 100%;
         }
 
-        text {
+        .text {
             box-sizing: border-box;
             width: 100%;
             overflow: hidden;

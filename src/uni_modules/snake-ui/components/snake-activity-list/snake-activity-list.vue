@@ -49,6 +49,7 @@
 <script>
 export default {
   name: 'activity-list',
+  emits: ['change'],
   props: {
     list: {
       type: Array,
@@ -166,7 +167,7 @@ export default {
     cursor: pointer;
     border-radius: 4rpx;
     transform: translateZ(0); // 启用硬件加速
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform, box-shadow, border-color; // 性能优化
 
     /* 相邻项间距 */
@@ -198,7 +199,7 @@ export default {
     display: block;
     width: 100%;
     height: 100%;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   /* 点击时图片效果 */
@@ -216,7 +217,7 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: top 0.3s cubic-bezier(0.4, 0, 0.2, 1), left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   /* 倒计时盒子 */
@@ -233,7 +234,7 @@ export default {
     color: var(--snake-color-white, #ffffff);
     background: var(--snake-color-text-secondary, #707184);
     border-radius: 0rpx 0 4rpx 0;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   /* 倒计时图标 */
@@ -251,7 +252,7 @@ export default {
     font-family: PingFangSC-Semibold;
     font-size: 26rpx;
     color: var(--snake-color-text, #333);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   /* 主标题 */
@@ -281,6 +282,16 @@ export default {
     margin-top: 4rpx;
     font-size: 20rpx;
     color: var(--snake-color-text-muted, #888891);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .activity-list__item,
+  .activity-list__image,
+  .activity-list__time,
+  .activity-list__time-box,
+  .activity-list__title {
+    transition: none;
   }
 }
 </style>

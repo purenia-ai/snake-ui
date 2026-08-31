@@ -48,7 +48,7 @@
                 @change="change"
                 @click="clickPushTo"
             >
-                <template v-slot:indicator>
+                <template #indicator>
                     <view v-if="datas.pagingType">
                         <!-- 指示器 -->
                         <!-- 样式一 -->

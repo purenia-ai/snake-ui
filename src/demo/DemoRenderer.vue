@@ -30,11 +30,11 @@ import {
 const props = defineProps<{ kind: string; title: string }>();
 const { localeName, text } = useDemoLocale();
 const definition = computed(() => {
-    localeName.value;
+    const _locale = localeName.value;
     return localizeDemoDefinition(getDemoDefinition(props.kind), demoText);
 });
 const localizedTitle = computed(() => {
-    localeName.value;
+    const _locale = localeName.value;
     return demoTitle(props.kind, props.title);
 });
 const isEnglish = computed(() => localeName.value === 'en-US');

@@ -2,15 +2,7 @@
   <view :style="$snakeThemeStyle">
     <snake-notice-bar
       :volume-icon="datas.isLeftIcon ? true : false"
-      :list="
-        datas.direction === 'row'
-          ? Array.isArray(noticeText)
-            ? datas.noticeText
-            : [datas.noticeText]
-          : Array.isArray(textList)
-            ? datas.noticeText
-            : [textList]
-      "
+      :list="noticeList"
       :bg-color="datas.backColor"
       :mode="datas.direction === 'row' ? 'horizontal' : 'vertical'"
       :color="datas.textColor"
@@ -23,37 +15,24 @@
   </view>
 </template>
 
-<script>
-export default {
-  name: 'notice',
-  props: {
-    datas: {
-      type: [Object, null],
-      default() {
-        return {};
-      },
-    },
-  },
-  data() {
-    return {};
-  },
-  computed: {
-    // 热词列表
-    textList() {
-      return this.datas.textList.map((el) => el.text);
-    },
-  },
-  methods: {
-    // 公告跳转
-    handleNotice(e) {
-      if (this.datas.direction === 'row') {
-        uni.$snake.navTo(this.datas.url);
-      } else {
-        uni.$snake.navTo(this.datas.textList[e].url);
-      }
-    },
-  },
-};
+<script setup lang="ts">
+import { computed } from 'vue';
+import { navTo } from '../../libs/function/platform';
+import type { SnakeNoticeProps } from './types';
+
+defineOptions({ name: 'SnakeNotice' });
+const props = withDefaults(defineProps<SnakeNoticeProps>(), { datas: () => ({}) });
+const noticeList = computed(() => {
+  if (props.datas.direction === 'row') {
+    return Array.isArray(props.datas.noticeText) ? props.datas.noticeText : [props.datas.noticeText || ''];
+  }
+  return Array.isArray(props.datas.textList) ? props.datas.textList.map(item => item.text || '') : [];
+});
+
+function handleNotice(index: number) {
+  const url = props.datas.direction === 'row' ? props.datas.url : props.datas.textList?.[index]?.url;
+  if (url) navTo(url);
+}
 </script>
 
 <style></style>

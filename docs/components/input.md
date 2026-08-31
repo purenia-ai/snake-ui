@@ -6,6 +6,10 @@ preview: /pages/componentsA/input/index
 
 基于 uni-app input，支持清空、密码显示、格式化、前后插槽和 Form 校验联动。
 
+## 何时使用
+
+用于单行文本、数字或密码输入。多行内容使用 Textarea；需要标签、校验信息和统一布局时，将 Input 放在 FormItem 中。
+
 ## 平台兼容性
 
 |  H5  | 微信小程序 | App  |
@@ -51,5 +55,13 @@ preview: /pages/componentsA/input/index
 ### Slots
 
 `prefix`、`suffix` 分别替换前后图标区域。
+
+## 无障碍
+
+不要只依赖 `placeholder` 说明字段含义，应由 FormItem 的标签或页面文字提供持久名称。错误状态应同时展示可读提示；密码显示按钮和清空按钮已提供可操作语义。
+
+## 类型定义
+
+从包根导入 `SnakeInputProps` 与 `SnakeInputEmits`。`formatter` 应保持同步且无副作用，异步校验交给 Form 规则处理。
 
 源码：`src/uni_modules/snake-ui/components/snake-input/snake-input.vue`

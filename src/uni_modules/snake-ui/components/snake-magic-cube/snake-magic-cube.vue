@@ -339,10 +339,8 @@ export default {
   computed: {
     imageList() {
       return (images) => {
-        let imageList = [...images];
-
         const showImageList = [];
-        imageList = imageList
+        images
           .filter((item) => {
             const weeksToShow = item.weeks || [7, 1, 2, 3, 4, 5, 6]; // 默认显示周日到周六
             const currentWeekday = this.getWeekday(); // 获取当前是星期几

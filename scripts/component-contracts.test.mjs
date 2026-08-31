@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import test from 'node:test';
 
 const root = new URL('../src/uni_modules/snake-ui/', import.meta.url);
@@ -26,12 +26,53 @@ const components = [
     'snake-index-anchor'
 ];
 
+test('every public component exposes an independent type contract', async () => {
+    const componentRoot = new URL('components/', root);
+    const directories = (await readdir(componentRoot, { withFileTypes: true }))
+        .filter(entry => entry.isDirectory() && entry.name.startsWith('snake-'))
+        .map(entry => entry.name)
+        .sort();
+    const packageEntry = await readFile(new URL('index.ts', root), 'utf8');
+    const declarationEntry = await readFile(new URL('types/components.d.ts', root), 'utf8');
+
+    assert.equal(directories.length, 53);
+    for (const component of directories) {
+        const types = await readFile(new URL(`components/${component}/types.ts`, root), 'utf8');
+        assert.match(types, /export (?:interface|type) Snake/, `${component}: missing public contract`);
+        assert.match(
+            packageEntry,
+            new RegExp(`export \\* from './components/${component}/types'`),
+            `${component}: missing type export`
+        );
+        assert.match(
+            declarationEntry,
+            new RegExp(`export \\* from '../components/${component}/types'`),
+            `${component}: missing declaration export`
+        );
+    }
+});
+
 test('public foundation components use independent type contracts', async () => {
     for (const component of components) {
         const types = await readFile(new URL(`components/${component}/types.ts`, root), 'utf8');
         const source = await readFile(new URL(`components/${component}/${component}.vue`, root), 'utf8');
         assert.match(types, /export (?:interface|type) Snake/);
         assert.match(source, /from '\.\/types'/);
+    }
+});
+
+test('migrated controls use runtime props as the defaults source of truth', async () => {
+    for (const [component, exportName] of [
+        ['snake-button', 'snakeButtonProps'],
+        ['snake-checkbox', 'snakeCheckboxProps'],
+        ['snake-radio', 'snakeRadioProps']
+    ]) {
+        const types = await readFile(new URL(`components/${component}/types.ts`, root), 'utf8');
+        const source = await readFile(new URL(`components/${component}/${component}.vue`, root), 'utf8');
+        assert.match(types, new RegExp(`export const ${exportName} =`));
+        assert.match(types, /ExtractPropTypes<typeof snake[A-Z]\w+Props>/);
+        assert.match(source, new RegExp(`defineProps\\(${exportName}\\)`));
+        assert.doesNotMatch(source, /withDefaults\(defineProps/);
     }
 });
 

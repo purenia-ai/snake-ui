@@ -15,7 +15,7 @@ const { text } = useDemoLocale();
         <view class="card">
             <view class="swatch" :style="{ backgroundColor: color.primary }" />
             <view class="body"
-                ><text class="title">{{ text(currentTheme.label) }}</text
+                ><text class="title">{{ text(currentTheme.label || currentTheme.name) }}</text
                 ><text class="meta">darkMode: {{ darkMode }}</text></view
             >
             <snake-button size="mini" @click="toggleDarkMode">{{ text('切换明暗') }}</snake-button>

@@ -51,23 +51,16 @@ import { resolveSnakeCmsOptions } from '../../libs/cms';
 import { sleep, toast } from '../../libs/function/platform';
 import {
     SnakeCmsError,
-    type SnakeCmsCouponService,
-    type SnakeCmsLinkService,
-    type SnakeCmsPageInfo
 } from '../snake-cms/types';
+import type { SnakeCouponEmits, SnakeCouponProps } from './types';
 
 defineOptions({ name: 'SnakeCoupon' });
 
 const props = withDefaults(
-    defineProps<{
-        datas?: Record<string, any>;
-        couponService?: SnakeCmsCouponService;
-        linkService?: SnakeCmsLinkService;
-        pageInfo?: SnakeCmsPageInfo;
-    }>(),
+    defineProps<SnakeCouponProps>(),
     { datas: () => ({}), couponService: undefined, linkService: undefined, pageInfo: () => ({}) }
 );
-const emit = defineEmits<{ error: [error: SnakeCmsError]; received: [] }>();
+const emit = defineEmits<SnakeCouponEmits>();
 const resolved = computed(() => resolveSnakeCmsOptions());
 const couponService = computed(() => props.couponService || resolved.value.services?.coupon);
 const linkService = computed(() => props.linkService || resolved.value.services?.link);

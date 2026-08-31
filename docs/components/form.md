@@ -35,6 +35,21 @@ await formRef.value.validate();
 
 规则支持 `required`、`type`、`min`、`max`、`len`、`pattern`、`enum`、`transform`、`validator` 和 `asyncValidator`。字段路径支持对象和数组嵌套。
 
+## 提交与错误处理
+
+```ts
+async function submit() {
+    try {
+        const values = await formRef.value.validate();
+        await save(values);
+    } catch (errors) {
+        // FormItem 会就近展示错误；页面可在这里滚动到第一个错误字段。
+    }
+}
+```
+
+标签必须描述输入目的，placeholder 只提供示例而不能代替标签。异步校验失败时应保留用户输入并给出可执行的修正提示。
+
 ## API
 
 ### Props

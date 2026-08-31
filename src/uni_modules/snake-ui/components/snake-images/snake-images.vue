@@ -3,58 +3,54 @@
     <view
       class="images-wrap"
       :style="{
-        padding: $snake.addUnit(imgsData.paddingLR, 'rpx'),
+        padding: addUnit(imgsData.paddingLR, 'rpx'),
       }"
-      @click="uni.$snake.navTo(imgsData.url)">
+      role="link"
+      :tabindex="imgsData.url ? 0 : -1"
+      :aria-label="imgsData.alt || '查看图片链接'"
+      @click="open"
+      @keydown.enter.prevent="open">
       <image
         class="image"
         :src="imgsData.src"
-        :style="{ height: !imgsData.height ? '100%' : $snake.addUnit(imgsData.height, 'rpx') }"
+        :style="{ height: !imgsData.height ? '100%' : addUnit(imgsData.height, 'rpx') }"
+        :aria-label="imgsData.alt || undefined"
         :mode="imgMode"></image>
     </view>
   </view>
 </template>
 
-<script>
-export default {
-  props: {
-    datas: {
-      type: [Object, null],
-      default() {
-        return {};
-      },
-    },
-  },
-  data() {
-    return {};
-  },
-  computed: {
-    imgMode() {
-      return !this.imgsData?.height ? 'widthFix' : 'scaleToFill';
-    },
-    platform() {
-      let platform = 'h5';
+<script setup lang="ts">
+import { computed } from 'vue';
+import { addUnit } from '../../libs/function/unit';
+import { navTo } from '../../libs/function/platform';
+import type { SnakeImagesProps } from './types';
+
+defineOptions({ name: 'SnakeImages' });
+const props = withDefaults(defineProps<SnakeImagesProps>(), { datas: () => ({}) });
+const platform = computed(() => {
+      let value = 'h5';
       // #ifdef APP-PLUS
-      platform = 'app';
+      value = 'app';
       // #endif
 
       // #ifdef MP-WEIXIN
-      platform = 'wxma';
+      value = 'wxma';
       // #endif
 
       // #ifdef MP-ALIPAY
-      platform = 'alima';
+      value = 'alima';
       // #endif
 
-      return platform;
-    },
-    imgsData() {
-      const { platformOptions } = this.datas;
-      const data = platformOptions.find((item) => item.value === this.platform).imgs;
-      return (data.src ? data : platformOptions[0].imgs) || {};
-    },
-  },
-};
+      return value;
+});
+const imgsData = computed(() => {
+  const options = Array.isArray(props.datas.platformOptions) ? props.datas.platformOptions : [];
+  const selected = options.find(item => item.value === platform.value)?.imgs;
+  return (selected?.src ? selected : options[0]?.imgs) || {};
+});
+const imgMode = computed(() => (!imgsData.value.height ? 'widthFix' : 'scaleToFill'));
+function open() { if (imgsData.value.url) navTo(imgsData.value.url); }
 </script>
 
 <style lang="scss" scoped>

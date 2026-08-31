@@ -9,6 +9,7 @@ defineOptions({ name: 'SnakeImage', options: { virtualHost: true, styleIsolation
 
 const props = withDefaults(defineProps<SnakeImageProps>(), {
     src: '',
+    alt: '',
     mode: 'scaleToFill',
     width: '100%',
     height: 'auto',
@@ -73,11 +74,12 @@ function click(event: unknown) {
 </script>
 
 <template>
-    <view class="snake-image" :class="customClass" :style="[$snakeThemeStyle, rootStyle]" @click="click">
+    <view class="snake-image" :class="customClass" :style="[$snakeThemeStyle, rootStyle]" :aria-label="alt || undefined" @click="click">
         <image
             v-if="src"
             class="snake-image__image"
             :src="src"
+            :alt="alt"
             :mode="mode as any"
             :lazy-load="lazyLoad"
             :show-menu-by-longpress="showMenuByLongpress"

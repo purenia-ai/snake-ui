@@ -45,7 +45,7 @@ export default defineConfig({
     base: '/snake-ui/',
     lang: 'zh-CN',
     title: 'Snake UI',
-    description: '面向 uni-app 商城场景的 CMS 组件文档',
+    description: '面向 uni-app 商城与 CMS 场景的 Vue 3 组件库',
     cleanUrls: true,
     lastUpdated: true,
     srcExclude: ['superpowers/**'],

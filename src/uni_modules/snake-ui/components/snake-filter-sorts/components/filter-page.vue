@@ -138,6 +138,7 @@ import InternalIndexAnchor from '../../snake-index-anchor/snake-index-anchor.vue
 import InternalIndexList from '../../snake-index-list/snake-index-list.vue';
 const cacheManager = createCacheClient('snake-filter-sorts');
 export default {
+  emits: ['confirm'],
   options: {
     virtualHost: true,
     addGlobalClass: true,
@@ -290,7 +291,7 @@ export default {
     },
     /* 初始化滚动区域 */
     initScrollView() {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         let view = uni.createSelectorQuery().in(this);
 
         // #ifdef MP-ALIPAY
@@ -311,7 +312,7 @@ export default {
     },
     /* 获取元素顶部信息 */
     getElementTop() {
-      new Promise((resolve, reject) => {
+      new Promise((resolve) => {
         let view = uni.createSelectorQuery().in(this);
 
         // #ifdef MP-ALIPAY
@@ -373,7 +374,7 @@ export default {
       if (this.filterParams[item.value].includes(item2.value)) {
         this.filterParams[item.value].splice(this.filterParams[item.value].indexOf(item2.value), 1);
       } else {
-        item.type === 'selector' && (this.filterParams[item.value] = []);
+        if (item.type === 'selector') this.filterParams[item.value] = [];
         this.filterParams[item.value].push(item2.value);
       }
 

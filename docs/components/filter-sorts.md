@@ -6,6 +6,10 @@ cms: true
 # 筛选排序 <span class="cms-badge">CMS</span>
 组合顶部快捷排序、价格排序和多维筛选面板，并向父级输出统一查询参数。
 
+## 何时使用
+
+用于商品列表上方的排序与多维条件筛选。只有一两个固定条件时，优先使用 Tabs 或普通按钮，减少弹层操作成本。
+
 ## 运行前提
 
 依赖 Vue `<script setup>`、uni-app 节点与滚动 API，以及包内筛选面板和私有交互组件。默认筛选通过安装 Snake UI 时传入的 `cache` 适配器保存。
@@ -84,5 +88,9 @@ const filters = {
 ## 注意事项
 
 内部下拉菜单方法名按现有接口调用为 `colseAll`。H5 打开筛选面板时会修改 `document.body.style.overflow`；SSR 文档不执行该组件。
+
+## 类型定义
+
+从包根导入 `SnakeFilterSortsProps`、`SnakeFilterSortsEmits` 与筛选数据类型。`change` 返回的是新的查询快照，宿主应用应以该快照重新请求列表，而不是依赖组件内部状态。
 
 源码：`src/uni_modules/snake-ui/components/snake-filter-sorts/snake-filter-sorts.vue`、`src/uni_modules/snake-ui/components/snake-filter-sorts/filter-page.vue`

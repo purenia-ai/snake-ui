@@ -2,46 +2,12 @@
 import { computed, ref } from 'vue';
 import SnakeIcon from '../snake-icon/snake-icon.vue';
 import SnakeLoadingIcon from '../snake-loading-icon/snake-loading-icon.vue';
-import type { SnakeButtonEmits, SnakeButtonProps } from './types';
+import { snakeButtonProps } from './types';
+import type { SnakeButtonEmits } from './types';
 
 defineOptions({ name: 'SnakeButton', options: { virtualHost: true, styleIsolation: 'shared' } });
 
-const props = withDefaults(defineProps<SnakeButtonProps>(), {
-    text: '',
-    type: 'default',
-    size: 'default',
-    shape: 'square',
-    plain: false,
-    hairLine: true,
-    disabled: false,
-    loading: false,
-    loadingText: '',
-    loadingMode: 'circle',
-    loadingSize: 18,
-    icon: '',
-    iconColor: '',
-    color: '',
-    customClass: '',
-    customStyle: '',
-    ripple: false,
-    rippleBgColor: 'rgba(255, 255, 255, .28)',
-    hoverClass: '',
-    hoverStartTime: 20,
-    hoverStayTime: 150,
-    throttleTime: 0,
-    formType: '',
-    openType: '',
-    scope: '',
-    appParameter: '',
-    hoverStopPropagation: false,
-    lang: 'en',
-    sessionFrom: '',
-    sendMessageTitle: '',
-    sendMessagePath: '',
-    sendMessageImg: '',
-    showMessageCard: false,
-    dataName: ''
-});
+const props = defineProps(snakeButtonProps);
 const emit = defineEmits<SnakeButtonEmits>();
 const emitNative = emit as unknown as (name: Exclude<keyof SnakeButtonEmits, 'click'>, event: unknown) => void;
 const rippleActive = ref(false);

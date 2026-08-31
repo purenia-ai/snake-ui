@@ -20,6 +20,8 @@ preview: /pages/componentsA/popup/index
 </snake-popup>
 ```
 
+关闭按钮、遮罩和业务操作都可关闭弹层。H5 中打开复杂表单弹层后，业务页面应将焦点移入弹层；关闭后恢复到触发按钮。不可只依赖滑动手势关闭。
+
 ## API
 
 ### Props

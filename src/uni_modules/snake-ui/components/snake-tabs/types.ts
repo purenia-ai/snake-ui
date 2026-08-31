@@ -47,3 +47,8 @@ export interface SnakeTabsEmits {
     change: [index: number];
     click: [detail: SnakeTabsClickDetail];
 }
+
+export interface SnakeTabsExpose {
+    init: () => Promise<void>;
+    scrollByIndex: () => Promise<void>;
+}

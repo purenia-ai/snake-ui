@@ -6,10 +6,8 @@
   </view>
 </template>
 
-<script>
-export default {
-  name: 'snake-follow',
-};
+<script setup lang="ts">
+defineOptions({ name: 'SnakeFollow' });
 </script>
 
 <style></style>

@@ -6,6 +6,12 @@ preview: /pages/componentsA/button/index
 
 正式操作按钮，支持多主题、尺寸、胶囊形态、加载、图标、水波纹、点击节流、表单行为和小程序开放能力。
 
+## 何时使用
+
+- 用于提交、保存、确认等明确操作；一个操作区只保留一个主要按钮。
+- 异步请求开始后再设置 `loading`，避免用户在请求尚未发起时无法提交。
+- 纯导航场景优先使用 `navigator`，不要把按钮当普通链接。
+
 ## 平台兼容性
 
 |  H5  | 微信小程序 | App  |
@@ -23,6 +29,16 @@ preview: /pages/componentsA/button/index
 ```
 
 `type` 支持 `default`、`primary`、`success`、`info`、`warning`、`error`；`size` 支持 `large`、`default`、`medium`、`small`、`mini`。
+
+## 受控加载与防重复提交
+
+```vue
+<snake-button :loading="submitting" loading-text="提交中" :throttle-time="500" @click="submit">
+  提交订单
+</snake-button>
+```
+
+`disabled` 或 `loading` 时不会触发 `click`，小程序开放能力也会同步禁用。
 
 ## 小程序开放能力
 
@@ -59,5 +75,15 @@ preview: /pages/componentsA/button/index
 ## Events 与 Slots
 
 普通点击触发 `click(event)`。平台开放能力可触发 `getuserinfo`、`contact`、`getphonenumber`、`error`、`launchapp`、`opensetting`、`chooseavatar`、`agreeprivacyauthorization`。默认插槽用于按钮内容。
+
+## 类型定义
+
+```ts
+import type { SnakeButtonEmits, SnakeButtonProps, SnakeButtonSize, SnakeButtonType } from '@puresnake/snake-ui';
+```
+
+## 主题与无障碍
+
+按钮颜色使用 `--snake-color-*`，圆角与动画使用 `--snake-radius-small`、`--snake-duration-fast`。文字按钮应提供明确操作文案；只有图标时请通过外层语义提供可访问名称。
 
 源码：`src/uni_modules/snake-ui/components/snake-button/snake-button.vue`

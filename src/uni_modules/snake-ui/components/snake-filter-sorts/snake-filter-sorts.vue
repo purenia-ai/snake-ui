@@ -8,7 +8,7 @@
           :class="{
             'snake-green snake-font-medium fw-500': filterParams['sort'] === item.value,
           }"
-          @click="sortSelectHandle('sort', item.value)">
+          @click="sortSelectHandle('sort', item.value ?? '')">
           {{ item.name }}
         </view>
         <internal-button-sort
@@ -35,6 +35,7 @@ import filterPage from './components/filter-page.vue';
 import InternalButtonSort from '../snake-button-sort/snake-button-sort.vue';
 import InternalDropMenu from '../snake-drop-menu/snake-drop-menu.vue';
 import InternalDropMenuItem from '../snake-drop-menu-item/snake-drop-menu-item.vue';
+import type { SnakeFilterSortsEmits, SnakeFilterSortsProps } from './types';
 
 defineOptions({
   name: 'filter-sorts',
@@ -45,43 +46,18 @@ defineOptions({
   },
 });
 
-const props = defineProps({
-  filters: {
-    type: Object,
-    default: () => ({}),
-  },
-  defaultFilter: {
-    type: Object,
-    default: () => ({}),
-  },
-  bgColor: {
-    type: String,
-    default: 'transparent',
-  },
-  sort: {
-    type: String,
-    default: '',
-  },
-  showTabs: {
-    type: Boolean,
-    default: true,
-  },
-  goodsListLength: {
-    type: Number,
-    default: 0,
-  },
-  customStyle: {
-    type: Object,
-    default: () => ({}),
-  },
-  // 页面滚动
-  scrollTop: {
-    type: Number,
-    default: 0,
-  },
+const props = withDefaults(defineProps<SnakeFilterSortsProps>(), {
+  filters: () => ({}),
+  defaultFilter: () => ({}),
+  bgColor: 'transparent',
+  sort: '',
+  showTabs: true,
+  goodsListLength: 0,
+  customStyle: () => ({}),
+  scrollTop: 0,
 });
 
-const emit = defineEmits(['change']);
+const emit = defineEmits<SnakeFilterSortsEmits>();
 
 const instance = getCurrentInstance();
 

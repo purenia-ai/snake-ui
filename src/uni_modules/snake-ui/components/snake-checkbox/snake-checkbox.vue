@@ -4,17 +4,10 @@ import { addUnit } from '../../libs/function/unit';
 import { snakeCheckboxGroupKey } from '../../libs/internal/checkbox';
 import { snakeFormItemKey } from '../../libs/internal/form-item';
 import SnakeIcon from '../snake-icon/snake-icon.vue';
-import type { SnakeCheckboxEmits, SnakeCheckboxProps } from './types';
+import { snakeCheckboxProps } from './types';
+import type { SnakeCheckboxEmits } from './types';
 defineOptions({ name: 'SnakeCheckbox', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = withDefaults(defineProps<SnakeCheckboxProps>(), {
-    modelValue: false,
-    label: '',
-    disabled: false,
-    labelDisabled: false,
-    iconColor: '#fff',
-    customClass: '',
-    customStyle: ''
-});
+const props = defineProps(snakeCheckboxProps);
 const emit = defineEmits<SnakeCheckboxEmits>();
 const group = inject(snakeCheckboxGroupKey, null);
 const formItem = inject(snakeFormItemKey, null);
@@ -53,8 +46,14 @@ function toggle(event: unknown, fromLabel = false) {
 <template>
     <view
         class="snake-checkbox"
+        role="checkbox"
+        :aria-checked="checked"
+        :aria-disabled="disabled"
+        :tabindex="disabled ? -1 : 0"
         :class="[customClass, `snake-checkbox--${size}`, { 'is-disabled': disabled }]"
         :style="[$snakeThemeStyle, customStyle]"
+        @keydown.enter.prevent="toggle($event)"
+        @keydown.space.prevent="toggle($event)"
         ><view class="snake-checkbox__icon" :class="`is-${shape}`" :style="iconStyle" @click="toggle($event)"
             ><snake-icon
                 v-if="checked"
@@ -76,6 +75,10 @@ function toggle(event: unknown, fromLabel = false) {
     gap: 12rpx;
     color: var(--snake-color-text, #303133);
 }
+.snake-checkbox:focus-visible {
+    outline: 2px solid var(--snake-color-primary, #06d290);
+    outline-offset: 4rpx;
+}
 .snake-checkbox.is-disabled {
     opacity: 0.45;
 }
@@ -86,7 +89,15 @@ function toggle(event: unknown, fromLabel = false) {
     align-items: center;
     justify-content: center;
     border: 1px solid;
-    transition: all 0.2s;
+    transition:
+        border-color 0.2s,
+        background-color 0.2s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .snake-checkbox__icon {
+        transition: none;
+    }
 }
 .snake-checkbox__icon.is-square {
     border-radius: 6rpx;

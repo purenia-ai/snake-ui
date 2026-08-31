@@ -6,6 +6,10 @@ preview: /pages/componentsA/checkbox/index
 
 可独立绑定 boolean，也可放入 CheckboxGroup，通过 `name` 管理数组值。
 
+## 何时使用
+
+用于零个、一个或多个可同时成立的选项。只能选择一项时使用 Radio；代表立即生效的开关状态时使用 Switch。
+
 ## 平台兼容性
 
 |  H5  | 微信小程序 | App  |
@@ -44,5 +48,13 @@ preview: /pages/componentsA/checkbox/index
 ### Slots
 
 默认插槽用于标签内容。
+
+## 无障碍
+
+组件支持焦点、Enter 和 Space 键，并输出 `checkbox` / `aria-checked` 状态。默认插槽应包含可理解的标签；仅显示图标时需要在邻近位置补充说明。
+
+## 类型定义
+
+从包根导入 `SnakeCheckboxProps` 与 `SnakeCheckboxEmits`；组合使用时可配合 `SnakeCheckboxGroupProps`。
 
 源码：`src/uni_modules/snake-ui/components/snake-checkbox/snake-checkbox.vue`

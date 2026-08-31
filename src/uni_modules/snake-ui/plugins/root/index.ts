@@ -39,13 +39,13 @@ function normalizeId(id: string) {
  * 头条小程序、Android App、iOS App、鸿蒙 App）均可正常工作
  */
 export function SnakeRoot(options?: SnakeRootOptions): Plugin {
-    options = {
+    const resolvedOptions: Required<SnakeRootOptions> = {
         rootFileName: 'App.root',
         ...options
     };
 
     const rootPath = process.env.UNI_INPUT_DIR || join(process.cwd(), 'src');
-    const appRootPath = resolve(rootPath, `${options.rootFileName}.vue`);
+    const appRootPath = resolve(rootPath, `${resolvedOptions.rootFileName}.vue`);
     const pagesPath = resolve(rootPath, 'pages.json');
 
     let pagesJson = loadPagesJson(pagesPath, rootPath);
@@ -94,7 +94,7 @@ export function SnakeRoot(options?: SnakeRootOptions): Plugin {
 
             // 注入 App.root.vue 的导入，并注册为全局组件 global-root-view
             if (normalizedId === `${normalizedRootPath}/main.ts` || normalizedId === `${normalizedRootPath}/main.js`) {
-                return registerRootApp(code, options.rootFileName);
+                return registerRootApp(code, resolvedOptions.rootFileName);
             }
 
             // App.root.vue 兜底处理（已在 load 中处理，此处只处理根 SFC）

@@ -4,25 +4,11 @@
   </view>
 </template>
 
-<script>
-export default {
-  name: 'snake-rich-text',
-  props: {
-    datas: {
-      type: [Object, null],
-      default() {
-        return {};
-      },
-    },
-  },
-  data() {
-    return {
-      tagStyle: {
-        pre: 'white-space: unset !important;',
-      },
-    };
-  },
-};
+<script setup lang="ts">
+import type { SnakeRichTextProps } from './types';
+
+defineOptions({ name: 'SnakeRichText' });
+withDefaults(defineProps<SnakeRichTextProps>(), { datas: () => ({}) });
 </script>
 
 <style lang="scss" scoped>
@@ -30,10 +16,4 @@ export default {
   padding: 0 20rpx;
   white-space: break-word !important;
 }
-// ::v-deep .ace-line {
-//   white-space: unset !important;
-// }
-// ::v-deep span {
-//   word-break: break-word !important;
-// }
 </style>

@@ -15,8 +15,8 @@ preview: /pages/componentsA/image/index
 ## 基础用法
 
 ```vue
-<snake-image src="/static/logo.png" width="100%" height="320rpx" mode="aspectFill" :radius="16" preview />
-<snake-image src="/static/avatar.png" width="120rpx" height="120rpx" shape="circle" />
+<snake-image src="/static/logo.png" alt="Snake UI 标志" width="100%" height="320rpx" mode="aspectFill" :radius="16" preview />
+<snake-image src="/static/avatar.png" alt="用户头像" width="120rpx" height="120rpx" shape="circle" />
 ```
 
 `loading` 与 `error` 插槽可替换默认反馈。
@@ -28,6 +28,7 @@ preview: /pages/componentsA/image/index
 | 参数                                      | 说明               | 类型                              | 默认值             |
 | ----------------------------------------- | ------------------ | --------------------------------- | ------------------ |
 | `src` / `mode`                            | 图片地址和裁剪方式 | `string`                          | `'' / scaleToFill` |
+| `alt`                                     | 图片的可访问文本   | `string`                          | `''`               |
 | `width` / `height`                        | 容器尺寸           | `string \| number`                | `100% / auto`      |
 | `shape` / `radius`                        | 形状和圆角         | `square\|circle / string\|number` | `square / 0`       |
 | `lazyLoad` / `webp`                       | 原生懒加载与 WebP  | `boolean`                         | `false`            |
@@ -39,5 +40,9 @@ preview: /pages/componentsA/image/index
 | `bgColor` / `customClass` / `customStyle` | 背景和自定义样式   | 多类型                            | 主题默认值         |
 
 事件包括 `load(event)`、`error(event)` 和 `click(event)`。
+
+## 无障碍与性能
+
+内容图片应填写简短的 `alt`；装饰图片保留空字符串。首屏以下图片建议启用 `lazyLoad`，固定展示区域时同时提供 `width` 与 `height`，减少布局跳动。
 
 源码：`src/uni_modules/snake-ui/components/snake-image/snake-image.vue`

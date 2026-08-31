@@ -6,6 +6,10 @@ preview: /pages/componentsA/radio/index
 
 可独立绑定 boolean，也可在 RadioGroup 中通过 `name` 参与互斥选择。
 
+## 何时使用
+
+用于一组选项中必须或最多选择一项的场景。允许多选时使用 Checkbox；选项很多或空间紧张时可考虑下拉选择组件。
+
 ## 平台兼容性
 
 |  H5  | 微信小程序 | App  |
@@ -40,5 +44,13 @@ preview: /pages/componentsA/radio/index
 ### Slots
 
 默认插槽用于标签内容。
+
+## 无障碍
+
+组件支持焦点、Enter 和 Space 键，并输出 `radio` / `aria-checked` 状态。每一项都应提供清晰且互不歧义的文字标签。
+
+## 类型定义
+
+从包根导入 `SnakeRadioProps` 与 `SnakeRadioEmits`；组合使用时可配合 `SnakeRadioGroupProps`。
 
 源码：`src/uni_modules/snake-ui/components/snake-radio/snake-radio.vue`

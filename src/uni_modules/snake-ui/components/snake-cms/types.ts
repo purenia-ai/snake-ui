@@ -1,5 +1,5 @@
 import type { SnakeCmsComponentConfig, SnakeCmsDiagnostic, SnakeCmsOptions, SnakeCmsPageInfo, SnakeCmsStatus } from '../../libs/cms/types';
-import { SnakeCmsError } from '../../libs/cms/types';
+import type { SnakeCmsError } from '../../libs/cms/types';
 
 export * from '../../libs/cms/types';
 

@@ -3,7 +3,7 @@
     <view
       class="contan"
       :style="{
-        height: $snake.addUnit(datas.blankHeight),
+        height: addUnit(datas.blankHeight),
         padding: datas.paddType === 0 ? '0px' : '0px 15px',
         backgroundColor: datas.bgColor,
       }">
@@ -18,13 +18,12 @@
   </view>
 </template>
 
-<script>
-export default {
-  name: 'auxiliarysegmentation',
-  props: {
-    datas: Object,
-  },
-};
+<script setup lang="ts">
+import { addUnit } from '../../libs/function/unit';
+import type { SnakeAuxiliarySegmentationProps } from './types';
+
+defineOptions({ name: 'SnakeAuxiliarySegmentation' });
+withDefaults(defineProps<SnakeAuxiliarySegmentationProps>(), { datas: () => ({}) });
 </script>
 
 <style scoped lang="scss">

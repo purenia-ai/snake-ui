@@ -20,6 +20,7 @@
 <script>
 export default {
   name: 'tree-select',
+  emits: ['click-nav'],
   props: {
     items: {
       type: Array,
@@ -63,7 +64,7 @@ export default {
     },
     // 获取一个目标元素的高度
     getElRect(elClass, dataVal) {
-      new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         const query = uni.createSelectorQuery().in(this);
         query
           .select('.' + elClass)
@@ -75,11 +76,12 @@ export default {
               // 如果节点尚未生成，res值为null，循环调用执行
               if (!res) {
                 setTimeout(() => {
-                  this.getElRect(elClass);
+                  this.getElRect(elClass, dataVal).then(resolve);
                 }, 10);
                 return;
               }
               this[dataVal] = res.height;
+              resolve(res);
             },
           )
           .exec();

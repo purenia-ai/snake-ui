@@ -3,6 +3,7 @@ export interface ComponentItem {
     title: string;
     link: `/components/${string}`;
     cms?: boolean;
+    since?: string;
 }
 
 export interface ComponentGroup {
@@ -42,8 +43,10 @@ export const componentGroups: ComponentGroup[] = [
     {
         title: '布局与导航',
         items: [
+            { name: 'Navbar', title: '导航栏', link: '/components/navbar' },
             { name: 'Sticky', title: '吸顶', link: '/components/sticky' },
             { name: 'Tabs', title: '标签页', link: '/components/tabs' },
+            { name: 'Subsection', title: '分段器', link: '/components/subsection' },
             { name: 'ButtonSort', title: '排序按钮', link: '/components/button-sort' },
             { name: 'DropMenu', title: '下拉菜单', link: '/components/drop-menu' },
             { name: 'DropMenuItem', title: '下拉菜单项', link: '/components/drop-menu-item' },
@@ -115,3 +118,8 @@ export const componentGroups: ComponentGroup[] = [
 ];
 
 export const componentCount = componentGroups.reduce((total, group) => total + group.items.length, 0);
+export const componentItems = componentGroups.flatMap(group =>
+    group.items.map(item => ({ ...item, group: group.title, since: item.since || '0.1.0' }))
+);
+export const foundationComponentItems = componentItems.filter(item => !item.cms);
+export const cmsComponentItems = componentItems.filter(item => item.cms);

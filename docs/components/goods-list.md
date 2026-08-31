@@ -7,6 +7,10 @@ cms: true
 
 以自适应卡片网格展示直购、新品或拍卖商品，包含库存、价格、标签和出价状态。
 
+## 何时使用
+
+用于 CMS 商品区的纯展示与点击上报。数据请求、分页、空状态和详情跳转应由 `snake-cms` 或宿主页面管理，不建议在列表组件内直接发起业务请求。
+
 ## 运行前提
 
 依赖 Snake UI LazyImage、uni-app 基础组件和运行时图片处理逻辑。部分状态图使用源码内置 CDN 地址。
@@ -68,5 +72,9 @@ cms: true
 - 图片处理会把 `http:` 替换为 `https:`，并为指定 CDN 域名追加 OSS 样式参数。
 - 组件直接读取 `item.image` 并调用字符串方法，商品数据应保证图片字段存在。
 - 远程默认图和标签图的可用性会影响视觉结果，但不影响文档构建。
+
+## 类型定义
+
+从包根导入 `SnakeGoodsListProps`、`SnakeGoodsListEmits` 和 `SnakeGoodsListItem`。接入后端数据时建议先建立显式映射，避免把接口响应对象直接透传给模板。
 
 源码：`src/uni_modules/snake-ui/components/snake-goods-list/snake-goods-list.vue`
