@@ -147,6 +147,15 @@ test('migrated controls use runtime props as the defaults source of truth', asyn
     }
 });
 
+test('button ripple follows the pointer and cleans up its timer', async () => {
+    const source = await readFile(new URL('components/snake-button/snake-button.vue', root), 'utf8');
+
+    assert.match(source, /boundingClientRect/);
+    assert.match(source, /changedTouches|touches/);
+    assert.match(source, /Math\.hypot/);
+    assert.match(source, /onBeforeUnmount/);
+});
+
 test('package entry exposes precise foundation component props', async () => {
     const declarations = await readFile(new URL('types/components.d.ts', root), 'utf8');
     for (const component of [

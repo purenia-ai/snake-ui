@@ -5,7 +5,7 @@
  * @see /components/button
  */
 
-import { computed, ref } from 'vue';
+import { computed, getCurrentInstance, nextTick, onBeforeUnmount, ref } from 'vue';
 import SnakeIcon from '../snake-icon/snake-icon.vue';
 import SnakeLoadingIcon from '../snake-loading-icon/snake-loading-icon.vue';
 import { snakeButtonProps } from './types';
@@ -16,12 +16,14 @@ defineOptions({ name: 'SnakeButton', options: { virtualHost: true, styleIsolatio
 const props = defineProps(snakeButtonProps);
 const emit = defineEmits<SnakeButtonEmits>();
 const emitNative = emit as unknown as (name: Exclude<keyof SnakeButtonEmits, 'click'>, event: unknown) => void;
+const instance = getCurrentInstance();
 const rippleActive = ref(false);
+const rippleStyle = ref({ top: '50%', left: '50%', width: '0px', height: '0px' });
 let lastClick = 0;
 let rippleTimer: ReturnType<typeof setTimeout> | undefined;
 
 const palette = computed(() => {
-    if (props.color) return { main: props.color, light: props.color, disabled: props.color };
+    if (props.color) return { main: props.color, light: 'transparent', disabled: props.color };
     const name = props.type === 'default' ? 'primary' : props.type;
     return {
         main: `var(--snake-color-${name}, ${props.type === 'default' ? '#06D290' : '#707184'})`,
@@ -49,22 +51,79 @@ const effectiveHoverClass = computed(() => {
 });
 const displayText = computed(() => (props.loading && props.loadingText ? props.loadingText : props.text));
 
+type PointerEventLike = {
+    clientX?: number;
+    clientY?: number;
+    pageX?: number;
+    pageY?: number;
+    x?: number;
+    y?: number;
+    touches?: PointerEventLike[];
+    changedTouches?: PointerEventLike[];
+    detail?: PointerEventLike;
+};
+
+function getPointer(event: unknown) {
+    const source = event as PointerEventLike;
+    const pointer = source.changedTouches?.[0] ?? source.touches?.[0] ?? source.detail ?? source;
+    return {
+        x: pointer.clientX ?? pointer.x ?? pointer.pageX,
+        y: pointer.clientY ?? pointer.y ?? pointer.pageY
+    };
+}
+
+/** 根据操作点与按钮边界生成足以覆盖四个角的水波纹。 */
+function startRipple(event: unknown) {
+    rippleActive.value = false;
+    if (rippleTimer) clearTimeout(rippleTimer);
+
+    nextTick(() => {
+        const query = uni.createSelectorQuery();
+        if (instance?.proxy) query.in(instance.proxy);
+        query
+            .select('.snake-button')
+            .boundingClientRect(rect => {
+                if (!rect || Array.isArray(rect) || !rect.width || !rect.height) return;
+                const pointer = getPointer(event);
+                const left = rect.left ?? 0;
+                const top = rect.top ?? 0;
+                const localX = Math.min(rect.width, Math.max(0, (pointer.x ?? left + rect.width / 2) - left));
+                const localY = Math.min(rect.height, Math.max(0, (pointer.y ?? top + rect.height / 2) - top));
+                const radius = Math.max(
+                    Math.hypot(localX, localY),
+                    Math.hypot(rect.width - localX, localY),
+                    Math.hypot(localX, rect.height - localY),
+                    Math.hypot(rect.width - localX, rect.height - localY)
+                );
+                const diameter = radius * 2;
+                rippleStyle.value = {
+                    top: `${localY - radius}px`,
+                    left: `${localX - radius}px`,
+                    width: `${diameter}px`,
+                    height: `${diameter}px`
+                };
+                nextTick(() => {
+                    rippleActive.value = true;
+                    rippleTimer = setTimeout(() => (rippleActive.value = false), 600);
+                });
+            })
+            .exec();
+    });
+}
+
 function click(event: unknown) {
     if (props.disabled || props.loading) return;
     const now = Date.now();
     const wait = Math.max(0, Number(props.throttleTime) || 0);
     if (wait && now - lastClick < wait) return;
     lastClick = now;
-    if (props.ripple) {
-        rippleActive.value = false;
-        if (rippleTimer) clearTimeout(rippleTimer);
-        setTimeout(() => {
-            rippleActive.value = true;
-            rippleTimer = setTimeout(() => (rippleActive.value = false), 600);
-        }, 0);
-    }
+    if (props.ripple) startRipple(event);
     emit('click', event);
 }
+
+onBeforeUnmount(() => {
+    if (rippleTimer) clearTimeout(rippleTimer);
+});
 
 function forward(name: Exclude<keyof SnakeButtonEmits, 'click'>, event: unknown) {
     emitNative(name, event);
@@ -134,7 +193,7 @@ function authorize(event: unknown) {
             v-if="ripple"
             class="snake-button__ripple"
             :class="{ 'snake-button__ripple--active': rippleActive }"
-            :style="{ backgroundColor: rippleBgColor }"
+            :style="{ ...rippleStyle, backgroundColor: rippleBgColor }"
         />
     </button>
 </template>
@@ -152,21 +211,24 @@ function authorize(event: unknown) {
     padding: 0 40rpx;
     border-width: 1px;
     border-style: solid;
-    border-radius: var(--snake-radius-small, 8rpx);
-    font-weight: 400;
+    border-radius: var(--snake-radius-small, 10rpx);
+    font-weight: 500;
     line-height: 1;
     cursor: pointer;
     transition:
         color var(--snake-duration-fast, 180ms),
         background-color var(--snake-duration-fast, 180ms),
         border-color var(--snake-duration-fast, 180ms),
-        opacity var(--snake-duration-fast, 180ms);
+        opacity var(--snake-duration-fast, 180ms),
+        filter var(--snake-duration-fast, 180ms),
+        transform var(--snake-duration-fast, 180ms);
 }
 .snake-button::after {
     border: 0;
 }
 .snake-button--hover {
     filter: brightness(0.92);
+    transform: translateY(1px);
 }
 .snake-button--large {
     height: 100rpx;
@@ -179,7 +241,7 @@ function authorize(event: unknown) {
 .snake-button--medium {
     width: auto;
     height: 70rpx;
-    padding: 0 64rpx;
+    padding: 0 72rpx;
     font-size: 26rpx;
 }
 .snake-button--small {
@@ -206,20 +268,18 @@ function authorize(event: unknown) {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    min-width: 0;
 }
 .snake-button__leading {
     margin-right: 12rpx;
 }
 .snake-button__ripple {
     position: absolute;
-    top: 50%;
-    left: 50%;
     z-index: 0;
-    width: 100%;
-    padding-bottom: 100%;
     border-radius: 50%;
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0);
+    transform: scale(0);
+    transform-origin: center;
     pointer-events: none;
 }
 .snake-button__ripple--active {
@@ -228,11 +288,11 @@ function authorize(event: unknown) {
 @keyframes snake-button-ripple {
     0% {
         opacity: 1;
-        transform: translate(-50%, -50%) scale(0);
+        transform: scale(0);
     }
     100% {
         opacity: 0;
-        transform: translate(-50%, -50%) scale(2);
+        transform: scale(1);
     }
 }
 </style>

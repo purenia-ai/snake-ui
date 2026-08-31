@@ -41,7 +41,11 @@ const definitions: Record<string, DemoDefinition> = {
                 defaultValue: 'primary',
                 options: [
                     { label: '主要', value: 'primary' },
-                    { label: '默认', value: 'default' }
+                    { label: '默认', value: 'default' },
+                    { label: '成功', value: 'success' },
+                    { label: '信息', value: 'info' },
+                    { label: '警告', value: 'warning' },
+                    { label: '错误', value: 'error' }
                 ]
             },
             {
@@ -52,6 +56,7 @@ const definitions: Record<string, DemoDefinition> = {
                 options: [
                     { label: '大', value: 'large' },
                     { label: '默认', value: 'default' },
+                    { label: '中', value: 'medium' },
                     { label: '小', value: 'small' },
                     { label: '迷你', value: 'mini' }
                 ]
@@ -68,7 +73,8 @@ const definitions: Record<string, DemoDefinition> = {
             },
             { key: 'plain', label: '朴素样式', type: 'switch', defaultValue: false },
             { key: 'loading', label: '加载状态', type: 'switch', defaultValue: false },
-            { key: 'disabled', label: '禁用状态', type: 'switch', defaultValue: false }
+            { key: 'disabled', label: '禁用状态', type: 'switch', defaultValue: false },
+            { key: 'ripple', label: '水波纹', type: 'switch', defaultValue: true }
         ]
     },
     'loading-icon': {

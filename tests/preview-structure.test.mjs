@@ -322,3 +322,22 @@ test('icon preview exposes the bundled glyph set with a restrained interactive g
     assert.match(config, /key: 'iconLabelPos'/);
     assert.match(config, /key: 'iconBold'/);
 });
+
+test('button preview presents the complete capability showcase', async () => {
+    const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
+
+    for (const section of [
+        '按钮主题',
+        '镂空按钮',
+        '按钮尺寸',
+        '按钮形状',
+        '按钮状态',
+        '图标按钮',
+        '自定义颜色',
+        '水波纹'
+    ]) {
+        assert.match(renderer, new RegExp(section), `button preview: missing ${section}`);
+    }
+    assert.match(renderer, /demo-button-grid/);
+    assert.match(renderer, /demo-button-flow/);
+});

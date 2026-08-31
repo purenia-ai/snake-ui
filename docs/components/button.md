@@ -30,6 +30,55 @@ preview: /pages/componentsA/button/index
 
 `type` 支持 `default`、`primary`、`success`、`info`、`warning`、`error`；`size` 支持 `large`、`default`、`medium`、`small`、`mini`。
 
+## 主题与镂空按钮
+
+```vue
+<snake-button type="primary">主要按钮</snake-button>
+<snake-button type="success">成功按钮</snake-button>
+<snake-button type="warning">警告按钮</snake-button>
+<snake-button type="error">错误按钮</snake-button>
+
+<snake-button type="primary" plain>主要镂空按钮</snake-button>
+<snake-button type="success" plain>成功镂空按钮</snake-button>
+```
+
+`plain` 会使用当前主题的文字、边框和浅色背景；自定义 `color` 时背景透明，适合次要操作。一个操作区域应只保留一个高强调的实心主按钮。
+
+## 尺寸与形状
+
+```vue
+<snake-button size="large">大号按钮</snake-button>
+<snake-button size="default">默认按钮</snake-button>
+<snake-button size="medium">中号按钮</snake-button>
+<snake-button size="small">小号按钮</snake-button>
+<snake-button size="mini">迷你按钮</snake-button>
+<snake-button shape="circle">胶囊按钮</snake-button>
+```
+
+`large` 和 `default` 默认占满父容器宽度；`medium`、`small` 和 `mini` 根据内容收缩，可放在支持换行的横向容器中。
+
+## 图标与自定义颜色
+
+```vue
+<snake-button icon="checkmark">确认</snake-button>
+<snake-button type="info" icon="search" icon-color="#fff">搜索</snake-button>
+<snake-button color="#7c3aed">品牌按钮</snake-button>
+<snake-button color="#f97316" plain>品牌镂空按钮</snake-button>
+```
+
+`color` 用于临时品牌色或业务色。需要全局统一时，应优先覆盖 `--snake-color-*` 主题变量。
+
+## 水波纹
+
+```vue
+<snake-button ripple>点击任意位置</snake-button>
+<snake-button ripple ripple-bg-color="rgba(255, 255, 255, .42)">
+  自定义水波纹
+</snake-button>
+```
+
+水波纹从用户实际按下的位置扩散，并自动计算覆盖整个按钮所需的尺寸。开启 `ripple` 后不再叠加原生 `hover-class` 反馈；无法获得触点信息的平台会从按钮中心扩散。
+
 ## 受控加载与防重复提交
 
 ```vue
@@ -53,22 +102,22 @@ preview: /pages/componentsA/button/index
 
 ### Props
 
-| 参数                                              | 说明                   | 类型                               | 默认值              |
-| ------------------------------------------------- | ---------------------- | ---------------------------------- | ------------------- |
-| `text`                                            | 无默认插槽时显示的文字 | `string`                           | `''`                |
-| `type`                                            | 主题类型               | `string`                           | `default`           |
-| `size`                                            | 按钮尺寸               | `string`                           | `default`           |
-| `shape`                                           | `square` 或 `circle`   | `string`                           | `square`            |
-| `plain` / `hairLine`                              | 朴素样式 / 细边框      | `boolean`                          | `false` / `true`    |
-| `disabled` / `loading`                            | 禁用 / 加载状态        | `boolean`                          | `false`             |
-| `loadingText` / `loadingMode` / `loadingSize`     | 加载文字、形态和尺寸   | `string / string / number\|string` | `'' / circle / 18`  |
-| `icon` / `iconColor`                              | 前置图标与颜色         | `string`                           | `''`                |
-| `color`                                           | 自定义主题色           | `string`                           | `''`                |
-| `ripple` / `rippleBgColor`                        | 水波纹开关与颜色       | `boolean / string`                 | `false`             |
-| `throttleTime`                                    | 点击节流时间，单位 ms  | `number \| string`                 | `0`                 |
-| `formType` / `openType`                           | uni-app 原生按钮能力   | `string`                           | `''`                |
-| `hoverClass` / `hoverStartTime` / `hoverStayTime` | 原生按压反馈参数       | `string / number / number`         | 自动 / `20` / `150` |
-| `customClass` / `customStyle`                     | 自定义类名与样式       | `string / style`                   | `''`                |
+| 参数                                              | 说明                     | 类型                               | 默认值                               |
+| ------------------------------------------------- | ------------------------ | ---------------------------------- | ------------------------------------ |
+| `text`                                            | 无默认插槽时显示的文字   | `string`                           | `''`                                 |
+| `type`                                            | 主题类型                 | `string`                           | `default`                            |
+| `size`                                            | 按钮尺寸                 | `string`                           | `default`                            |
+| `shape`                                           | `square` 或 `circle`     | `string`                           | `square`                             |
+| `plain` / `hairLine`                              | 朴素样式 / 细边框        | `boolean`                          | `false` / `true`                     |
+| `disabled` / `loading`                            | 禁用 / 加载状态          | `boolean`                          | `false`                              |
+| `loadingText` / `loadingMode` / `loadingSize`     | 加载文字、形态和尺寸     | `string / string / number\|string` | `'' / circle / 18`                   |
+| `icon` / `iconColor`                              | 前置图标与颜色           | `string`                           | `''`                                 |
+| `color`                                           | 自定义主题色             | `string`                           | `''`                                 |
+| `ripple` / `rippleBgColor`                        | 点击位置水波纹开关与颜色 | `boolean / string`                 | `false` / `rgba(255, 255, 255, .28)` |
+| `throttleTime`                                    | 点击节流时间，单位 ms    | `number \| string`                 | `0`                                  |
+| `formType` / `openType`                           | uni-app 原生按钮能力     | `string`                           | `''`                                 |
+| `hoverClass` / `hoverStartTime` / `hoverStayTime` | 原生按压反馈参数         | `string / number / number`         | 自动 / `20` / `150`                  |
+| `customClass` / `customStyle`                     | 自定义类名与样式         | `string / style`                   | `''`                                 |
 
 其余开放能力参数包括 `scope`、`appParameter`、`hoverStopPropagation`、`lang`、`sessionFrom`、`sendMessageTitle`、`sendMessagePath`、`sendMessageImg`、`showMessageCard` 和 `dataName`。
 
