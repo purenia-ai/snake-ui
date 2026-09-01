@@ -1,28 +1,6 @@
-export type DemoValue = string | number | boolean;
+import type { DemoDefinition, DemoOption, DemoValue } from '../common/demo-types';
 
-export interface DemoOption {
-    label: string;
-    value: DemoValue;
-}
-
-export interface DemoControl {
-    key: string;
-    label: string;
-    type: 'select' | 'switch' | 'slider' | 'input';
-    defaultValue: DemoValue;
-    options?: DemoOption[];
-    min?: number;
-    max?: number;
-    step?: number;
-    unit?: string;
-    placeholder?: string;
-}
-
-export interface DemoDefinition {
-    category: string;
-    description: string;
-    controls: DemoControl[];
-}
+export type { DemoControl, DemoDefinition, DemoOption, DemoValue } from '../common/demo-types';
 
 const boolOptions: DemoOption[] = [
     { label: '开启', value: true },

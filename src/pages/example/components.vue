@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import DemoPage from '../../demo/components/DemoPage.vue';
-import { demoText, useDemoLocale } from '../../demo/demo-i18n';
+import DemoPage from '../../components/demo-page/demo-page.vue';
+import { demoText, useDemoLocale } from '../../common/demo-i18n';
 import rawGroups from './components.config';
 
 defineOptions({ name: 'SnakeExampleComponents' });
@@ -130,7 +130,7 @@ const clearSearch = () => {
 </template>
 
 <style lang="scss" scoped>
-@import '../../demo/theme.scss';
+@import '../../common/demo.scss';
 
 .overview {
     padding: 0 4px 28px;

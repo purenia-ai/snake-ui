@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import DemoPage from '../../../demo/components/DemoPage.vue';
+import DemoPage from '../../../components/demo-page/demo-page.vue';
 import { SnakeHttpError, SnakeRequest } from '../../../uni_modules/snake-ui';
 
 const client = new SnakeRequest();

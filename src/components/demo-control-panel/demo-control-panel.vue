@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { DemoControl, DemoValue } from '../demo-config';
-import { useDemoLocale } from '../demo-i18n';
+import type { DemoControl, DemoValue } from '../../common/demo-types';
+import { useDemoLocale } from '../../common/demo-i18n';
 
 const props = defineProps<{ controls: DemoControl[]; values: Record<string, DemoValue> }>();
 const emit = defineEmits<{ change: [key: string, value: DemoValue] }>();
@@ -62,7 +62,7 @@ function selectOption(control: DemoControl, index: number) {
 </template>
 
 <style lang="scss" scoped>
-@import '../theme.scss';
+@import '../../common/demo.scss';
 
 .demo-controls {
     margin: 0;

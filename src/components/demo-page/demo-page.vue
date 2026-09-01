@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { snakeColor, snakeDarkMode, snakeSystemDark, snakeThemeStyle } from '../../uni_modules/snake-ui';
-import DemoTabbar from './DemoTabbar.vue';
-import type { DemoTab } from '../demo-tabbar';
-import { useDemoLocale } from '../demo-i18n';
+import type { DemoTab } from '../../common/demo-types';
+import { useDemoLocale } from '../../common/demo-i18n';
+import DemoTabbar from '../demo-tabbar/demo-tabbar.vue';
 
 withDefaults(
     defineProps<{
@@ -32,7 +32,7 @@ withDefaults(
  * 外壳组合变量必须内联到页面根节点:uni-app H5 会把 `page` 选择器编译成
  * uni-page-body,自定义属性在定义处完成 var() 代换后按字面值继承,
  * 仅写在 :root / .snake-theme-dark 上的深色覆写无法穿透到页面内容。
- * 导航纯色使用 demo/theme.scss 中的私有变量,不受代换影响。
+ * 导航纯色使用 common/demo.scss 中的私有变量,不受代换影响。
  */
 const isDark = computed(() =>
     snakeDarkMode.value === 'auto' ? snakeSystemDark.value : snakeDarkMode.value === 'dark'
@@ -102,7 +102,7 @@ function goHome() {
 </template>
 
 <style lang="scss" scoped>
-@import '../theme.scss';
+@import '../../common/demo.scss';
 
 .demo-page {
     box-sizing: border-box;

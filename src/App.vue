@@ -12,7 +12,7 @@ onHide(() => {
 </script>
 <style lang="scss">
 @import './uni_modules/snake-ui/index.scss';
-@import './demo/theme.scss';
+@import './common/demo.scss';
 
 page {
     min-height: 100%;

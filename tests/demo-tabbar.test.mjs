@@ -35,8 +35,8 @@ test('page tree has no obsolete top-level demo directories', async () => {
 
 test('primary pages share the custom themed tabbar', async () => {
     const [tabbar, shell, components, tools, about] = await Promise.all([
-        read('src/demo/components/DemoTabbar.vue'),
-        read('src/demo/components/DemoPage.vue'),
+        read('src/components/demo-tabbar/demo-tabbar.vue'),
+        read('src/components/demo-page/demo-page.vue'),
         read('src/pages/example/components.vue'),
         read('src/pages/example/tools.vue'),
         read('src/pages/example/about.vue')

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import DemoPage from '../../demo/components/DemoPage.vue';
-import { useDemoLocale } from '../../demo/demo-i18n';
+import DemoPage from '../../components/demo-page/demo-page.vue';
+import { useDemoLocale } from '../../common/demo-i18n';
 
 defineOptions({ name: 'SnakeExampleAbout' });
 
@@ -56,7 +56,7 @@ function copyDocsUrl() {
 </template>
 
 <style lang="scss" scoped>
-@import '../../demo/theme.scss';
+@import '../../common/demo.scss';
 
 .brand-card,
 .section {

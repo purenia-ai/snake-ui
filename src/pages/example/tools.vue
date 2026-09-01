@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import DemoPage from '../../demo/components/DemoPage.vue';
-import { useDemoLocale } from '../../demo/demo-i18n';
+import DemoPage from '../../components/demo-page/demo-page.vue';
+import { useDemoLocale } from '../../common/demo-i18n';
 import tools from './tools.config';
 
 defineOptions({ name: 'SnakeExampleTools' });
@@ -38,7 +38,7 @@ const openTool = (url: string) => uni.navigateTo({ url });
 </template>
 
 <style lang="scss" scoped>
-@import '../../demo/theme.scss';
+@import '../../common/demo.scss';
 
 .tool-list {
     display: grid;

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import DemoPage from '../../../demo/components/DemoPage.vue';
-import { useDemoLocale } from '../../../demo/demo-i18n';
+import DemoPage from '../../../components/demo-page/demo-page.vue';
+import { useDemoLocale } from '../../../common/demo-i18n';
 import { useSnakeLocale, useSnakeTheme } from '../../../uni_modules/snake-ui';
 
 const { currentTheme, darkMode, color, toggleDarkMode } = useSnakeTheme();

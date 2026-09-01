@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import type { DemoTab } from '../demo-tabbar';
-import { useDemoLocale } from '../demo-i18n';
+import type { DemoTab } from '../../common/demo-types';
+import { useDemoLocale } from '../../common/demo-i18n';
 
 const props = defineProps<{ current: DemoTab }>();
 const { text } = useDemoLocale();

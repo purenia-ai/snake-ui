@@ -21,7 +21,7 @@ withDefaults(defineProps<{ title?: string; bare?: boolean; variant?: DemoSection
 </template>
 
 <style lang="scss" scoped>
-@import '../theme.scss';
+@import '../../common/demo.scss';
 
 .demo-section {
     overflow: hidden;
