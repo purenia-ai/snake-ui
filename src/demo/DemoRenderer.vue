@@ -5,17 +5,7 @@ import DemoPage from '../components/demo-page/demo-page.vue';
 import DemoSection from '../components/demo-section/demo-section.vue';
 import { createDemoState, getDemoDefinition, localizeDemoDefinition, type DemoValue } from './demo-config';
 import { demoText, demoTitle, useDemoLocale } from '../common/demo-i18n';
-import {
-    activities,
-    cmsComponents,
-    couponData,
-    filters,
-    goods,
-    jumpAppletData,
-    listSwitchingData,
-    popupData,
-    suspensionData
-} from '../common/fixtures';
+import { activities, cmsComponents, couponData, filters, goods, listSwitchingData } from '../common/fixtures';
 
 const props = defineProps<{ kind: string; title: string }>();
 const { localeName, text } = useDemoLocale();
@@ -30,23 +20,12 @@ const localizedTitle = computed(() => {
 const demoState = reactive<Record<string, DemoValue>>(createDemoState(props.kind));
 const currentActivity = ref('001');
 const scrollTop = ref(0);
-const viewportKinds = new Set(['snake-cms', 'filter-sorts', 'page-popup', 'suspension']);
+const viewportKinds = new Set(['snake-cms', 'filter-sorts']);
 const isViewportPreview = computed(() => viewportKinds.has(props.kind));
 const categoryLabel = computed(() => definition.value.category);
 const previewDescription = computed(() => definition.value.description);
 const cmsPageInfo = { pageId: 'preview' };
 const demoCmsComponents = computed(() => (demoState.cmsScene === 'simple' ? cmsComponents.slice(0, 1) : cmsComponents));
-const demoSuspensionData = computed(() => ({
-    ...suspensionData,
-    width: Number(demoState.suspensionSize ?? 96),
-    height: Number(demoState.suspensionSize ?? 96)
-}));
-const demoPopupData = computed(() => ({ ...popupData, popupMode: String(demoState.pagePopupMode ?? 'center') }));
-const demoJumpAppletData = computed(() => ({
-    ...jumpAppletData,
-    title: String(demoState.appletTitle ?? '打开小程序'),
-    btnColor: String(demoState.appletColor ?? '#06D290')
-}));
 const demoActivities = computed(() => (demoState.activityScene === 'single' ? activities.slice(0, 1) : activities));
 const demoListSwitchingData = computed(() => ({
     ...listSwitchingData,
@@ -86,31 +65,6 @@ function selectActivity(item: { id: string }) {
                 :page-components="demoCmsComponents"
                 :scroll-top="scrollTop"
             />
-            <snake-suspension
-                v-else-if="kind === 'suspension'"
-                class="demo-suspension-showcase"
-                :datas="demoSuspensionData"
-                :scroll-top="scrollTop"
-            />
-            <snake-page-popup
-                v-else-if="kind === 'page-popup'"
-                class="demo-page-popup-showcase"
-                :datas="demoPopupData"
-            />
-            <snake-jump-applet
-                v-else-if="kind === 'jump-applet'"
-                class="demo-jump-applet-showcase"
-                :datas="demoJumpAppletData"
-            />
-            <view
-                v-else-if="kind === 'follow'"
-                :class="[
-                    'demo-follow',
-                    'demo-follow-showcase',
-                    { 'demo-follow--strong': demoState.followScene === 'strong' }
-                ]"
-                ><snake-follow
-            /></view>
             <snake-goods-list
                 v-else-if="kind === 'goods-list'"
                 class="demo-goods-list-showcase"
@@ -160,14 +114,5 @@ function selectActivity(item: { id: string }) {
     min-height: 50vh;
     align-items: center;
     justify-content: center;
-}
-.demo-follow {
-    padding: 24rpx;
-    border-radius: 16rpx;
-    background: var(--snake-color-surface-muted);
-}
-.demo-follow--strong {
-    border: 2rpx solid var(--snake-color-primary);
-    background: var(--snake-color-primary-light);
 }
 </style>
