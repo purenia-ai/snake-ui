@@ -2,159 +2,130 @@
 
 ## 背景
 
-`src/demo/DemoRenderer.vue` 当前集中维护所有公开组件的演示状态、模拟数据、事件、模板分支和局部样式。文件已超过 1100 行，并包含近 50 个按 `kind` 分派的模板分支。增加或调整单个组件演示时，需要同时理解大量无关内容，容易产生冲突和回归。
+`src/demo/DemoRenderer.vue` 集中维护所有公开组件的演示状态、模拟数据、事件、模板和样式。把这些分支转移到 Showcase 和注册表后，组件页面仍只是 `<DemoRenderer kind="..." />` 的薄入口，页面本身依然无法独立维护。
 
-本次参考 uView Pro 的演示工程组织方式。uView Pro 将具体组件演示放在独立页面，并通过公共 `demo-page` 和共享样式提供页面外壳；但其公共外壳也混入导航、引导、互动和评分等职责，文件超过 1400 行。Snake UI 只吸收“按组件或领域隔离演示”的优点，不复制巨型公共外壳和额外体验功能。
+uView Pro 的实际模式是：公共 `demo-page` 提供页面外壳，每个 `pages/components*/组件/index.vue` 自己维护演示模板、状态、配置和事件。本次采用这一模式，不把任务、评分和引导等额外职责加入公共页面组件。
 
 ## 目标
 
-- 将 `DemoRenderer.vue` 缩减为演示配置协调与 Showcase 分派入口，目标不超过约 120 行。
-- 按基础、表单、导航和 CMS/商品领域隔离演示实现。
-- 复杂组件使用独立 Showcase，简单且相关的组件允许共享领域 Showcase。
-- 将大体积静态演示数据移出组件逻辑，降低单文件认知成本。
-- 保持现有页面路由、文档预览地址、实时参数配置、双语切换和组件公开 API 不变。
-- 第一阶段仅进行等价迁移，不改变既有演示效果和交互契约。
+- 完全删除 `src/demo` 和中央 `DemoRenderer.vue`。
+- 每个组件的模板、状态、参数、事件和专属样式写在当前 `index.vue`。
+- 公共演示外壳放入 `src/components`，公共样式和双语逻辑放入 `src/common`。
+- 保持页面路由、文档预览地址、实时参数控制、双语和视觉行为不变。
+- CMS 与商品的大体积纯模拟数据允许共享，普通组件数据与页面共置。
 
 ## 非目标
 
-- 不调整 `src/uni_modules/snake-ui/components` 的公开组件目录。
-- 不移动 `src/pages/componentsA`、`src/pages/componentsB`，也不修改其路由地址。
-- 不引入动态远程加载、新依赖、评分系统、任务系统或新手引导。
-- 不在重构过程中顺便重新设计组件视觉或业务数据协议。
-- 不要求每个公开组件都对应一个独立文件；避免产生大量只有几行模板的文件。
+- 不调整 `src/uni_modules/snake-ui/components` 的公开目录和 API。
+- 不移动或重命名 `src/pages/componentsA|B` 下的路由页面。
+- 不引入 Showcase 注册表、动态组件分派或新依赖。
+- 不复制 uView Pro 源码、样式变量、任务、评分或引导系统。
+- 第一阶段只做等价迁移，不顺便重新设计演示效果。
 
-## 目录结构
+## 目标目录
 
 ```text
-src/demo/
+src/
 ├─ components/
-│  ├─ DemoPage.vue
-│  ├─ DemoSection.vue
-│  ├─ DemoControlPanel.vue
-│  └─ DemoTabbar.vue
-├─ showcases/
-│  ├─ foundation/
-│  ├─ forms/
-│  ├─ navigation/
-│  └─ commerce/
-├─ fixtures/
-│  ├─ common.ts
-│  ├─ cms.ts
-│  ├─ goods.ts
-│  └─ navigation.ts
-├─ DemoRenderer.vue
-├─ showcase-registry.ts
-├─ demo-config.ts
-├─ demo-i18n.ts
-├─ demo-tabbar.ts
-└─ theme.scss
+│  ├─ demo-page/demo-page.vue
+│  ├─ demo-section/demo-section.vue
+│  ├─ demo-control-panel/demo-control-panel.vue
+│  └─ demo-tabbar/demo-tabbar.vue
+├─ common/
+│  ├─ demo.scss
+│  ├─ demo-i18n.ts
+│  ├─ demo-types.ts
+│  └─ fixtures/
+│     ├─ cms.ts
+│     └─ goods.ts
+├─ pages/
+│  ├─ componentsA/
+│  └─ componentsB/
+└─ uni_modules/
 ```
 
-`components` 保存所有演示共用的页面和控制组件。`showcases` 保存具体组件的演示实现。`fixtures` 只保存静态数据或创建演示数据的纯函数。配置、国际化和主题文件暂留根目录，避免为少量文件增加无收益层级。
+完成后不存在 `src/demo`、`DemoRenderer.vue`、`showcase-registry.ts` 或 `showcases`。
 
-## 模块职责
+## 页面职责
 
-### DemoRenderer
+每个组件页面直接组合公共外壳和 Snake UI 组件。页面拥有当前演示的全部可变状态、控制项和事件；阅读一个 `index.vue` 即可理解该组件如何演示，不需要跳转到中央 Renderer、注册表或领域 Showcase。
 
-`DemoRenderer.vue` 继续作为所有薄路由页面的稳定入口，接收现有 `kind` 和 `title`。它负责：
+```vue
+<script setup lang="ts">
+import { reactive } from 'vue';
+import DemoPage from '@/components/demo-page/demo-page.vue';
+import DemoSection from '@/components/demo-section/demo-section.vue';
 
-1. 根据 `kind` 读取演示定义和本地化信息。
-2. 创建当前演示的参数状态。
-3. 从注册表取得对应 Showcase。
-4. 组合 `DemoPage`、预览区和 `DemoControlPanel`。
-5. 将演示上下文通过明确的 Props 和 Events 传给 Showcase。
+const state = reactive({ radius: 16 });
+</script>
 
-它不再包含组件专属模拟数据、大量事件处理、几十个模板条件分支或组件专属样式。
-
-### Showcase 注册表
-
-`showcase-registry.ts` 使用静态导入建立 `kind` 到 Showcase 的映射。静态注册能够兼容 uni-app 多端编译，也便于 TypeScript 和测试检查，不使用运行时字符串路径或远程动态组件。
-
-未注册的 `kind` 显示明确的开发期占位提示，不抛出导致整个预览页面白屏的异常。现有 52 个演示类型必须全部注册。
-
-### Showcase
-
-Showcase 只负责某个复杂组件或一组简单相关组件的演示内容。建议初始分组如下：
-
-- `foundation`：Button 独立；图片媒体一组；反馈浮层一组；其余基础展示一组。
-- `forms`：Form/FormItem 独立；输入类一组；选择类一组。
-- `navigation`：Tabs/Swiper 等导航一组；DropMenu/IndexList 等复杂布局可按需要独立。
-- `commerce`：SnakeCms 独立；商品列表与筛选一组；CMS 内容一组；CMS 营销一组。
-
-普通 Showcase 尽量控制在 250 行以内。某个文件超过该范围且同时包含多个可独立理解的演示时，再按职责拆分；不为了满足行数机械拆文件。
-
-### Fixtures
-
-Fixtures 保存商品、活动、CMS 页面配置、图片和导航等静态演示数据，或返回新数据对象的纯函数。响应式状态、组件引用、计时器、平台 API 和事件处理不得进入 fixtures。
-
-可变对象由工厂函数返回，避免不同页面实例共享并污染同一对象。
-
-### 公共演示组件
-
-现有 `DemoPage`、`DemoSection`、`DemoControlPanel` 和 `DemoTabbar` 移入 `components`。移动只调整内部导入路径，不改变 Props、Events、Slots 和视觉表现。`DemoPage` 保持页面外壳职责，不吸收 uView Pro 的任务、评分、收藏或引导逻辑。
-
-## 数据流
-
-```text
-薄路由页面
-  -> DemoRenderer(kind, title)
-      -> demo-config + demo-i18n
-      -> reactive demoState
-      -> showcase-registry[kind]
-          -> Showcase(props: state/context, events: update/action)
-      -> DemoControlPanel(updateDemoValue)
+<template>
+    <DemoPage title="图片">
+        <DemoSection title="演示效果">
+            <snake-image :radius="state.radius" />
+        </DemoSection>
+    </DemoPage>
+</template>
 ```
 
-`demoState` 仍由 `DemoRenderer` 创建，保证控制面板与 Showcase 使用同一状态源。Showcase 不直接修改配置定义；对外动作通过事件回传，或通过只包含演示能力的窄上下文执行。
+## 公共职责
+
+- `demo-page`：导航、标题、主题、语言入口、内容和底部演示导航。
+- `demo-section`：演示效果、参数配置等统一区块。
+- `demo-control-panel`：根据当前页面传入的控制项渲染选择、开关、滑块和输入。
+- `demo-tabbar`：组件、工具和关于页面的底部导航。
+- `common/demo.scss`：跨页面主题变量和基础演示布局。
+- `common/demo-i18n.ts`：语言状态、持久化、切换和公共文本。
+- `common/demo-types.ts`：`DemoControl`、`DemoValue` 等公共类型，不保存 52 个组件的集中配置。
+- `common/fixtures`：CMS、活动、筛选和商品等大体积纯数据或工厂函数。
+
+公共组件不保存具体组件状态，也不根据组件名选择内容。Fixtures 不包含响应式对象、组件引用、计时器、平台 API 或事件处理。
 
 ## 迁移策略
 
-重构按领域分批进行，每批均保持当前 `kind`、预览内容和参数行为：
+迁移期间允许已迁移页面与旧 Renderer 页面并存：
 
-1. 创建目录、公共类型和静态注册表，移动公共演示组件。
-2. 迁移基础与反馈 Showcase，并移走对应样式和 fixtures。
-3. 迁移表单 Showcase。
-4. 迁移导航与布局 Showcase。
-5. 迁移 CMS 与商品 Showcase。
-6. 删除 `DemoRenderer` 中已迁移的旧状态、分支和样式，收紧结构测试。
+1. 将公共演示组件迁入 `src/components`，样式、国际化和类型迁入 `src/common`。
+2. 将 Button、Icon、Image、LazyImage 的临时 Showcase 内容移动到各自页面并删除注册项。
+3. 迁移其余基础与反馈组件页面。
+4. 迁移表单组件页面。
+5. 迁移导航与布局组件页面。
+6. 迁移 CMS 与商品组件页面，共享纯数据下沉到 `common/fixtures`。
+7. 删除 Renderer、注册表、Showcase、集中配置和整个 `src/demo`。
+8. 收紧测试，禁止组件页面重新依赖中央 Renderer。
 
-迁移期间注册表允许新旧实现并存，但同一个 `kind` 只能有一个实际渲染路径。每批独立提交，便于定位和回退。
+同一个页面在任一提交中只能存在一个演示入口。每个领域独立提交，不使用 `git reset` 回退已提交工作。
 
-## 兼容与异常处理
+## 兼容与样式
 
-- `src/pages/componentsA|B/*/index.vue` 继续导入同一路径的 `DemoRenderer.vue`。
-- `pages.json`、文档 frontmatter 中的 `preview` 地址以及 52 个组件页面保持不变。
-- Showcase 加载失败或未注册时显示组件名称和诊断文本；生产演示不输出敏感对象。
-- Popup、Overlay、计时器及全局滚动状态仍由所属 Showcase 在卸载时清理。
-- Fixtures 中缺少可选字段时沿用当前组件的默认和空状态表现。
-
-## 样式策略
-
-- `theme.scss` 继续保存跨演示共享的主题变量和通用视觉规则。
-- Showcase 专属样式与对应 Showcase 共置并使用 scoped 样式。
-- 不复制 uView Pro 的 `common/demo.scss`，也不引入 `u-*` 类名或运行时依赖。
-- 重构前后的暗色模式、窄屏布局、文档手机预览尺寸和中英文显示保持一致。
+- `pages.json` 和文档 frontmatter 中的 52 个预览地址保持不变。
+- 标题、分类、描述、默认值和控制项从集中配置等价迁移到当前页面。
+- 页面计时器、弹层和全局滚动状态由当前页面或组件在卸载时清理。
+- 通用主题和布局放在 `common/demo.scss`；专属样式与当前页面共置并 scoped。
+- 不引入 `u-*` 类名或 uView Pro 运行时。
+- 暗色模式、窄屏、文档手机预览和中英文显示保持一致。
 
 ## 测试与验证
 
-- 更新预览结构测试，确认 52 个 `kind` 均存在注册项和可解析 Showcase。
-- 增加架构约束测试，确保 `DemoRenderer.vue` 不再包含长 `kind` 条件链，并限制其职责性体积。
-- 保留现有组件文档、路由、双语、分组展示和交互一致性测试。
-- 每个迁移批次运行相关测试、TypeScript 类型检查和 ESLint。
-- 完成全部迁移后运行全量测试、H5 构建和 VitePress 文档构建。
-- 当前环境不能替代真实小程序和 App 运行；涉及条件编译的演示在 H5 编译通过之外，还需确保分支语法未被动态组件方案破坏。
+- 确认 52 个组件页面不再只是 Renderer 薄入口。
+- 禁止 `src/pages/componentsA|B` 导入 `DemoRenderer`。
+- 最终验证 `src/demo` 不存在。
+- 保留路由、文档、双语、分组展示和组件交互测试。
+- 每个领域运行结构测试、类型检查、ESLint 和 H5 构建。
+- 全部完成后运行全量测试和 VitePress 文档构建。
 
 ## 验收标准
 
-- `DemoRenderer.vue` 只承担配置、状态和分派职责，不再维护组件专属模板与大体积 fixtures。
-- 52 个现有演示页面均可通过原地址访问，参数控制和双语切换行为不变。
-- Showcase 目录按领域可定位，复杂演示具有独立边界，简单演示没有被机械拆成大量碎片文件。
-- 公共演示组件没有新增与页面外壳无关的体验功能。
-- Snake UI 运行时代码和发布包不依赖演示目录，也不引入 uView Pro 运行时。
+- 每个组件演示可在对应 `index.vue` 直接阅读和修改。
+- `src/demo`、中央 Renderer、注册表和 Showcase 全部删除。
+- 公共演示组件不包含具体组件分派逻辑。
+- 52 个预览页面原地址、控制项、双语和视觉行为保持一致。
+- 发布包不依赖演示应用代码，也不引入 uView Pro 运行时。
 - 类型检查、Lint、全量测试、H5 构建和文档构建全部通过。
 
 ## 提交策略
 
-- 本设计文档独立提交。
-- 实现阶段按基础、表单、导航、CMS/商品领域拆分提交。
-- 构建产物、缓存和无关工作区修改不进入提交。
+- 本次设计修订独立提交。
+- 实现按公共基础、基础反馈、表单、导航布局、CMS 商品分批提交。
+- 已建立的公共组件和临时 Showcase 通过向前迁移调整。
+- 构建产物、缓存和无关修改不进入提交。
