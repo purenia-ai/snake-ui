@@ -314,7 +314,7 @@ test('mobile preview and locale guide expose one persistent bilingual experience
 });
 
 test('icon preview exposes the bundled glyph set with a restrained interactive grid', async () => {
-    const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
+    const renderer = await readFile(resolve(root, 'src/demo/showcases/foundation/IconShowcase.vue'), 'utf8');
     const config = await readFile(resolve(root, 'src/demo/demo-config.ts'), 'utf8');
 
     assert.match(renderer, /const selectedIcon = ref\('search'\)/);
@@ -347,6 +347,12 @@ test('button preview presents the complete capability showcase', async () => {
 
 test('foundation feedback previews expose grouped variants', async () => {
     const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
+    const extracted = await Promise.all(
+        ['ButtonShowcase.vue', 'IconShowcase.vue'].map(file =>
+            readFile(resolve(root, 'src/demo/showcases/foundation', file), 'utf8')
+        )
+    );
+    const foundationSource = [renderer, ...extracted].join('\n');
 
     for (const component of [
         'loading-icon',
@@ -361,7 +367,11 @@ test('foundation feedback previews expose grouped variants', async () => {
         'popup',
         'sticky'
     ]) {
-        assert.match(renderer, new RegExp(`demo-${component}-showcase`), `${component}: missing grouped showcase`);
+        assert.match(
+            foundationSource,
+            new RegExp(`demo-${component}-showcase`),
+            `${component}: missing grouped showcase`
+        );
     }
     assert.match(renderer, /demo-variant-title/);
 });
