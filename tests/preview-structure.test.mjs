@@ -380,15 +380,24 @@ test('foundation feedback previews expose grouped variants', async () => {
             `${component}: missing grouped showcase`
         );
     }
-    assert.match(renderer, /demo-variant-title/);
+    assert.match(foundationSource, /demo-variant-title/);
 });
 
 test('form control previews expose grouped variants', async () => {
     const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
     const extracted = await Promise.all(
-        ['form', 'formItem', 'input', 'textarea', 'checkbox', 'checkboxGroup'].map(directory =>
-            readFile(resolve(root, 'src/pages/componentsA', directory, 'index.vue'), 'utf8')
-        )
+        [
+            'form',
+            'formItem',
+            'input',
+            'textarea',
+            'checkbox',
+            'checkboxGroup',
+            'radio',
+            'radioGroup',
+            'switch',
+            'slider'
+        ].map(directory => readFile(resolve(root, 'src/pages/componentsA', directory, 'index.vue'), 'utf8'))
     );
     const formSource = [renderer, ...extracted].join('\n');
 

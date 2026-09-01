@@ -35,14 +35,9 @@ const localizedTitle = computed(() => {
     const _locale = localeName.value;
     return demoTitle(props.kind, props.title);
 });
-const isEnglish = computed(() => localeName.value === 'en-US');
 const demoState = reactive<Record<string, DemoValue>>(createDemoState(props.kind));
 const currentActivity = ref('001');
 const scrollTop = ref(0);
-const radioStandalone = ref(false);
-const radioValue = ref<unknown>('sweet');
-const switchValue = ref(true);
-const sliderValue = ref(35);
 const viewportKinds = new Set(['snake-cms', 'filter-sorts', 'page-popup', 'suspension']);
 const isViewportPreview = computed(() => viewportKinds.has(props.kind));
 const categoryLabel = computed(() => definition.value.category);
@@ -141,39 +136,6 @@ function selectActivity(item: { id: string }) {
 <template>
     <DemoPage :title="localizedTitle" :eyebrow="categoryLabel" :desc="previewDescription" :viewport="isViewportPreview">
         <DemoSection :bare="isViewportPreview" variant="preview" :title="text('演示效果')">
-            <view v-if="kind === 'radio'" class="demo-control-stack demo-radio-showcase"
-                ><text class="demo-variant-title">{{ isEnglish ? 'Standalone radio' : '独立单选框' }}</text
-                ><snake-radio v-model="radioStandalone" :disabled="Boolean(demoState.choiceDisabled)">{{
-                    isEnglish ? 'Default address' : '默认地址'
-                }}</snake-radio
-                ><text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ radioStandalone }}</text></view
-            >
-            <view v-else-if="kind === 'radio-group'" class="demo-control-stack demo-radio-group-showcase"
-                ><text class="demo-variant-title">{{ isEnglish ? 'Exclusive selection' : '互斥选择' }}</text
-                ><snake-radio-group v-model="radioValue" :placement="demoState.choiceColumn ? 'column' : 'row'"
-                    ><snake-radio name="sweet">{{ isEnglish ? 'Sweet' : '鲜甜' }}</snake-radio
-                    ><snake-radio name="spicy">{{ isEnglish ? 'Spicy' : '香辣' }}</snake-radio
-                    ><snake-radio name="mild">{{ isEnglish ? 'Mild' : '清淡' }}</snake-radio></snake-radio-group
-                ><text>{{ isEnglish ? 'Selected: ' : '已选：' }}{{ radioValue }}</text></view
-            >
-            <view v-else-if="kind === 'switch'" class="demo-control-stack demo-switch-showcase"
-                ><text class="demo-variant-title">{{ isEnglish ? 'Switch states' : '开关状态' }}</text
-                ><snake-switch
-                    v-model="switchValue"
-                    :loading="Boolean(demoState.switchLoading)"
-                    :disabled="Boolean(demoState.switchDisabled)"
-                /><text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ switchValue }}</text></view
-            >
-            <view v-else-if="kind === 'slider'" class="demo-control-stack demo-slider-showcase"
-                ><text class="demo-variant-title">{{ isEnglish ? 'Touch and keyboard' : '触摸与键盘操作' }}</text
-                ><snake-slider
-                    v-model="sliderValue"
-                    :step="Number(demoState.sliderStep)"
-                    :show-value="Boolean(demoState.sliderShowValue)"
-                    :disabled="Boolean(demoState.sliderDisabled)"
-                    show-edge-value
-                /><text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ sliderValue }}</text></view
-            >
             <snake-cms
                 v-if="kind === 'snake-cms'"
                 class="demo-snake-cms-showcase"
@@ -286,13 +248,6 @@ function selectActivity(item: { id: string }) {
     flex-direction: column;
     gap: 24rpx;
 }
-.demo-variant-title {
-    display: block;
-    color: var(--snake-color-text);
-    font-size: 28rpx;
-    font-weight: 600;
-    line-height: 1.4;
-}
 .demo-center {
     display: flex;
     min-height: 50vh;
@@ -307,16 +262,6 @@ function selectActivity(item: { id: string }) {
 .demo-follow--strong {
     border: 2rpx solid var(--snake-color-primary);
     background: var(--snake-color-primary-light);
-}
-.demo-control-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 28rpx;
-    padding: 24rpx;
-}
-.demo-control-stack > text {
-    color: var(--snake-color-text-secondary);
-    font-size: 26rpx;
 }
 
 .custom-card {
