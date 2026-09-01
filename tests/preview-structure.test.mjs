@@ -470,7 +470,12 @@ test('CMS and commerce previews expose grouped variants', async () => {
             'suspension',
             'pagePopup',
             'jumpApplet',
-            'follow'
+            'follow',
+            'goodsList',
+            'activityList',
+            'filterSorts',
+            'listSwitching',
+            'coupon'
         ].map(directory => readFile(resolve(root, 'src/pages/componentsB', directory, 'index.vue'), 'utf8'))
     );
     const cmsSource = [renderer, ...extracted].join('\n');
