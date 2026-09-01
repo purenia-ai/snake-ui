@@ -7,17 +7,13 @@ import { createDemoState, getDemoDefinition, localizeDemoDefinition, type DemoVa
 import { demoText, demoTitle, useDemoLocale } from '../common/demo-i18n';
 import {
     activities,
-    auxiliaryData,
     cmsComponents,
     couponData,
     filters,
     goods,
     jumpAppletData,
     listSwitchingData,
-    navigationData,
-    noticeData,
     popupData,
-    searchData,
     suspensionData
 } from '../common/fixtures';
 
@@ -40,22 +36,6 @@ const categoryLabel = computed(() => definition.value.category);
 const previewDescription = computed(() => definition.value.description);
 const cmsPageInfo = { pageId: 'preview' };
 const demoCmsComponents = computed(() => (demoState.cmsScene === 'simple' ? cmsComponents.slice(0, 1) : cmsComponents));
-const demoNoticeData = computed(() => ({
-    ...noticeData,
-    direction: String(demoState.noticeDirection ?? 'column'),
-    isLeftIcon: Boolean(demoState.noticeCmsIcon ?? true)
-}));
-const demoAuxiliaryData = computed(() => ({ ...auxiliaryData, blankHeight: Number(demoState.segmentHeight ?? 32) }));
-const demoNavigationData = computed(() => ({
-    ...navigationData,
-    borderRadius: Number(demoState.navRadius ?? 16),
-    textColor: String(demoState.navTextColor ?? '#24342c')
-}));
-const demoSearchData = computed(() => ({
-    ...searchData,
-    searchText: String(demoState.searchPlaceholder ?? '搜索 Snake UI 组件'),
-    borderRadius: Number(demoState.searchRadius ?? 36)
-}));
 const demoSuspensionData = computed(() => ({
     ...suspensionData,
     width: Number(demoState.suspensionSize ?? 96),
@@ -105,22 +85,6 @@ function selectActivity(item: { id: string }) {
                 :page-info="cmsPageInfo"
                 :page-components="demoCmsComponents"
                 :scroll-top="scrollTop"
-            />
-            <snake-notice v-else-if="kind === 'notice'" class="demo-notice-showcase" :datas="demoNoticeData" />
-            <snake-auxiliary-segmentation
-                v-else-if="kind === 'auxiliary-segmentation'"
-                class="demo-auxiliary-segmentation-showcase"
-                :datas="demoAuxiliaryData"
-            />
-            <snake-graphic-navigation
-                v-else-if="kind === 'graphic-navigation'"
-                class="demo-graphic-navigation-showcase"
-                :datas="demoNavigationData"
-            />
-            <snake-commodity-search
-                v-else-if="kind === 'commodity-search'"
-                class="demo-commodity-search-showcase"
-                :datas="demoSearchData"
             />
             <snake-suspension
                 v-else-if="kind === 'suspension'"
