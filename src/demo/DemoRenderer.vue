@@ -176,66 +176,7 @@ function resetForm() {
 <template>
     <DemoPage :title="localizedTitle" :eyebrow="categoryLabel" :desc="previewDescription" :viewport="isViewportPreview">
         <DemoSection :bare="isViewportPreview" variant="preview" :title="text('演示效果')">
-            <view v-if="kind === 'empty'" class="demo-stack demo-empty-showcase"
-                ><text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text
-                ><snake-empty
-                    :mode="String(demoState.emptyMode)"
-                    :icon="demoState.showIcon ? localImage : ''"
-                    :icon-size="Number(demoState.emptyIconSize)"
-                    :text="String(demoState.text)"
-                    :text-color="String(demoState.textColor)" /><text class="demo-variant-title">{{
-                    isEnglish ? 'Semantic states' : '语义状态'
-                }}</text
-                ><view class="demo-empty-grid"
-                    ><snake-empty
-                        mode="search"
-                        :text="isEnglish ? 'No results' : '没有搜索结果'"
-                        icon-size="72" /><snake-empty
-                        mode="wifi"
-                        :text="isEnglish ? 'Network error' : '网络连接异常'"
-                        icon-size="72" /></view
-            ></view>
-            <view v-else-if="kind === 'loadmore'" class="demo-stack demo-loadmore-showcase"
-                ><text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text
-                ><snake-loadmore
-                    :status="String(demoState.loadStatus)"
-                    :icon-type="String(demoState.loadIcon)"
-                    :is-dot="Boolean(demoState.loadDot)" /><text class="demo-variant-title">{{
-                    isEnglish ? 'All states' : '全部状态'
-                }}</text
-                ><snake-loadmore status="loadmore" /><snake-loadmore status="loading" /><snake-loadmore
-                    status="nomore"
-                    is-dot
-            /></view>
-            <view v-else-if="kind === 'notice-bar'" class="demo-stack demo-notice-bar-showcase"
-                ><text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text
-                ><snake-notice-bar
-                    :volume-icon="Boolean(demoState.noticeIcon)"
-                    :more-icon="Boolean(demoState.noticeMore)"
-                    :mode="demoState.noticeMode === 'vertical' ? 'vertical' : 'horizontal'"
-                    :direction="demoState.noticeMode === 'vertical' ? 'column' : 'row'"
-                    :text="
-                        demoState.noticeMode === 'vertical'
-                            ? ''
-                            : isEnglish
-                              ? 'Welcome to Snake UI'
-                              : '欢迎使用 Snake UI'
-                    "
-                    :list="
-                        isEnglish
-                            ? ['Foundation components are ready', 'Supports H5, mini programs and apps']
-                            : ['基础组件已就绪', '支持 H5、小程序和 App']
-                    "
-                    :duration="Number(demoState.noticeDuration)" /><text class="demo-variant-title">{{
-                    isEnglish ? 'Themes and actions' : '主题与操作'
-                }}</text
-                ><snake-notice-bar
-                    type="info"
-                    volume-icon
-                    more-icon
-                    :text="isEnglish ? 'View the latest component updates' : '查看最新组件更新'"
-            /></view>
-            <view v-else-if="kind === 'overlay'" class="demo-trigger demo-overlay-showcase"
+            <view v-if="kind === 'overlay'" class="demo-trigger demo-overlay-showcase"
                 ><text class="demo-variant-title">{{ isEnglish ? 'Overlay content' : '遮罩内容' }}</text
                 ><snake-button @click="overlayVisible = true">{{
                     isEnglish ? 'Open overlay' : '打开遮罩'
@@ -637,13 +578,6 @@ function resetForm() {
 }
 .demo-variant-title--padded {
     padding: 24rpx 24rpx 0;
-}
-.demo-empty-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16rpx;
-    border-radius: 16rpx;
-    background: var(--snake-color-surface-muted);
 }
 .demo-center {
     display: flex;
