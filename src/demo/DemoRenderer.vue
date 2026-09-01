@@ -46,8 +46,6 @@ const currentTabLabel = computed(() => {
     return typeof item === 'string' ? item : String(item?.name ?? '');
 });
 const sortValue = ref('');
-const popupVisible = ref(false);
-const overlayVisible = ref(false);
 const scrollTop = ref(0);
 const formRef = ref<any>();
 const formModel = reactive({ name: '', intro: '', fruit: ['apple'], flavor: 'sweet', enabled: true });
@@ -64,7 +62,7 @@ const radioStandalone = ref(false);
 const radioValue = ref<unknown>('sweet');
 const switchValue = ref(true);
 const sliderValue = ref(35);
-const viewportKinds = new Set(['snake-cms', 'filter-sorts', 'page-popup', 'suspension', 'overlay', 'popup', 'sticky']);
+const viewportKinds = new Set(['snake-cms', 'filter-sorts', 'page-popup', 'suspension']);
 const isViewportPreview = computed(() => viewportKinds.has(props.kind));
 const categoryLabel = computed(() => definition.value.category);
 const previewDescription = computed(() => definition.value.description);
@@ -176,34 +174,7 @@ function resetForm() {
 <template>
     <DemoPage :title="localizedTitle" :eyebrow="categoryLabel" :desc="previewDescription" :viewport="isViewportPreview">
         <DemoSection :bare="isViewportPreview" variant="preview" :title="text('演示效果')">
-            <view v-if="kind === 'overlay'" class="demo-trigger demo-overlay-showcase"
-                ><text class="demo-variant-title">{{ isEnglish ? 'Overlay content' : '遮罩内容' }}</text
-                ><snake-button @click="overlayVisible = true">{{
-                    isEnglish ? 'Open overlay' : '打开遮罩'
-                }}</snake-button
-                ><snake-overlay v-model="overlayVisible"
-                    ><view class="demo-overlay-tip">{{ demoState.overlayTip }}</view></snake-overlay
-                ></view
-            >
-            <view v-else-if="kind === 'popup'" class="demo-trigger demo-popup-showcase"
-                ><text class="demo-variant-title">{{
-                    isEnglish ? 'Position and closing behavior' : '位置与关闭行为'
-                }}</text
-                ><snake-button @click="popupVisible = true">{{ isEnglish ? 'Open popup' : '打开弹窗' }}</snake-button
-                ><snake-popup
-                    v-model="popupVisible"
-                    :mode="demoState.popupMode as any"
-                    :close-on-click-overlay="Boolean(demoState.closeOverlay)"
-                    ><view class="demo-popup"
-                        ><text class="demo-popup__title">Snake Popup</text
-                        ><text>{{ isEnglish ? 'This is an interactive popup.' : '这是一个可交互的弹出层。' }}</text
-                        ><snake-button custom-style="margin-top: 32rpx" @click="popupVisible = false">{{
-                            isEnglish ? 'Close' : '关闭'
-                        }}</snake-button></view
-                    ></snake-popup
-                ></view
-            >
-            <view v-else-if="kind === 'navbar'" class="demo-navbar-preview demo-navbar-showcase"
+            <view v-if="kind === 'navbar'" class="demo-navbar-preview demo-navbar-showcase"
                 ><snake-navbar
                     :title="String(demoState.navbarTitle)"
                     :is-back="Boolean(demoState.navbarBack)"
@@ -214,24 +185,6 @@ function resetForm() {
                     ><template #right
                         ><text class="demo-navbar-preview__action">{{ isEnglish ? 'More' : '更多' }}</text></template
                     ></snake-navbar
-                ></view
-            >
-            <view v-else-if="kind === 'sticky'" class="demo-scroll demo-sticky-showcase"
-                ><text class="demo-variant-title demo-variant-title--padded">{{
-                    isEnglish ? 'Page scroll sticky' : '页面滚动吸顶'
-                }}</text
-                ><view class="demo-scroll-hero">{{
-                    isEnglish ? 'Scroll down to see the sticky behavior' : '向下滚动查看吸顶效果'
-                }}</view
-                ><snake-sticky
-                    bg-color="#06D290"
-                    :disabled="Boolean(demoState.stickyDisabled)"
-                    :offset-top="Number(demoState.stickyOffset)"
-                    ><view class="demo-sticky">{{
-                        isEnglish ? 'I stay at the top of the preview' : '我会固定在手机预览顶部'
-                    }}</view></snake-sticky
-                ><view v-for="item in 12" :key="item" class="demo-row"
-                    >{{ isEnglish ? 'Scroll item' : '滚动内容' }} {{ item }}</view
                 ></view
             >
             <view v-else-if="kind === 'swiper'" class="demo-stack demo-swiper-showcase"
@@ -576,9 +529,6 @@ function resetForm() {
     font-weight: 600;
     line-height: 1.4;
 }
-.demo-variant-title--padded {
-    padding: 24rpx 24rpx 0;
-}
 .demo-center {
     display: flex;
     min-height: 50vh;
@@ -593,52 +543,6 @@ function resetForm() {
     padding: 0 24rpx;
     color: var(--snake-demo-accent-text);
     font-size: 26rpx;
-}
-.demo-trigger {
-    padding: 48rpx 24rpx;
-}
-.demo-overlay-tip {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-}
-.demo-popup {
-    padding: 40rpx 32rpx calc(40rpx + env(safe-area-inset-bottom));
-    color: var(--snake-color-text-secondary);
-}
-.demo-popup__title {
-    display: block;
-    margin-bottom: 16rpx;
-    color: var(--snake-color-text);
-    font-size: 34rpx;
-    font-weight: 700;
-}
-.demo-scroll {
-    min-height: 150vh;
-    background: var(--snake-color-surface-muted);
-}
-.demo-scroll-hero {
-    display: flex;
-    height: 360rpx;
-    align-items: center;
-    justify-content: center;
-    color: var(--snake-color-text-secondary);
-}
-.demo-sticky {
-    padding: 24rpx;
-    color: #fff;
-    text-align: center;
-}
-.demo-row {
-    margin: 20rpx 24rpx;
-    padding: 32rpx;
-    border: 1rpx solid var(--snake-color-divider);
-    border-radius: 14rpx;
-    background: var(--snake-color-surface);
-    box-shadow: 0 6rpx 18rpx rgba(16, 84, 56, 0.04);
 }
 .demo-tab-content {
     padding: 64rpx 24rpx;
