@@ -14,10 +14,8 @@ import {
     goods,
     jumpAppletData,
     listSwitchingData,
-    localImage,
     navigationData,
     noticeData,
-    pictureAdsData,
     popupData,
     searchData,
     suspensionData
@@ -40,26 +38,8 @@ const viewportKinds = new Set(['snake-cms', 'filter-sorts', 'page-popup', 'suspe
 const isViewportPreview = computed(() => viewportKinds.has(props.kind));
 const categoryLabel = computed(() => definition.value.category);
 const previewDescription = computed(() => definition.value.description);
-const magicCubeData = computed(() => ({
-    rubiksCubeType: 1,
-    heights: 360,
-    pageMargin: 20,
-    imgMargin: Number(demoState.cubeMargin ?? 8),
-    borderRadius: Number(demoState.cubeRadius ?? 12),
-    bgColor: '#ffffff',
-    imageTypeObj: { imageList: [{ src: localImage, url: '' }] }
-}));
-const richTextData = computed(() => ({
-    myValue: `<h3>${String(demoState.richHeading ?? 'Snake UI')}</h3><p>这是一个可交互的 uni-app 跨端实时预览。</p>`
-}));
-const videoData = computed(() => ({ src: demoState.videoScene === 'local' ? localImage : '' }));
 const cmsPageInfo = { pageId: 'preview' };
 const demoCmsComponents = computed(() => (demoState.cmsScene === 'simple' ? cmsComponents.slice(0, 1) : cmsComponents));
-const demoPictureAdsData = computed(() => ({
-    ...pictureAdsData,
-    borderRadius: Number(demoState.adRadius ?? 16),
-    interval: Number(demoState.adInterval ?? 3000)
-}));
 const demoNoticeData = computed(() => ({
     ...noticeData,
     direction: String(demoState.noticeDirection ?? 'column'),
@@ -126,18 +106,6 @@ function selectActivity(item: { id: string }) {
                 :page-components="demoCmsComponents"
                 :scroll-top="scrollTop"
             />
-            <snake-picture-ads
-                v-else-if="kind === 'picture-ads'"
-                class="demo-picture-ads-showcase"
-                :datas="demoPictureAdsData"
-            />
-            <snake-magic-cube
-                v-else-if="kind === 'magic-cube'"
-                class="demo-magic-cube-showcase"
-                :datas="magicCubeData"
-            />
-            <snake-videos v-else-if="kind === 'videos'" class="demo-videos-showcase" :datas="videoData" />
-            <snake-rich-text v-else-if="kind === 'rich-text'" class="demo-rich-text-showcase" :datas="richTextData" />
             <snake-notice v-else-if="kind === 'notice'" class="demo-notice-showcase" :datas="demoNoticeData" />
             <snake-auxiliary-segmentation
                 v-else-if="kind === 'auxiliary-segmentation'"

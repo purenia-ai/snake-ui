@@ -455,7 +455,7 @@ test('navigation and layout previews expose grouped variants', async () => {
 test('CMS and commerce previews expose grouped variants', async () => {
     const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
     const extracted = await Promise.all(
-        ['customModule', 'images', 'hotzone'].map(directory =>
+        ['customModule', 'images', 'hotzone', 'pictureAds', 'magicCube', 'videos', 'richText'].map(directory =>
             readFile(resolve(root, 'src/pages/componentsB', directory, 'index.vue'), 'utf8')
         )
     );
