@@ -405,7 +405,7 @@ test('form control previews expose grouped variants', async () => {
 test('navigation and layout previews expose grouped variants', async () => {
     const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
     const extracted = await Promise.all(
-        ['navbar', 'swiper', 'tabs'].map(directory =>
+        ['navbar', 'swiper', 'tabs', 'subsection', 'buttonSort', 'dropMenu', 'dropMenuItem'].map(directory =>
             readFile(resolve(root, 'src/pages/componentsA', directory, 'index.vue'), 'utf8')
         )
     );

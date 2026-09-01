@@ -38,7 +38,6 @@ const localizedTitle = computed(() => {
 const isEnglish = computed(() => localeName.value === 'en-US');
 const demoState = reactive<Record<string, DemoValue>>(createDemoState(props.kind));
 const currentActivity = ref('001');
-const sortValue = ref('');
 const scrollTop = ref(0);
 const formRef = ref<any>();
 const formModel = reactive({ name: '', intro: '', fruit: ['apple'], flavor: 'sweet', enabled: true });
@@ -167,44 +166,8 @@ function resetForm() {
 <template>
     <DemoPage :title="localizedTitle" :eyebrow="categoryLabel" :desc="previewDescription" :viewport="isViewportPreview">
         <DemoSection :bare="isViewportPreview" variant="preview" :title="text('演示效果')">
-            <view v-if="kind === 'subsection'" class="demo-stack demo-subsection-showcase"
-                ><snake-subsection
-                    :list="isEnglish ? ['Pending payment', 'To ship', 'To receive'] : ['待付款', '待发货', '待收货']"
-                    :current="Number(demoState.subsectionCurrent)"
-                    :mode="demoState.subsectionMode as any"
-                    :bold="Boolean(demoState.subsectionBold)"
-                    :animation="Boolean(demoState.subsectionAnimation)"
-                    @change="demoState.subsectionCurrent = $event"
-            /></view>
-            <view v-else-if="kind === 'button-sort'" class="demo-stack demo-button-sort-showcase"
-                ><snake-button-sort :title="String(demoState.sortTitle)" @change="sortValue = $event.value" /><view
-                    class="demo-tab-content"
-                    >{{ isEnglish ? 'Current state: ' : '当前状态：'
-                    }}{{ sortValue || (isEnglish ? 'Default' : '默认') }}</view
-                ></view
-            >
             <view
-                v-else-if="kind === 'drop-menu' || kind === 'drop-menu-item'"
-                :class="[
-                    'demo-menu',
-                    kind === 'drop-menu' ? 'demo-drop-menu-showcase' : 'demo-drop-menu-item-showcase'
-                ]"
-                ><snake-drop-menu
-                    ><snake-drop-menu-item :title="String(demoState.menuTitle)"
-                        ><view class="demo-menu-panel">{{
-                            isEnglish
-                                ? 'Place filters or other business content here'
-                                : '这里可以放筛选项或其他业务内容'
-                        }}</view></snake-drop-menu-item
-                    ><snake-drop-menu-item :title="isEnglish ? 'Sort by' : '排序方式'"
-                        ><view class="demo-menu-panel">{{
-                            isEnglish ? 'Recommended · Latest · Price' : '综合排序 · 最新发布 · 价格优先'
-                        }}</view></snake-drop-menu-item
-                    ></snake-drop-menu
-                ></view
-            >
-            <view
-                v-else-if="kind === 'index-list' || kind === 'index-anchor'"
+                v-if="kind === 'index-list' || kind === 'index-anchor'"
                 :class="[
                     'demo-index',
                     kind === 'index-list' ? 'demo-index-list-showcase' : 'demo-index-anchor-showcase'
@@ -490,13 +453,6 @@ function resetForm() {
     align-items: center;
     justify-content: center;
 }
-.demo-tab-content {
-    padding: 64rpx 24rpx;
-    border-radius: 16rpx;
-    background: var(--snake-color-surface-muted);
-    color: var(--snake-demo-accent-text);
-    text-align: center;
-}
 .demo-follow {
     padding: 24rpx;
     border-radius: 16rpx;
@@ -505,19 +461,6 @@ function resetForm() {
 .demo-follow--strong {
     border: 2rpx solid var(--snake-color-primary);
     background: var(--snake-color-primary-light);
-}
-.demo-menu {
-    min-height: 320rpx;
-    padding: 28rpx 0;
-}
-.demo-menu :deep(.snake-drop-menu) {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-}
-.demo-menu-panel {
-    padding: 48rpx 28rpx;
-    color: var(--snake-color-text-secondary);
-    background: var(--snake-color-surface);
 }
 .demo-index {
     height: 620rpx;
