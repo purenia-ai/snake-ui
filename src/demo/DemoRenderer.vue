@@ -5,7 +5,6 @@ import DemoPage from '../components/demo-page/demo-page.vue';
 import DemoSection from '../components/demo-section/demo-section.vue';
 import { createDemoState, getDemoDefinition, localizeDemoDefinition, type DemoValue } from './demo-config';
 import { demoText, demoTitle, useDemoLocale } from '../common/demo-i18n';
-import { resolveShowcase } from './showcase-registry';
 import {
     activities,
     auxiliaryData,
@@ -40,7 +39,6 @@ const localizedTitle = computed(() => {
 });
 const isEnglish = computed(() => localeName.value === 'en-US');
 const demoState = reactive<Record<string, DemoValue>>(createDemoState(props.kind));
-const showcase = computed(() => resolveShowcase(props.kind));
 const currentActivity = ref('001');
 const currentTab = ref(0);
 const currentTabLabel = computed(() => {
@@ -179,8 +177,7 @@ function resetForm() {
 <template>
     <DemoPage :title="localizedTitle" :eyebrow="categoryLabel" :desc="previewDescription" :viewport="isViewportPreview">
         <DemoSection :bare="isViewportPreview" variant="preview" :title="text('演示效果')">
-            <component :is="showcase" v-if="showcase" :kind="kind" :state="demoState" :is-english="isEnglish" />
-            <view v-else-if="kind === 'loading-icon'" class="demo-stack demo-loading-icon-showcase"
+            <view v-if="kind === 'loading-icon'" class="demo-stack demo-loading-icon-showcase"
                 ><text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text
                 ><view class="demo-feedback-row"
                     ><snake-loading-icon

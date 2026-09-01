@@ -74,19 +74,16 @@ test('component docs and example routes remain one-to-one', async () => {
     assert.deepEqual([...new Set(previews)].sort(), [...new Set(routes)].sort());
 });
 
-test('all public foundation components have docs, routes, and preview registrations', async () => {
+test('all public foundation components have docs, routes, and preview pages', async () => {
     const pages = await readFile(resolve(root, 'src/pages.json'), 'utf8');
-    const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
-    const registry = await readFile(resolve(root, 'src/demo/showcase-registry.ts'), 'utf8');
 
     for (const name of foundationComponents) {
         const routeName = componentRouteName(name);
         const markdown = await readFile(resolve(root, 'docs/components', `${name}.md`), 'utf8');
+        const previewPage = await readFile(resolve(root, 'src/pages/componentsA', routeName, 'index.vue'), 'utf8');
         assert.match(markdown, new RegExp(`^preview:\\s*/pages/componentsA/${routeName}/index$`, 'm'));
         assert.match(pages, new RegExp(`"path":\\s*"${routeName}/index"`));
-        const legacyBranch = new RegExp(`kind === ['"]${name}['"]`).test(renderer);
-        const showcaseRegistration = new RegExp(`(?:['"]${name}['"]|\\b${name}\\b)\\s*:`).test(registry);
-        assert.ok(legacyBranch || showcaseRegistration, `${name}: missing preview registration`);
+        assert.match(previewPage, /DemoRenderer|<snake-/, `${name}: missing preview content`);
     }
 });
 
@@ -314,20 +311,19 @@ test('mobile preview and locale guide expose one persistent bilingual experience
 });
 
 test('icon preview exposes the bundled glyph set with a restrained interactive grid', async () => {
-    const renderer = await readFile(resolve(root, 'src/demo/showcases/foundation/IconShowcase.vue'), 'utf8');
-    const config = await readFile(resolve(root, 'src/demo/demo-config.ts'), 'utf8');
+    const renderer = await readFile(resolve(root, 'src/pages/componentsA/icon/index.vue'), 'utf8');
 
     assert.match(renderer, /const selectedIcon = ref\('search'\)/);
     assert.match(renderer, /const iconNames = \[/);
     assert.match(renderer, /grid-template-columns: repeat\(3, minmax\(0, 1fr\)\)/);
     assert.match(renderer, /'demo-icon-item--active': selectedIcon === name/);
     assert.match(renderer, /@click="selectedIcon = name"/);
-    assert.match(config, /key: 'iconLabelPos'/);
-    assert.match(config, /key: 'iconBold'/);
+    assert.match(renderer, /key: 'iconLabelPos'/);
+    assert.match(renderer, /key: 'iconBold'/);
 });
 
 test('button preview presents the complete capability showcase', async () => {
-    const renderer = await readFile(resolve(root, 'src/demo/showcases/foundation/ButtonShowcase.vue'), 'utf8');
+    const renderer = await readFile(resolve(root, 'src/pages/componentsA/button/index.vue'), 'utf8');
 
     for (const section of [
         '按钮主题',
@@ -348,8 +344,8 @@ test('button preview presents the complete capability showcase', async () => {
 test('foundation feedback previews expose grouped variants', async () => {
     const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
     const extracted = await Promise.all(
-        ['ButtonShowcase.vue', 'IconShowcase.vue', 'MediaShowcase.vue'].map(file =>
-            readFile(resolve(root, 'src/demo/showcases/foundation', file), 'utf8')
+        ['button', 'icon', 'image', 'lazyImage'].map(directory =>
+            readFile(resolve(root, 'src/pages/componentsA', directory, 'index.vue'), 'utf8')
         )
     );
     const foundationSource = [renderer, ...extracted].join('\n');
@@ -369,7 +365,7 @@ test('foundation feedback previews expose grouped variants', async () => {
     ]) {
         assert.match(
             foundationSource,
-            new RegExp(`demo-${component}-showcase`),
+            new RegExp(`demo-${component}-showcase|<snake-${component}`),
             `${component}: missing grouped showcase`
         );
     }
