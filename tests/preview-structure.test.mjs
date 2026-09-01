@@ -45,8 +45,19 @@ function exampleRoutes(pages) {
 
 const componentRouteName = name => name.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
 
+async function examplePageSources() {
+    const sources = [];
+    for (const group of ['componentsA', 'componentsB']) {
+        const directories = await readdir(resolve(root, 'src/pages', group));
+        for (const directory of directories) {
+            sources.push(await readFile(resolve(root, 'src/pages', group, directory, 'index.vue'), 'utf8'));
+        }
+    }
+    return sources;
+}
+
 test('preview renderer uses an uncropped viewport root', async () => {
-    const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
+    const renderer = await readFile(resolve(root, 'src/pages/componentsB/snakeCms/index.vue'), 'utf8');
     const page = await readFile(resolve(root, 'src/components/demo-page/demo-page.vue'), 'utf8');
     assert.ok(page.includes('background-color: var(--snake-color-surface)'));
 
@@ -132,20 +143,20 @@ test('component overview page covers every example route and directory layout', 
     assert.match(pages, /"navigationStyle":\s*"custom"/);
 });
 
-test('all example components declare an interactive demo configuration', async () => {
-    const config = await readFile(resolve(root, 'src/demo/demo-config.ts'), 'utf8');
+test('all example pages own their interactive demo configuration', async () => {
     const panel = await readFile(resolve(root, 'src/components/demo-control-panel/demo-control-panel.vue'), 'utf8');
-    const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
+    const pages = await examplePageSources();
 
-    const configuredKinds = [...config.matchAll(/^\s+(?:'([^']+)'|([a-z][\w-]*)):\s*\{\s*category:/gm)].map(
-        match => match[1] || match[2]
-    );
-    assert.equal(configuredKinds.length, 52);
+    assert.equal(pages.length, 52);
+    for (const page of pages) {
+        assert.match(page, /<DemoPage/);
+        assert.match(page, /<DemoControlPanel/);
+        assert.doesNotMatch(page, /DemoRenderer/);
+    }
     assert.match(panel, /control\.type === 'select'/);
     assert.match(panel, /control\.type === 'switch'/);
     assert.match(panel, /control\.type === 'slider'/);
     assert.match(panel, /demo-control__input/);
-    assert.match(renderer, /<DemoControlPanel/);
 });
 
 test('component demos use one restrained shared presentation system', async () => {
@@ -153,7 +164,7 @@ test('component demos use one restrained shared presentation system', async () =
     const page = await readFile(resolve(root, 'src/components/demo-page/demo-page.vue'), 'utf8');
     const section = await readFile(resolve(root, 'src/components/demo-section/demo-section.vue'), 'utf8');
     const panel = await readFile(resolve(root, 'src/components/demo-control-panel/demo-control-panel.vue'), 'utf8');
-    const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
+    const pages = (await examplePageSources()).join('\n');
 
     assert.match(theme, /--snake-demo-nav-background:\s*var\(--snake-color-primary/);
     assert.doesNotMatch(theme, /snake-demo-nav-gradient|snake-demo-page-tint|snake-demo-card-shadow/);
@@ -166,8 +177,8 @@ test('component demos use one restrained shared presentation system', async () =
     assert.match(panel, /:current="selectedIndex\(control\)"/);
     assert.match(panel, /@change="selectOption\(control, \$event\)"/);
     assert.match(panel, /v-else-if="control\.type === 'input'"/);
-    assert.match(renderer, /variant="preview"/);
-    assert.match(renderer, /definition\.controls\.length[^>]*variant="controls"/);
+    assert.match(pages, /variant="preview"/);
+    assert.match(pages, /variant="controls"/);
 });
 test('desktop phone preview keeps an uncropped internal viewport', async () => {
     const frame = await readFile(resolve(root, 'docs/.vitepress/theme/PreviewFrame.vue'), 'utf8');
@@ -284,8 +295,7 @@ test('docs and preview shell use the approved brand green system', async () => {
 test('mobile preview and locale guide expose one persistent bilingual experience', async () => {
     const demoLocale = await readFile(resolve(root, 'src/common/demo-i18n.ts'), 'utf8');
     const demoPage = await readFile(resolve(root, 'src/components/demo-page/demo-page.vue'), 'utf8');
-    const demoConfig = await readFile(resolve(root, 'src/demo/demo-config.ts'), 'utf8');
-    const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
+    const pages = (await examplePageSources()).join('\n');
     const indexPage = await readFile(resolve(root, 'src/pages/example/components.vue'), 'utf8');
     const localePage = await readFile(resolve(root, 'src/pages/other/themeLocale/index.vue'), 'utf8');
     const localeGuide = await readFile(resolve(root, 'docs/tools/use-locale.md'), 'utf8');
@@ -296,8 +306,8 @@ test('mobile preview and locale guide expose one persistent bilingual experience
     assert.match(demoLocale, /button:\s*'Button'/);
     assert.match(demoPage, /@click="switchLocale"/);
     assert.match(demoPage, /\{\{ nextLocaleLabel \}\}/);
-    assert.match(demoConfig, /export function localizeDemoDefinition/);
-    assert.match(renderer, /localizeDemoDefinition/);
+    assert.match(pages, /useDemoLocale/);
+    assert.match(pages, /demoTitle/);
     assert.match(indexPage, /useDemoLocale/);
     assert.match(localePage, /text\('切换语言'\)/);
     assert.match(localeGuide, /defaultLocale/);
@@ -342,7 +352,6 @@ test('button preview presents the complete capability showcase', async () => {
 });
 
 test('foundation feedback previews expose grouped variants', async () => {
-    const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
     const extracted = await Promise.all(
         [
             'button',
@@ -359,7 +368,7 @@ test('foundation feedback previews expose grouped variants', async () => {
             'sticky'
         ].map(directory => readFile(resolve(root, 'src/pages/componentsA', directory, 'index.vue'), 'utf8'))
     );
-    const foundationSource = [renderer, ...extracted].join('\n');
+    const foundationSource = extracted.join('\n');
 
     for (const component of [
         'loading-icon',
@@ -384,7 +393,6 @@ test('foundation feedback previews expose grouped variants', async () => {
 });
 
 test('form control previews expose grouped variants', async () => {
-    const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
     const extracted = await Promise.all(
         [
             'form',
@@ -399,7 +407,7 @@ test('form control previews expose grouped variants', async () => {
             'slider'
         ].map(directory => readFile(resolve(root, 'src/pages/componentsA', directory, 'index.vue'), 'utf8'))
     );
-    const formSource = [renderer, ...extracted].join('\n');
+    const formSource = extracted.join('\n');
 
     for (const component of [
         'form',
@@ -418,7 +426,6 @@ test('form control previews expose grouped variants', async () => {
 });
 
 test('navigation and layout previews expose grouped variants', async () => {
-    const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
     const extracted = await Promise.all(
         [
             'navbar',
@@ -432,7 +439,7 @@ test('navigation and layout previews expose grouped variants', async () => {
             'indexAnchor'
         ].map(directory => readFile(resolve(root, 'src/pages/componentsA', directory, 'index.vue'), 'utf8'))
     );
-    const navigationSource = [renderer, ...extracted].join('\n');
+    const navigationSource = extracted.join('\n');
     for (const component of [
         'navbar',
         'tabs',
@@ -453,9 +460,9 @@ test('navigation and layout previews expose grouped variants', async () => {
 });
 
 test('CMS and commerce previews expose grouped variants', async () => {
-    const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
     const extracted = await Promise.all(
         [
+            'snakeCms',
             'customModule',
             'images',
             'hotzone',
@@ -478,7 +485,7 @@ test('CMS and commerce previews expose grouped variants', async () => {
             'coupon'
         ].map(directory => readFile(resolve(root, 'src/pages/componentsB', directory, 'index.vue'), 'utf8'))
     );
-    const cmsSource = [renderer, ...extracted].join('\n');
+    const cmsSource = extracted.join('\n');
     for (const component of [
         'snake-cms',
         'custom-module',
