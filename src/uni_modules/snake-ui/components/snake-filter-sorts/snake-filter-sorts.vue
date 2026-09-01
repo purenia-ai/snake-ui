@@ -1,33 +1,46 @@
 <template>
-  <view v-if="filters.topFilter" id="filtersId" class="filter-sorts" :style="[$snakeThemeStyle, { backgroundColor: bgColor }, customStyle]">
-    <view class="flex-1 flex-items-center">
-      <template v-for="(item, index) in filters.topFilter" :key="index">
-        <view
-          v-if="item.type === 'click'"
-          class="flex-1 flex-center text-26rpx"
-          :class="{
-            'snake-green snake-font-medium fw-500': filterParams['sort'] === item.value,
-          }"
-          @click="sortSelectHandle('sort', item.value ?? '')">
-          {{ item.name }}
+    <view
+        v-if="filters.topFilter"
+        id="filtersId"
+        class="filter-sorts"
+        :style="[$snakeThemeStyle, { backgroundColor: bgColor }, customStyle]"
+    >
+        <view class="flex-1 flex-items-center" role="toolbar" aria-label="商品排序与筛选">
+            <template v-for="(item, index) in filters.topFilter" :key="index">
+                <view
+                    v-if="item.type === 'click'"
+                    class="flex-1 flex-center text-26rpx"
+                    :class="{
+                        'snake-green snake-font-medium fw-500': filterParams['sort'] === item.value
+                    }"
+                    role="button"
+                    tabindex="0"
+                    :aria-pressed="filterParams['sort'] === item.value"
+                    @click="sortSelectHandle('sort', item.value ?? '')"
+                    @keydown.enter.prevent="sortSelectHandle('sort', item.value ?? '')"
+                    @keydown.space.prevent="sortSelectHandle('sort', item.value ?? '')"
+                >
+                    {{ item.name }}
+                </view>
+                <internal-button-sort
+                    v-if="item.type === 'sort'"
+                    :title="item.name"
+                    @change="(e: any) => sortSelectHandle('price', e.value)"
+                ></internal-button-sort>
+            </template>
+            <internal-drop-menu ref="dropMenuRef" custom-style="flex: 1; min-width: 0">
+                <internal-drop-menu-item title="筛选" :before-toggle="handleBeforeToggle" @close="dropMenuClose">
+                    <filterPage
+                        :show="showDrawer"
+                        :filters="filters"
+                        :scrollTop="scrollTop"
+                        :defaultParams="filterParams"
+                        @confirm="filterConfirm"
+                    ></filterPage>
+                </internal-drop-menu-item>
+            </internal-drop-menu>
         </view>
-        <internal-button-sort
-          v-if="item.type === 'sort'"
-          :title="item.name"
-          @change="(e: any) => sortSelectHandle('price', e.value)"></internal-button-sort>
-      </template>
-      <internal-drop-menu ref="dropMenuRef" custom-style="flex: 1; min-width: 0">
-        <internal-drop-menu-item title="筛选" :before-toggle="handleBeforeToggle" @close="dropMenuClose">
-          <filterPage
-            :show="showDrawer"
-            :filters="filters"
-            :scrollTop="scrollTop"
-            :defaultParams="filterParams"
-            @confirm="filterConfirm"></filterPage>
-        </internal-drop-menu-item>
-      </internal-drop-menu>
     </view>
-  </view>
 </template>
 <script lang="ts" setup>
 /**
@@ -44,23 +57,23 @@ import InternalDropMenuItem from '../snake-drop-menu-item/snake-drop-menu-item.v
 import type { SnakeFilterSortsEmits, SnakeFilterSortsProps } from './types';
 
 defineOptions({
-  name: 'filter-sorts',
-  options: {
-    virtualHost: true,
-    addGlobalClass: true,
-    styleIsolation: 'shared',
-  },
+    name: 'filter-sorts',
+    options: {
+        virtualHost: true,
+        addGlobalClass: true,
+        styleIsolation: 'shared'
+    }
 });
 
 const props = withDefaults(defineProps<SnakeFilterSortsProps>(), {
-  filters: () => ({}),
-  defaultFilter: () => ({}),
-  bgColor: 'transparent',
-  sort: '',
-  showTabs: true,
-  goodsListLength: 0,
-  customStyle: () => ({}),
-  scrollTop: 0,
+    filters: () => ({}),
+    defaultFilter: () => ({}),
+    bgColor: 'transparent',
+    sort: '',
+    showTabs: true,
+    goodsListLength: 0,
+    customStyle: () => ({}),
+    scrollTop: 0
 });
 
 const emit = defineEmits<SnakeFilterSortsEmits>();
@@ -71,85 +84,84 @@ const dropMenuRef = ref<{ updateDropMenuRect: () => void; colseAll: () => void }
 
 const showDrawer = ref(false);
 const filterParams = ref<Record<string, string | number | boolean>>({
-  sort: 'auto',
-  price: '',
+    sort: 'auto',
+    price: ''
 });
 
 const dropMenuOpen = () => {
-  showDrawer.value = true;
+    showDrawer.value = true;
 };
 const dropMenuClose = async () => {
-  showDrawer.value = false;
+    showDrawer.value = false;
 };
 // 异步打开
 const handleBeforeToggle = async ({ resolve }: { resolve: (value: boolean) => void }) => {
-  let scrollTop = 0;
+    let scrollTop = 0;
 
-  uni
-    .createSelectorQuery()
-    .in(instance)
-    .selectViewport()
-    .scrollOffset((res) => {
-      scrollTop = (res as UniApp.NodeInfo).scrollTop || 0;
-    })
-    .exec();
+    uni.createSelectorQuery()
+        .in(instance)
+        .selectViewport()
+        .scrollOffset(res => {
+            scrollTop = (res as UniApp.NodeInfo).scrollTop || 0;
+        })
+        .exec();
 
-  const query = uni.createSelectorQuery().in(instance);
-  query.select('#filtersId').boundingClientRect();
-  query.exec((res) => {
-    const navbarHeight = 44;
-    const tabsHeight = props.showTabs ? 42 : 0;
-    scrollTop = scrollTop + (res[0]?.top || 0) - navbarHeight - tabsHeight;
-    // #ifndef H5
-    scrollTop = scrollTop - (uni.$snake.sys().statusBarHeight || 0);
-    // #endif
-    if (scrollTop > 0) {
-      uni.pageScrollTo({
-        scrollTop,
-        duration: 0,
-        success: () => {
-          dropMenuRef.value?.updateDropMenuRect();
-          dropMenuOpen();
-          resolve(true);
-        },
-      });
-    } else {
-      dropMenuRef.value?.updateDropMenuRect();
-      dropMenuOpen();
-      resolve(true);
-    }
-  });
+    const query = uni.createSelectorQuery().in(instance);
+    query.select('#filtersId').boundingClientRect();
+    query.exec(res => {
+        const navbarHeight = 44;
+        const tabsHeight = props.showTabs ? 42 : 0;
+        scrollTop = scrollTop + (res[0]?.top || 0) - navbarHeight - tabsHeight;
+        // #ifndef H5
+        scrollTop = scrollTop - (uni.$snake.sys().statusBarHeight || 0);
+        // #endif
+        if (scrollTop > 0) {
+            uni.pageScrollTo({
+                scrollTop,
+                duration: 0,
+                success: () => {
+                    dropMenuRef.value?.updateDropMenuRect();
+                    dropMenuOpen();
+                    resolve(true);
+                }
+            });
+        } else {
+            dropMenuRef.value?.updateDropMenuRect();
+            dropMenuOpen();
+            resolve(true);
+        }
+    });
 };
 
 // 排序选择
 const sortSelectHandle = (propName: string | number, value: string) => {
-  filterParams.value[propName] = value;
-  dropMenuRef.value?.colseAll();
-  emitChange();
+    filterParams.value[propName] = value;
+    dropMenuRef.value?.colseAll();
+    emitChange();
 };
 
 // 确认筛选
 const filterConfirm = (e: Record<string, string | number | boolean>) => {
-  filterParams.value = {
-    sort: filterParams.value.sort,
-    price: filterParams.value.price,
-    ...e,
-  };
-  dropMenuRef.value?.colseAll();
-  emitChange();
+    filterParams.value = {
+        sort: filterParams.value.sort,
+        price: filterParams.value.price,
+        ...e
+    };
+    dropMenuRef.value?.colseAll();
+    emitChange();
 };
 const emitChange = () => {
-  emit('change', filterParams.value);
+    emit('change', filterParams.value);
 };
 
 onMounted(async () => {
-  await uni.$snake.sleep();
-  filterParams.value.sort = props.sort;
+    await uni.$snake.sleep();
+    filterParams.value.sort = props.sort;
 });
 </script>
 
 <style lang="scss" scoped>
 ::v-deep .u-drawer-content {
-  height: 100% !important;
+    height: 100% !important;
 }
 </style>

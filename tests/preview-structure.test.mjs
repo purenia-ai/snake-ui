@@ -398,3 +398,32 @@ test('navigation and layout previews expose grouped variants', async () => {
         assert.match(renderer, new RegExp(`demo-${component}-showcase`), `${component}: missing grouped showcase`);
     }
 });
+
+test('CMS and commerce previews expose grouped variants', async () => {
+    const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
+    for (const component of [
+        'snake-cms',
+        'custom-module',
+        'images',
+        'hotzone',
+        'picture-ads',
+        'magic-cube',
+        'videos',
+        'rich-text',
+        'notice',
+        'auxiliary-segmentation',
+        'graphic-navigation',
+        'commodity-search',
+        'suspension',
+        'page-popup',
+        'jump-applet',
+        'follow',
+        'goods-list',
+        'activity-list',
+        'filter-sorts',
+        'list-switching',
+        'coupon'
+    ]) {
+        assert.match(renderer, new RegExp(`demo-${component}-showcase`), `${component}: missing grouped showcase`);
+    }
+});

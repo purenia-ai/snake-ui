@@ -4,7 +4,16 @@
         :style="[$snakeThemeStyle, { padding: `15rpx ${pageMargin + imageMargin}rpx 0`, backgroundColor: bgColor }]"
     >
         <block v-for="(item, index) in goodsList" :key="item.id">
-            <view class="item" :style="[itemStyle]" @click.stop="$emit('item-click', item, index)">
+            <view
+                class="item"
+                :style="[itemStyle]"
+                role="link"
+                tabindex="0"
+                :aria-label="`查看商品：${item.name || item.goodsName || item.id || index + 1}`"
+                @click.stop="$emit('item-click', item, index)"
+                @keydown.enter.prevent="$emit('item-click', item, index)"
+                @keydown.space.prevent="$emit('item-click', item, index)"
+            >
                 <!-- 图片 -->
                 <view class="card-img">
                     <snake-lazy-image
@@ -187,8 +196,8 @@
  */
 
 export default {
-  name: 'GoodsList',
-  emits: ['item-click', 'handlerOffer'],
+    name: 'GoodsList',
+    emits: ['item-click', 'handlerOffer'],
     options: {
         addGlobalClass: true,
         // #ifndef MP-TOUTIAO
@@ -505,10 +514,10 @@ export default {
     font-family: PingFangSC-Medium;
     font-size: 26rpx;
     font-weight: 500;
-    color: var(--snake-color-primary, #06D290);
+    color: var(--snake-color-primary, #06d290);
     text-align: center;
     // line-height: 44rpx;
-    border: 2rpx solid var(--snake-color-primary, #06D290);
+    border: 2rpx solid var(--snake-color-primary, #06d290);
     border-radius: 2rpx;
 }
 

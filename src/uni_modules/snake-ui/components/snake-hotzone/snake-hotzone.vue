@@ -10,7 +10,12 @@
                 :key="zone.id ?? index"
                 class="snake-hotzone__zone"
                 :style="zoneStyle(zone)"
+                role="link"
+                :tabindex="zone.http ? 0 : -1"
+                :aria-label="`打开热区链接 ${index + 1}`"
                 @click="handleZoneClick(zone)"
+                @keydown.enter.prevent="handleZoneClick(zone)"
+                @keydown.space.prevent="handleZoneClick(zone)"
             />
         </view>
     </view>

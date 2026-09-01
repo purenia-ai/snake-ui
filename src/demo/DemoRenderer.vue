@@ -729,33 +729,75 @@ function resetForm() {
             >
             <snake-cms
                 v-if="kind === 'snake-cms'"
+                class="demo-snake-cms-showcase"
                 :page-info="cmsPageInfo"
                 :page-components="demoCmsComponents"
                 :scroll-top="scrollTop"
             />
-            <snake-custom-module v-else-if="kind === 'custom-module'" :datas="customModuleData"
+            <snake-custom-module
+                v-else-if="kind === 'custom-module'"
+                class="demo-custom-module-showcase"
+                :datas="customModuleData"
                 ><view class="custom-card">{{ demoState.moduleText }}</view></snake-custom-module
             >
-            <snake-images v-else-if="kind === 'images'" :datas="demoImageData" />
-            <snake-hotzone v-else-if="kind === 'hotzone'" :datas="demoHotzoneData" />
-            <snake-picture-ads v-else-if="kind === 'picture-ads'" :datas="demoPictureAdsData" />
-            <snake-magic-cube v-else-if="kind === 'magic-cube'" :datas="magicCubeData" />
-            <snake-videos v-else-if="kind === 'videos'" :datas="videoData" />
-            <snake-rich-text v-else-if="kind === 'rich-text'" :datas="richTextData" />
-            <snake-notice v-else-if="kind === 'notice'" :datas="demoNoticeData" />
-            <snake-auxiliary-segmentation v-else-if="kind === 'auxiliary-segmentation'" :datas="demoAuxiliaryData" />
-            <snake-graphic-navigation v-else-if="kind === 'graphic-navigation'" :datas="demoNavigationData" />
-            <snake-commodity-search v-else-if="kind === 'commodity-search'" :datas="demoSearchData" />
-            <snake-suspension v-else-if="kind === 'suspension'" :datas="demoSuspensionData" :scroll-top="scrollTop" />
-            <snake-page-popup v-else-if="kind === 'page-popup'" :datas="demoPopupData" />
-            <snake-jump-applet v-else-if="kind === 'jump-applet'" :datas="demoJumpAppletData" />
+            <snake-images v-else-if="kind === 'images'" class="demo-images-showcase" :datas="demoImageData" />
+            <snake-hotzone v-else-if="kind === 'hotzone'" class="demo-hotzone-showcase" :datas="demoHotzoneData" />
+            <snake-picture-ads
+                v-else-if="kind === 'picture-ads'"
+                class="demo-picture-ads-showcase"
+                :datas="demoPictureAdsData"
+            />
+            <snake-magic-cube
+                v-else-if="kind === 'magic-cube'"
+                class="demo-magic-cube-showcase"
+                :datas="magicCubeData"
+            />
+            <snake-videos v-else-if="kind === 'videos'" class="demo-videos-showcase" :datas="videoData" />
+            <snake-rich-text v-else-if="kind === 'rich-text'" class="demo-rich-text-showcase" :datas="richTextData" />
+            <snake-notice v-else-if="kind === 'notice'" class="demo-notice-showcase" :datas="demoNoticeData" />
+            <snake-auxiliary-segmentation
+                v-else-if="kind === 'auxiliary-segmentation'"
+                class="demo-auxiliary-segmentation-showcase"
+                :datas="demoAuxiliaryData"
+            />
+            <snake-graphic-navigation
+                v-else-if="kind === 'graphic-navigation'"
+                class="demo-graphic-navigation-showcase"
+                :datas="demoNavigationData"
+            />
+            <snake-commodity-search
+                v-else-if="kind === 'commodity-search'"
+                class="demo-commodity-search-showcase"
+                :datas="demoSearchData"
+            />
+            <snake-suspension
+                v-else-if="kind === 'suspension'"
+                class="demo-suspension-showcase"
+                :datas="demoSuspensionData"
+                :scroll-top="scrollTop"
+            />
+            <snake-page-popup
+                v-else-if="kind === 'page-popup'"
+                class="demo-page-popup-showcase"
+                :datas="demoPopupData"
+            />
+            <snake-jump-applet
+                v-else-if="kind === 'jump-applet'"
+                class="demo-jump-applet-showcase"
+                :datas="demoJumpAppletData"
+            />
             <view
                 v-else-if="kind === 'follow'"
-                :class="['demo-follow', { 'demo-follow--strong': demoState.followScene === 'strong' }]"
+                :class="[
+                    'demo-follow',
+                    'demo-follow-showcase',
+                    { 'demo-follow--strong': demoState.followScene === 'strong' }
+                ]"
                 ><snake-follow
             /></view>
             <snake-goods-list
                 v-else-if="kind === 'goods-list'"
+                class="demo-goods-list-showcase"
                 :goods-list="goods"
                 :list-type="String(demoState.goodsMode)"
                 :commodity-type="0"
@@ -764,20 +806,26 @@ function resetForm() {
             />
             <snake-activity-list
                 v-else-if="kind === 'activity-list'"
+                class="demo-activity-list-showcase"
                 :list="demoActivities"
                 :current="currentActivity"
                 @change="selectActivity"
             />
             <snake-filter-sorts
                 v-else-if="kind === 'filter-sorts'"
+                class="demo-filter-sorts-showcase"
                 :filters="filters"
                 sort="auto"
                 :bg-color="String(demoState.filterBg)"
                 :show-tabs="Boolean(demoState.filterTabs)"
                 :scroll-top="scrollTop"
             />
-            <snake-list-switching v-else-if="kind === 'list-switching'" :datas="demoListSwitchingData" />
-            <snake-coupon v-else-if="kind === 'coupon'" :datas="demoCouponData" />
+            <snake-list-switching
+                v-else-if="kind === 'list-switching'"
+                class="demo-list-switching-showcase"
+                :datas="demoListSwitchingData"
+            />
+            <snake-coupon v-else-if="kind === 'coupon'" class="demo-coupon-showcase" :datas="demoCouponData" />
         </DemoSection>
         <DemoSection v-if="definition.controls.length" variant="controls" :title="text('参数配置')">
             <DemoControlPanel :controls="definition.controls" :values="demoState" @change="updateDemoValue" />

@@ -84,3 +84,21 @@ test('second parity batch remains independent from uView runtime', async () => {
     );
     assert.doesNotMatch(source, /uni\.\$u|uview-pro|<u-/);
 });
+
+test('commerce actions expose keyboard semantics and clean transient timers', async () => {
+    const [activities, filters, goods, hotzone] = await Promise.all([
+        read('components/snake-activity-list/snake-activity-list.vue'),
+        read('components/snake-filter-sorts/snake-filter-sorts.vue'),
+        read('components/snake-goods-list/snake-goods-list.vue'),
+        read('components/snake-hotzone/snake-hotzone.vue')
+    ]);
+    assert.match(activities, /role="tablist"/);
+    assert.match(activities, /@keydown\.left/);
+    assert.match(activities, /beforeUnmount\(\)/);
+    assert.match(activities, /clearTimeout\(this\.clickTimer\)/);
+    for (const source of [filters, goods, hotzone]) {
+        assert.match(source, /tabindex/);
+        assert.match(source, /@keydown\.enter/);
+        assert.match(source, /@keydown\.space/);
+    }
+});
