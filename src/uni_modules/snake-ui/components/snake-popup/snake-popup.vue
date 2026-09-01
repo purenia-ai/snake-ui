@@ -30,6 +30,7 @@ const props = withDefaults(defineProps<SnakePopupProps>(), {
     closeOnClickOverlay: true,
     overlay: true,
     overlayOpacity: 0.5,
+    lockScroll: true,
     overlayStyle: '',
     safeAreaInsetBottom: false,
     safeAreaInsetTop: false,
@@ -108,6 +109,7 @@ defineExpose({ open, close });
             :z-index="zIndex - 1"
             :duration="duration"
             :opacity="overlayOpacity"
+            :lock-scroll="lockScroll"
             :custom-style="overlayStyle"
             @click="overlayClick"
         />

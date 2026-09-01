@@ -70,6 +70,24 @@ test('image, overlay, popup and sticky expose behavioral APIs', async () => {
     for (const event of ['fixed', 'unfixed', 'change']) assert.match(sticky, new RegExp(event));
 });
 
+test('lazy image separates placeholder events from the real image lifecycle', async () => {
+    const lazyImage = await read('components/snake-lazy-image/snake-lazy-image.vue');
+
+    assert.match(lazyImage, /if \(!visible\.value\) return/);
+    assert.match(lazyImage, /snake-lazy-image__error-image/);
+    assert.match(lazyImage, /observer\?\.disconnect\(\)/);
+});
+
+test('popup exposes overlay scroll locking as a public option', async () => {
+    const [source, types] = await Promise.all([
+        read('components/snake-popup/snake-popup.vue'),
+        read('components/snake-popup/types.ts')
+    ]);
+
+    assert.match(types, /lockScroll\?: boolean/);
+    assert.match(source, /:lock-scroll="lockScroll"/);
+});
+
 test('parity batch does not restore uView runtime names', async () => {
     const paths = [
         'components/snake-transition/snake-transition.vue',

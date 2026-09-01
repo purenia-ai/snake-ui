@@ -18,6 +18,14 @@ preview: /pages/componentsA/lazyImage/index
 <snake-lazy-image :src="item.image" :index="index" :threshold="160" mode="aspectFill" height="300rpx" @load="loaded" />
 ```
 
+## 占位与失败回退
+
+```vue
+<snake-lazy-image :src="item.image" loading-img="/static/image-loading.png" error-img="/static/image-error.png" />
+```
+
+`loadingImg` 只作为进入视口前的占位资源，不会提前触发真实图片的 `load` 或 `error` 事件；`errorImg` 是图片地址。需要自定义复杂状态时可使用同名插槽。
+
 ## API
 
 ### Props
@@ -34,6 +42,6 @@ preview: /pages/componentsA/lazyImage/index
 
 `src`、`mode`、`width`、`height`、`radius`、`fade`、`duration` 与 Image 含义一致；`loadingImg` 和 `errorImg` 设置占位资源，`threshold`（默认 `100`）控制视口预加载距离，`index` 用于区分列表项，`customStyle` 自定义容器样式。
 
-`click`、`load`、`error` 均返回 `(event, index)`，保留原始事件作为第一个参数。支持 `loading`、`error` 插槽。
+`click`、`load`、`error` 均返回 `(event, index)`，保留原始事件作为第一个参数；`load` 和 `error` 仅对应真实 `src`。支持 `loading`、`error` 插槽。
 
 源码：`src/uni_modules/snake-ui/components/snake-lazy-image/snake-lazy-image.vue`

@@ -287,14 +287,22 @@ function resetForm() {
                     </view>
                 </view>
             </view>
-            <view v-else-if="kind === 'loading-icon'" class="demo-stack demo-center"
-                ><snake-loading-icon
-                    :mode="demoState.loadingMode as any"
-                    :size="Number(demoState.loadingSize)"
-                    :vertical="Boolean(demoState.loadingVertical)"
-                    :text="isEnglish ? 'Loading' : '加载中'"
-            /></view>
-            <view v-else-if="kind === 'transition'" class="demo-stack"
+            <view v-else-if="kind === 'loading-icon'" class="demo-stack demo-loading-icon-showcase"
+                ><text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text
+                ><view class="demo-feedback-row"
+                    ><snake-loading-icon
+                        :mode="demoState.loadingMode as any"
+                        :size="Number(demoState.loadingSize)"
+                        :vertical="Boolean(demoState.loadingVertical)"
+                        :text="isEnglish ? 'Loading' : '加载中'" /></view
+                ><text class="demo-variant-title">{{ isEnglish ? 'Modes' : '加载形态' }}</text
+                ><view class="demo-feedback-row"
+                    ><snake-loading-icon mode="circle" text="Circle" /><snake-loading-icon
+                        mode="spinner"
+                        text="Spinner" /></view
+            ></view>
+            <view v-else-if="kind === 'transition'" class="demo-stack demo-transition-showcase"
+                ><text class="demo-variant-title">{{ isEnglish ? 'Interactive transition' : '交互动画' }}</text
                 ><snake-button size="small" @click="transitionVisible = !transitionVisible">{{
                     isEnglish ? 'Toggle' : '切换显示'
                 }}</snake-button
@@ -303,17 +311,34 @@ function resetForm() {
                     :name="demoState.transitionName as any"
                     :duration="Number(demoState.transitionDuration)"
                     ><view class="demo-transition-card">Snake Transition</view></snake-transition
+                ><text class="demo-variant-title">{{ isEnglish ? 'Preset: fade and zoom' : '预设：淡入与缩放' }}</text
+                ><view class="demo-feedback-row"
+                    ><snake-transition show name="fade"><view class="demo-transition-chip">Fade</view></snake-transition
+                    ><snake-transition show name="zoom-in"
+                        ><view class="demo-transition-chip">Zoom</view></snake-transition
+                    ></view
                 ></view
             >
-            <view v-else-if="kind === 'empty'" class="demo-center"
+            <view v-else-if="kind === 'empty'" class="demo-stack demo-empty-showcase"
+                ><text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text
                 ><snake-empty
                     :mode="String(demoState.emptyMode)"
                     :icon="demoState.showIcon ? localImage : ''"
                     :icon-size="Number(demoState.emptyIconSize)"
                     :text="String(demoState.text)"
-                    :text-color="String(demoState.textColor)"
-            /></view>
-            <view v-else-if="kind === 'icon'" class="demo-icon-showcase">
+                    :text-color="String(demoState.textColor)" /><text class="demo-variant-title">{{
+                    isEnglish ? 'Semantic states' : '语义状态'
+                }}</text
+                ><view class="demo-empty-grid"
+                    ><snake-empty
+                        mode="search"
+                        :text="isEnglish ? 'No results' : '没有搜索结果'"
+                        icon-size="72" /><snake-empty
+                        mode="wifi"
+                        :text="isEnglish ? 'Network error' : '网络连接异常'"
+                        icon-size="72" /></view
+            ></view>
+            <view v-else-if="kind === 'icon'" class="demo-icon-showcase demo-icon-showcase--grouped">
                 <view class="demo-icon-preview">
                     <snake-icon
                         :name="selectedIcon"
@@ -349,30 +374,52 @@ function resetForm() {
                     </view>
                 </view>
             </view>
-            <view v-else-if="kind === 'image'" class="demo-stack"
+            <view v-else-if="kind === 'image'" class="demo-stack demo-image-showcase"
+                ><text class="demo-variant-title">{{ isEnglish ? 'Loaded image' : '正常图片' }}</text
                 ><snake-image
                     :src="localImage"
                     width="100%"
                     height="320rpx"
                     :radius="Number(demoState.radius)"
-                    :mode="String(demoState.imageMode)" /><snake-image
+                    :mode="String(demoState.imageMode)" /><text class="demo-variant-title">{{
+                    isEnglish ? 'Error fallback' : '加载失败'
+                }}</text
+                ><snake-image
                     src="/static/not-found.png"
                     width="100%"
                     height="180rpx"
                     :radius="Number(demoState.radius)"
             /></view>
-            <view v-else-if="kind === 'lazy-image'" class="demo-stack"
+            <view v-else-if="kind === 'lazy-image'" class="demo-stack demo-lazy-image-showcase"
+                ><text class="demo-variant-title">{{ isEnglish ? 'Viewport loading' : '进入视口后加载' }}</text
                 ><view class="demo-image-box"
                     ><snake-lazy-image
                         :src="demoState.lazySource === 'error' ? '/static/not-found.png' : localImage" /></view
-            ></view>
-            <view v-else-if="kind === 'loadmore'" class="demo-stack"
+                ><text class="demo-variant-title">{{ isEnglish ? 'Custom fallback' : '自定义占位' }}</text
+                ><view class="demo-image-box"
+                    ><snake-lazy-image :src="localImage"
+                        ><template #loading
+                            ><view class="demo-lazy-placeholder">{{
+                                isEnglish ? 'Waiting…' : '等待加载…'
+                            }}</view></template
+                        ></snake-lazy-image
+                    ></view
+                ></view
+            >
+            <view v-else-if="kind === 'loadmore'" class="demo-stack demo-loadmore-showcase"
+                ><text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text
                 ><snake-loadmore
                     :status="String(demoState.loadStatus)"
                     :icon-type="String(demoState.loadIcon)"
-                    :is-dot="Boolean(demoState.loadDot)"
+                    :is-dot="Boolean(demoState.loadDot)" /><text class="demo-variant-title">{{
+                    isEnglish ? 'All states' : '全部状态'
+                }}</text
+                ><snake-loadmore status="loadmore" /><snake-loadmore status="loading" /><snake-loadmore
+                    status="nomore"
+                    is-dot
             /></view>
-            <view v-else-if="kind === 'notice-bar'" class="demo-stack"
+            <view v-else-if="kind === 'notice-bar'" class="demo-stack demo-notice-bar-showcase"
+                ><text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text
                 ><snake-notice-bar
                     :volume-icon="Boolean(demoState.noticeIcon)"
                     :more-icon="Boolean(demoState.noticeMore)"
@@ -390,9 +437,17 @@ function resetForm() {
                             ? ['Foundation components are ready', 'Supports H5, mini programs and apps']
                             : ['基础组件已就绪', '支持 H5、小程序和 App']
                     "
-                    :duration="Number(demoState.noticeDuration)"
+                    :duration="Number(demoState.noticeDuration)" /><text class="demo-variant-title">{{
+                    isEnglish ? 'Themes and actions' : '主题与操作'
+                }}</text
+                ><snake-notice-bar
+                    type="info"
+                    volume-icon
+                    more-icon
+                    :text="isEnglish ? 'View the latest component updates' : '查看最新组件更新'"
             /></view>
-            <view v-else-if="kind === 'overlay'" class="demo-trigger"
+            <view v-else-if="kind === 'overlay'" class="demo-trigger demo-overlay-showcase"
+                ><text class="demo-variant-title">{{ isEnglish ? 'Overlay content' : '遮罩内容' }}</text
                 ><snake-button @click="overlayVisible = true">{{
                     isEnglish ? 'Open overlay' : '打开遮罩'
                 }}</snake-button
@@ -400,7 +455,10 @@ function resetForm() {
                     ><view class="demo-overlay-tip">{{ demoState.overlayTip }}</view></snake-overlay
                 ></view
             >
-            <view v-else-if="kind === 'popup'" class="demo-trigger"
+            <view v-else-if="kind === 'popup'" class="demo-trigger demo-popup-showcase"
+                ><text class="demo-variant-title">{{
+                    isEnglish ? 'Position and closing behavior' : '位置与关闭行为'
+                }}</text
                 ><snake-button @click="popupVisible = true">{{ isEnglish ? 'Open popup' : '打开弹窗' }}</snake-button
                 ><snake-popup
                     v-model="popupVisible"
@@ -428,7 +486,10 @@ function resetForm() {
                     ></snake-navbar
                 ></view
             >
-            <view v-else-if="kind === 'sticky'" class="demo-scroll"
+            <view v-else-if="kind === 'sticky'" class="demo-scroll demo-sticky-showcase"
+                ><text class="demo-variant-title demo-variant-title--padded">{{
+                    isEnglish ? 'Page scroll sticky' : '页面滚动吸顶'
+                }}</text
                 ><view class="demo-scroll-hero">{{
                     isEnglish ? 'Scroll down to see the sticky behavior' : '向下滚动查看吸顶效果'
                 }}</view
@@ -734,6 +795,49 @@ function resetForm() {
     flex-wrap: wrap;
     align-items: center;
     gap: 18rpx;
+}
+.demo-variant-title {
+    display: block;
+    color: var(--snake-color-text);
+    font-size: 28rpx;
+    font-weight: 600;
+    line-height: 1.4;
+}
+.demo-variant-title--padded {
+    padding: 24rpx 24rpx 0;
+}
+.demo-feedback-row {
+    display: flex;
+    min-height: 120rpx;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 48rpx;
+    padding: 24rpx;
+    border-radius: 16rpx;
+    background: var(--snake-color-surface-muted);
+}
+.demo-transition-chip {
+    padding: 20rpx 28rpx;
+    border-radius: 12rpx;
+    background: var(--snake-color-primary-light);
+    color: var(--snake-demo-accent-text);
+}
+.demo-empty-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16rpx;
+    border-radius: 16rpx;
+    background: var(--snake-color-surface-muted);
+}
+.demo-lazy-placeholder {
+    display: flex;
+    width: 100%;
+    min-height: 180rpx;
+    align-items: center;
+    justify-content: center;
+    color: var(--snake-color-text-muted);
+    font-size: 24rpx;
 }
 .demo-center {
     display: flex;

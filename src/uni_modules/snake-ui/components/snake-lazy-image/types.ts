@@ -5,9 +5,9 @@ import type { SnakeImageMode, SnakeStyleValue } from '../../types/global';
 export interface SnakeLazyImageProps {
     /** 资源地址。 */
     src?: string;
-    /** loading img 配置。 */
+    /** 进入视口前显示的占位图片地址，不触发真实图片加载事件。 */
     loadingImg?: string;
-    /** error img 配置。 */
+    /** 真实图片加载失败后显示的回退图片地址。 */
     errorImg?: string;
     /** threshold 配置。 */
     threshold?: number;

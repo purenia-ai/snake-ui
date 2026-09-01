@@ -39,6 +39,8 @@ export interface SnakePopupProps {
     overlay?: boolean;
     /** 遮罩层透明度。 */
     overlayOpacity?: number;
+    /** 是否阻止遮罩区域的触摸滚动。 */
+    lockScroll?: boolean;
     /** 遮罩层自定义样式。 */
     overlayStyle?: SnakeStyleValue;
     /** 是否适配底部安全区域。 */

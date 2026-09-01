@@ -22,6 +22,8 @@ preview: /pages/componentsA/popup/index
 
 关闭按钮、遮罩和业务操作都可关闭弹层。H5 中打开复杂表单弹层后，业务页面应将焦点移入弹层；关闭后恢复到触发按钮。不可只依赖滑动手势关闭。
 
+默认通过遮罩阻止背景区域触摸滚动。嵌套滚动容器等特殊场景可设置 `:lock-scroll="false"`，并由业务自行处理背景滚动。
+
 ## API
 
 ### Props
@@ -35,6 +37,7 @@ preview: /pages/componentsA/popup/index
 | `closeable` / `closeIcon` / `closeIconPos`    | 关闭按钮参数       | 多类型    | `false / close / top-right` |
 | `closeOnClickOverlay`                         | 点击遮罩关闭       | `boolean` | `true`                      |
 | `overlay` / `overlayOpacity` / `overlayStyle` | 遮罩参数           | 多类型    | `true / 0.5 / ''`           |
+| `lockScroll`                                  | 阻止遮罩触摸滚动   | `boolean` | `true`                      |
 | `safeAreaInsetBottom` / `safeAreaInsetTop`    | 安全区             | `boolean` | `false`                     |
 | `customClass` / `customStyle`                 | 面板类名和样式     | 多类型    | `''`                        |
 

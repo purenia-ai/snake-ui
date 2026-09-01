@@ -341,3 +341,24 @@ test('button preview presents the complete capability showcase', async () => {
     assert.match(renderer, /demo-button-grid/);
     assert.match(renderer, /demo-button-flow/);
 });
+
+test('foundation feedback previews expose grouped variants', async () => {
+    const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
+
+    for (const component of [
+        'loading-icon',
+        'transition',
+        'icon',
+        'image',
+        'lazy-image',
+        'empty',
+        'loadmore',
+        'notice-bar',
+        'overlay',
+        'popup',
+        'sticky'
+    ]) {
+        assert.match(renderer, new RegExp(`demo-${component}-showcase`), `${component}: missing grouped showcase`);
+    }
+    assert.match(renderer, /demo-variant-title/);
+});

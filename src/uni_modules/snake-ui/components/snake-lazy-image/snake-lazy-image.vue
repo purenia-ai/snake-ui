@@ -30,6 +30,16 @@ const visible = ref(false);
 const instance = getCurrentInstance();
 let observer: any;
 
+function onLoad(event: unknown) {
+    if (!visible.value) return;
+    emit('load', event, props.index);
+}
+
+function onError(event: unknown) {
+    if (!visible.value) return;
+    emit('error', event, props.index);
+}
+
 onMounted(() => {
     if (typeof uni === 'undefined' || typeof uni.createIntersectionObserver !== 'function') {
         visible.value = true;
@@ -62,15 +72,26 @@ onBeforeUnmount(() => observer?.disconnect());
             :radius="radius"
             :fade="fade"
             :duration="duration"
-            :error-icon="errorImg || 'image'"
+            error-icon="image"
             :custom-style="customStyle"
             lazy-load
             @click="emit('click', $event, index)"
-            @load="emit('load', $event, index)"
-            @error="emit('error', $event, index)"
+            @load="onLoad"
+            @error="onError"
         >
             <template v-if="$slots.loading" #loading><slot name="loading" /></template>
-            <template v-if="$slots.error" #error><slot name="error" /></template>
+            <template v-if="$slots.error || errorImg" #error>
+                <slot name="error">
+                    <image class="snake-lazy-image__error-image" :src="errorImg" mode="aspectFit" />
+                </slot>
+            </template>
         </snake-image>
     </view>
 </template>
+
+<style scoped>
+.snake-lazy-image__error-image {
+    width: 100%;
+    height: 100%;
+}
+</style>
