@@ -43,6 +43,7 @@ const emit = defineEmits<SnakeTextareaEmits>();
 const formItem = inject(snakeFormItemKey, null);
 const innerValue = ref(String(props.modelValue ?? ''));
 const focused = ref(false);
+const composing = ref(false);
 watch(
     () => props.modelValue,
     value => {
@@ -66,7 +67,17 @@ function update(value: string) {
     emit('input', value);
 }
 function onInput(event: any) {
-    update(String(event.detail?.value ?? ''));
+    const value = String(event.detail?.value ?? '');
+    if (composing.value) {
+        innerValue.value = value;
+        return;
+    }
+    update(value);
+    void formItem?.notify('change');
+}
+function onCompositionEnd(event: any) {
+    composing.value = false;
+    update(String(event.detail?.value ?? innerValue.value));
     void formItem?.notify('change');
 }
 function onBlur(event: any) {
@@ -110,6 +121,8 @@ function onBlur(event: any) {
             @confirm="emit('confirm', String($event.detail?.value ?? innerValue), $event)"
             @linechange="emit('linechange', $event)"
             @keyboardheightchange="emit('keyboardheightchange', $event)"
+            @compositionstart="composing = true"
+            @compositionend="onCompositionEnd"
         />
         <text v-if="count && maxlength > 0" class="snake-textarea__count">{{ innerValue.length }}/{{ maxlength }}</text>
     </view>
@@ -133,10 +146,10 @@ function onBlur(event: any) {
     border-radius: 0;
 }
 .snake-textarea.is-focused {
-    border-color: var(--snake-color-primary, #06D290);
+    border-color: var(--snake-color-primary, #06d290);
 }
 .snake-textarea.is-error {
-    border-color: var(--snake-color-error, #FE0832);
+    border-color: var(--snake-color-error, #fe0832);
 }
 .snake-textarea.is-disabled {
     background: var(--snake-color-disabled-bg, #f5f7fa);

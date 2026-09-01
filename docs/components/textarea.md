@@ -18,6 +18,8 @@ preview: /pages/componentsA/textarea/index
 <snake-textarea v-model="intro" :maxlength="200" count :height="180" />
 ```
 
+中文、日文等输入法处于候选组合阶段时，组件只更新内部显示；组合结束后才同步 `v-model` 并触发表单 `change` 校验，避免半成品拼音造成误校验。
+
 ## API
 
 ### Props

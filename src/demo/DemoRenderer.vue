@@ -575,7 +575,11 @@ function resetForm() {
                     ></snake-index-list
                 ></view
             >
-            <view v-else-if="kind === 'form' || kind === 'form-item'" class="demo-form">
+            <view
+                v-else-if="kind === 'form' || kind === 'form-item'"
+                :class="['demo-form', kind === 'form' ? 'demo-form-showcase' : 'demo-form-item-showcase']"
+            >
+                <text class="demo-variant-title">{{ isEnglish ? 'Validation form' : '表单校验' }}</text>
                 <snake-form
                     ref="formRef"
                     :model="formModel"
@@ -626,7 +630,8 @@ function resetForm() {
                 >
                 <text class="demo-form__message">{{ formMessage }}</text>
             </view>
-            <view v-else-if="kind === 'input'" class="demo-control-stack"
+            <view v-else-if="kind === 'input'" class="demo-control-stack demo-input-showcase"
+                ><text class="demo-variant-title">{{ isEnglish ? 'Text and password' : '文本与密码' }}</text
                 ><snake-input
                     v-model="inputValue"
                     border="surround"
@@ -645,7 +650,8 @@ function resetForm() {
                     }}{{ inputValue || (isEnglish ? 'Empty' : '空') }}</text
                 ></view
             >
-            <view v-else-if="kind === 'textarea'" class="demo-control-stack"
+            <view v-else-if="kind === 'textarea'" class="demo-control-stack demo-textarea-showcase"
+                ><text class="demo-variant-title">{{ isEnglish ? 'Multiline input' : '多行输入' }}</text
                 ><snake-textarea
                     v-model="textareaValue"
                     :count="Boolean(demoState.textareaCount)"
@@ -655,13 +661,15 @@ function resetForm() {
                     isEnglish ? `${textareaValue.length} characters` : `已输入 ${textareaValue.length} 个字`
                 }}</text></view
             >
-            <view v-else-if="kind === 'checkbox'" class="demo-control-stack"
+            <view v-else-if="kind === 'checkbox'" class="demo-control-stack demo-checkbox-showcase"
+                ><text class="demo-variant-title">{{ isEnglish ? 'Standalone checkbox' : '独立复选框' }}</text
                 ><snake-checkbox v-model="checkboxValue" :disabled="Boolean(demoState.choiceDisabled)">{{
                     isEnglish ? 'Accept the user agreement' : '同意用户协议'
                 }}</snake-checkbox
                 ><text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ checkboxValue }}</text></view
             >
-            <view v-else-if="kind === 'checkbox-group'" class="demo-control-stack"
+            <view v-else-if="kind === 'checkbox-group'" class="demo-control-stack demo-checkbox-group-showcase"
+                ><text class="demo-variant-title">{{ isEnglish ? 'Limited selection' : '限制选择数量' }}</text
                 ><snake-checkbox-group
                     v-model="checkboxValues"
                     :placement="demoState.choiceColumn ? 'column' : 'row'"
@@ -676,27 +684,31 @@ function resetForm() {
                     }}{{ checkboxValues.join(isEnglish ? ', ' : '、') || (isEnglish ? 'None' : '无') }}</text
                 ></view
             >
-            <view v-else-if="kind === 'radio'" class="demo-control-stack"
+            <view v-else-if="kind === 'radio'" class="demo-control-stack demo-radio-showcase"
+                ><text class="demo-variant-title">{{ isEnglish ? 'Standalone radio' : '独立单选框' }}</text
                 ><snake-radio v-model="radioStandalone" :disabled="Boolean(demoState.choiceDisabled)">{{
                     isEnglish ? 'Default address' : '默认地址'
                 }}</snake-radio
                 ><text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ radioStandalone }}</text></view
             >
-            <view v-else-if="kind === 'radio-group'" class="demo-control-stack"
+            <view v-else-if="kind === 'radio-group'" class="demo-control-stack demo-radio-group-showcase"
+                ><text class="demo-variant-title">{{ isEnglish ? 'Exclusive selection' : '互斥选择' }}</text
                 ><snake-radio-group v-model="radioValue" :placement="demoState.choiceColumn ? 'column' : 'row'"
                     ><snake-radio name="sweet">{{ isEnglish ? 'Sweet' : '鲜甜' }}</snake-radio
                     ><snake-radio name="spicy">{{ isEnglish ? 'Spicy' : '香辣' }}</snake-radio
                     ><snake-radio name="mild">{{ isEnglish ? 'Mild' : '清淡' }}</snake-radio></snake-radio-group
                 ><text>{{ isEnglish ? 'Selected: ' : '已选：' }}{{ radioValue }}</text></view
             >
-            <view v-else-if="kind === 'switch'" class="demo-control-stack"
+            <view v-else-if="kind === 'switch'" class="demo-control-stack demo-switch-showcase"
+                ><text class="demo-variant-title">{{ isEnglish ? 'Switch states' : '开关状态' }}</text
                 ><snake-switch
                     v-model="switchValue"
                     :loading="Boolean(demoState.switchLoading)"
                     :disabled="Boolean(demoState.switchDisabled)"
                 /><text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ switchValue }}</text></view
             >
-            <view v-else-if="kind === 'slider'" class="demo-control-stack"
+            <view v-else-if="kind === 'slider'" class="demo-control-stack demo-slider-showcase"
+                ><text class="demo-variant-title">{{ isEnglish ? 'Touch and keyboard' : '触摸与键盘操作' }}</text
                 ><snake-slider
                     v-model="sliderValue"
                     :step="Number(demoState.sliderStep)"

@@ -362,3 +362,22 @@ test('foundation feedback previews expose grouped variants', async () => {
     }
     assert.match(renderer, /demo-variant-title/);
 });
+
+test('form control previews expose grouped variants', async () => {
+    const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
+
+    for (const component of [
+        'form',
+        'form-item',
+        'input',
+        'textarea',
+        'checkbox',
+        'checkbox-group',
+        'radio',
+        'radio-group',
+        'switch',
+        'slider'
+    ]) {
+        assert.match(renderer, new RegExp(`demo-${component}-showcase`), `${component}: missing grouped showcase`);
+    }
+});

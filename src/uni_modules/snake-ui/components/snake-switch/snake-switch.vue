@@ -62,7 +62,11 @@ function toggle(event: unknown) {
         :style="[$snakeThemeStyle, trackStyle, customStyle]"
         role="switch"
         :aria-checked="checked"
+        :aria-disabled="disabled || loading"
+        :tabindex="disabled || loading ? -1 : 0"
         @click="toggle"
+        @keydown.enter.prevent="toggle($event)"
+        @keydown.space.prevent="toggle($event)"
         ><view class="snake-switch__thumb" :style="thumbStyle"
             ><snake-loading-icon
                 v-if="loading"
@@ -80,6 +84,10 @@ function toggle(event: unknown) {
 }
 .snake-switch.is-disabled {
     opacity: 0.55;
+}
+.snake-switch:focus-visible {
+    outline: 2px solid var(--snake-color-primary, #06d290);
+    outline-offset: 4rpx;
 }
 .snake-switch__thumb {
     display: flex;

@@ -100,6 +100,11 @@ function onInput(event: any) {
     commit(value, 'input');
     void formItem?.notify('change');
 }
+function onCompositionEnd(event: any) {
+    composing.value = false;
+    commit(String(event.detail?.value ?? innerValue.value), 'input');
+    void formItem?.notify('change');
+}
 function onFocus(event: unknown) {
     focused.value = true;
     emit('focus', event);
@@ -158,7 +163,7 @@ function confirm(event: any) {
             @confirm="confirm"
             @keyboardheightchange="emit('keyboardheightchange', $event)"
             @compositionstart="composing = true"
-            @compositionend="composing = false"
+            @compositionend="onCompositionEnd"
         />
         <snake-icon v-if="showClear" name="close-circle-fill" class="snake-input__action" @click="clear" />
         <snake-icon
@@ -204,10 +209,10 @@ function confirm(event: any) {
     min-height: 92rpx;
 }
 .snake-input.is-focused {
-    border-color: var(--snake-color-primary, #06D290);
+    border-color: var(--snake-color-primary, #06d290);
 }
 .snake-input.is-error {
-    border-color: var(--snake-color-error, #FE0832);
+    border-color: var(--snake-color-error, #fe0832);
 }
 .snake-input.is-disabled {
     opacity: 0.72;

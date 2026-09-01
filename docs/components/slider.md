@@ -24,6 +24,8 @@ preview: /pages/componentsA/slider/index
 </snake-slider>
 ```
 
+H5 中轨道可通过 Tab 聚焦，方向键按照 `step` 调整数值；触摸拖动、轨道点击和键盘调整都会遵守 `min`、`max` 与步长归一化规则。
+
 ## API
 
 ### Props

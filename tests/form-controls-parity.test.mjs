@@ -120,6 +120,23 @@ test('input controls notify forms and slider supports touch measurement', async 
     assert.match(toggle, /inactiveValue/);
 });
 
+test('textarea protects IME composition and interactive controls support keyboards', async () => {
+    const [textarea, toggle, slider] = await Promise.all([
+        read('components/snake-textarea/snake-textarea.vue'),
+        read('components/snake-switch/snake-switch.vue'),
+        read('components/snake-slider/snake-slider.vue')
+    ]);
+
+    assert.match(textarea, /const composing = ref\(false\)/);
+    assert.match(textarea, /@compositionstart="composing = true"/);
+    assert.match(textarea, /if \(composing\.value\)/);
+    for (const source of [toggle, slider]) {
+        assert.match(source, /tabindex/);
+        assert.match(source, /@keydown\.enter|@keydown\.left/);
+        assert.match(source, /aria-disabled/);
+    }
+});
+
 test('form controls keep readable rpx size defaults', async () => {
     const [checkbox, checkboxGroup, radio, radioGroup, toggle, slider] = await Promise.all([
         read('components/snake-checkbox/snake-checkbox.vue'),

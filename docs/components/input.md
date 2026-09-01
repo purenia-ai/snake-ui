@@ -23,6 +23,8 @@ preview: /pages/componentsA/input/index
 <snake-input v-model="password" type="password" show-password border="surround" />
 ```
 
+中文、日文等输入法处于候选组合阶段时不会提前同步半成品内容；组合结束后再更新 `v-model` 并触发表单校验。
+
 ## API
 
 ### Props

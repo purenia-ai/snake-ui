@@ -19,6 +19,8 @@ preview: /pages/componentsA/switch/index
 <snake-switch v-model="status" active-value="yes" inactive-value="no" loading />
 ```
 
+H5 中组件可通过 Tab 聚焦，并使用 Enter 或空格切换。`disabled` 或 `loading` 时会退出键盘焦点顺序，也不会更新绑定值。
+
 ## API
 
 ### Props

@@ -134,6 +134,15 @@ async function tap(event: any) {
     emit('change', current.value);
     void formItem?.notify('change');
 }
+function adjust(direction: -1 | 1) {
+    if (props.disabled) return;
+    const next = normalize(current.value + stepValue.value * direction);
+    if (next === current.value) return;
+    current.value = next;
+    emit('update:modelValue', next);
+    emit('change', next);
+    void formItem?.notify('change');
+}
 onMounted(() => void update());
 defineExpose<SnakeSliderExpose>({ update });
 </script>
@@ -148,7 +157,17 @@ defineExpose<SnakeSliderExpose>({ update });
             ><view
                 class="snake-slider__track"
                 :style="{ height: addUnit(height, 'rpx'), backgroundColor: inactiveColor }"
+                role="slider"
+                :aria-valuemin="minValue"
+                :aria-valuemax="maxValue"
+                :aria-valuenow="current"
+                :aria-disabled="disabled"
+                :tabindex="disabled ? -1 : 0"
                 @click="tap"
+                @keydown.left.prevent="adjust(-1)"
+                @keydown.down.prevent="adjust(-1)"
+                @keydown.right.prevent="adjust(1)"
+                @keydown.up.prevent="adjust(1)"
                 @touchstart.stop.prevent="start"
                 @touchmove.stop.prevent="move"
                 @touchend.stop.prevent="end"
@@ -187,6 +206,10 @@ defineExpose<SnakeSliderExpose>({ update });
 .snake-slider__track {
     position: relative;
     border-radius: 999px;
+}
+.snake-slider__track:focus-visible {
+    outline: 2px solid var(--snake-color-primary, #06d290);
+    outline-offset: 8rpx;
 }
 .snake-slider__active {
     position: absolute;
