@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import type { DemoValue } from '../../demo-config';
 
-defineProps<{ state: Record<string, DemoValue>; isEnglish: boolean }>();
+defineProps<{ kind?: string; state: Record<string, DemoValue>; isEnglish: boolean }>();
 
 const selectedIcon = ref('search');
 const iconNames = [

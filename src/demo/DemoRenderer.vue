@@ -179,7 +179,7 @@ function resetForm() {
 <template>
     <DemoPage :title="localizedTitle" :eyebrow="categoryLabel" :desc="previewDescription" :viewport="isViewportPreview">
         <DemoSection :bare="isViewportPreview" variant="preview" :title="text('演示效果')">
-            <component :is="showcase" v-if="showcase" :state="demoState" :is-english="isEnglish" />
+            <component :is="showcase" v-if="showcase" :kind="kind" :state="demoState" :is-english="isEnglish" />
             <view v-else-if="kind === 'loading-icon'" class="demo-stack demo-loading-icon-showcase"
                 ><text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text
                 ><view class="demo-feedback-row"
@@ -231,38 +231,6 @@ function resetForm() {
                         :text="isEnglish ? 'Network error' : '网络连接异常'"
                         icon-size="72" /></view
             ></view>
-            <view v-else-if="kind === 'image'" class="demo-stack demo-image-showcase"
-                ><text class="demo-variant-title">{{ isEnglish ? 'Loaded image' : '正常图片' }}</text
-                ><snake-image
-                    :src="localImage"
-                    width="100%"
-                    height="320rpx"
-                    :radius="Number(demoState.radius)"
-                    :mode="String(demoState.imageMode)" /><text class="demo-variant-title">{{
-                    isEnglish ? 'Error fallback' : '加载失败'
-                }}</text
-                ><snake-image
-                    src="/static/not-found.png"
-                    width="100%"
-                    height="180rpx"
-                    :radius="Number(demoState.radius)"
-            /></view>
-            <view v-else-if="kind === 'lazy-image'" class="demo-stack demo-lazy-image-showcase"
-                ><text class="demo-variant-title">{{ isEnglish ? 'Viewport loading' : '进入视口后加载' }}</text
-                ><view class="demo-image-box"
-                    ><snake-lazy-image
-                        :src="demoState.lazySource === 'error' ? '/static/not-found.png' : localImage" /></view
-                ><text class="demo-variant-title">{{ isEnglish ? 'Custom fallback' : '自定义占位' }}</text
-                ><view class="demo-image-box"
-                    ><snake-lazy-image :src="localImage"
-                        ><template #loading
-                            ><view class="demo-lazy-placeholder">{{
-                                isEnglish ? 'Waiting…' : '等待加载…'
-                            }}</view></template
-                        ></snake-lazy-image
-                    ></view
-                ></view
-            >
             <view v-else-if="kind === 'loadmore'" class="demo-stack demo-loadmore-showcase"
                 ><text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text
                 ><snake-loadmore
@@ -730,15 +698,6 @@ function resetForm() {
     border-radius: 16rpx;
     background: var(--snake-color-surface-muted);
 }
-.demo-lazy-placeholder {
-    display: flex;
-    width: 100%;
-    min-height: 180rpx;
-    align-items: center;
-    justify-content: center;
-    color: var(--snake-color-text-muted);
-    font-size: 24rpx;
-}
 .demo-center {
     display: flex;
     min-height: 50vh;
@@ -753,13 +712,6 @@ function resetForm() {
     padding: 0 24rpx;
     color: var(--snake-demo-accent-text);
     font-size: 26rpx;
-}
-.demo-image-box {
-    width: 100%;
-    height: 300rpx;
-    border: 1rpx solid var(--snake-color-divider);
-    border-radius: 16rpx;
-    background: var(--snake-color-surface-muted);
 }
 .demo-transition-card {
     display: flex;

@@ -2,6 +2,7 @@
 import type { DemoValue } from '../../demo-config';
 
 defineProps<{
+    kind?: string;
     state: Record<string, DemoValue>;
     isEnglish: boolean;
 }>();

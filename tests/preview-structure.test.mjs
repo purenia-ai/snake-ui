@@ -348,7 +348,7 @@ test('button preview presents the complete capability showcase', async () => {
 test('foundation feedback previews expose grouped variants', async () => {
     const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
     const extracted = await Promise.all(
-        ['ButtonShowcase.vue', 'IconShowcase.vue'].map(file =>
+        ['ButtonShowcase.vue', 'IconShowcase.vue', 'MediaShowcase.vue'].map(file =>
             readFile(resolve(root, 'src/demo/showcases/foundation', file), 'utf8')
         )
     );
