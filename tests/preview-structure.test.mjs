@@ -74,16 +74,19 @@ test('component docs and example routes remain one-to-one', async () => {
     assert.deepEqual([...new Set(previews)].sort(), [...new Set(routes)].sort());
 });
 
-test('all public foundation components have docs, routes, and renderer branches', async () => {
+test('all public foundation components have docs, routes, and preview registrations', async () => {
     const pages = await readFile(resolve(root, 'src/pages.json'), 'utf8');
     const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
+    const registry = await readFile(resolve(root, 'src/demo/showcase-registry.ts'), 'utf8');
 
     for (const name of foundationComponents) {
         const routeName = componentRouteName(name);
         const markdown = await readFile(resolve(root, 'docs/components', `${name}.md`), 'utf8');
         assert.match(markdown, new RegExp(`^preview:\\s*/pages/componentsA/${routeName}/index$`, 'm'));
         assert.match(pages, new RegExp(`"path":\\s*"${routeName}/index"`));
-        assert.match(renderer, new RegExp(`kind === ['"]${name}['"]`));
+        const legacyBranch = new RegExp(`kind === ['"]${name}['"]`).test(renderer);
+        const showcaseRegistration = new RegExp(`(?:['"]${name}['"]|\\b${name}\\b)\\s*:`).test(registry);
+        assert.ok(legacyBranch || showcaseRegistration, `${name}: missing preview registration`);
     }
 });
 
@@ -324,7 +327,7 @@ test('icon preview exposes the bundled glyph set with a restrained interactive g
 });
 
 test('button preview presents the complete capability showcase', async () => {
-    const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
+    const renderer = await readFile(resolve(root, 'src/demo/showcases/foundation/ButtonShowcase.vue'), 'utf8');
 
     for (const section of [
         '按钮主题',
