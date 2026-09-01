@@ -385,6 +385,12 @@ test('foundation feedback previews expose grouped variants', async () => {
 
 test('form control previews expose grouped variants', async () => {
     const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
+    const extracted = await Promise.all(
+        ['form', 'formItem'].map(directory =>
+            readFile(resolve(root, 'src/pages/componentsA', directory, 'index.vue'), 'utf8')
+        )
+    );
+    const formSource = [renderer, ...extracted].join('\n');
 
     for (const component of [
         'form',
@@ -398,7 +404,7 @@ test('form control previews expose grouped variants', async () => {
         'switch',
         'slider'
     ]) {
-        assert.match(renderer, new RegExp(`demo-${component}-showcase`), `${component}: missing grouped showcase`);
+        assert.match(formSource, new RegExp(`demo-${component}-showcase`), `${component}: missing grouped showcase`);
     }
 });
 

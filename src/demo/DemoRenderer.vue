@@ -39,13 +39,6 @@ const isEnglish = computed(() => localeName.value === 'en-US');
 const demoState = reactive<Record<string, DemoValue>>(createDemoState(props.kind));
 const currentActivity = ref('001');
 const scrollTop = ref(0);
-const formRef = ref<any>();
-const formModel = reactive({ name: '', intro: '', fruit: ['apple'], flavor: 'sweet', enabled: true });
-const formRules = {
-    name: [{ required: true, message: '请输入姓名', trigger: ['change', 'blur'] }],
-    intro: [{ min: 5, message: '简介至少输入 5 个字', trigger: 'blur' }]
-};
-const formMessage = ref('请填写并提交表单');
 const inputValue = ref('');
 const textareaValue = ref('Snake UI 表单组件');
 const checkboxValue = ref(true);
@@ -147,81 +140,12 @@ function updateDemoValue(key: string, value: DemoValue) {
 function selectActivity(item: { id: string }) {
     currentActivity.value = item.id;
 }
-
-async function submitForm() {
-    try {
-        await formRef.value?.validate();
-        formMessage.value = `校验通过：${formModel.name}`;
-    } catch {
-        formMessage.value = '请检查表单中的错误提示';
-    }
-}
-
-function resetForm() {
-    formRef.value?.resetFields();
-    formMessage.value = '表单已重置';
-}
 </script>
 
 <template>
     <DemoPage :title="localizedTitle" :eyebrow="categoryLabel" :desc="previewDescription" :viewport="isViewportPreview">
         <DemoSection :bare="isViewportPreview" variant="preview" :title="text('演示效果')">
-            <view
-                v-if="kind === 'form' || kind === 'form-item'"
-                :class="['demo-form', kind === 'form' ? 'demo-form-showcase' : 'demo-form-item-showcase']"
-            >
-                <text class="demo-variant-title">{{ isEnglish ? 'Validation form' : '表单校验' }}</text>
-                <snake-form
-                    ref="formRef"
-                    :model="formModel"
-                    :rules="formRules"
-                    :border-bottom="Boolean(demoState.formBorder)"
-                    :label-position="demoState.formTopLabel ? 'top' : 'left'"
-                >
-                    <snake-form-item
-                        :label="isEnglish ? 'Name' : '姓名'"
-                        prop="name"
-                        :required="Boolean(demoState.formRequired ?? true)"
-                        left-icon="info"
-                        ><snake-input
-                            v-model="formModel.name"
-                            :placeholder="isEnglish ? 'Enter your name' : '请输入姓名'"
-                            clearable
-                    /></snake-form-item>
-                    <snake-form-item :label="isEnglish ? 'Bio' : '简介'" prop="intro"
-                        ><snake-textarea v-model="formModel.intro" :maxlength="60" count height="150"
-                    /></snake-form-item>
-                    <snake-form-item :label="isEnglish ? 'Fruit' : '水果'" prop="fruit"
-                        ><snake-checkbox-group v-model="formModel.fruit"
-                            ><snake-checkbox name="apple">{{ isEnglish ? 'Apple' : '苹果' }}</snake-checkbox
-                            ><snake-checkbox name="pear">{{
-                                isEnglish ? 'Pear' : '雪梨'
-                            }}</snake-checkbox></snake-checkbox-group
-                        ></snake-form-item
-                    >
-                    <snake-form-item :label="isEnglish ? 'Flavor' : '味道'" prop="flavor"
-                        ><snake-radio-group v-model="formModel.flavor"
-                            ><snake-radio name="sweet">{{ isEnglish ? 'Sweet' : '鲜甜' }}</snake-radio
-                            ><snake-radio name="spicy">{{
-                                isEnglish ? 'Spicy' : '香辣'
-                            }}</snake-radio></snake-radio-group
-                        ></snake-form-item
-                    >
-                    <snake-form-item :label="isEnglish ? 'Enabled' : '启用'" prop="enabled"
-                        ><snake-switch v-model="formModel.enabled"
-                    /></snake-form-item>
-                </snake-form>
-                <view class="demo-form__actions"
-                    ><snake-button size="small" @click="submitForm">{{
-                        isEnglish ? 'Validate' : '提交校验'
-                    }}</snake-button
-                    ><snake-button size="small" plain @click="resetForm">{{
-                        isEnglish ? 'Reset' : '重置'
-                    }}</snake-button></view
-                >
-                <text class="demo-form__message">{{ formMessage }}</text>
-            </view>
-            <view v-else-if="kind === 'input'" class="demo-control-stack demo-input-showcase"
+            <view v-if="kind === 'input'" class="demo-control-stack demo-input-showcase"
                 ><text class="demo-variant-title">{{ isEnglish ? 'Text and password' : '文本与密码' }}</text
                 ><snake-input
                     v-model="inputValue"
@@ -442,22 +366,12 @@ function resetForm() {
     border: 2rpx solid var(--snake-color-primary);
     background: var(--snake-color-primary-light);
 }
-.demo-form,
 .demo-control-stack {
     display: flex;
     flex-direction: column;
     gap: 28rpx;
     padding: 24rpx;
 }
-.demo-form {
-    gap: 20rpx;
-}
-.demo-form__actions {
-    display: flex;
-    gap: 20rpx;
-    padding-top: 12rpx;
-}
-.demo-form__message,
 .demo-control-stack > text {
     color: var(--snake-color-text-secondary);
     font-size: 26rpx;
