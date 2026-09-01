@@ -454,6 +454,12 @@ test('navigation and layout previews expose grouped variants', async () => {
 
 test('CMS and commerce previews expose grouped variants', async () => {
     const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
+    const extracted = await Promise.all(
+        ['customModule', 'images', 'hotzone'].map(directory =>
+            readFile(resolve(root, 'src/pages/componentsB', directory, 'index.vue'), 'utf8')
+        )
+    );
+    const cmsSource = [renderer, ...extracted].join('\n');
     for (const component of [
         'snake-cms',
         'custom-module',
@@ -477,6 +483,6 @@ test('CMS and commerce previews expose grouped variants', async () => {
         'list-switching',
         'coupon'
     ]) {
-        assert.match(renderer, new RegExp(`demo-${component}-showcase`), `${component}: missing grouped showcase`);
+        assert.match(cmsSource, new RegExp(`demo-${component}-showcase`), `${component}: missing grouped showcase`);
     }
 });

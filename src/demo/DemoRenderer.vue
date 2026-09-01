@@ -12,8 +12,6 @@ import {
     couponData,
     filters,
     goods,
-    hotzoneData,
-    imageData,
     jumpAppletData,
     listSwitchingData,
     localImage,
@@ -51,27 +49,12 @@ const magicCubeData = computed(() => ({
     bgColor: '#ffffff',
     imageTypeObj: { imageList: [{ src: localImage, url: '' }] }
 }));
-const customModuleData = { slotName: 'campaign' };
 const richTextData = computed(() => ({
     myValue: `<h3>${String(demoState.richHeading ?? 'Snake UI')}</h3><p>这是一个可交互的 uni-app 跨端实时预览。</p>`
 }));
 const videoData = computed(() => ({ src: demoState.videoScene === 'local' ? localImage : '' }));
 const cmsPageInfo = { pageId: 'preview' };
 const demoCmsComponents = computed(() => (demoState.cmsScene === 'simple' ? cmsComponents.slice(0, 1) : cmsComponents));
-const demoImageData = computed(() => ({
-    ...imageData,
-    platformOptions: imageData.platformOptions.map(item => ({
-        ...item,
-        imgs: { ...item.imgs, paddingLR: Number(demoState.contentMargin ?? 20) }
-    }))
-}));
-const demoHotzoneData = computed(() => ({
-    ...hotzoneData,
-    hotzoneList: hotzoneData.hotzoneList.map(zone => ({
-        ...zone,
-        httpType: Number(demoState.hotzoneLinkType ?? 10)
-    }))
-}));
 const demoPictureAdsData = computed(() => ({
     ...pictureAdsData,
     borderRadius: Number(demoState.adRadius ?? 16),
@@ -143,14 +126,6 @@ function selectActivity(item: { id: string }) {
                 :page-components="demoCmsComponents"
                 :scroll-top="scrollTop"
             />
-            <snake-custom-module
-                v-else-if="kind === 'custom-module'"
-                class="demo-custom-module-showcase"
-                :datas="customModuleData"
-                ><view class="custom-card">{{ demoState.moduleText }}</view></snake-custom-module
-            >
-            <snake-images v-else-if="kind === 'images'" class="demo-images-showcase" :datas="demoImageData" />
-            <snake-hotzone v-else-if="kind === 'hotzone'" class="demo-hotzone-showcase" :datas="demoHotzoneData" />
             <snake-picture-ads
                 v-else-if="kind === 'picture-ads'"
                 class="demo-picture-ads-showcase"
@@ -262,14 +237,5 @@ function selectActivity(item: { id: string }) {
 .demo-follow--strong {
     border: 2rpx solid var(--snake-color-primary);
     background: var(--snake-color-primary-light);
-}
-
-.custom-card {
-    margin: 0 24rpx;
-    padding: 48rpx 28rpx;
-    border-radius: 20rpx;
-    color: #eafff4;
-    background: linear-gradient(135deg, var(--snake-color-primary-deeper), var(--snake-color-primary-deep));
-    font-weight: 700;
 }
 </style>
