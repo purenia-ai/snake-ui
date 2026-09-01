@@ -44,6 +44,8 @@ const tabs = ['推荐', '新品', '热门'];
 
 `isScroll` 是兼容 uView Pro 命名的别名；同时传入时优先使用 `isScroll`。
 
+H5 中标签组使用 `tablist` / `tab` 语义。Tab 键进入当前项后，可使用左右方向键跳过隐藏或禁用项并切换标签。
+
 ## 对象列表与徽标
 
 ```vue

@@ -473,7 +473,7 @@ function resetForm() {
                     ></snake-popup
                 ></view
             >
-            <view v-else-if="kind === 'navbar'" class="demo-navbar-preview"
+            <view v-else-if="kind === 'navbar'" class="demo-navbar-preview demo-navbar-showcase"
                 ><snake-navbar
                     :title="String(demoState.navbarTitle)"
                     :is-back="Boolean(demoState.navbarBack)"
@@ -504,7 +504,7 @@ function resetForm() {
                     >{{ isEnglish ? 'Scroll item' : '滚动内容' }} {{ item }}</view
                 ></view
             >
-            <view v-else-if="kind === 'swiper'" class="demo-stack"
+            <view v-else-if="kind === 'swiper'" class="demo-stack demo-swiper-showcase"
                 ><snake-swiper
                     :list="foundationSwiperData"
                     :height="Number(demoState.swiperHeight)"
@@ -515,7 +515,7 @@ function resetForm() {
                     :show-title="Boolean(demoState.swiperTitle)"
                     :autoplay="Boolean(demoState.swiperAutoplay)"
             /></view>
-            <view v-else-if="kind === 'tabs'" class="demo-stack"
+            <view v-else-if="kind === 'tabs'" class="demo-stack demo-tabs-showcase"
                 ><snake-tabs
                     :list="foundationTabs"
                     :current="currentTab"
@@ -529,7 +529,7 @@ function resetForm() {
                     >{{ isEnglish ? 'Selected: ' : '当前选中：' }}{{ currentTabLabel }}</view
                 ></view
             >
-            <view v-else-if="kind === 'subsection'" class="demo-stack"
+            <view v-else-if="kind === 'subsection'" class="demo-stack demo-subsection-showcase"
                 ><snake-subsection
                     :list="isEnglish ? ['Pending payment', 'To ship', 'To receive'] : ['待付款', '待发货', '待收货']"
                     :current="Number(demoState.subsectionCurrent)"
@@ -538,14 +538,19 @@ function resetForm() {
                     :animation="Boolean(demoState.subsectionAnimation)"
                     @change="demoState.subsectionCurrent = $event"
             /></view>
-            <view v-else-if="kind === 'button-sort'" class="demo-stack"
+            <view v-else-if="kind === 'button-sort'" class="demo-stack demo-button-sort-showcase"
                 ><snake-button-sort :title="String(demoState.sortTitle)" @change="sortValue = $event.value" /><view
                     class="demo-tab-content"
                     >{{ isEnglish ? 'Current state: ' : '当前状态：'
                     }}{{ sortValue || (isEnglish ? 'Default' : '默认') }}</view
                 ></view
             >
-            <view v-else-if="kind === 'drop-menu' || kind === 'drop-menu-item'" class="demo-menu"
+            <view
+                v-else-if="kind === 'drop-menu' || kind === 'drop-menu-item'"
+                :class="[
+                    'demo-menu',
+                    kind === 'drop-menu' ? 'demo-drop-menu-showcase' : 'demo-drop-menu-item-showcase'
+                ]"
                 ><snake-drop-menu
                     ><snake-drop-menu-item :title="String(demoState.menuTitle)"
                         ><view class="demo-menu-panel">{{
@@ -560,7 +565,12 @@ function resetForm() {
                     ></snake-drop-menu
                 ></view
             >
-            <view v-else-if="kind === 'index-list' || kind === 'index-anchor'" class="demo-index"
+            <view
+                v-else-if="kind === 'index-list' || kind === 'index-anchor'"
+                :class="[
+                    'demo-index',
+                    kind === 'index-list' ? 'demo-index-list-showcase' : 'demo-index-anchor-showcase'
+                ]"
                 ><snake-index-list
                     :index-list="['A', 'B', 'C', 'D']"
                     :active-color="String(demoState.indexColor || '#06D290')"

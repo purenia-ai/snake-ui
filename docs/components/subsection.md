@@ -29,6 +29,8 @@ preview: /pages/componentsA/subsection/index
 />
 ```
 
+H5 中当前分段可通过 Tab 聚焦，左右方向键会循环切换，并自动跳过禁用选项。
+
 ## API
 
 ### Props

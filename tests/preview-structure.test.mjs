@@ -381,3 +381,20 @@ test('form control previews expose grouped variants', async () => {
         assert.match(renderer, new RegExp(`demo-${component}-showcase`), `${component}: missing grouped showcase`);
     }
 });
+
+test('navigation and layout previews expose grouped variants', async () => {
+    const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
+    for (const component of [
+        'navbar',
+        'tabs',
+        'swiper',
+        'subsection',
+        'button-sort',
+        'drop-menu',
+        'drop-menu-item',
+        'index-list',
+        'index-anchor'
+    ]) {
+        assert.match(renderer, new RegExp(`demo-${component}-showcase`), `${component}: missing grouped showcase`);
+    }
+});

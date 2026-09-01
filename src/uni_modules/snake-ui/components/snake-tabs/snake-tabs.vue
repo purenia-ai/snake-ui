@@ -218,6 +218,17 @@ function select(item: SnakeTabItem, index: number) {
     emit('change', index);
 }
 
+function selectAdjacent(index: number, direction: -1 | 1) {
+    for (let offset = 1; offset <= props.list.length; offset += 1) {
+        const target = (index + direction * offset + props.list.length) % props.list.length;
+        const item = props.list[target];
+        if (item && !isHidden(item) && !isDisabled(item)) {
+            select(item, target);
+            return;
+        }
+    }
+}
+
 watch(
     () => [
         props.list,
@@ -253,7 +264,7 @@ defineExpose({ init, scrollByIndex });
             scroll-with-animation
             :show-scrollbar="false"
         >
-            <view class="snake-tabs__track" :class="{ 'is-scrollable': canScroll }">
+            <view class="snake-tabs__track" :class="{ 'is-scrollable': canScroll }" role="tablist">
                 <view
                     v-for="(item, index) in list"
                     :id="itemId(index)"
@@ -261,7 +272,13 @@ defineExpose({ init, scrollByIndex });
                     class="snake-tabs__item"
                     :class="{ 'is-hidden': isHidden(item), 'is-disabled': isDisabled(item) }"
                     :style="itemStyle(index)"
+                    role="tab"
+                    :aria-selected="index === active"
+                    :aria-disabled="isDisabled(item)"
+                    :tabindex="isHidden(item) || isDisabled(item) ? -1 : index === active ? 0 : -1"
                     @click="select(item, index)"
+                    @keydown.left.prevent="selectAdjacent(index, -1)"
+                    @keydown.right.prevent="selectAdjacent(index, 1)"
                 >
                     <view class="snake-tabs__label">
                         <text>{{ label(item) }}</text>
