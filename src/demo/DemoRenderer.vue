@@ -11,8 +11,6 @@ import {
     cmsComponents,
     couponData,
     filters,
-    foundationSwiperData,
-    foundationTabs,
     goods,
     hotzoneData,
     imageData,
@@ -40,11 +38,6 @@ const localizedTitle = computed(() => {
 const isEnglish = computed(() => localeName.value === 'en-US');
 const demoState = reactive<Record<string, DemoValue>>(createDemoState(props.kind));
 const currentActivity = ref('001');
-const currentTab = ref(0);
-const currentTabLabel = computed(() => {
-    const item = foundationTabs[currentTab.value];
-    return typeof item === 'string' ? item : String(item?.name ?? '');
-});
 const sortValue = ref('');
 const scrollTop = ref(0);
 const formRef = ref<any>();
@@ -174,45 +167,7 @@ function resetForm() {
 <template>
     <DemoPage :title="localizedTitle" :eyebrow="categoryLabel" :desc="previewDescription" :viewport="isViewportPreview">
         <DemoSection :bare="isViewportPreview" variant="preview" :title="text('演示效果')">
-            <view v-if="kind === 'navbar'" class="demo-navbar-preview demo-navbar-showcase"
-                ><snake-navbar
-                    :title="String(demoState.navbarTitle)"
-                    :is-back="Boolean(demoState.navbarBack)"
-                    :border-bottom="Boolean(demoState.navbarBorder)"
-                    :title-bold="Boolean(demoState.navbarBold)"
-                    :fixed="false"
-                    :safe-area-inset-top="false"
-                    ><template #right
-                        ><text class="demo-navbar-preview__action">{{ isEnglish ? 'More' : '更多' }}</text></template
-                    ></snake-navbar
-                ></view
-            >
-            <view v-else-if="kind === 'swiper'" class="demo-stack demo-swiper-showcase"
-                ><snake-swiper
-                    :list="foundationSwiperData"
-                    :height="Number(demoState.swiperHeight)"
-                    :radius="Number(demoState.radius)"
-                    :indicator="Boolean(demoState.swiperIndicator)"
-                    :indicator-mode="String(demoState.swiperMode)"
-                    :effect3d="Boolean(demoState.swiperEffect3d)"
-                    :show-title="Boolean(demoState.swiperTitle)"
-                    :autoplay="Boolean(demoState.swiperAutoplay)"
-            /></view>
-            <view v-else-if="kind === 'tabs'" class="demo-stack demo-tabs-showcase"
-                ><snake-tabs
-                    :list="foundationTabs"
-                    :current="currentTab"
-                    :scrollable="Boolean(demoState.tabsScrollable)"
-                    :line-color="String(demoState.tabsColor)"
-                    :active-color="String(demoState.tabsColor)"
-                    :font-size="Number(demoState.tabsSize)"
-                    :is-dot="Boolean(demoState.tabsDot)"
-                    @change="currentTab = $event"
-                /><view class="demo-tab-content"
-                    >{{ isEnglish ? 'Selected: ' : '当前选中：' }}{{ currentTabLabel }}</view
-                ></view
-            >
-            <view v-else-if="kind === 'subsection'" class="demo-stack demo-subsection-showcase"
+            <view v-if="kind === 'subsection'" class="demo-stack demo-subsection-showcase"
                 ><snake-subsection
                     :list="isEnglish ? ['Pending payment', 'To ship', 'To receive'] : ['待付款', '待发货', '待收货']"
                     :current="Number(demoState.subsectionCurrent)"
@@ -534,15 +489,6 @@ function resetForm() {
     min-height: 50vh;
     align-items: center;
     justify-content: center;
-}
-.demo-navbar-preview {
-    border: 1rpx solid var(--snake-color-divider);
-    border-radius: 10rpx;
-}
-.demo-navbar-preview__action {
-    padding: 0 24rpx;
-    color: var(--snake-demo-accent-text);
-    font-size: 26rpx;
 }
 .demo-tab-content {
     padding: 64rpx 24rpx;

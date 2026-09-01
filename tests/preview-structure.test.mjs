@@ -404,6 +404,12 @@ test('form control previews expose grouped variants', async () => {
 
 test('navigation and layout previews expose grouped variants', async () => {
     const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
+    const extracted = await Promise.all(
+        ['navbar', 'swiper', 'tabs'].map(directory =>
+            readFile(resolve(root, 'src/pages/componentsA', directory, 'index.vue'), 'utf8')
+        )
+    );
+    const navigationSource = [renderer, ...extracted].join('\n');
     for (const component of [
         'navbar',
         'tabs',
@@ -415,7 +421,11 @@ test('navigation and layout previews expose grouped variants', async () => {
         'index-list',
         'index-anchor'
     ]) {
-        assert.match(renderer, new RegExp(`demo-${component}-showcase`), `${component}: missing grouped showcase`);
+        assert.match(
+            navigationSource,
+            new RegExp(`demo-${component}-showcase`),
+            `${component}: missing grouped showcase`
+        );
     }
 });
 
