@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onBeforeUnmount, ref } from 'vue';
-import DemoPage from '../../../demo/DemoPage.vue';
+import DemoPage from '../../../demo/components/DemoPage.vue';
 import { debounce, throttle } from '../../../uni_modules/snake-ui';
 
 const debounceClicks = ref(0);

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import DemoPage from '../../../demo/DemoPage.vue';
+import DemoPage from '../../../demo/components/DemoPage.vue';
 import { useDemoLocale } from '../../../demo/demo-i18n';
 import { useSnakeLocale, useSnakeTheme } from '../../../uni_modules/snake-ui';
 

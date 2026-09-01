@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import DemoPage from '../../demo/DemoPage.vue';
+import DemoPage from '../../demo/components/DemoPage.vue';
 import { useDemoLocale } from '../../demo/demo-i18n';
 
 defineOptions({ name: 'SnakeExampleAbout' });

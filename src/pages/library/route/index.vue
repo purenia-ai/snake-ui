@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import DemoPage from '../../../demo/DemoPage.vue';
+import DemoPage from '../../../demo/components/DemoPage.vue';
 import { route } from '../../../uni_modules/snake-ui';
 
 const log = ref('尚未导航');

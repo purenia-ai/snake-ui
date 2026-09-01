@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { snakeColor, snakeDarkMode, snakeSystemDark, snakeThemeStyle } from '../uni_modules/snake-ui';
+import { snakeColor, snakeDarkMode, snakeSystemDark, snakeThemeStyle } from '../../uni_modules/snake-ui';
 import DemoTabbar from './DemoTabbar.vue';
-import type { DemoTab } from './demo-tabbar';
-import { useDemoLocale } from './demo-i18n';
+import type { DemoTab } from '../demo-tabbar';
+import { useDemoLocale } from '../demo-i18n';
 
 withDefaults(
     defineProps<{
@@ -102,7 +102,7 @@ function goHome() {
 </template>
 
 <style lang="scss" scoped>
-@import './theme.scss';
+@import '../theme.scss';
 
 .demo-page {
     box-sizing: border-box;

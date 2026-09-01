@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue';
-import DemoPage from './DemoPage.vue';
-import DemoSection from './DemoSection.vue';
-import DemoControlPanel from './DemoControlPanel.vue';
+import DemoPage from './components/DemoPage.vue';
+import DemoSection from './components/DemoSection.vue';
+import DemoControlPanel from './components/DemoControlPanel.vue';
 import { createDemoState, getDemoDefinition, localizeDemoDefinition, type DemoValue } from './demo-config';
 import { demoText, demoTitle, useDemoLocale } from './demo-i18n';
 import {

@@ -47,7 +47,7 @@ const componentRouteName = name => name.replace(/-([a-z])/g, (_, letter) => lett
 
 test('preview renderer uses an uncropped viewport root', async () => {
     const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
-    const page = await readFile(resolve(root, 'src/demo/DemoPage.vue'), 'utf8');
+    const page = await readFile(resolve(root, 'src/demo/components/DemoPage.vue'), 'utf8');
     assert.ok(page.includes('background-color: var(--snake-color-surface)'));
 
     assert.doesNotMatch(renderer, /DemoShell/);
@@ -134,7 +134,7 @@ test('component overview page covers every example route and directory layout', 
 
 test('all example components declare an interactive demo configuration', async () => {
     const config = await readFile(resolve(root, 'src/demo/demo-config.ts'), 'utf8');
-    const panel = await readFile(resolve(root, 'src/demo/DemoControlPanel.vue'), 'utf8');
+    const panel = await readFile(resolve(root, 'src/demo/components/DemoControlPanel.vue'), 'utf8');
     const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
 
     const configuredKinds = [...config.matchAll(/^\s+(?:'([^']+)'|([a-z][\w-]*)):\s*\{\s*category:/gm)].map(
@@ -150,9 +150,9 @@ test('all example components declare an interactive demo configuration', async (
 
 test('component demos use one restrained shared presentation system', async () => {
     const theme = await readFile(resolve(root, 'src/demo/theme.scss'), 'utf8');
-    const page = await readFile(resolve(root, 'src/demo/DemoPage.vue'), 'utf8');
-    const section = await readFile(resolve(root, 'src/demo/DemoSection.vue'), 'utf8');
-    const panel = await readFile(resolve(root, 'src/demo/DemoControlPanel.vue'), 'utf8');
+    const page = await readFile(resolve(root, 'src/demo/components/DemoPage.vue'), 'utf8');
+    const section = await readFile(resolve(root, 'src/demo/components/DemoSection.vue'), 'utf8');
+    const panel = await readFile(resolve(root, 'src/demo/components/DemoControlPanel.vue'), 'utf8');
     const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
 
     assert.match(theme, /--snake-demo-nav-background:\s*var\(--snake-color-primary/);
@@ -257,7 +257,7 @@ test('docs and preview shell use the approved brand green system', async () => {
     const frame = await readFile(resolve(root, 'docs/.vitepress/theme/PreviewFrame.vue'), 'utf8');
     const css = await readFile(resolve(root, 'docs/.vitepress/theme/custom.css'), 'utf8');
     const demoTheme = await readFile(resolve(root, 'src/demo/theme.scss'), 'utf8');
-    const demoPage = await readFile(resolve(root, 'src/demo/DemoPage.vue'), 'utf8');
+    const demoPage = await readFile(resolve(root, 'src/demo/components/DemoPage.vue'), 'utf8');
 
     assert.match(config, /theme-color[^\n]+#06D290/);
     assert.match(css, /--snake-brand-fill:\s*#06d290/i);
@@ -283,7 +283,7 @@ test('docs and preview shell use the approved brand green system', async () => {
 
 test('mobile preview and locale guide expose one persistent bilingual experience', async () => {
     const demoLocale = await readFile(resolve(root, 'src/demo/demo-i18n.ts'), 'utf8');
-    const demoPage = await readFile(resolve(root, 'src/demo/DemoPage.vue'), 'utf8');
+    const demoPage = await readFile(resolve(root, 'src/demo/components/DemoPage.vue'), 'utf8');
     const demoConfig = await readFile(resolve(root, 'src/demo/demo-config.ts'), 'utf8');
     const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
     const indexPage = await readFile(resolve(root, 'src/pages/example/components.vue'), 'utf8');

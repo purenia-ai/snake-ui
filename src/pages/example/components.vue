@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import DemoPage from '../../demo/DemoPage.vue';
+import DemoPage from '../../demo/components/DemoPage.vue';
 import { demoText, useDemoLocale } from '../../demo/demo-i18n';
 import rawGroups from './components.config';
 
