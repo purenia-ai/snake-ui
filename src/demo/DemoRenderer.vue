@@ -167,27 +167,7 @@ function resetForm() {
     <DemoPage :title="localizedTitle" :eyebrow="categoryLabel" :desc="previewDescription" :viewport="isViewportPreview">
         <DemoSection :bare="isViewportPreview" variant="preview" :title="text('演示效果')">
             <view
-                v-if="kind === 'index-list' || kind === 'index-anchor'"
-                :class="[
-                    'demo-index',
-                    kind === 'index-list' ? 'demo-index-list-showcase' : 'demo-index-anchor-showcase'
-                ]"
-                ><snake-index-list
-                    :index-list="['A', 'B', 'C', 'D']"
-                    :active-color="String(demoState.indexColor || '#06D290')"
-                    ><view v-for="letter in ['A', 'B', 'C', 'D']" :key="letter"
-                        ><snake-index-anchor
-                            :index="letter"
-                            :text="kind === 'index-anchor' ? `${String(demoState.anchorPrefix)} ${letter}` : letter"
-                            custom-style="height: 64rpx; padding: 0 20rpx"
-                        /><view v-for="item in 3" :key="item" class="demo-index-row"
-                            >{{ letter }} {{ isEnglish ? 'item' : '类内容' }} {{ item }}</view
-                        ></view
-                    ></snake-index-list
-                ></view
-            >
-            <view
-                v-else-if="kind === 'form' || kind === 'form-item'"
+                v-if="kind === 'form' || kind === 'form-item'"
                 :class="['demo-form', kind === 'form' ? 'demo-form-showcase' : 'demo-form-item-showcase']"
             >
                 <text class="demo-variant-title">{{ isEnglish ? 'Validation form' : '表单校验' }}</text>
@@ -461,15 +441,6 @@ function resetForm() {
 .demo-follow--strong {
     border: 2rpx solid var(--snake-color-primary);
     background: var(--snake-color-primary-light);
-}
-.demo-index {
-    height: 620rpx;
-}
-.demo-index-row {
-    padding: 28rpx 20rpx;
-    border-bottom: 1rpx solid var(--snake-color-divider);
-    color: var(--snake-color-text-secondary);
-    background: var(--snake-color-surface);
 }
 .demo-form,
 .demo-control-stack {
