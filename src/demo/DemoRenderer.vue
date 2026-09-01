@@ -23,7 +23,7 @@ import {
     popupData,
     searchData,
     suspensionData
-} from './fixtures';
+} from '../common/fixtures';
 
 const props = defineProps<{ kind: string; title: string }>();
 const { localeName, text } = useDemoLocale();
