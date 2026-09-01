@@ -39,10 +39,6 @@ const isEnglish = computed(() => localeName.value === 'en-US');
 const demoState = reactive<Record<string, DemoValue>>(createDemoState(props.kind));
 const currentActivity = ref('001');
 const scrollTop = ref(0);
-const inputValue = ref('');
-const textareaValue = ref('Snake UI 表单组件');
-const checkboxValue = ref(true);
-const checkboxValues = ref<unknown[]>(['apple']);
 const radioStandalone = ref(false);
 const radioValue = ref<unknown>('sweet');
 const switchValue = ref(true);
@@ -145,61 +141,7 @@ function selectActivity(item: { id: string }) {
 <template>
     <DemoPage :title="localizedTitle" :eyebrow="categoryLabel" :desc="previewDescription" :viewport="isViewportPreview">
         <DemoSection :bare="isViewportPreview" variant="preview" :title="text('演示效果')">
-            <view v-if="kind === 'input'" class="demo-control-stack demo-input-showcase"
-                ><text class="demo-variant-title">{{ isEnglish ? 'Text and password' : '文本与密码' }}</text
-                ><snake-input
-                    v-model="inputValue"
-                    border="surround"
-                    prefix-icon="search"
-                    :clearable="Boolean(demoState.inputClearable)"
-                    :disabled="Boolean(demoState.inputDisabled)"
-                    :placeholder="String(demoState.inputPlaceholder)"
-                /><snake-input
-                    v-model="inputValue"
-                    type="password"
-                    border="surround"
-                    show-password
-                    :placeholder="isEnglish ? 'Password' : '密码输入'"
-                /><text
-                    >{{ isEnglish ? 'Current value: ' : '当前值：'
-                    }}{{ inputValue || (isEnglish ? 'Empty' : '空') }}</text
-                ></view
-            >
-            <view v-else-if="kind === 'textarea'" class="demo-control-stack demo-textarea-showcase"
-                ><text class="demo-variant-title">{{ isEnglish ? 'Multiline input' : '多行输入' }}</text
-                ><snake-textarea
-                    v-model="textareaValue"
-                    :count="Boolean(demoState.textareaCount)"
-                    :auto-height="Boolean(demoState.textareaAuto)"
-                    :maxlength="80"
-                /><text>{{
-                    isEnglish ? `${textareaValue.length} characters` : `已输入 ${textareaValue.length} 个字`
-                }}</text></view
-            >
-            <view v-else-if="kind === 'checkbox'" class="demo-control-stack demo-checkbox-showcase"
-                ><text class="demo-variant-title">{{ isEnglish ? 'Standalone checkbox' : '独立复选框' }}</text
-                ><snake-checkbox v-model="checkboxValue" :disabled="Boolean(demoState.choiceDisabled)">{{
-                    isEnglish ? 'Accept the user agreement' : '同意用户协议'
-                }}</snake-checkbox
-                ><text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ checkboxValue }}</text></view
-            >
-            <view v-else-if="kind === 'checkbox-group'" class="demo-control-stack demo-checkbox-group-showcase"
-                ><text class="demo-variant-title">{{ isEnglish ? 'Limited selection' : '限制选择数量' }}</text
-                ><snake-checkbox-group
-                    v-model="checkboxValues"
-                    :placement="demoState.choiceColumn ? 'column' : 'row'"
-                    :max="2"
-                    ><snake-checkbox name="apple">{{ isEnglish ? 'Apple' : '苹果' }}</snake-checkbox
-                    ><snake-checkbox name="pear">{{ isEnglish ? 'Pear' : '雪梨' }}</snake-checkbox
-                    ><snake-checkbox name="lemon">{{
-                        isEnglish ? 'Lemon' : '柠檬'
-                    }}</snake-checkbox></snake-checkbox-group
-                ><text
-                    >{{ isEnglish ? 'Selected: ' : '已选：'
-                    }}{{ checkboxValues.join(isEnglish ? ', ' : '、') || (isEnglish ? 'None' : '无') }}</text
-                ></view
-            >
-            <view v-else-if="kind === 'radio'" class="demo-control-stack demo-radio-showcase"
+            <view v-if="kind === 'radio'" class="demo-control-stack demo-radio-showcase"
                 ><text class="demo-variant-title">{{ isEnglish ? 'Standalone radio' : '独立单选框' }}</text
                 ><snake-radio v-model="radioStandalone" :disabled="Boolean(demoState.choiceDisabled)">{{
                     isEnglish ? 'Default address' : '默认地址'

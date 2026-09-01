@@ -386,7 +386,7 @@ test('foundation feedback previews expose grouped variants', async () => {
 test('form control previews expose grouped variants', async () => {
     const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
     const extracted = await Promise.all(
-        ['form', 'formItem'].map(directory =>
+        ['form', 'formItem', 'input', 'textarea', 'checkbox', 'checkboxGroup'].map(directory =>
             readFile(resolve(root, 'src/pages/componentsA', directory, 'index.vue'), 'utf8')
         )
     );
