@@ -344,7 +344,7 @@ test('button preview presents the complete capability showcase', async () => {
 test('foundation feedback previews expose grouped variants', async () => {
     const renderer = await readFile(resolve(root, 'src/demo/DemoRenderer.vue'), 'utf8');
     const extracted = await Promise.all(
-        ['button', 'icon', 'image', 'lazyImage'].map(directory =>
+        ['button', 'icon', 'image', 'lazyImage', 'loadingIcon', 'transition'].map(directory =>
             readFile(resolve(root, 'src/pages/componentsA', directory, 'index.vue'), 'utf8')
         )
     );

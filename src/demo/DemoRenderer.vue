@@ -48,7 +48,6 @@ const currentTabLabel = computed(() => {
 const sortValue = ref('');
 const popupVisible = ref(false);
 const overlayVisible = ref(false);
-const transitionVisible = ref(true);
 const scrollTop = ref(0);
 const formRef = ref<any>();
 const formModel = reactive({ name: '', intro: '', fruit: ['apple'], flavor: 'sweet', enabled: true });
@@ -177,39 +176,7 @@ function resetForm() {
 <template>
     <DemoPage :title="localizedTitle" :eyebrow="categoryLabel" :desc="previewDescription" :viewport="isViewportPreview">
         <DemoSection :bare="isViewportPreview" variant="preview" :title="text('演示效果')">
-            <view v-if="kind === 'loading-icon'" class="demo-stack demo-loading-icon-showcase"
-                ><text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text
-                ><view class="demo-feedback-row"
-                    ><snake-loading-icon
-                        :mode="demoState.loadingMode as any"
-                        :size="Number(demoState.loadingSize)"
-                        :vertical="Boolean(demoState.loadingVertical)"
-                        :text="isEnglish ? 'Loading' : '加载中'" /></view
-                ><text class="demo-variant-title">{{ isEnglish ? 'Modes' : '加载形态' }}</text
-                ><view class="demo-feedback-row"
-                    ><snake-loading-icon mode="circle" text="Circle" /><snake-loading-icon
-                        mode="spinner"
-                        text="Spinner" /></view
-            ></view>
-            <view v-else-if="kind === 'transition'" class="demo-stack demo-transition-showcase"
-                ><text class="demo-variant-title">{{ isEnglish ? 'Interactive transition' : '交互动画' }}</text
-                ><snake-button size="small" @click="transitionVisible = !transitionVisible">{{
-                    isEnglish ? 'Toggle' : '切换显示'
-                }}</snake-button
-                ><snake-transition
-                    :show="transitionVisible"
-                    :name="demoState.transitionName as any"
-                    :duration="Number(demoState.transitionDuration)"
-                    ><view class="demo-transition-card">Snake Transition</view></snake-transition
-                ><text class="demo-variant-title">{{ isEnglish ? 'Preset: fade and zoom' : '预设：淡入与缩放' }}</text
-                ><view class="demo-feedback-row"
-                    ><snake-transition show name="fade"><view class="demo-transition-chip">Fade</view></snake-transition
-                    ><snake-transition show name="zoom-in"
-                        ><view class="demo-transition-chip">Zoom</view></snake-transition
-                    ></view
-                ></view
-            >
-            <view v-else-if="kind === 'empty'" class="demo-stack demo-empty-showcase"
+            <view v-if="kind === 'empty'" class="demo-stack demo-empty-showcase"
                 ><text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text
                 ><snake-empty
                     :mode="String(demoState.emptyMode)"
@@ -671,23 +638,6 @@ function resetForm() {
 .demo-variant-title--padded {
     padding: 24rpx 24rpx 0;
 }
-.demo-feedback-row {
-    display: flex;
-    min-height: 120rpx;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 48rpx;
-    padding: 24rpx;
-    border-radius: 16rpx;
-    background: var(--snake-color-surface-muted);
-}
-.demo-transition-chip {
-    padding: 20rpx 28rpx;
-    border-radius: 12rpx;
-    background: var(--snake-color-primary-light);
-    color: var(--snake-demo-accent-text);
-}
 .demo-empty-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -709,15 +659,6 @@ function resetForm() {
     padding: 0 24rpx;
     color: var(--snake-demo-accent-text);
     font-size: 26rpx;
-}
-.demo-transition-card {
-    display: flex;
-    min-height: 220rpx;
-    align-items: center;
-    justify-content: center;
-    border-radius: 20rpx;
-    color: #fff;
-    background: linear-gradient(135deg, var(--snake-color-primary-deep), var(--snake-color-primary-deeper));
 }
 .demo-trigger {
     padding: 48rpx 24rpx;
