@@ -12,6 +12,10 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.sicon-info-circle:before {
+    content: '\e77e';
+}
+
 .sicon-arrow-up:before {
     content: '\e601';
 }
@@ -21,11 +25,11 @@
 }
 
 .sicon-arrow-left:before {
-    content: '\e660';
+    content: '\e604';
 }
 
 .sicon-arrow-right:before {
-    content: '\e84a';
+    content: '\e603';
 }
 
 .sicon-minus:before {

@@ -50,8 +50,9 @@
                 <snake-sticky
                     v-if="item.setStyle.tabShow || item.setStyle.filterShow"
                     :offset-top="stickyOffsetTop"
+                    :custom-nav-height="stickyCustomNavHeight"
                     :scroll-top="scrollTop"
-                    :disabled="!item.setStyle.stickyDisabled"
+                    :disabled="Boolean(item.setStyle.stickyDisabled)"
                     :bg-color="item.setStyle.backgroundColor || 'var(--snake-color-background, #f6f6f6)'"
                     :z-index="19"
                 >
@@ -185,6 +186,7 @@ const props = withDefaults(
         pageComponents?: unknown[];
         scrollTop?: number;
         stickyOffsetTop?: number;
+        stickyCustomNavHeight?: number;
         cmsOptions?: SnakeCmsOptions;
     }>(),
     {
@@ -192,6 +194,7 @@ const props = withDefaults(
         pageComponents: () => [],
         scrollTop: 0,
         stickyOffsetTop: 0,
+        stickyCustomNavHeight: 0,
         cmsOptions: () => ({})
     }
 );

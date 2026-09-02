@@ -35,7 +35,12 @@ function unitNumber(value: number | string | null | undefined) {
     const number = Number.parseFloat(String(value ?? 0));
     return Number.isFinite(number) ? number : 0;
 }
-const top = computed(() => unitNumber(props.offsetTop) + unitNumber(props.customNavHeight));
+function offsetTopPx(value: number | string | null | undefined) {
+    const number = unitNumber(value);
+    if (typeof value === 'string' && value.trim().endsWith('px')) return number;
+    return typeof uni !== 'undefined' && typeof uni.upx2px === 'function' ? uni.upx2px(number) : number;
+}
+const top = computed(() => offsetTopPx(props.offsetTop) + unitNumber(props.customNavHeight));
 const placeholderStyle = computed(() => ({ height: fixed.value ? `${height.value}px` : 'auto' }));
 const contentStyle = computed(() => [
     (fixed.value

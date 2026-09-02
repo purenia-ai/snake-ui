@@ -3,9 +3,9 @@ import type { SnakeStyleValue } from '../../types/global';
 
 /** SnakeSticky 组件的公开属性。 */
 export interface SnakeStickyProps {
-    /** 吸顶或定位的顶部偏移量。 */
+    /** 吸顶或定位的顶部偏移量，数值按 rpx 处理，带 px 后缀时按 px 处理。 */
     offsetTop?: UnitValue;
-    /** custom nav height 配置。 */
+    /** 自定义导航栏高度，单位 px。 */
     customNavHeight?: UnitValue;
     /** 组件层级。 */
     zIndex?: number;

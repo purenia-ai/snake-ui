@@ -35,6 +35,7 @@ const props = withDefaults(defineProps<SnakeIconProps>(), {
 const emit = defineEmits<SnakeIconEmits>();
 
 const iconfontNames = new Set([
+    'info-circle',
     'minus',
     'eye',
     'eye-off',

@@ -136,6 +136,18 @@ test('commerce filter panel gives percentage-height content a definite containin
     assert.match(filters, /<internal-drop-menu-item[\s\S]*custom-style="height: 70vh"/);
 });
 
+test('CMS sticky keeps legacy enable semantics and explicit navigation offset', async () => {
+    const [cms, sticky] = await Promise.all([
+        read('components/snake-cms/snake-cms.vue'),
+        read('components/snake-sticky/snake-sticky.vue')
+    ]);
+    assert.match(cms, /:disabled="Boolean\(item\.setStyle\.stickyDisabled\)"/);
+    assert.doesNotMatch(cms, /:disabled="!item\.setStyle\.stickyDisabled"/);
+    assert.match(cms, /:custom-nav-height="stickyCustomNavHeight"/);
+    assert.match(sticky, /uni\.upx2px\(number\)/);
+    assert.match(sticky, /unitNumber\(props\.customNavHeight\)/);
+});
+
 test('lazy goods images keep custom loading and error artwork through request states', async () => {
     const [lazyImage, goods, legacy] = await Promise.all([
         read('components/snake-lazy-image/snake-lazy-image.vue'),
