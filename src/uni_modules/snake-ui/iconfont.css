@@ -6,18 +6,18 @@
 
 .snake-iconfont {
     font-family: 'snake-iconfont' !important;
-    font-size: 16px;
+    font-size: inherit;
     font-style: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 .sicon-arrow-up:before {
-    content: '\e65d';
+    content: '\e601';
 }
 
 .sicon-arrow-down:before {
-    content: '\e65e';
+    content: '\e602';
 }
 
 .sicon-arrow-left:before {

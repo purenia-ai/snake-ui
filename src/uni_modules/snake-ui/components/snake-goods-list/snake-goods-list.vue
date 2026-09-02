@@ -17,9 +17,12 @@
                 <!-- 图片 -->
                 <view class="card-img">
                     <snake-lazy-image
-                        :image="imageFilter(item)"
+                        :src="imageFilter(item)"
                         :loading-img="assets.goodsLoading || ''"
                         :error-img="assets.goodsError || ''"
+                        mode="aspectFill"
+                        width="100%"
+                        height="100%"
                     ></snake-lazy-image>
 
                     <!-- 直购已出售蒙层 -->
@@ -256,7 +259,7 @@ export default {
             return item => {
                 const style = {};
                 if (!item.activityInfo?.myPrice) {
-                    style.backgroundColor = 'var(--snake-color-primary, #06D290)';
+                    style.backgroundColor = '#2d57e7';
                     style.color = 'var(--snake-color-white, #fff)';
                 }
 
@@ -294,7 +297,7 @@ export default {
             return item?.activityInfo?.activityType !== 'pack';
         },
         imageFilter(item) {
-            const image = item.image.replace(/^http:/, 'https:');
+            const image = String(item.image || '').replace(/^http:/, 'https:');
             if (image.indexOf('qiuxietang') > -1 || image.indexOf('puresnake') > -1) {
                 if (item.name && item.name.includes('潮服')) {
                     return `${image}?x-oss-process=style/ys`;
@@ -514,10 +517,10 @@ export default {
     font-family: PingFangSC-Medium;
     font-size: 26rpx;
     font-weight: 500;
-    color: var(--snake-color-primary, #06d290);
+    color: #2d57e7;
     text-align: center;
     // line-height: 44rpx;
-    border: 2rpx solid var(--snake-color-primary, #06d290);
+    border: 2rpx solid #2d57e7;
     border-radius: 2rpx;
 }
 

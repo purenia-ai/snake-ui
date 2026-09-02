@@ -101,4 +101,52 @@ test('commerce actions expose keyboard semantics and clean transient timers', as
         assert.match(source, /@keydown\.enter/);
         assert.match(source, /@keydown\.space/);
     }
+    assert.match(goods, /<snake-lazy-image\s+:src="imageFilter\(item\)"/);
+    assert.match(goods, /mode="aspectFill"/);
+    assert.match(goods, /height="100%"/);
+    assert.doesNotMatch(goods, /<snake-lazy-image\s+:image=/);
+});
+
+test('commerce price sort uses legacy triangles while filter uses bundled directional icons', async () => {
+    const [sort, dropItem] = await Promise.all([
+        read('components/snake-button-sort/snake-button-sort.vue'),
+        read('components/snake-drop-menu-item/snake-drop-menu-item.vue')
+    ]);
+    assert.match(sort, /class="snake-sort__arrow-up"/);
+    assert.match(sort, /class="snake-sort__arrow-down"/);
+    assert.match(sort, /border-bottom-color: var\(--snake-color-text-muted, #888891\)/);
+    assert.match(sort, /border-top-color: var\(--snake-color-text-muted, #888891\)/);
+    assert.doesNotMatch(sort, /<snake-icon/);
+    assert.match(dropItem, /:name="isOpen \? 'arrow-up' : 'arrow-down'"/);
+    assert.match(dropItem, /:size="menu\?\.menuIconSize\.value \|\| 18"/);
+});
+
+test('auction actions and active activity retain the legacy blue accent', async () => {
+    const [activities, goods] = await Promise.all([
+        read('components/snake-activity-list/snake-activity-list.vue'),
+        read('components/snake-goods-list/snake-goods-list.vue')
+    ]);
+    assert.match(goods, /style\.backgroundColor = '#2d57e7'/);
+    assert.match(goods, /\.auction__btn[\s\S]*color: #2d57e7;[\s\S]*border: 2rpx solid #2d57e7;/);
+    assert.match(activities, /activity-list__item--active[\s\S]*border: 4rpx solid #2d57e7;/);
+});
+
+test('commerce filter panel gives percentage-height content a definite containing height', async () => {
+    const filters = await read('components/snake-filter-sorts/snake-filter-sorts.vue');
+    assert.match(filters, /<internal-drop-menu-item[\s\S]*custom-style="height: 70vh"/);
+});
+
+test('lazy goods images keep custom loading and error artwork through request states', async () => {
+    const [lazyImage, goods, legacy] = await Promise.all([
+        read('components/snake-lazy-image/snake-lazy-image.vue'),
+        read('components/snake-goods-list/snake-goods-list.vue'),
+        read('libs/cms/legacy-joker.ts')
+    ]);
+    assert.match(lazyImage, /v-if="\$slots\.loading \|\| loadingImg"/);
+    assert.match(lazyImage, /:src="loadingImg"/);
+    assert.match(lazyImage, /:src="errorImg"/);
+    assert.match(goods, /:loading-img="assets\.goodsLoading \|\| ''"/);
+    assert.match(goods, /:error-img="assets\.goodsError \|\| ''"/);
+    assert.match(legacy, /goodsLoading:\s*'https:\/\/cdn\.puresnake\.com\/joker\/static\/snake-loading\.png'/);
+    assert.match(legacy, /goodsError:\s*'https:\/\/cdn\.puresnake\.com\/joker\/static\/loadfail\.png'/);
 });

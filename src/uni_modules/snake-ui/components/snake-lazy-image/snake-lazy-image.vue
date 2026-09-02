@@ -6,6 +6,7 @@
  */
 
 import { getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue';
+import { addUnit } from '../../libs/function/unit';
 import SnakeImage from '../snake-image/snake-image.vue';
 import type { SnakeLazyImageEmits, SnakeLazyImageProps } from './types';
 
@@ -63,7 +64,10 @@ onBeforeUnmount(() => observer?.disconnect());
 </script>
 
 <template>
-    <view class="snake-lazy-image">
+    <view
+        class="snake-lazy-image"
+        :style="{ width: addUnit(width), height: height === 'auto' ? 'auto' : addUnit(height) }"
+    >
         <snake-image
             :src="visible ? src : loadingImg"
             :mode="mode"
@@ -79,10 +83,14 @@ onBeforeUnmount(() => observer?.disconnect());
             @load="onLoad"
             @error="onError"
         >
-            <template v-if="$slots.loading" #loading><slot name="loading" /></template>
+            <template v-if="$slots.loading || loadingImg" #loading>
+                <slot name="loading">
+                    <image class="snake-lazy-image__status-image" :src="loadingImg" mode="aspectFit" />
+                </slot>
+            </template>
             <template v-if="$slots.error || errorImg" #error>
                 <slot name="error">
-                    <image class="snake-lazy-image__error-image" :src="errorImg" mode="aspectFit" />
+                    <image class="snake-lazy-image__status-image" :src="errorImg" mode="aspectFit" />
                 </slot>
             </template>
         </snake-image>
@@ -90,7 +98,10 @@ onBeforeUnmount(() => observer?.disconnect());
 </template>
 
 <style scoped>
-.snake-lazy-image__error-image {
+.snake-lazy-image {
+    display: block;
+}
+.snake-lazy-image__status-image {
     width: 100%;
     height: 100%;
 }

@@ -29,7 +29,12 @@
                 ></internal-button-sort>
             </template>
             <internal-drop-menu ref="dropMenuRef" custom-style="flex: 1; min-width: 0">
-                <internal-drop-menu-item title="筛选" :before-toggle="handleBeforeToggle" @close="dropMenuClose">
+                <internal-drop-menu-item
+                    title="筛选"
+                    custom-style="height: 70vh"
+                    :before-toggle="handleBeforeToggle"
+                    @close="dropMenuClose"
+                >
                     <filterPage
                         :show="showDrawer"
                         :filters="filters"

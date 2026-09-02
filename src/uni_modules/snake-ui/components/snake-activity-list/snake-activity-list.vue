@@ -225,7 +225,7 @@ export default {
             width: 195rpx;
             min-width: 195rpx;
             height: 195rpx;
-            border: 4rpx solid var(--snake-color-primary, #06d290);
+            border: 4rpx solid #2d57e7;
             border-radius: 4rpx;
             // box-shadow: 0 6rpx 16rpx rgba(45, 87, 231, 0.3);
             transform: translateY(-4rpx);

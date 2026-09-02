@@ -218,8 +218,12 @@ test('icon uses the bundled Snake UI font for stable common glyphs', async () =>
     assert.ok(source.includes("@import '../../iconfont.css'"));
     assert.ok(source.includes("checkmark: 'checkbox-mark'"));
     assert.match(stylesheet, /font-family: ["']snake-iconfont["']/);
+    assert.match(stylesheet, /\.snake-iconfont\s*\{[^}]*font-size:\s*inherit/s);
+    assert.doesNotMatch(stylesheet, /\.snake-iconfont\s*\{[^}]*font-size:\s*16px/s);
     assert.match(stylesheet, /\.sicon-checkbox-mark::?before/);
     assert.match(stylesheet, /content: ["']\\e628["']/);
+    assert.match(stylesheet, /\.sicon-arrow-up::?before\s*\{\s*content: ["']\\e601["']/);
+    assert.match(stylesheet, /\.sicon-arrow-down::?before\s*\{\s*content: ["']\\e602["']/);
     assert.match(stylesheet, /url\(.*(x-font-woff2|iconfont\.woff2)/);
     assert.ok(font.length > 0);
     assert.ok(types.includes("'left' | 'right' | 'top' | 'bottom'"));

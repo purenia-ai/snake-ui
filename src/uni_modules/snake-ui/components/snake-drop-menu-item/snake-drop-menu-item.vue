@@ -83,9 +83,10 @@ onBeforeUnmount(() => menu?.unregister(itemId));
         >
             <text class="snake-drop-item__title">{{ displayTitle }}</text
             ><snake-icon
-                :name="menu?.menuIcon.value || 'down'"
-                :size="menu?.menuIconSize.value || 13"
-                :class="{ 'is-open': isOpen }"
+                class="snake-drop-item__arrow"
+                :name="isOpen ? 'arrow-up' : 'arrow-down'"
+                :size="menu?.menuIconSize.value || 18"
+                aria-hidden="true"
             />
         </button>
         <view
@@ -142,8 +143,9 @@ onBeforeUnmount(() => menu?.unregister(itemId));
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-.snake-drop-item__trigger .is-open {
-    transform: rotate(180deg);
+.snake-drop-item__arrow {
+    flex: none;
+    line-height: 1;
 }
 .snake-drop-item__mask {
     position: fixed;
@@ -174,7 +176,7 @@ onBeforeUnmount(() => menu?.unregister(itemId));
     color: var(--snake-color-text-secondary, #606266);
 }
 .snake-drop-item__option.is-active {
-    color: var(--snake-color-primary, #06D290);
+    color: var(--snake-color-primary, #06d290);
 }
 .snake-drop-item__option.is-disabled {
     opacity: 0.45;

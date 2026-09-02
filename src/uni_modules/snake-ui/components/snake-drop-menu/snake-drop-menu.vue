@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<SnakeDropMenuProps>(), {
     borderBottom: false,
     titleSize: 28,
     menuIcon: 'down',
-    menuIconSize: 13,
+    menuIconSize: 18,
     zIndex: 985,
     customClass: '',
     customStyle: ''
