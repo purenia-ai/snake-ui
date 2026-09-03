@@ -52,7 +52,7 @@
                     :offset-top="stickyOffsetTop"
                     :custom-nav-height="stickyCustomNavHeight"
                     :scroll-top="scrollTop"
-                    :disabled="Boolean(item.setStyle.stickyDisabled)"
+                    :disabled="resolveStickyDisabled(item.setStyle.stickyDisabled)"
                     :bg-color="item.setStyle.backgroundColor || 'var(--snake-color-background, #f6f6f6)'"
                     :z-index="19"
                 >
@@ -220,6 +220,10 @@ const activeBarStyle = {
     backgroundColor: 'var(--snake-color-primary, #06D290)',
     borderRadius: '2rpx'
 };
+
+function resolveStickyDisabled(value: unknown): boolean {
+    return value === true || value === 1 || value === '1' || value === 'true';
+}
 
 let readyEmitted = false;
 const commerce = useSnakeCmsCommerce({
