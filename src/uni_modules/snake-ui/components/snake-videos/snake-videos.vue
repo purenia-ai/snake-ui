@@ -1,6 +1,6 @@
 <template>
   <view :style="$snakeThemeStyle">
-    <view class="wh-full pos-relative" role="button" tabindex="0" aria-label="播放视频" @click="open" @keydown.enter.prevent="open" @keydown.space.prevent="open">
+    <view class="snake-videos__cover" role="button" tabindex="0" aria-label="播放视频" @click="open" @keydown.enter.prevent="open" @keydown.space.prevent="open">
       <snake-image :src="datas.src + '?x-oss-process=video/snapshot,t_0,f_jpg'" alt="视频封面" width="100%" mode="widthFix"></snake-image>
       <view
         style="
@@ -28,8 +28,8 @@
 			:poster="datas.src + '?x-oss-process=video/snapshot,t_0,f_jpg'"></video> -->
 
     <snake-popup v-model="show" mode="center" @close="show = false">
-      <view class="w-100vw h-100vh flex-items-center bg-#000" v-if="show" @click.stop="close">
-        <view class="pos-absolute top-60rpx right-50rpx" role="button" tabindex="0" aria-label="关闭视频" @keydown.enter.prevent="close" @keydown.space.prevent="close">
+      <view class="snake-videos__player" v-if="show" @click.stop="close">
+        <view class="snake-videos__close" role="button" tabindex="0" aria-label="关闭视频" @keydown.enter.prevent="close" @keydown.space.prevent="close">
           <snake-icon name="close" color="#707184" size="30rpx" bold></snake-icon>
         </view>
         <video
@@ -63,6 +63,27 @@ function close() { show.value = false; }
 
 <style lang="scss" scoped>
 .videos {
-  width: 100%;
+    width: 100%;
+}
+
+.snake-videos__cover {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.snake-videos__player {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    background-color: #000;
+}
+
+.snake-videos__close {
+    position: absolute;
+    top: 60rpx;
+    right: 50rpx;
 }
 </style>

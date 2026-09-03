@@ -5,13 +5,13 @@
         class="filter-sorts"
         :style="[$snakeThemeStyle, { backgroundColor: bgColor }, customStyle]"
     >
-        <view class="flex-1 flex-items-center" role="toolbar" aria-label="商品排序与筛选">
+        <view class="filter-sorts__toolbar" role="toolbar" aria-label="商品排序与筛选">
             <template v-for="(item, index) in filters.topFilter" :key="index">
                 <view
                     v-if="item.type === 'click'"
-                    class="flex-1 flex-center text-26rpx"
+                    class="filter-sorts__item"
                     :class="{
-                        'snake-green snake-font-medium fw-500': filterParams['sort'] === item.value
+                        'filter-sorts__item--active': filterParams['sort'] === item.value
                     }"
                     role="button"
                     tabindex="0"
@@ -22,14 +22,14 @@
                 >
                     {{ item.name }}
                 </view>
-                <internal-button-sort
+                <snake-button-sort
                     v-if="item.type === 'sort'"
                     :title="item.name"
                     @change="(e: any) => sortSelectHandle('price', e.value)"
-                ></internal-button-sort>
+                ></snake-button-sort>
             </template>
-            <internal-drop-menu ref="dropMenuRef" custom-style="flex: 1; min-width: 0">
-                <internal-drop-menu-item
+            <snake-drop-menu ref="dropMenuRef" custom-style="flex: 1; min-width: 0">
+                <snake-drop-menu-item
                     title="筛选"
                     custom-style="height: 70vh"
                     :before-toggle="handleBeforeToggle"
@@ -42,8 +42,8 @@
                         :defaultParams="filterParams"
                         @confirm="filterConfirm"
                     ></filterPage>
-                </internal-drop-menu-item>
-            </internal-drop-menu>
+                </snake-drop-menu-item>
+            </snake-drop-menu>
         </view>
     </view>
 </template>
@@ -56,9 +56,9 @@
 
 import { getCurrentInstance, onMounted, ref } from 'vue';
 import filterPage from './components/filter-page.vue';
-import InternalButtonSort from '../snake-button-sort/snake-button-sort.vue';
-import InternalDropMenu from '../snake-drop-menu/snake-drop-menu.vue';
-import InternalDropMenuItem from '../snake-drop-menu-item/snake-drop-menu-item.vue';
+import SnakeButtonSort from '../snake-button-sort/snake-button-sort.vue';
+import SnakeDropMenu from '../snake-drop-menu/snake-drop-menu.vue';
+import SnakeDropMenuItem from '../snake-drop-menu-item/snake-drop-menu-item.vue';
 import type { SnakeFilterSortsEmits, SnakeFilterSortsProps } from './types';
 
 defineOptions({
@@ -168,5 +168,24 @@ onMounted(async () => {
 <style lang="scss" scoped>
 ::v-deep .u-drawer-content {
     height: 100% !important;
+}
+
+.filter-sorts__toolbar {
+    display: flex;
+    flex: 1;
+    align-items: center;
+}
+
+.filter-sorts__item {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    font-size: 26rpx;
+}
+
+.filter-sorts__item--active {
+    color: var(--snake-color-primary, #06d290);
+    font-weight: 500;
 }
 </style>

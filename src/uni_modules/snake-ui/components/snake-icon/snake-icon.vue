@@ -69,6 +69,7 @@ const glyphs: Record<string, string> = {
     checkmark: '✓',
     'checkmark-circle': '✓',
     'checkmark-circle-fill': '●',
+    circle: '○',
     'close-circle': '⊗',
     'close-circle-fill': '⊗',
     info: 'ⓘ',

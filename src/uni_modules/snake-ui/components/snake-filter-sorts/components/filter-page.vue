@@ -31,10 +31,15 @@
             <view class="item main-item" v-for="(item, index) in filterList" :key="index" :id="'item-' + index">
               <view class="title" v-if="item.value !== 'brandFilter'">
                 <text>{{ item.name }}</text>
-                <view class="pos-relative" v-if="item.desc">
-                  <view class="next-icons icon-question-circle ml-10rpx" @click.stop="showTooltip = !showTooltip"></view>
+                  <view class="filter-page__tooltip-wrap" v-if="item.desc">
+                    <snake-icon
+                      name="info-circle"
+                      size="26rpx"
+                      custom-class="filter-page__tooltip-icon"
+                      stop
+                      @click="showTooltip = !showTooltip"></snake-icon>
                   <view class="tooltip" v-if="showTooltip">
-                    <view class="p-14rpx" style="background-color: var(--snake-color-primary-light, #eafff5)">
+                    <view class="filter-page__tooltip-body" style="background-color: #eafff5">
                       <mp-html :content="item.desc"></mp-html>
                     </view>
                   </view>
@@ -59,7 +64,7 @@
               <view class="tabs" v-if="item.value !== 'brandFilter'">
                 <block v-for="(item2, index2) in item.children" :key="index2">
                   <view
-                    class="tabs-item snake-ellipse-1"
+                    class="tabs-item filter-page__ellipsis"
                     :class="{
                       'tabs-item--active': filterParams[item.value].includes(item2.value),
                     }"
@@ -74,10 +79,10 @@
 
           <view class="title" v-if="filterList[leftIndex]">
             <text>{{ filterList[leftIndex].name }}</text>
-            <text class="fw-300">（已选{{ filterParams[filterList[leftIndex].value].length }}个）</text>
+            <text class="filter-page__count">（已选{{ filterParams[filterList[leftIndex].value].length }}个）</text>
           </view>
 
-          <internal-index-list
+          <snake-index-list
             v-if="filterList.length - 1 === leftIndex"
             ref="uIndexListRef"
             :indexList="indexList"
@@ -85,29 +90,32 @@
             inactiveColor="var(--snake-color-text-muted, #acacb7)"
             :scrollTop="scrollTop">
             <block v-for="(item, index) in brandGroupList" :key="index">
-              <internal-index-anchor
+              <snake-index-anchor
                 :index="index"
                 :text="indexList[index]"
-                :customStyle="{ height: '44rpx', padding: '0 10px' }"></internal-index-anchor>
+                :customStyle="{ height: '44rpx', padding: '0 10px' }"></snake-index-anchor>
 
               <template v-for="(cell, cellIndex) in item" :key="cellIndex">
                 <view
-                  class="flex-items-center justify-between bg-white h-40rpx mt-10rpx pl-10rpx"
+                  class="filter-page__brand-cell"
                   @click.stop="
                     selectHandle(filterList[leftIndex], {
                       value: cell,
                     })
                   ">
-                  <view class="text-24rpx" hover-class="u-hover-class">{{ cell }}</view>
-                  <view
-                    class="next-icons icon-checkMark text-28rpx pr-96rpx snake-green fw-500"
-                    v-if="filterParams.brandFilter.includes(cell)"></view>
+                  <view class="filter-page__brand-name" hover-class="u-hover-class">{{ cell }}</view>
+                  <snake-icon
+                    v-if="filterParams.brandFilter.includes(cell)"
+                    name="checkmark"
+                    size="28rpx"
+                    color="var(--snake-color-primary, #06d290)"
+                    custom-class="filter-page__brand-check"></snake-icon>
                 </view>
               </template>
-              <view class="h-20rpx"></view>
+              <view class="filter-page__spacer-sm"></view>
             </block>
-            <view class="h-120rpx"></view>
-          </internal-index-list>
+            <view class="filter-page__spacer-lg"></view>
+          </snake-index-list>
         </view>
       </view>
     </view>
@@ -116,14 +124,23 @@
 
     <!-- 底部按钮 -->
     <view class="filter-footer">
-      <view class="flex-items-center" @click="isDefaultSave = !isDefaultSave">
-        <text v-if="isDefaultSave" class="next-icons icon-selected snake-green"></text>
-        <text v-else class="next-icons icon-notselected"></text>
-        <text class="text-24rpx ml-10rpx">保存为默认筛选</text>
+      <view class="filter-page__save-row" @click="isDefaultSave = !isDefaultSave">
+        <snake-icon
+          v-if="isDefaultSave"
+          name="checkbox-mark"
+          size="28rpx"
+          color="var(--snake-color-primary, #06d290)"></snake-icon>
+        <snake-icon v-else name="circle" size="28rpx" color="var(--snake-color-text-muted, #acacb7)"></snake-icon>
+        <text class="filter-page__save-text">保存为默认筛选</text>
       </view>
 
       <view class="action">
-        <snake-button type="primary" plain customStyle="width: 168rpx; height: 76rpx;" @click="resetFilter">重置</snake-button>
+        <snake-button
+          type="primary"
+          color="var(--snake-color-primary, #06D290)"
+          plain
+          customStyle="width: 168rpx; height: 76rpx;"
+          @click="resetFilter">重置</snake-button>
         <snake-button type="primary" customStyle="width: 228rpx; height: 76rpx; margin-left: 20rpx;" @click="confirmFilter">
           确定
         </snake-button>
@@ -140,8 +157,8 @@
  */
 
 import { createCacheClient } from '../../../libs/adapters/cache';
-import InternalIndexAnchor from '../../snake-index-anchor/snake-index-anchor.vue';
-import InternalIndexList from '../../snake-index-list/snake-index-list.vue';
+import SnakeIndexAnchor from '../../snake-index-anchor/snake-index-anchor.vue';
+import SnakeIndexList from '../../snake-index-list/snake-index-list.vue';
 const cacheManager = createCacheClient('snake-filter-sorts');
 export default {
   emits: ['confirm'],
@@ -150,7 +167,7 @@ export default {
     addGlobalClass: true,
     styleIsolation: 'shared',
   },
-  components: { InternalIndexAnchor, InternalIndexList },
+  components: { SnakeIndexAnchor, SnakeIndexList },
   props: {
     show: {
       type: Boolean,
@@ -445,6 +462,67 @@ export default {
   height: 60vh !important;
 }
 
+/* 品牌勾选区（原依赖宿主 UnoCSS 原子类，迁移为组件语义类） */
+.filter-page__brand-cell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40rpx;
+  margin-top: 10rpx;
+  padding-left: 10rpx;
+  background-color: var(--snake-color-surface, #fff);
+}
+
+.filter-page__brand-name {
+  font-size: 24rpx;
+}
+
+.filter-page__brand-check {
+  padding-right: 96rpx;
+}
+
+.filter-page__spacer-sm {
+  height: 20rpx;
+}
+
+.filter-page__spacer-lg {
+  height: 120rpx;
+}
+
+/* 底部保存区 */
+.filter-page__save-row {
+  display: flex;
+  align-items: center;
+}
+
+.filter-page__save-text {
+  margin-left: 10rpx;
+  font-size: 24rpx;
+}
+
+/* 工具提示 */
+.filter-page__tooltip-wrap {
+  position: relative;
+}
+
+.filter-page__tooltip-icon {
+  margin-left: 10rpx;
+}
+
+.filter-page__tooltip-body {
+  padding: 14rpx;
+}
+
+.filter-page__ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.filter-page__count {
+  font-weight: 300;
+}
+
 .tooltip {
   position: absolute;
   top: 50rpx;
@@ -464,7 +542,7 @@ export default {
   height: 0;
   content: '';
   border-right: 8px solid transparent;
-  border-bottom: 8px solid var(--snake-color-primary-light, #eafff5);
+  border-bottom: 8px solid #eafff5;
   border-left: 8px solid transparent;
 }
 

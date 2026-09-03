@@ -41,8 +41,10 @@
                             >
                                 <text v-if="currentTime < item.startTime">拍卖预告</text>
                                 <template v-else>
-                                    <view class="activity-list__time-icon next-icons icon-countdown"></view>
-                                    <text class="min-w-full h-36rpx">
+                                    <view class="activity-list__time-icon">
+                                        <snake-icon name="clock" size="20rpx" color="var(--snake-color-white, #ffffff)"></snake-icon>
+                                    </view>
+                                    <text class="activity-list__countdown">
                                         {{ uni.$snake.formatTime(item.endTime, 'mm-dd hh:MM') }}
                                     </text>
                                 </template>
@@ -54,9 +56,9 @@
                             <text class="activity-list__title-sub" v-if="currentTime > item.startTime">{{
                                 item.subtitle
                             }}</text>
-                            <text class="activity-list__title-time snake-font-dinSchrift" v-else>
+                            <text class="activity-list__title-time activity-list__title-time--din" v-else>
                                 {{ uni.$snake.formatTime(item.startTime, 'mm-dd') }}
-                                <text class="snake-font-medium !fw-500">开场</text>
+                                <text class="activity-list__title-time--open">开场</text>
                             </text>
                         </view>
                     </view>
@@ -73,8 +75,11 @@
  * @see /components/activity-list
  */
 
+import SnakeIcon from '../snake-icon/snake-icon.vue';
+
 export default {
     name: 'activity-list',
+    components: { SnakeIcon },
     emits: ['change'],
     props: {
         list: {
@@ -279,6 +284,12 @@ export default {
         transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
+    /* 倒计时文本 */
+    &__countdown {
+        min-width: 100%;
+        height: 36rpx;
+    }
+
     /* 倒计时图标 */
     &__time-icon {
         margin-right: 4rpx;
@@ -327,6 +338,14 @@ export default {
         margin-top: 4rpx;
         font-size: 20rpx;
         color: var(--snake-color-text-muted, #888891);
+    }
+
+    &__title-time--din {
+        font-family: 'DIN-Schrift';
+    }
+
+    &__title-time--open {
+        font-weight: 500;
     }
 }
 
