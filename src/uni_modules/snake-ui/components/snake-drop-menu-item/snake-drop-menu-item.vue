@@ -76,9 +76,8 @@ onBeforeUnmount(() => menu?.unregister(itemId));
 
 <template>
     <view class="snake-drop-item" :style="$snakeThemeStyle">
-        <button
+        <view
             class="snake-drop-item__trigger"
-            :disabled="disabled"
             :style="{ color, fontSize: addUnit(menu?.titleSize.value || 28, 'rpx') }"
             @click="toggle"
         >
@@ -89,7 +88,7 @@ onBeforeUnmount(() => menu?.unregister(itemId));
                 :size="menu?.menuIconSize.value || 18"
                 aria-hidden="true"
             />
-        </button>
+        </view>
         <view
             v-if="isOpen"
             class="snake-drop-item__mask"
@@ -133,11 +132,6 @@ onBeforeUnmount(() => menu?.unregister(itemId));
     height: 100%;
     padding: 0 12rpx;
     line-height: 1;
-    background: transparent;
-    border: 0;
-}
-.snake-drop-item__trigger::after {
-    display: none;
 }
 .snake-drop-item__title {
     overflow: hidden;
