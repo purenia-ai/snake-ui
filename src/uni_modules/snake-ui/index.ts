@@ -26,6 +26,8 @@ export { default as SnakeImages } from './components/snake-images/snake-images.v
 export { default as SnakeJumpApplet } from './components/snake-jump-applet/snake-jump-applet.vue';
 export { default as SnakeListSwitching } from './components/snake-list-switching/snake-list-switching.vue';
 export { default as SnakeMagicCube } from './components/snake-magic-cube/snake-magic-cube.vue';
+export { default as SnakeModal } from './components/snake-modal/snake-modal.vue';
+export { default as SnakeToast } from './components/snake-toast/snake-toast.vue';
 export { default as SnakeNotice } from './components/snake-notice/snake-notice.vue';
 export { default as SnakePagePopup } from './components/snake-page-popup/snake-page-popup.vue';
 export { default as SnakePictureAds } from './components/snake-picture-ads/snake-picture-ads.vue';
@@ -112,6 +114,8 @@ export * from './components/snake-images/types';
 export * from './components/snake-jump-applet/types';
 export * from './components/snake-list-switching/types';
 export * from './components/snake-magic-cube/types';
+export * from './components/snake-modal/types';
+export * from './components/snake-toast/types';
 export * from './components/snake-notice/types';
 export * from './components/snake-page-popup/types';
 export * from './components/snake-picture-ads/types';

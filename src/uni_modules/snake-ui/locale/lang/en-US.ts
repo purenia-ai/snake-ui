@@ -15,6 +15,7 @@ const enUS: SnakeLocale = {
             retry: 'Retry'
         },
         image: { loading: 'Loading image', error: 'Image failed to load' },
+        modal: { title: 'Prompt', confirmText: 'Confirm', cancelText: 'Cancel' },
         network: { error: 'Network request failed', canceled: 'Request canceled' }
     }
 };

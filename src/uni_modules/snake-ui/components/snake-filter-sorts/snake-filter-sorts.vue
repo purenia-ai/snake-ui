@@ -28,7 +28,7 @@
                     @change="(e: any) => sortSelectHandle('price', e.value)"
                 ></snake-button-sort>
             </template>
-            <snake-drop-menu ref="dropMenuRef" custom-style="flex: 1; min-width: 0">
+            <snake-drop-menu ref="dropMenuRef" custom-style="flex: 1; min-width: 0; background: transparent;">
                 <snake-drop-menu-item
                     title="筛选"
                     custom-style="height: 70vh"

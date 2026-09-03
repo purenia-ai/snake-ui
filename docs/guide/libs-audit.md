@@ -56,7 +56,7 @@ Snake UI 的 `libs/` 以 uView Pro 的 `libs/` 架构为参考基准组织。本
 | `useRect.ts`（响应式） | `hooks/useRect.ts` | ported | |
 | `useTheme` / `useColor` / `useLocale` | `useTheme` / `useColor` / `useLocale` | aligned | 原名对齐（原 useSnake* 前缀已去除） |
 | `useDebounce` / `useThrottle` | `useDebounce` / `useThrottle` | aligned | |
-| `useToast` / `useModal`（事件总线式，依赖 u-toast/u-modal 组件） | `useToast` / `useModal`（`uni.showToast/showModal` 薄包装） | divergent | snake 无 toast/modal 组件，不引入事件总线方案 |
+| `useToast` / `useModal`（事件总线式，依赖 u-toast/u-modal 组件） | `useToast` / `useModal`（事件总线式，依赖 `snake-toast`/`snake-modal` 组件） | aligned | 随 snake-toast/snake-modal 迁移对齐事件总线方案 |
 | `useEmitter` | `useEmitter`（`function/emitter.ts` 单例） | aligned | |
 | `useRouter`（不在 barrel） | `useRouter` | aligned | |
 

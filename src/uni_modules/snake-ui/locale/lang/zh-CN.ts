@@ -15,6 +15,7 @@ const zhCN: SnakeLocale = {
             retry: '重试'
         },
         image: { loading: '图片加载中', error: '图片加载失败' },
+        modal: { title: '提示', confirmText: '确认', cancelText: '取消' },
         network: { error: '网络请求失败', canceled: '请求已取消' }
     }
 };
