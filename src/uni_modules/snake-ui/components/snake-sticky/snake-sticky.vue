@@ -66,7 +66,8 @@ function offsetTopPx(value: number | string | null | undefined) {
 }
 // 正规化 disabled，避免宿主把 "false" 字符串传进来后被当成 true。
 const isDisabled = computed(() => {
-    const value = props.disabled;
+    // CMS 数据可能传入字符串布尔值，公共类型保持 boolean，此处按 unknown 归一化。
+    const value = props.disabled as unknown;
     return value === true || value === 1 || value === '1' || value === 'true';
 });
 const stickyTop = computed(() => offsetTopPx(props.offsetTop) + unitNumber(props.customNavHeight));

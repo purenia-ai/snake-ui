@@ -74,7 +74,7 @@ test('lazy image separates placeholder events from the real image lifecycle', as
     const lazyImage = await read('components/snake-lazy-image/snake-lazy-image.vue');
 
     assert.match(lazyImage, /if \(!visible\.value\) return/);
-    assert.match(lazyImage, /snake-lazy-image__error-image/);
+    assert.match(lazyImage, /snake-lazy-image__status-image/);
     assert.match(lazyImage, /observer\?\.disconnect\(\)/);
 });
 

@@ -133,7 +133,7 @@ test('auction actions and active activity retain the legacy blue accent', async 
 
 test('commerce filter panel gives percentage-height content a definite containing height', async () => {
     const filters = await read('components/snake-filter-sorts/snake-filter-sorts.vue');
-    assert.match(filters, /<internal-drop-menu-item[\s\S]*custom-style="height: 70vh"/);
+    assert.match(filters, /<snake-drop-menu-item[\s\S]*custom-style="height: 70vh"/);
 });
 
 test('CMS sticky keeps legacy enable semantics and explicit navigation offset', async () => {
@@ -141,8 +141,8 @@ test('CMS sticky keeps legacy enable semantics and explicit navigation offset', 
         read('components/snake-cms/snake-cms.vue'),
         read('components/snake-sticky/snake-sticky.vue')
     ]);
-    assert.match(cms, /:disabled="Boolean\(item\.setStyle\.stickyDisabled\)"/);
-    assert.doesNotMatch(cms, /:disabled="!item\.setStyle\.stickyDisabled"/);
+    assert.match(cms, /:disabled="resolveStickyDisabled\(item\.setStyle\.stickyDisabled\)"/);
+    assert.match(cms, /function resolveStickyDisabled/);
     assert.match(cms, /:custom-nav-height="stickyCustomNavHeight"/);
     assert.match(sticky, /uni\.upx2px\(number\)/);
     assert.match(sticky, /unitNumber\(props\.customNavHeight\)/);
