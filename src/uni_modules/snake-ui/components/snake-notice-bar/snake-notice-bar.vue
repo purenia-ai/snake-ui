@@ -82,7 +82,7 @@ function more(event: any) {
         v-if="visible"
         class="snake-notice-bar"
         :class="customClass"
-        :style="[$snakeThemeStyle, rootStyle]"
+        :style="rootStyle"
         @click="emit('click', current)"
     >
         <snake-icon v-if="volumeIcon" class="snake-notice-bar__leading" name="info" :size="volumeSize" />

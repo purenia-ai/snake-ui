@@ -1,5 +1,5 @@
 <template>
-    <view v-if="list.length" class="activity-list" :style="$snakeThemeStyle">
+    <view v-if="list.length" class="activity-list">
         <scroll-view
             class="scroll-view"
             :scroll-x="list.length > 3"

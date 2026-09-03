@@ -67,7 +67,7 @@ const textStyle = computed(() => ({ color: props.color || props.textColor, fontS
 </script>
 
 <template>
-    <view v-if="show" class="snake-empty" :class="customClass" :style="[$snakeThemeStyle, rootStyle]">
+    <view v-if="show" class="snake-empty" :class="customClass" :style="rootStyle">
         <slot name="icon">
             <image v-if="isImage" class="snake-empty__image" :src="iconName" mode="aspectFit" :style="imageStyle" />
             <snake-icon v-else :name="iconName" :color="iconColor" :size="iconSize" />

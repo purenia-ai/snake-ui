@@ -48,7 +48,7 @@ const textStyle = computed(() => ({
 </script>
 
 <template>
-    <view v-if="show" class="snake-loading-icon" :style="[$snakeThemeStyle, rootStyle]">
+    <view v-if="show" class="snake-loading-icon" :style="rootStyle">
         <view v-if="mode === 'circle'" class="snake-loading-icon__circle" :style="iconStyle" />
         <view v-else class="snake-loading-icon__spinner" :style="iconStyle">
             <view

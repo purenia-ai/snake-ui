@@ -150,7 +150,7 @@ defineExpose<SnakeSliderExpose>({ update });
     <view
         class="snake-slider"
         :class="[customClass, { 'is-disabled': disabled }]"
-        :style="[$snakeThemeStyle, rootStyle]"
+        :style="rootStyle"
     >
         <text v-if="showEdgeValue" class="snake-slider__edge">{{ minValue }}</text>
         <view class="snake-slider__main"

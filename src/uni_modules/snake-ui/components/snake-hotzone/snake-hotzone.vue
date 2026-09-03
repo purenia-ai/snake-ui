@@ -1,5 +1,5 @@
 <template>
-    <view class="snake-hotzone" :style="$snakeThemeStyle">
+    <view class="snake-hotzone">
         <!-- 无背景图占位 -->
         <view v-if="!datas.image" class="snake-hotzone__empty">热区图</view>
         <!-- 背景图 + 百分比热区 -->

@@ -1,5 +1,5 @@
 <template>
-    <view class="pictureads" :style="[$snakeThemeStyle, { backgroundColor: datas.backgroundColor }]">
+    <view class="pictureads" :style="{ backgroundColor: datas.backgroundColor }">
         <view v-if="!imageList.length" :style="{ height: $snake.addUnit(datas.height * 2, 'rpx') }" class="upload"
             >暂无图片</view
         >

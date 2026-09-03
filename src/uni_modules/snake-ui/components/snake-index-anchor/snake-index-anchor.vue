@@ -14,5 +14,5 @@ const props = withDefaults(defineProps<SnakeIndexAnchorProps>(), { text: '', use
 const list = inject(snakeIndexListKey); const anchorId = computed(() => list?.anchorId(props.index) ?? `snake-index-anchor-${props.index}`);
 const style = computed(() => [{ position: list?.sticky.value ? 'sticky' : 'relative', top: list?.sticky.value ? addUnit(list.offsetTop.value, 'rpx') : 'auto', zIndex: list?.zIndex.value } as CSSProperties, props.customStyle]);
 </script>
-<template><view :id="anchorId" class="snake-index-anchor" :class="customClass" :style="[$snakeThemeStyle, style]"><slot v-if="useSlot" /><text v-else>{{ text || index }}</text></view></template>
+<template><view :id="anchorId" class="snake-index-anchor" :class="customClass" :style="style"><slot v-if="useSlot" /><text v-else>{{ text || index }}</text></view></template>
 <style scoped>.snake-index-anchor { display: flex; box-sizing: border-box; min-height: 64rpx; align-items: center; padding: 0 20rpx; color: var(--snake-color-text, #303133); font-size: 24rpx; font-weight: 600; background: var(--snake-color-background, #f5f6f8); }</style>

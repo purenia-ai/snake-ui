@@ -1,5 +1,5 @@
 <template>
-  <view class="filter-container" :style="$snakeThemeStyle">
+  <view class="filter-container">
     <view class="scroll-panel" id="scroll-panel">
       <view class="list-box">
         <view class="left">

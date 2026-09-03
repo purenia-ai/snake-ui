@@ -75,7 +75,7 @@ onBeforeUnmount(() => menu?.unregister(itemId));
 </script>
 
 <template>
-    <view class="snake-drop-item" :style="$snakeThemeStyle">
+    <view class="snake-drop-item">
         <view
             class="snake-drop-item__trigger"
             :style="{ color, fontSize: addUnit(menu?.titleSize.value || 28, 'rpx') }"

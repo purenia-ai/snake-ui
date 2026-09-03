@@ -1,5 +1,5 @@
 <template>
-  <view class="richtext" :style="$snakeThemeStyle">
+  <view class="richtext">
     <mp-html :content="datas.myValue"></mp-html>
   </view>
 </template>

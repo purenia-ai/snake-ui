@@ -50,7 +50,7 @@ function stopTouchMove() {
         name="fade"
         :duration="duration"
         :custom-class="['snake-overlay', customClass].filter(Boolean).join(' ')"
-        :custom-style="[$snakeThemeStyle, overlayStyle]"
+        :custom-style="overlayStyle"
         @click="click"
         @after-enter="emit('opened')"
         @after-leave="emit('closed')"

@@ -267,7 +267,7 @@ test('http keeps legacy adapter support and rejects interceptor cancellation', a
     );
 });
 
-test('every component root receives Snake theme variables', async () => {
+test('theme variables are injected once at the page level via snake-config-provider', async () => {
     const componentsRoot = resolve(import.meta.dirname, '../src/uni_modules/snake-ui/components');
     async function vueFiles(directory) {
         const entries = await readdir(directory, { withFileTypes: true });
@@ -281,13 +281,11 @@ test('every component root receives Snake theme variables', async () => {
             )
         ).flat();
     }
-    const delegatedRoots = new Set(['snake-lazy-image.vue', 'snake-popup.vue']);
-    const missing = [];
+    const injected = [];
     for (const file of await vueFiles(componentsRoot)) {
         const source = await readFile(file, 'utf8');
-        if (!source.includes('$snakeThemeStyle') && !delegatedRoots.has(file.split(/[\\/]/).at(-1))) {
-            missing.push(file.replace(`${componentsRoot}\\`, ''));
-        }
+        if (source.includes('$snakeThemeStyle')) injected.push(file);
     }
-    assert.deepEqual(missing, []);
+    assert.equal(injected.length, 1);
+    assert.ok(injected[0].endsWith('snake-config-provider.vue'));
 });

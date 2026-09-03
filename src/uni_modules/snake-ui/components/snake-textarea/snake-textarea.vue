@@ -91,7 +91,7 @@ function onBlur(event: any) {
 </script>
 
 <template>
-    <view class="snake-textarea" :class="[customClass, rootClass]" :style="[$snakeThemeStyle, rootStyle]">
+    <view class="snake-textarea" :class="[customClass, rootClass]" :style="rootStyle">
         <textarea
             class="snake-textarea__native"
             :value="innerValue"

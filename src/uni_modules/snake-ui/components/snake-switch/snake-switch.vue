@@ -59,7 +59,7 @@ function toggle(event: unknown) {
     <view
         class="snake-switch"
         :class="[customClass, { 'is-disabled': disabled || loading }]"
-        :style="[$snakeThemeStyle, trackStyle, customStyle]"
+        :style="[trackStyle, customStyle]"
         role="switch"
         :aria-checked="checked"
         :aria-disabled="disabled || loading"

@@ -1,5 +1,5 @@
 <template>
-    <view v-if="imageList.length" class="graphicnavigation" :style="$snakeThemeStyle">
+    <view v-if="imageList.length" class="graphicnavigation">
         <!-- 鍥哄畾鍒楄〃 -->
         <block v-if="datas.imgStyle === 0">
             <view class="defaultNavigation" :style="{ backgroundColor: datas.backgroundColor, flexWrap: 'wrap' }">

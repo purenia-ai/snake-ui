@@ -1,5 +1,5 @@
 <template>
-  <view :style="$snakeThemeStyle">
+  <view>
     <snake-notice-bar
       :volume-icon="datas.isLeftIcon ? true : false"
       :list="noticeList"

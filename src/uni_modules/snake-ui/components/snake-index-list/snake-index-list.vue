@@ -108,7 +108,7 @@ defineExpose({ scrollTo, update });
 </script>
 
 <template>
-    <view class="snake-index-list" :class="customClass" :style="[$snakeThemeStyle, customStyle]">
+    <view class="snake-index-list" :class="customClass" :style="customStyle">
         <scroll-view
             class="snake-index-list__content"
             scroll-y

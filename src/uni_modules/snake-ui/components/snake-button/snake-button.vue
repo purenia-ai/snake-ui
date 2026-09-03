@@ -140,7 +140,7 @@ function authorize(event: unknown) {
             { 'snake-button--plain': plain, 'snake-button--hairline': hairLine, 'snake-button--loading': loading },
             customClass
         ]"
-        :style="[$snakeThemeStyle, buttonStyle]"
+        :style="buttonStyle"
         :disabled="disabled"
         :form-type="formType || undefined"
         :open-type="disabled || loading ? undefined : openType || undefined"

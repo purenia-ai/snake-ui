@@ -20,7 +20,7 @@ Snake UI 的 `libs/` 以 uView Pro 的 `libs/` 架构为参考基准组织。本
 | --- | --- | --- | --- |
 | `libs/index.ts`（聚合 `$u` + 命名导出 + hooks/configProvider 全量导出） | `libs/index.ts`（barrel）+ `foundation.ts`（聚合 `$snake`）+ `runtime.ts`（DI 注册表 + `uni.$snake` 挂载） | divergent | snake 拆成 foundation/runtime 两半再 `Object.assign`，为支撑宿主适配器注入；对外形态与 `$u` 一致（扁平函数 + `config` + `zIndex` + `http`） |
 | `$u` 挂载 `uni.$u` | `$snake` 挂载 `uni.$snake` | aligned | |
-| — | `$snakeThemeStyle` 全局属性 | snake-only | CSS 变量换肤需要内联绑定（uni-app 自定义属性继承陷阱） |
+| — | `$snakeThemeStyle` 全局属性 | snake-only | 返回当前主题的 `--snake-*` 变量表；内联绑定收敛到 `snake-config-provider`（组件不再各自内联） |
 
 ## config/
 

@@ -167,7 +167,7 @@ function click(event: unknown) {
     <view
         class="snake-icon"
         :class="[customPrefix && `${customPrefix}-${name}`, customClass]"
-        :style="[$snakeThemeStyle, rootStyle]"
+        :style="rootStyle"
         :hover-class="hoverClass"
         @click="click"
     >

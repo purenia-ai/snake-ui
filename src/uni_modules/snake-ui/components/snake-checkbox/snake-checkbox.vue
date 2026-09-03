@@ -57,7 +57,7 @@ function toggle(event: unknown, fromLabel = false) {
         :aria-disabled="disabled"
         :tabindex="disabled ? -1 : 0"
         :class="[customClass, `snake-checkbox--${size}`, { 'is-disabled': disabled }]"
-        :style="[$snakeThemeStyle, customStyle]"
+        :style="customStyle"
         @keydown.enter.prevent="toggle($event)"
         @keydown.space.prevent="toggle($event)"
         ><view class="snake-checkbox__icon" :class="`is-${shape}`" :style="iconStyle" @click="toggle($event)"

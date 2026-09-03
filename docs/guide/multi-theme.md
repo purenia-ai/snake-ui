@@ -59,7 +59,10 @@ app.use(SnakeUI, {
 
 ## 让主题覆盖所有页面
 
-需要在页面根部注入主题变量时，使用 [ConfigProvider](/components/config-provider)。本地 `uni_modules` 示例：
+主题变量分两层供给：
+
+- **默认主题**：`theme.scss` 把 `--snake-color-*` 静态声明在 `:root, page`，所有平台无需任何注入即可生效。
+- **运行时换肤**（多主题切换 / 暗黑模式）：组件本身不再内联主题变量，注入点收敛到 [ConfigProvider](/components/config-provider)——把当前色板内联到页面根部。本地 `uni_modules` 示例：
 
 ```vue
 <script setup lang="ts">

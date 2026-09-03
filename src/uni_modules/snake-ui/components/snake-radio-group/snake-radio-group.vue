@@ -47,7 +47,7 @@ provide(snakeRadioGroupKey, {
     <view
         class="snake-radio-group"
         :class="[customClass, `is-${placement || direction}`]"
-        :style="[$snakeThemeStyle, customStyle]"
+        :style="customStyle"
         ><slot
     /></view>
 </template>

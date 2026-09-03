@@ -116,7 +116,7 @@ function selectAdjacent(index: number, direction: -1 | 1) {
 <template>
     <view
         :class="['snake-subsection', `snake-subsection--${mode}`, customClass]"
-        :style="[$snakeThemeStyle, rootStyle]"
+        :style="rootStyle"
         role="tablist"
     >
         <view v-if="list.length" class="snake-subsection__slider" :style="sliderStyle" />

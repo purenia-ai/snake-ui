@@ -1,5 +1,5 @@
 <template>
-    <view class="snake-sort" :style="$snakeThemeStyle" @click="toggle">
+    <view class="snake-sort" @click="toggle">
         <text class="snake-sort__label" :style="labelStyle">{{ title }}</text>
         <view class="snake-sort__arrows" aria-hidden="true">
             <view class="snake-sort__arrow-up" :class="{ 'is-active': value === 'asc' }" />

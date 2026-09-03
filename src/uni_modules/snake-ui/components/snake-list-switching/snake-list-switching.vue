@@ -2,7 +2,7 @@
     <view
         class="listswitching"
         :ref="listSwitchName"
-        :style="[$snakeThemeStyle, { backgroundImage: 'url(' + datas.bgImg + ')' }]"
+        :style="{ backgroundImage: 'url(' + datas.bgImg + ')' }"
     >
         <!-- 类型一 -->
         <!-- 没有数据展示默认 -->

@@ -1,5 +1,5 @@
 <template>
-  <view class="images" :style="$snakeThemeStyle">
+  <view class="images">
     <view
       class="images-wrap"
       :style="{

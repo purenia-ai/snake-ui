@@ -54,7 +54,7 @@ function select(event: unknown, fromLabel = false) {
         :aria-disabled="disabled"
         :tabindex="disabled ? -1 : 0"
         :class="[customClass, `snake-radio--${size}`, { 'is-disabled': disabled }]"
-        :style="[$snakeThemeStyle, customStyle]"
+        :style="customStyle"
         @keydown.enter.prevent="select($event)"
         @keydown.space.prevent="select($event)"
         ><view class="snake-radio__icon" :class="`is-${shape}`" :style="iconStyle" @click="select($event)"

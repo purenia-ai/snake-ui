@@ -256,7 +256,7 @@ defineExpose({ init, scrollByIndex });
 </script>
 
 <template>
-    <view class="snake-tabs" :class="customClass" :style="[$snakeThemeStyle, rootStyle]">
+    <view class="snake-tabs" :class="customClass" :style="rootStyle">
         <scroll-view
             class="snake-tabs__viewport"
             :scroll-x="canScroll"

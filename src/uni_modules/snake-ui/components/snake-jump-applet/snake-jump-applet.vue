@@ -1,5 +1,5 @@
 <template>
-    <view :style="$snakeThemeStyle">
+    <view>
         <view class="jumpApplet" v-if="datas.isButton">
             <button
                 class="jumpAppletBtn"

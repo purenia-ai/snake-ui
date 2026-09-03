@@ -1,5 +1,5 @@
 <template>
-  <view :style="$snakeThemeStyle">
+  <view>
     <!-- #ifdef MP-WEIXIN -->
     <official-account></official-account>
     <!-- #endif -->

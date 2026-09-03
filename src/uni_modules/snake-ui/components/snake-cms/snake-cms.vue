@@ -1,5 +1,5 @@
 <template>
-    <view v-if="components.length" class="snake-cms" :style="$snakeThemeStyle">
+    <view v-if="components.length" class="snake-cms">
         <template v-for="item in components" :key="item.id">
             <snake-commodity-search v-if="item.component === 'commoditysearch'" :datas="item.setStyle" />
             <snake-auxiliary-segmentation

@@ -1,11 +1,11 @@
 <template>
   <view
     class="magiccube"
-    :style="[$snakeThemeStyle, {
+    :style="{
       'padding-left': datas.pageMargin + 'rpx',
       'padding-right': datas.pageMargin + 'rpx',
       background: datas.bgColor,
-    }]"
+    }"
     v-if="datas.imageTypeObj">
     <!-- 一行最多6个 -->
     <section class="buju buju0" v-if="datas.rubiksCubeType === 0">

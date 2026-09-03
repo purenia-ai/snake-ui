@@ -114,7 +114,7 @@ onBeforeUnmount(clearFallback);
         v-if="rendered"
         class="snake-transition"
         :class="[customClass, phaseClass]"
-        :style="[$snakeThemeStyle, rootStyle]"
+        :style="rootStyle"
         @animationend="onAnimationEnd"
         @click="emit('click', $event)"
     >

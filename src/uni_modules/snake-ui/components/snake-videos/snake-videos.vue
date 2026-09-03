@@ -1,5 +1,5 @@
 <template>
-  <view :style="$snakeThemeStyle">
+  <view>
     <view class="snake-videos__cover" role="button" tabindex="0" aria-label="播放视频" @click="open" @keydown.enter.prevent="open" @keydown.space.prevent="open">
       <snake-image :src="datas.src + '?x-oss-process=video/snapshot,t_0,f_jpg'" alt="视频封面" width="100%" mode="widthFix"></snake-image>
       <view

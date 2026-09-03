@@ -99,7 +99,7 @@ defineExpose<SnakeFormExpose>({ validate, validateField, resetFields, clearValid
 </script>
 
 <template>
-    <view class="snake-form" :class="customClass" :style="[$snakeThemeStyle, customStyle]"><slot /></view>
+    <view class="snake-form" :class="customClass" :style="customStyle"><slot /></view>
 </template>
 
 <style scoped>

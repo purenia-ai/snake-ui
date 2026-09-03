@@ -1,5 +1,5 @@
 <template>
-  <view class="menu-wrap" :style="$snakeThemeStyle">
+  <view class="menu-wrap">
     <scroll-view scroll-y scroll-with-animation class="tab-view menu-scroll-view" :scroll-top="scrollTop">
       <view
         v-for="(item, index) in items"

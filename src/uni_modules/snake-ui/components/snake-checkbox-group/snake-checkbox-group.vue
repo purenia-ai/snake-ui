@@ -56,7 +56,7 @@ provide(snakeCheckboxGroupKey, {
     <view
         class="snake-checkbox-group"
         :class="[customClass, `is-${placement || direction}`]"
-        :style="[$snakeThemeStyle, customStyle]"
+        :style="customStyle"
         ><slot
     /></view>
 </template>

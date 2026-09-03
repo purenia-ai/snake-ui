@@ -1,6 +1,6 @@
 <template>
   <!-- 外层添加高度 防止高度塌陷 -->
-  <view :style="[$snakeThemeStyle, { height: height }]">
+  <view :style="{ height: height }">
     <view :class="{ 'search-fixed': datas.position === 1 }">
       <!-- 搜索 -->
       <view class="search" :style="{ background: datas.backgroundColor, padding: `0 ${datas.pageMargin}rpx` }">

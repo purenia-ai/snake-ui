@@ -33,7 +33,7 @@ function finish(event: any) { emit('animationfinish', detail(event)); }
 </script>
 
 <template>
-  <view class="snake-swiper" :class="customClass" :style="[$snakeThemeStyle, rootStyle]">
+  <view class="snake-swiper" :class="customClass" :style="rootStyle">
     <swiper class="snake-swiper__body" :current="Number(current)" :autoplay="autoplay" :interval="interval" :duration="duration" :circular="circular" :previous-margin="margin" :next-margin="effect3d ? margin : nextMargin" @change="change" @animationfinish="finish">
       <swiper-item v-for="(item, index) in list" :key="index" class="snake-swiper__item" @click="emit('click', index, item)">
         <image class="snake-swiper__image" :class="{ 'is-effect3d': effect3d && index !== active }" :src="source(item)" :mode="imgMode as any" />

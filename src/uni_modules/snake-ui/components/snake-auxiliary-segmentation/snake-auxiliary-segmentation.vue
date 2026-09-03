@@ -1,5 +1,5 @@
 <template>
-  <view class="auxiliarysegmentation" :style="$snakeThemeStyle">
+  <view class="auxiliarysegmentation">
     <view
       class="contan"
       :style="{

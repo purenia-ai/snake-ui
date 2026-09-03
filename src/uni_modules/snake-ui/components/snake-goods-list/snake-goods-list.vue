@@ -1,7 +1,7 @@
 <template>
     <view
         class="goods-list"
-        :style="[$snakeThemeStyle, { padding: `15rpx ${pageMargin + imageMargin}rpx 0`, backgroundColor: bgColor }]"
+        :style="{ padding: `15rpx ${pageMargin + imageMargin}rpx 0`, backgroundColor: bgColor }"
     >
         <block v-for="(item, index) in goodsList" :key="item.id">
             <view

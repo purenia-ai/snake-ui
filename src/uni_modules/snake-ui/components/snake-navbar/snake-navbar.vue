@@ -65,7 +65,7 @@ function goBack(event: unknown) {
 </script>
 
 <template>
-    <view class="snake-navbar-host" :style="$snakeThemeStyle">
+    <view class="snake-navbar-host">
         <view
             :class="['snake-navbar', { 'is-fixed': fixed, 'has-border': borderBottom }, customClass]"
             :style="rootStyle"

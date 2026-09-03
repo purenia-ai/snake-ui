@@ -134,7 +134,7 @@ function confirm(event: any) {
     <view
         class="snake-input"
         :class="[customClass, rootClass]"
-        :style="[$snakeThemeStyle, rootStyle]"
+        :style="rootStyle"
         @click="emit('click', $event)"
     >
         <slot name="prefix"><snake-icon v-if="prefixIcon" :name="prefixIcon" class="snake-input__icon" /></slot>

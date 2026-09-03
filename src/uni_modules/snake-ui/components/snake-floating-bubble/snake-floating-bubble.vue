@@ -3,7 +3,7 @@
         class="floating-bubble"
         :class="{ 'floating-bubble--slot': hasSlot }"
         :animation="animationData"
-        :style="[$snakeThemeStyle, rootStyle]"
+        :style="rootStyle"
         v-if="visible"
     >
         <view class="floating-bubble__wrap" :style="wrapStyle" @click="handleNavigate">

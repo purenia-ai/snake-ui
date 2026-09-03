@@ -90,7 +90,7 @@ defineExpose<SnakeFormItemExpose>({ validate, resetField, clearValidate });
 </script>
 
 <template>
-    <view class="snake-form-item" :class="[customClass, itemClass]" :style="[$snakeThemeStyle, customStyle]">
+    <view class="snake-form-item" :class="[customClass, itemClass]" :style="customStyle">
         <view v-if="label || $slots.label" class="snake-form-item__label" :style="mergedLabelStyle"
             ><text v-if="isRequired" class="snake-form-item__required">*</text
             ><snake-icon v-if="leftIcon" :name="leftIcon" class="snake-form-item__left-icon" /><slot name="label"

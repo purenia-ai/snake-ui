@@ -1,5 +1,5 @@
 <template>
-  <view class="custommodule" :style="$snakeThemeStyle">
+  <view class="custommodule">
     <!-- <slot :name="datas.slotName" /> -->
     <slot />
   </view>

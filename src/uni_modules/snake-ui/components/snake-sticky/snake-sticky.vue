@@ -5,7 +5,7 @@
             :class="[elClass, customClass]"
             :style="placeholderStyle"
         >
-            <view class="snake-sticky__content" :style="[$snakeThemeStyle, contentStyle]">
+            <view class="snake-sticky__content" :style="contentStyle">
                 <slot />
             </view>
         </view>

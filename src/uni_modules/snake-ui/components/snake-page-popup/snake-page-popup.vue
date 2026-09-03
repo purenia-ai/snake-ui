@@ -1,5 +1,5 @@
 <template>
-    <view class="page-popup" :style="$snakeThemeStyle">
+    <view class="page-popup">
         <snake-popup
             v-model="show"
             border-radius="10rpx"

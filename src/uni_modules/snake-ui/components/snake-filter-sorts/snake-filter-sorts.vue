@@ -3,7 +3,7 @@
         v-if="filters.topFilter"
         id="filtersId"
         class="filter-sorts"
-        :style="[$snakeThemeStyle, { backgroundColor: bgColor }, customStyle]"
+        :style="[{ backgroundColor: bgColor }, customStyle]"
     >
         <view class="filter-sorts__toolbar" role="toolbar" aria-label="商品排序与筛选">
             <template v-for="(item, index) in filters.topFilter" :key="index">

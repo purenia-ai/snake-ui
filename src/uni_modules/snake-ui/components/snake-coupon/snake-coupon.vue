@@ -1,5 +1,5 @@
 <template>
-    <view class="coupon" :style="$snakeThemeStyle">
+    <view class="coupon">
         <!-- 页面显示 -->
         <view @click="handleReceiveCoupon" v-if="datas.modeType === 'page'">
             <view v-show="isCouponCheck">

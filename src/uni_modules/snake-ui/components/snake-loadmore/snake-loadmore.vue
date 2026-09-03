@@ -30,7 +30,7 @@ function click() { emit('click', props.status); if (props.status === 'loadmore')
 </script>
 
 <template>
-  <view class="snake-loadmore" :class="customClass" :style="[$snakeThemeStyle, rootStyle]" @click="click">
+  <view class="snake-loadmore" :class="customClass" :style="rootStyle" @click="click">
     <snake-loading-icon v-if="status === 'loading' && icon" :mode="iconType === 'flower' ? 'spinner' : iconType" :color="iconColor" size="16" />
     <text class="snake-loadmore__text">{{ label }}</text>
   </view>

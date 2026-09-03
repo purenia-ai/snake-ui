@@ -80,7 +80,7 @@ function click(event: unknown) {
 </script>
 
 <template>
-    <view class="snake-image" :class="customClass" :style="[$snakeThemeStyle, rootStyle]" :aria-label="alt || undefined" @click="click">
+    <view class="snake-image" :class="customClass" :style="rootStyle" :aria-label="alt || undefined" @click="click">
         <image
             v-if="src"
             class="snake-image__image"
