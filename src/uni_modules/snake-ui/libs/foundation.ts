@@ -17,6 +17,7 @@ import {
     toggleSnakeDarkMode
 } from './config/theme';
 import * as functions from './function';
+import { snakeEmitter } from './function/emitter';
 import * as hooks from './hooks';
 import { currentSnakeLocale, initSnakeLocale, setSnakeLocale, snakeLocales, snakeTranslate } from '../locale';
 import { configureSnakeHttp, snakeHttp } from './request';
@@ -29,6 +30,9 @@ export const snakeFoundation = {
     config: snakeConfig,
     zIndex,
     version: SNAKE_UI_VERSION,
+    type: ['primary', 'success', 'error', 'warning', 'info'],
+    date: functions.formatTime,
+    emitter: snakeEmitter,
     http: snakeHttp,
     themes: snakeThemes,
     currentTheme: currentSnakeTheme,

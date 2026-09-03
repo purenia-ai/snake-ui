@@ -9,14 +9,10 @@ export {
     resetSnakeUIRuntime,
     snakeUIOptionsKey
 } from './runtime';
-export type { SnakeCacheAdapter, SnakeRequestAdapter, SnakeUIConfig, SnakeUIOptions } from './runtime';
-export * from './foundation';
+export type { SnakeCacheAdapter, SnakeRequestAdapter, SnakeUIConfig, SnakeUIOptions } from './runtime';export * from './foundation';
 export * from './config';
 export * from './function';
 export * from './hooks';
 export * from './request';
 export * from './cms';
 export * from './form';
-export * from './adapters/request';
-export * from './adapters/cache';
-export * from './adapters/config';

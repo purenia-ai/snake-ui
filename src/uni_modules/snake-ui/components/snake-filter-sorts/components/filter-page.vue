@@ -156,7 +156,7 @@
  * @see /components/filter-sorts
  */
 
-import { createCacheClient } from '../../../libs/adapters/cache';
+import { createCacheClient } from '../../../libs/runtime';
 import SnakeIndexAnchor from '../../snake-index-anchor/snake-index-anchor.vue';
 import SnakeIndexList from '../../snake-index-list/snake-index-list.vue';
 const cacheManager = createCacheClient('snake-filter-sorts');

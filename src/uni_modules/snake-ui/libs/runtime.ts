@@ -90,6 +90,37 @@ export function getSnakeConfig(component: string): Readonly<SnakeUIConfig> {
     return runtime.config;
 }
 
+// ===== 宿主能力注入门面（原 adapters/ 目录折叠而来，仍从 ./libs barrel 导出） =====
+
+export function createRequestClient(component: string) {
+    return {
+        get<T = unknown>(url: string, params?: Record<string, unknown>): Promise<T> {
+            return requireSnakeRequest(component).get<T>(url, params);
+        },
+        post<T = unknown>(url: string, data?: Record<string, unknown>): Promise<T> {
+            return requireSnakeRequest(component).post<T>(url, data);
+        }
+    };
+}
+
+export function createCacheClient(component: string) {
+    return {
+        get<T = unknown>(key: string): T | undefined {
+            return requireSnakeCache(component).get<T>(key);
+        },
+        set<T = unknown>(key: string, value: T, ttlSeconds?: number): void {
+            requireSnakeCache(component).set(key, value, ttlSeconds);
+        },
+        delete(key: string): void {
+            requireSnakeCache(component).delete(key);
+        }
+    };
+}
+
+export function getConfig(component: string) {
+    return getSnakeConfig(component);
+}
+
 export function installSnakeUIRuntime(app: App, options: SnakeUIOptions = {}): void {
     const configured = configureSnakeUI(options);
     app.provide(snakeUIOptionsKey, configured);
