@@ -26,7 +26,7 @@
                 :page-info="pageInfo"
             />
             <snake-follow v-else-if="item.component === 'follow'" :datas="item.setStyle" />
-            <snake-suspension
+            <snake-floating-bubble
                 v-else-if="item.component === 'suspension'"
                 :datas="item.setStyle"
                 :scroll-top="scrollTop"
@@ -118,9 +118,9 @@
             <slot v-else name="extension" :item="item" :page-info="pageInfo" />
         </template>
 
-        <snake-suspension
+        <snake-floating-bubble
             v-if="goodsList.length && options.assets?.backToTop"
-            :top="scrollTop"
+            :scroll-top="scrollTop"
             bottom="310rpx"
             background="transparent"
         >
@@ -130,7 +130,7 @@
                 class="snake-cms__to-top"
                 @click="handleToTop"
             />
-        </snake-suspension>
+        </snake-floating-bubble>
     </view>
 </template>
 
@@ -159,7 +159,7 @@ import SnakeNotice from '../snake-notice/snake-notice.vue';
 import SnakePagePopup from '../snake-page-popup/snake-page-popup.vue';
 import SnakePictureAds from '../snake-picture-ads/snake-picture-ads.vue';
 import SnakeRichText from '../snake-rich-text/snake-rich-text.vue';
-import SnakeSuspension from '../snake-suspension/snake-suspension.vue';
+import SnakeFloatingBubble from '../snake-floating-bubble/snake-floating-bubble.vue';
 import SnakeVideos from '../snake-videos/snake-videos.vue';
 import {
     normalizeSnakeCmsComponents,

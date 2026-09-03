@@ -45,7 +45,7 @@ C 端主要消费 `component` 与 `setStyle`。`text`、`type`、`style` 和 `ac
 | `richtext`              | 富文本     | 无                                      |
 | `auxiliarysegmentation` | 辅助分割线 | 无                                      |
 | `follow`                | 关注       | 无                                      |
-| `suspension`            | 悬浮入口   | `scroll-top`                            |
+| `suspension`            | 悬浮气泡   | `scroll-top`                            |
 | `jumpApplet`            | 小程序跳转 | link service                            |
 | `images`                | 图片展示   | 无                                      |
 | `hotzone`               | 热区图     | 外链需要 link service                   |

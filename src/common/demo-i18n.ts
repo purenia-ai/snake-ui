@@ -302,7 +302,7 @@ const demoTitles: Record<string, string> = {
     'auxiliary-segmentation': 'Divider',
     'graphic-navigation': 'Graphic Navigation',
     'commodity-search': 'Product Search',
-    suspension: 'Floating Entry',
+    'floating-bubble': 'Floating Bubble',
     'page-popup': 'Page Popup',
     'jump-applet': 'Open Mini Program',
     follow: 'Follow',

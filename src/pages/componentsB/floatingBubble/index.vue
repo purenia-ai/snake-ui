@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
-import { suspensionData } from '../../../common/fixtures';
+import { floatingBubbleData } from '../../../common/fixtures';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
@@ -10,7 +10,7 @@ const { localeName, text } = useDemoLocale();
 const scrollTop = ref(0);
 const controls: DemoControl[] = [
     {
-        key: 'suspensionSize',
+        key: 'floatingBubbleSize',
         label: '入口尺寸',
         type: 'slider',
         defaultValue: 96,
@@ -20,11 +20,11 @@ const controls: DemoControl[] = [
         unit: 'rpx'
     }
 ];
-const state = reactive<Record<string, DemoValue>>({ suspensionSize: 96 });
+const state = reactive<Record<string, DemoValue>>({ floatingBubbleSize: 96 });
 const data = computed(() => ({
-    ...suspensionData,
-    width: Number(state.suspensionSize),
-    height: Number(state.suspensionSize)
+    ...floatingBubbleData,
+    width: Number(state.floatingBubbleSize),
+    height: Number(state.floatingBubbleSize)
 }));
 const localizedControls = computed(() => {
     const _locale = localeName.value;
@@ -32,7 +32,7 @@ const localizedControls = computed(() => {
 });
 const title = computed(() => {
     const _locale = localeName.value;
-    return demoTitle('suspension', '悬浮入口');
+    return demoTitle('floating-bubble', '悬浮气泡');
 });
 function updateValue(key: string, value: DemoValue) {
     state[key] = value;
@@ -45,7 +45,8 @@ function updateValue(key: string, value: DemoValue) {
         :desc="text('在页面边缘提供始终可见的营销或客服入口。')"
         viewport
         ><DemoSection bare variant="preview" :title="text('演示效果')"
-            ><snake-suspension class="demo-suspension-showcase" :datas="data" :scroll-top="scrollTop" /></DemoSection
+            ><snake-floating-bubble class="demo-floating-bubble-showcase" :datas="data" :scroll-top="scrollTop"
+            /></DemoSection
         ><DemoSection variant="controls" :title="text('参数配置')"
             ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" /></DemoSection
     ></DemoPage>

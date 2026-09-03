@@ -30,7 +30,7 @@ export { default as SnakeNotice } from './components/snake-notice/snake-notice.v
 export { default as SnakePagePopup } from './components/snake-page-popup/snake-page-popup.vue';
 export { default as SnakePictureAds } from './components/snake-picture-ads/snake-picture-ads.vue';
 export { default as SnakeRichText } from './components/snake-rich-text/snake-rich-text.vue';
-export { default as SnakeSuspension } from './components/snake-suspension/snake-suspension.vue';
+export { default as SnakeFloatingBubble } from './components/snake-floating-bubble/snake-floating-bubble.vue';
 export { default as SnakeVideos } from './components/snake-videos/snake-videos.vue';
 export { default as SnakeButton } from './components/snake-button/snake-button.vue';
 export { default as SnakeLoadingIcon } from './components/snake-loading-icon/snake-loading-icon.vue';
@@ -116,7 +116,7 @@ export * from './components/snake-notice/types';
 export * from './components/snake-page-popup/types';
 export * from './components/snake-picture-ads/types';
 export * from './components/snake-rich-text/types';
-export * from './components/snake-suspension/types';
+export * from './components/snake-floating-bubble/types';
 export * from './components/snake-videos/types';
 export * from './libs';
 export * from './locale';

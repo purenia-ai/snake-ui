@@ -1,10 +1,10 @@
 ---
-preview: /pages/componentsB/suspension/index
+preview: /pages/componentsB/floatingBubble/index
 cms: true
 ---
 
-# 悬浮入口 <span class="cms-badge">CMS</span>
-在页面右侧显示可关闭的悬浮图片；页面滚动时暂时向屏幕外收起，停止后恢复。
+# 悬浮气泡 <span class="cms-badge">CMS</span>
+在页面右侧显示可关闭的悬浮图片；页面滚动时暂时向屏幕外收起，停止后恢复。也可通过默认插槽承载自定义内容（如分享、回到顶部按钮）。
 
 ## 运行前提
 
@@ -20,8 +20,10 @@ cms: true
 
 ## 基础用法
 
+图片入口模式，点击跳转、可关闭：
+
 ```vue
-<snake-suspension
+<snake-floating-bubble
   :datas="{
     uid: 'customer-service',
     src: 'https://example.com/service.png',
@@ -35,6 +37,19 @@ cms: true
 />
 ```
 
+插槽模式，承载自定义内容：
+
+```vue
+<snake-floating-bubble
+  :scroll-top="scrollTop"
+  bottom="280rpx"
+  background="transparent"
+>
+  <image src="/static/share.png" @click="share" />
+  <image src="/static/totop.png" @click="toTop" />
+</snake-floating-bubble>
+```
+
 ## 效果图
 
 <div class="component-preview"><span class="component-preview__label">请在右侧实时预览中操作组件</span></div>
@@ -45,8 +60,17 @@ cms: true
 
 | 参数 | 说明 | 类型 | 默认值 | 可选值 |
 | --- | --- | --- | --- | --- |
-| `datas` | 悬浮入口配置 | `Object` | 未声明 | - |
+| `datas` | 图片入口配置；传入即启用图片模式 | `Object` | `{}` | - |
 | `scrollTop` | 页面滚动位置；变化时触发收起动画 | `Number` | `0` | - |
+| `bottom` | 插槽模式下底部定位偏移 | `String` | `80rpx` | - |
+| `background` | 插槽模式下容器背景 | `String` | `transparent` | - |
+| `zIndex` | 层级 | `Number \| String` | `6` | - |
+
+### Slots
+
+| 名称 | 说明 |
+| --- | --- |
+| `default` | 自定义内容；提供后覆盖图片模式，关闭按钮不再显示 |
 
 ### `datas` 字段
 
@@ -65,4 +89,4 @@ cms: true
 - 每次 `scrollTop` 变化都会尝试触发动画，内部用 2 秒定时器恢复。
 - 组件卸载时会清理定时器。
 
-源码：`src/uni_modules/snake-ui/components/snake-suspension/snake-suspension.vue`
+源码：`src/uni_modules/snake-ui/components/snake-floating-bubble/snake-floating-bubble.vue`

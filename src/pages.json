@@ -81,7 +81,7 @@
                 { "path": "auxiliarySegmentation/index", "style": { "navigationBarTitleText": "辅助分割线" } },
                 { "path": "graphicNavigation/index", "style": { "navigationBarTitleText": "图文导航" } },
                 { "path": "commoditySearch/index", "style": { "navigationBarTitleText": "商品搜索" } },
-                { "path": "suspension/index", "style": { "navigationBarTitleText": "悬浮入口" } },
+                { "path": "floatingBubble/index", "style": { "navigationBarTitleText": "悬浮气泡" } },
                 { "path": "pagePopup/index", "style": { "navigationBarTitleText": "页面弹窗" } },
                 { "path": "jumpApplet/index", "style": { "navigationBarTitleText": "小程序跳转" } },
                 { "path": "follow/index", "style": { "navigationBarTitleText": "关注" } },

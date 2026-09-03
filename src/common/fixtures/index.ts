@@ -96,7 +96,7 @@ export const navigationData = {
 };
 
 export const popupData = { popupMode: "center", image: localImage, url: "" };
-export const suspensionData = { uid: "service", src: localImage, url: "", width: 96, height: 96, right: 0, bottom: 20 };
+export const floatingBubbleData = { uid: "service", src: localImage, url: "", width: 96, height: 96, right: 0, bottom: 20 };
 export const couponData = { modeType: "page", couponId: "preview", beforeImage: localImage, afterImage: localImage, type: "10", afterUrl: "" };
 export const jumpAppletData = { isButton: true, title: "打开小程序", textColor: "#ffffff", btnColor: "#06D290", appId: "", path: "", query: "", isAuto: false, isWeCom: false };
 

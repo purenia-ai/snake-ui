@@ -197,9 +197,9 @@ const componentGroups: SnakeComponentGroup[] = [
                 true
             ),
             item(
-                '/pages/componentsB/suspension/index',
-                'Suspension 悬浮入口',
-                'Suspension',
+                '/pages/componentsB/floatingBubble/index',
+                'FloatingBubble 悬浮气泡',
+                'FloatingBubble',
                 '始终可见的营销或客服入口。',
                 true
             )

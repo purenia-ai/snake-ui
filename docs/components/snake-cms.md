@@ -136,7 +136,7 @@ app.use(SnakeUI, {
 | `notice`                | 公告       |
 | `jumpApplet`            | 小程序跳转 |
 | `follow`                | 关注       |
-| `suspension`            | 悬浮入口   |
+| `suspension`            | 悬浮气泡   |
 | `coupon`                | 优惠券     |
 | `pagePopup`             | 页面弹窗   |
 | `goodslist`             | 商品组合区 |

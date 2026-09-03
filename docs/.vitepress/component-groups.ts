@@ -99,7 +99,7 @@ export const componentGroups: ComponentGroup[] = [
         items: [
             { name: 'GraphicNavigation', title: '图文导航', link: '/components/graphic-navigation', cms: true },
             { name: 'CommoditySearch', title: '商品搜索', link: '/components/commodity-search', cms: true },
-            { name: 'Suspension', title: '悬浮入口', link: '/components/suspension', cms: true },
+            { name: 'FloatingBubble', title: '悬浮气泡', link: '/components/floating-bubble', cms: true },
             { name: 'PagePopup', title: '页面弹窗', link: '/components/page-popup', cms: true },
             { name: 'JumpApplet', title: '小程序跳转', link: '/components/jump-applet', cms: true },
             { name: 'Follow', title: '关注', link: '/components/follow', cms: true }
