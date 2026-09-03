@@ -3,7 +3,7 @@ import type {
     SnakeCmsDiagnostic,
     SnakeCmsOptions,
     SnakeCmsPageInfo,
-    SnakeCmsStatus
+    SnakeCmsStateChange
 } from '../../libs/cms/types';
 import type { SnakeCmsError } from '../../libs/cms/types';
 
@@ -21,16 +21,6 @@ export interface SnakeCmsProps {
     stickyOffsetTop?: number;
     /** 当前实例使用的 CMS 服务与兼容配置。 */
     cmsOptions?: SnakeCmsOptions;
-}
-
-/** SnakeCmsStateChange 类型定义。 */
-export interface SnakeCmsStateChange {
-    /** 当前状态。 */
-    status: SnakeCmsStatus;
-    /** page 配置。 */
-    page: number;
-    /** item count 配置。 */
-    itemCount: number;
 }
 
 /** SnakeCms 组件的事件契约。 */

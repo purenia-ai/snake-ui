@@ -7,7 +7,7 @@ import type {
     SnakeCmsLinkAction,
     SnakeCmsLinkService,
     SnakeCmsOptions
-} from '../../components/snake-cms/types';
+} from './types';
 
 interface LegacyResponse<T = any> {
     success?: boolean;

@@ -6,8 +6,8 @@ import type {
     SnakeCmsPageInfo,
     SnakeCmsStateChange,
     SnakeCmsStatus
-} from '../../components/snake-cms/types';
-import { SnakeCmsError as CmsError } from '../../components/snake-cms/types';
+} from './types';
+import { SnakeCmsError as CmsError } from './types';
 import { getSnakeUIOptions } from '../runtime';
 
 type Dictionary = Record<string, any>;

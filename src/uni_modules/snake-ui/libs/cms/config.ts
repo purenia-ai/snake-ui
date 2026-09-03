@@ -1,5 +1,5 @@
 import { deepMerge } from '../function';
-import type { SnakeCmsOptions } from '../../components/snake-cms/types';
+import type { SnakeCmsOptions } from './types';
 
 const DEFAULT_CMS_OPTIONS: SnakeCmsOptions = {
     aliases: { videoss: 'videos' },

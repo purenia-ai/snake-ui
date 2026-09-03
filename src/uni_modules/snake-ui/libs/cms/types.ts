@@ -57,6 +57,16 @@ export interface SnakeCmsDiagnostic {
 
 export type SnakeCmsStatus = 'idle' | 'initial-loading' | 'ready' | 'empty' | 'loading-more' | 'no-more' | 'error';
 
+/** SnakeCmsStateChange 类型定义。 */
+export interface SnakeCmsStateChange {
+    /** 当前状态。 */
+    status: SnakeCmsStatus;
+    /** page 配置。 */
+    page: number;
+    /** item count 配置。 */
+    itemCount: number;
+}
+
 export interface SnakeCmsServiceContext {
     pageInfo: Readonly<SnakeCmsPageInfo>;
     component: Readonly<SnakeCmsNormalizedComponent>;

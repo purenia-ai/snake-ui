@@ -1,7 +1,7 @@
 import { deepMerge } from '../function';
 import { isSnakeDebugMode } from '../config/state';
 import { getSnakeUIOptions } from '../runtime';
-import type { SnakeCmsDiagnostic, SnakeCmsOptions } from '../../components/snake-cms/types';
+import type { SnakeCmsDiagnostic, SnakeCmsOptions } from './types';
 import { getSnakeCmsOptions } from './config';
 import { createLegacyJokerCmsOptions } from './legacy-joker';
 

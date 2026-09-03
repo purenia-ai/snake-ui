@@ -6,7 +6,7 @@ import type {
     SnakeCmsNormalizedComponent,
     SnakeCmsOptions,
     SnakeCmsPageInfo
-} from '../../components/snake-cms/types';
+} from './types';
 
 export const snakeCmsBuiltinComponents = new Set<SnakeCmsBuiltinComponent>([
     'commoditysearch',

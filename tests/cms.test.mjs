@@ -115,3 +115,20 @@ test('Joker endpoints, routes, review flags, and CDN assets stay inside the lega
     for (const root of roots) await scan(root);
     assert.deepEqual(violations, []);
 });
+
+test('libs layer never imports back from components', async () => {
+    const libsRoot = resolve(import.meta.dirname, '../src/uni_modules/snake-ui/libs');
+    const violations = [];
+    async function scan(directory) {
+        for (const entry of await readdir(directory, { withFileTypes: true })) {
+            const path = join(directory, entry.name);
+            if (entry.isDirectory()) await scan(path);
+            else if (/\.(?:ts|vue)$/.test(entry.name)) {
+                const source = await readFile(path, 'utf8');
+                if (source.includes('../../components/')) violations.push(path);
+            }
+        }
+    }
+    await scan(libsRoot);
+    assert.deepEqual(violations, []);
+});
