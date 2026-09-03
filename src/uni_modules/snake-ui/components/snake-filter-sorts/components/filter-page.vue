@@ -324,8 +324,9 @@ export default {
         view
           .select('#scroll-panel')
           .boundingClientRect((res) => {
-            this.scrollTopSize = res.top;
-            this.scrollHeight = res.height;
+            // virtualHost 下 mp 端 selector 可能返回 null，回退默认高度避免 initData 中断
+            this.scrollTopSize = res?.top || 0;
+            this.scrollHeight = res?.height || this.scrollHeight;
             setTimeout(() => {
               resolve();
             }, 100);
@@ -349,13 +350,14 @@ export default {
           })
           .exec();
       }).then((res) => {
-        const topArr = res.map((item) => {
+        const list = res || [];
+        const topArr = list.map((item) => {
           return item.top - this.scrollTopSize; /* 减去滚动容器距离顶部的距离 */
         });
         this.topArr = topArr;
 
         /* 获取最后一项的高度，设置填充高度。判断和填充时做了 +-20 的操作，是为了滚动时更好的定位 */
-        const last = res[res.length - 1]?.height || 0;
+        const last = list[list.length - 1]?.height || 0;
         if (last - 20 < this.scrollHeight) {
           this.fillHeight = this.scrollHeight - last + 20;
         }

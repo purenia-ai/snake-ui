@@ -5,7 +5,7 @@
  * @see /components/drop-menu-item
  */
 
-import { computed, inject, onBeforeUnmount, watch } from 'vue';
+import { computed, inject, onBeforeUnmount, watch, type CSSProperties } from 'vue';
 import zIndex from '../../libs/config/zIndex';
 import { addUnit } from '../../libs/function/unit';
 import { snakeDropMenuKey } from '../../libs/internal/drop-menu';
@@ -33,11 +33,20 @@ const color = computed(() =>
     isOpen.value || menu?.highlighted.value === itemIndex ? menu?.activeColor.value : menu?.inactiveColor.value
 );
 const panelStyle = computed(() => [
-    {
+    ({
+        // 面板定位/底色直接内联，避免依赖跨组件 scoped class（custom-class 应用在
+        // snake-transition 根节点上，而 scoped 样式带的是本组件 data-v，选择器匹配不上）。
+        position: 'fixed',
         top: `${menu?.menuTop.value || 0}px`,
+        left: 0,
+        right: 0,
         zIndex: (menu?.zIndex.value || zIndex.dropdown) + 1,
-        maxHeight: props.height === 'auto' ? '70vh' : addUnit(props.height, 'rpx')
-    },
+        maxHeight: props.height === 'auto' ? '70vh' : addUnit(props.height, 'rpx'),
+        boxSizing: 'border-box',
+        overflow: 'hidden',
+        background: 'var(--snake-color-surface, #fff)',
+        boxShadow: '0 18rpx 48rpx var(--snake-color-shadow, rgba(15, 30, 24, 0.12))'
+    } as CSSProperties),
     props.customStyle
 ]);
 function requestOpen() {
@@ -149,15 +158,7 @@ onBeforeUnmount(() => menu?.unregister(itemId));
     left: 0;
     background: rgba(0, 0, 0, 0.45);
 }
-.snake-drop-item__panel {
-    position: fixed;
-    right: 0;
-    left: 0;
-    box-sizing: border-box;
-    overflow: hidden;
-    background: var(--snake-color-surface, #fff);
-    box-shadow: 0 18rpx 48rpx var(--snake-color-shadow, rgba(15, 30, 24, 0.12));
-}
+/* 面板定位/底色已内联在 panelStyle（跨组件 custom-class 无法命中 scoped 选择器） */
 .snake-drop-item__options {
     max-height: 70vh;
 }
