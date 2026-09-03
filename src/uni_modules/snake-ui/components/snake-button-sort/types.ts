@@ -5,6 +5,8 @@ export type SnakeButtonSortValue = '' | 'asc' | 'desc';
 export interface SnakeButtonSortProps {
     /** 标题文本。 */
     title?: string;
+    /** 标题颜色。 */
+    titleColor?: string;
 }
 
 /** SnakeButtonSortChange 事件详情。 */

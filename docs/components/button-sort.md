@@ -25,6 +25,7 @@ preview: /pages/componentsA/buttonSort/index
 | 参数 | 说明 | 类型 | 默认值 | 可选值 |
 | --- | --- | --- | --- | --- |
 | `title` | 按钮文字 | `string` | `''` | - |
+| `titleColor` | 按钮文字颜色，不传则用主题文字色 | `string` | `''` | - |
 
 ### Events
 
