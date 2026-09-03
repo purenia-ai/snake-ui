@@ -1,5 +1,13 @@
 export * from './unit';
 export * from './platform';
+export * from './sleep';
+export * from './guid';
+export * from './getRect';
+export * from './toast';
+export * from './system';
+export * from './route';
+export * from './queryParams';
+export * from './timeFormat';
 export * from './timeFrom';
 export * from './color';
 export * from './deepClone';
@@ -13,8 +21,8 @@ export * from './test';
 export * from './style';
 export * from './format';
 export * from './clipboard';
-export * from './system';
 export * from './type2icon';
 export * from './emitter';
-
-export { getQueryParams as queryParams, formatTime as timeFormat } from './platform';
+export * from './getParent';
+export * from './$parent';
+export * from './styleUtils';

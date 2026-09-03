@@ -1,4 +1,4 @@
-import { formatTime } from './platform';
+import { formatTime } from './timeFormat';
 
 function normalizeTime(value: string | number | Date): Date {
     if (value instanceof Date) return new Date(value.getTime());

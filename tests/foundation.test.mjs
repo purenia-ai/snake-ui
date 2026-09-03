@@ -98,6 +98,68 @@ test('foundation utilities clone, merge, style, and color values', () => {
     assert.equal(functions.colorToRgba('#00a86f', 0.5), 'rgba(0, 168, 111, 0.5)');
 });
 
+test('test suite keeps snake semantics and covers the full validator set', () => {
+    const { test: suite } = functions;
+    // snake 原有 8 个校验器语义不变
+    assert.equal(suite.email('a@b.com'), true);
+    assert.equal(suite.mobile('13800138000'), true);
+    assert.equal(suite.url('https://a.com'), true);
+    assert.equal(suite.number('12.5'), true);
+    assert.equal(suite.number('abc'), false);
+    assert.equal(suite.string('x'), true);
+    assert.equal(suite.object({}), true);
+    assert.equal(suite.object([]), false);
+    assert.equal(suite.array([]), true);
+    assert.equal(suite.empty(''), true);
+    assert.equal(suite.empty('0'), false);
+    // 移植补齐的校验器
+    assert.equal(suite.dateISO('2026-09-03'), true);
+    assert.equal(suite.digits('123'), true);
+    assert.equal(suite.digits('12.3'), false);
+    assert.equal(suite.idCard('110101199003077258'), true);
+    assert.equal(suite.carNo('京A12345'), true);
+    assert.equal(suite.carNo('京AD12345'), true);
+    assert.equal(suite.amount('1,234.50'), true);
+    assert.equal(suite.chinese('中文'), true);
+    assert.equal(suite.letter('abc'), true);
+    assert.equal(suite.enOrNum('abc123'), true);
+    assert.equal(suite.contains('hello', 'ell'), true);
+    assert.equal(suite.range(5, [1, 10]), true);
+    assert.equal(suite.rangeLength('abc', [2, 5]), true);
+    assert.equal(suite.landline('010-12345678'), true);
+    assert.equal(suite.jsonString('{"a":1}'), true);
+    assert.equal(suite.code('123456'), true);
+    assert.equal(suite.code('12345', 5), true);
+    assert.equal(suite.func(() => {}), true);
+    assert.equal(suite.promise(Promise.resolve()), true);
+    assert.equal(suite.image('a.png?x=1'), true);
+    assert.equal(suite.video('a.mp4'), true);
+    assert.equal(suite.regExp(/a/), true);
+    assert.equal(suite.isEmpty(null), true);
+});
+
+test('styleUtils merges css strings and objects in both directions', () => {
+    assert.deepEqual(functions.mergeStyles('color: red', { backgroundColor: 'blue' }), {
+        color: 'red',
+        backgroundColor: 'blue'
+    });
+    assert.equal(functions.mergeCssStrings({ backgroundColor: '#fff' }, 'color:#000'), 'background-color: #fff; color: #000;');
+});
+
+test('$parent walks the instance chain by component name', () => {
+    const chain = { type: { name: 'SnakeList' }, parent: { type: { name: 'SnakeForm' } } };
+    assert.equal(functions.$parent('SnakeForm', chain), chain.parent);
+    assert.equal(functions.$parent(undefined, chain), chain.parent);
+    assert.equal(functions.$parent('Missing', chain), null);
+    // uView 语义：数字 0 视为「未传」回落父组件值，false 视为「已传」覆盖
+    const inherited = functions.getParent.call(
+        { $parent: { $options: { name: 'SnakeList' }, gap: 10, bold: true } },
+        'SnakeList',
+        { gap: 0, bold: false }
+    );
+    assert.deepEqual(inherited, { gap: 10, bold: false });
+});
+
 test('route supports uView Pro aliases and URL parameter encoding', async () => {
     navigationCalls.length = 0;
     await functions.route('/pages/detail?source=home#summary', {
