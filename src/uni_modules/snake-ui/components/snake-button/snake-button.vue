@@ -6,6 +6,7 @@
  */
 
 import { computed, getCurrentInstance, nextTick, onBeforeUnmount, ref } from 'vue';
+import { getRect } from '../../libs/function/getRect';
 import SnakeIcon from '../snake-icon/snake-icon.vue';
 import SnakeLoadingIcon from '../snake-loading-icon/snake-loading-icon.vue';
 import { snakeButtonProps } from './types';
@@ -78,36 +79,31 @@ function startRipple(event: unknown) {
     if (rippleTimer) clearTimeout(rippleTimer);
 
     nextTick(() => {
-        const query = uni.createSelectorQuery();
-        if (instance?.proxy) query.in(instance.proxy);
-        query
-            .select('.snake-button')
-            .boundingClientRect(rect => {
-                if (!rect || Array.isArray(rect) || !rect.width || !rect.height) return;
-                const pointer = getPointer(event);
-                const left = rect.left ?? 0;
-                const top = rect.top ?? 0;
-                const localX = Math.min(rect.width, Math.max(0, (pointer.x ?? left + rect.width / 2) - left));
-                const localY = Math.min(rect.height, Math.max(0, (pointer.y ?? top + rect.height / 2) - top));
-                const radius = Math.max(
-                    Math.hypot(localX, localY),
-                    Math.hypot(rect.width - localX, localY),
-                    Math.hypot(localX, rect.height - localY),
-                    Math.hypot(rect.width - localX, rect.height - localY)
-                );
-                const diameter = radius * 2;
-                rippleStyle.value = {
-                    top: `${localY - radius}px`,
-                    left: `${localX - radius}px`,
-                    width: `${diameter}px`,
-                    height: `${diameter}px`
-                };
-                nextTick(() => {
-                    rippleActive.value = true;
-                    rippleTimer = setTimeout(() => (rippleActive.value = false), 600);
-                });
-            })
-            .exec();
+        getRect('.snake-button', instance).then(rect => {
+            if (Array.isArray(rect) || !rect.width || !rect.height) return;
+            const pointer = getPointer(event);
+            const left = rect.left ?? 0;
+            const top = rect.top ?? 0;
+            const localX = Math.min(rect.width, Math.max(0, (pointer.x ?? left + rect.width / 2) - left));
+            const localY = Math.min(rect.height, Math.max(0, (pointer.y ?? top + rect.height / 2) - top));
+            const radius = Math.max(
+                Math.hypot(localX, localY),
+                Math.hypot(rect.width - localX, localY),
+                Math.hypot(localX, rect.height - localY),
+                Math.hypot(rect.width - localX, rect.height - localY)
+            );
+            const diameter = radius * 2;
+            rippleStyle.value = {
+                top: `${localY - radius}px`,
+                left: `${localX - radius}px`,
+                width: `${diameter}px`,
+                height: `${diameter}px`
+            };
+            nextTick(() => {
+                rippleActive.value = true;
+                rippleTimer = setTimeout(() => (rippleActive.value = false), 600);
+            });
+        });
     });
 }
 
