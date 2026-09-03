@@ -99,6 +99,7 @@ export default defineConfig({
                     text: '迁移与排错',
                     items: [
                         { text: '从 uView Pro 迁移', link: '/guide/migrate-from-uview' },
+                        { text: 'libs 层对齐审计', link: '/guide/libs-audit' },
                         { text: '常见问题', link: '/guide/troubleshooting' }
                     ]
                 }

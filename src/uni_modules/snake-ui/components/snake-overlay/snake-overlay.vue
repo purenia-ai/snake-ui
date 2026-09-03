@@ -6,6 +6,7 @@
  */
 
 import { computed, getCurrentInstance } from 'vue';
+import zIndex from '../../libs/config/zIndex';
 import SnakeTransition from '../snake-transition/snake-transition.vue';
 import type { SnakeOverlayEmits, SnakeOverlayProps } from './types';
 
@@ -14,7 +15,7 @@ defineOptions({ name: 'SnakeOverlay', options: { virtualHost: true, styleIsolati
 const props = withDefaults(defineProps<SnakeOverlayProps>(), {
     modelValue: false,
     opacity: 0.5,
-    zIndex: 10070,
+    zIndex: zIndex.mask,
     duration: 300,
     lockScroll: true,
     customClass: '',

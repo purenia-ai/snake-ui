@@ -6,6 +6,7 @@
  */
 
 import { getCurrentInstance, onMounted, provide, ref, toRef, watch } from 'vue';
+import zIndex from '../../libs/config/zIndex';
 import { addUnit } from '../../libs/function/unit';
 import { snakeDropMenuKey } from '../../libs/internal/drop-menu';
 import type { SnakeDropMenuEmits, SnakeDropMenuExpose, SnakeDropMenuProps } from './types';
@@ -22,7 +23,7 @@ const props = withDefaults(defineProps<SnakeDropMenuProps>(), {
     titleSize: 28,
     menuIcon: 'down',
     menuIconSize: 18,
-    zIndex: 985,
+    zIndex: zIndex.dropdown,
     customClass: '',
     customStyle: ''
 });

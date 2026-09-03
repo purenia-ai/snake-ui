@@ -6,6 +6,7 @@
  */
 
 import { computed, inject, onBeforeUnmount, watch } from 'vue';
+import zIndex from '../../libs/config/zIndex';
 import { addUnit } from '../../libs/function/unit';
 import { snakeDropMenuKey } from '../../libs/internal/drop-menu';
 import SnakeIcon from '../snake-icon/snake-icon.vue';
@@ -34,7 +35,7 @@ const color = computed(() =>
 const panelStyle = computed(() => [
     {
         top: `${menu?.menuTop.value || 0}px`,
-        zIndex: (menu?.zIndex.value || 985) + 1,
+        zIndex: (menu?.zIndex.value || zIndex.dropdown) + 1,
         maxHeight: props.height === 'auto' ? '70vh' : addUnit(props.height, 'rpx')
     },
     props.customStyle
@@ -92,7 +93,7 @@ onBeforeUnmount(() => menu?.unregister(itemId));
         <view
             v-if="isOpen"
             class="snake-drop-item__mask"
-            :style="{ top: `${menu?.menuTop.value || 0}px`, zIndex: menu?.zIndex.value || 985 }"
+            :style="{ top: `${menu?.menuTop.value || 0}px`, zIndex: menu?.zIndex.value || zIndex.dropdown }"
             @click="maskClick"
         />
         <snake-transition

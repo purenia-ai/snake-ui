@@ -1,7 +1,8 @@
 import type { App } from 'vue';
 import type { SnakeUIOptions } from './runtime';
 import { snake as runtimeSnake } from './runtime';
-import { snakeConfig, setSnakeConfig } from './config/state';
+import { snakeConfig, setSnakeConfig, SNAKE_UI_VERSION } from './config/state';
+import zIndex from './config/zIndex';
 import {
     currentSnakeTheme,
     initSnakeTheme,
@@ -26,6 +27,8 @@ export const snakeFoundation = {
     ...hooks,
     color: snakeColor,
     config: snakeConfig,
+    zIndex,
+    version: SNAKE_UI_VERSION,
     http: snakeHttp,
     themes: snakeThemes,
     currentTheme: currentSnakeTheme,

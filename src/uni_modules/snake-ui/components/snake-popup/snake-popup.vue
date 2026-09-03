@@ -6,6 +6,7 @@
  */
 
 import { computed, getCurrentInstance, ref, watch } from 'vue';
+import zIndex from '../../libs/config/zIndex';
 import { addUnit } from '../../libs/function/unit';
 import SnakeIcon from '../snake-icon/snake-icon.vue';
 import SnakeOverlay from '../snake-overlay/snake-overlay.vue';
@@ -18,7 +19,7 @@ const props = withDefaults(defineProps<SnakePopupProps>(), {
     modelValue: false,
     mode: 'center',
     bgColor: 'var(--snake-color-surface, #fff)',
-    zIndex: 10075,
+    zIndex: zIndex.popup,
     duration: 300,
     round: false,
     zoom: true,

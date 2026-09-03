@@ -6,6 +6,7 @@
  */
 
 import { getCurrentInstance, onMounted, provide, ref, toRef, watch } from 'vue';
+import zIndex from '../../libs/config/zIndex';
 import { snakeIndexListKey } from '../../libs/internal/index-list';
 import type { SnakeIndexListEmits, SnakeIndexListProps, SnakeIndexValue } from './types';
 
@@ -13,7 +14,7 @@ defineOptions({ name: 'SnakeIndexList', options: { virtualHost: true, styleIsola
 const props = withDefaults(defineProps<SnakeIndexListProps>(), {
     indexList: () => [],
     scrollTop: 0,
-    zIndex: 965,
+    zIndex: zIndex.indexListSticky,
     sticky: true,
     offsetTop: 0,
     activeColor: 'var(--snake-color-primary, #06D290)',

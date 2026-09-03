@@ -6,6 +6,7 @@
  */
 
 import { computed } from 'vue';
+import zIndex from '../../libs/config/zIndex';
 import { addUnit } from '../../libs/function/unit';
 import SnakeIcon from '../snake-icon/snake-icon.vue';
 import type { SnakeNavbarEmits, SnakeNavbarProps } from './types';
@@ -30,7 +31,7 @@ const props = withDefaults(defineProps<SnakeNavbarProps>(), {
     immersive: false,
     safeAreaInsetTop: true,
     borderBottom: true,
-    zIndex: 980,
+    zIndex: zIndex.navbar,
     customBack: null,
     customClass: '',
     customStyle: ''
@@ -44,7 +45,7 @@ const placeholderHeight = computed(() => navbarHeight.value + statusBarHeight.va
 const backgroundStyle = computed(() =>
     typeof props.background === 'string' ? { background: props.background } : props.background
 );
-const rootStyle = computed(() => [backgroundStyle.value, { zIndex: Number(props.zIndex) || 980 }, props.customStyle]);
+const rootStyle = computed(() => [backgroundStyle.value, { zIndex: Number(props.zIndex) || zIndex.navbar }, props.customStyle]);
 const innerStyle = computed(() => ({ height: navbarHeight.value + 'px' }));
 const titleStyle = computed(() => ({
     width: addUnit(props.titleWidth, 'rpx'),
