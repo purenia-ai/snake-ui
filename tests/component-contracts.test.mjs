@@ -210,6 +210,37 @@ test('popup and overlay resolve visibility from the actually bound channel', asy
     }
 });
 
+test('published styles avoid wxss-unsupported universal selectors', async () => {
+    // 回归：微信小程序 WXSS 不支持通配选择器 `*`，上传时编译报
+    // 「error at token `*`」（错误码 80058）。命中无 class 的包装容器时应补语义 class。
+    const componentRoot = new URL('components/', root);
+    const directories = (await readdir(componentRoot, { withFileTypes: true }))
+        .filter(entry => entry.isDirectory() && entry.name.startsWith('snake-'))
+        .map(entry => entry.name)
+        .sort();
+    const files = directories.map(component => `components/${component}/${component}.vue`);
+    files.push(
+        'components/snake-filter-sorts/components/filter-page.vue',
+        'components/snake-list-switching/components/tree-select/index.vue'
+    );
+
+    for (const path of files) {
+        const source = await readFile(new URL(path, root), 'utf8');
+        const styles = [...source.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map(match => match[1]);
+        for (const style of styles) {
+            const clean = style
+                .replace(/\/\*[\s\S]*?\*\//g, '')
+                .replace(/\/\/[^\n]*/g, '')
+                .replace(/(["'])(?:\\.|(?!\1).)*\1/g, '""');
+            assert.doesNotMatch(
+                clean,
+                />\s*\*/,
+                `${path}: WXSS 不支持通配选择器 *，请为子元素补显式 class`
+            );
+        }
+    }
+});
+
 test('icon uses the bundled Snake UI font for stable common glyphs', async () => {
     const source = await readFile(new URL('components/snake-icon/snake-icon.vue', root), 'utf8');
     const types = await readFile(new URL('components/snake-icon/types.ts', root), 'utf8');

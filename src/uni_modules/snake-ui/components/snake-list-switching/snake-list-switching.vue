@@ -122,7 +122,7 @@
                             <text class="commodity-currency">￥</text>
                             99
                         </text>
-                        <view v-show="datas.purchasebutton">
+                        <view class="commodity-action-wrap" v-show="datas.purchasebutton">
                             <!-- <snake-icon name="" size="23" v-show="datas.purchasebuttonType === 0" />
 							<snake-icon name="" size="23" v-show="datas.purchasebuttonType === 1" />
 							<snake-icon name="" size="23" v-show="datas.purchasebuttonType === 2" />
@@ -241,11 +241,11 @@
                         {{ item.introduce }}
                     </text>
                     <view class="mony" v-if="datas.priceofcommodity || datas.purchasebutton">
-                        <view v-if="datas.priceofcommodity">
+                        <view class="commodity-price-wrap" v-if="datas.priceofcommodity">
                             <text>￥</text>
                             {{ item.price }}
                         </view>
-                        <view v-if="datas.purchasebutton">
+                        <view class="commodity-action-wrap" v-if="datas.purchasebutton">
                             <!-- <snake-icon name="" size="23" v-if="datas.purchasebuttonType === 0" />
 							<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 1" />
 							<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 2" />
@@ -375,7 +375,7 @@
                                 <text class="commodity-currency">￥</text>
                                 99
                             </text>
-                            <view v-if="datas.purchasebutton">
+                            <view class="commodity-action-wrap" v-if="datas.purchasebutton">
                                 <!-- <snake-icon name="" size="23" v-if="datas.purchasebuttonType === 0" />
 								<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 1" />
 								<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 2" />
@@ -497,7 +497,7 @@
                                 <text class="commodity-currency">￥</text>
                                 {{ item.price }}
                             </text>
-                            <view v-if="datas.purchasebutton">
+                            <view class="commodity-action-wrap" v-if="datas.purchasebutton">
                                 <!-- <snake-icon name="" size="23" v-if="datas.purchasebuttonType === 0" />
 								<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 1" />
 								<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 2" />
@@ -614,7 +614,7 @@
                                             <text class="commodity-currency">￥</text>
                                             99
                                         </text>
-                                        <view v-if="datas.purchasebutton">
+                                        <view class="commodity-action-wrap" v-if="datas.purchasebutton">
                                             <!-- <snake-icon name="" size="23" v-if="datas.purchasebuttonType === 0" />
 											<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 1" />
 											<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 2" />
@@ -724,7 +724,7 @@
                                             <text class="commodity-currency">￥</text>
                                             {{ item.price }}
                                         </text>
-                                        <view v-show="datas.purchasebutton">
+                                        <view class="commodity-action-wrap" v-show="datas.purchasebutton">
                                             <!-- 	<snake-icon name="" size="23" v-show="datas.purchasebuttonType === 0" />
 											<snake-icon name="" size="23" v-show="datas.purchasebuttonType === 1" />
 											<snake-icon name="" size="23" v-show="datas.purchasebuttonType === 2" />
@@ -1174,7 +1174,8 @@ export default {
                     // height: 44px;
                     width: 100%;
 
-                    > * {
+                    > .commodity-price-wrap,
+                    > .commodity-action-wrap {
                         display: flex;
                         align-items: center;
                         font-size: 16px;
