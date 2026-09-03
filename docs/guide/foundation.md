@@ -119,15 +119,23 @@ uni.$snake.navTo('/pages/example/components');
 await uni.$snake.sleep(300);
 ```
 
+`$snake` 上还挂了对齐 uView 生态的配置面：`zIndex` 层级数值表（`uni.$snake.zIndex.popup === 10075`）、`type` 主题类型数组、`version` 库版本、`date`（`formatTime` 别名）与 `emitter` 事件总线单例；校验套件可通过 `uni.$snake.test.idCard(...)` 等 30 个校验器使用。
+
 可复用模块更推荐按需导入：
 
 ```ts
-import { debounce, deepMerge, navTo, queryParams, useSnakeEmitter, useSnakeRouter, useSnakeToast } from '@puresnake/snake-ui';
+import { debounce, deepMerge, mergeStyles, navTo, queryParams, useSnakeEmitter, useSnakeRouter, useSnakeToast } from '@puresnake/snake-ui';
+```
+
+从 uView Pro 移植组件时，uView 原名 hook 也可直接按需导入：
+
+```ts
+import { useParent, useChildren, useRect, getParent, $parent } from '@puresnake/snake-ui';
 ```
 
 这样类型推导、测试和依赖分析更直接。
 
-路由、查询参数、时间和其他函数的完整说明见[工具介绍](/tools/intro)。
+路由、查询参数、时间和其他函数的完整说明见[工具介绍](/tools/intro)；libs 层与 uView Pro 的逐模块对照见[libs 层对齐审计](/guide/libs-audit)。
 
 ## 样式入口
 

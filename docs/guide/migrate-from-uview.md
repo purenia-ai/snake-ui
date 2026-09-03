@@ -59,6 +59,15 @@ await route({ type: 'redirect', url: '/pages/login' });
 
 完整的别名、参数编码与平台限制见[工具介绍](/tools/intro)。
 
+uView 组件里常用的父子关系 hook 也已按原名提供，移植时可直接替换导入来源：
+
+```ts
+// uView: import { useParent, useChildren } from 'uview-pro';
+import { useParent, useChildren, useRect, getParent, $parent, mergeStyles } from '@puresnake/snake-ui';
+```
+
+libs 层与 uView Pro 的逐模块对照（含刻意分歧清单）见[libs 层对齐审计](/guide/libs-audit)。
+
 ## 分阶段替换
 
 1. 按[安装](/components/install)与[配置](/components/setting)接入 Snake UI，暂时保留 uView Pro。
