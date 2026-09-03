@@ -54,11 +54,11 @@ Snake UI 的 `libs/` 以 uView Pro 的 `libs/` 架构为参考基准组织。本
 | --- | --- | --- | --- |
 | `useCompRelation.ts`（useParent/useChildren/hasParent/broadcast） | `hooks/useCompRelation.ts` | ported | uView 原名导出，供移植组件直接引用 |
 | `useRect.ts`（响应式） | `hooks/useRect.ts` | ported | |
-| `useTheme` / `useColor` / `useLocale` | `useSnakeTheme` / `useSnakeColor` / `useSnakeLocale` | aligned | snake 命名保留为兼容面 |
-| `useDebounce` / `useThrottle` | `useSnakeDebounce` / `useSnakeThrottle` | aligned | |
-| `useToast` / `useModal`（事件总线式，依赖 u-toast/u-modal 组件） | `useSnakeToast` / `useSnakeModal`（`uni.showToast/showModal` 薄包装） | divergent | snake 无 toast/modal 组件，不引入事件总线方案 |
-| `useEmitter` | `useSnakeEmitter`（`function/emitter.ts` 单例） | aligned | |
-| `useRouter`（不在 barrel） | `useSnakeRouter` | aligned | |
+| `useTheme` / `useColor` / `useLocale` | `useTheme` / `useColor` / `useLocale` | aligned | 原名对齐（原 useSnake* 前缀已去除） |
+| `useDebounce` / `useThrottle` | `useDebounce` / `useThrottle` | aligned | |
+| `useToast` / `useModal`（事件总线式，依赖 u-toast/u-modal 组件） | `useToast` / `useModal`（`uni.showToast/showModal` 薄包装） | divergent | snake 无 toast/modal 组件，不引入事件总线方案 |
+| `useEmitter` | `useEmitter`（`function/emitter.ts` 单例） | aligned | |
+| `useRouter`（不在 barrel） | `useRouter` | aligned | |
 
 ## internal/ 与组件关系模式
 

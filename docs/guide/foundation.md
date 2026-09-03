@@ -47,13 +47,13 @@ app.use(SnakeUI, {
 默认提供 Snake 主题，暗色策略支持 `light`、`dark` 和 `auto`：
 
 ```ts
-import { setSnakeDarkMode, setSnakeTheme, setSnakeThemeColor, toggleSnakeDarkMode, useSnakeTheme } from '@puresnake/snake-ui';
+import { setSnakeDarkMode, setSnakeTheme, setSnakeThemeColor, toggleSnakeDarkMode, useTheme } from '@puresnake/snake-ui';
 
 setSnakeDarkMode('auto');
 setSnakeThemeColor({ primary: '#00b77a' });
 setSnakeTheme('snake');
 
-const { color, darkMode, isDark, setDarkMode } = useSnakeTheme();
+const { color, darkMode, isDark, setDarkMode } = useTheme();
 ```
 
 需要注册多套主题或全局注入 CSS 变量时，查看[多主题与暗黑模式](/guide/multi-theme)。
@@ -63,12 +63,12 @@ const { color, darkMode, isDark, setDarkMode } = useSnakeTheme();
 内置 `zh-CN` 和 `en-US`。语言选择会持久化，缺失词条按“当前语言 → 中文 → key”回退。
 
 ```ts
-import { setSnakeLocale, snakeTranslate, useSnakeLocale } from '@puresnake/snake-ui';
+import { setSnakeLocale, snakeTranslate, useLocale } from '@puresnake/snake-ui';
 
 setSnakeLocale('en-US');
 snakeTranslate('common.confirm'); // Confirm
 
-const { locale, setLocale, t } = useSnakeLocale();
+const { locale, setLocale, t } = useLocale();
 ```
 
 追加或局部覆盖语言：
@@ -124,7 +124,7 @@ await uni.$snake.sleep(300);
 可复用模块更推荐按需导入：
 
 ```ts
-import { debounce, deepMerge, mergeStyles, navTo, queryParams, useSnakeEmitter, useSnakeRouter, useSnakeToast } from '@puresnake/snake-ui';
+import { debounce, deepMerge, mergeStyles, navTo, queryParams, useEmitter, useRouter, useToast } from '@puresnake/snake-ui';
 ```
 
 从 uView Pro 移植组件时，uView 原名 hook 也可直接按需导入：

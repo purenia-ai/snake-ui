@@ -14,4 +14,4 @@ console.log(rect.width, rect.top);
 | `selector` | CSS 选择器                       |
 | `instance` | 可选的组件实例，用于限定查询范围 |
 
-查询不到节点时 Promise 会拒绝。应在挂载完成并等待 DOM 更新后调用；组合式写法见[useSnakeRect](/tools/use-rect)。
+查询不到节点时 Promise 会拒绝。应在挂载完成并等待 DOM 更新后调用；组合式写法见[useRect](/tools/use-rect)。

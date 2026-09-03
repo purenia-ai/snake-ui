@@ -1,14 +1,11 @@
-export * from './useSnakeTheme';
-export * from './useSnakeColor';
-export * from './useSnakeLocale';
-export * from './useSnakeRouter';
-export * from './useSnakeRect';
-export * from './useSnakeToast';
-export * from './useSnakeModal';
-export * from './useSnakeDebounce';
-export * from './useSnakeThrottle';
-export * from './useSnakeEmitter';
-export * from './useSnakeCompRelation';
-// uView 原名导出：从 uView 移植组件时可直接引用 useParent/useChildren/useRect
+export * from './useEmitter';
+export * from './useRect';
+export * from './useTheme';
+export * from './useColor';
+export * from './useLocale';
+export * from './useRouter';
+export * from './useDebounce';
+export * from './useThrottle';
+export * from './useToast';
+export * from './useModal';
 export { useParent, useChildren, hasParent, getParentContextByName, cleanupComponentRelations } from './useCompRelation';
-export { useRect } from './useRect';

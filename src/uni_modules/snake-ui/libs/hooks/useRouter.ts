@@ -1,5 +1,5 @@
 import { navTo, route } from '../function/platform';
 
-export function useSnakeRouter() {
+export function useRouter() {
     return { route, navTo };
 }

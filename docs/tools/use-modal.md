@@ -1,12 +1,12 @@
-# useSnakeModal
+# useModal
 
-`useSnakeModal()` 把 `uni.showModal` 转为 Promise 调用。
+`useModal()` 把 `uni.showModal` 转为 Promise 调用。
 
 ```vue
 <script setup lang="ts">
-import { useSnakeModal } from '@puresnake/snake-ui';
+import { useModal } from '@puresnake/snake-ui';
 
-const { show } = useSnakeModal();
+const { show } = useModal();
 
 async function remove() {
     const result = await show({

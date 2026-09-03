@@ -1,4 +1,4 @@
-export function useSnakeModal() {
+export function useModal() {
     return {
         show(options: UniApp.ShowModalOptions): Promise<UniApp.ShowModalRes> {
             return new Promise((resolve, reject) => {

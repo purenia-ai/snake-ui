@@ -1,18 +1,17 @@
-# useSnakeRect
+# useRect
 
-`useSnakeRect(instance?)` 把组件实例预绑定到节点查询工具。
+`useRect(selector?, all?)` 返回响应式的节点信息：`rect`、`getRect()` 和 `refresh()`。
 
 ```vue
 <script setup lang="ts">
-import { getCurrentInstance, nextTick } from 'vue';
-import { useSnakeRect } from '@puresnake/snake-ui';
+import { useRect } from '@puresnake/snake-ui';
 
-const { proxy } = getCurrentInstance()!;
-const { getRect } = useSnakeRect(proxy);
+const { rect, getRect, refresh } = useRect('.toolbar');
 
-await nextTick();
-const rect = await getRect('.toolbar');
+await getRect();           // 测量并写入 rect
+console.log(rect.value);   // 响应式的节点信息
+await refresh('.other');   // 换选择器重新测量
 </script>
 ```
 
-查询不到节点时 Promise 会拒绝。页面根节点查询可不传 instance。
+查询不到节点时 Promise 会拒绝。`all` 传 `true` 时用 `selectAll` 匹配全部，`rect` 为节点数组。

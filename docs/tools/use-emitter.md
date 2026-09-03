@@ -1,13 +1,13 @@
-# useSnakeEmitter
+# useEmitter
 
-`useSnakeEmitter()` 返回 Snake UI 的共享事件总线。
+`useEmitter()` 返回 Snake UI 的共享事件总线。
 
 ```vue
 <script setup lang="ts">
 import { onBeforeUnmount } from 'vue';
-import { useSnakeEmitter } from '@puresnake/snake-ui';
+import { useEmitter } from '@puresnake/snake-ui';
 
-const emitter = useSnakeEmitter();
+const emitter = useEmitter();
 const off = emitter.on('cart:changed', refreshCart);
 onBeforeUnmount(off);
 </script>

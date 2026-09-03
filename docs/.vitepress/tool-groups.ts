@@ -60,20 +60,20 @@ export const toolGroups: ToolGroup[] = [
     {
         text: '组合式函数',
         items: [
-            { text: '主题管理', link: '/tools/use-theme', apis: ['useSnakeTheme'] },
-            { text: '颜色管理', link: '/tools/use-color', apis: ['useSnakeColor'] },
-            { text: '语言管理', link: '/tools/use-locale', apis: ['useSnakeLocale'] },
-            { text: '路由', link: '/tools/use-router', apis: ['useSnakeRouter'] },
-            { text: '节点信息', link: '/tools/use-rect', apis: ['useSnakeRect'] },
-            { text: '轻提示', link: '/tools/use-toast', apis: ['useSnakeToast'] },
-            { text: '模态框', link: '/tools/use-modal', apis: ['useSnakeModal'] },
+            { text: '主题管理', link: '/tools/use-theme', apis: ['useTheme'] },
+            { text: '颜色管理', link: '/tools/use-color', apis: ['useColor'] },
+            { text: '语言管理', link: '/tools/use-locale', apis: ['useLocale'] },
+            { text: '路由', link: '/tools/use-router', apis: ['useRouter'] },
+            { text: '节点信息', link: '/tools/use-rect', apis: ['useRect'] },
+            { text: '轻提示', link: '/tools/use-toast', apis: ['useToast'] },
+            { text: '模态框', link: '/tools/use-modal', apis: ['useModal'] },
             {
                 text: '节流与防抖',
                 link: '/tools/use-rate-limit',
-                apis: ['useSnakeDebounce', 'useSnakeThrottle']
+                apis: ['useDebounce', 'useThrottle']
             },
-            { text: '事件总线', link: '/tools/use-emitter', apis: ['useSnakeEmitter'] },
-            { text: '组件关系', link: '/tools/use-comp-relation', apis: ['useSnakeCompRelation'] }
+            { text: '事件总线', link: '/tools/use-emitter', apis: ['useEmitter'] },
+            { text: '组件关系', link: '/tools/use-comp-relation', apis: ['useParent', 'useChildren'] }
         ]
     }
 ];

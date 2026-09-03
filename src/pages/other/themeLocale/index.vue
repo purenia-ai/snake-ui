@@ -2,10 +2,10 @@
 import { computed } from 'vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import { useDemoLocale } from '../../../common/demo-i18n';
-import { useSnakeLocale, useSnakeTheme } from '../../../uni_modules/snake-ui';
+import { useLocale, useTheme } from '../../../uni_modules/snake-ui';
 
-const { currentTheme, darkMode, color, toggleDarkMode } = useSnakeTheme();
-const { currentLocale, t, setLocale } = useSnakeLocale();
+const { currentTheme, darkMode, color, toggleDarkMode } = useTheme();
+const { currentLocale, t, setLocale } = useLocale();
 const nextLocale = computed(() => (currentLocale.value.name === 'zh-CN' ? 'en-US' : 'zh-CN'));
 const { text } = useDemoLocale();
 </script>

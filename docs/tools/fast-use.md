@@ -30,11 +30,11 @@ await uni.$snake.sleep(300);
 ## HTTP 与 Hooks
 
 ```ts
-import { snakeHttp, useSnakeLocale, useSnakeTheme } from '@puresnake/snake-ui';
+import { snakeHttp, useLocale, useTheme } from '@puresnake/snake-ui';
 
 const profile = await snakeHttp.get<User>('/profile');
-const { setLocale } = useSnakeLocale();
-const { toggleDarkMode } = useSnakeTheme();
+const { setLocale } = useLocale();
+const { toggleDarkMode } = useTheme();
 ```
 
 ## 入口建议
@@ -44,6 +44,6 @@ const { toggleDarkMode } = useSnakeTheme();
 | 新的 TypeScript 代码     | 从 `@puresnake/snake-ui` 按需导入          |
 | 模板中的简单提示或格式化 | `$snake`                        |
 | 旧 Options API 项目      | `uni.$snake` 或逐步改为按需导入 |
-| Vue 响应式状态           | `useSnake*` 组合式函数          |
+| Vue 响应式状态           | `use*` 组合式函数（如 `useTheme` / `useColor`）          |
 
 不要同时维护自定义工具副本和 Snake UI 入口；先确认现有工具是否满足需求，再决定是否封装业务层。

@@ -1,5 +1,5 @@
 import { toast } from '../function/platform';
 
-export function useSnakeToast() {
+export function useToast() {
     return { show: toast };
 }

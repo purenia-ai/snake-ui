@@ -4,11 +4,11 @@ preview: /pages/other/themeLocale/index
 
 # 主题管理
 
-`useSnakeTheme()` 在 Vue 组件中提供响应式主题、暗色模式、颜色和 CSS 变量。
+`useTheme()` 在 Vue 组件中提供响应式主题、暗色模式、颜色和 CSS 变量。
 
 ```vue
 <script setup lang="ts">
-import { useSnakeTheme } from '@puresnake/snake-ui';
+import { useTheme } from '@puresnake/snake-ui';
 
 const {
     currentTheme,
@@ -21,7 +21,7 @@ const {
     setDarkMode,
     toggleDarkMode,
     isInDarkMode
-} = useSnakeTheme();
+} = useTheme();
 </script>
 ```
 

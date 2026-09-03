@@ -82,7 +82,7 @@ export default defineConfig({
 </SnakeConfigProvider>
 ```
 
-这两个事件描述的是组件对 props 的同步结果。通过 `setSnakeTheme()`、`setSnakeDarkMode()` 或 `useSnakeTheme()` 在组件外部切换主题时，请直接监听对应的响应式状态。
+这两个事件描述的是组件对 props 的同步结果。通过 `setSnakeTheme()`、`setSnakeDarkMode()` 或 `useTheme()` 在组件外部切换主题时，请直接监听对应的响应式状态。
 
 ## 工作原理
 
@@ -99,7 +99,7 @@ export default defineConfig({
 - **局部样式扩展**：使用 `custom-class` 或 `custom-style` 补充根节点布局，同时继续继承主题变量。
 
 ::: tip 主题状态
-组件负责让主题变量进入页面。注册主题、主动切换主题以及读取响应式色板，请使用 [`useSnakeTheme()` 和主题 API](/guide/multi-theme)。
+组件负责让主题变量进入页面。注册主题、主动切换主题以及读取响应式色板，请使用 [`useTheme()` 和主题 API](/guide/multi-theme)。
 :::
 
 ## API

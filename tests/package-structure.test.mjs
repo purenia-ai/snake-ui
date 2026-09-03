@@ -55,17 +55,16 @@ test('library follows the function, hooks, css and component entry conventions',
 
     const hookEntry = await read('libs/hooks/index.ts');
     for (const hook of [
-        'useSnakeTheme',
-        'useSnakeColor',
-        'useSnakeLocale',
-        'useSnakeRouter',
-        'useSnakeRect',
-        'useSnakeToast',
-        'useSnakeModal',
-        'useSnakeDebounce',
-        'useSnakeThrottle',
-        'useSnakeEmitter',
-        'useSnakeCompRelation'
+        'useEmitter',
+        'useRect',
+        'useCompRelation',
+        'useTheme',
+        'useColor',
+        'useLocale',
+        'useDebounce',
+        'useThrottle',
+        'useToast',
+        'useModal'
     ]) {
         await access(new URL(`libs/hooks/${hook}.ts`, root));
         assert.match(hookEntry, new RegExp(`\\./${hook}`));

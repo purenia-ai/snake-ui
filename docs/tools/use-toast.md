@@ -1,12 +1,12 @@
-# useSnakeToast
+# useToast
 
-`useSnakeToast()` 提供轻量文本提示。
+`useToast()` 提供轻量文本提示。
 
 ```vue
 <script setup lang="ts">
-import { useSnakeToast } from '@puresnake/snake-ui';
+import { useToast } from '@puresnake/snake-ui';
 
-const { show } = useSnakeToast();
+const { show } = useToast();
 show('保存成功', 1800);
 </script>
 ```

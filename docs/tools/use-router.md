@@ -1,12 +1,12 @@
-# useSnakeRouter
+# useRouter
 
-`useSnakeRouter()` 在组合式代码中同时提供新的 Promise 路由和旧的兼容路由。
+`useRouter()` 在组合式代码中同时提供新的 Promise 路由和旧的兼容路由。
 
 ```vue
 <script setup lang="ts">
-import { useSnakeRouter } from '@puresnake/snake-ui';
+import { useRouter } from '@puresnake/snake-ui';
 
-const { route, navTo } = useSnakeRouter();
+const { route, navTo } = useRouter();
 
 async function openOrder(id: number) {
     await route('/pages/order/detail', { id });

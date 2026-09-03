@@ -1,22 +1,16 @@
-# useSnakeCompRelation
+# useParent / useChildren / hasParent
 
-`useSnakeCompRelation(key, value?)` 使用类型安全的 `InjectionKey` 建立组件关系：传入 value 时提供上下文，不传时读取最近的上下文。
+按组件 `name` 链建立父子关系，供跨层级组件协作：
 
 ```ts
-import type { InjectionKey, Ref } from 'vue';
-import { useSnakeCompRelation } from '@puresnake/snake-ui';
+import { hasParent, useChildren, useParent } from '@puresnake/snake-ui';
 
-interface GroupContext {
-    current: Ref<string>;
-}
+// 父组件：收集名为 SnakeCheckbox 的子组件
+useChildren('SnakeCheckbox');
 
-const groupKey: InjectionKey<GroupContext> = Symbol('group');
-
-// 父组件
-useSnakeCompRelation(groupKey, { current });
-
-// 子组件
-const group = useSnakeCompRelation(groupKey);
+// 子组件：向上查找 SnakeCheckboxGroup
+const group = useParent('SnakeCheckboxGroup');
+const inGroup = hasParent('SnakeCheckboxGroup');
 ```
 
-找不到 provider 时返回 `null`。公开业务组件优先使用 Props/Events；该工具适合需要跨层级协作的组件族。
+找不到父组件时 `useParent` 返回 `null`。另提供 `getParentContextByName(name)` 与 `cleanupComponentRelations()`；库内原生表单族仍用类型化的 `internal/` InjectionKey 方案，二者并存。

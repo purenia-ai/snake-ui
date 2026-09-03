@@ -311,7 +311,7 @@ test('mobile preview and locale guide expose one persistent bilingual experience
     assert.match(indexPage, /useDemoLocale/);
     assert.match(localePage, /text\('切换语言'\)/);
     assert.match(localeGuide, /defaultLocale/);
-    assert.match(localeGuide, /useSnakeLocale/);
+    assert.match(localeGuide, /useLocale/);
     assert.match(localeGuide, /snakeTranslate/);
     assert.match(localeGuide, /自定义或覆盖语言包/);
     assert.match(localeGuide, /当前语言。/);

@@ -13,7 +13,7 @@ import {
     toggleSnakeDarkMode
 } from '../config/theme';
 
-export function useSnakeTheme() {
+export function useTheme() {
     return {
         currentTheme: currentSnakeTheme,
         themes: snakeThemes,

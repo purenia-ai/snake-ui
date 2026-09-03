@@ -1,12 +1,12 @@
 # 颜色管理
 
-`useSnakeColor()` 提供当前主题色板和局部颜色覆盖入口。
+`useColor()` 提供当前主题色板和局部颜色覆盖入口。
 
 ```vue
 <script setup lang="ts">
-import { useSnakeColor } from '@puresnake/snake-ui';
+import { useColor } from '@puresnake/snake-ui';
 
-const { color, setColor } = useSnakeColor();
+const { color, setColor } = useColor();
 
 function applyBrand() {
     setColor({ primary: '#00805a' });

@@ -4,7 +4,7 @@ Snake UI 内置简体中文 `zh-CN` 和英文 `en-US`，用于管理组件库自
 
 ## 核心行为
 
-- 通过 `setSnakeLocale()` 或 `useSnakeLocale()` 响应式切换。
+- 通过 `setSnakeLocale()` 或 `useLocale()` 响应式切换。
 - 用户选择自动保存在 `@puresnake/snake-ui-locale`。
 - 同名语言包与内置词条深度合并。
 - 缺失词条按“当前语言 → `zh-CN` → 原始 key”回退。
@@ -34,7 +34,7 @@ const changed = setSnakeLocale('en-US');
 
 语言已注册时返回 `true` 并持久化选择；名称不存在时返回 `false`，当前语言保持不变。
 
-组件内使用 `useSnakeLocale()` 可以同时获得 `currentLocale`、`locales`、`setLocale` 和 `t`。完整交互示例见[多语言工具](/tools/use-locale)。
+组件内使用 `useLocale()` 可以同时获得 `currentLocale`、`locales`、`setLocale` 和 `t`。完整交互示例见[多语言工具](/tools/use-locale)。
 
 ## 添加或覆盖语言包
 
@@ -69,17 +69,17 @@ app.use(SnakeUI, {
 ## 翻译和参数插值
 
 ```ts
-import { snakeTranslate, useSnakeLocale } from '@puresnake/snake-ui';
+import { snakeTranslate, useLocale } from '@puresnake/snake-ui';
 
 snakeTranslate('common.confirm');
 snakeTranslate('checkout.welcome', { name: 'Snake' });
 snakeTranslate('pagination.total', [20]);
 
-const { t } = useSnakeLocale('checkout');
+const { t } = useLocale('checkout');
 t('welcome', { name: 'Snake' }); // checkout.welcome
 ```
 
-`useSnakeLocale(namespace)` 会自动为 `t()` 补上命名空间，适合按页面或业务模块组织词条。
+`useLocale(namespace)` 会自动为 `t()` 补上命名空间，适合按页面或业务模块组织词条。
 
 ## 与业务国际化协同
 
@@ -99,7 +99,7 @@ function changeLocale(locale: 'zh-CN' | 'en-US') {
 | --- | --- |
 | `setSnakeLocale(name)` | 切换并持久化已注册语言，返回是否成功 |
 | `snakeTranslate(key, replacements?, localeName?)` | 翻译词条并执行参数替换 |
-| `useSnakeLocale(namespace?)` | 获取当前语言、语言列表、`t()` 和切换方法 |
+| `useLocale(namespace?)` | 获取当前语言、语言列表、`t()` 和切换方法 |
 | `currentSnakeLocale` | 当前语言的响应式引用 |
 | `snakeLocales` | 已注册语言列表的响应式引用 |
 

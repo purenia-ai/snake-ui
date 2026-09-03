@@ -93,7 +93,7 @@ const popular = [
     { name: 'MagicCube', title: '魔方布局', tag: 'CMS', link: '/components/magic-cube' },
     { name: 'GoodsList', title: '商品列表', tag: '商城', link: '/components/goods-list' },
     { name: 'PictureAds', title: '轮播广告', tag: '营销', link: '/components/picture-ads' },
-    { name: 'useSnakeTheme', title: '主题管理', tag: 'Hook', link: '/tools/use-theme' },
+    { name: 'useTheme', title: '主题管理', tag: 'Hook', link: '/tools/use-theme' },
     { name: 'snakeHttp', title: 'HTTP 请求', tag: '工具', link: '/tools/http' }
 ];
 const internalLink = (path: string) => withBase(path);
