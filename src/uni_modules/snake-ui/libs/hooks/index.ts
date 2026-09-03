@@ -9,3 +9,6 @@ export * from './useSnakeDebounce';
 export * from './useSnakeThrottle';
 export * from './useSnakeEmitter';
 export * from './useSnakeCompRelation';
+// uView 原名导出：从 uView 移植组件时可直接引用 useParent/useChildren/useRect
+export { useParent, useChildren, hasParent, getParentContextByName, cleanupComponentRelations } from './useCompRelation';
+export { useRect } from './useRect';
