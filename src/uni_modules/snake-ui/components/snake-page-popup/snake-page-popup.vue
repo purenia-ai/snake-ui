@@ -44,7 +44,7 @@
 import { onMounted, ref, watch } from 'vue';
 import type { SnakePagePopupProps } from './types';
 
-defineOptions({ name: 'SnakePagePopup' });
+defineOptions({ name: 'SnakePagePopup', options: { virtualHost: true, styleIsolation: 'shared' } });
 
 const props = withDefaults(defineProps<SnakePagePopupProps>(), {
     datas: () => ({})

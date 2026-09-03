@@ -119,7 +119,7 @@ onBeforeUnmount(() => menu?.unregister(itemId));
     </view>
 </template>
 
-<style>
+<style scoped>
 .snake-drop-item {
     flex: 1;
     min-width: 0;

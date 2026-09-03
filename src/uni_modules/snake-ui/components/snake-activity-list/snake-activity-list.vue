@@ -79,6 +79,7 @@ import SnakeIcon from '../snake-icon/snake-icon.vue';
 
 export default {
     name: 'activity-list',
+    options: { virtualHost: true, styleIsolation: 'shared' },
     components: { SnakeIcon },
     emits: ['change'],
     props: {

@@ -26,7 +26,7 @@ import { computed } from 'vue';
 import { navTo } from '../../libs/function/platform';
 import type { SnakeNoticeProps } from './types';
 
-defineOptions({ name: 'SnakeNotice' });
+defineOptions({ name: 'SnakeNotice', options: { virtualHost: true, styleIsolation: 'shared' } });
 const props = withDefaults(defineProps<SnakeNoticeProps>(), { datas: () => ({}) });
 const noticeList = computed(() => {
   if (props.datas.direction === 'row') {

@@ -67,6 +67,7 @@ import { pxToRpx } from '../../libs/function/unit';
 
 export default {
     name: 'snake-graphic-navigation',
+    options: { virtualHost: true, styleIsolation: 'shared' },
     props: { datas: Object },
     data() {
         return {};

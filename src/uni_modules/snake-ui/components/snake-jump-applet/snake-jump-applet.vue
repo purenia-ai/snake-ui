@@ -29,7 +29,7 @@ import {
 } from '../snake-cms/types';
 import type { SnakeJumpAppletEmits, SnakeJumpAppletProps } from './types';
 
-defineOptions({ name: 'SnakeJumpApplet' });
+defineOptions({ name: 'SnakeJumpApplet', options: { virtualHost: true, styleIsolation: 'shared' } });
 
 const props = withDefaults(
     defineProps<SnakeJumpAppletProps>(),

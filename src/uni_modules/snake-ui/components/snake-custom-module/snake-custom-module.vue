@@ -14,7 +14,7 @@
 
 import type { SnakeCustomModuleProps, SnakeCustomModuleSlots } from './types';
 
-defineOptions({ name: 'SnakeCustomModule' });
+defineOptions({ name: 'SnakeCustomModule', options: { virtualHost: true, styleIsolation: 'shared' } });
 withDefaults(defineProps<SnakeCustomModuleProps>(), { datas: () => ({}) });
 defineSlots<SnakeCustomModuleSlots>();
 </script>

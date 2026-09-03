@@ -77,6 +77,7 @@
 import { getCurrentInstance } from 'vue';
 export default {
   name: 'commoditysearch',
+  options: { virtualHost: true, styleIsolation: 'shared' },
   props: { datas: Object },
   setup() {
     const instance = getCurrentInstance();

@@ -54,7 +54,7 @@
 import { ref } from 'vue';
 import type { SnakeVideosProps } from './types';
 
-defineOptions({ name: 'SnakeVideos' });
+defineOptions({ name: 'SnakeVideos', options: { virtualHost: true, styleIsolation: 'shared' } });
 withDefaults(defineProps<SnakeVideosProps>(), { datas: () => ({}), scrollTop: 0 });
 const show = ref(false);
 function open() { show.value = true; }

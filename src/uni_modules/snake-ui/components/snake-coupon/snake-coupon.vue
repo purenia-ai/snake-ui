@@ -60,7 +60,7 @@ import {
 } from '../snake-cms/types';
 import type { SnakeCouponEmits, SnakeCouponProps } from './types';
 
-defineOptions({ name: 'SnakeCoupon' });
+defineOptions({ name: 'SnakeCoupon', options: { virtualHost: true, styleIsolation: 'shared' } });
 
 const props = withDefaults(
     defineProps<SnakeCouponProps>(),

@@ -13,7 +13,7 @@
 
 import type { SnakeRichTextProps } from './types';
 
-defineOptions({ name: 'SnakeRichText' });
+defineOptions({ name: 'SnakeRichText', options: { virtualHost: true, styleIsolation: 'shared' } });
 withDefaults(defineProps<SnakeRichTextProps>(), { datas: () => ({}) });
 </script>
 

@@ -27,7 +27,7 @@
 import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import type { SnakeSuspensionProps } from './types';
 
-defineOptions({ name: 'SnakeSuspension' });
+defineOptions({ name: 'SnakeSuspension', options: { virtualHost: true, styleIsolation: 'shared' } });
 
 const props = withDefaults(defineProps<SnakeSuspensionProps>(), {
     datas: () => ({}),

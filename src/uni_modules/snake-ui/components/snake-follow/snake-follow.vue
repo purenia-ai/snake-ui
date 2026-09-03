@@ -13,7 +13,7 @@
  * @see /components/follow
  */
 
-defineOptions({ name: 'SnakeFollow' });
+defineOptions({ name: 'SnakeFollow', options: { virtualHost: true, styleIsolation: 'shared' } });
 </script>
 
 <style></style>

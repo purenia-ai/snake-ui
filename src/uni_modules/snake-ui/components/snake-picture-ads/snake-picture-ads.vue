@@ -93,6 +93,7 @@
 
 export default {
     name: 'Pictureads',
+    options: { virtualHost: true, styleIsolation: 'shared' },
     props: {
         datas: {
             type: [Object, null],

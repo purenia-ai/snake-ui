@@ -756,6 +756,7 @@
 import treeSelect from './components/tree-select/index.vue';
 export default {
     name: 'listswitching',
+    options: { virtualHost: true, styleIsolation: 'shared' },
     emits: ['item-click'],
     components: {
         treeSelect

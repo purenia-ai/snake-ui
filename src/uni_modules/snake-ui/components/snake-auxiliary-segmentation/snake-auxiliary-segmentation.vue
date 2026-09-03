@@ -28,7 +28,7 @@
 import { addUnit } from '../../libs/function/unit';
 import type { SnakeAuxiliarySegmentationProps } from './types';
 
-defineOptions({ name: 'SnakeAuxiliarySegmentation' });
+defineOptions({ name: 'SnakeAuxiliarySegmentation', options: { virtualHost: true, styleIsolation: 'shared' } });
 withDefaults(defineProps<SnakeAuxiliarySegmentationProps>(), { datas: () => ({}) });
 </script>
 

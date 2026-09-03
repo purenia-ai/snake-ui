@@ -340,6 +340,7 @@ import { pxToRpx } from '../../libs/function/unit';
 
 export default {
   name: 'snake-magic-cube',
+  options: { virtualHost: true, styleIsolation: 'shared' },
   props: { datas: Object },
   components: { pictureads: SnakePictureAds },
   computed: {

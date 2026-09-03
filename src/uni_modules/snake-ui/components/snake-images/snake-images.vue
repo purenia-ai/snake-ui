@@ -32,7 +32,7 @@ import { addUnit } from '../../libs/function/unit';
 import { navTo } from '../../libs/function/platform';
 import type { SnakeImagesProps } from './types';
 
-defineOptions({ name: 'SnakeImages' });
+defineOptions({ name: 'SnakeImages', options: { virtualHost: true, styleIsolation: 'shared' } });
 const props = withDefaults(defineProps<SnakeImagesProps>(), { datas: () => ({}) });
 const platform = computed(() => {
       let value = 'h5';
