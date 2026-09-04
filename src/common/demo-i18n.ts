@@ -189,7 +189,22 @@ const englishMessages: Record<string, string> = {
     显示筛选标签: 'Show filter tabs',
     背景颜色: 'Background color',
     默认布局: 'Default layout',
-    卡片圆角: 'Card radius'
+    卡片圆角: 'Card radius',
+    线条方向: 'Direction',
+    线条颜色: 'Line color',
+    线条类型: 'Line style',
+    半像素细线: 'Hairline',
+    实线: 'Solid',
+    虚线: 'Dashed',
+    进度值: 'Progress',
+    主题预设: 'Theme preset',
+    无预设: 'None',
+    显示百分比: 'Show percentage',
+    条纹: 'Stripes',
+    条纹动画: 'Animated stripes',
+    两端半圆: 'Rounded ends',
+    分组标题: 'Group title',
+    外边框: 'Outer border'
 };
 
 Object.assign(englishMessages, {
@@ -222,6 +237,10 @@ Object.assign(englishMessages, {
         'A dropdown item provides a trigger, content panel and close event.',
     '通过右侧索引快速定位列表中的分组内容。': 'Uses the side index to jump between grouped list content.',
     '索引锚点定义分组位置，需要放在 IndexList 内使用。': 'Defines group anchors inside an IndexList.',
+    '将一组单元格组合为带标题和外边框的分组。': 'Groups cells with a title and outer borders.',
+    '以横向或竖向线条分隔内容块，支持半像素细线。': 'Separates content with horizontal or vertical hairlines.',
+    '以线形进度展示任务完成情况，支持条纹与百分比。':
+        'Shows task progress as a bar with stripes and a percentage.',
     '组合字段控件，完成规则校验、错误展示、提交和重置。':
         'Combines fields with validation, error display, submit and reset.',
     '连接标签、字段控件和校验错误。': 'Connects labels, field controls and validation errors.',
@@ -280,6 +299,9 @@ const demoTitles: Record<string, string> = {
     'drop-menu-item': 'Dropdown Menu Item',
     'index-list': 'Index List',
     'index-anchor': 'Index Anchor',
+    'cell-group': 'Cell Group',
+    line: 'Divider',
+    'line-progress': 'Line Progress',
     form: 'Form',
     'form-item': 'Form Item',
     input: 'Input',

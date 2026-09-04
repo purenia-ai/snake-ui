@@ -24,7 +24,10 @@ const components = [
     'snake-drop-menu',
     'snake-drop-menu-item',
     'snake-index-list',
-    'snake-index-anchor'
+    'snake-index-anchor',
+    'snake-cell-group',
+    'snake-line',
+    'snake-line-progress'
 ];
 
 test('every public component exposes an independent type contract', async () => {
@@ -36,7 +39,7 @@ test('every public component exposes an independent type contract', async () => 
     const packageEntry = await readFile(new URL('index.ts', root), 'utf8');
     const declarationEntry = await readFile(new URL('types/components.d.ts', root), 'utf8');
 
-    assert.equal(directories.length, 55);
+    assert.equal(directories.length, 58);
     for (const component of directories) {
         const types = await readFile(new URL(`components/${component}/types.ts`, root), 'utf8');
         assert.match(types, /export (?:interface|type) Snake/, `${component}: missing public contract`);
@@ -136,7 +139,10 @@ test('migrated controls use runtime props as the defaults source of truth', asyn
     for (const [component, exportName] of [
         ['snake-button', 'snakeButtonProps'],
         ['snake-checkbox', 'snakeCheckboxProps'],
-        ['snake-radio', 'snakeRadioProps']
+        ['snake-radio', 'snakeRadioProps'],
+        ['snake-cell-group', 'snakeCellGroupProps'],
+        ['snake-line', 'snakeLineProps'],
+        ['snake-line-progress', 'snakeLineProgressProps']
     ]) {
         const types = await readFile(new URL(`components/${component}/types.ts`, root), 'utf8');
         const source = await readFile(new URL(`components/${component}/${component}.vue`, root), 'utf8');
@@ -178,7 +184,10 @@ test('package entry exposes precise foundation component props', async () => {
         'DropMenu',
         'DropMenuItem',
         'IndexList',
-        'IndexAnchor'
+        'IndexAnchor',
+        'CellGroup',
+        'Line',
+        'LineProgress'
     ]) {
         assert.match(declarations, new RegExp(`Snake${component}: SnakeComponent<Snake${component}Props`));
     }

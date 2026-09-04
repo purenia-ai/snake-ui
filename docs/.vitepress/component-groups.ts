@@ -29,6 +29,7 @@ export const componentGroups: ComponentGroup[] = [
         items: [
             { name: 'Swiper', title: '轮播图', link: '/components/swiper' },
             { name: 'Loadmore', title: '加载更多', link: '/components/loadmore' },
+            { name: 'LineProgress', title: '线形进度条', link: '/components/line-progress' },
             { name: 'Empty', title: '空状态', link: '/components/empty' }
         ]
     },
@@ -51,7 +52,9 @@ export const componentGroups: ComponentGroup[] = [
             { name: 'DropMenu', title: '下拉菜单', link: '/components/drop-menu' },
             { name: 'DropMenuItem', title: '下拉菜单项', link: '/components/drop-menu-item' },
             { name: 'IndexList', title: '索引列表', link: '/components/index-list' },
-            { name: 'IndexAnchor', title: '索引锚点', link: '/components/index-anchor' }
+            { name: 'IndexAnchor', title: '索引锚点', link: '/components/index-anchor' },
+            { name: 'CellGroup', title: '单元格分组', link: '/components/cell-group' },
+            { name: 'Line', title: '分隔线', link: '/components/line' }
         ]
     },
     {

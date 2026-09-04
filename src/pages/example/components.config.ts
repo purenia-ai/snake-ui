@@ -89,6 +89,12 @@ const componentGroups: SnakeComponentGroup[] = [
                 '图片进入视口后加载，并提供失败反馈。'
             ),
             item('/pages/componentsA/noticeBar/index', 'NoticeBar 通知栏', 'NoticeBar', '支持横向通知与纵向多条轮播。'),
+            item(
+                '/pages/componentsA/lineProgress/index',
+                'LineProgress 线形进度条',
+                'LineProgress',
+                '以线形进度展示任务完成情况，支持条纹与百分比。'
+            ),
             item('/pages/componentsA/swiper/index', 'Swiper 轮播图', 'Swiper', '支持自动播放、指示器与标题展示。'),
             item(
                 '/pages/componentsB/images/index',
@@ -175,6 +181,13 @@ const componentGroups: SnakeComponentGroup[] = [
                 'IndexAnchor',
                 '定义索引列表中的内容分组位置。'
             ),
+            item(
+                '/pages/componentsA/cellGroup/index',
+                'CellGroup 单元格分组',
+                'CellGroup',
+                '将一组单元格组合为带标题和外边框的分组。'
+            ),
+            item('/pages/componentsA/line/index', 'Line 分隔线', 'Line', '以横向或竖向线条分隔内容块，支持半像素细线。'),
             item(
                 '/pages/componentsB/auxiliarySegmentation/index',
                 'AuxiliarySegmentation 辅助分割',
