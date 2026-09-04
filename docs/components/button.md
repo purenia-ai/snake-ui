@@ -26,6 +26,7 @@ preview: /pages/componentsA/button/index
 <snake-button size="small" shape="circle" icon="checkmark">完成</snake-button>
 <snake-button loading loading-text="提交中" loading-mode="spinner" />
 <snake-button disabled>不可操作</snake-button>
+<snake-button type="info" :block="false">自适应宽度</snake-button>
 ```
 
 `type` 支持 `default`、`primary`、`success`、`info`、`warning`、`error`；`size` 支持 `large`、`default`、`medium`、`small`、`mini`。
@@ -108,6 +109,7 @@ preview: /pages/componentsA/button/index
 | `type`                                            | 主题类型                 | `string`                           | `default`                            |
 | `size`                                            | 按钮尺寸                 | `string`                           | `default`                            |
 | `shape`                                           | `square` 或 `circle`     | `string`                           | `square`                             |
+| `block`                                           | 是否撑满容器宽度（块级） | `boolean`                          | `true`                               |
 | `plain` / `hairLine`                              | 朴素样式 / 细边框        | `boolean`                          | `false` / `true`                     |
 | `disabled` / `loading`                            | 禁用 / 加载状态          | `boolean`                          | `false`                              |
 | `loadingText` / `loadingMode` / `loadingSize`     | 加载文字、形态和尺寸     | `string / string / number\|string` | `'' / circle / 18`                   |

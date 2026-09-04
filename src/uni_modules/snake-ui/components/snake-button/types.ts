@@ -20,6 +20,8 @@ export const snakeButtonProps = {
     size: { type: String as PropType<SnakeButtonSize>, default: 'default' },
     /** 组件形状。 */
     shape: { type: String as PropType<SnakeButtonShape>, default: 'square' },
+    /** 是否以块级形态撑满容器宽度。 */
+    block: { type: Boolean, default: true },
     /** 是否使用朴素按钮样式。 */
     plain: { type: Boolean, default: false },
     /** 是否使用半像素细边框。 */
@@ -95,6 +97,8 @@ export interface SnakeButtonProps {
     size?: SnakeButtonSize;
     /** 组件形状。 */
     shape?: SnakeButtonShape;
+    /** 是否以块级形态撑满容器宽度。 */
+    block?: boolean;
     /** 是否使用朴素按钮样式。 */
     plain?: boolean;
     /** 是否使用半像素细边框。 */

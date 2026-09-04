@@ -146,7 +146,12 @@ function authorize(event: unknown) {
         :class="[
             `snake-button--${size}`,
             `snake-button--${shape}`,
-            { 'snake-button--plain': plain, 'snake-button--hairline': hairLine, 'snake-button--loading': loading },
+            {
+                'snake-button--plain': plain,
+                'snake-button--hairline': hairLine,
+                'snake-button--loading': loading,
+                'snake-button--block': block
+            },
             customClass
         ]"
         :style="buttonStyle"
@@ -211,7 +216,6 @@ function authorize(event: unknown) {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
     margin: 0;
     padding: 0 40rpx;
     border-width: 1px;
@@ -234,6 +238,9 @@ function authorize(event: unknown) {
 .snake-button--hover {
     filter: brightness(0.92);
     transform: translateY(1px);
+}
+.snake-button--block {
+    width: 100%;
 }
 .snake-button--large {
     height: 100rpx;

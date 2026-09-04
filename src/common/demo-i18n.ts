@@ -77,6 +77,7 @@ const englishMessages: Record<string, string> = {
     按钮主题: 'Button variant',
     按钮尺寸: 'Button size',
     按钮形状: 'Button shape',
+    撑满容器: 'Block',
     朴素样式: 'Plain style',
     加载状态: 'Loading state',
     禁用状态: 'Disabled',
