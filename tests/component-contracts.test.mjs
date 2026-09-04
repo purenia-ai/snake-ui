@@ -32,7 +32,9 @@ const components = [
     'snake-search',
     'snake-select',
     'snake-read-more',
-    'snake-no-network'
+    'snake-no-network',
+    'snake-link',
+    'snake-text'
 ];
 
 test('every public component exposes an independent type contract', async () => {
@@ -44,7 +46,7 @@ test('every public component exposes an independent type contract', async () => 
     const packageEntry = await readFile(new URL('index.ts', root), 'utf8');
     const declarationEntry = await readFile(new URL('types/components.d.ts', root), 'utf8');
 
-    assert.equal(directories.length, 63);
+    assert.equal(directories.length, 65);
     for (const component of directories) {
         const types = await readFile(new URL(`components/${component}/types.ts`, root), 'utf8');
         assert.match(types, /export (?:interface|type) Snake/, `${component}: missing public contract`);
@@ -152,7 +154,9 @@ test('migrated controls use runtime props as the defaults source of truth', asyn
         ['snake-search', 'snakeSearchProps'],
         ['snake-select', 'snakeSelectProps'],
         ['snake-read-more', 'snakeReadMoreProps'],
-        ['snake-no-network', 'snakeNoNetworkProps']
+        ['snake-no-network', 'snakeNoNetworkProps'],
+        ['snake-link', 'snakeLinkProps'],
+        ['snake-text', 'snakeTextProps']
     ]) {
         const types = await readFile(new URL(`components/${component}/types.ts`, root), 'utf8');
         const source = await readFile(new URL(`components/${component}/${component}.vue`, root), 'utf8');
@@ -202,7 +206,9 @@ test('package entry exposes precise foundation component props', async () => {
         'Search',
         'Select',
         'ReadMore',
-        'NoNetwork'
+        'NoNetwork',
+        'Link',
+        'Text'
     ]) {
         assert.match(declarations, new RegExp(`Snake${component}: SnakeComponent<Snake${component}Props`));
     }

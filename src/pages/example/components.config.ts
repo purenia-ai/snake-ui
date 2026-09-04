@@ -46,6 +46,18 @@ const componentGroups: SnakeComponentGroup[] = [
                 'Transition',
                 '提供一致的跨端进出场动画。'
             ),
+            item(
+                '/pages/componentsA/text/index',
+                'Text 文本',
+                'Text',
+                '价格、脱敏、日期与链接等常用文本场景。'
+            ),
+            item(
+                '/pages/componentsA/link/index',
+                'Link 超链接',
+                'Link',
+                '跨端打开链接或复制到粘贴板。'
+            ),
             item('/pages/componentsA/icon/index', 'Icon 图标', 'Icon', '常用图标集合，支持自定义尺寸与颜色。')
         ]
     },

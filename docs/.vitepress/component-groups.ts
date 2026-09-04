@@ -21,7 +21,9 @@ export const componentGroups: ComponentGroup[] = [
             { name: 'Image', title: '图片', link: '/components/image' },
             { name: 'LazyImage', title: '懒加载图片', link: '/components/lazy-image' },
             { name: 'LoadingIcon', title: '加载图标', link: '/components/loading-icon' },
-            { name: 'Transition', title: '过渡动画', link: '/components/transition' }
+            { name: 'Transition', title: '过渡动画', link: '/components/transition' },
+            { name: 'Text', title: '文本', link: '/components/text' },
+            { name: 'Link', title: '超链接', link: '/components/link' }
         ]
     },
     {

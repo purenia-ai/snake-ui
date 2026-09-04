@@ -245,7 +245,28 @@ const englishMessages: Record<string, string> = {
     提示文字颜色: 'Hint color',
     触发条件: 'Trigger condition',
     断网时自动全屏展示: 'Full-screen overlay shown when offline',
-    重试: 'Retry'
+    重试: 'Retry',
+    文本模式: 'Text mode',
+    普通文本: 'Plain text',
+    价格: 'Price',
+    手机号: 'Phone number',
+    姓名: 'Name',
+    日期: 'Date',
+    超链接: 'Hyperlink',
+    脱敏: 'Masked',
+    下划线: 'Underline',
+    链接地址: 'Link URL',
+    打开方式: 'Open behavior',
+    内置跳转: 'Built-in navigation',
+    仅触发事件: 'Emit event only',
+    点击事件: 'Click event',
+    文本内容: 'Text content',
+    前置图标: 'Prefix icon',
+    后置图标: 'Suffix icon',
+    粗体: 'Bold',
+    块状: 'Block',
+    文字颜色: 'Text color',
+    字体大小: 'Font size'
 };
 
 Object.assign(englishMessages, {
@@ -289,6 +310,9 @@ Object.assign(englishMessages, {
     '长内容先收起一部分，点击展开全文。': 'Collapses long content and expands it on demand.',
     '自动监听网络状态，断网时全屏提示并支持重试。':
         'Watches network status and shows a full-screen prompt with retry when offline.',
+    '价格、脱敏、日期与链接等常用文本场景。':
+        'Handles common text scenarios such as price, masking, dates and links.',
+    '跨端打开链接或复制到粘贴板。': 'Opens links across platforms or copies them to the clipboard.',
     '组合字段控件，完成规则校验、错误展示、提交和重置。':
         'Combines fields with validation, error display, submit and reset.',
     '连接标签、字段控件和校验错误。': 'Connects labels, field controls and validation errors.',
@@ -355,6 +379,8 @@ const demoTitles: Record<string, string> = {
     select: 'Select',
     'read-more': 'Read More',
     'no-network': 'No Network',
+    text: 'Text',
+    link: 'Link',
     form: 'Form',
     'form-item': 'Form Item',
     input: 'Input',

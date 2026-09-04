@@ -36,6 +36,8 @@
                 { "path": "button/index", "style": { "navigationBarTitleText": "按钮" } },
                 { "path": "loadingIcon/index", "style": { "navigationBarTitleText": "加载图标" } },
                 { "path": "transition/index", "style": { "navigationBarTitleText": "过渡动画" } },
+                { "path": "text/index", "style": { "navigationBarTitleText": "文本" } },
+                { "path": "link/index", "style": { "navigationBarTitleText": "超链接" } },
                 { "path": "empty/index", "style": { "navigationBarTitleText": "空状态" } },
                 { "path": "icon/index", "style": { "navigationBarTitleText": "图标" } },
                 { "path": "image/index", "style": { "navigationBarTitleText": "图片" } },
