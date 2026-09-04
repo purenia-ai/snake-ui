@@ -42,7 +42,7 @@ preview: /pages/componentsA/button/index
 <snake-button type="success" plain>成功镂空按钮</snake-button>
 ```
 
-`plain` 会使用当前主题的文字、边框和浅色背景；自定义 `color` 时背景透明，适合次要操作。一个操作区域应只保留一个高强调的实心主按钮。
+`plain` 会使用当前主题的文字、边框和浅色背景；自定义 `color` 时使用该颜色 10% 透明度的浅底（非 hex 颜色回退到主题浅色 token），适合次要操作。一个操作区域应只保留一个高强调的实心主按钮。
 
 ## 尺寸与形状
 

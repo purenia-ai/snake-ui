@@ -6,6 +6,7 @@
  */
 
 import { computed, getCurrentInstance, nextTick, onBeforeUnmount, ref } from 'vue';
+import { colorToRgba } from '../../libs/function/color';
 import { getRect } from '../../libs/function/getRect';
 import SnakeIcon from '../snake-icon/snake-icon.vue';
 import SnakeLoadingIcon from '../snake-loading-icon/snake-loading-icon.vue';
@@ -24,8 +25,16 @@ let lastClick = 0;
 let rippleTimer: ReturnType<typeof setTimeout> | undefined;
 
 const palette = computed(() => {
-    if (props.color) return { main: props.color, light: 'transparent', disabled: props.color };
     const name = props.type === 'default' ? 'primary' : props.type;
+    if (props.color) {
+        // plain 模式用自定义色 10% 透明度的浅底；非 hex 颜色解析不了，回退到类型浅色 token
+        const tint = colorToRgba(props.color, 0.1);
+        return {
+            main: props.color,
+            light: tint === props.color ? `var(--snake-color-${name}-light, #f4f4f5)` : tint,
+            disabled: props.color
+        };
+    }
     return {
         main: `var(--snake-color-${name}, ${props.type === 'default' ? '#06D290' : '#707184'})`,
         light: `var(--snake-color-${name}-light, #f4f4f5)`,
