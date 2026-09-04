@@ -265,7 +265,6 @@ const englishMessages: Record<string, string> = {
     后置图标: 'Suffix icon',
     粗体: 'Bold',
     块状: 'Block',
-    文字颜色: 'Text color',
     字体大小: 'Font size'
 };
 
