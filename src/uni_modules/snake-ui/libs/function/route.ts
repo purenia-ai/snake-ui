@@ -1,3 +1,5 @@
+import { getQueryParams } from './queryParams';
+
 export type SnakeRouteType =
   | 'navigateTo'
   | 'to'
@@ -89,6 +91,16 @@ export function route(input: string | SnakeRouteOptions, params?: SnakeRoutePara
   });
 }
 
+function parseJsonObject(raw: string | undefined): Record<string, unknown> {
+  if (!raw) return {};
+  try {
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
 export function navTo(url?: string): void {
   if (!url) return;
   if (/^https?:\/\//i.test(url)) {
@@ -98,5 +110,34 @@ export function navTo(url?: string): void {
     // #endif
     return;
   }
+
+  // 小程序打开其他小程序：/miniprogram?appId=wx...&path=pages/...&extra={...}
+  // 沿用 r2nd-joker 历史 CMS 链接约定，运行时探测 API，避免平台条件编译差异。
+  if (url.includes('/miniprogram')) {
+    if (typeof uni.navigateToMiniProgram !== 'function') return;
+    const query = getQueryParams(url);
+    const appId = query.wxAppId || query.aliAppId || query.appId || '';
+    if (!appId) return;
+    uni.navigateToMiniProgram({
+      appId,
+      path: query.path || '',
+      extraData: parseJsonObject(query.extra),
+      envVersion: (query.envVersion as 'release' | 'develop' | 'trial') || 'release',
+      fail: () => {},
+    });
+    return;
+  }
+
+  // 微信客服：/serviceChat?url=...&corpId=...
+  if (url.includes('/serviceChat')) {
+    if (typeof uni.openCustomerServiceChat !== 'function') return;
+    const query = getQueryParams(url);
+    uni.openCustomerServiceChat({
+      extInfo: { url: query.url || '' },
+      corpId: query.corpId || '',
+    });
+    return;
+  }
+
   uni.navigateTo({ url, fail: () => uni.switchTab({ url }) });
 }

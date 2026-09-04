@@ -6,6 +6,7 @@ import { createServer } from 'vite';
 
 const storage = new Map();
 const navigationCalls = [];
+const miniProgramCalls = [];
 let failNextNavigateTo = false;
 
 function recordNavigation(method) {
@@ -32,7 +33,15 @@ globalThis.uni = {
     redirectTo: recordNavigation('redirectTo'),
     switchTab: recordNavigation('switchTab'),
     reLaunch: recordNavigation('reLaunch'),
-    navigateBack: recordNavigation('navigateBack')
+    navigateBack: recordNavigation('navigateBack'),
+    navigateToMiniProgram: options => {
+        miniProgramCalls.push({ method: 'navigateToMiniProgram', options: { ...options, success: undefined, fail: undefined } });
+        options.success?.({ errMsg: 'navigateToMiniProgram:ok' });
+    },
+    openCustomerServiceChat: options => {
+        miniProgramCalls.push({ method: 'openCustomerServiceChat', options: { ...options, success: undefined, fail: undefined } });
+        options.success?.({ errMsg: 'openCustomerServiceChat:ok' });
+    }
 };
 
 const server = await createServer({
@@ -228,6 +237,36 @@ test('navTo preserves navigateTo to switchTab fallback', () => {
         navigationCalls.map(call => call.method),
         ['navigateTo', 'switchTab']
     );
+});
+
+test('navTo opens cross-mini-program and service-chat links without router fallthrough', () => {
+    navigationCalls.length = 0;
+    miniProgramCalls.length = 0;
+
+    functions.navTo('/miniprogram?appId=wx123&path=pages%2Findex%2Findex&extra=%7B%22channel%22%3A%22x%22%7D');
+    assert.equal(navigationCalls.length, 0, 'must not fall through to navigateTo');
+    assert.equal(miniProgramCalls.length, 1);
+    assert.equal(miniProgramCalls[0].method, 'navigateToMiniProgram');
+    assert.deepEqual(miniProgramCalls[0].options, {
+        appId: 'wx123',
+        path: 'pages/index/index',
+        extraData: { channel: 'x' },
+        envVersion: 'release',
+        success: undefined,
+        fail: undefined
+    });
+
+    miniProgramCalls.length = 0;
+    functions.navTo('/serviceChat?url=https%3A%2F%2Fwork.weixin.qq.com%2Fkfid%2Fabc&corpId=ww123');
+    assert.equal(navigationCalls.length, 0, 'must not fall through to navigateTo');
+    assert.equal(miniProgramCalls.length, 1);
+    assert.equal(miniProgramCalls[0].method, 'openCustomerServiceChat');
+    assert.deepEqual(miniProgramCalls[0].options, {
+        extInfo: { url: 'https://work.weixin.qq.com/kfid/abc' },
+        corpId: 'ww123',
+        success: undefined,
+        fail: undefined
+    });
 });
 
 test('query and time helpers handle encoded and normalized values', () => {
