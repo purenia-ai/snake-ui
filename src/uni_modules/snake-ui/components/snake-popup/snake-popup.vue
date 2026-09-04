@@ -64,8 +64,20 @@ const transitionName = computed(() => {
 });
 const radius = computed(() => {
     if (props.round === false) return '0';
-    if (props.round === true) return 'var(--snake-radius-large, 20rpx)';
-    return addUnit(props.round, 'rpx');
+    const value = props.round === true ? 'var(--snake-radius-large, 20rpx)' : addUnit(props.round, 'rpx');
+    // 四边弹层只圆远离屏幕边缘的一侧（uview 同款），否则贴着屏幕边的角会被圆掉露出页面背景
+    switch (props.mode) {
+        case 'top':
+            return `0 0 ${value} ${value}`;
+        case 'bottom':
+            return `${value} ${value} 0 0`;
+        case 'left':
+            return `0 ${value} ${value} 0`;
+        case 'right':
+            return `${value} 0 0 ${value}`;
+        default:
+            return value;
+    }
 });
 const panelStyle = computed(() => [
     {
@@ -155,6 +167,31 @@ defineExpose({ open, close });
 .snake-popup__panel--center.snake-transition--zoom-in-leave {
     animation-name: snake-popup-center-zoom-out;
 }
+/* 四边弹层整块滑入滑出（uview 同款）：transition 通用滑入只有 40rpx 位移 + 淡入，这里覆盖为 100% 平移 */
+.snake-popup__panel--bottom.snake-transition--slide-up-enter {
+    animation-name: snake-popup-slide-up-in;
+}
+.snake-popup__panel--bottom.snake-transition--slide-up-leave {
+    animation-name: snake-popup-slide-up-out;
+}
+.snake-popup__panel--top.snake-transition--slide-down-enter {
+    animation-name: snake-popup-slide-down-in;
+}
+.snake-popup__panel--top.snake-transition--slide-down-leave {
+    animation-name: snake-popup-slide-down-out;
+}
+.snake-popup__panel--left.snake-transition--slide-right-enter {
+    animation-name: snake-popup-slide-right-in;
+}
+.snake-popup__panel--left.snake-transition--slide-right-leave {
+    animation-name: snake-popup-slide-right-out;
+}
+.snake-popup__panel--right.snake-transition--slide-left-enter {
+    animation-name: snake-popup-slide-left-in;
+}
+.snake-popup__panel--right.snake-transition--slide-left-leave {
+    animation-name: snake-popup-slide-left-out;
+}
 .snake-popup__panel--top {
     top: 0;
     left: 0;
@@ -215,6 +252,70 @@ defineExpose({ open, close });
     to {
         opacity: 0;
         transform: translate(-50%, -50%) scale(0.85);
+    }
+}
+@keyframes snake-popup-slide-up-in {
+    from {
+        transform: translate3d(0, 100%, 0);
+    }
+    to {
+        transform: translate3d(0, 0, 0);
+    }
+}
+@keyframes snake-popup-slide-up-out {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+    to {
+        transform: translate3d(0, 100%, 0);
+    }
+}
+@keyframes snake-popup-slide-down-in {
+    from {
+        transform: translate3d(0, -100%, 0);
+    }
+    to {
+        transform: translate3d(0, 0, 0);
+    }
+}
+@keyframes snake-popup-slide-down-out {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+    to {
+        transform: translate3d(0, -100%, 0);
+    }
+}
+@keyframes snake-popup-slide-right-in {
+    from {
+        transform: translate3d(-100%, 0, 0);
+    }
+    to {
+        transform: translate3d(0, 0, 0);
+    }
+}
+@keyframes snake-popup-slide-right-out {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+    to {
+        transform: translate3d(-100%, 0, 0);
+    }
+}
+@keyframes snake-popup-slide-left-in {
+    from {
+        transform: translate3d(100%, 0, 0);
+    }
+    to {
+        transform: translate3d(0, 0, 0);
+    }
+}
+@keyframes snake-popup-slide-left-out {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+    to {
+        transform: translate3d(100%, 0, 0);
     }
 }
 </style>

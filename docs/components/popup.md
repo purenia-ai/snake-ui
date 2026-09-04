@@ -34,6 +34,8 @@ preview: /pages/componentsA/popup/index
 | `mode`                                        | 弹出方向           | `string`  | `center`                    |
 | `duration` / `zIndex` / `bgColor`             | 动画、层级和背景   | 多类型    | `300 / 10075 / 主题表面色`  |
 | `round` / `zoom`                              | 圆角与中心缩放     | 多类型    | `false / true`              |
+
+`round` 为数字或字符串时按 rpx 处理，`true` 使用主题大圆角 token。center 模式四角全圆；四边模式只圆远离屏幕边缘的一侧（bottom 只圆上两角），避免贴边角被圆掉露出页面背景。四边弹层进出场为整块 100% 滑入滑出。
 | `closeable` / `closeIcon` / `closeIconPos`    | 关闭按钮参数       | 多类型    | `false / close / top-right` |
 | `closeOnClickOverlay`                         | 点击遮罩关闭       | `boolean` | `true`                      |
 | `overlay` / `overlayOpacity` / `overlayStyle` | 遮罩参数           | 多类型    | `true / 0.5 / ''`           |
