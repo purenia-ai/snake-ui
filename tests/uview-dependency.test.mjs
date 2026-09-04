@@ -31,13 +31,18 @@ test('runtime source and package metadata are independent from uView Pro', async
   assert.deepEqual(violations, [])
 })
 
-test('all replacement primitives are public components and exports', async () => {
+test('all replacement primitives are public components resolved via easycom', async () => {
   const names = ['button', 'empty', 'icon', 'image', 'lazy-image', 'loadmore', 'notice-bar', 'overlay', 'popup', 'sticky', 'swiper', 'tabs']
   const entry = await readFile(resolve(root, 'src/uni_modules/snake-ui/index.ts'), 'utf8')
+  const pagesJson = await readFile(resolve(root, 'src/pages.json'), 'utf8')
+
+  // 组件通过 easycom 暴露为公共组件，桶入口只导出 types，不再 re-export .vue（对齐 uView Pro）
+  assert.match(pagesJson, /\^snake-/)
+  assert.doesNotMatch(entry, /\.vue'/)
+
   for (const name of names) {
     const file = resolve(root, `src/uni_modules/snake-ui/components/snake-${name}/snake-${name}.vue`)
     assert.ok((await readFile(file, 'utf8')).includes('<template>'), `missing template: snake-${name}`)
-    const exportName = `Snake${name.split('-').map((part) => part[0].toUpperCase() + part.slice(1)).join('')}`
-    assert.match(entry, new RegExp(`export \\{ default as ${exportName} \\}`))
+    assert.match(entry, new RegExp(`export \\* from './components/snake-${name}/types'`), `snake-${name}: missing type export`)
   }
 })

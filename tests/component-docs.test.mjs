@@ -46,7 +46,7 @@ test('component registry is the complete public component source of truth', asyn
     const packageEntry = await readFile(resolve(root, 'src/uni_modules/snake-ui/index.ts'), 'utf8');
     for (const item of componentItems) {
         const componentDirectory = toComponentDirectory(item);
-        assert.match(packageEntry, new RegExp(`components/${componentDirectory}/${componentDirectory}\\.vue`), item.name);
+        assert.match(packageEntry, new RegExp(`export \\* from './components/${componentDirectory}/types'`), item.name);
     }
 });
 

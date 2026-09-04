@@ -108,8 +108,10 @@ interface SnakeCacheAdapter {
 
 ## 手动导入
 
+组件推荐使用 easycom 标签；如需手动导入，按组件路径引入：
+
 ```ts
-import { SnakeButton, SnakePopup, SnakeGoodsList } from '@puresnake/snake-ui';
+import SnakeButton from '@puresnake/snake-ui/components/snake-button/snake-button.vue';
 
 import { addUnit, navTo, sleep, toast } from '@puresnake/snake-ui/libs';
 ```

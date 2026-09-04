@@ -12,8 +12,8 @@ test('first parity batch exposes reusable transition and loading foundations', a
         read('components/snake-transition/snake-transition.vue'),
         read('components/snake-loading-icon/snake-loading-icon.vue')
     ]);
-    for (const name of ['SnakeTransition', 'SnakeLoadingIcon']) {
-        assert.match(entry, new RegExp(`export { default as ${name} }`));
+    for (const [name, dir] of [['SnakeTransition', 'snake-transition'], ['SnakeLoadingIcon', 'snake-loading-icon']]) {
+        assert.match(entry, new RegExp(`export \\* from './components/${dir}/types'`));
         assert.match(declarations, new RegExp(`export const ${name}:`));
     }
     assert.match(transition, /after-enter/);
@@ -44,7 +44,7 @@ test('subsection exposes animated button and outlined selection modes', async ()
         read('components/snake-subsection/snake-subsection.vue')
     ]);
 
-    assert.match(entry, /export \{ default as SnakeSubsection \}/);
+    assert.match(entry, /export \* from '\.\/components\/snake-subsection\/types'/);
     assert.match(declarations, /export const SnakeSubsection:/);
     for (const prop of ['list', 'current', 'mode', 'activeColor', 'inactiveColor', 'animation', 'buttonColor']) {
         assert.match(types, new RegExp(`${prop}\\?`));

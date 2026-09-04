@@ -11,10 +11,6 @@
   <!-- 全局 toast，承接 useToast() 的事件 -->
   <snake-toast global />
 </template>
-
-<script setup lang="ts">
-import { SnakeToast } from '@puresnake/snake-ui';
-</script>
 ```
 
 业务中调用：
@@ -71,7 +67,6 @@ toast.show({
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { SnakeToast } from '@puresnake/snake-ui';
 
 const toastRef = ref();
 toastRef.value?.show({ title: '提示', type: 'success' });

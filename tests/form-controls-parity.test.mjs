@@ -58,12 +58,13 @@ test('form control components expose independent contracts', async () => {
     }
 });
 
-test('form controls are exported from runtime and declaration entries', async () => {
+test('form controls are exported from type and declaration entries', async () => {
     const [runtime, declaration, types] = await Promise.all([
         read('index.ts'),
         read('types/components.d.ts'),
         read('types/components.d.ts')
     ]);
+    // 桶入口只导出 types（不再 re-export .vue，对齐 uView Pro），组件声明在 types/components.d.ts
     for (const name of [
         'Form',
         'FormItem',
@@ -76,10 +77,12 @@ test('form controls are exported from runtime and declaration entries', async ()
         'Switch',
         'Slider'
     ]) {
-        assert.match(runtime, new RegExp(`Snake${name}`));
         assert.match(declaration, new RegExp(`Snake${name}`));
     }
-    for (const path of components) assert.match(types, new RegExp(`snake-${path}/types`));
+    for (const path of components) {
+        assert.match(runtime, new RegExp(`export \\* from './components/snake-${path}/types'`));
+        assert.match(types, new RegExp(`snake-${path}/types`));
+    }
 });
 
 test('form exposes validation and field lifecycle APIs', async () => {
