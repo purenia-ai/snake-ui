@@ -645,7 +645,7 @@ export default {
         font-family: PingFangSC-Medium;
         font-weight: 500;
         color: var(--snake-color-primary, #06D290);
-        background: var(--snake-color-primary-light, #e8f8f2);
+        background: var(--snake-color-primary-light, rgba(6, 210, 144, 0.1));
         border: 1px solid var(--snake-color-primary, #06D290);
       }
     }
