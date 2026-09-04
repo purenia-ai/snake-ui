@@ -230,7 +230,22 @@ const englishMessages: Record<string, string> = {
     内容垂直居中: 'Center content',
     点击反馈: 'Click feedback',
     变体示例: 'Variants',
-    暂无事件: 'No event yet'
+    暂无事件: 'No event yet',
+    打开选择器: 'Open selector',
+    选择模式: 'Select mode',
+    单列: 'Single column',
+    多列: 'Multiple columns',
+    多列联动: 'Cascading columns',
+    选择结果: 'Selection result',
+    已取消: 'Canceled',
+    已关闭: 'Closed',
+    展开全文: 'Expand full text',
+    显示收起: 'Show collapse',
+    占位高度: 'Placeholder height',
+    提示文字颜色: 'Hint color',
+    触发条件: 'Trigger condition',
+    断网时自动全屏展示: 'Full-screen overlay shown when offline',
+    重试: 'Retry'
 };
 
 Object.assign(englishMessages, {
@@ -270,6 +285,10 @@ Object.assign(englishMessages, {
     '带图标、标题、描述和箭头的单行列表条目。': 'A list row with icon, title, description and arrow.',
     '集成占位、清除与操作按钮的常用搜索输入。':
         'A common search input with placeholder, clear control and action button.',
+    '单列、多列与多列联动的底部选择器。': 'A bottom picker for single, multiple and cascading columns.',
+    '长内容先收起一部分，点击展开全文。': 'Collapses long content and expands it on demand.',
+    '自动监听网络状态，断网时全屏提示并支持重试。':
+        'Watches network status and shows a full-screen prompt with retry when offline.',
     '组合字段控件，完成规则校验、错误展示、提交和重置。':
         'Combines fields with validation, error display, submit and reset.',
     '连接标签、字段控件和校验错误。': 'Connects labels, field controls and validation errors.',
@@ -333,6 +352,9 @@ const demoTitles: Record<string, string> = {
     line: 'Divider',
     'line-progress': 'Line Progress',
     search: 'Search',
+    select: 'Select',
+    'read-more': 'Read More',
+    'no-network': 'No Network',
     form: 'Form',
     'form-item': 'Form Item',
     input: 'Input',

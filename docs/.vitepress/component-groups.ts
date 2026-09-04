@@ -30,6 +30,7 @@ export const componentGroups: ComponentGroup[] = [
             { name: 'Swiper', title: '轮播图', link: '/components/swiper' },
             { name: 'Loadmore', title: '加载更多', link: '/components/loadmore' },
             { name: 'LineProgress', title: '线形进度条', link: '/components/line-progress' },
+            { name: 'ReadMore', title: '阅读更多', link: '/components/read-more' },
             { name: 'Empty', title: '空状态', link: '/components/empty' }
         ]
     },
@@ -38,7 +39,8 @@ export const componentGroups: ComponentGroup[] = [
         items: [
             { name: 'NoticeBar', title: '通知栏', link: '/components/notice-bar' },
             { name: 'Overlay', title: '遮罩层', link: '/components/overlay' },
-            { name: 'Popup', title: '弹出层', link: '/components/popup' }
+            { name: 'Popup', title: '弹出层', link: '/components/popup' },
+            { name: 'NoNetwork', title: '无网络提示', link: '/components/no-network' }
         ]
     },
     {
@@ -71,7 +73,8 @@ export const componentGroups: ComponentGroup[] = [
             { name: 'RadioGroup', title: '单选框组', link: '/components/radio-group' },
             { name: 'Switch', title: '开关', link: '/components/switch' },
             { name: 'Slider', title: '滑动选择器', link: '/components/slider' },
-            { name: 'Search', title: '搜索框', link: '/components/search' }
+            { name: 'Search', title: '搜索框', link: '/components/search' },
+            { name: 'Select', title: '列选择器', link: '/components/select' }
         ]
     },
     {

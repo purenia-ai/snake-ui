@@ -79,6 +79,12 @@ const componentGroups: SnakeComponentGroup[] = [
                 'Search 搜索框',
                 'Search',
                 '集成占位、清除与操作按钮的常用搜索输入。'
+            ),
+            item(
+                '/pages/componentsA/select/index',
+                'Select 列选择器',
+                'Select',
+                '单列、多列与多列联动的底部选择器。'
             )
         ]
     },
@@ -100,6 +106,12 @@ const componentGroups: SnakeComponentGroup[] = [
                 'LineProgress 线形进度条',
                 'LineProgress',
                 '以线形进度展示任务完成情况，支持条纹与百分比。'
+            ),
+            item(
+                '/pages/componentsA/readMore/index',
+                'ReadMore 阅读更多',
+                'ReadMore',
+                '长内容先收起一部分，点击展开全文。'
             ),
             item('/pages/componentsA/swiper/index', 'Swiper 轮播图', 'Swiper', '支持自动播放、指示器与标题展示。'),
             item(
@@ -134,6 +146,12 @@ const componentGroups: SnakeComponentGroup[] = [
             ),
             item('/pages/componentsA/overlay/index', 'Overlay 遮罩层', 'Overlay', '隔离当前页面与浮层操作。'),
             item('/pages/componentsA/popup/index', 'Popup 弹出层', 'Popup', '支持从不同方向出现并承载业务内容。'),
+            item(
+                '/pages/componentsA/noNetwork/index',
+                'NoNetwork 无网络提示',
+                'NoNetwork',
+                '自动监听网络状态，断网时全屏提示并支持重试。'
+            ),
             item(
                 '/pages/componentsB/pagePopup/index',
                 'PagePopup 页面弹窗',

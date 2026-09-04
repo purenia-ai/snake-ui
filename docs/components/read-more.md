@@ -1,0 +1,63 @@
+---
+preview: /pages/componentsA/readMore/index
+---
+
+# ReadMore 阅读更多
+
+用于内容较长时预先收起一部分、点击展开全部内容的场景，超出占位高度才显示展开按钮。
+
+## 平台兼容性
+
+|  H5  | 微信小程序 | App  |
+| :--: | :--------: | :--: |
+| 支持 |    支持    | 支持 |
+
+## 基础用法
+
+```vue
+<snake-read-more :show-height="400">
+  <rich-text :nodes="content" />
+</snake-read-more>
+```
+
+## 展开与收起
+
+```vue
+<snake-read-more toggle close-text="展开阅读全文" open-text="收起">
+  <text>长内容……</text>
+</snake-read-more>
+```
+
+`toggle` 为 true 时，展开后显示收起按钮；内容动态变化后可通过 `ref.init()` 重新测量高度。
+
+## API
+
+### Props
+
+| 参数          | 说明                               | 类型                  | 默认值                    |
+| ------------- | ---------------------------------- | --------------------- | ------------------------- |
+| `showHeight`  | 显示占位高度，数值按 rpx 处理      | `number \| string`    | `400`                     |
+| `toggle`      | 展开后是否显示收起按钮             | `boolean`             | `false`                   |
+| `closeText`   | 收起状态的提示文字                 | `string`              | 语言包默认值              |
+| `openText`    | 展开状态的提示文字                 | `string`              | 语言包默认值              |
+| `color`       | 提示文字颜色                       | `string`              | `--snake-color-primary`   |
+| `fontSize`    | 提示文字大小，数值按 rpx 处理      | `number \| string`    | `28`                      |
+| `shadowStyle` | 收起时覆盖在内容底部的阴影样式     | `object \| array`     | 渐隐到 surface 的默认阴影 |
+| `textIndent`  | 段落首行缩进                       | `string`              | `2em`                     |
+| `index`       | open/close 事件回调中的标识值      | `number \| string`    | `''`                      |
+| `customClass` / `customStyle` | 自定义类名和样式         | `string \| object \| array` | `''`                |
+
+### Events
+
+| 事件名  | 触发时机 | 参数    |
+| ------- | -------- | ------- |
+| `open`  | 展开     | `index` |
+| `close` | 收起     | `index` |
+
+### Methods
+
+| 方法名 | 说明                             |
+| ------ | -------------------------------- |
+| `init` | 重新测量内容高度并刷新展开状态   |
+
+源码：`src/uni_modules/snake-ui/components/snake-read-more/snake-read-more.vue`
