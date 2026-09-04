@@ -286,6 +286,23 @@ test('query and time helpers handle encoded and normalized values', () => {
     assert.equal(functions.timeFrom((now - 31 * 86_400_000) / 1000, now), '2026-07-20');
 });
 
+test('time helpers handle 10-digit timestamps and safe identifiers', () => {
+    // 10 位数字/字符串按秒级时间戳换算，与 13 位毫秒时间戳指向同一时刻
+    const expectedYear = String(new Date(1700000000 * 1000).getFullYear());
+    assert.equal(functions.timeFormat(1700000000, 'yyyy'), expectedYear);
+    assert.equal(functions.timeFormat('1700000000', 'yyyy'), expectedYear);
+    assert.equal(functions.timeFormat(1700000000000, 'yyyy'), expectedYear);
+    // guid 输出仅含字母数字与连字符，可直接用作 CSS 类名
+    assert.match(functions.guid(), /^[a-z0-9-]+$/i);
+    // 金额与姓名脱敏与参考实现输出一致
+    assert.equal(functions.formatPrice(1234.5, 2), '1,234.50');
+    assert.equal(functions.formatPrice('1234567.891', 2), '1,234,567.89');
+    assert.equal(functions.formatName('张'), '张');
+    assert.equal(functions.formatName('张三'), '张*');
+    assert.equal(functions.formatName('张三丰'), '张*丰');
+    assert.equal(functions.formatName('欧阳娜娜'), '欧**娜');
+});
+
 test('http keeps legacy adapter support and rejects interceptor cancellation', async () => {
     request.snakeHttp.reset();
     request.configureSnakeHttp(

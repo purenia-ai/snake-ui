@@ -1,5 +1,10 @@
 export function formatTime(value: string | number | Date, pattern = 'yyyy-mm-dd hh:MM:ss'): string {
-  const date = value instanceof Date ? value : new Date(value);
+  // 10 位数字/字符串按秒级时间戳处理，统一换算为毫秒
+  let timeValue: string | number | Date = value;
+  if ((typeof timeValue === 'number' || typeof timeValue === 'string') && String(timeValue).length === 10) {
+    timeValue = Number(timeValue) * 1000;
+  }
+  const date = timeValue instanceof Date ? timeValue : new Date(timeValue);
   if (Number.isNaN(date.getTime())) return '';
   const parts: Record<string, string> = {
     yyyy: String(date.getFullYear()),
