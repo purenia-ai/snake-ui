@@ -204,7 +204,33 @@ const englishMessages: Record<string, string> = {
     条纹动画: 'Animated stripes',
     两端半圆: 'Rounded ends',
     分组标题: 'Group title',
-    外边框: 'Outer border'
+    外边框: 'Outer border',
+    左侧图标: 'Leading icon',
+    描述文字: 'Description',
+    显示箭头: 'Show arrow',
+    必填星号: 'Required marker',
+    点击条目: 'Clicked cell',
+    箭头方向: 'Arrow direction',
+    向右: 'Right',
+    向上: 'Up',
+    向下: 'Down',
+    搜索形状: 'Search shape',
+    圆形: 'Round',
+    方形: 'Square',
+    显示操作按钮: 'Show action button',
+    启用清除: 'Clearable',
+    搜索内容: 'Search value',
+    点击搜索: 'Search',
+    点击清除: 'Clear',
+    标题: 'Title',
+    手机: 'Phone',
+    无图标: 'No icon',
+    图片: 'Image',
+    聚焦动画: 'Focus animation',
+    内容垂直居中: 'Center content',
+    点击反馈: 'Click feedback',
+    变体示例: 'Variants',
+    暂无事件: 'No event yet'
 };
 
 Object.assign(englishMessages, {
@@ -241,6 +267,9 @@ Object.assign(englishMessages, {
     '以横向或竖向线条分隔内容块，支持半像素细线。': 'Separates content with horizontal or vertical hairlines.',
     '以线形进度展示任务完成情况，支持条纹与百分比。':
         'Shows task progress as a bar with stripes and a percentage.',
+    '带图标、标题、描述和箭头的单行列表条目。': 'A list row with icon, title, description and arrow.',
+    '集成占位、清除与操作按钮的常用搜索输入。':
+        'A common search input with placeholder, clear control and action button.',
     '组合字段控件，完成规则校验、错误展示、提交和重置。':
         'Combines fields with validation, error display, submit and reset.',
     '连接标签、字段控件和校验错误。': 'Connects labels, field controls and validation errors.',
@@ -300,8 +329,10 @@ const demoTitles: Record<string, string> = {
     'index-list': 'Index List',
     'index-anchor': 'Index Anchor',
     'cell-group': 'Cell Group',
+    'cell-item': 'Cell Item',
     line: 'Divider',
     'line-progress': 'Line Progress',
+    search: 'Search',
     form: 'Form',
     'form-item': 'Form Item',
     input: 'Input',

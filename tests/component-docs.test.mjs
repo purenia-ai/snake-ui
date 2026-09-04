@@ -38,8 +38,8 @@ test('all component docs contain the common detailed sections', async () => {
 });
 
 test('component registry is the complete public component source of truth', async () => {
-    assert.equal(componentItems.length, 56);
-    assert.equal(foundation.length, 35);
+    assert.equal(componentItems.length, 58);
+    assert.equal(foundation.length, 37);
     assert.equal(cms.length, 21);
     assert.equal(new Set(componentItems.map(item => item.link)).size, componentItems.length);
 

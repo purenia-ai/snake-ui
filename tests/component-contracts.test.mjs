@@ -26,8 +26,10 @@ const components = [
     'snake-index-list',
     'snake-index-anchor',
     'snake-cell-group',
+    'snake-cell-item',
     'snake-line',
-    'snake-line-progress'
+    'snake-line-progress',
+    'snake-search'
 ];
 
 test('every public component exposes an independent type contract', async () => {
@@ -39,7 +41,7 @@ test('every public component exposes an independent type contract', async () => 
     const packageEntry = await readFile(new URL('index.ts', root), 'utf8');
     const declarationEntry = await readFile(new URL('types/components.d.ts', root), 'utf8');
 
-    assert.equal(directories.length, 58);
+    assert.equal(directories.length, 60);
     for (const component of directories) {
         const types = await readFile(new URL(`components/${component}/types.ts`, root), 'utf8');
         assert.match(types, /export (?:interface|type) Snake/, `${component}: missing public contract`);
@@ -141,8 +143,10 @@ test('migrated controls use runtime props as the defaults source of truth', asyn
         ['snake-checkbox', 'snakeCheckboxProps'],
         ['snake-radio', 'snakeRadioProps'],
         ['snake-cell-group', 'snakeCellGroupProps'],
+        ['snake-cell-item', 'snakeCellItemProps'],
         ['snake-line', 'snakeLineProps'],
-        ['snake-line-progress', 'snakeLineProgressProps']
+        ['snake-line-progress', 'snakeLineProgressProps'],
+        ['snake-search', 'snakeSearchProps']
     ]) {
         const types = await readFile(new URL(`components/${component}/types.ts`, root), 'utf8');
         const source = await readFile(new URL(`components/${component}/${component}.vue`, root), 'utf8');
@@ -186,8 +190,10 @@ test('package entry exposes precise foundation component props', async () => {
         'IndexList',
         'IndexAnchor',
         'CellGroup',
+        'CellItem',
         'Line',
-        'LineProgress'
+        'LineProgress',
+        'Search'
     ]) {
         assert.match(declarations, new RegExp(`Snake${component}: SnakeComponent<Snake${component}Props`));
     }

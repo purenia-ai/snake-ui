@@ -73,7 +73,13 @@ const componentGroups: SnakeComponentGroup[] = [
             item('/pages/componentsA/radio/index', 'Radio 单选框', 'Radio', '独立或成组选择单个值。'),
             item('/pages/componentsA/radioGroup/index', 'RadioGroup 单选框组', 'RadioGroup', '管理互斥单选值。'),
             item('/pages/componentsA/switch/index', 'Switch 开关', 'Switch', '切换布尔值或自定义开关值。'),
-            item('/pages/componentsA/slider/index', 'Slider 滑动选择器', 'Slider', '通过点击或触摸拖动选择数值。')
+            item('/pages/componentsA/slider/index', 'Slider 滑动选择器', 'Slider', '通过点击或触摸拖动选择数值。'),
+            item(
+                '/pages/componentsA/search/index',
+                'Search 搜索框',
+                'Search',
+                '集成占位、清除与操作按钮的常用搜索输入。'
+            )
         ]
     },
     {
@@ -186,6 +192,12 @@ const componentGroups: SnakeComponentGroup[] = [
                 'CellGroup 单元格分组',
                 'CellGroup',
                 '将一组单元格组合为带标题和外边框的分组。'
+            ),
+            item(
+                '/pages/componentsA/cellItem/index',
+                'CellItem 单元格条目',
+                'CellItem',
+                '带图标、标题、描述和箭头的单行列表条目。'
             ),
             item('/pages/componentsA/line/index', 'Line 分隔线', 'Line', '以横向或竖向线条分隔内容块，支持半像素细线。'),
             item(

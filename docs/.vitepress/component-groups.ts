@@ -54,6 +54,7 @@ export const componentGroups: ComponentGroup[] = [
             { name: 'IndexList', title: '索引列表', link: '/components/index-list' },
             { name: 'IndexAnchor', title: '索引锚点', link: '/components/index-anchor' },
             { name: 'CellGroup', title: '单元格分组', link: '/components/cell-group' },
+            { name: 'CellItem', title: '单元格条目', link: '/components/cell-item' },
             { name: 'Line', title: '分隔线', link: '/components/line' }
         ]
     },
@@ -69,7 +70,8 @@ export const componentGroups: ComponentGroup[] = [
             { name: 'Radio', title: '单选框', link: '/components/radio' },
             { name: 'RadioGroup', title: '单选框组', link: '/components/radio-group' },
             { name: 'Switch', title: '开关', link: '/components/switch' },
-            { name: 'Slider', title: '滑动选择器', link: '/components/slider' }
+            { name: 'Slider', title: '滑动选择器', link: '/components/slider' },
+            { name: 'Search', title: '搜索框', link: '/components/search' }
         ]
     },
     {
