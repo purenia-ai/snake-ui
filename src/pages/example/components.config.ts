@@ -97,6 +97,12 @@ const componentGroups: SnakeComponentGroup[] = [
                 'Select 列选择器',
                 'Select',
                 '单列、多列与多列联动的底部选择器。'
+            ),
+            item(
+                '/pages/componentsA/calendar/index',
+                'Calendar 日历',
+                'Calendar',
+                '单个或范围日期选择，支持农历与节日。'
             )
         ]
     },

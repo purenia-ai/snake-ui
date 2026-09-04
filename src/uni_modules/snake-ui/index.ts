@@ -42,6 +42,7 @@ export * from './components/snake-read-more/types';
 export * from './components/snake-no-network/types';
 export * from './components/snake-link/types';
 export * from './components/snake-text/types';
+export * from './components/snake-calendar/types';
 export * from './components/snake-hotzone/types';
 export * from './components/snake-index-list/types';
 export * from './components/snake-index-anchor/types';

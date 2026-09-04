@@ -23,7 +23,9 @@ export default tseslint.config(
             '**/.vitepress/cache/**',
             '**/.vitepress/dist/**',
             '**/*.min.js',
-            '**/*.map'
+            '**/*.map',
+            // 第三方压缩库内联（农历换算），保持原样
+            '**/libs/util/calendar.ts'
         ]
     },
     eslint.configs.recommended,

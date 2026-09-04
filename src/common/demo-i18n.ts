@@ -265,7 +265,15 @@ const englishMessages: Record<string, string> = {
     后置图标: 'Suffix icon',
     粗体: 'Bold',
     块状: 'Block',
-    字体大小: 'Font size'
+    字体大小: 'Font size',
+    打开日历: 'Open calendar',
+    日期范围: 'Date range',
+    单个日期: 'Single date',
+    显示农历: 'Show lunar',
+    最小日期: 'Min date',
+    显示关闭图标: 'Show close icon',
+    默认选中今天: 'Select today by default',
+    页面内联日历: 'Inline calendar'
 };
 
 Object.assign(englishMessages, {
@@ -312,6 +320,7 @@ Object.assign(englishMessages, {
     '价格、脱敏、日期与链接等常用文本场景。':
         'Handles common text scenarios such as price, masking, dates and links.',
     '跨端打开链接或复制到粘贴板。': 'Opens links across platforms or copies them to the clipboard.',
+    '单个或范围日期选择，支持农历与节日。': 'Selects a single date or a range, with lunar and festival support.',
     '组合字段控件，完成规则校验、错误展示、提交和重置。':
         'Combines fields with validation, error display, submit and reset.',
     '连接标签、字段控件和校验错误。': 'Connects labels, field controls and validation errors.',
@@ -380,6 +389,7 @@ const demoTitles: Record<string, string> = {
     'no-network': 'No Network',
     text: 'Text',
     link: 'Link',
+    calendar: 'Calendar',
     form: 'Form',
     'form-item': 'Form Item',
     input: 'Input',

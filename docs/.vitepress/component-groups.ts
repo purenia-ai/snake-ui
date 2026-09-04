@@ -76,7 +76,8 @@ export const componentGroups: ComponentGroup[] = [
             { name: 'Switch', title: '开关', link: '/components/switch' },
             { name: 'Slider', title: '滑动选择器', link: '/components/slider' },
             { name: 'Search', title: '搜索框', link: '/components/search' },
-            { name: 'Select', title: '列选择器', link: '/components/select' }
+            { name: 'Select', title: '列选择器', link: '/components/select' },
+            { name: 'Calendar', title: '日历', link: '/components/calendar' }
         ]
     },
     {

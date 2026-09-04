@@ -30,6 +30,7 @@ import type { SnakeReadMoreEmits, SnakeReadMoreProps } from '../components/snake
 import type { SnakeNoNetworkEmits, SnakeNoNetworkProps } from '../components/snake-no-network/types';
 import type { SnakeLinkEmits, SnakeLinkProps } from '../components/snake-link/types';
 import type { SnakeTextEmits, SnakeTextProps } from '../components/snake-text/types';
+import type { SnakeCalendarEmits, SnakeCalendarProps } from '../components/snake-calendar/types';
 import type { SnakeIndexListEmits, SnakeIndexListProps } from '../components/snake-index-list/types';
 import type { SnakeIndexAnchorProps } from '../components/snake-index-anchor/types';
 import type { SnakeFormEmits, SnakeFormProps } from '../components/snake-form/types';
@@ -93,6 +94,7 @@ export * from '../components/snake-read-more/types';
 export * from '../components/snake-no-network/types';
 export * from '../components/snake-link/types';
 export * from '../components/snake-text/types';
+export * from '../components/snake-calendar/types';
 export * from '../components/snake-hotzone/types';
 export * from '../components/snake-index-list/types';
 export * from '../components/snake-index-anchor/types';
@@ -195,6 +197,7 @@ export const SnakeReadMore: SnakeComponent<SnakeReadMoreProps, SnakeReadMoreEmit
 export const SnakeNoNetwork: SnakeComponent<SnakeNoNetworkProps, SnakeNoNetworkEmits>;
 export const SnakeLink: SnakeComponent<SnakeLinkProps, SnakeLinkEmits>;
 export const SnakeText: SnakeComponent<SnakeTextProps, SnakeTextEmits>;
+export const SnakeCalendar: SnakeComponent<SnakeCalendarProps, SnakeCalendarEmits>;
 export const SnakeIndexList: SnakeComponent<SnakeIndexListProps, SnakeIndexListEmits>;
 export const SnakeIndexAnchor: SnakeComponent<SnakeIndexAnchorProps>;
 export const SnakeForm: SnakeComponent<SnakeFormProps, SnakeFormEmits>;
