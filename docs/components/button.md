@@ -45,6 +45,8 @@ preview: /pages/componentsA/button/index
 
 `plain` 会使用当前主题的文字、边框和浅色背景——primary/success 的浅底 token 即品牌色 10% 透明 `rgba(6, 210, 144, 0.1)`；自定义 `color` 时使用该颜色 10% 透明度的浅底（非 hex 颜色回退到主题浅色 token），适合次要操作。一个操作区域应只保留一个高强调的实心主按钮。
 
+实心按钮不描边框（描同色边框会在四角产生毛刺，uview 同款处理），`hairLine` 细边框只在 `plain` 镂空形态下可见。
+
 ## 分部件定制
 
 根节点之外，可通过 `contentClass` / `contentStyle` 定制内容区（图标与文字的容器）。小程序端组件内部样式经编译带有属性选择器（特异性 0,2,0），页面工具类（0,1,0）无法覆盖，因此冲突样式请用 `contentStyle` 行内写法（行内样式始终优先），`contentClass` 用于语义类或非冲突样式：

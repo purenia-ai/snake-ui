@@ -49,7 +49,9 @@ const buttonStyle = computed(() => [
               ? 'var(--snake-color-primary-ink, #FFFFFF)'
               : 'var(--snake-color-white, #fff)',
         backgroundColor: props.plain ? palette.value.light : palette.value.main,
-        borderColor: props.disabled ? palette.value.disabled : palette.value.main,
+        // 实心按钮不描边（uview 同款：彩色实心描同色边框会在四角产生毛刺），镂空按钮描主色边，禁用描灰色边
+        borderColor: props.disabled ? palette.value.disabled : props.plain ? palette.value.main : 'transparent',
+        borderWidth: props.plain ? undefined : 0,
         opacity: props.disabled ? 0.65 : 1,
         overflow: props.ripple ? 'hidden' : 'visible'
     },
