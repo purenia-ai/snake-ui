@@ -61,6 +61,7 @@
                 { "path": "search/index", "style": { "navigationBarTitleText": "搜索框" } },
                 { "path": "select/index", "style": { "navigationBarTitleText": "列选择器" } },
                 { "path": "calendar/index", "style": { "navigationBarTitleText": "日历" } },
+                { "path": "countDown/index", "style": { "navigationBarTitleText": "倒计时" } },
                 { "path": "readMore/index", "style": { "navigationBarTitleText": "阅读更多" } },
                 { "path": "noNetwork/index", "style": { "navigationBarTitleText": "无网络提示" } },
                 { "path": "line/index", "style": { "navigationBarTitleText": "分隔线" } },

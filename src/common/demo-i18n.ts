@@ -274,7 +274,21 @@ const englishMessages: Record<string, string> = {
     最小日期: 'Min date',
     显示关闭图标: 'Show close icon',
     默认选中今天: 'Select today by default',
-    页面内联日历: 'Inline calendar'
+    页面内联日历: 'Inline calendar',
+    剩余秒数: 'Remaining seconds',
+    分隔符: 'Separator',
+    冒号: 'Colon',
+    中文单位: 'Chinese units',
+    显示天: 'Show days',
+    显示小时: 'Show hours',
+    显示分钟: 'Show minutes',
+    显示秒: 'Show seconds',
+    天为零隐藏: 'Hide zero day',
+    数字边框: 'Digit border',
+    当前剩余: 'Remaining',
+    已结束: 'Finished',
+    重新开始: 'Restart',
+    '用于活动截止等场景的倒计时，通过数字变化给用户明确的时间感受。': 'Counts down to an event deadline, giving users a clear sense of time through changing digits.'
 };
 
 Object.assign(englishMessages, {
@@ -391,6 +405,7 @@ const demoTitles: Record<string, string> = {
     text: 'Text',
     link: 'Link',
     calendar: 'Calendar',
+    'count-down': 'Count Down',
     form: 'Form',
     'form-item': 'Form Item',
     input: 'Input',

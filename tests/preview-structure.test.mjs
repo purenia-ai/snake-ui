@@ -45,7 +45,8 @@ const foundationComponents = [
     'no-network',
     'text',
     'link',
-    'calendar'
+    'calendar',
+    'count-down'
 ];
 
 function exampleRoutes(pages) {
@@ -91,8 +92,8 @@ test('component docs and example routes remain one-to-one', async () => {
         if (match) previews.push(match[1]);
     }
 
-    assert.equal(routes.length, 63);
-    assert.equal(previews.length, 63);
+    assert.equal(routes.length, 64);
+    assert.equal(previews.length, 64);
     assert.deepEqual([...new Set(previews)].sort(), [...new Set(routes)].sort());
 });
 
@@ -121,9 +122,9 @@ test('component overview page covers every example route and directory layout', 
     );
     const routes = exampleRoutes(pages);
 
-    assert.equal(configuredPaths.length, 63);
+    assert.equal(configuredPaths.length, 64);
     assert.deepEqual([...configuredPaths].sort(), [...routes].sort());
-    assert.equal(groupA.length, 42);
+    assert.equal(groupA.length, 43);
     assert.equal(groupB.length, 21);
     for (const directory of [
         ...groupA.map(name => ['componentsA', name]),
@@ -158,7 +159,7 @@ test('all example pages own their interactive demo configuration', async () => {
     const panel = await readFile(resolve(root, 'src/components/demo-control-panel/demo-control-panel.vue'), 'utf8');
     const pages = await examplePageSources();
 
-    assert.equal(pages.length, 63);
+    assert.equal(pages.length, 64);
     for (const page of pages) {
         assert.match(page, /<DemoPage/);
         assert.match(page, /<DemoControlPanel/);

@@ -45,6 +45,12 @@ const zhCN: SnakeLocale = {
             to: '至',
             holiday: '休',
             workday: '班'
+        },
+        countDown: {
+            day: '天',
+            hour: '时',
+            minute: '分',
+            second: '秒'
         }
     }
 };

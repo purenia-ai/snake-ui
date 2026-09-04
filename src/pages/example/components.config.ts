@@ -99,6 +99,12 @@ const componentGroups: SnakeComponentGroup[] = [
                 '单列、多列与多列联动的底部选择器。'
             ),
             item(
+                '/pages/componentsA/countDown/index',
+                'CountDown 倒计时',
+                'Count Down',
+                '用于活动截止等场景的倒计时。'
+            ),
+            item(
                 '/pages/componentsA/calendar/index',
                 'Calendar 日历',
                 'Calendar',

@@ -45,6 +45,12 @@ const enUS: SnakeLocale = {
             to: ' to ',
             holiday: '休',
             workday: '班'
+        },
+        countDown: {
+            day: 'd',
+            hour: 'h',
+            minute: 'm',
+            second: 's'
         }
     }
 };
