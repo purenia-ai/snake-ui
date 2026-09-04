@@ -45,6 +45,16 @@ preview: /pages/componentsA/button/index
 
 `plain` 会使用当前主题的文字、边框和浅色背景；自定义 `color` 时使用该颜色 10% 透明度的浅底（非 hex 颜色回退到主题浅色 token），适合次要操作。一个操作区域应只保留一个高强调的实心主按钮。
 
+## 分部件定制
+
+根节点之外，可通过 `contentClass` / `contentStyle` 定制内容区（图标与文字的容器）。小程序端组件内部样式经编译带有属性选择器（特异性 0,2,0），页面工具类（0,1,0）无法覆盖，因此冲突样式请用 `contentStyle` 行内写法（行内样式始终优先），`contentClass` 用于语义类或非冲突样式：
+
+```vue
+<snake-button type="primary" content-style="gap: 8rpx; min-width: 120rpx">
+  自定义内容区
+</snake-button>
+```
+
 ## 尺寸与形状
 
 ```vue
@@ -120,6 +130,7 @@ preview: /pages/componentsA/button/index
 | `formType` / `openType`                           | uni-app 原生按钮能力     | `string`                           | `''`                                 |
 | `hoverClass` / `hoverStartTime` / `hoverStayTime` | 原生按压反馈参数         | `string / number / number`         | 自动 / `20` / `150`                  |
 | `customClass` / `customStyle`                     | 自定义类名与样式         | `string / style`                   | `''`                                 |
+| `contentClass` / `contentStyle`                  | 内容区自定义类名与样式   | `string / style`                   | `''`                                 |
 
 其余开放能力参数包括 `scope`、`appParameter`、`hoverStopPropagation`、`lang`、`sessionFrom`、`sendMessageTitle`、`sendMessagePath`、`sendMessageImg`、`showMessageCard` 和 `dataName`。
 

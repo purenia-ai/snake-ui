@@ -181,7 +181,7 @@ function authorize(event: unknown) {
         @chooseavatar="forward('chooseavatar', $event)"
         @agreeprivacyauthorization="forward('agreeprivacyauthorization', $event)"
     >
-        <view class="snake-button__content">
+        <view class="snake-button__content" :class="contentClass" :style="contentStyle">
             <snake-loading-icon
                 v-if="loading"
                 class="snake-button__leading"

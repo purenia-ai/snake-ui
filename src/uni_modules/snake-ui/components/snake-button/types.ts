@@ -46,6 +46,10 @@ export const snakeButtonProps = {
     customClass: { type: String, default: '' },
     /** 根节点自定义样式。 */
     customStyle: { type: [String, Object, Array] as PropType<SnakeStyleValue>, default: '' },
+    /** 内容区自定义类名，用于非冲突样式或语义类。 */
+    contentClass: { type: String, default: '' },
+    /** 内容区自定义样式，行内样式优先于组件内部样式。 */
+    contentStyle: { type: [String, Object, Array] as PropType<SnakeStyleValue>, default: '' },
     /** 是否启用点击水波纹效果；波纹从用户按下位置向外扩散。 */
     ripple: { type: Boolean, default: false },
     /** 水波纹背景颜色，建议使用带透明度的颜色。 */
@@ -123,6 +127,10 @@ export interface SnakeButtonProps {
     customClass?: string;
     /** 根节点自定义样式。 */
     customStyle?: SnakeStyleValue;
+    /** 内容区自定义类名，用于非冲突样式或语义类。 */
+    contentClass?: string;
+    /** 内容区自定义样式，行内样式优先于组件内部样式。 */
+    contentStyle?: SnakeStyleValue;
     /** 是否启用点击水波纹效果；波纹从用户按下位置向外扩散。 */
     ripple?: boolean;
     /** 水波纹背景颜色，建议使用带透明度的颜色。 */
