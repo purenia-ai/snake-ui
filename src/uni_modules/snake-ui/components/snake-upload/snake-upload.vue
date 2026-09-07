@@ -1435,7 +1435,7 @@ defineExpose({
     height: 200rpx;
     overflow: hidden;
     margin: 10rpx;
-    background: var(--snake-color-surface-muted, #f5f7fa);
+    background: var(--snake-color-disabled-bg, #f1f1f1);
     position: relative;
     border-radius: 10rpx;
     /* #ifndef APP-NVUE */
@@ -1461,7 +1461,7 @@ defineExpose({
 }
 
 .snake-upload-grid__add--hover {
-    background-color: var(--snake-color-surface-muted, #f5f7fa);
+    background-color: var(--snake-color-disabled-bg, #f1f1f1);
 }
 
 .snake-upload-grid__image {
@@ -1638,7 +1638,7 @@ defineExpose({
     width: 80rpx;
     height: 80rpx;
     border-radius: 8rpx;
-    background: var(--snake-color-surface-muted, #f5f7fa);
+    background: var(--snake-color-disabled-bg, #f1f1f1);
 }
 
 .snake-upload-list__thumb--circle {
@@ -1754,7 +1754,7 @@ defineExpose({
 }
 
 .snake-upload-list__add-btn--hover {
-    background: var(--snake-color-surface-muted, #f5f7fa);
+    background: var(--snake-color-disabled-bg, #f1f1f1);
     border-color: var(--snake-color-primary, #06D290);
 }
 
