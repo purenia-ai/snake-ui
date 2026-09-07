@@ -8,8 +8,22 @@ import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
 const value = ref(true);
-const controls: DemoControl[] = [{ key: 'choiceDisabled', label: '禁用状态', type: 'switch', defaultValue: false }];
-const state = reactive<Record<string, DemoValue>>({ choiceDisabled: false });
+const fruits = ref<unknown[]>(['apple']);
+const controls: DemoControl[] = [
+    { key: 'choiceDisabled', label: '禁用状态', type: 'switch', defaultValue: false },
+    {
+        key: 'choiceSize',
+        label: '组件尺寸',
+        type: 'select',
+        defaultValue: 'default',
+        options: [
+            { label: 'small', value: 'small' },
+            { label: 'default', value: 'default' },
+            { label: 'large', value: 'large' }
+        ]
+    }
+];
+const state = reactive<Record<string, DemoValue>>({ choiceDisabled: false, choiceSize: 'default' });
 const localizedControls = computed(() => {
     const _locale = localeName.value;
     return controls.map(control => ({ ...control, label: demoText(control.label) }));
@@ -30,7 +44,15 @@ function updateValue(key: string, nextValue: DemoValue) {
                 ><snake-checkbox v-model="value" :disabled="Boolean(state.choiceDisabled)">{{
                     isEnglish ? 'Accept the user agreement' : '同意用户协议'
                 }}</snake-checkbox
-                ><text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ value }}</text></view
+                ><text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ value }}</text
+                ><text class="demo-variant-title">{{ isEnglish ? 'Multiple selection' : '多选组合' }}</text
+                ><snake-checkbox-group v-model="fruits" :size="String(state.choiceSize)"
+                    ><snake-checkbox name="apple">{{ isEnglish ? 'Apple' : '苹果' }}</snake-checkbox
+                    ><snake-checkbox name="pear">{{ isEnglish ? 'Pear' : '雪梨' }}</snake-checkbox></snake-checkbox-group
+                ><text
+                    >{{ isEnglish ? 'Selected: ' : '已选：'
+                    }}{{ fruits.join(isEnglish ? ', ' : '、') || (isEnglish ? 'None' : '无') }}</text
+                ></view
             ></DemoSection
         ><DemoSection variant="controls" :title="text('参数配置')"
             ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" /></DemoSection

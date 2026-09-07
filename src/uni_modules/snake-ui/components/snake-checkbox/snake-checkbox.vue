@@ -1,117 +1,304 @@
 <script setup lang="ts">
 /**
  * @component SnakeCheckbox
- * @description 可独立绑定 boolean，也可放入 CheckboxGroup，通过 `name` 管理数组值。
+ * @description 对齐 uView Pro 的 checkbox 复选框，可独立 v-model 使用，也可放入 CheckboxGroup 参与多选。
  * @see /components/checkbox
  */
 
-import { computed, inject } from 'vue';
+import { computed, inject, ref, watch } from 'vue';
+import { useChildren } from '../../libs/hooks';
 import { addUnit } from '../../libs/function/unit';
-import { snakeCheckboxGroupKey } from '../../libs/internal/checkbox';
-import { snakeFormItemKey } from '../../libs/internal/form-item';
+import { snakeFormKey } from '../../libs/internal/form';
 import SnakeIcon from '../snake-icon/snake-icon.vue';
 import { snakeCheckboxProps } from './types';
 import type { SnakeCheckboxEmits } from './types';
-defineOptions({ name: 'SnakeCheckbox', options: { virtualHost: true, styleIsolation: 'shared' } });
+
+defineOptions({
+    name: 'SnakeCheckbox',
+    options: {
+        addGlobalClass: true,
+        // #ifndef MP-TOUTIAO
+        virtualHost: true,
+        // #endif
+        styleIsolation: 'shared'
+    }
+});
+
 const props = defineProps(snakeCheckboxProps);
 const emit = defineEmits<SnakeCheckboxEmits>();
-const group = inject(snakeCheckboxGroupKey, null);
-const formItem = inject(snakeFormItemKey, null);
-const checked = computed(() =>
-    group ? group.modelValue.value.some(value => Object.is(value, props.name)) : props.modelValue
+// checkbox 是否选中，true/false
+const checkedValue = ref(props.modelValue);
+// 使用组件关系 hooks 获取父组件
+const { parentExposed } = useChildren('SnakeCheckbox', 'SnakeCheckboxGroup');
+const form = inject(snakeFormKey, null);
+
+// checkbox 的 value 值，id
+const checkboxValue = computed(() => {
+    if (props.value !== '') return props.value;
+    return props.name;
+});
+
+watch(
+    () => props.modelValue,
+    (newVal: boolean) => {
+        checkedValue.value = newVal;
+    }
 );
-const disabled = computed(() => props.disabled || Boolean(group?.disabled.value));
-const shape = computed(() => props.shape || group?.shape.value || 'square');
-const size = computed(() => props.size || group?.size.value || 'default');
-const activeColor = computed(
-    () => props.activeColor || group?.activeColor.value || 'var(--snake-color-primary,#06D290)'
+
+watch(
+    () => checkedValue.value,
+    (newVal: boolean) => {
+        emit('update:modelValue', newVal);
+    },
+    { immediate: true }
 );
-const inactiveColor = computed(
-    () => props.inactiveColor || group?.inactiveColor.value || 'var(--snake-color-border,#c0c4cc)'
-);
-const iconSize = computed(() => props.iconSize || group?.iconSize.value || 34);
-const labelSize = computed(() => props.labelSize || group?.labelSize.value || 28);
-const iconStyle = computed(() => ({
-    width: addUnit(iconSize.value, 'rpx'),
-    height: addUnit(iconSize.value, 'rpx'),
-    borderColor: checked.value ? activeColor.value : inactiveColor.value,
-    backgroundColor: checked.value ? activeColor.value : 'transparent'
-}));
-function toggle(event: unknown, fromLabel = false) {
-    emit('click', event);
-    if (disabled.value || (fromLabel && props.labelDisabled)) return;
-    const next = !checked.value;
-    if (group) group.toggle(props.name, next);
-    else {
-        emit('update:modelValue', next);
-        emit('change', next, props.name);
-        void formItem?.notify('change');
+
+// 根据 size 定义不同的配置
+const sizeConfig = {
+    small: { size: 28, fontSize: 24, iconSize: 16 },
+    default: { size: 34, fontSize: 28, iconSize: 20 },
+    large: { size: 40, fontSize: 32, iconSize: 24 }
+};
+
+// 获取实际使用的 size 值（优先级：props.size > snake-checkbox-group.size > snake-form.size）
+const actualSize = computed(() => {
+    if (props.size !== '') return String(props.size);
+    if (parentExposed.value?.props?.size) return String(parentExposed.value.props.size);
+    if (form?.size.value) return String(form.size.value);
+    return 'default';
+});
+
+// 判断实际使用的 size 是否在预设配置中
+const isInSizeConfig = computed(() => actualSize.value in sizeConfig);
+
+// 获取预设 size（用于查找 sizeConfig 配置，如图标大小、高度等）
+const presetSize = computed(() => {
+    return (isInSizeConfig.value ? actualSize.value : 'default') as 'small' | 'default' | 'large';
+});
+
+// 获取当前尺寸配置
+const currentSizeConfig = computed(() => sizeConfig[presetSize.value]);
+
+// 是否禁用，如果父组件 snake-checkbox-group 禁用的话，将会忽略子组件的配置
+const isDisabled = computed(() => {
+    return props.disabled !== '' ? props.disabled : (parentExposed.value?.props?.disabled ?? false);
+});
+
+// 是否禁用 label 点击
+const isLabelDisabled = computed(() => {
+    return props.labelDisabled !== '' ? props.labelDisabled : (parentExposed.value?.props?.labelDisabled ?? false);
+});
+
+// 组件尺寸，对应 size 的值，默认值为 34rpx
+const checkboxSize = computed(() => currentSizeConfig.value.size);
+
+// 组件的勾选图标的尺寸，默认 20rpx
+const checkboxIconSize = computed(() => {
+    if (props.iconSize) return props.iconSize;
+    if (parentExposed.value?.props?.iconSize) return parentExposed.value?.props?.iconSize;
+    if (isInSizeConfig.value) return currentSizeConfig.value.iconSize;
+    return 20;
+});
+
+// label 字体大小，默认 28rpx
+const labelFontSize = computed(() => {
+    if (isInSizeConfig.value) return addUnit(currentSizeConfig.value.fontSize, 'rpx');
+    return props.labelSize ? addUnit(props.labelSize, 'rpx') : '';
+});
+
+// 组件选中激活时的颜色
+const elActiveColor = computed(() => {
+    return props.activeColor
+        ? props.activeColor
+        : parentExposed.value?.props?.activeColor ?? 'var(--snake-color-primary, #06D290)';
+});
+
+// 组件的形状
+const elShape = computed(() => {
+    return props.shape ? props.shape : (parentExposed.value?.props?.shape ?? 'square');
+});
+
+// 图标样式
+const iconStyle = computed(() => {
+    const style: Record<string, string> = {};
+    if (elActiveColor.value && checkedValue.value && !isDisabled.value) {
+        style.borderColor = elActiveColor.value;
+        style.backgroundColor = elActiveColor.value;
+    }
+    style.width = addUnit(checkboxSize.value, 'rpx');
+    style.height = addUnit(checkboxSize.value, 'rpx');
+    return style;
+});
+
+// checkbox 内部的勾选图标，如果选中状态，为白色，否则为透明色即可
+const iconColor = computed(() => {
+    return checkedValue.value ? '#fff' : 'transparent';
+});
+
+const iconClass = computed(() => {
+    const classes: string[] = [];
+    classes.push(`snake-checkbox__icon-wrap--${elShape.value}`);
+    if (checkedValue.value == true) classes.push('snake-checkbox__icon-wrap--checked');
+    if (isDisabled.value) classes.push('snake-checkbox__icon-wrap--disabled');
+    if (checkedValue.value && isDisabled.value) classes.push('snake-checkbox__icon-wrap--disabled--checked');
+    return classes.join(' ');
+});
+
+const checkboxStyle = computed(() => {
+    const style: Record<string, string> = {};
+    if (parentExposed.value?.props?.width) {
+        style.width = parentExposed.value.props.width;
+        // #ifdef MP
+        // 各家小程序因为它们特殊的编译结构，使用 float 布局
+        style.float = 'left';
+        // #endif
+        // #ifndef MP
+        // H5 和 APP 使用 flex 布局
+        style.flex = `0 0 ${parentExposed.value.props.width}`;
+        // #endif
+    }
+    if (parentExposed.value?.props?.wrap) {
+        style.width = '100%';
+        // #ifndef MP
+        // H5 和 APP 使用 flex 布局，将宽度设置 100%，即可自动换行
+        style.flex = '0 0 100%';
+        // #endif
+    }
+    return style;
+});
+
+/**
+ * 点击 label
+ */
+function onClickLabel() {
+    if (!isLabelDisabled.value && !isDisabled.value) {
+        setValue();
     }
 }
+
+/**
+ * 点击 icon
+ */
+function toggle() {
+    if (!isDisabled.value) {
+        setValue();
+    }
+}
+
+/**
+ * 触发 change 事件
+ */
+function emitEvent() {
+    emit('change', !checkedValue.value);
+    // 通知父组件状态变化
+    setTimeout(() => {
+        if (parentExposed.value?.emitEvent) {
+            parentExposed.value.emitEvent();
+        }
+    }, 80);
+}
+
+/**
+ * 设置通过 v-model 绑定的组件的值
+ */
+function setValue() {
+    // 判断是否超过了可选的最大数量
+    if (checkedValue.value == true) {
+        emitEvent();
+        checkedValue.value = false;
+    } else {
+        if (parentExposed?.value?.validateSelection && !parentExposed?.value?.validateSelection()) {
+            return;
+        }
+        emitEvent();
+        checkedValue.value = true;
+    }
+}
+
+// 设置组件的 modelValue 值
+function setChecked(data: { checked: boolean }) {
+    if (!isDisabled.value) {
+        const needEmit = checkedValue.value !== data.checked;
+        checkedValue.value = data.checked;
+        if (needEmit) {
+            emitEvent();
+        }
+    }
+}
+
+defineExpose({
+    isChecked: computed(() => checkedValue.value),
+    label: props.label,
+    name: props.name,
+    value: checkboxValue.value,
+    setValue,
+    emitEvent,
+    props,
+    setChecked
+});
 </script>
 <template>
-    <view
-        class="snake-checkbox"
-        role="checkbox"
-        :aria-checked="checked"
-        :aria-disabled="disabled"
-        :tabindex="disabled ? -1 : 0"
-        :class="[customClass, `snake-checkbox--${size}`, { 'is-disabled': disabled }]"
-        :style="customStyle"
-        @keydown.enter.prevent="toggle($event)"
-        @keydown.space.prevent="toggle($event)"
-        ><view class="snake-checkbox__icon" :class="`is-${shape}`" :style="iconStyle" @click="toggle($event)"
-            ><snake-icon
-                v-if="checked"
-                name="checkmark"
-                :color="iconColor"
-                :size="Number(iconSize) * (20 / 34)" /></view
-        ><view
-            class="snake-checkbox__label"
-            :style="{ fontSize: addUnit(labelSize, 'rpx') }"
-            @click="toggle($event, true)"
-            ><slot>{{ label }}</slot></view
-        ></view
-    >
+    <view class="snake-checkbox" :style="[checkboxStyle, customStyle]" :class="customClass">
+        <view class="snake-checkbox__icon-wrap" @tap="toggle" :class="iconClass" :style="iconStyle">
+            <snake-icon name="checkmark" :size="checkboxIconSize" :color="iconColor" />
+        </view>
+        <view class="snake-checkbox__label" @tap="onClickLabel" :style="{ fontSize: labelFontSize }">
+            <slot>{{ label }}</slot>
+        </view>
+    </view>
 </template>
 <style scoped>
 .snake-checkbox {
+    /* #ifndef APP-NVUE */
     display: inline-flex;
+    /* #endif */
     align-items: center;
-    gap: 12rpx;
-    color: var(--snake-color-text, #303133);
+    overflow: hidden;
+    user-select: none;
+    line-height: 1.8;
 }
-.snake-checkbox:focus-visible {
-    outline: 2px solid var(--snake-color-primary, #06d290);
-    outline-offset: 4rpx;
-}
-.snake-checkbox.is-disabled {
-    opacity: 0.45;
-}
-.snake-checkbox__icon {
+.snake-checkbox__icon-wrap {
     display: flex;
     flex: none;
-    box-sizing: border-box;
     align-items: center;
     justify-content: center;
-    border: 1px solid;
-    transition:
-        border-color 0.2s,
-        background-color 0.2s;
+    box-sizing: border-box;
+    width: 42rpx;
+    height: 42rpx;
+    color: transparent;
+    text-align: center;
+    transition-property: color, border-color, background-color;
+    font-size: 20px;
+    border: 1px solid var(--snake-color-border, #dcdfe6);
+    transition-duration: 0.2s;
+    /* #ifdef MP-TOUTIAO */
+    // 头条小程序兼容性问题，需要设置行高为 0，否则图标偏下
+    line-height: 0;
+    /* #endif */
 }
-
-@media (prefers-reduced-motion: reduce) {
-    .snake-checkbox__icon {
-        transition: none;
-    }
+.snake-checkbox__icon-wrap--circle {
+    border-radius: 100%;
 }
-.snake-checkbox__icon.is-square {
+.snake-checkbox__icon-wrap--square {
     border-radius: 6rpx;
 }
-.snake-checkbox__icon.is-circle {
-    border-radius: 50%;
+.snake-checkbox__icon-wrap--checked {
+    color: #fff;
+    background-color: var(--snake-color-primary, #06d290);
+    border-color: var(--snake-color-primary, #06d290);
+}
+.snake-checkbox__icon-wrap--disabled {
+    background-color: var(--snake-color-disabled-bg, #f1f1f1);
+    border-color: var(--snake-color-border, #dcdfe6);
+}
+.snake-checkbox__icon-wrap--disabled--checked {
+    color: var(--snake-color-disabled-bg, #f1f1f1) !important;
 }
 .snake-checkbox__label {
-    line-height: 1.5;
+    word-wrap: break-word;
+    margin-left: 10rpx;
+    margin-right: 24rpx;
+    color: var(--snake-color-text, #303133);
+    font-size: 30rpx;
 }
 </style>

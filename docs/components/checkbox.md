@@ -4,7 +4,7 @@ preview: /pages/componentsA/checkbox/index
 
 # Checkbox 复选框
 
-可独立绑定 boolean，也可放入 CheckboxGroup，通过 `name` 管理数组值。
+复选框支持独立 `v-model` 布尔绑定，也可放入 CheckboxGroup，通过 `name` 管理数组值。
 
 ## 何时使用
 
@@ -20,38 +20,38 @@ preview: /pages/componentsA/checkbox/index
 
 ```vue
 <snake-checkbox v-model="accepted">同意用户协议</snake-checkbox>
-<snake-checkbox-group v-model="fruits"><snake-checkbox name="apple">苹果</snake-checkbox></snake-checkbox-group>
+<snake-checkbox-group v-model="fruits">
+  <snake-checkbox name="apple">苹果</snake-checkbox>
+  <snake-checkbox name="pear">雪梨</snake-checkbox>
+</snake-checkbox-group>
 ```
 
 ## API
 
 ### Props
 
-| 参数                                          | 说明                     | 类型                | 默认值      |
-| --------------------------------------------- | ------------------------ | ------------------- | ----------- |
-| `modelValue`                                  | 独立使用时的选中值       | `boolean`           | `false`     |
-| `name` / `label`                              | Group 值和标签           | `unknown \| string` | -           |
-| `disabled` / `labelDisabled`                  | 禁用全部或仅禁用标签点击 | `boolean`           | `false`     |
-| `shape` / `size`                              | square/circle 与组件尺寸 | `string`            | 继承 Group  |
-| `activeColor` / `inactiveColor` / `iconColor` | 选中、未选中和勾选颜色   | `string`            | 主题默认值  |
-| `iconSize` / `labelSize`                      | 图标和文字大小           | `UnitValue`         | `34` / `28` |
-| `customClass` / `customStyle`                 | 自定义类名和样式         | `string \| style`   | `''`        |
+| 参数                    | 说明                               | 类型               | 默认值      |
+| ----------------------- | ---------------------------------- | ------------------ | ----------- |
+| `modelValue`            | 是否选中，支持 v-model             | `boolean`          | `false`     |
+| `value` / `name`        | 兼容旧 API 的值 / 数据项标识，`value` 非空时优先 | `string \| number` | `''` |
+| `label`                 | 展示标签文本                       | `string`           | `''`        |
+| `shape`                 | square/circle 形状                 | `string`           | 继承 Group  |
+| `disabled` / `labelDisabled` | 禁用 / 禁止点击标签选中         | `boolean`          | `false`     |
+| `activeColor`           | 选中颜色，设置后覆盖父级 activeColor | `string`         | 主题色      |
+| `iconSize` / `labelSize` | 勾号与标签字号，单位 rpx           | `UnitValue`        | 按 size 预设 |
+| `size`                  | 整体尺寸 small/default/large       | `string`           | 继承 Group  |
+| `customClass` / `customStyle` | 自定义类名和样式             | `string \| style`  | `''`        |
 
 ### Events
 
-| 事件名              | 说明         | 参数              |
-| ------------------- | ------------ | ----------------- |
-| `update:modelValue` | 独立状态更新 | `checked`         |
-| `change`            | 独立状态变化 | `(checked, name)` |
-| `click`             | 点击组件     | event             |
+| 事件名              | 说明             | 参数      |
+| ------------------- | ---------------- | --------- |
+| `update:modelValue` | 选中状态更新     | `checked` |
+| `change`            | 选中状态变化     | `checked` |
 
 ### Slots
 
 默认插槽用于标签内容。
-
-## 无障碍
-
-组件支持焦点、Enter 和 Space 键，并输出 `checkbox` / `aria-checked` 状态。默认插槽应包含可理解的标签；仅显示图标时需要在邻近位置补充说明。
 
 ## 类型定义
 

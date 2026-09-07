@@ -8,8 +8,8 @@ import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
 const value = ref<unknown[]>(['apple']);
-const controls: DemoControl[] = [{ key: 'choiceColumn', label: '纵向排列', type: 'switch', defaultValue: false }];
-const state = reactive<Record<string, DemoValue>>({ choiceColumn: false });
+const controls: DemoControl[] = [{ key: 'choiceWrap', label: '每个换行', type: 'switch', defaultValue: false }];
+const state = reactive<Record<string, DemoValue>>({ choiceWrap: false });
 const localizedControls = computed(() => {
     const _locale = localeName.value;
     return controls.map(control => ({ ...control, label: demoText(control.label) }));
@@ -27,7 +27,7 @@ function updateValue(key: string, nextValue: DemoValue) {
         ><DemoSection variant="preview" :title="text('演示效果')"
             ><view class="demo-control-stack demo-checkbox-group-showcase"
                 ><text class="demo-variant-title">{{ isEnglish ? 'Limited selection' : '限制选择数量' }}</text
-                ><snake-checkbox-group v-model="value" :placement="state.choiceColumn ? 'column' : 'row'" :max="2"
+                ><snake-checkbox-group v-model="value" :wrap="Boolean(state.choiceWrap)" :max="2"
                     ><snake-checkbox name="apple">{{ isEnglish ? 'Apple' : '苹果' }}</snake-checkbox
                     ><snake-checkbox name="pear">{{ isEnglish ? 'Pear' : '雪梨' }}</snake-checkbox
                     ><snake-checkbox name="lemon">{{
