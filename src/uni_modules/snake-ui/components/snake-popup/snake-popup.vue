@@ -6,6 +6,7 @@
  */
 
 import { computed, getCurrentInstance, ref, watch } from 'vue';
+import type { CSSProperties } from 'vue';
 import zIndex from '../../libs/config/zIndex';
 import { addUnit } from '../../libs/function/unit';
 import SnakeIcon from '../snake-icon/snake-icon.vue';
@@ -25,7 +26,7 @@ const props = withDefaults(defineProps<SnakePopupProps>(), {
     zoom: true,
     closeable: false,
     closeIcon: 'close',
-    closeIconColor: 'var(--snake-color-text-muted, #707184)',
+    closeIconColor: 'var(--snake-color-text-muted, #909399)',
     closeIconSize: 20,
     closeIconPos: 'top-right',
     closeOnClickOverlay: true,
@@ -79,10 +80,23 @@ const radius = computed(() => {
             return value;
     }
 });
+// 计算整理后的 z-index 值（对齐 u-popup 的 uZIndex）：缺失/非法时退回 popup 档
+const uZIndex = computed(() => Number(props.zIndex) || zIndex.popup);
+// 根节点持有整棵弹层的页面层级（对齐 u-drawer 的 uZ-1）：遮罩与面板被锁进同一个专属
+// 层叠上下文，页面元素无法插进遮罩与面板之间，任何一级行内层级在运行时丢失，
+// 面板也不会被自家遮罩盖住（根为 fixed，即使行内 z 丢失也仍是独立层叠上下文）
+const rootStyle = computed<CSSProperties>(() => ({
+    zIndex: uZIndex.value - 1,
+    // 对齐 u-popup 的 v-if 语义：u-popup 隐藏时整棵弹层不渲染，空壳不存在；
+    // 我们的根常驻（离场动画需要），隐藏时置 none 不拦截页面点击，显示时恢复 auto——
+    // 遮罩/面板自身零 pointer-events 声明，交互完全由根决定（u-mask 同款）
+    pointerEvents: localShow.value ? 'auto' : 'none'
+}));
 const panelStyle = computed(() => [
     {
         backgroundColor: props.bgColor,
-        zIndex: props.zIndex,
+        // 面板行内层级（uZ）：排序范围是根节点的专属上下文，只需压过遮罩（uZ-2）
+        zIndex: uZIndex.value,
         borderRadius: radius.value,
         paddingBottom: props.safeAreaInsetBottom ? 'env(safe-area-inset-bottom)' : undefined,
         paddingTop: props.safeAreaInsetTop ? 'env(safe-area-inset-top)' : undefined
@@ -115,11 +129,12 @@ defineExpose({ open, close });
 </script>
 
 <template>
-    <view class="snake-popup" :style="{ pointerEvents: localShow ? 'auto' : 'none' }">
+    <view class="snake-popup" :style="rootStyle">
+        <!-- 三层结构对齐 u-drawer：根 uZ-1 / 遮罩 uZ-2 / 面板 uZ，全部收在根的层叠上下文内 -->
         <snake-overlay
             v-if="overlay"
             :show="localShow"
-            :z-index="zIndex - 1"
+            :z-index="uZIndex - 2"
             :duration="duration"
             :opacity="overlayOpacity"
             :lock-scroll="lockScroll"
@@ -149,8 +164,20 @@ defineExpose({ open, close });
 </template>
 
 <style>
-.snake-popup__panel {
+/* 全屏定位根（对齐 u-drawer）：为遮罩与面板提供专属层叠上下文；隐藏时空根不拦截
+   页面点击（pointer-events 由 rootStyle 动态切换），无遮罩弹层仍可点击面板以外的页面区域 */
+.snake-popup {
     position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+.snake-popup__panel {
+    /* 挂在 fixed 根内，定位基准仍是视口；行内 z-index 丢失时的基线层级（popup 档） */
+    position: absolute;
+    pointer-events: auto;
+    z-index: var(--snake-z-index-popup, 10075);
     box-sizing: border-box;
     max-width: 100%;
     max-height: 100%;

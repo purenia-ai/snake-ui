@@ -8,6 +8,7 @@
 import { computed, getCurrentInstance, nextTick, onBeforeUnmount, ref } from 'vue';
 import { colorToRgba } from '../../libs/function/color';
 import { getRect } from '../../libs/function/getRect';
+import { toStyle } from '../../libs/function/style';
 import SnakeIcon from '../snake-icon/snake-icon.vue';
 import SnakeLoadingIcon from '../snake-loading-icon/snake-loading-icon.vue';
 import { snakeButtonProps } from './types';
@@ -36,27 +37,44 @@ const palette = computed(() => {
         };
     }
     return {
-        main: `var(--snake-color-${name}, ${props.type === 'default' ? '#06D290' : '#707184'})`,
+        main: `var(--snake-color-${name}, ${props.type === 'default' ? '#06D290' : '#909399'})`,
         light: `var(--snake-color-${name}-light, #f4f4f5)`,
         disabled: `var(--snake-color-${name}-disabled, #c8c9cc)`
     };
 });
-const buttonStyle = computed(() => [
-    {
-        color: props.plain
-            ? palette.value.main
-            : props.type === 'default' || props.type === 'primary'
-              ? 'var(--snake-color-primary-ink, #FFFFFF)'
-              : 'var(--snake-color-white, #fff)',
-        backgroundColor: props.plain ? palette.value.light : palette.value.main,
-        // 实心按钮不描边（uview 同款：彩色实心描同色边框会在四角产生毛刺），镂空按钮描主色边，禁用描灰色边
-        borderColor: props.disabled ? palette.value.disabled : props.plain ? palette.value.main : 'transparent',
-        borderWidth: props.plain ? undefined : 0,
-        opacity: props.disabled ? 0.65 : 1,
-        overflow: props.ripple ? 'hidden' : 'visible'
-    },
-    props.customStyle
-]);
+// uview 同款类型分组：default/info 是白底深字浅边的"纸面"按钮（uview 的 info 没有样式规则，
+// 与 default 视觉一致），primary/success/warning/error 才是彩底白字实心按钮；传 color 时按自定义彩色处理
+const isPaper = computed(() => (props.type === 'default' || props.type === 'info') && !props.color);
+const buttonStyle = computed(() =>
+    // 对齐 uview 的 toStyle 思路：组件内完成字符串/对象归一与合并，输出单一字符串样式，
+    // 不依赖各端运行时的 :style 数组解析行为；customStyle 覆盖同名前缀样式
+    toStyle(
+        {
+            color: isPaper.value
+                ? 'var(--snake-color-text, #303133)'
+                : props.plain
+                  ? palette.value.main
+                  : 'var(--snake-color-white, #fff)',
+            backgroundColor: isPaper.value
+                ? 'var(--snake-color-surface, #fff)'
+                : props.plain
+                  ? palette.value.light
+                  : palette.value.main,
+            // 彩色实心不描边（uview 同款：彩色实心描同色边框会在四角产生毛刺），纸面按钮描浅边
+            borderColor: isPaper.value
+                ? 'var(--snake-color-border, #DCDFE6)'
+                : props.disabled
+                  ? palette.value.disabled
+                  : props.plain
+                    ? palette.value.main
+                    : 'transparent',
+            borderWidth: isPaper.value || props.plain ? undefined : 0,
+            opacity: props.disabled ? 0.65 : 1,
+            overflow: props.ripple ? 'hidden' : 'visible'
+        },
+        props.customStyle
+    )
+);
 const effectiveHoverClass = computed(() => {
     if (props.disabled || props.loading || props.ripple) return 'none';
     return props.hoverClass || 'snake-button--hover';

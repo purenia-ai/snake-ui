@@ -952,7 +952,7 @@ function btnFix(show: boolean) {
   width: 100%;
   padding: 0 40rpx 30rpx;
   font-size: 24rpx;
-  color: var(--snake-color-text-muted, #707184);
+  color: var(--snake-color-text-muted, #909399);
   background-color: var(--snake-color-surface, #fff);
 }
 .snake-calendar__bottom__choose {

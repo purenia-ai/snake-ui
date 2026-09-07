@@ -28,7 +28,7 @@ defineProps(snakeCellGroupProps);
   padding: 30rpx 32rpx 10rpx 32rpx;
   font-size: 30rpx;
   text-align: left;
-  color: var(--snake-color-text-muted, #707184);
+  color: var(--snake-color-text-muted, #909399);
 }
 .snake-cell-group__body {
   background-color: var(--snake-color-surface, #fff);

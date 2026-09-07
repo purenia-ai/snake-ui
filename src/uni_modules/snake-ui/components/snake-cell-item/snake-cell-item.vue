@@ -101,7 +101,7 @@ function onClick() {
 }
 .snake-cell-item__right-icon-wrap {
   margin-left: 10rpx;
-  color: var(--snake-color-text-muted, #707184);
+  color: var(--snake-color-text-muted, #909399);
   font-size: 28rpx;
 }
 .snake-cell-item__right {
@@ -127,13 +127,13 @@ function onClick() {
   margin-top: 6rpx;
   font-size: 26rpx;
   line-height: 36rpx;
-  color: var(--snake-color-text-muted, #707184);
+  color: var(--snake-color-text-muted, #909399);
   word-wrap: break-word;
 }
 .snake-cell-item__value {
   overflow: hidden;
   font-size: 26rpx;
-  color: var(--snake-color-text-muted, #707184);
+  color: var(--snake-color-text-muted, #909399);
   text-align: right;
   vertical-align: middle;
 }

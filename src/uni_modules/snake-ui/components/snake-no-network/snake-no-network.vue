@@ -95,7 +95,7 @@ defineExpose<SnakeNoNetworkExpose>({ retry });
 .snake-no-network__tips {
   padding: 30rpx 0;
   font-size: 28rpx;
-  color: var(--snake-color-text-muted, #707184);
+  color: var(--snake-color-text-muted, #909399);
 }
 .snake-no-network__icon {
   width: 300rpx;
@@ -104,12 +104,12 @@ defineExpose<SnakeNoNetworkExpose>({ retry });
   margin-top: 30rpx;
   padding: 6rpx 30rpx;
   font-size: 28rpx;
-  color: var(--snake-color-text-muted, #707184);
-  border: 1px solid var(--snake-color-text-muted, #707184);
+  color: var(--snake-color-text-muted, #909399);
+  border: 1px solid var(--snake-color-text-muted, #909399);
   border-radius: 3px;
 }
 .snake-no-network__retry--hover {
   color: var(--snake-color-white, #fff);
-  background-color: var(--snake-color-text-muted, #707184);
+  background-color: var(--snake-color-text-muted, #909399);
 }
 </style>

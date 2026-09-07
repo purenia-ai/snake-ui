@@ -30,7 +30,7 @@
     <snake-popup v-model="show" mode="center" @close="show = false">
       <view class="snake-videos__player" v-if="show" @click.stop="close">
         <view class="snake-videos__close" role="button" tabindex="0" aria-label="关闭视频" @keydown.enter.prevent="close" @keydown.space.prevent="close">
-          <snake-icon name="close" color="#707184" size="30rpx" bold></snake-icon>
+          <snake-icon name="close" color="#909399" size="30rpx" bold></snake-icon>
         </view>
         <video
           class="videos"

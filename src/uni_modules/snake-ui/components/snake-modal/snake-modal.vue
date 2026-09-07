@@ -399,7 +399,7 @@ defineExpose({
         padding-top: 48rpx;
         font-weight: 500;
         text-align: center;
-        color: var(--snake-color-text, #0f1113);
+        color: var(--snake-color-text, #303133);
     }
 
     &__content {
@@ -407,7 +407,7 @@ defineExpose({
             padding: 48rpx;
             font-size: 30rpx;
             text-align: center;
-            color: var(--snake-color-text-secondary, #707184);
+            color: var(--snake-color-text-secondary, #909399);
         }
     }
 

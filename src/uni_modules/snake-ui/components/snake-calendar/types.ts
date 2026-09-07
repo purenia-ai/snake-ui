@@ -100,7 +100,7 @@ export const snakeCalendarProps = {
     /** 月份切换按钮箭头颜色。 */
     monthArrowColor: { type: String, default: 'var(--snake-color-text-secondary, #606266)' },
     /** 年份切换按钮箭头颜色。 */
-    yearArrowColor: { type: String, default: 'var(--snake-color-text-muted, #707184)' },
+    yearArrowColor: { type: String, default: 'var(--snake-color-text-muted, #909399)' },
     /** 默认日期字体颜色。 */
     color: { type: String, default: 'var(--snake-color-text, #303133)' },
     /** 选中/起始结束日期背景色。 */

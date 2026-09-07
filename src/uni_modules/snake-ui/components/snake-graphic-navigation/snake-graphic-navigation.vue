@@ -34,7 +34,7 @@
           :indicatorBarWidth="25"
           :indicator="datas.showSlider && datas.imageList.length > datas.showSize"
           indicatorColor="var(--snake-color-border, #cccccc)"
-          indicatorActiveColor="var(--snake-color-text, #404155)">
+          indicatorActiveColor="var(--snake-color-text, #606266)">
           <view class="scroll-list">
             <view class="scroll-list__line" v-for="(scrollItem, scrollIndex) in scrollList" :key="scrollIndex">
               <view

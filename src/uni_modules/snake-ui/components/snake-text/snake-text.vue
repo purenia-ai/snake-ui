@@ -259,7 +259,7 @@ function onOpenSetting(event: unknown) {
 .snake-text__value--error { color: var(--snake-color-error, #fa3534); }
 .snake-text__value--main { color: var(--snake-color-text, #303133); }
 .snake-text__value--content { color: var(--snake-color-text-secondary, #606266); }
-.snake-text__value--tips { color: var(--snake-color-text-muted, #707184); }
+.snake-text__value--tips { color: var(--snake-color-text-muted, #909399); }
 .snake-text__value--light { color: var(--snake-color-text-light, #c0c4cc); }
 .snake-text__button {
   padding: 0;

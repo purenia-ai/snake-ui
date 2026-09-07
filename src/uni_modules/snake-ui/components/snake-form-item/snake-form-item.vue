@@ -127,7 +127,7 @@ defineExpose<SnakeFormItemExpose>({ validate, resetField, clearValidate });
     border-bottom: 1px solid var(--snake-color-divider, #e4e7ed);
 }
 .snake-form-item--error-border {
-    border-color: var(--snake-color-error, #FE0832);
+    border-color: var(--snake-color-error, #FA3534);
 }
 .snake-form-item__label {
     display: flex;
@@ -146,7 +146,7 @@ defineExpose<SnakeFormItemExpose>({ validate, resetField, clearValidate });
 }
 .snake-form-item__required {
     margin-right: 6rpx;
-    color: var(--snake-color-error, #FE0832);
+    color: var(--snake-color-error, #FA3534);
 }
 .snake-form-item__left-icon {
     margin-right: 8rpx;
@@ -164,7 +164,7 @@ defineExpose<SnakeFormItemExpose>({ validate, resetField, clearValidate });
 .snake-form-item__error {
     display: block;
     padding-top: 6rpx;
-    color: var(--snake-color-error, #FE0832);
+    color: var(--snake-color-error, #FA3534);
     font-size: 24rpx;
     line-height: 1.4;
 }

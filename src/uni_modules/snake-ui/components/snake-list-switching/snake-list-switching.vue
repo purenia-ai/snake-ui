@@ -1149,7 +1149,7 @@ export default {
                     text-overflow: ellipsis;
                     -webkit-line-clamp: 2;
                     font-size: 22rpx;
-                    color: var(--snake-color-text, #0f1113);
+                    color: var(--snake-color-text, #303133);
                     word-break: break-all;
                     white-space: normal;
                     -webkit-box-orient: vertical;

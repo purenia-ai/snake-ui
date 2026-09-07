@@ -584,7 +584,7 @@ export default {
       font-family: PingFangSC-Regular;
       font-size: 26rpx;
       font-weight: 400;
-      color: var(--snake-color-text-secondary, #707184);
+      color: var(--snake-color-text-secondary, #909399);
 
       &.active {
         font-family: PingFangSC-Medium;

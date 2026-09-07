@@ -29,7 +29,7 @@ export const snakeModalProps = {
     /** 确认按钮颜色。 */
     confirmColor: { type: String, default: 'var(--snake-color-primary, #06D290)' },
     /** 取消文字颜色。 */
-    cancelColor: { type: String, default: 'var(--snake-color-text-secondary, #707184)' },
+    cancelColor: { type: String, default: 'var(--snake-color-text-secondary, #909399)' },
     /** 弹窗圆角值，单位 rpx。 */
     borderRadius: { type: [Number, String] as PropType<number | string>, default: 16 },
     /** 标题样式。 */

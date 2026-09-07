@@ -252,7 +252,7 @@ defineExpose<SnakeToastExpose>({
     font-size: 28rpx;
     text-align: center;
     color: var(--snake-color-white, #ffffff);
-    background: var(--snake-color-text, #0f1113);
+    background: var(--snake-color-text, #303133);
     border-radius: 8rpx;
     opacity: 0;
     pointer-events: none;
@@ -306,25 +306,25 @@ defineExpose<SnakeToastExpose>({
 }
 
 .snake-type-error {
-    color: var(--snake-color-error, #fe0832);
-    background-color: var(--snake-color-error-light, #f7ebed);
-    border: 1px solid var(--snake-color-error-light, #f7ebed);
+    color: var(--snake-color-error, #FA3534);
+    background-color: var(--snake-color-error-light, #FEF0F0);
+    border: 1px solid var(--snake-color-error-light, #FEF0F0);
 }
 
 .snake-type-warning {
-    color: var(--snake-color-warning, #ff6a0c);
-    background-color: var(--snake-color-warning-light, #f9f1ec);
-    border: 1px solid var(--snake-color-warning-light, #f9f1ec);
+    color: var(--snake-color-warning, #FF9900);
+    background-color: var(--snake-color-warning-light, #FDF6EC);
+    border: 1px solid var(--snake-color-warning-light, #FDF6EC);
 }
 
 .snake-type-info {
-    color: var(--snake-color-info, #2d57e7);
-    background-color: var(--snake-color-info-light, #eef0f7);
-    border: 1px solid var(--snake-color-info-light, #eef0f7);
+    color: var(--snake-color-info, #909399);
+    background-color: var(--snake-color-info-light, #F4F4F5);
+    border: 1px solid var(--snake-color-info-light, #F4F4F5);
 }
 
 .snake-type-default {
     color: var(--snake-color-white, #ffffff);
-    background-color: var(--snake-color-text, #0f1113);
+    background-color: var(--snake-color-text, #303133);
 }
 </style>
