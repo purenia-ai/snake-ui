@@ -4,7 +4,7 @@ preview: /pages/componentsA/button/index
 
 # Button 按钮
 
-基于 uni-app 原生 `button` 封装，属性、状态和交互与 uView Pro `u-button` 保持一致。
+基于 uni-app 原生 `button` 封装，覆盖常用属性、状态与交互。
 
 ## 平台兼容性
 

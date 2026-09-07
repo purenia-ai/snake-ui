@@ -4,7 +4,7 @@ preview: /pages/componentsA/tabs/index
 
 # Tabs 标签页
 
-用于同层级内容切换。组件行为与 uView Pro `u-tabs` 一致：滚动模式下激活标签自动居中，非滚动模式下标签均分宽度，所有标签保持单行。
+用于同层级内容切换：滚动模式下激活标签自动居中，非滚动模式下标签均分宽度，所有标签保持单行。
 
 ## 平台兼容性
 
@@ -88,7 +88,5 @@ const tabs = [{ name: '推荐' }, { name: '新品' }, { name: '热门' }];
 | `init()` | 重新测量标签布局 |
 | `clickTab(index)` | 执行与点击标签一致的逻辑 |
 | `scrollByIndex()` | 按当前激活索引更新滚动位置和滑块 |
-
-按用户要求，本组件以本地 uView Pro `u-tabs` 为行为基准。
 
 源码：`src/uni_modules/snake-ui/components/snake-tabs/snake-tabs.vue`

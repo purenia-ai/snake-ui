@@ -1,6 +1,6 @@
 # 工具
 
-Snake UI 把网络请求、通用函数、uni-app 平台封装和组合式函数放在同一个工具域中。每项能力拥有独立页面，便于搜索、收藏和从 uView Pro 迁移时逐项核对。
+Snake UI 把网络请求、通用函数、uni-app 平台封装和组合式函数放在同一个工具域中。每项能力拥有独立页面，便于搜索、收藏和逐项核对。
 
 ## 能力地图
 
@@ -33,4 +33,4 @@ await uni.$snake.route('/pages/order/detail', { id: 1 });
 
 - 新项目先阅读[快速使用](/tools/fast-use)，确定统一的导入约定。
 - 接口接入查看[HTTP 请求](/tools/http)。
-- 从 uView Pro 迁移查看[路由跳转](/tools/route)和[节流与防抖](/tools/debounce-throttle)。
+- 页面跳转查看[路由跳转](/tools/route)，高频调用节流查看[节流与防抖](/tools/debounce-throttle)。

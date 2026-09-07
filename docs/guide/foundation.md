@@ -119,7 +119,7 @@ uni.$snake.navTo('/pages/example/components');
 await uni.$snake.sleep(300);
 ```
 
-`$snake` 上还挂了对齐 uView 生态的配置面：`zIndex` 层级数值表（`uni.$snake.zIndex.popup === 10075`）、`type` 主题类型数组、`version` 库版本、`date`（`formatTime` 别名）与 `emitter` 事件总线单例；校验套件可通过 `uni.$snake.test.idCard(...)` 等 30 个校验器使用。
+`$snake` 上还挂了完整的配置面：`zIndex` 层级数值表（`uni.$snake.zIndex.popup === 10075`）、`type` 主题类型数组、`version` 库版本、`date`（`formatTime` 别名）与 `emitter` 事件总线单例；校验套件可通过 `uni.$snake.test.idCard(...)` 等 30 个校验器使用。
 
 可复用模块更推荐按需导入：
 
@@ -127,7 +127,7 @@ await uni.$snake.sleep(300);
 import { debounce, deepMerge, mergeStyles, navTo, queryParams, useEmitter, useRouter, useToast } from '@puresnake/snake-ui';
 ```
 
-从 uView Pro 移植组件时，uView 原名 hook 也可直接按需导入：
+常用的父子关系 hook 也可直接按需导入：
 
 ```ts
 import { useParent, useChildren, useRect, getParent, $parent } from '@puresnake/snake-ui';

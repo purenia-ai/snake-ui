@@ -4,7 +4,7 @@ preview: /pages/componentsA/upload/index
 
 # Upload 文件上传
 
-用于选择、预览和上传图片、视频或文件。组件对齐本地 uView Pro `u-upload`，支持普通接口上传与 OSS 等自定义上传。
+用于选择、预览和上传图片、视频或文件。支持普通接口上传与 OSS 等自定义上传。
 
 ## 平台兼容性
 
