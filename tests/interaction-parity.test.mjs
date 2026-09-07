@@ -32,6 +32,7 @@ test('tabs and swiper expose navigation and indicator contracts', async () => {
     assert.match(tabsSource, /contentCenter - viewportWidth \/ 2/);
     assert.match(tabsSource, /defineExpose\(\{ init, scrollByIndex \}\)/);
     assert.doesNotMatch(tabsSource, /scroll-into-view/);
+    assert.match(tabsSource, /'is-active': index === active/);
     assert.equal((tabsSource.match(/class="snake-tabs__line"/g) || []).length, 1);
     const listSwitching = await read('components/snake-list-switching/snake-list-switching.vue');
     assert.match(listSwitching, /changeTabs\(index\)\s*{\s*this\.active1 = index/);

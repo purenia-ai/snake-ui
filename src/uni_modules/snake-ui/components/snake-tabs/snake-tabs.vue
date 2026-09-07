@@ -270,7 +270,7 @@ defineExpose({ init, scrollByIndex });
                     :id="itemId(index)"
                     :key="index"
                     class="snake-tabs__item"
-                    :class="{ 'is-hidden': isHidden(item), 'is-disabled': isDisabled(item) }"
+                    :class="{ 'is-active': index === active, 'is-hidden': isHidden(item), 'is-disabled': isDisabled(item) }"
                     :style="itemStyle(index)"
                     role="tab"
                     :aria-selected="index === active"
@@ -357,7 +357,7 @@ defineExpose({ init, scrollByIndex });
     padding: 0 7rpx;
     border-radius: 14rpx;
     color: #fff;
-    background: var(--snake-color-error, #fe0832);
+    background: var(--snake-color-error, #FA3534);
     font-size: 18rpx;
     line-height: 28rpx;
     text-align: center;
