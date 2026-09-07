@@ -78,6 +78,7 @@ export const componentGroups: ComponentGroup[] = [
             { name: 'Slider', title: '滑动选择器', link: '/components/slider' },
             { name: 'Search', title: '搜索框', link: '/components/search' },
             { name: 'Select', title: '列选择器', link: '/components/select' },
+            { name: 'Upload', title: '文件上传', link: '/components/upload' },
             { name: 'Calendar', title: '日历', link: '/components/calendar' },
             { name: 'CountDown', title: '倒计时', link: '/components/count-down' }
         ]
