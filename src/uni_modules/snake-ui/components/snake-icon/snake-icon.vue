@@ -55,7 +55,21 @@ const iconfontNames = new Set([
     'edit',
     'warning',
     'checkbox-mark',
-    'search'
+    'search',
+    'empty-address',
+    'empty-car',
+    'empty-coupon',
+    'empty-data',
+    'empty-favor',
+    'empty-history',
+    'empty-list',
+    'empty-message',
+    'empty-news',
+    'empty-order',
+    'empty-page',
+    'empty-permission',
+    'empty-search',
+    'empty-wifi'
 ]);
 const iconfontAliases: Record<string, string> = {
     checkmark: 'checkbox-mark',

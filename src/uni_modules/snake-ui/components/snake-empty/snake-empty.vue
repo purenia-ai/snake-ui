@@ -46,19 +46,19 @@ const displayText = computed(() => props.text || modeTexts[props.mode] || snakeT
 const source = computed(() => props.src || props.icon);
 const isImage = computed(() => /^(https?:|data:|\/|\.\/|\.\.\/)/i.test(source.value));
 const modeIcons: Record<string, string> = {
-    data: 'image',
-    list: 'menu',
-    search: 'search',
-    page: 'page',
-    order: 'list',
-    coupon: 'coupon',
-    favor: 'star',
-    permission: 'lock',
-    history: 'clock',
-    message: 'info',
-    wifi: 'warning',
-    address: 'location',
-    car: 'cart'
+    data: 'empty-data',
+    list: 'empty-list',
+    search: 'empty-search',
+    page: 'empty-page',
+    order: 'empty-order',
+    coupon: 'empty-coupon',
+    favor: 'empty-favor',
+    permission: 'empty-permission',
+    history: 'empty-history',
+    message: 'empty-message',
+    wifi: 'empty-wifi',
+    address: 'empty-address',
+    car: 'empty-car'
 };
 const iconName = computed(() => source.value || modeIcons[props.mode] || 'image');
 const rootStyle = computed(() => [{ marginTop: addUnit(props.marginTop, 'rpx') }, props.customStyle]);

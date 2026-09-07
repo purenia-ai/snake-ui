@@ -87,3 +87,61 @@
 .sicon-search:before {
     content: '\e68d';
 }
+
+/* empty-state glyphs (merged from third-party open-source iconfont, MIT) */
+.sicon-empty-address:before {
+    content: '\f100';
+}
+
+.sicon-empty-car:before {
+    content: '\f101';
+}
+
+.sicon-empty-coupon:before {
+    content: '\f102';
+}
+
+.sicon-empty-data:before {
+    content: '\f103';
+}
+
+.sicon-empty-favor:before {
+    content: '\f104';
+}
+
+.sicon-empty-history:before {
+    content: '\f105';
+}
+
+.sicon-empty-list:before {
+    content: '\f106';
+}
+
+.sicon-empty-message:before {
+    content: '\f107';
+}
+
+.sicon-empty-news:before {
+    content: '\f108';
+}
+
+.sicon-empty-order:before {
+    content: '\f109';
+}
+
+.sicon-empty-page:before {
+    content: '\f10a';
+}
+
+.sicon-empty-permission:before {
+    content: '\f10b';
+}
+
+.sicon-empty-search:before {
+    content: '\f10c';
+}
+
+.sicon-empty-wifi:before {
+    content: '\f10d';
+}
+
