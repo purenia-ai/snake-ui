@@ -54,6 +54,12 @@ test('tabs and subsection expose keyboard navigation semantics', async () => {
     }
 });
 
+test('tabs keep labels on one line like uView', async () => {
+    const tabs = await read('components/snake-tabs/snake-tabs.vue');
+    assert.match(tabs, /\.snake-tabs__item \{[\s\S]*white-space: nowrap;/);
+    assert.match(tabs, /\.snake-tabs__label \{[\s\S]*white-space: nowrap;/);
+});
+
 test('drop menu performs real measurement and both index list modes handle touch navigation', async () => {
     const [menu, item, list, panel] = await Promise.all([
         read('components/snake-drop-menu/snake-drop-menu.vue'),
@@ -147,6 +153,11 @@ test('commerce filter panel gives percentage-height content a definite containin
     ]);
     assert.match(filters, /<snake-drop-menu-item[\s\S]*custom-style="height: 70vh"/);
     assert.match(filterPage, /<snake-index-list-panel/);
+    assert.match(filterPage, /class="filter-page__brand-panel"/);
+    assert.match(filterPage, /:customStyle="\{ flex: 1, minHeight: 0, height: 'auto' \}"/);
+    assert.match(filterPage, /\.list-box \{[\s\S]*height: 100%;[\s\S]*min-height: 0;/);
+    assert.match(filterPage, /\.filter-page__brand-panel \{[\s\S]*height: 100%;[\s\S]*min-height: 0;/);
+    assert.match(filterPage, /uIndexListRef\?\.update\?\.\(\)/);
     assert.doesNotMatch(filterPage, /:scrollTop="scrollTop"/);
     assert.match(filterPage, /:index="indexList\[index\]"/);
 });

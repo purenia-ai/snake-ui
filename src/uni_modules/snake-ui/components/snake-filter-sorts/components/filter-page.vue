@@ -89,50 +89,52 @@
                         <view class="fill-last" :style="{ height: fillHeight + 'px' }"></view>
                     </scroll-view>
 
-                    <view class="title" v-if="filterList[leftIndex]">
-                        <text>{{ filterList[leftIndex].name }}</text>
-                        <text class="filter-page__count"
-                            >（已选{{ filterParams[filterList[leftIndex].value].length }}个）</text
+                    <view v-if="filterList.length - 1 === leftIndex" class="filter-page__brand-panel">
+                        <view class="title" v-if="filterList[leftIndex]">
+                            <text>{{ filterList[leftIndex].name }}</text>
+                            <text class="filter-page__count"
+                                >（已选{{ filterParams[filterList[leftIndex].value].length }}个）</text
+                            >
+                        </view>
+
+                        <snake-index-list-panel
+                            ref="uIndexListRef"
+                            :indexList="indexList"
+                            :customStyle="{ flex: 1, minHeight: 0, height: 'auto' }"
+                            activeColor="var(--snake-color-text, #26273a)"
+                            inactiveColor="var(--snake-color-text-muted, #acacb7)"
                         >
+                            <block v-for="(item, index) in brandGroupList" :key="index">
+                                <snake-index-anchor
+                                    :index="indexList[index]"
+                                    :text="indexList[index]"
+                                    :customStyle="{ height: '44rpx', padding: '0 10px' }"
+                                ></snake-index-anchor>
+
+                                <template v-for="(cell, cellIndex) in item" :key="cellIndex">
+                                    <view
+                                        class="filter-page__brand-cell"
+                                        @click.stop="
+                                            selectHandle(filterList[leftIndex], {
+                                                value: cell
+                                            })
+                                        "
+                                    >
+                                        <view class="filter-page__brand-name" hover-class="u-hover-class">{{ cell }}</view>
+                                        <snake-icon
+                                            v-if="filterParams.brandFilter.includes(cell)"
+                                            name="checkmark"
+                                            size="28rpx"
+                                            color="var(--snake-color-primary, #06d290)"
+                                            custom-class="filter-page__brand-check"
+                                        ></snake-icon>
+                                    </view>
+                                </template>
+                                <view class="filter-page__spacer-sm"></view>
+                            </block>
+                            <view class="filter-page__spacer-lg"></view>
+                        </snake-index-list-panel>
                     </view>
-
-                    <snake-index-list-panel
-                        v-if="filterList.length - 1 === leftIndex"
-                        ref="uIndexListRef"
-                        :indexList="indexList"
-                        activeColor="var(--snake-color-text, #26273a)"
-                        inactiveColor="var(--snake-color-text-muted, #acacb7)"
-                    >
-                        <block v-for="(item, index) in brandGroupList" :key="index">
-                            <snake-index-anchor
-                                :index="indexList[index]"
-                                :text="indexList[index]"
-                                :customStyle="{ height: '44rpx', padding: '0 10px' }"
-                            ></snake-index-anchor>
-
-                            <template v-for="(cell, cellIndex) in item" :key="cellIndex">
-                                <view
-                                    class="filter-page__brand-cell"
-                                    @click.stop="
-                                        selectHandle(filterList[leftIndex], {
-                                            value: cell
-                                        })
-                                    "
-                                >
-                                    <view class="filter-page__brand-name" hover-class="u-hover-class">{{ cell }}</view>
-                                    <snake-icon
-                                        v-if="filterParams.brandFilter.includes(cell)"
-                                        name="checkmark"
-                                        size="28rpx"
-                                        color="var(--snake-color-primary, #06d290)"
-                                        custom-class="filter-page__brand-check"
-                                    ></snake-icon>
-                                </view>
-                            </template>
-                            <view class="filter-page__spacer-sm"></view>
-                        </block>
-                        <view class="filter-page__spacer-lg"></view>
-                    </snake-index-list-panel>
                 </view>
             </view>
         </view>
@@ -294,6 +296,10 @@ export default {
         }
     },
     watch: {
+        leftIndex(newVal) {
+            if (newVal !== this.filterList.length - 1) return;
+            this.$nextTick(() => this.$refs.uIndexListRef?.update?.());
+        },
         show: {
             async handler(newVal) {
                 // #ifdef H5
@@ -596,6 +602,8 @@ export default {
 .list-box {
     display: flex;
     flex-direction: row;
+    height: 100%;
+    min-height: 0;
     font-size: 28rpx;
 
     .left {
@@ -630,6 +638,8 @@ export default {
     .main {
         box-sizing: border-box;
         flex-grow: 1;
+        height: 100%;
+        min-height: 0;
         width: 0;
         padding-left: 20rpx;
         background-color: var(--snake-color-surface, #fff);
@@ -678,6 +688,13 @@ export default {
             }
         }
     }
+}
+
+.filter-page__brand-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
 }
 
 .filter-footer {

@@ -330,6 +330,7 @@ defineExpose({ init, scrollByIndex });
     height: 100%;
     align-items: center;
     justify-content: center;
+    white-space: nowrap;
     text-align: center;
     transition-property: color;
 }
@@ -347,6 +348,7 @@ defineExpose({ init, scrollByIndex });
     display: inline-flex;
     height: 100%;
     align-items: center;
+    white-space: nowrap;
 }
 
 .snake-tabs__badge {
