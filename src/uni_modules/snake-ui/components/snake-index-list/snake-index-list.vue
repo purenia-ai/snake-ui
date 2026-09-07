@@ -5,7 +5,7 @@
  * @see /components/index-list
  */
 
-import { getCurrentInstance, onMounted, provide, ref, toRef, watch } from 'vue';
+import { getCurrentInstance, onBeforeUnmount, onMounted, provide, ref, toRef, watch } from 'vue';
 import zIndex from '../../libs/config/zIndex';
 import { snakeIndexListKey } from '../../libs/internal/index-list';
 import type { SnakeIndexListEmits, SnakeIndexListProps, SnakeIndexValue } from './types';
@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<SnakeIndexListProps>(), {
     sticky: true,
     offsetTop: 0,
     activeColor: 'var(--snake-color-primary, #06D290)',
-    inactiveColor: 'var(--snake-color-text-muted, #707184)',
+    inactiveColor: 'var(--snake-color-text-muted, #909399)',
     railStyle: '',
     customClass: '',
     customStyle: ''
@@ -32,6 +32,7 @@ const railTop = ref(0);
 const railHeight = ref(0);
 const anchorOffsets = ref<number[]>([]);
 const touching = ref(false);
+let measureTimer: ReturnType<typeof setTimeout> | undefined;
 const anchorId = (value: SnakeIndexValue) => `snake-index-anchor-${String(value).replace(/[^a-zA-Z0-9_-]/g, '-')}`;
 function setActive(index: number, selected = false) {
     const safe = Math.max(0, Math.min(props.indexList.length - 1, index));
@@ -51,6 +52,12 @@ function scrollTo(indexOrValue: number | SnakeIndexValue) {
             : props.indexList.indexOf(indexOrValue);
     if (index < 0) return;
     setActive(index, true);
+    // 优先用测量好的锚点偏移直接滚动：scroll-into-view 依赖宿主元素查找，部分环境（延迟挂载/虚拟化）不可靠
+    if (anchorOffsets.value.length && index < anchorOffsets.value.length) {
+        innerScrollTop.value = anchorOffsets.value[index];
+        scrollIntoView.value = '';
+        return;
+    }
     scrollIntoView.value = '';
     setTimeout(() => (scrollIntoView.value = anchorId(props.indexList[index])), 0);
 }
@@ -62,6 +69,14 @@ function touchSelect(event: any) {
 }
 function onScroll(event: any) {
     innerScrollTop.value = Number(event.detail?.scrollTop) || 0;
+    // 挂载时列表可能为空（异步数据），首次滚动立即补测
+    if (!anchorOffsets.value.length) void update();
+    // 滚动停止后重测保持锚点新鲜（布局可能已变化），静止时测量避免滚动动画中 rect 与 scrollTop 不一致
+    if (measureTimer) clearTimeout(measureTimer);
+    measureTimer = setTimeout(() => {
+        measureTimer = undefined;
+        void update();
+    }, 300);
     const target = innerScrollTop.value + Number.parseFloat(String(props.offsetTop || 0));
     let index = 0;
     anchorOffsets.value.forEach((offset, position) => {
@@ -96,6 +111,11 @@ watch(
     () => props.scrollTop,
     value => (innerScrollTop.value = Number(value) || 0)
 );
+// 异步数据到达/列表变化时补测（挂载时列表常为空，锚点与 rail 几何需要重测后才能拖拽/滚动定位）
+watch(
+    () => props.indexList,
+    () => void update()
+);
 provide(snakeIndexListKey, {
     activeIndex,
     sticky: toRef(props, 'sticky'),
@@ -104,6 +124,9 @@ provide(snakeIndexListKey, {
     anchorId
 });
 onMounted(() => void update());
+onBeforeUnmount(() => {
+    if (measureTimer) clearTimeout(measureTimer);
+});
 defineExpose({ scrollTo, update });
 </script>
 
