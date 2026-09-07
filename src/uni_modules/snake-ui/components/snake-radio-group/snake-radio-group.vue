@@ -1,64 +1,92 @@
 <script setup lang="ts">
 /**
  * @component SnakeRadioGroup
- * @description 管理一组 Radio 的互斥值、禁用状态、颜色与横纵布局。
+ * @description 对齐 uView Pro 的 radio 父组件，管理一组 Radio 的互斥值、禁用状态与布局。
  * @see /components/radio-group
  */
 
-import { computed, inject, provide, toRef } from 'vue';
-import { snakeRadioGroupKey } from '../../libs/internal/radio';
+import { inject } from 'vue';
+import { useParent } from '../../libs/hooks';
 import { snakeFormItemKey } from '../../libs/internal/form-item';
 import type { SnakeRadioGroupEmits, SnakeRadioGroupProps } from './types';
-defineOptions({ name: 'SnakeRadioGroup', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = withDefaults(defineProps<SnakeRadioGroupProps>(), {
-    disabled: false,
-    direction: 'row',
-    size: 'default',
-    activeColor: 'var(--snake-color-primary,#06D290)',
-    inactiveColor: 'var(--snake-color-border,#c0c4cc)',
-    iconSize: 34,
-    labelSize: 28,
-    shape: 'circle',
-    customClass: '',
-    customStyle: ''
+
+defineOptions({
+    name: 'SnakeRadioGroup',
+    options: {
+        addGlobalClass: true,
+        // #ifndef MP-TOUTIAO
+        virtualHost: true,
+        // #endif
+        styleIsolation: 'shared'
+    }
 });
+
+const props = withDefaults(defineProps<SnakeRadioGroupProps>(), {
+    customStyle: '',
+    customClass: '',
+    disabled: false,
+    modelValue: '',
+    activeColor: 'var(--snake-color-primary, #06D290)',
+    size: '',
+    labelDisabled: false,
+    shape: 'circle',
+    iconSize: '',
+    width: 'auto',
+    wrap: false
+});
+
 const emit = defineEmits<SnakeRadioGroupEmits>();
 const formItem = inject(snakeFormItemKey, null);
-const value = computed(() => props.modelValue);
-function select(name: unknown) {
-    if (Object.is(value.value, name)) return;
-    emit('update:modelValue', name);
-    emit('change', name);
+
+// 注册父组件上下文，供子组件 useChildren 链接
+useParent('SnakeRadioGroup');
+
+/**
+ * 父组件数据，供子组件使用
+ */
+function getData() {
+    return {
+        iconSize: props.iconSize,
+        labelDisabled: props.labelDisabled,
+        disabled: props.disabled,
+        shape: props.shape,
+        activeColor: props.activeColor,
+        size: props.size,
+        width: props.width,
+        wrap: props.wrap,
+        value: props.modelValue
+    };
+}
+
+/**
+ * 设置选中值
+ * @param val 选中的 radio 的 name 值
+ */
+function setValue(val: string | number) {
+    // 通过 emit 事件，设置父组件通过 v-model 双向绑定的值
+    emit('update:modelValue', val);
+    emit('change', val);
+    // 通知 snake-form-item 进行校验
     void formItem?.notify('change');
 }
-provide(snakeRadioGroupKey, {
-    modelValue: value,
-    disabled: toRef(props, 'disabled'),
-    size: toRef(props, 'size'),
-    activeColor: toRef(props, 'activeColor'),
-    inactiveColor: toRef(props, 'inactiveColor'),
-    iconSize: toRef(props, 'iconSize'),
-    labelSize: toRef(props, 'labelSize'),
-    shape: toRef(props, 'shape'),
-    select
-});
+
+defineExpose({ props, getData, setValue });
 </script>
 <template>
-    <view
-        class="snake-radio-group"
-        :class="[customClass, `is-${placement || direction}`]"
-        :style="customStyle"
-        ><slot
-    /></view>
+    <view class="snake-radio-group snake-radio-group--clearfix" :style="customStyle" :class="customClass"><slot /></view>
 </template>
 <style scoped>
 .snake-radio-group {
-    display: flex;
+    /* #ifndef MP || APP-NVUE */
+    display: inline-flex;
     flex-wrap: wrap;
-    gap: 20rpx 28rpx;
+    /* #endif */
 }
-.snake-radio-group.is-column {
-    flex-direction: column;
-    align-items: flex-start;
+/* MP 下子项以 float 布局时，容器需要清除浮动 */
+.snake-radio-group--clearfix::after {
+    content: '';
+    display: block;
+    overflow: hidden;
+    clear: both;
 }
 </style>

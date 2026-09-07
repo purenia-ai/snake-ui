@@ -1,38 +1,36 @@
 import type { UnitValue } from '../../libs/function/unit';
 import type { SnakeStyleValue } from '../../types/global';
-import type { SnakeChoiceDirection } from '../../libs/internal/checkbox';
-import type { SnakeFormSize } from '../../libs/internal/form';
-/** SnakeRadioGroup 组件的公开属性。 */
+
+/** SnakeRadioGroup 组件的公开属性（对齐 uView Pro 的 RadioGroupProps）。 */
 export interface SnakeRadioGroupProps {
-    /** 双向绑定的当前值。 */
-    modelValue?: unknown;
-    /** 是否禁用交互。 */
-    disabled?: boolean;
-    /** 内容排列或滚动方向。 */
-    direction?: SnakeChoiceDirection;
-    /** 内容出现的位置。 */
-    placement?: SnakeChoiceDirection;
-    /** 组件尺寸。 */
-    size?: SnakeFormSize;
-    /** 激活状态颜色。 */
-    activeColor?: string;
-    /** 未激活状态颜色。 */
-    inactiveColor?: string;
-    /** 图标尺寸，数值按 rpx 处理。 */
-    iconSize?: UnitValue;
-    /** 标签文字尺寸，数值按 rpx 处理。 */
-    labelSize?: UnitValue;
-    /** 组件形状。 */
-    shape?: 'square' | 'circle';
-    /** 根节点自定义类名。 */
-    customClass?: string;
     /** 根节点自定义样式。 */
     customStyle?: SnakeStyleValue;
+    /** 根节点自定义类名。 */
+    customClass?: string;
+    /** 是否禁用所有 radio。 */
+    disabled?: boolean;
+    /** 匹配某一个 radio 组件，如果某个 radio 的 name 值等于此值，那么这个 radio 就被会选中。 */
+    modelValue?: string | number;
+    /** 选中状态下的颜色，应用到所有子 radio。 */
+    activeColor?: string;
+    /** 组件整体大小，small/default/large 或自定义数值。 */
+    size?: string | number;
+    /** 是否禁止点击标签选中。 */
+    labelDisabled?: boolean;
+    /** 组件形状，square 为方形，circle 为圆形。 */
+    shape?: 'square' | 'circle';
+    /** 勾选图标的大小，单位 rpx。 */
+    iconSize?: UnitValue;
+    /** 每个 radio 占 snake-radio-group 的宽度，需带单位。 */
+    width?: UnitValue;
+    /** 是否每个 radio 都换行。 */
+    wrap?: boolean;
 }
+
 /** SnakeRadioGroup 组件的事件契约。 */
 export interface SnakeRadioGroupEmits {
-    /** update:modelValue 事件携带的参数。 */
-    'update:modelValue': [value: unknown];
-    /** change 事件携带的参数。 */
-    change: [value: unknown];
+    /** 更新当前选中值。 */
+    'update:modelValue': [value: string | number];
+    /** 任一个 radio 状态发生变化时触发，携带最新选中值。 */
+    change: [value: string | number];
 }

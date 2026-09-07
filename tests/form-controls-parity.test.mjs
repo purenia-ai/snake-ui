@@ -103,9 +103,11 @@ test('selection controls use typed group protocols', async () => {
         read('components/snake-radio-group/snake-radio-group.vue')
     ]);
     assert.match(checkbox, /snakeCheckboxGroupKey/);
-    assert.match(radio, /snakeRadioGroupKey/);
     assert.match(checkboxGroup, /provide\(snakeCheckboxGroupKey/);
-    assert.match(radioGroup, /provide\(snakeRadioGroupKey/);
+    // radio 对齐 uView Pro：父子通过 useCompRelation 关系链通信
+    assert.match(radio, /useChildren\('SnakeRadio', 'SnakeRadioGroup'\)/);
+    assert.match(radioGroup, /useParent\('SnakeRadioGroup'\)/);
+    assert.match(radioGroup, /defineExpose\(\{ props, getData, setValue \}\)/);
 });
 
 test('input controls notify forms and slider supports touch measurement', async () => {
@@ -149,7 +151,12 @@ test('form controls keep readable rpx size defaults', async () => {
         read('components/snake-switch/snake-switch.vue'),
         read('components/snake-slider/snake-slider.vue')
     ]);
-    for (const source of [checkbox, checkboxGroup, radio, radioGroup]) assert.match(source, /iconSize[^\n]*34/);
+    for (const source of [checkbox, checkboxGroup]) assert.match(source, /iconSize[^\n]*34/);
+    // radio 对齐 uView Pro 的 sizeConfig 预设：盒子 34 / 字号 28 / 勾号 20
+    assert.match(radio, /small: \{ size: 28, fontSize: 24, iconSize: 16 \}/);
+    assert.match(radio, /default: \{ size: 34, fontSize: 28, iconSize: 20 \}/);
+    assert.match(radio, /large: \{ size: 40, fontSize: 32, iconSize: 24 \}/);
+    assert.match(radioGroup, /width: 'auto'/);
     assert.match(toggle, /size === 'small' \? 40 : size === 'large' \? 60 : size === 'default' \? 50/);
     assert.match(slider, /height: 6,/);
     assert.match(slider, /blockWidth: 30,/);
@@ -162,13 +169,17 @@ test('third parity batch remains independent from uView and async-validator', as
     assert.doesNotMatch(source, /uni\.\$u|uview-pro|async-validator|<u-/);
 });
 
-test('radio and checkbox use the compact iconfont checkmark', async () => {
+test('radio and checkbox render the iconfont checkmark', async () => {
     const [checkbox, radio] = await Promise.all([
         read('components/snake-checkbox/snake-checkbox.vue'),
         read('components/snake-radio/snake-radio.vue')
     ]);
+    assert.ok(checkbox.includes('Number(iconSize) * (20 / 34)'));
+    // radio 对齐 uView Pro：勾号常驻渲染，尺寸取自 sizeConfig 预设的 elIconSize
+    assert.ok(radio.includes('name="checkmark"'));
+    assert.ok(radio.includes(':size="elIconSize"'));
+    assert.ok(!radio.includes('Number(iconSize) * (20 / 34)'));
     for (const source of [checkbox, radio]) {
-        assert.ok(source.includes('Number(iconSize) * (20 / 34)'));
         assert.ok(!source.includes('name="checkmark"\n                :color="iconColor"\n                bold'));
     }
 });

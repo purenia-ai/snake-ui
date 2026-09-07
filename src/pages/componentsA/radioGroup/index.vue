@@ -7,9 +7,21 @@ import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
-const value = ref<unknown>('sweet');
-const controls: DemoControl[] = [{ key: 'choiceColumn', label: '纵向排列', type: 'switch', defaultValue: false }];
-const state = reactive<Record<string, DemoValue>>({ choiceColumn: false });
+const value = ref('sweet');
+const controls: DemoControl[] = [
+    { key: 'choiceWrap', label: '每个换行', type: 'switch', defaultValue: false },
+    {
+        key: 'choiceWidth',
+        label: '单项宽度',
+        type: 'select',
+        defaultValue: 'auto',
+        options: [
+            { label: 'auto', value: 'auto' },
+            { label: '240rpx', value: 240 }
+        ]
+    }
+];
+const state = reactive<Record<string, DemoValue>>({ choiceWrap: false, choiceWidth: 'auto' });
 const localizedControls = computed(() => {
     const _locale = localeName.value;
     return controls.map(control => ({ ...control, label: demoText(control.label) }));
@@ -27,7 +39,10 @@ function updateValue(key: string, nextValue: DemoValue) {
         ><DemoSection variant="preview" :title="text('演示效果')"
             ><view class="demo-control-stack demo-radio-group-showcase"
                 ><text class="demo-variant-title">{{ isEnglish ? 'Exclusive selection' : '互斥选择' }}</text
-                ><snake-radio-group v-model="value" :placement="state.choiceColumn ? 'column' : 'row'"
+                ><snake-radio-group
+                    v-model="value"
+                    :wrap="Boolean(state.choiceWrap)"
+                    :width="state.choiceWidth === 'auto' ? 'auto' : Number(state.choiceWidth)"
                     ><snake-radio name="sweet">{{ isEnglish ? 'Sweet' : '鲜甜' }}</snake-radio
                     ><snake-radio name="spicy">{{ isEnglish ? 'Spicy' : '香辣' }}</snake-radio
                     ><snake-radio name="mild">{{ isEnglish ? 'Mild' : '清淡' }}</snake-radio></snake-radio-group

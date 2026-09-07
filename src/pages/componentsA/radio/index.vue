@@ -7,9 +7,22 @@ import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
-const value = ref(false);
-const controls: DemoControl[] = [{ key: 'choiceDisabled', label: '禁用状态', type: 'switch', defaultValue: false }];
-const state = reactive<Record<string, DemoValue>>({ choiceDisabled: false });
+const value = ref('sweet');
+const controls: DemoControl[] = [
+    { key: 'choiceDisabled', label: '禁用状态', type: 'switch', defaultValue: false },
+    {
+        key: 'choiceSize',
+        label: '组件尺寸',
+        type: 'select',
+        defaultValue: 'default',
+        options: [
+            { label: 'small', value: 'small' },
+            { label: 'default', value: 'default' },
+            { label: 'large', value: 'large' }
+        ]
+    }
+];
+const state = reactive<Record<string, DemoValue>>({ choiceDisabled: false, choiceSize: 'default' });
 const localizedControls = computed(() => {
     const _locale = localeName.value;
     return controls.map(control => ({ ...control, label: demoText(control.label) }));
@@ -23,14 +36,18 @@ function updateValue(key: string, nextValue: DemoValue) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :eyebrow="text('表单组件')" :desc="text('可独立使用的单选框，也可放入 RadioGroup。')"
+    <DemoPage :title="title" :eyebrow="text('表单组件')" :desc="text('单选框，需搭配 RadioGroup 使用。')"
         ><DemoSection variant="preview" :title="text('演示效果')"
             ><view class="demo-control-stack demo-radio-showcase"
-                ><text class="demo-variant-title">{{ isEnglish ? 'Standalone radio' : '独立单选框' }}</text
-                ><snake-radio v-model="value" :disabled="Boolean(state.choiceDisabled)">{{
-                    isEnglish ? 'Default address' : '默认地址'
-                }}</snake-radio
-                ><text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ value }}</text></view
+                ><text class="demo-variant-title">{{ isEnglish ? 'Exclusive selection' : '互斥选择' }}</text
+                ><snake-radio-group
+                    v-model="value"
+                    :disabled="Boolean(state.choiceDisabled)"
+                    :size="String(state.choiceSize)"
+                    ><snake-radio name="sweet">{{ isEnglish ? 'Sweet' : '鲜甜' }}</snake-radio
+                    ><snake-radio name="spicy">{{ isEnglish ? 'Spicy' : '香辣' }}</snake-radio
+                    ><snake-radio name="mild">{{ isEnglish ? 'Mild' : '清淡' }}</snake-radio></snake-radio-group
+                ><text>{{ isEnglish ? 'Selected: ' : '已选：' }}{{ value }}</text></view
             ></DemoSection
         ><DemoSection variant="controls" :title="text('参数配置')"
             ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" /></DemoSection

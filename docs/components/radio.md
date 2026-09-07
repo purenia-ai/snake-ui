@@ -4,7 +4,7 @@ preview: /pages/componentsA/radio/index
 
 # Radio 单选框
 
-可独立绑定 boolean，也可在 RadioGroup 中通过 `name` 参与互斥选择。
+单选框用于多个选项只能选择其中一个的场景，通过 `name` 参与 RadioGroup 的互斥选择。
 
 ## 何时使用
 
@@ -19,35 +19,35 @@ preview: /pages/componentsA/radio/index
 ## 基础用法
 
 ```vue
-<snake-radio v-model="isDefault">默认地址</snake-radio>
-<snake-radio-group v-model="flavor"><snake-radio name="sweet">鲜甜</snake-radio></snake-radio-group>
+<snake-radio-group v-model="flavor">
+  <snake-radio name="sweet">鲜甜</snake-radio>
+  <snake-radio name="spicy">香辣</snake-radio>
+  <snake-radio name="mild">清淡</snake-radio>
+</snake-radio-group>
 ```
 
 ## API
 
 ### Props
 
-| 参数                                          | 说明                     | 类型                | 默认值      |
-| --------------------------------------------- | ------------------------ | ------------------- | ----------- |
-| `modelValue`                                  | 独立使用时的选中值       | `boolean`           | `false`     |
-| `name` / `label`                              | Group 值和标签           | `unknown \| string` | -           |
-| `disabled` / `labelDisabled`                  | 禁用全部或标签点击       | `boolean`           | `false`     |
-| `shape` / `size`                              | circle/square 与组件尺寸 | `string`            | 继承 Group  |
-| `activeColor` / `inactiveColor` / `iconColor` | 状态颜色                 | `string`            | 主题默认值  |
-| `iconSize` / `labelSize`                      | 图标和文字大小           | `UnitValue`         | `34` / `28` |
-| `customClass` / `customStyle`                 | 自定义类名和样式         | `string \| style`   | `''`        |
+| 参数                    | 说明                             | 类型                | 默认值      |
+| ----------------------- | -------------------------------- | ------------------- | ----------- |
+| `label`                 | 展示标签文本                     | `string`            | `''`        |
+| `value` / `name`        | 兼容旧 API 的值 / 数据项标识，`value` 非空时优先 | `string \| number`  | `''`        |
+| `shape`                 | circle/square 形状               | `string`            | 继承 Group  |
+| `disabled` / `labelDisabled` | 禁用 / 禁止点击标签选中       | `boolean`           | `false`     |
+| `activeColor`           | 选中颜色，设置后覆盖父级 activeColor | `string`        | 主题色      |
+| `iconSize` / `labelSize` | 勾号与标签字号，单位 rpx         | `UnitValue`         | 按 size 预设 |
+| `size`                  | 整体尺寸 small/default/large     | `string`            | 继承 Group  |
+| `customClass` / `customStyle` | 自定义类名和样式           | `string \| style`   | `''`        |
 
 ### Events
 
-`update:modelValue`、`change(checked, name)` 和 `click(event)`。
+`change(name)` — radio 从未选中变为选中时触发，携带当前 radio 的 name。点击已选中项不触发。
 
 ### Slots
 
 默认插槽用于标签内容。
-
-## 无障碍
-
-组件支持焦点、Enter 和 Space 键，并输出 `radio` / `aria-checked` 状态。每一项都应提供清晰且互不歧义的文字标签。
 
 ## 类型定义
 

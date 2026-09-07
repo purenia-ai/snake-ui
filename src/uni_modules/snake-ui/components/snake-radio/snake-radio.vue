@@ -1,111 +1,271 @@
 <script setup lang="ts">
 /**
  * @component SnakeRadio
- * @description 可独立绑定 boolean，也可在 RadioGroup 中通过 `name` 参与互斥选择。
+ * @description 对齐 uView Pro 的 radio 单选框，通过 `name` 参与 RadioGroup 互斥选择。
  * @see /components/radio
  */
 
 import { computed, inject } from 'vue';
+import { useChildren } from '../../libs/hooks';
 import { addUnit } from '../../libs/function/unit';
-import { snakeRadioGroupKey } from '../../libs/internal/radio';
-import { snakeFormItemKey } from '../../libs/internal/form-item';
+import { snakeFormKey } from '../../libs/internal/form';
 import SnakeIcon from '../snake-icon/snake-icon.vue';
 import { snakeRadioProps } from './types';
 import type { SnakeRadioEmits } from './types';
-defineOptions({ name: 'SnakeRadio', options: { virtualHost: true, styleIsolation: 'shared' } });
+
+defineOptions({
+    name: 'SnakeRadio',
+    options: {
+        addGlobalClass: true,
+        // #ifndef MP-TOUTIAO
+        virtualHost: true,
+        // #endif
+        styleIsolation: 'shared'
+    }
+});
+
 const props = defineProps(snakeRadioProps);
 const emit = defineEmits<SnakeRadioEmits>();
-const group = inject(snakeRadioGroupKey, null);
-const formItem = inject(snakeFormItemKey, null);
-const checked = computed(() => (group ? Object.is(group.modelValue.value, props.name) : props.modelValue));
-const disabled = computed(() => props.disabled || Boolean(group?.disabled.value));
-const shape = computed(() => props.shape || group?.shape.value || 'circle');
-const size = computed(() => props.size || group?.size.value || 'default');
-const activeColor = computed(
-    () => props.activeColor || group?.activeColor.value || 'var(--snake-color-primary,#06D290)'
+
+// 使用组件关系 hooks 获取父组件
+const { parentExposed } = useChildren('SnakeRadio', 'SnakeRadioGroup');
+const form = inject(snakeFormKey, null);
+
+// radio 的 value 值，id
+const radioValue = computed(() => {
+    if (props.value !== '') return props.value;
+    return props.name;
+});
+
+// 父组件的默认值（兼容没有父组件的场景）
+const parentData = computed(() => {
+    return (
+        parentExposed?.value?.getData?.() || {
+            iconSize: null,
+            labelDisabled: null,
+            disabled: null,
+            shape: null,
+            activeColor: null,
+            size: null,
+            width: null,
+            height: null,
+            value: null,
+            wrap: null
+        }
+    );
+});
+
+// 根据 size 定义不同的配置
+const sizeConfig = {
+    small: { size: 28, fontSize: 24, iconSize: 16 },
+    default: { size: 34, fontSize: 28, iconSize: 20 },
+    large: { size: 40, fontSize: 32, iconSize: 24 }
+};
+
+// 获取实际使用的 size 值（优先级：props.size > snake-radio-group.size > snake-form.size）
+const actualSize = computed(() => {
+    if (props.size !== '') return String(props.size);
+    if (parentExposed.value?.props?.size) return String(parentExposed.value.props.size);
+    if (form?.size.value) return String(form.size.value);
+    return 'default';
+});
+
+// 判断实际使用的 size 是否在预设配置中
+const isInSizeConfig = computed(() => actualSize.value in sizeConfig);
+
+// 获取预设 size（用于查找 sizeConfig 配置，如图标大小、高度等）
+const presetSize = computed(() => {
+    return (isInSizeConfig.value ? actualSize.value : 'default') as 'small' | 'default' | 'large';
+});
+
+// 获取当前尺寸配置
+const currentSizeConfig = computed(() => sizeConfig[presetSize.value]);
+
+// 是否禁用，如果父组件 snake-radio-group 禁用的话，将会忽略子组件的配置
+const elDisabled = computed(() =>
+    props.disabled !== '' ? props.disabled : parentData.value.disabled !== null ? parentData.value.disabled : false
 );
-const inactiveColor = computed(
-    () => props.inactiveColor || group?.inactiveColor.value || 'var(--snake-color-border,#c0c4cc)'
+
+// 是否禁用 label 点击
+const elLabelDisabled = computed(() =>
+    props.labelDisabled !== ''
+        ? props.labelDisabled
+        : parentData.value.labelDisabled !== null
+          ? parentData.value.labelDisabled
+          : false
 );
-const iconSize = computed(() => props.iconSize || group?.iconSize.value || 34);
-const labelSize = computed(() => props.labelSize || group?.labelSize.value || 28);
-const iconStyle = computed(() => ({
-    width: addUnit(iconSize.value, 'rpx'),
-    height: addUnit(iconSize.value, 'rpx'),
-    borderColor: checked.value ? activeColor.value : inactiveColor.value,
-    backgroundColor: checked.value ? activeColor.value : 'transparent'
-}));
-function select(event: unknown, fromLabel = false) {
-    emit('click', event);
-    if (disabled.value || checked.value || (fromLabel && props.labelDisabled)) return;
-    if (group) group.select(props.name);
-    else {
-        emit('update:modelValue', true);
-        emit('change', true, props.name);
-        void formItem?.notify('change');
+
+// 组件尺寸，对应 size 的值，默认值为 34rpx
+const elSize = computed(() => currentSizeConfig.value.size);
+
+// 组件的勾选图标的尺寸，默认 20
+const elIconSize = computed(() => {
+    if (props.iconSize) return props.iconSize;
+    if (parentExposed.value?.props?.iconSize) return parentExposed.value?.props?.iconSize;
+    if (isInSizeConfig.value) return currentSizeConfig.value.iconSize;
+    return 20;
+});
+
+// label 字体大小，默认 28
+const labelFontSize = computed(() => {
+    if (isInSizeConfig.value) return addUnit(currentSizeConfig.value.fontSize, 'rpx');
+    return props.labelSize ? addUnit(props.labelSize, 'rpx') : '';
+});
+
+// 组件选中激活时的颜色
+const elActiveColor = computed(() =>
+    props.activeColor ? props.activeColor : parentData.value.activeColor ? parentData.value.activeColor : 'var(--snake-color-primary, #06D290)'
+);
+
+// 组件的形状
+const elShape = computed(() =>
+    props.shape ? props.shape : parentData.value.shape ? parentData.value.shape : 'circle'
+);
+
+// 设置 radio 的状态，要求 radio 的 name 等于 parent 的 value 时才为选中状态
+const iconStyle = computed(() => {
+    const style: Record<string, string> = {};
+    if (elActiveColor.value && parentData.value.value == radioValue.value && !elDisabled.value) {
+        style.borderColor = elActiveColor.value;
+        style.backgroundColor = elActiveColor.value;
     }
+    style.width = addUnit(elSize.value, 'rpx');
+    style.height = addUnit(elSize.value, 'rpx');
+    return style;
+});
+
+const iconColor = computed(() => (radioValue.value == parentData.value.value ? '#fff' : 'transparent'));
+
+const iconClass = computed(() => {
+    const classes: string[] = [];
+    classes.push(`snake-radio__icon-wrap--${elShape.value}`);
+    if (radioValue.value == parentData.value.value) classes.push('snake-radio__icon-wrap--checked');
+    if (elDisabled.value) classes.push('snake-radio__icon-wrap--disabled');
+    if (radioValue.value == parentData.value.value && elDisabled.value)
+        classes.push('snake-radio__icon-wrap--disabled--checked');
+    return classes.join(' ');
+});
+
+const radioStyle = computed(() => {
+    const style: Record<string, string> = {};
+    if (parentData.value.width) {
+        style.width = addUnit(parentData.value.width, 'rpx');
+        // #ifdef MP
+        // 各家小程序因为它们特殊的编译结构，使用 float 布局
+        style.float = 'left';
+        // #endif
+        // #ifndef MP
+        // H5 和 APP 使用 flex 布局
+        style.flex = `0 0 ${addUnit(parentData.value.width, 'rpx')}`;
+        // #endif
+    }
+    if (parentData.value.wrap) {
+        style.width = '100%';
+        // #ifndef MP
+        // H5 和 APP 使用 flex 布局，将宽度设置 100%，即可自动换行
+        style.flex = '0 0 100%';
+        // #endif
+    }
+    return style;
+});
+
+/**
+ * 点击 label
+ */
+function onClickLabel() {
+    if (!elLabelDisabled.value && !elDisabled.value) {
+        setRadioCheckedStatus();
+    }
+}
+
+/**
+ * 点击 icon
+ */
+function toggle() {
+    if (!elDisabled.value) {
+        setRadioCheckedStatus();
+    }
+}
+
+/**
+ * 发出事件
+ * snake-radio 的 name 不等于父组件的 v-model 的值时(意味着未选中)，才发出事件，避免多次点击触发事件
+ */
+function emitEvent() {
+    if (parentData.value.value != radioValue.value) emit('change', radioValue.value);
+}
+
+/**
+ * 改变组件选中状态
+ * 通过父组件 setValue 更新 v-model，父级变化后所有 radio 由 computed 重新计算选中状态
+ */
+function setRadioCheckedStatus() {
+    emitEvent();
+    parentExposed?.value?.setValue?.(radioValue.value);
 }
 </script>
 <template>
-    <view
-        class="snake-radio"
-        role="radio"
-        :aria-checked="checked"
-        :aria-disabled="disabled"
-        :tabindex="disabled ? -1 : 0"
-        :class="[customClass, `snake-radio--${size}`, { 'is-disabled': disabled }]"
-        :style="customStyle"
-        @keydown.enter.prevent="select($event)"
-        @keydown.space.prevent="select($event)"
-        ><view class="snake-radio__icon" :class="`is-${shape}`" :style="iconStyle" @click="select($event)"
-            ><snake-icon
-                v-if="checked"
-                name="checkmark"
-                :color="iconColor"
-                :size="Number(iconSize) * (20 / 34)" /></view
-        ><view class="snake-radio__label" :style="{ fontSize: addUnit(labelSize, 'rpx') }" @click="select($event, true)"
-            ><slot>{{ label }}</slot></view
-        ></view
-    >
+    <view class="snake-radio" :style="[radioStyle, customStyle]" :class="customClass">
+        <view class="snake-radio__icon-wrap" @tap="toggle" :class="iconClass" :style="iconStyle">
+            <snake-icon name="checkmark" :size="elIconSize" :color="iconColor" />
+        </view>
+        <view class="snake-radio__label" @tap="onClickLabel" :style="{ fontSize: labelFontSize }">
+            <slot>{{ label }}</slot>
+        </view>
+    </view>
 </template>
 <style scoped>
 .snake-radio {
+    /* #ifndef APP-NVUE */
     display: inline-flex;
+    /* #endif */
     align-items: center;
-    gap: 12rpx;
-    color: var(--snake-color-text, #303133);
+    overflow: hidden;
+    user-select: none;
+    line-height: 1.8;
 }
-.snake-radio:focus-visible {
-    outline: 2px solid var(--snake-color-primary, #06d290);
-    outline-offset: 4rpx;
-}
-.snake-radio.is-disabled {
-    opacity: 0.45;
-}
-.snake-radio__icon {
+.snake-radio__icon-wrap {
     display: flex;
     flex: none;
-    box-sizing: border-box;
     align-items: center;
     justify-content: center;
-    border: 1px solid;
-    transition:
-        border-color 0.2s,
-        background-color 0.2s;
+    box-sizing: border-box;
+    width: 42rpx;
+    height: 42rpx;
+    color: transparent;
+    text-align: center;
+    transition-property: color, border-color, background-color;
+    font-size: 20px;
+    border: 1px solid var(--snake-color-border, #dcdfe6);
+    transition-duration: 0.2s;
+    /* #ifdef MP-TOUTIAO */
+    // 头条小程序兼容性问题，需要设置行高为 0，否则图标偏下
+    line-height: 0;
+    /* #endif */
 }
-
-@media (prefers-reduced-motion: reduce) {
-    .snake-radio__icon {
-        transition: none;
-    }
+.snake-radio__icon-wrap--circle {
+    border-radius: 100%;
 }
-.snake-radio__icon.is-square {
-    border-radius: 6rpx;
+.snake-radio__icon-wrap--square {
+    border-radius: 3px;
 }
-.snake-radio__icon.is-circle {
-    border-radius: 50%;
+.snake-radio__icon-wrap--checked {
+    color: #fff;
+    background-color: var(--snake-color-primary, #06d290);
+    border-color: var(--snake-color-primary, #06d290);
+}
+.snake-radio__icon-wrap--disabled {
+    background-color: var(--snake-color-disabled-bg, #f1f1f1);
+    border-color: var(--snake-color-border, #dcdfe6);
+}
+.snake-radio__icon-wrap--disabled--checked {
+    color: var(--snake-color-disabled-bg, #f1f1f1) !important;
 }
 .snake-radio__label {
-    line-height: 1.5;
+    word-wrap: break-word;
+    margin-left: 10rpx;
+    margin-right: 24rpx;
+    color: var(--snake-color-text, #303133);
+    font-size: 30rpx;
 }
 </style>
