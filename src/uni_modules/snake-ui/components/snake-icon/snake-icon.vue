@@ -1,205 +1,99 @@
 <script setup lang="ts">
 /**
  * @component SnakeIcon
- * @description 图标组件支持 Snake UI 自有字体图标、图片地址和项目自定义图标字体，可同时显示四个方向的标签。
+ * @description 与 uView Pro u-icon 行为一致的字体及图片图标组件。
  * @see /components/icon
  */
-
-import { computed, type CSSProperties } from 'vue';
+import { computed } from 'vue';
 import { addUnit } from '../../libs/function/unit';
-import type { SnakeIconEmits, SnakeIconProps } from './types';
+import { toStyle } from '../../libs/function/style';
+import { SnakeIconProps } from './types';
 
-defineOptions({ name: 'SnakeIcon', options: { virtualHost: true, styleIsolation: 'shared' } });
-
-const props = withDefaults(defineProps<SnakeIconProps>(), {
-    name: '',
-    color: 'currentColor',
-    size: 16,
-    bold: false,
-    index: '',
-    label: '',
-    labelPos: 'right',
-    labelColor: 'var(--snake-color-text-secondary, #606266)',
-    labelSize: 14,
-    space: 6,
-    customPrefix: '',
-    customClass: '',
-    hoverClass: 'none',
-    imgMode: 'widthFix',
-    width: '',
-    height: '',
-    top: 0,
-    stop: false,
-    customStyle: ''
+defineOptions({
+    name: 'SnakeIcon',
+    options: {
+        addGlobalClass: true,
+        // #ifndef MP-TOUTIAO
+        virtualHost: true,
+        // #endif
+        styleIsolation: 'shared'
+    }
 });
-const emit = defineEmits<SnakeIconEmits>();
 
-const iconfontNames = new Set([
-    'info-circle',
-    'minus',
-    'eye',
-    'eye-off',
-    'info',
-    'arrow-left',
-    'arrow-left-double',
-    'arrow-down',
-    'arrow-up',
-    'arrow-right',
-    'arrow-right-double',
-    'close',
-    'plus',
-    'trash',
-    'success',
-    'eye-off-outline',
-    'eye-outline',
-    'edit',
-    'warning',
-    'checkbox-mark',
-    'search',
-    'empty-address',
-    'empty-car',
-    'empty-coupon',
-    'empty-data',
-    'empty-favor',
-    'empty-history',
-    'empty-list',
-    'empty-message',
-    'empty-news',
-    'empty-order',
-    'empty-page',
-    'empty-permission',
-    'empty-search',
-    'empty-wifi'
-]);
-const iconfontAliases: Record<string, string> = {
-    checkmark: 'checkbox-mark',
-    close2: 'close'
-};
+const props = defineProps(SnakeIconProps);
+const emit = defineEmits<{
+    (event: 'click', index: string | number | unknown): void;
+    (event: 'touchstart', index: string | number | unknown): void;
+}>();
+const themeTypes = ['primary', 'success', 'error', 'warning', 'info'];
 
-const glyphs: Record<string, string> = {
-    search: '⌕',
-    close: '×',
-    close2: '×',
-    plus: '+',
-    minus: '−',
-    checkmark: '✓',
-    'checkmark-circle': '✓',
-    'checkmark-circle-fill': '●',
-    circle: '○',
-    'close-circle': '⊗',
-    'close-circle-fill': '⊗',
-    info: 'ⓘ',
-    'info-circle': 'ⓘ',
-    warning: '⚠',
-    'warning-fill': '⚠',
-    question: '?',
-    left: '‹',
-    right: '›',
-    up: '⌃',
-    down: '⌄',
-    'arrow-left': '←',
-    'arrow-left-double': '⇤',
-    'arrow-right': '→',
-    'arrow-right-double': '⇥',
-    'arrow-up': '↑',
-    'arrow-down': '↓',
-    home: '⌂',
-    menu: '☰',
-    list: '☷',
-    page: '▤',
-    coupon: '▱',
-    cart: '◰',
-    more: '•••',
-    star: '☆',
-    'star-fill': '★',
-    heart: '♡',
-    'heart-fill': '♥',
-    play: '▷',
-    'play-right': '▷',
-    'play-right-fill': '▶',
-    pause: 'Ⅱ',
-    stop: '■',
-    camera: '◉',
-    image: '▣',
-    trash: '⌫',
-    edit: '✎',
-    share: '↗',
-    refresh: '↻',
-    lock: '▣',
-    unlock: '□',
-    eye: '◉',
-    'eye-off': '⊘',
-    phone: '☎',
-    calendar: '▦',
-    location: '⌖',
-    clock: '◷',
-    download: '⇩',
-    upload: '⇧',
-    filter: '▽',
-    setting: '⚙'
-};
-const isImage = computed(() => /^(https?:|data:|\/|\.\/|\.\.\/)/i.test(props.name));
-const iconfontName = computed(() => iconfontAliases[props.name] || props.name);
-const usesIconfont = computed(() => !props.customPrefix && iconfontNames.has(iconfontName.value));
-const glyph = computed(() => (usesIconfont.value ? '' : glyphs[props.name] || (props.customPrefix ? '' : props.name)));
-const rootStyle = computed(() => [
-    {
-        color: props.color,
-        fontSize: addUnit(props.size),
-        top: addUnit(props.top),
-        flexDirection: ['top', 'bottom'].includes(props.labelPos)
-            ? props.labelPos === 'top'
-                ? 'column-reverse'
-                : 'column'
-            : props.labelPos === 'left'
-              ? 'row-reverse'
-              : 'row'
-    } as CSSProperties,
-    props.customStyle
-]);
-const imageStyle = computed(() => ({
-    width: addUnit(props.width || props.size),
-    height: addUnit(props.height || props.size)
+const iconClass = computed(() => {
+    let classes: string[] | string = [`${props.customPrefix}-${props.name}`];
+    classes.push(props.customPrefix === 'sicon' ? 'snake-iconfont' : props.customPrefix);
+    const color = props.showDecimalIcon ? props.inactiveColor : props.color;
+    if (color && themeTypes.includes(color)) classes.push(`snake-icon__icon--${color}`);
+    // #ifdef MP-ALIPAY || MP-TOUTIAO || MP-BAIDU
+    classes = classes.join(' ');
+    // #endif
+    return classes;
+});
+const iconStyle = computed(() => {
+    const style: Record<string, string> = {
+        fontSize: props.size === 'inherit' ? 'inherit' : addUnit(props.size, 'rpx'),
+        fontWeight: props.bold ? 'bold' : 'normal',
+        top: addUnit(props.top, 'rpx')
+    };
+    const color = props.showDecimalIcon ? props.inactiveColor : props.color;
+    if (color && !themeTypes.includes(color)) style.color = color;
+    return style;
+});
+const isImg = computed(() => props.name.includes('/'));
+const imgStyle = computed(() => ({
+    width: addUnit(props.width || props.size, 'rpx'),
+    height: addUnit(props.height || props.size, 'rpx')
 }));
-const glyphStyle = computed(() => ({
-    fontWeight: props.bold ? '700' : '400'
-}));
+const decimalIconStyle = computed(() => {
+    const style: Record<string, string> = {
+        fontSize: props.size === 'inherit' ? 'inherit' : addUnit(props.size, 'rpx'),
+        fontWeight: props.bold ? 'bold' : 'normal',
+        top: addUnit(props.top, 'rpx'),
+        width: `${props.percent}%`
+    };
+    if (props.color && !themeTypes.includes(props.color)) style.color = props.color;
+    return style;
+});
+const decimalIconClass = computed(() => {
+    let classes: string[] | string = [`${props.customPrefix}-${props.name}`];
+    classes.push(props.customPrefix === 'sicon' ? 'snake-iconfont' : props.customPrefix);
+    classes.push(props.color && themeTypes.includes(props.color) ? `snake-icon__icon--${props.color}` : 'snake-icon__icon--primary');
+    // #ifdef MP-ALIPAY || MP-TOUTIAO || MP-BAIDU
+    classes = classes.join(' ');
+    // #endif
+    return classes;
+});
 const labelStyle = computed(() => ({
     color: props.labelColor,
-    fontSize: addUnit(props.labelSize),
-    marginLeft: props.labelPos === 'right' ? addUnit(props.space, 'rpx') : 0,
-    marginTop: props.labelPos === 'bottom' ? addUnit(props.space, 'rpx') : 0,
-    marginRight: props.labelPos === 'left' ? addUnit(props.space, 'rpx') : 0,
-    marginBottom: props.labelPos === 'top' ? addUnit(props.space, 'rpx') : 0
+    fontSize: addUnit(props.labelSize, 'rpx'),
+    marginLeft: props.labelPos === 'right' ? addUnit(props.space || props.marginLeft, 'rpx') : 0,
+    marginTop: props.labelPos === 'bottom' ? addUnit(props.space || props.marginTop, 'rpx') : 0,
+    marginRight: props.labelPos === 'left' ? addUnit(props.space || props.marginRight, 'rpx') : 0,
+    marginBottom: props.labelPos === 'top' ? addUnit(props.space || props.marginBottom, 'rpx') : 0
 }));
 
-function click(event: unknown) {
-    if (props.stop && event && typeof (event as { stopPropagation?: () => void }).stopPropagation === 'function') {
-        (event as { stopPropagation: () => void }).stopPropagation();
-    }
-    emit('click', event, props.index);
+function onClick(event: unknown) {
+    emit('click', props.index || event);
+}
+function onTouchstart(event: unknown) {
+    emit('touchstart', props.index || event);
 }
 </script>
 
 <template>
-    <view
-        class="snake-icon"
-        :class="[customPrefix && `${customPrefix}-${name}`, customClass]"
-        :style="rootStyle"
-        :hover-class="hoverClass"
-        @click="click"
-    >
-        <image v-if="isImage" class="snake-icon__image" :src="name" :mode="imgMode as any" :style="imageStyle" />
-        <text
-            v-else
-            :class="[
-                'snake-icon__glyph',
-                { 'snake-iconfont': usesIconfont },
-                usesIconfont ? 'sicon-' + iconfontName : ''
-            ]"
-            :style="glyphStyle"
-            >{{ glyph }}</text
-        >
+    <view :style="toStyle(customStyle)" class="snake-icon" :class="['snake-icon--' + labelPos, customClass]" @click="onClick">
+        <image v-if="isImg" class="snake-icon__img" :src="name" :mode="imgMode" :style="imgStyle" />
+        <text v-else class="snake-icon__icon" :class="iconClass" :style="toStyle(iconStyle)" :hover-class="hoverClass" @touchstart="onTouchstart">
+            <text v-if="showDecimalIcon" class="snake-icon__decimal" :class="decimalIconClass" :style="toStyle(decimalIconStyle)" :hover-class="hoverClass" />
+        </text>
         <text v-if="label !== ''" class="snake-icon__label" :style="labelStyle">{{ label }}</text>
     </view>
 </template>
@@ -207,24 +101,18 @@ function click(event: unknown) {
 <style scoped>
 @import '../../iconfont.css';
 
-.snake-icon {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-    vertical-align: middle;
-}
-.snake-icon__glyph {
-    font: inherit;
-    line-height: 1;
-}
-.snake-icon__image {
-    display: block;
-    flex: none;
-}
-.snake-icon__label {
-    white-space: nowrap;
-    line-height: 1.35;
-}
+.snake-icon { display: inline-flex; align-items: center; }
+.snake-icon--left { flex-direction: row-reverse; align-items: center; }
+.snake-icon--right { flex-direction: row; align-items: center; }
+.snake-icon--top { flex-direction: column-reverse; justify-content: center; }
+.snake-icon--bottom { flex-direction: column; justify-content: center; }
+.snake-icon__icon { position: relative; }
+.snake-icon__icon--primary { color: var(--snake-color-primary, #06d290); }
+.snake-icon__icon--success { color: var(--snake-color-success, #19be6b); }
+.snake-icon__icon--error { color: var(--snake-color-error, #fa3534); }
+.snake-icon__icon--warning { color: var(--snake-color-warning, #ff9900); }
+.snake-icon__icon--info { color: var(--snake-color-info, #909399); }
+.snake-icon__decimal { position: absolute; top: 0; left: 0; display: inline-block; overflow: hidden; }
+.snake-icon__img { height: auto; will-change: transform; }
+.snake-icon__label { line-height: 1; }
 </style>

@@ -24,40 +24,39 @@ test('tabs and swiper expose navigation and indicator contracts', async () => {
     ]);
     for (const name of ['barWidth', 'barHeight', 'gutter', 'isDot', 'showBar', 'itemWidth'])
         assert.match(tabs, new RegExp(`${name}\\?`));
-    for (const name of ['hidden', 'disabled']) assert.match(tabs, new RegExp(`${name}\\?`));
+    assert.match(tabs, /hidden\?/);
+    assert.doesNotMatch(tabs, /disabled\?/);
     assert.match(tabsSource, /height:\s*80,[\s\S]*fontSize:\s*30/);
     assert.match(tabsSource, /barWidth:\s*40,[\s\S]*barHeight:\s*6,[\s\S]*gutter:\s*30/);
     assert.match(tabsSource, /createSelectorQuery\(\)\.in\(instance\?\.proxy/);
     assert.match(tabsSource, /const scrollLeft = ref\(0\)/);
-    assert.match(tabsSource, /contentCenter - viewportWidth \/ 2/);
-    assert.match(tabsSource, /defineExpose\(\{ init, scrollByIndex \}\)/);
+    assert.match(tabsSource, /offsetLeft - \(componentWidth\.value - tabWidth\) \/ 2/);
+    assert.match(tabsSource, /left - uni\.upx2px\(Number\(props\.barWidth\)\) \/ 2/);
+    assert.match(tabsSource, /defineExpose\(\{ init, clickTab, scrollByIndex \}\)/);
     assert.doesNotMatch(tabsSource, /scroll-into-view/);
-    assert.match(tabsSource, /'is-active': index === active/);
-    assert.equal((tabsSource.match(/class="snake-tabs__line"/g) || []).length, 1);
+    assert.match(tabsSource, /'snake-tabs__scroll-flex': !isScroll/);
+    assert.equal((tabsSource.match(/class="snake-tabs__bar"/g) || []).length, 1);
     const listSwitching = await read('components/snake-list-switching/snake-list-switching.vue');
     assert.match(listSwitching, /changeTabs\(index\)\s*{\s*this\.active1 = index/);
     for (const name of ['indicatorPos', 'effect3d', 'animationfinish', 'titleStyle'])
         assert.match(swiper, new RegExp(name));
 });
 
-test('tabs and subsection expose keyboard navigation semantics', async () => {
+test('tabs follow uView interaction scope while subsection keeps keyboard navigation', async () => {
     const [tabs, subsection] = await Promise.all([
         read('components/snake-tabs/snake-tabs.vue'),
         read('components/snake-subsection/snake-subsection.vue')
     ]);
-    for (const source of [tabs, subsection]) {
-        assert.match(source, /role="tablist"/);
-        assert.match(source, /role="tab"/);
-        assert.match(source, /aria-selected/);
-        assert.match(source, /@keydown\.left/);
-        assert.match(source, /@keydown\.right/);
-    }
+    for (const marker of ['role="tablist"', 'role="tab"', 'aria-selected', '@keydown.left', '@keydown.right'])
+        assert.doesNotMatch(tabs, new RegExp(marker.replace('.', '\\.')));
+    for (const marker of [/role="tablist"/, /role="tab"/, /aria-selected/, /@keydown\.left/, /@keydown\.right/])
+        assert.match(subsection, marker);
 });
 
 test('tabs keep labels on one line like uView', async () => {
     const tabs = await read('components/snake-tabs/snake-tabs.vue');
     assert.match(tabs, /\.snake-tabs__item \{[\s\S]*white-space: nowrap;/);
-    assert.match(tabs, /\.snake-tabs__label \{[\s\S]*white-space: nowrap;/);
+    assert.match(tabs, /\.snake-tabs__scroll-box \{[^}]*white-space: nowrap;/);
 });
 
 test('drop menu performs real measurement and both index list modes handle touch navigation', async () => {

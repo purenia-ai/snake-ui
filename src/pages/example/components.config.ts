@@ -178,6 +178,7 @@ const componentGroups: SnakeComponentGroup[] = [
             item('/pages/componentsA/navbar/index', 'Navbar 导航栏', 'Navbar', '用于页面顶部导航并处理返回与安全区。'),
             item('/pages/componentsA/sticky/index', 'Sticky 吸顶', 'Sticky', '滚动时将重要内容固定在页面顶部。'),
             item('/pages/componentsA/tabs/index', 'Tabs 标签页', 'Tabs', '在同层级内容之间快速切换。'),
+            item('/pages/componentsA/upload/index', 'Upload 文件上传', 'Upload', '上传图片、视频和文件，支持 OSS 适配器。'),
             item(
                 '/pages/componentsA/subsection/index',
                 'Subsection 分段选择器',

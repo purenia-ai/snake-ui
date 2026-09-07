@@ -47,7 +47,6 @@ const controls: DemoControl[] = [
         ]
     },
     { key: 'plain', label: '朴素样式', type: 'switch', defaultValue: false },
-    { key: 'block', label: '撑满容器', type: 'switch', defaultValue: true },
     { key: 'loading', label: '加载状态', type: 'switch', defaultValue: false },
     { key: 'disabled', label: '禁用状态', type: 'switch', defaultValue: false },
     { key: 'ripple', label: '水波纹', type: 'switch', defaultValue: true }
@@ -87,12 +86,9 @@ function updateValue(key: string, value: DemoValue) {
                         :size="state.buttonSize as any"
                         :shape="state.buttonShape as any"
                         :plain="Boolean(state.plain)"
-                        :block="Boolean(state.block)"
                         :disabled="Boolean(state.disabled)"
                         :loading="Boolean(state.loading)"
-                        :loading-text="isEnglish ? 'Processing' : '处理中'"
                         :ripple="Boolean(state.ripple)"
-                        icon="checkmark"
                     >
                         Snake Button
                     </snake-button>
@@ -140,24 +136,8 @@ function updateValue(key: string, value: DemoValue) {
                     <text class="demo-button-section__title">{{ isEnglish ? 'Button states' : '按钮状态' }}</text>
                     <view class="demo-button-grid">
                         <snake-button disabled>{{ isEnglish ? 'Disabled' : '禁用状态' }}</snake-button>
-                        <snake-button loading :loading-text="isEnglish ? 'Loading' : '加载中'" />
-                        <snake-button type="success" loading loading-mode="spinner">Spinner</snake-button>
-                    </view>
-                </view>
-                <view class="demo-button-section">
-                    <text class="demo-button-section__title">{{ isEnglish ? 'Icon buttons' : '图标按钮' }}</text>
-                    <view class="demo-button-flow">
-                        <snake-button size="medium" icon="checkmark">{{ isEnglish ? 'Confirm' : '确认' }}</snake-button>
-                        <snake-button size="small" type="info" icon="search">{{
-                            isEnglish ? 'Search' : '搜索'
-                        }}</snake-button>
-                    </view>
-                </view>
-                <view class="demo-button-section">
-                    <text class="demo-button-section__title">{{ isEnglish ? 'Custom colors' : '自定义颜色' }}</text>
-                    <view class="demo-button-grid">
-                        <snake-button color="#7c3aed">Violet</snake-button>
-                        <snake-button color="#f97316" plain>Orange</snake-button>
+                        <snake-button loading>{{ isEnglish ? 'Loading' : '加载中' }}</snake-button>
+                        <snake-button type="success" loading>Loading</snake-button>
                     </view>
                 </view>
                 <view class="demo-button-section">

@@ -1,197 +1,114 @@
 <script setup lang="ts">
 /**
  * @component SnakeButton
- * @description 正式操作按钮，支持多主题、尺寸、胶囊形态、加载、图标、水波纹、点击节流、表单行为和小程序开放能力。
+ * @description 与 uView Pro u-button 行为一致的跨端按钮。
  * @see /components/button
  */
-
-import { computed, getCurrentInstance, nextTick, onBeforeUnmount, ref } from 'vue';
-import { colorToRgba } from '../../libs/function/color';
-import { getRect } from '../../libs/function/getRect';
+import { computed, getCurrentInstance, nextTick, ref } from 'vue';
 import { toStyle } from '../../libs/function/style';
-import SnakeIcon from '../snake-icon/snake-icon.vue';
-import SnakeLoadingIcon from '../snake-loading-icon/snake-loading-icon.vue';
 import { snakeButtonProps } from './types';
 import type { SnakeButtonEmits } from './types';
 
-defineOptions({ name: 'SnakeButton', options: { virtualHost: true, styleIsolation: 'shared' } });
+defineOptions({ name: 'SnakeButton', options: { addGlobalClass: true, virtualHost: true, styleIsolation: 'shared' } });
 
 const props = defineProps(snakeButtonProps);
 const emit = defineEmits<SnakeButtonEmits>();
 const emitNative = emit as unknown as (name: Exclude<keyof SnakeButtonEmits, 'click'>, event: unknown) => void;
 const instance = getCurrentInstance();
-const rippleActive = ref(false);
-const rippleStyle = ref({ top: '50%', left: '50%', width: '0px', height: '0px' });
-let lastClick = 0;
-let rippleTimer: ReturnType<typeof setTimeout> | undefined;
+const rippleTop = ref(0);
+const rippleLeft = ref(0);
+const targetWidth = ref(0);
+const waveActive = ref(false);
+let lastClickTime = 0;
 
-const palette = computed(() => {
-    const name = props.type === 'default' ? 'primary' : props.type;
-    if (props.color) {
-        // plain 模式用自定义色 10% 透明度的浅底；非 hex 颜色解析不了，回退到类型浅色 token
-        const tint = colorToRgba(props.color, 0.1);
-        return {
-            main: props.color,
-            light: tint === props.color ? `var(--snake-color-${name}-light, #f4f4f5)` : tint,
-            disabled: props.color
-        };
-    }
-    return {
-        main: `var(--snake-color-${name}, ${props.type === 'default' ? '#06D290' : '#909399'})`,
-        light: `var(--snake-color-${name}-light, #f4f4f5)`,
-        disabled: `var(--snake-color-${name}-disabled, #c8c9cc)`
-    };
+const hoverClassName = computed(() => {
+    if (props.loading || props.disabled || props.ripple) return '';
+    if (props.hoverClass) return props.hoverClass;
+    return props.plain ? `snake-${props.type}-plain-hover` : `snake-${props.type}-hover`;
 });
-// uview 同款类型分组：default/info 是白底深字浅边的"纸面"按钮（uview 的 info 没有样式规则，
-// 与 default 视觉一致），primary/success/warning/error 才是彩底白字实心按钮；传 color 时按自定义彩色处理
-const isPaper = computed(() => (props.type === 'default' || props.type === 'info') && !props.color);
-const buttonStyle = computed(() =>
-    // 对齐 uview 的 toStyle 思路：组件内完成字符串/对象归一与合并，输出单一字符串样式，
-    // 不依赖各端运行时的 :style 数组解析行为；customStyle 覆盖同名前缀样式
-    toStyle(
-        {
-            color: isPaper.value
-                ? 'var(--snake-color-text, #303133)'
-                : props.plain
-                  ? palette.value.main
-                  : 'var(--snake-color-white, #fff)',
-            backgroundColor: isPaper.value
-                ? 'var(--snake-color-surface, #fff)'
-                : props.plain
-                  ? palette.value.light
-                  : palette.value.main,
-            // 彩色实心不描边（uview 同款：彩色实心描同色边框会在四角产生毛刺），纸面按钮描浅边
-            borderColor: isPaper.value
-                ? 'var(--snake-color-border, #DCDFE6)'
-                : props.disabled
-                  ? palette.value.disabled
-                  : props.plain
-                    ? palette.value.main
-                    : 'transparent',
-            borderWidth: isPaper.value || props.plain ? undefined : 0,
-            opacity: props.disabled ? 0.65 : 1,
-            overflow: props.ripple ? 'hidden' : 'visible'
-        },
-        props.customStyle
-    )
+const hairLineClass = computed(() =>
+    ['primary', 'success', 'error', 'warning'].includes(props.type) && !props.plain ? '' : 'snake-hairline-border'
 );
-const effectiveHoverClass = computed(() => {
-    if (props.disabled || props.loading || props.ripple) return 'none';
-    return props.hoverClass || 'snake-button--hover';
-});
-const displayText = computed(() => (props.loading && props.loadingText ? props.loadingText : props.text));
-
-type PointerEventLike = {
-    clientX?: number;
-    clientY?: number;
-    pageX?: number;
-    pageY?: number;
-    x?: number;
-    y?: number;
-    touches?: PointerEventLike[];
-    changedTouches?: PointerEventLike[];
-    detail?: PointerEventLike;
-};
-
-function getPointer(event: unknown) {
-    const source = event as PointerEventLike;
-    const pointer = source.changedTouches?.[0] ?? source.touches?.[0] ?? source.detail ?? source;
-    return {
-        x: pointer.clientX ?? pointer.x ?? pointer.pageX,
-        y: pointer.clientY ?? pointer.y ?? pointer.pageY
-    };
-}
-
-/** 根据操作点与按钮边界生成足以覆盖四个角的水波纹。 */
-function startRipple(event: unknown) {
-    rippleActive.value = false;
-    if (rippleTimer) clearTimeout(rippleTimer);
-
-    nextTick(() => {
-        getRect('.snake-button', instance).then(rect => {
-            if (Array.isArray(rect) || !rect.width || !rect.height) return;
-            const pointer = getPointer(event);
-            const left = rect.left ?? 0;
-            const top = rect.top ?? 0;
-            const localX = Math.min(rect.width, Math.max(0, (pointer.x ?? left + rect.width / 2) - left));
-            const localY = Math.min(rect.height, Math.max(0, (pointer.y ?? top + rect.height / 2) - top));
-            const radius = Math.max(
-                Math.hypot(localX, localY),
-                Math.hypot(rect.width - localX, localY),
-                Math.hypot(localX, rect.height - localY),
-                Math.hypot(rect.width - localX, rect.height - localY)
-            );
-            const diameter = radius * 2;
-            rippleStyle.value = {
-                top: `${localY - radius}px`,
-                left: `${localX - radius}px`,
-                width: `${diameter}px`,
-                height: `${diameter}px`
-            };
-            nextTick(() => {
-                rippleActive.value = true;
-                rippleTimer = setTimeout(() => (rippleActive.value = false), 600);
-            });
-        });
-    });
-}
+const rootStyle = computed(() => toStyle({ overflow: props.ripple ? 'hidden' : 'visible' }, props.customStyle));
 
 function click(event: unknown) {
-    if (props.disabled || props.loading) return;
-    const now = Date.now();
-    const wait = Math.max(0, Number(props.throttleTime) || 0);
-    if (wait && now - lastClick < wait) return;
-    lastClick = now;
-    if (props.ripple) startRipple(event);
+    const wait = Number(props.throttleTime);
+    if (wait) {
+        const now = Date.now();
+        if (now - lastClickTime < wait) return;
+        lastClickTime = now;
+    }
+    if (props.loading || props.disabled) return;
+    if (props.ripple) {
+        waveActive.value = false;
+        nextTick(() => getWaveQuery(event));
+    }
     emit('click', event);
 }
 
-onBeforeUnmount(() => {
-    if (rippleTimer) clearTimeout(rippleTimer);
-});
+type TouchPoint = { clientX?: number; clientY?: number };
+type TouchEventLike = { touches?: TouchPoint[]; changedTouches?: TouchPoint[]; detail?: TouchPoint };
+
+function getWaveQuery(event: unknown) {
+    uni.createSelectorQuery()
+        .in(instance?.proxy ?? null)
+        .select('.snake-button')
+        .boundingClientRect(rect => {
+            if (!rect || Array.isArray(rect) || !rect.width || !rect.height) return;
+            const source = event as TouchEventLike;
+            const touch = source.changedTouches?.[0] ?? source.touches?.[0] ?? source.detail;
+            if (!touch) return;
+            targetWidth.value = Math.max(rect.height, rect.width);
+            rippleTop.value = Number(touch.clientY) - (rect.top ?? 0) - targetWidth.value / 2;
+            rippleLeft.value = Number(touch.clientX) - (rect.left ?? 0) - targetWidth.value / 2;
+            nextTick(() => (waveActive.value = true));
+        })
+        .exec();
+}
 
 function forward(name: Exclude<keyof SnakeButtonEmits, 'click'>, event: unknown) {
     emitNative(name, event);
 }
-
-function authorize(event: unknown) {
+function getAuthorize(event: unknown) {
     if (props.scope === 'phoneNumber') emit('getphonenumber', event);
-    if (props.scope === 'userInfo') emit('getuserinfo', event);
+    else if (props.scope === 'userInfo') emit('getuserinfo', event);
 }
 </script>
 
 <template>
     <button
-        class="snake-button"
+        id="snake-wave-btn"
+        class="snake-button snake-line-1 snake-fix-ios-appearance"
+        data-eventsync="true"
         :class="[
-            `snake-button--${size}`,
-            `snake-button--${shape}`,
-            {
-                'snake-button--plain': plain,
-                'snake-button--hairline': hairLine,
-                'snake-button--loading': loading,
-                'snake-button--block': block
-            },
+            `snake-size-${size}`,
+            plain ? `snake-button--${type}--plain` : '',
+            loading ? 'snake-loading' : '',
+            shape === 'circle' ? 'snake-round-circle' : '',
+            hairLine ? hairLineClass : 'snake-button--bold-border',
+            `snake-button--${type}`,
+            disabled ? `snake-button--${type}--disabled` : '',
             customClass
         ]"
-        :style="buttonStyle"
+        :hover-start-time="Number(hoverStartTime)"
+        :hover-stay-time="Number(hoverStayTime)"
         :disabled="disabled"
         :form-type="formType || undefined"
         :open-type="disabled || loading ? undefined : openType || undefined"
         :app-parameter="appParameter"
         :hover-stop-propagation="hoverStopPropagation"
-        :hover-class="effectiveHoverClass"
-        :hover-start-time="Number(hoverStartTime)"
-        :hover-stay-time="Number(hoverStayTime)"
-        :lang="lang"
-        :session-from="sessionFrom"
         :send-message-title="sendMessageTitle"
         :send-message-path="sendMessagePath"
+        :lang="lang"
+        :data-name="dataName"
+        :session-from="sessionFrom"
         :send-message-img="sendMessageImg"
         :show-message-card="showMessageCard"
-        :data-name="dataName"
-        @click="click"
-        @getauthorize="authorize"
+        :style="rootStyle"
+        :hover-class="hoverClassName"
+        :loading="loading"
+        @tap.stop="click"
+        @getauthorize="getAuthorize"
         @getuserinfo="forward('getuserinfo', $event)"
         @contact="forward('contact', $event)"
         @getphonenumber="forward('getphonenumber', $event)"
@@ -201,130 +118,54 @@ function authorize(event: unknown) {
         @chooseavatar="forward('chooseavatar', $event)"
         @agreeprivacyauthorization="forward('agreeprivacyauthorization', $event)"
     >
-        <view class="snake-button__content" :class="contentClass" :style="contentStyle">
-            <snake-loading-icon
-                v-if="loading"
-                class="snake-button__leading"
-                :mode="loadingMode"
-                :size="loadingSize"
-                :color="plain ? palette.main : 'currentColor'"
-                inactive-color="rgba(255,255,255,.45)"
-            />
-            <snake-icon
-                v-else-if="icon"
-                class="snake-button__leading"
-                :name="icon"
-                :size="loadingSize"
-                :color="iconColor || 'currentColor'"
-            />
-            <slot>{{ displayText }}</slot>
-        </view>
+        <slot>{{ text }}</slot>
         <view
             v-if="ripple"
-            class="snake-button__ripple"
-            :class="{ 'snake-button__ripple--active': rippleActive }"
-            :style="{ ...rippleStyle, backgroundColor: rippleBgColor }"
+            class="snake-wave-ripple"
+            :class="{ 'snake-wave-active': waveActive }"
+            :style="{ top: `${rippleTop}px`, left: `${rippleLeft}px`, width: `${targetWidth}px`, height: `${targetWidth}px`, backgroundColor: rippleBgColor || 'rgba(0, 0, 0, 0.15)' }"
         />
     </button>
 </template>
 
 <style scoped>
-.snake-button {
-    position: relative;
-    z-index: 1;
-    box-sizing: border-box;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    padding: 0 40rpx;
-    border-width: 1px;
-    border-style: solid;
-    border-radius: var(--snake-radius-small, 10rpx);
-    font-weight: 500;
-    line-height: 1;
-    cursor: pointer;
-    transition:
-        color var(--snake-duration-fast, 180ms),
-        background-color var(--snake-duration-fast, 180ms),
-        border-color var(--snake-duration-fast, 180ms),
-        opacity var(--snake-duration-fast, 180ms),
-        filter var(--snake-duration-fast, 180ms),
-        transform var(--snake-duration-fast, 180ms);
-}
-.snake-button::after {
-    border: 0;
-}
-.snake-button--hover {
-    filter: brightness(0.92);
-    transform: translateY(1px);
-}
-.snake-button--block {
-    width: 100%;
-}
-.snake-button--large {
-    height: 100rpx;
-    font-size: 36rpx;
-}
-.snake-button--default {
-    height: 80rpx;
-    font-size: 30rpx;
-}
-.snake-button--medium {
-    width: auto;
-    height: 70rpx;
-    padding: 0 72rpx;
-    font-size: 26rpx;
-}
-.snake-button--small {
-    width: auto;
-    height: 60rpx;
-    padding: 0 30rpx;
-    font-size: 24rpx;
-}
-.snake-button--mini {
-    width: auto;
-    height: 50rpx;
-    padding: 0 20rpx;
-    font-size: 22rpx;
-}
-.snake-button--circle {
-    border-radius: 999px;
-}
-.snake-button--hairline {
-    border-width: 0.5px;
-}
-.snake-button__content {
-    position: relative;
-    z-index: 2;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 0;
-}
-.snake-button__leading {
-    margin-right: 12rpx;
-}
-.snake-button__ripple {
-    position: absolute;
-    z-index: 0;
-    border-radius: 50%;
-    opacity: 0;
-    transform: scale(0);
-    transform-origin: center;
-    pointer-events: none;
-}
-.snake-button__ripple--active {
-    animation: snake-button-ripple 0.6s ease-out;
-}
-@keyframes snake-button-ripple {
-    0% {
-        opacity: 1;
-        transform: scale(0);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(1);
-    }
-}
+.snake-button::after { border: none; }
+.snake-button { position: relative; z-index: 1; box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; overflow: visible; padding: 0 40rpx; border: 0; line-height: 1; cursor: pointer; transition: all 0.15s; }
+.snake-button--bold-border { border: 1px solid var(--snake-color-white, #fff); }
+.snake-button--default { color: var(--snake-color-text, #606266); border-color: var(--snake-color-border-light, #c8c9cc); background-color: var(--snake-color-surface, #fff); }
+.snake-button--primary { color: var(--snake-color-white, #fff); border-color: var(--snake-color-primary, #06d290); background-color: var(--snake-color-primary, #06d290); }
+.snake-button--success { color: var(--snake-color-white, #fff); border-color: var(--snake-color-success, #19be6b); background-color: var(--snake-color-success, #19be6b); }
+.snake-button--error { color: var(--snake-color-white, #fff); border-color: var(--snake-color-error, #fa3534); background-color: var(--snake-color-error, #fa3534); }
+.snake-button--warning { color: var(--snake-color-white, #fff); border-color: var(--snake-color-warning, #ff9900); background-color: var(--snake-color-warning, #ff9900); }
+.snake-button--default--disabled { color: var(--snake-color-white, #fff); border-color: var(--snake-color-border, #e4e7ed); background-color: var(--snake-color-surface, #fff); }
+.snake-button--primary--disabled { color: var(--snake-color-white, #fff) !important; border-color: var(--snake-color-primary-disabled, #71d5a1) !important; background-color: var(--snake-color-primary-disabled, #71d5a1) !important; }
+.snake-button--success--disabled { color: var(--snake-color-white, #fff) !important; border-color: var(--snake-color-success-disabled, #71d5a1) !important; background-color: var(--snake-color-success-disabled, #71d5a1) !important; }
+.snake-button--error--disabled { color: var(--snake-color-white, #fff) !important; border-color: var(--snake-color-error-disabled, #fab6b6) !important; background-color: var(--snake-color-error-disabled, #fab6b6) !important; }
+.snake-button--warning--disabled { color: var(--snake-color-white, #fff) !important; border-color: var(--snake-color-warning-disabled, #fcbd71) !important; background-color: var(--snake-color-warning-disabled, #fcbd71) !important; }
+.snake-button--primary--plain { color: var(--snake-color-primary, #06d290) !important; border-color: var(--snake-color-primary-disabled, #71d5a1) !important; background-color: var(--snake-color-primary-light, #ecf5ff) !important; }
+.snake-button--success--plain { color: var(--snake-color-success, #19be6b) !important; border-color: var(--snake-color-success-disabled, #71d5a1) !important; background-color: var(--snake-color-success-light, #dbf1e1) !important; }
+.snake-button--error--plain { color: var(--snake-color-error, #fa3534) !important; border-color: var(--snake-color-error-disabled, #fab6b6) !important; background-color: var(--snake-color-error-light, #fef0f0) !important; }
+.snake-button--warning--plain { color: var(--snake-color-warning, #ff9900) !important; border-color: var(--snake-color-warning-disabled, #fcbd71) !important; background-color: var(--snake-color-warning-light, #fdf6ec) !important; }
+.snake-hairline-border::after { content: ' '; position: absolute; z-index: 1; top: 0; left: 0; box-sizing: border-box; width: 199.8%; height: 199.7%; border: 1px solid currentColor; transform: scale(0.5); transform-origin: 0 0; pointer-events: none; }
+.snake-wave-ripple { position: absolute; z-index: 0; border-radius: 100%; opacity: 1; background-clip: padding-box; transform: scale(0); transform-origin: center; pointer-events: none; user-select: none; }
+.snake-wave-ripple.snake-wave-active { opacity: 0; transform: scale(2); transition: opacity 1s linear, transform 0.4s linear; }
+.snake-round-circle, .snake-round-circle::after { border-radius: 100rpx; }
+.snake-loading::after { background-color: hsla(0, 0%, 100%, 0.35); }
+.snake-size-large { height: 100rpx; font-size: 36rpx; line-height: 100rpx; }
+.snake-size-default { height: 80rpx; font-size: 30rpx; line-height: 80rpx; }
+.snake-size-medium { display: inline-flex; width: auto; height: 70rpx; padding: 0 80rpx; font-size: 26rpx; line-height: 70rpx; }
+.snake-size-small { display: inline-flex; width: auto; height: 60rpx; padding: 0 30rpx; font-size: 24rpx; line-height: 60rpx; }
+.snake-size-mini { display: inline-flex; width: auto; height: 50rpx; padding: 0 20rpx; padding-top: 1px; font-size: 22rpx; line-height: 50rpx; }
+.snake-primary-plain-hover { color: var(--snake-color-white, #fff) !important; border-color: var(--snake-color-primary-dark, #18b566) !important; background-color: var(--snake-color-primary-dark, #18b566) !important; }
+.snake-default-plain-hover { color: var(--snake-color-white, #fff) !important; border-color: var(--snake-color-primary-dark, #18b566) !important; background-color: var(--snake-color-primary-dark, #18b566) !important; }
+.snake-success-plain-hover { color: var(--snake-color-white, #fff) !important; border-color: var(--snake-color-success-dark, #18b566) !important; background-color: var(--snake-color-success-dark, #18b566) !important; }
+.snake-warning-plain-hover { color: var(--snake-color-white, #fff) !important; border-color: var(--snake-color-warning-dark, #f29100) !important; background-color: var(--snake-color-warning-dark, #f29100) !important; }
+.snake-error-plain-hover { color: var(--snake-color-white, #fff) !important; border-color: var(--snake-color-error-dark, #dd6161) !important; background-color: var(--snake-color-error-dark, #dd6161) !important; }
+.snake-info-plain-hover { color: var(--snake-color-white, #fff) !important; border-color: var(--snake-color-info-dark, #767a82) !important; background-color: var(--snake-color-info-dark, #767a82) !important; }
+.snake-default-hover { color: var(--snake-color-primary-dark, #18b566) !important; border-color: var(--snake-color-primary-dark, #18b566) !important; background-color: var(--snake-color-primary-light, #ecf5ff) !important; }
+.snake-primary-hover { color: var(--snake-color-white, #fff); background: var(--snake-color-primary-dark, #18b566) !important; }
+.snake-success-hover { color: var(--snake-color-white, #fff); background: var(--snake-color-success-dark, #18b566) !important; }
+.snake-info-hover { color: var(--snake-color-white, #fff); background: var(--snake-color-info-dark, #767a82) !important; }
+.snake-warning-hover { color: var(--snake-color-white, #fff); background: var(--snake-color-warning-dark, #f29100) !important; }
+.snake-error-hover { color: var(--snake-color-white, #fff); background: var(--snake-color-error-dark, #dd6161) !important; }
 </style>

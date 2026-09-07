@@ -79,7 +79,7 @@ function goBack(event: unknown) {
                         hover-class="snake-navbar__hit--hover"
                         @click="goBack"
                     >
-                        <snake-icon :name="backIconName" :size="backIconSize" :color="backIconColor" />
+                        <snake-icon :name="backIconName" :size="backIconSize ?? 'inherit'" :color="backIconColor" />
                         <text v-if="backText" class="snake-navbar__back-text" :style="backTextStyle">{{
                             backText
                         }}</text>

@@ -27,13 +27,23 @@ test('button has full state and native capability contract', async () => {
         read('components/snake-button/types.ts'),
         read('components/snake-button/snake-button.vue')
     ]);
-    for (const prop of ['size', 'shape', 'loadingText', 'loadingMode', 'icon', 'ripple', 'throttleTime', 'openType']) {
+    for (const prop of ['size', 'shape', 'hoverBgColor', 'rippleBgColor', 'ripple', 'throttleTime', 'openType']) {
         assert.match(types, new RegExp(`${prop}\\?`));
     }
     for (const event of ['getphonenumber', 'chooseavatar', 'agreeprivacyauthorization']) {
         assert.match(source, new RegExp(`@${event}`));
     }
-    assert.match(source, /SnakeLoadingIcon/);
+    assert.match(source, /:loading="loading"/);
+    for (const type of ['default', 'primary', 'success', 'warning', 'error', 'info']) {
+        assert.match(
+            source,
+            new RegExp(`\\.snake-${type}-plain-hover \\{[^}]*color:[^}]*border-color:[^}]*background-color:`),
+            `${type} plain hover should use a filled theme state`
+        );
+    }
+    for (const removed of ['loadingText', 'loadingMode', 'iconColor', 'contentStyle', 'block']) {
+        assert.doesNotMatch(types, new RegExp(`${removed}\\?`));
+    }
 });
 
 test('subsection exposes animated button and outlined selection modes', async () => {

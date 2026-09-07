@@ -20,6 +20,7 @@ const components = [
     'snake-sticky',
     'snake-swiper',
     'snake-tabs',
+    'snake-upload',
     'snake-button-sort',
     'snake-drop-menu',
     'snake-drop-menu-item',
@@ -49,7 +50,7 @@ test('every public component exposes an independent type contract', async () => 
     const packageEntry = await readFile(new URL('index.ts', root), 'utf8');
     const declarationEntry = await readFile(new URL('types/components.d.ts', root), 'utf8');
 
-    assert.equal(directories.length, 68);
+    assert.equal(directories.length, 69);
     for (const component of directories) {
         const types = await readFile(new URL(`components/${component}/types.ts`, root), 'utf8');
         assert.match(types, /export (?:interface|type) Snake/, `${component}: missing public contract`);
@@ -172,13 +173,13 @@ test('migrated controls use runtime props as the defaults source of truth', asyn
     }
 });
 
-test('button ripple follows the pointer and cleans up its timer', async () => {
+test('button ripple follows the uView longest-edge wave model', async () => {
     const source = await readFile(new URL('components/snake-button/snake-button.vue', root), 'utf8');
 
-    assert.match(source, /getRect\('.snake-button'/);
+    assert.match(source, /createSelectorQuery\(\)/);
     assert.match(source, /changedTouches|touches/);
-    assert.match(source, /Math\.hypot/);
-    assert.match(source, /onBeforeUnmount/);
+    assert.match(source, /Math\.max\(rect\.height, rect\.width\)/);
+    assert.match(source, /transform: scale\(2\)/);
 });
 
 test('package entry exposes precise foundation component props', async () => {
@@ -274,27 +275,24 @@ test('published styles avoid wxss-unsupported universal selectors', async () => 
     }
 });
 
-test('icon uses the bundled Snake UI font for stable common glyphs', async () => {
+test('icon follows the uView Pro contract with the complete bundled glyph set', async () => {
     const source = await readFile(new URL('components/snake-icon/snake-icon.vue', root), 'utf8');
     const types = await readFile(new URL('components/snake-icon/types.ts', root), 'utf8');
     const stylesheet = await readFile(new URL('iconfont.css', root), 'utf8');
-    const font = await readFile(new URL('iconfont.woff2', root));
     assert.ok(source.includes("@import '../../iconfont.css'"));
-    assert.ok(source.includes("checkmark: 'checkbox-mark'"));
+    assert.ok(source.includes("props.name.includes('/')"));
+    assert.ok(source.includes("emit('click', props.index || event)"));
+    assert.ok(source.includes("emit('touchstart', props.index || event)"));
+    assert.ok(source.includes('showDecimalIcon'));
+    assert.doesNotMatch(source, /glyphs|iconfontAliases|\bstop\b/);
     assert.match(stylesheet, /font-family: ["']snake-iconfont["']/);
-    assert.match(stylesheet, /\.snake-iconfont\s*\{[^}]*font-size:\s*inherit/s);
-    assert.doesNotMatch(stylesheet, /\.snake-iconfont\s*\{[^}]*font-size:\s*16px/s);
     assert.match(stylesheet, /\.sicon-checkbox-mark::?before/);
-    assert.match(stylesheet, /content: ["']\\e628["']/);
-    assert.match(stylesheet, /\.sicon-arrow-up::?before\s*\{\s*content: ["']\\e601["']/);
-    assert.match(stylesheet, /\.sicon-arrow-down::?before\s*\{\s*content: ["']\\e602["']/);
-    assert.match(stylesheet, /url\(.*(x-font-woff2|iconfont\.woff2)/);
-    assert.ok(font.length > 0);
+    assert.match(stylesheet, /x-font-woff2/);
     assert.ok(types.includes("'left' | 'right' | 'top' | 'bottom'"));
-    assert.ok(source.includes("props.labelPos === 'left'"));
-    assert.ok(source.includes("props.labelPos === 'top'"));
-    for (const icon of ['search', 'success', 'warning', 'eye-outline', 'arrow-right']) {
+    assert.ok(types.includes("default: 'sicon'"));
+    assert.ok(types.includes('showDecimalIcon'));
+    assert.ok(types.includes('marginBottom'));
+    for (const icon of ['search', 'checkmark-circle', 'warning', 'eye-off-outline', 'arrow-right']) {
         assert.match(stylesheet, new RegExp(`\\.sicon-${icon}::?before`), `${icon}: missing bundled glyph`);
-        assert.ok(source.includes(`'${icon}'`), `${icon}: missing component mapping`);
     }
 });

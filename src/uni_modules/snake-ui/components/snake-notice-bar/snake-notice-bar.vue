@@ -85,7 +85,7 @@ function more(event: any) {
         :style="rootStyle"
         @click="emit('click', current)"
     >
-        <snake-icon v-if="volumeIcon" class="snake-notice-bar__leading" name="info" :size="volumeSize" />
+        <snake-icon v-if="volumeIcon" class="snake-notice-bar__leading" name="info" :size="volumeSize ?? 'inherit'" />
         <swiper
             v-if="vertical"
             class="snake-notice-bar__swiper"

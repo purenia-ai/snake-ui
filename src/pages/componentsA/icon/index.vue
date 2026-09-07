@@ -20,7 +20,7 @@ const controls: DemoControl[] = [
             { label: '中性灰', value: '#7b8d84' }
         ]
     },
-    { key: 'iconSize', label: '图标尺寸', type: 'slider', defaultValue: 28, min: 18, max: 44, step: 2, unit: 'px' },
+    { key: 'iconSize', label: '图标尺寸', type: 'slider', defaultValue: 36, min: 24, max: 64, step: 2, unit: 'rpx' },
     { key: 'iconBold', label: '图标加粗', type: 'switch', defaultValue: false },
     { key: 'iconLabel', label: '标签文字', type: 'input', defaultValue: '搜索', placeholder: '留空则隐藏标签' },
     {
@@ -60,7 +60,7 @@ const selectedIcon = ref('search');
 const iconNames = [
     'search',
     'checkbox-mark',
-    'success',
+    'checkmark-circle',
     'warning',
     'info',
     'close',

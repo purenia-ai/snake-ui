@@ -1,50 +1,45 @@
-import type { UnitValue } from '../../libs/function/unit';
+import type { ExtractPropTypes, PropType } from 'vue';
 import type { SnakeImageMode, SnakeStyleValue } from '../../types/global';
 
-/** SnakeIcon 组件的公开属性。 */
-export interface SnakeIconProps {
-    /** 数据项名称或唯一标识。 */
-    name?: string;
-    /** 内容颜色。 */
-    color?: string;
-    /** 组件尺寸。 */
-    size?: UnitValue;
-    /** 是否使用粗体文字。 */
-    bold?: boolean;
-    /** 当前数据项索引。 */
-    index?: number | string;
-    /** 展示标签文本。 */
-    label?: number | string;
-    /** label pos 配置。 */
-    labelPos?: 'left' | 'right' | 'top' | 'bottom';
-    /** label color 配置。 */
-    labelColor?: string;
-    /** 标签文字尺寸，数值按 rpx 处理。 */
-    labelSize?: UnitValue;
-    /** space 配置。 */
-    space?: UnitValue;
-    /** custom prefix 配置。 */
-    customPrefix?: string;
-    /** 根节点自定义类名。 */
-    customClass?: string;
-    /** 按下组件时应用的类名。 */
-    hoverClass?: string;
-    /** 图片裁剪与缩放模式。 */
-    imgMode?: SnakeImageMode;
-    /** 组件宽度。 */
-    width?: UnitValue;
-    /** 组件高度。 */
-    height?: UnitValue;
-    /** top 配置。 */
-    top?: UnitValue;
-    /** stop 配置。 */
-    stop?: boolean;
-    /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
-}
+/** 标签相对图标的显示方向。 */
+export type SnakeIconLabelPosition = 'left' | 'right' | 'top' | 'bottom';
 
-/** SnakeIcon 组件的事件契约。 */
+/** 与 uView Pro IconProps 等价的 SnakeIcon 运行时属性。 */
+export const SnakeIconProps = {
+    customStyle: { type: [String, Object, Array] as PropType<SnakeStyleValue>, default: () => ({}) },
+    customClass: { type: String, default: '' },
+    name: { type: String, default: '' },
+    color: { type: String, default: '' },
+    size: { type: [Number, String] as PropType<string | number>, default: 'inherit' },
+    bold: { type: Boolean, default: false },
+    index: { type: [Number, String] as PropType<string | number>, default: '' },
+    hoverClass: { type: String, default: '' },
+    customPrefix: { type: String, default: 'sicon' },
+    label: { type: [String, Number] as PropType<string | number>, default: '' },
+    labelPos: { type: String as PropType<SnakeIconLabelPosition>, default: 'right' },
+    labelSize: { type: [String, Number] as PropType<string | number>, default: '28' },
+    labelColor: { type: String, default: 'var(--snake-color-text-secondary, #606266)' },
+    marginLeft: { type: [String, Number] as PropType<string | number>, default: '6' },
+    marginTop: { type: [String, Number] as PropType<string | number>, default: '6' },
+    marginRight: { type: [String, Number] as PropType<string | number>, default: '6' },
+    marginBottom: { type: [String, Number] as PropType<string | number>, default: '6' },
+    space: { type: [String, Number] as PropType<string | number>, default: '' },
+    imgMode: { type: String as PropType<SnakeImageMode>, default: 'widthFix' },
+    width: { type: [String, Number] as PropType<string | number>, default: '' },
+    height: { type: [String, Number] as PropType<string | number>, default: '' },
+    top: { type: [String, Number] as PropType<string | number>, default: 0 },
+    showDecimalIcon: { type: Boolean, default: false },
+    inactiveColor: { type: String, default: 'var(--snake-color-divider, #e4e7ed)' },
+    percent: { type: [Number, String] as PropType<string | number>, default: '50' }
+};
+
+/** SnakeIcon 组件的公开属性类型。 */
+export type SnakeIconProps = ExtractPropTypes<typeof SnakeIconProps>;
+
+/** SnakeIcon 组件的公开事件。 */
 export interface SnakeIconEmits {
-    /** click 事件携带的参数。 */
-    click: [event: unknown, index: number | string];
+    /** 点击图标时返回 index，未设置时返回原始事件。 */
+    (event: 'click', index: string | number | unknown): void;
+    /** 触摸图标时返回 index，未设置时返回原始事件。 */
+    (event: 'touchstart', index: string | number | unknown): void;
 }

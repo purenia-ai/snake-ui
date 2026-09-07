@@ -31,7 +31,7 @@ const openTool = (url: string) => uni.navigateTo({ url });
                     <text class="tool-card__title">{{ text(tool.title) }}</text>
                     <text class="tool-card__desc">{{ text(tool.desc) }}</text>
                 </view>
-                <snake-icon name="right" :size="18" />
+                <snake-icon name="arrow-right" :size="18" />
             </view>
         </view>
     </DemoPage>

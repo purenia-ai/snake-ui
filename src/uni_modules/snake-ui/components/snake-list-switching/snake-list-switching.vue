@@ -264,7 +264,7 @@
             <snake-tabs
                 :list="datas.commoditylisttypetab"
                 :current="active1"
-                :lineColor="datas.tabColor"
+                :active-color="datas.tabColor"
                 @change="changeTabs"
             ></snake-tabs>
             <!-- 无数据默认展示 -->

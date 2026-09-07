@@ -51,6 +51,15 @@ const enUS: SnakeLocale = {
             hour: 'h',
             minute: 'm',
             second: 's'
+        },
+        upload: {
+            uploadImage: 'Upload image', uploadVideo: 'Upload video', uploadFile: 'Upload file', uploadMedia: 'Upload media',
+            retry: 'Retry', reUpload: 'Uploading again', fileNotSupported: 'File selection is not supported on this platform',
+            overSize: 'File size exceeds the limit', overMaxCount: 'File count exceeds the limit',
+            noAction: 'Configure an upload action or uploadRequest', uploadFailed: 'Upload failed',
+            modalTitle: 'Prompt', deleteConfirm: 'Delete this file?', modalCancelText: 'Cancel', modalConfirmText: 'Confirm',
+            terminatedRemove: 'Removal canceled', removeSuccess: 'Removed', previewFailed: 'Preview failed',
+            openFailed: 'Unable to open this file', notAllowedExt: 'Unsupported file type: {ext}'
         }
     }
 };

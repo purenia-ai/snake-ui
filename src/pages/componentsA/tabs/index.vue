@@ -60,8 +60,7 @@ function updateValue(key: string, value: DemoValue) {
                 ><snake-tabs
                     :list="tabs"
                     :current="current"
-                    :scrollable="Boolean(state.tabsScrollable)"
-                    :line-color="String(state.tabsColor)"
+                    :is-scroll="Boolean(state.tabsScrollable)"
                     :active-color="String(state.tabsColor)"
                     :font-size="Number(state.tabsSize)"
                     :is-dot="Boolean(state.tabsDot)"

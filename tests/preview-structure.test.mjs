@@ -92,8 +92,8 @@ test('component docs and example routes remain one-to-one', async () => {
         if (match) previews.push(match[1]);
     }
 
-    assert.equal(routes.length, 65);
-    assert.equal(previews.length, 65);
+    assert.equal(routes.length, 66);
+    assert.equal(previews.length, 66);
     assert.deepEqual([...new Set(previews)].sort(), [...new Set(routes)].sort());
 });
 
@@ -122,9 +122,9 @@ test('component overview page covers every example route and directory layout', 
     );
     const routes = exampleRoutes(pages);
 
-    assert.equal(configuredPaths.length, 65);
+    assert.equal(configuredPaths.length, 66);
     assert.deepEqual([...configuredPaths].sort(), [...routes].sort());
-    assert.equal(groupA.length, 44);
+    assert.equal(groupA.length, 45);
     assert.equal(groupB.length, 21);
     for (const directory of [
         ...groupA.map(name => ['componentsA', name]),
@@ -159,7 +159,7 @@ test('all example pages own their interactive demo configuration', async () => {
     const panel = await readFile(resolve(root, 'src/components/demo-control-panel/demo-control-panel.vue'), 'utf8');
     const pages = await examplePageSources();
 
-    assert.equal(pages.length, 65);
+    assert.equal(pages.length, 66);
     for (const page of pages) {
         assert.match(page, /<DemoPage/);
         assert.match(page, /<DemoControlPanel/);
@@ -347,18 +347,12 @@ test('icon preview exposes the bundled glyph set with a restrained interactive g
 test('button preview presents the complete capability showcase', async () => {
     const renderer = await readFile(resolve(root, 'src/pages/componentsA/button/index.vue'), 'utf8');
 
-    for (const section of [
-        '按钮主题',
-        '镂空按钮',
-        '按钮尺寸',
-        '按钮形状',
-        '按钮状态',
-        '图标按钮',
-        '自定义颜色',
-        '水波纹'
-    ]) {
-        assert.match(renderer, new RegExp(section), `button preview: missing ${section}`);
-    }
+    assert.doesNotMatch(renderer, /loading-text|loading-mode|\bicon=|<snake-button[^>]*\scolor=|:block=/);
+    assert.match(renderer, /type="primary"/);
+    assert.match(renderer, /type="success" plain/);
+    assert.match(renderer, /size="mini"/);
+    assert.match(renderer, /shape="circle"/);
+    assert.match(renderer, /ripple-bg-color/);
     assert.match(renderer, /demo-button-grid/);
     assert.match(renderer, /demo-button-flow/);
 });

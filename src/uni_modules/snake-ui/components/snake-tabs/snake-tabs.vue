@@ -1,388 +1,276 @@
 <script setup lang="ts">
 /**
  * @component SnakeTabs
- * @description 用于分类导航和状态筛选。标签较多时，激活项会自动滚动到容器中间；同时支持隐藏或禁用标签、数量或圆点徽标及自定义指示线。
+ * @description 对齐 uView Pro 的 tabs 标签组件，支持横向滚动、激活项居中、徽标和滑块。
  * @see /components/tabs
  */
-
 import { computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import type { SnakeTabItem, SnakeTabsEmits, SnakeTabsProps } from './types';
 
-defineOptions({ name: 'SnakeTabs', options: { virtualHost: true, styleIsolation: 'shared' } });
+defineOptions({
+    name: 'SnakeTabs',
+    options: {
+        addGlobalClass: true,
+        // #ifndef MP-TOUTIAO
+        virtualHost: true,
+        // #endif
+        styleIsolation: 'shared'
+    }
+});
 
 const props = withDefaults(defineProps<SnakeTabsProps>(), {
+    customStyle: '',
+    customClass: '',
+    isScroll: true,
     list: () => [],
     current: 0,
-    name: 'name',
-    count: 'count',
-    scrollable: true,
     height: 80,
     fontSize: 30,
-    duration: 0.3,
-    lineColor: 'var(--snake-color-primary, #06D290)',
-    activeColor: 'var(--snake-color-text, #303133)',
-    inactiveColor: 'var(--snake-color-text-secondary, #606266)',
+    duration: 0.5,
+    activeColor: 'var(--snake-color-primary, #06D290)',
+    inactiveColor: 'var(--snake-color-text, #303133)',
     barWidth: 40,
     barHeight: 6,
     gutter: 30,
-    bgColor: 'transparent',
+    bgColor: '#fff',
+    name: 'name',
+    count: 'count',
     offset: () => [5, 20],
     isDot: false,
     bold: true,
-    activeItemStyle: '',
+    activeItemStyle: () => ({}),
     showBar: true,
-    barStyle: '',
-    itemWidth: 'auto',
-    customClass: '',
-    customStyle: ''
+    barStyle: () => ({}),
+    itemWidth: 'auto'
 });
 
 const emit = defineEmits<SnakeTabsEmits>();
 const instance = getCurrentInstance();
-const itemIdPrefix = `snake-tabs-${instance?.uid ?? 0}-item`;
 const scrollLeft = ref(0);
-const indicatorLeft = ref(0);
-const indicatorReady = ref(false);
-const firstLayout = ref(true);
+const tabQueryInfo = ref<UniApp.NodeInfo[]>([]);
+const componentWidth = ref(0);
+const scrollBarLeft = ref(0);
+const parentLeft = ref(0);
+const id = `snake-tabs-${instance?.uid ?? 0}`;
+const currentIndex = ref<number | string>(props.current);
+const barFirstTimeMove = ref(true);
+let initTimer: ReturnType<typeof setTimeout> | undefined;
+let firstMoveTimer: ReturnType<typeof setTimeout> | undefined;
 
-let layoutVersion = 0;
-let layoutTimer: ReturnType<typeof setTimeout> | undefined;
-let animationTimer: ReturnType<typeof setTimeout> | undefined;
-
-const active = computed(() => {
-    if (!props.list.length) return -1;
-    const value = Number(props.current);
-    const index = Number.isFinite(value) ? Math.trunc(value) : 0;
-    return Math.max(0, Math.min(props.list.length - 1, index));
-});
-const canScroll = computed(() => props.isScroll ?? props.scrollable);
-const durationSeconds = computed(() => {
-    const value = Number(props.duration);
-    return Number.isFinite(value) && value >= 0 ? value : 0.3;
-});
-const rootStyle = computed(() => [
+const rootStyle = computed(() => [{ background: props.bgColor }, props.customStyle]);
+const tabBarStyle = computed(() => [
     {
-        height: addUnit(props.height, 'rpx'),
-        backgroundColor: props.bgColor
-    },
-    props.customStyle
-]);
-const indicatorStyle = computed(() => [
-    {
-        left: `${indicatorLeft.value}px`,
         width: addUnit(props.barWidth, 'rpx'),
+        transform: `translate(${scrollBarLeft.value}px, -100%)`,
+        transitionDuration: `${barFirstTimeMove.value ? 0 : props.duration}s`,
+        backgroundColor: props.activeColor,
         height: addUnit(props.barHeight, 'rpx'),
-        backgroundColor: props.lineColor,
-        borderRadius: '999rpx',
-        opacity: indicatorReady.value ? 1 : 0,
-        transitionDuration: `${firstLayout.value ? 0 : durationSeconds.value}s`
+        opacity: barFirstTimeMove.value ? 0 : 1,
+        borderRadius: `${Number(props.barHeight) / 2}px`
     },
     props.barStyle
 ]);
 
-function isObjectItem(item: SnakeTabItem): item is Exclude<SnakeTabItem, string> {
-    return typeof item !== 'string';
+function itemValue(item: SnakeTabItem, key: string, fallback: 'name' | 'count') {
+    return item[key] || item[fallback];
 }
 
-function label(item: SnakeTabItem) {
-    if (!isObjectItem(item)) return item;
-    return String(item[props.name] ?? item.name ?? '');
+function badgeCount(item: SnakeTabItem) {
+    return itemValue(item, props.count, 'count') || 0;
 }
 
-function badge(item: SnakeTabItem) {
-    if (!isObjectItem(item)) return '';
-    return item[props.count] ?? item.count ?? '';
+function badgeText(item: SnakeTabItem) {
+    if (props.isDot) return '';
+    const value = badgeCount(item);
+    return Number(value) > 99 ? '99+' : value;
 }
 
-function showBadge(item: SnakeTabItem) {
-    const value = badge(item);
-    return value !== '' && value !== null && value !== undefined;
-}
-
-function isHidden(item: SnakeTabItem) {
-    return isObjectItem(item) && Boolean(item.hidden);
-}
-
-function isDisabled(item: SnakeTabItem) {
-    return isObjectItem(item) && Boolean(item.disabled);
-}
-
-function itemStyle(index: number) {
-    const selected = index === active.value;
-    const style = {
-        color: selected ? props.activeColor : props.inactiveColor,
+function tabItemStyle(index: number) {
+    const style: Record<string, string> = {
+        height: addUnit(props.height, 'rpx'),
+        lineHeight: addUnit(props.height, 'rpx'),
         fontSize: addUnit(props.fontSize, 'rpx'),
-        fontWeight: selected && props.bold ? '600' : '400',
-        transitionDuration: `${durationSeconds.value}s`,
-        flex: canScroll.value ? 'none' : '1',
-        width: props.itemWidth === 'auto' ? undefined : addUnit(props.itemWidth, 'rpx'),
-        paddingLeft: canScroll.value ? addUnit(props.gutter, 'rpx') : undefined,
-        paddingRight: canScroll.value ? addUnit(props.gutter, 'rpx') : undefined,
-        opacity: isDisabled(props.list[index]) ? 0.45 : 1
+        transitionDuration: `${props.duration}s`,
+        padding: props.isScroll ? `0 ${addUnit(props.gutter, 'rpx')}` : '',
+        flex: props.isScroll ? 'auto' : '1',
+        width: addUnit(props.itemWidth),
+        color: index === Number(currentIndex.value) ? props.activeColor : props.inactiveColor
     };
-    return [style, selected ? props.activeItemStyle : ''];
+    if (index === Number(currentIndex.value) && props.bold) style.fontWeight = 'bold';
+    return [style, index === Number(currentIndex.value) ? props.activeItemStyle : {}];
 }
 
-function badgeStyle() {
-    return {
-        top: addUnit(props.offset[0], 'rpx'),
-        right: addUnit(props.offset[1], 'rpx')
-    };
-}
-
-function itemId(index: number) {
-    return `${itemIdPrefix}-${index}`;
-}
-
-function hideIndicator() {
-    if (animationTimer) clearTimeout(animationTimer);
-    animationTimer = undefined;
-    indicatorReady.value = false;
-    firstLayout.value = true;
-}
-
-function finishFirstLayout() {
-    if (!firstLayout.value) return;
-    if (animationTimer) clearTimeout(animationTimer);
-    animationTimer = setTimeout(() => {
-        firstLayout.value = false;
-        animationTimer = undefined;
-    }, 16);
-}
-
-/**
- * 在视图更新后批量测量容器、轨道和标签位置。
- * layoutVersion 保证快速连续刷新时，较早返回的节点查询不会覆盖最新布局。
- */
-async function init() {
-    const version = ++layoutVersion;
-    await nextTick();
-
-    if (typeof uni === 'undefined' || typeof uni.createSelectorQuery !== 'function') return;
-
-    await new Promise<void>(resolve => {
-        const query = uni.createSelectorQuery().in(instance?.proxy as any);
-        query.select('.snake-tabs__viewport').boundingClientRect();
-        query.select('.snake-tabs__track').boundingClientRect();
-        for (let index = 0; index < props.list.length; index += 1) {
-            query.select(`#${itemId(index)}`).boundingClientRect();
-        }
-        query.exec((results: any[]) => {
-            if (version !== layoutVersion) {
-                resolve();
-                return;
-            }
-
-            const viewport = results?.[0];
-            const track = results?.[1];
-            const itemRect = active.value >= 0 ? results?.[active.value + 2] : null;
-            const activeItem = active.value >= 0 ? props.list[active.value] : undefined;
-
-            if (!viewport || !track || !itemRect || !activeItem || isHidden(activeItem)) {
-                scrollLeft.value = 0;
-                hideIndicator();
-                resolve();
-                return;
-            }
-
-            const viewportWidth = Number(viewport.width) || 0;
-            const contentCenter =
-                (Number(itemRect.left) || 0) - (Number(track.left) || 0) + (Number(itemRect.width) || 0) / 2;
-
-            indicatorLeft.value = contentCenter;
-            scrollLeft.value = canScroll.value ? Math.max(0, contentCenter - viewportWidth / 2) : 0;
-            indicatorReady.value = true;
-            finishFirstLayout();
-            resolve();
-        });
+function getRect(selector: string) {
+    return new Promise<UniApp.NodeInfo | null>(resolve => {
+        uni.createSelectorQuery()
+            .in(instance?.proxy as any)
+            .select(selector)
+            .boundingClientRect(rect => resolve((rect as UniApp.NodeInfo | null) ?? null))
+            .exec();
     });
 }
 
-async function scrollByIndex() {
-    await init();
+async function init() {
+    await nextTick();
+    if (typeof uni === 'undefined' || typeof uni.createSelectorQuery !== 'function') return;
+    const tabRect = await getRect(`#${id}`);
+    if (!tabRect) return;
+    parentLeft.value = Number(tabRect.left) || 0;
+    componentWidth.value = Number(tabRect.width) || 0;
+    getTabRect();
 }
 
-/** 合并同一轮中的多次列表或尺寸变化，避免重复执行节点测量。 */
-function scheduleInit() {
-    if (layoutTimer) clearTimeout(layoutTimer);
-    layoutTimer = setTimeout(() => {
-        layoutTimer = undefined;
-        void init();
-    }, 0);
-}
-
-function select(item: SnakeTabItem, index: number) {
-    emit('click', { index, item });
-    if (isHidden(item) || isDisabled(item) || index === active.value) return;
+function clickTab(index: number) {
+    if (index === Number(currentIndex.value)) return;
     emit('change', index);
 }
 
-function selectAdjacent(index: number, direction: -1 | 1) {
-    for (let offset = 1; offset <= props.list.length; offset += 1) {
-        const target = (index + direction * offset + props.list.length) % props.list.length;
-        const item = props.list[target];
-        if (item && !isHidden(item) && !isDisabled(item)) {
-            select(item, target);
-            return;
-        }
+function getTabRect() {
+    const query = uni.createSelectorQuery().in(instance?.proxy as any);
+    for (let index = 0; index < props.list.length; index += 1) {
+        query.select(`#${id}-item-${index}`).fields({ size: true, rect: true }, () => {});
     }
+    query.exec(results => {
+        tabQueryInfo.value = (results ?? []) as UniApp.NodeInfo[];
+        scrollByIndex();
+    });
+}
+
+function scrollByIndex() {
+    const tabInfo = tabQueryInfo.value[Number(currentIndex.value)];
+    if (!tabInfo) return;
+    const tabWidth = Number(tabInfo.width) || 0;
+    const offsetLeft = (Number(tabInfo.left) || 0) - parentLeft.value;
+    const nextScrollLeft = offsetLeft - (componentWidth.value - tabWidth) / 2;
+    scrollLeft.value = nextScrollLeft < 0 ? 0 : nextScrollLeft;
+    const left = (Number(tabInfo.left) || 0) + tabWidth / 2 - parentLeft.value;
+    scrollBarLeft.value = left - uni.upx2px(Number(props.barWidth)) / 2;
+    if (!barFirstTimeMove.value) return;
+    if (firstMoveTimer) clearTimeout(firstMoveTimer);
+    firstMoveTimer = setTimeout(() => {
+        barFirstTimeMove.value = false;
+        firstMoveTimer = undefined;
+    }, 100);
 }
 
 watch(
-    () => [
-        props.list,
-        props.current,
-        props.name,
-        props.fontSize,
-        props.gutter,
-        props.itemWidth,
-        props.isScroll,
-        props.scrollable
-    ],
-    scheduleInit,
-    { deep: true }
+    () => props.list,
+    (nextList, previousList) => {
+        if (nextList.length !== previousList.length) currentIndex.value = 0;
+        void nextTick(init);
+    }
 );
 
-onMounted(scheduleInit);
+watch(
+    () => props.current,
+    value => {
+        void nextTick(() => {
+            currentIndex.value = value;
+            scrollByIndex();
+        });
+    },
+    { immediate: true }
+);
 
-onBeforeUnmount(() => {
-    layoutVersion += 1;
-    if (layoutTimer) clearTimeout(layoutTimer);
-    if (animationTimer) clearTimeout(animationTimer);
+onMounted(() => {
+    void nextTick(() => {
+        initTimer = setTimeout(() => {
+            initTimer = undefined;
+            void init();
+        }, 500);
+    });
 });
 
-defineExpose({ init, scrollByIndex });
+onBeforeUnmount(() => {
+    if (initTimer) clearTimeout(initTimer);
+    if (firstMoveTimer) clearTimeout(firstMoveTimer);
+});
+
+defineExpose({ init, clickTab, scrollByIndex });
 </script>
 
 <template>
-    <view class="snake-tabs" :class="customClass" :style="rootStyle">
-        <scroll-view
-            class="snake-tabs__viewport"
-            :scroll-x="canScroll"
-            :scroll-left="scrollLeft"
-            scroll-with-animation
-            :show-scrollbar="false"
-        >
-            <view class="snake-tabs__track" :class="{ 'is-scrollable': canScroll }" role="tablist">
-                <view
-                    v-for="(item, index) in list"
-                    :id="itemId(index)"
-                    :key="index"
-                    class="snake-tabs__item"
-                    :class="{ 'is-active': index === active, 'is-hidden': isHidden(item), 'is-disabled': isDisabled(item) }"
-                    :style="itemStyle(index)"
-                    role="tab"
-                    :aria-selected="index === active"
-                    :aria-disabled="isDisabled(item)"
-                    :tabindex="isHidden(item) || isDisabled(item) ? -1 : index === active ? 0 : -1"
-                    @click="select(item, index)"
-                    @keydown.left.prevent="selectAdjacent(index, -1)"
-                    @keydown.right.prevent="selectAdjacent(index, 1)"
-                >
-                    <view class="snake-tabs__label">
-                        <text>{{ label(item) }}</text>
-                        <text
-                            v-if="showBadge(item)"
+    <view class="snake-tabs" :style="rootStyle" :class="customClass">
+        <view>
+            <scroll-view
+                scroll-x
+                class="snake-tabs__scroll-view"
+                :scroll-left="scrollLeft"
+                :show-scrollbar="false"
+                scroll-with-animation
+            >
+                <view :id="id" class="snake-tabs__scroll-box" :class="{ 'snake-tabs__scroll-flex': !isScroll }">
+                    <view
+                        v-for="(item, index) in list"
+                        :id="`${id}-item-${index}`"
+                        :key="index"
+                        class="snake-tabs__item snake-line-1"
+                        :class="{ 'snake-tabs__item--hidden': item.hidden }"
+                        :style="tabItemStyle(index)"
+                        @tap="clickTab(index)"
+                    >
+                        <view
+                            v-if="Number(badgeCount(item)) !== 0"
                             class="snake-tabs__badge"
-                            :class="{ 'is-dot': isDot }"
-                            :style="badgeStyle()"
-                        >
-                            {{ isDot ? '' : badge(item) }}
-                        </text>
+                            :class="{ 'snake-tabs__badge--dot': isDot }"
+                            :style="{ top: `${offset[0]}rpx`, right: `${offset[1]}rpx` }"
+                        >{{ badgeText(item) }}</view>
+                        {{ itemValue(item, name, 'name') }}
                     </view>
+                    <view v-if="showBar" class="snake-tabs__bar" :style="tabBarStyle" />
                 </view>
-                <view v-if="showBar" class="snake-tabs__line" :style="indicatorStyle" />
-            </view>
-        </scroll-view>
+            </scroll-view>
+        </view>
     </view>
 </template>
 
 <style scoped>
 .snake-tabs,
-.snake-tabs__viewport {
-    box-sizing: border-box;
-    width: 100%;
-    height: 100%;
-}
-
-.snake-tabs__viewport {
-    position: relative;
-    white-space: nowrap;
-}
-
-.snake-tabs__track {
-    position: relative;
-    display: flex;
-    min-width: 100%;
-    height: 100%;
-}
-
-.snake-tabs__track.is-scrollable {
-    display: inline-flex;
-}
-
+.snake-tabs__scroll-view,
+.snake-tabs__scroll-box,
+.snake-tabs__item { box-sizing: border-box; }
+.snake-tabs__scroll-box { position: relative; white-space: nowrap; }
+.snake-tabs__scroll-view { position: relative; width: 100%; white-space: nowrap; }
 .snake-tabs__item {
     position: relative;
-    box-sizing: border-box;
-    display: flex;
-    min-width: 0;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-    white-space: nowrap;
+    display: inline-block;
+    overflow: hidden;
     text-align: center;
-    transition-property: color;
-}
-
-.snake-tabs__item.is-hidden {
-    display: none;
-}
-
-.snake-tabs__item.is-disabled {
-    cursor: not-allowed;
-}
-
-.snake-tabs__label {
-    position: relative;
-    display: inline-flex;
-    height: 100%;
-    align-items: center;
+    text-overflow: ellipsis;
     white-space: nowrap;
+    transition-property: background-color, color;
 }
-
+.snake-tabs__item--hidden { display: none; }
+.snake-tabs__bar { position: absolute; bottom: 0; }
+.snake-tabs__scroll-flex { display: flex; justify-content: space-between; }
 .snake-tabs__badge {
     position: absolute;
-    z-index: 1;
+    z-index: 9;
+    display: inline-flex;
     min-width: 28rpx;
     height: 28rpx;
+    align-items: center;
+    justify-content: center;
     padding: 0 7rpx;
-    border-radius: 14rpx;
+    border-radius: 100rpx;
     color: #fff;
-    background: var(--snake-color-error, #FA3534);
+    background: var(--snake-color-error, #fa3534);
     font-size: 18rpx;
     line-height: 28rpx;
-    text-align: center;
+    transform: scale(0.8);
+    transform-origin: center;
 }
-
-.snake-tabs__badge.is-dot {
-    width: 12rpx;
-    min-width: 12rpx;
-    height: 12rpx;
-    padding: 0;
+.snake-tabs__badge--dot { width: 16rpx; min-width: 16rpx; height: 16rpx; padding: 0; }
+::-webkit-scrollbar {
+    display: none;
+    width: 0 !important;
+    height: 0 !important;
+    background: transparent;
+    -webkit-appearance: none;
 }
-
-.snake-tabs__line {
-    position: absolute;
-    bottom: 0;
-    box-sizing: border-box;
-    transform: translateX(-50%);
-    transition-property: left, width, height, background-color, opacity;
-    transition-timing-function: ease;
-}
-
 /* #ifdef H5 */
-.snake-tabs__viewport :deep(::-webkit-scrollbar) {
+.snake-tabs__scroll-view :deep(::-webkit-scrollbar) {
     display: none;
     width: 0 !important;
     height: 0 !important;
@@ -390,11 +278,4 @@ defineExpose({ init, scrollByIndex });
     -webkit-appearance: none;
 }
 /* #endif */
-
-@media (prefers-reduced-motion: reduce) {
-    .snake-tabs__item,
-    .snake-tabs__line {
-        transition-duration: 0s !important;
-    }
-}
 </style>

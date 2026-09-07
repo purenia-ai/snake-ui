@@ -23,7 +23,7 @@
                             @click.stop="show = false"
                             v-if="!datas.popupMode || datas.popupMode === 'bottom'"
                         >
-                            <snake-icon name="close2" color="var(--snake-color-text, #26273a)" size="18"></snake-icon>
+                            <snake-icon name="close" color="var(--snake-color-text, #26273a)" size="18"></snake-icon>
                         </view>
                         <image
                             class="coupon-img"
@@ -37,7 +37,7 @@
                         @click.stop="show = false"
                         v-if="datas.popupMode === 'center'"
                     >
-                        <snake-icon name="close2" color="#fff" size="28"></snake-icon>
+                        <snake-icon name="close" color="#fff" size="28"></snake-icon>
                     </view>
                 </view>
             </snake-popup>

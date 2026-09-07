@@ -51,6 +51,15 @@ const zhCN: SnakeLocale = {
             hour: '时',
             minute: '分',
             second: '秒'
+        },
+        upload: {
+            uploadImage: '上传图片', uploadVideo: '上传视频', uploadFile: '上传文件', uploadMedia: '上传媒体',
+            retry: '重试', reUpload: '重新上传', fileNotSupported: '当前平台暂不支持文件选择',
+            overSize: '文件大小超出限制', overMaxCount: '文件数量超出限制',
+            noAction: '请配置上传地址或自定义上传函数', uploadFailed: '上传失败',
+            modalTitle: '提示', deleteConfirm: '确认删除该文件吗？', modalCancelText: '取消', modalConfirmText: '确认',
+            terminatedRemove: '已取消删除', removeSuccess: '删除成功', previewFailed: '预览失败',
+            openFailed: '无法打开此文件', notAllowedExt: '不支持该文件类型：{ext}'
         }
     }
 };
