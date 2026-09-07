@@ -135,7 +135,7 @@ import { useParent, useChildren, useRect, getParent, $parent } from '@puresnake/
 
 这样类型推导、测试和依赖分析更直接。
 
-路由、查询参数、时间和其他函数的完整说明见[工具介绍](/tools/intro)；libs 层与 uView Pro 的逐模块对照见[libs 层对齐审计](/guide/libs-audit)。
+路由、查询参数、时间和其他函数的完整说明见[工具介绍](/tools/intro)。
 
 ## 样式入口
 

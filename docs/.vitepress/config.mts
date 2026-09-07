@@ -97,10 +97,7 @@ export default defineConfig({
                 },
                 {
                     text: '迁移与排错',
-                    items: [
-                        { text: 'libs 层对齐审计', link: '/guide/libs-audit' },
-                        { text: '常见问题', link: '/guide/troubleshooting' }
-                    ]
+                    items: [{ text: '常见问题', link: '/guide/troubleshooting' }]
                 }
             ],
             '/cms/': cmsSidebar,
