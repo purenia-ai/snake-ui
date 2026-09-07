@@ -143,7 +143,7 @@ defineExpose({ scrollTo, update });
         /></scroll-view>
         <view
             class="snake-index-list__rail"
-            :style="[{ zIndex }, railStyle]"
+            :style="[{ zIndex: props.zIndex }, railStyle]"
             aria-label="索引导航"
             @touchstart.stop.prevent="touchSelect"
             @touchmove.stop.prevent="touchSelect"
