@@ -260,7 +260,7 @@ import type { SnakeUploadFileItem, SnakeUploadFileItem as UploadFileItem } from 
 import snakeIcon from '../snake-icon/snake-icon.vue';
 import snakeLineProgress from '../snake-line-progress/snake-line-progress.vue';
 
-// uView Pro 通过 flex 容器居中图标；补齐图标根节点的行盒约束，
+// 通过 flex 容器居中图标；补齐图标根节点的行盒约束，
 // 避免字体基线在不同运行端造成加号和关闭图标的视觉偏移。
 const addIconStyle = {
     alignItems: 'center',

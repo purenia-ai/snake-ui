@@ -11,7 +11,7 @@ export type SnakeButtonFormType = 'submit' | 'reset' | '';
 /** 支付宝授权范围。 */
 export type SnakeButtonScope = '' | 'phoneNumber' | 'userInfo';
 
-/** snake-button 运行时属性，与 uView Pro u-button 对齐。 */
+/** snake-button 运行时属性。 */
 export const snakeButtonProps = {
     /** 根节点自定义样式。 */ customStyle: { type: [String, Object] as PropType<string | Record<string, unknown>>, default: () => ({}) },
     /** 根节点自定义类名。 */ customClass: { type: String, default: '' },

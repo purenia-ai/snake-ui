@@ -1,5 +1,5 @@
 /**
- * 常用校验套件（键名与 uView 生态 test 预设对齐，便于组件移植直接引用）。
+ * 常用校验套件，便于组件移植直接引用。
  * snake 原有校验器语义保持不变：number 为 Number.isFinite 版、object 为纯对象判定、
  * empty 对 null/''/空数组/空对象返回 true。
  */

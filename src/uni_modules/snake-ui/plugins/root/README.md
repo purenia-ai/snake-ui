@@ -1,6 +1,6 @@
 # vite-plugin-snake-root
 
-Snake UI 虚拟根组件 Vite 插件,零额外依赖,纯字符串操作实现。(移植自 uView-Pro 的 vite-plugin-uni-root)
+Snake UI 虚拟根组件 Vite 插件,零额外依赖,纯字符串操作实现。
 
 ## 解决的问题
 
@@ -84,4 +84,3 @@ H5 / 微信小程序 / 支付宝小程序 / 头条抖音小程序 / Android App 
 ## 致谢
 
 - 实现参考了 [@uni-ku/root](https://github.com/uni-ku/root)(MIT License,作者 skiyee),核心思路受其启发并进行了重新实现。
-- 移植自 uView-Pro 的 `plugins/root`(vite-plugin-uni-root)。

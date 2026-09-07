@@ -2,9 +2,9 @@ import { ref, reactive, getCurrentInstance, onUnmounted, nextTick, computed, onM
 import { isSnakeDebugMode } from '../config/state';
 
 /**
- * 组件父子关系注册表（对齐 uView 生态 useParent/useChildren 机制，供从 uView 移植组件直接引用）。
+ * 组件父子关系注册表（useParent/useChildren 机制，按组件 name 链查找父上下文）。
  * 与 snake 原生表单族的 internal/ InjectionKey 方案双轨并存：
- * internal/ 服务库内自研组件（类型更严格），本文件服务 uView 式移植组件（按组件 name 链查找 + 广播）。
+ * internal/ 服务库内自研组件（类型更严格），本文件服务按组件 name 链查找的移植组件（查找 + 广播）。
  */
 
 // 类型定义

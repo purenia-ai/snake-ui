@@ -49,5 +49,5 @@ export function getParent(
     return {};
 }
 
-// 兼容 uView 生态默认导入习惯：import getParent from '.../getParent'
+// 兼容默认导入习惯：import getParent from '.../getParent'
 export default getParent;

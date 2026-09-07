@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * @component SnakeButton
- * @description 与 uView Pro u-button 行为一致的跨端按钮。
+ * @description 跨端按钮。
  * @see /components/button
  */
 import { computed, getCurrentInstance, nextTick, ref } from 'vue';

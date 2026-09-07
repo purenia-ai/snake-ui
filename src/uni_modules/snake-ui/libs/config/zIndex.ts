@@ -1,8 +1,8 @@
 /**
- * 组件层级数值表（对齐 uView 生态 zIndex 预设的键名与数值）。
+ * 组件层级数值表。
  *
- * 键名与 uView 保持一致，便于从 uView 移植组件时直接引用；
- * 数值以 snake-ui 组件当前生效的默认值为准（绝大多数与 uView 相同）。
+ * 键名保持稳定，便于组件移植时直接引用；
+ * 数值以 snake-ui 组件当前生效的默认值为准。
  */
 
 export interface SnakeZIndexConfig {
@@ -18,7 +18,7 @@ export interface SnakeZIndexConfig {
     navbar: number;
     /** 顶部提示层级。 */
     topTips: number;
-    /** 吸顶层级。snake-sticky 当前默认 10（CMS 传 19），与 uView 的 970 有意保持分歧。 */
+    /** 吸顶层级。snake-sticky 当前默认 10（CMS 传 19），有意不采用 970。 */
     sticky: number;
     /** 索引列表锚点吸顶层级。 */
     indexListSticky: number;

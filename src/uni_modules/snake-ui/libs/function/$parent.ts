@@ -29,5 +29,5 @@ export function $parent(
     return null;
 }
 
-// 兼容 uView 生态默认导入习惯：import $parent from '.../$parent'
+// 兼容默认导入习惯：import $parent from '.../$parent'
 export default $parent;

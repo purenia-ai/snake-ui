@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * @component SnakeCheckboxGroup
- * @description 对齐 uView Pro 的 checkbox 父组件，管理一组 Checkbox 的数组值、最大选择数与布局。
+ * @description checkbox 父组件，管理一组 Checkbox 的数组值、最大选择数与布局。
  * @see /components/checkbox-group
  */
 

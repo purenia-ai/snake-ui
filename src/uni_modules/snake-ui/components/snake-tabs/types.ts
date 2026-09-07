@@ -2,7 +2,7 @@ import type { CSSProperties } from 'vue';
 import type { UnitValue } from '../../libs/function/unit';
 import type { SnakeStyleValue } from '../../types/global';
 
-/** Tabs 对象数据项，与 uView Pro 的 TabsItem 对齐。 */
+/** Tabs 对象数据项。 */
 export interface SnakeTabItem extends Record<string, unknown> {
     /** 默认标签字段。 */
     name?: string | number;

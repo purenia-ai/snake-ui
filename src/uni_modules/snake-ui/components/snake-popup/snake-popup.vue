@@ -66,7 +66,7 @@ const transitionName = computed(() => {
 const radius = computed(() => {
     if (props.round === false) return '0';
     const value = props.round === true ? 'var(--snake-radius-large, 20rpx)' : addUnit(props.round, 'rpx');
-    // 四边弹层只圆远离屏幕边缘的一侧（uview 同款），否则贴着屏幕边的角会被圆掉露出页面背景
+    // 四边弹层只圆远离屏幕边缘的一侧，否则贴着屏幕边的角会被圆掉露出页面背景
     switch (props.mode) {
         case 'top':
             return `0 0 ${value} ${value}`;
@@ -80,16 +80,16 @@ const radius = computed(() => {
             return value;
     }
 });
-// 计算整理后的 z-index 值（对齐 u-popup 的 uZIndex）：缺失/非法时退回 popup 档
+// 计算整理后的 z-index 值：缺失/非法时退回 popup 档
 const uZIndex = computed(() => Number(props.zIndex) || zIndex.popup);
-// 根节点持有整棵弹层的页面层级（对齐 u-drawer 的 uZ-1）：遮罩与面板被锁进同一个专属
+// 根节点持有整棵弹层的页面层级：遮罩与面板被锁进同一个专属
 // 层叠上下文，页面元素无法插进遮罩与面板之间，任何一级行内层级在运行时丢失，
 // 面板也不会被自家遮罩盖住（根为 fixed，即使行内 z 丢失也仍是独立层叠上下文）
 const rootStyle = computed<CSSProperties>(() => ({
     zIndex: uZIndex.value - 1,
-    // 对齐 u-popup 的 v-if 语义：u-popup 隐藏时整棵弹层不渲染，空壳不存在；
+    // 采用 v-if 语义：弹层隐藏时整棵弹层不渲染，空壳不存在；
     // 我们的根常驻（离场动画需要），隐藏时置 none 不拦截页面点击，显示时恢复 auto——
-    // 遮罩/面板自身零 pointer-events 声明，交互完全由根决定（u-mask 同款）
+    // 遮罩/面板自身零 pointer-events 声明，交互完全由根决定
     pointerEvents: localShow.value ? 'auto' : 'none'
 }));
 const panelStyle = computed(() => [
@@ -130,7 +130,7 @@ defineExpose({ open, close });
 
 <template>
     <view class="snake-popup" :style="rootStyle">
-        <!-- 三层结构对齐 u-drawer：根 uZ-1 / 遮罩 uZ-2 / 面板 uZ，全部收在根的层叠上下文内 -->
+        <!-- 三层结构：根 / 遮罩 / 面板，全部收在根的层叠上下文内 -->
         <snake-overlay
             v-if="overlay"
             :show="localShow"
@@ -164,7 +164,7 @@ defineExpose({ open, close });
 </template>
 
 <style>
-/* 全屏定位根（对齐 u-drawer）：为遮罩与面板提供专属层叠上下文；隐藏时空根不拦截
+/* 全屏定位根：为遮罩与面板提供专属层叠上下文；隐藏时空根不拦截
    页面点击（pointer-events 由 rootStyle 动态切换），无遮罩弹层仍可点击面板以外的页面区域 */
 .snake-popup {
     position: fixed;
@@ -194,7 +194,7 @@ defineExpose({ open, close });
 .snake-popup__panel--center.snake-transition--zoom-in-leave {
     animation-name: snake-popup-center-zoom-out;
 }
-/* 四边弹层整块滑入滑出（uview 同款）：transition 通用滑入只有 40rpx 位移 + 淡入，这里覆盖为 100% 平移 */
+/* 四边弹层整块滑入滑出：transition 通用滑入只有 40rpx 位移 + 淡入，这里覆盖为 100% 平移 */
 .snake-popup__panel--bottom.snake-transition--slide-up-enter {
     animation-name: snake-popup-slide-up-in;
 }

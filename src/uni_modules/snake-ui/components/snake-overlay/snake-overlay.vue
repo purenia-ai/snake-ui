@@ -25,7 +25,7 @@ const emit = defineEmits<SnakeOverlayEmits>();
 // 与 snake-popup 同理：未绑定 show 时 Boolean casting 会让 `??` 失效，需检测实际绑定来源。
 const showBound = 'show' in (getCurrentInstance()?.vnode?.props ?? {});
 const visible = computed(() => (showBound ? props.show : props.modelValue));
-// 层级对齐 u-mask：z-index 全权交给行内样式——显示时取 mask 档、隐藏时 -1，
+// 层级：z-index 全权交给行内样式——显示时取 mask 档、隐藏时 -1，
 // 传入值非法（undefined/NaN 会被小程序当作非法声明丢弃）时由 || 退回 mask 档
 const overlayStyle = computed(() => [
     {

@@ -20,7 +20,7 @@ function normalizeId(id: string) {
 }
 
 /**
- * Snake UI 虚拟根组件 Vite 插件(对齐 uView 生态的 uni-root 插件实现)
+ * Snake UI 虚拟根组件 Vite 插件（uni-root 实现）
  *
  * ## 解决的问题
  * UniApp 不支持原生的根组件包裹机制，导致无法在全局统一注入

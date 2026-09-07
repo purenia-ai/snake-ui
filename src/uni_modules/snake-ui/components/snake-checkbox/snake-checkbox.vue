@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * @component SnakeCheckbox
- * @description 对齐 uView Pro 的 checkbox 复选框，可独立 v-model 使用，也可放入 CheckboxGroup 参与多选。
+ * @description checkbox 复选框，可独立 v-model 使用，也可放入 CheckboxGroup 参与多选。
  * @see /components/checkbox
  */
 

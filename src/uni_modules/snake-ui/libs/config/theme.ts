@@ -6,7 +6,7 @@ const THEME_STORAGE_KEY = 'snake-ui-theme';
 const DARK_MODE_STORAGE_KEY = 'snake-ui-dark-mode';
 
 export const snakeLightPalette: SnakeThemeColor = {
-    // 品牌绿七档（自有品牌色，对应 uview primary 一档，保留）
+    // 品牌绿七档（自有品牌色，保留）
     primary: '#06D290',
     primaryDark: '#2EBD7C',
     primaryDeep: '#26273A',
@@ -14,7 +14,7 @@ export const snakeLightPalette: SnakeThemeColor = {
     primaryDisabled: '#A6EBD3',
     primaryLight: '#EEFFE0',
     primaryInk: '#FFFFFF',
-    // 语义色与中性色对齐 uview 默认主题（uview theme-tokens lightPalette）
+    // 语义色与中性色默认主题（lightPalette）
     success: '#19BE6B',
     successDark: '#18B566',
     successDisabled: '#71D5A1',
@@ -59,7 +59,7 @@ export const snakeDarkPalette: SnakeThemeColor = {
     primaryDisabled: '#1E3A31',
     primaryLight: '#0C2A1E',
     primaryInk: '#26273A',
-    // 语义色与中性色对齐 uview 暗色主题（uview theme-tokens darkPalette）
+    // 语义色与中性色暗色主题（darkPalette）
     success: '#4ADE80',
     successDark: '#1F9D57',
     successDisabled: '#2F4D3D',

@@ -28,7 +28,7 @@ export function addStyle(style: SnakeStyleSource, target: 'object' | 'string' = 
 }
 
 export function toStyle(...styles: Array<SnakeStyleSource>): string {
-    // 兼容 uview：单个数组整体传入时（如 [object, string]）解构展开
+    // 兼容旧用法：单个数组整体传入时（如 [object, string]）解构展开
     if (styles.length === 1 && Array.isArray(styles[0])) {
         styles = (styles[0] as SnakeStyleSource[]).slice();
     }

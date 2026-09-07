@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * @component SnakeRadioGroup
- * @description 对齐 uView Pro 的 radio 父组件，管理一组 Radio 的互斥值、禁用状态与布局。
+ * @description radio 父组件，管理一组 Radio 的互斥值、禁用状态与布局。
  * @see /components/radio-group
  */
 

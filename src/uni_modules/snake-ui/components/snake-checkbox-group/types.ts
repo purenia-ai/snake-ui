@@ -1,7 +1,7 @@
 import type { UnitValue } from '../../libs/function/unit';
 import type { SnakeStyleValue } from '../../types/global';
 
-/** SnakeCheckboxGroup 组件的公开属性（对齐 uView Pro 的 CheckboxGroupProps）。 */
+/** SnakeCheckboxGroup 组件的公开属性。 */
 export interface SnakeCheckboxGroupProps {
     /** 根节点自定义样式。 */
     customStyle?: SnakeStyleValue;

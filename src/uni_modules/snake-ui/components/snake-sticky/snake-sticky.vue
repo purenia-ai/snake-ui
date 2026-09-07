@@ -15,7 +15,7 @@
 <script setup lang="ts">
 /**
  * @component SnakeSticky
- * @description 通过 IntersectionObserver 相对视口观察占位层实现跨端吸顶，对齐 uView Pro 的三层结构（外层容器 / 占位层 / 内容层），并在不支持 Observer 的环境降级为页面 scrollTop 定位。
+ * @description 通过 IntersectionObserver 相对视口观察占位层实现跨端吸顶，采用三层结构（外层容器 / 占位层 / 内容层），并在不支持 Observer 的环境降级为页面 scrollTop 定位。
  * @see /components/sticky
  */
 

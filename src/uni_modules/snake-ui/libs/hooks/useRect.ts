@@ -1,7 +1,7 @@
 import { getCurrentInstance, nextTick, ref } from 'vue';
 
 /**
- * useRect - 获取元素的位置信息（响应式版本，对齐 uView 生态 useRect 形态）。
+ * useRect - 获取元素的位置信息（响应式版本）。
  * 基础层的 function/getRect.ts 因 node 直载测试约束保持无 vue 依赖，
  * 响应式能力（rect ref + refresh）由本 hook 提供。
  * @param selector 选择器（如 #id 或 .class）

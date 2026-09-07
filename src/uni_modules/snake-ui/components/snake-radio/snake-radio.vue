@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * @component SnakeRadio
- * @description 对齐 uView Pro 的 radio 单选框，通过 `name` 参与 RadioGroup 互斥选择。
+ * @description radio 单选框，通过 `name` 参与 RadioGroup 互斥选择。
  * @see /components/radio
  */
 

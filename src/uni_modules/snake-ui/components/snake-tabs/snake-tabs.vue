@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * @component SnakeTabs
- * @description 对齐 uView Pro 的 tabs 标签组件，支持横向滚动、激活项居中、徽标和滑块。
+ * @description tabs 标签组件，支持横向滚动、激活项居中、徽标和滑块。
  * @see /components/tabs
  */
 import { computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';

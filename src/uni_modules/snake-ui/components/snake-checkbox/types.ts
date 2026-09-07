@@ -2,7 +2,7 @@ import type { ExtractPropTypes, PropType } from 'vue';
 import type { UnitValue } from '../../libs/function/unit';
 import type { SnakeStyleValue } from '../../types/global';
 
-/** snakeCheckboxProps 运行时属性及默认值（对齐 uView Pro 的 CheckboxProps）。 */
+/** snakeCheckboxProps 运行时属性及默认值。 */
 export const snakeCheckboxProps = {
     /** 根节点自定义样式。 */
     customStyle: { type: [String, Object, Array] as PropType<SnakeStyleValue>, default: () => ({}) },

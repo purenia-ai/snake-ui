@@ -4,7 +4,7 @@ import type { SnakeImageMode, SnakeStyleValue } from '../../types/global';
 /** 标签相对图标的显示方向。 */
 export type SnakeIconLabelPosition = 'left' | 'right' | 'top' | 'bottom';
 
-/** 与 uView Pro IconProps 等价的 SnakeIcon 运行时属性。 */
+/** SnakeIcon 运行时属性。 */
 export const SnakeIconProps = {
     customStyle: { type: [String, Object, Array] as PropType<SnakeStyleValue>, default: () => ({}) },
     customClass: { type: String, default: '' },

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * @component SnakeIcon
- * @description 与 uView Pro u-icon 行为一致的字体及图片图标组件。
+ * @description 字体及图片图标组件。
  * @see /components/icon
  */
 import { computed } from 'vue';
