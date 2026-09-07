@@ -54,4 +54,4 @@ npm 方式的插件、样式和组件路径都以 `@puresnake/snake-ui` 开头�
 
 ## 下一步
 
-安装完成后继续进行[工程配置](/components/setting)。如果是从 uView Pro 迁移，请先查看[迁移说明](/guide/migrate-from-uview)。
+安装完成后继续进行[工程配置](/components/setting)。
