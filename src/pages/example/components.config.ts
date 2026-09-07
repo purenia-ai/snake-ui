@@ -46,18 +46,8 @@ const componentGroups: SnakeComponentGroup[] = [
                 'Transition',
                 '提供一致的跨端进出场动画。'
             ),
-            item(
-                '/pages/componentsA/text/index',
-                'Text 文本',
-                'Text',
-                '价格、脱敏、日期与链接等常用文本场景。'
-            ),
-            item(
-                '/pages/componentsA/link/index',
-                'Link 超链接',
-                'Link',
-                '跨端打开链接或复制到粘贴板。'
-            ),
+            item('/pages/componentsA/text/index', 'Text 文本', 'Text', '价格、脱敏、日期与链接等常用文本场景。'),
+            item('/pages/componentsA/link/index', 'Link 超链接', 'Link', '跨端打开链接或复制到粘贴板。'),
             item('/pages/componentsA/icon/index', 'Icon 图标', 'Icon', '常用图标集合，支持自定义尺寸与颜色。')
         ]
     },
@@ -92,12 +82,7 @@ const componentGroups: SnakeComponentGroup[] = [
                 'Search',
                 '集成占位、清除与操作按钮的常用搜索输入。'
             ),
-            item(
-                '/pages/componentsA/select/index',
-                'Select 列选择器',
-                'Select',
-                '单列、多列与多列联动的底部选择器。'
-            ),
+            item('/pages/componentsA/select/index', 'Select 列选择器', 'Select', '单列、多列与多列联动的底部选择器。'),
             item(
                 '/pages/componentsA/countDown/index',
                 'CountDown 倒计时',
@@ -224,6 +209,12 @@ const componentGroups: SnakeComponentGroup[] = [
                 '通过右侧索引快速定位分组内容。'
             ),
             item(
+                '/pages/componentsA/indexListPanel/index',
+                'IndexListPanel 容器索引列表',
+                'IndexListPanel',
+                '用于弹窗和定高区域的内部滚动索引列表。'
+            ),
+            item(
                 '/pages/componentsA/indexAnchor/index',
                 'IndexAnchor 索引锚点',
                 'IndexAnchor',
@@ -241,7 +232,12 @@ const componentGroups: SnakeComponentGroup[] = [
                 'CellItem',
                 '带图标、标题、描述和箭头的单行列表条目。'
             ),
-            item('/pages/componentsA/line/index', 'Line 分隔线', 'Line', '以横向或竖向线条分隔内容块，支持半像素细线。'),
+            item(
+                '/pages/componentsA/line/index',
+                'Line 分隔线',
+                'Line',
+                '以横向或竖向线条分隔内容块，支持半像素细线。'
+            ),
             item(
                 '/pages/componentsB/auxiliarySegmentation/index',
                 'AuxiliarySegmentation 辅助分割',

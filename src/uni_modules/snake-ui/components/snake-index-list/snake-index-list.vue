@@ -1,16 +1,17 @@
 <script setup lang="ts">
 /**
  * @component SnakeIndexList
- * @description 通过右侧索引快速定位分组内容，与 `IndexAnchor` 配合使用。支持点击、触摸滑动、当前分组同步和吸顶锚点。
+ * @description 跟随页面滚动的索引列表，通过右侧索引快速定位分组内容，并与 IndexAnchor 配合实现吸顶。
  * @see /components/index-list
  */
 
-import { getCurrentInstance, onBeforeUnmount, onMounted, provide, ref, toRef, watch } from 'vue';
+import { computed, getCurrentInstance, nextTick, onMounted, provide, ref, toRef, watch, type CSSProperties } from 'vue';
 import zIndex from '../../libs/config/zIndex';
-import { snakeIndexListKey } from '../../libs/internal/index-list';
+import { indexFromTouch, offsetTopPx, resolveIndex, snakeIndexListKey } from '../../libs/internal/index-list';
 import type { SnakeIndexListEmits, SnakeIndexListProps, SnakeIndexValue } from './types';
 
 defineOptions({ name: 'SnakeIndexList', options: { virtualHost: true, styleIsolation: 'shared' } });
+
 const props = withDefaults(defineProps<SnakeIndexListProps>(), {
     indexList: () => [],
     scrollTop: 0,
@@ -25,130 +26,144 @@ const props = withDefaults(defineProps<SnakeIndexListProps>(), {
 });
 const emit = defineEmits<SnakeIndexListEmits>();
 const instance = getCurrentInstance();
-const activeIndex = ref(0);
-const scrollIntoView = ref('');
-const innerScrollTop = ref(Number(props.scrollTop) || 0);
+const activeIndex = ref(-1);
+const touching = ref(false);
 const railTop = ref(0);
 const railHeight = ref(0);
-const anchorOffsets = ref<number[]>([]);
-const touching = ref(false);
-let measureTimer: ReturnType<typeof setTimeout> | undefined;
+const listLeft = ref(0);
+const listWidth = ref(0);
+const anchorTops = ref<number[]>([]);
+const anchorHeights = ref<number[]>([]);
+const currentScrollTop = computed(() => Number(props.scrollTop) || 0);
+const currentOffsetTop = computed(() => offsetTopPx(props.offsetTop));
 const anchorId = (value: SnakeIndexValue) => `snake-index-anchor-${String(value).replace(/[^a-zA-Z0-9_-]/g, '-')}`;
+
 function setActive(index: number, selected = false) {
-    const safe = Math.max(0, Math.min(props.indexList.length - 1, index));
-    if (safe !== activeIndex.value) {
-        activeIndex.value = safe;
-        emit('change', { index: safe, value: props.indexList[safe] });
+    if (!props.indexList.length || index < 0 || index >= props.indexList.length) return;
+    if (index !== activeIndex.value) {
+        activeIndex.value = index;
+        emit('change', { index, value: props.indexList[index] });
     }
-    if (selected) emit('select', props.indexList[safe]);
+    if (selected) emit('select', props.indexList[index]);
 }
-function scrollTo(indexOrValue: number | SnakeIndexValue) {
-    let index =
-        typeof indexOrValue === 'number' &&
-        Number.isInteger(indexOrValue) &&
-        indexOrValue >= 0 &&
-        indexOrValue < props.indexList.length
-            ? indexOrValue
-            : props.indexList.indexOf(indexOrValue);
-    if (index < 0) return;
-    setActive(index, true);
-    // 优先用测量好的锚点偏移直接滚动：scroll-into-view 依赖宿主元素查找，部分环境（延迟挂载/虚拟化）不可靠
-    if (anchorOffsets.value.length && index < anchorOffsets.value.length) {
-        innerScrollTop.value = anchorOffsets.value[index];
-        scrollIntoView.value = '';
+
+function updateActive() {
+    if (!anchorTops.value.length) {
+        activeIndex.value = -1;
         return;
     }
-    scrollIntoView.value = '';
-    setTimeout(() => (scrollIntoView.value = anchorId(props.indexList[index])), 0);
+    const target = currentScrollTop.value + currentOffsetTop.value;
+    let index = -1;
+    anchorTops.value.forEach((top, position) => {
+        if (top <= target + 1) index = position;
+    });
+    if (index >= 0) setActive(index);
+    else activeIndex.value = -1;
 }
+
+function scrollTo(indexOrValue: number | SnakeIndexValue) {
+    const index = resolveIndex(indexOrValue, props.indexList);
+    if (index < 0 || index >= anchorTops.value.length) return;
+    setActive(index, true);
+    uni.pageScrollTo({ duration: 0, scrollTop: Math.max(0, anchorTops.value[index] - currentOffsetTop.value) });
+}
+
 function touchSelect(event: any) {
     touching.value = true;
     const y = Number(event.touches?.[0]?.clientY ?? event.changedTouches?.[0]?.clientY);
-    if (!Number.isFinite(y) || !railHeight.value) return;
-    scrollTo(Math.floor(((y - railTop.value) / railHeight.value) * props.indexList.length));
+    const index = indexFromTouch(y, railTop.value, railHeight.value, props.indexList.length);
+    if (index >= 0) scrollTo(index);
 }
-function onScroll(event: any) {
-    innerScrollTop.value = Number(event.detail?.scrollTop) || 0;
-    // 挂载时列表可能为空（异步数据），首次滚动立即补测
-    if (!anchorOffsets.value.length) void update();
-    // 滚动停止后重测保持锚点新鲜（布局可能已变化），静止时测量避免滚动动画中 rect 与 scrollTop 不一致
-    if (measureTimer) clearTimeout(measureTimer);
-    measureTimer = setTimeout(() => {
-        measureTimer = undefined;
-        void update();
-    }, 300);
-    const target = innerScrollTop.value + Number.parseFloat(String(props.offsetTop || 0));
-    let index = 0;
-    anchorOffsets.value.forEach((offset, position) => {
-        if (offset <= target + 1) index = position;
-    });
-    setActive(index);
-}
+
 async function update() {
     if (typeof uni === 'undefined') return;
+    await nextTick();
     await new Promise<void>(resolve => {
         const query = uni.createSelectorQuery().in(instance?.proxy as any);
-        query.select('.snake-index-list__content').boundingClientRect();
+        query.select('.snake-index-list').boundingClientRect();
         query.select('.snake-index-list__rail').boundingClientRect();
-        query.selectAll('.snake-index-anchor').boundingClientRect();
+        query.selectAll('.snake-index-anchor__wrapper').boundingClientRect();
         query.exec((results: any[]) => {
-            const content = results?.[0];
+            const list = results?.[0];
             const rail = results?.[1];
             const anchors = results?.[2] || [];
+            if (list) {
+                listLeft.value = Number(list.left) || 0;
+                listWidth.value = Number(list.width) || 0;
+            }
             if (rail) {
                 railTop.value = Number(rail.top) || 0;
                 railHeight.value = Number(rail.height) || 0;
             }
-            if (content)
-                anchorOffsets.value = anchors.map(
-                    (item: any) => Number(item.top) - Number(content.top) + innerScrollTop.value
-                );
+            anchorTops.value = anchors.map((item: any) => Number(item.top) + currentScrollTop.value);
+            anchorHeights.value = anchors.map((item: any) => Number(item.height) || 0);
+            updateActive();
             resolve();
         });
     });
 }
-watch(
-    () => props.scrollTop,
-    value => (innerScrollTop.value = Number(value) || 0)
-);
-// 异步数据到达/列表变化时补测（挂载时列表常为空，锚点与 rail 几何需要重测后才能拖拽/滚动定位）
-watch(
-    () => props.indexList,
-    () => void update()
-);
+
+function indexOfAnchor(value: SnakeIndexValue) {
+    return props.indexList.indexOf(value);
+}
+
+function anchorStyle(value: SnakeIndexValue): CSSProperties {
+    const index = indexOfAnchor(value);
+    if (!props.sticky || index < 0 || index !== activeIndex.value) return {};
+    const height = anchorHeights.value[index] || 0;
+    const nextTop = anchorTops.value[index + 1];
+    const nextViewportTop = nextTop === undefined ? Number.POSITIVE_INFINITY : nextTop - currentScrollTop.value;
+    const translateY = Math.min(0, nextViewportTop - currentOffsetTop.value - height);
+    return {
+        position: 'fixed',
+        top: `${currentOffsetTop.value}px`,
+        left: `${listLeft.value}px`,
+        width: `${listWidth.value}px`,
+        zIndex: props.zIndex,
+        color: props.activeColor,
+        transform: `translate3d(0, ${translateY}px, 0)`
+    };
+}
+
+function wrapperStyle(value: SnakeIndexValue): CSSProperties {
+    const index = indexOfAnchor(value);
+    return props.sticky && index === activeIndex.value ? { height: `${anchorHeights.value[index] || 0}px` } : {};
+}
+
 provide(snakeIndexListKey, {
     activeIndex,
     sticky: toRef(props, 'sticky'),
     offsetTop: toRef(props, 'offsetTop'),
     zIndex: toRef(props, 'zIndex'),
-    anchorId
+    anchorId,
+    anchorStyle,
+    wrapperStyle,
+    isActive: value => indexOfAnchor(value) === activeIndex.value
 });
+
+watch(() => props.scrollTop, updateActive);
+watch(() => props.offsetTop, updateActive);
+watch(
+    () => props.indexList,
+    () => void update(),
+    { deep: true }
+);
 onMounted(() => void update());
-onBeforeUnmount(() => {
-    if (measureTimer) clearTimeout(measureTimer);
-});
 defineExpose({ scrollTo, update });
 </script>
 
 <template>
     <view class="snake-index-list" :class="customClass" :style="customStyle">
-        <scroll-view
-            class="snake-index-list__content"
-            scroll-y
-            :scroll-top="innerScrollTop"
-            :scroll-into-view="scrollIntoView"
-            scroll-with-animation
-            @scroll="onScroll"
-            ><slot
-        /></scroll-view>
+        <slot />
         <view
+            v-if="indexList.length"
             class="snake-index-list__rail"
             :style="[{ zIndex: props.zIndex }, railStyle]"
             aria-label="索引导航"
             @touchstart.stop.prevent="touchSelect"
             @touchmove.stop.prevent="touchSelect"
-            @touchend="touching = false"
-            @touchcancel="touching = false"
+            @touchend.stop.prevent="touching = false"
+            @touchcancel.stop.prevent="touching = false"
         >
             <view
                 v-for="(item, index) in indexList"
@@ -160,25 +175,24 @@ defineExpose({ scrollTo, update });
                 >{{ item }}</view
             >
         </view>
-        <view v-if="indexList.length" class="snake-index-list__bubble" :class="{ 'is-visible': touching }">{{
-            indexList[activeIndex]
-        }}</view>
+        <view
+            v-if="indexList.length"
+            class="snake-index-list__bubble"
+            :class="{ 'is-visible': touching }"
+            :style="{ zIndex: props.zIndex + 1 }"
+            >{{ activeIndex >= 0 ? indexList[activeIndex] : '' }}</view
+        >
     </view>
 </template>
 
 <style scoped>
 .snake-index-list {
     position: relative;
-    height: 100%;
-    min-height: 400rpx;
-}
-.snake-index-list__content {
     box-sizing: border-box;
-    height: 100%;
     padding-right: 64rpx;
 }
 .snake-index-list__rail {
-    position: absolute;
+    position: fixed;
     top: 50%;
     right: 10rpx;
     display: flex;
@@ -187,6 +201,7 @@ defineExpose({ scrollTo, update });
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.86);
     transform: translateY(-50%);
+    user-select: none;
 }
 .snake-index-list__key {
     display: flex;
@@ -203,9 +218,9 @@ defineExpose({ scrollTo, update });
     background: var(--snake-color-primary-light, rgba(6, 210, 144, 0.1));
 }
 .snake-index-list__bubble {
-    position: absolute;
+    position: fixed;
     top: 50%;
-    left: 50%;
+    right: 90rpx;
     display: none;
     width: 96rpx;
     height: 96rpx;
@@ -215,7 +230,7 @@ defineExpose({ scrollTo, update });
     color: #fff;
     font-size: 42rpx;
     background: rgba(0, 0, 0, 0.58);
-    transform: translate(-50%, -50%);
+    transform: translateY(-50%);
 }
 .snake-index-list__bubble.is-visible {
     display: flex;

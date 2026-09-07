@@ -46,7 +46,10 @@
                 { "path": "noticeBar/index", "style": { "navigationBarTitleText": "通知栏" } },
                 { "path": "overlay/index", "style": { "navigationBarTitleText": "遮罩层" } },
                 { "path": "popup/index", "style": { "navigationBarTitleText": "弹出层" } },
-                { "path": "navbar/index", "style": { "navigationBarTitleText": "导航栏", "navigationStyle": "custom" } },
+                {
+                    "path": "navbar/index",
+                    "style": { "navigationBarTitleText": "导航栏", "navigationStyle": "custom" }
+                },
                 { "path": "sticky/index", "style": { "navigationBarTitleText": "吸顶" } },
                 { "path": "swiper/index", "style": { "navigationBarTitleText": "轮播图" } },
                 { "path": "tabs/index", "style": { "navigationBarTitleText": "标签页" } },
@@ -55,6 +58,7 @@
                 { "path": "dropMenu/index", "style": { "navigationBarTitleText": "下拉菜单" } },
                 { "path": "dropMenuItem/index", "style": { "navigationBarTitleText": "下拉菜单项" } },
                 { "path": "indexList/index", "style": { "navigationBarTitleText": "索引列表" } },
+                { "path": "indexListPanel/index", "style": { "navigationBarTitleText": "容器索引列表" } },
                 { "path": "indexAnchor/index", "style": { "navigationBarTitleText": "索引锚点" } },
                 { "path": "cellGroup/index", "style": { "navigationBarTitleText": "单元格分组" } },
                 { "path": "cellItem/index", "style": { "navigationBarTitleText": "单元格条目" } },

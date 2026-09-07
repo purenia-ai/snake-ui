@@ -32,7 +32,7 @@ function updateValue(key: string, value: DemoValue) {
     >
         <DemoSection variant="preview" :title="text('演示效果')"
             ><view class="demo-index demo-index-anchor-showcase"
-                ><snake-index-list :index-list="letters" active-color="#06D290"
+                ><snake-index-list-panel :index-list="letters" active-color="#06D290"
                     ><view v-for="letter in letters" :key="letter"
                         ><snake-index-anchor
                             :index="letter"
@@ -41,7 +41,7 @@ function updateValue(key: string, value: DemoValue) {
                         /><view v-for="item in 3" :key="item" class="demo-index-row"
                             >{{ letter }} {{ isEnglish ? 'item' : '类内容' }} {{ item }}</view
                         ></view
-                    ></snake-index-list
+                    ></snake-index-list-panel
                 ></view
             ></DemoSection
         >

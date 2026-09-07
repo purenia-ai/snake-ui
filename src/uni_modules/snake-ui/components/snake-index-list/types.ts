@@ -6,7 +6,7 @@ export type SnakeIndexValue = string | number;
 export interface SnakeIndexListProps {
     /** index list 配置。 */
     indexList?: SnakeIndexValue[];
-    /** 页面或容器当前滚动距离。 */
+    /** 页面当前滚动距离，由页面的 onPageScroll 事件传入。 */
     scrollTop?: number | string;
     /** 组件层级。 */
     zIndex?: number;

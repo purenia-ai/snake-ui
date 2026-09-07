@@ -33,6 +33,7 @@ import type { SnakeTextEmits, SnakeTextProps } from '../components/snake-text/ty
 import type { SnakeCalendarEmits, SnakeCalendarProps } from '../components/snake-calendar/types';
 import type { SnakeCountDownEmits, SnakeCountDownProps } from '../components/snake-count-down/types';
 import type { SnakeIndexListEmits, SnakeIndexListProps } from '../components/snake-index-list/types';
+import type { SnakeIndexListPanelEmits, SnakeIndexListPanelProps } from '../components/snake-index-list-panel/types';
 import type { SnakeIndexAnchorProps } from '../components/snake-index-anchor/types';
 import type { SnakeFormEmits, SnakeFormProps } from '../components/snake-form/types';
 import type { SnakeFormItemProps } from '../components/snake-form-item/types';
@@ -99,6 +100,7 @@ export * from '../components/snake-calendar/types';
 export * from '../components/snake-count-down/types';
 export * from '../components/snake-hotzone/types';
 export * from '../components/snake-index-list/types';
+export * from '../components/snake-index-list-panel/types';
 export * from '../components/snake-index-anchor/types';
 export * from '../components/snake-form/types';
 export * from '../components/snake-form-item/types';
@@ -133,7 +135,6 @@ export * from '../components/snake-picture-ads/types';
 export * from '../components/snake-rich-text/types';
 export * from '../components/snake-floating-bubble/types';
 export * from '../components/snake-videos/types';
-
 
 type SnakeComponent<Props = Record<string, unknown>, Emits extends object = {}> = DefineComponent<
     Props,
@@ -202,6 +203,7 @@ export const SnakeText: SnakeComponent<SnakeTextProps, SnakeTextEmits>;
 export const SnakeCalendar: SnakeComponent<SnakeCalendarProps, SnakeCalendarEmits>;
 export const SnakeCountDown: SnakeComponent<SnakeCountDownProps, SnakeCountDownEmits>;
 export const SnakeIndexList: SnakeComponent<SnakeIndexListProps, SnakeIndexListEmits>;
+export const SnakeIndexListPanel: SnakeComponent<SnakeIndexListPanelProps, SnakeIndexListPanelEmits>;
 export const SnakeIndexAnchor: SnakeComponent<SnakeIndexAnchorProps>;
 export const SnakeForm: SnakeComponent<SnakeFormProps, SnakeFormEmits>;
 export const SnakeFormItem: SnakeComponent<SnakeFormItemProps>;

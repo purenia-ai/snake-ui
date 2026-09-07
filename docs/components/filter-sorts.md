@@ -71,7 +71,7 @@ const filters = {
 | `showTabs`        | 计算打开面板时的页面滚动偏移 | `Boolean` | `true`          | -      |
 | `goodsListLength` | 已声明但当前逻辑未使用       | `Number`  | `0`             | -      |
 | `customStyle`     | 合并到最外层的样式对象       | `Object`  | `{}`            | -      |
-| `scrollTop`       | 传给内部筛选面板             | `Number`  | `0`             | -      |
+| `scrollTop`       | 已废弃，仅为兼容旧调用保留   | `Number`  | `0`             | -      |
 
 ### Events
 

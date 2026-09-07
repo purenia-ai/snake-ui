@@ -38,7 +38,6 @@
                     <filterPage
                         :show="showDrawer"
                         :filters="filters"
-                        :scrollTop="scrollTop"
                         :defaultParams="filterParams"
                         @confirm="filterConfirm"
                     ></filterPage>
@@ -78,6 +77,7 @@ const props = withDefaults(defineProps<SnakeFilterSortsProps>(), {
     showTabs: true,
     goodsListLength: 0,
     customStyle: () => ({}),
+    // @deprecated 弹层索引列表已使用独立的容器滚动，不再依赖页面 scrollTop。
     scrollTop: 0
 });
 

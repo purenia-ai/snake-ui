@@ -24,6 +24,7 @@ const components = [
     'snake-drop-menu',
     'snake-drop-menu-item',
     'snake-index-list',
+    'snake-index-list-panel',
     'snake-index-anchor',
     'snake-cell-group',
     'snake-cell-item',
@@ -48,7 +49,7 @@ test('every public component exposes an independent type contract', async () => 
     const packageEntry = await readFile(new URL('index.ts', root), 'utf8');
     const declarationEntry = await readFile(new URL('types/components.d.ts', root), 'utf8');
 
-    assert.equal(directories.length, 67);
+    assert.equal(directories.length, 68);
     for (const component of directories) {
         const types = await readFile(new URL(`components/${component}/types.ts`, root), 'utf8');
         assert.match(types, /export (?:interface|type) Snake/, `${component}: missing public contract`);
@@ -202,6 +203,7 @@ test('package entry exposes precise foundation component props', async () => {
         'DropMenu',
         'DropMenuItem',
         'IndexList',
+        'IndexListPanel',
         'IndexAnchor',
         'CellGroup',
         'CellItem',
@@ -267,11 +269,7 @@ test('published styles avoid wxss-unsupported universal selectors', async () => 
                 .replace(/\/\*[\s\S]*?\*\//g, '')
                 .replace(/\/\/[^\n]*/g, '')
                 .replace(/(["'])(?:\\.|(?!\1).)*\1/g, '""');
-            assert.doesNotMatch(
-                clean,
-                />\s*\*/,
-                `${path}: WXSS 不支持通配选择器 *，请为子元素补显式 class`
-            );
+            assert.doesNotMatch(clean, />\s*\*/, `${path}: WXSS 不支持通配选择器 *，请为子元素补显式 class`);
         }
     }
 });

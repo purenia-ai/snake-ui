@@ -48,7 +48,7 @@ export interface SnakeFilterSortsProps<Filters extends SnakeFilterSortsData = Sn
     goodsListLength?: number;
     /** 根节点自定义样式。 */
     customStyle?: SnakeStyleValue;
-    /** 页面或容器当前滚动距离。 */
+    /** @deprecated 弹层索引列表已使用独立容器滚动，此属性仅为兼容旧调用保留。 */
     scrollTop?: number;
 }
 

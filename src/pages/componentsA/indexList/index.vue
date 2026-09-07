@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, reactive } from 'vue';
+import { onPageScroll } from '@dcloudio/uni-app';
+import { computed, reactive, ref } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
@@ -9,6 +10,7 @@ import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
 const letters = ['A', 'B', 'C', 'D'];
+const scrollTop = ref(0);
 const controls: DemoControl[] = [
     {
         key: 'indexColor',
@@ -37,13 +39,19 @@ const title = computed(() => {
 function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
+onPageScroll(event => {
+    scrollTop.value = event.scrollTop;
+});
 </script>
 
 <template>
     <DemoPage :title="title" :eyebrow="text('导航与布局')" :desc="text('通过右侧索引快速定位列表中的分组内容。')">
         <DemoSection variant="preview" :title="text('演示效果')"
             ><view class="demo-index demo-index-list-showcase"
-                ><snake-index-list :index-list="letters" :active-color="String(state.indexColor)"
+                ><snake-index-list
+                    :index-list="letters"
+                    :scroll-top="scrollTop"
+                    :active-color="String(state.indexColor)"
                     ><view v-for="letter in letters" :key="letter"
                         ><snake-index-anchor
                             :index="letter"
@@ -63,10 +71,8 @@ function updateValue(key: string, value: DemoValue) {
 </template>
 
 <style scoped>
-.demo-index {
-    height: 620rpx;
-}
 .demo-index-row {
+    min-height: 160rpx;
     padding: 28rpx 20rpx;
     border-bottom: 1rpx solid var(--snake-color-divider);
     color: var(--snake-color-text-secondary);

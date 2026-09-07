@@ -1,152 +1,187 @@
 <template>
-  <view class="filter-container">
-    <view class="scroll-panel" id="scroll-panel">
-      <view class="list-box">
-        <view class="left">
-          <scroll-view
-            scroll-y
-            :style="{ height: scrollHeight + 'px' }"
-            :scroll-into-view="leftIntoView"
-            :scroll-with-animation="false">
-            <view
-              class="item"
-              v-for="(item, index) in filterList"
-              :key="index"
-              :class="{ active: index == leftIndex }"
-              :id="'left-' + index"
-              :data-index="index"
-              @tap.stop="leftTap">
-              {{ item.name }}
-            </view>
-          </scroll-view>
-        </view>
-        <view class="main">
-          <scroll-view
-            v-if="filterList.length - 1 !== leftIndex"
-            scroll-y
-            :style="{ height: scrollHeight + 'px' }"
-            :scroll-into-view="scrollInto"
-            :scroll-with-animation="false"
-            @scroll="mainScroll">
-            <view class="item main-item" v-for="(item, index) in filterList" :key="index" :id="'item-' + index">
-              <view class="title" v-if="item.value !== 'brandFilter'">
-                <text>{{ item.name }}</text>
-                  <view class="filter-page__tooltip-wrap" v-if="item.desc">
-                    <snake-icon
-                      name="info-circle"
-                      size="26rpx"
-                      custom-class="filter-page__tooltip-icon"
-                      stop
-                      @click="showTooltip = !showTooltip"></snake-icon>
-                  <view class="tooltip" v-if="showTooltip">
-                    <view class="filter-page__tooltip-body" style="background-color: #eafff5">
-                      <mp-html :content="item.desc"></mp-html>
-                    </view>
-                  </view>
+    <view class="filter-container">
+        <view class="scroll-panel" id="scroll-panel">
+            <view class="list-box">
+                <view class="left">
+                    <scroll-view
+                        scroll-y
+                        :style="{ height: scrollHeight + 'px' }"
+                        :scroll-into-view="leftIntoView"
+                        :scroll-with-animation="false"
+                    >
+                        <view
+                            class="item"
+                            v-for="(item, index) in filterList"
+                            :key="index"
+                            :class="{ active: index == leftIndex }"
+                            :id="'left-' + index"
+                            :data-index="index"
+                            @tap.stop="leftTap"
+                        >
+                            {{ item.name }}
+                        </view>
+                    </scroll-view>
                 </view>
-              </view>
-              <view class="price-input-box" v-if="item.value === 'priceFilter'">
-                <input
-                  class="price-input-item"
-                  placeholder="最低价"
-                  v-model="priceValue.low"
-                  placeholder-style="color: var(--snake-color-text-muted, #acacb7)"
-                  @input="inputChange($event, item, 'low')" />
-                <view class="line"></view>
-                <input
-                  class="price-input-item"
-                  placeholder="最高价"
-                  v-model="priceValue.high"
-                  placeholder-style="color: var(--snake-color-text-muted, #acacb7)"
-                  @input="inputChange($event, item, 'high')" />
-              </view>
+                <view class="main">
+                    <scroll-view
+                        v-if="filterList.length - 1 !== leftIndex"
+                        scroll-y
+                        :style="{ height: scrollHeight + 'px' }"
+                        :scroll-into-view="scrollInto"
+                        :scroll-with-animation="false"
+                        @scroll="mainScroll"
+                    >
+                        <view
+                            class="item main-item"
+                            v-for="(item, index) in filterList"
+                            :key="index"
+                            :id="'item-' + index"
+                        >
+                            <view class="title" v-if="item.value !== 'brandFilter'">
+                                <text>{{ item.name }}</text>
+                                <view class="filter-page__tooltip-wrap" v-if="item.desc">
+                                    <snake-icon
+                                        name="info-circle"
+                                        size="26rpx"
+                                        custom-class="filter-page__tooltip-icon"
+                                        stop
+                                        @click="showTooltip = !showTooltip"
+                                    ></snake-icon>
+                                    <view class="tooltip" v-if="showTooltip">
+                                        <view class="filter-page__tooltip-body" style="background-color: #eafff5">
+                                            <mp-html :content="item.desc"></mp-html>
+                                        </view>
+                                    </view>
+                                </view>
+                            </view>
+                            <view class="price-input-box" v-if="item.value === 'priceFilter'">
+                                <input
+                                    class="price-input-item"
+                                    placeholder="最低价"
+                                    v-model="priceValue.low"
+                                    placeholder-style="color: var(--snake-color-text-muted, #acacb7)"
+                                    @input="inputChange($event, item, 'low')"
+                                />
+                                <view class="line"></view>
+                                <input
+                                    class="price-input-item"
+                                    placeholder="最高价"
+                                    v-model="priceValue.high"
+                                    placeholder-style="color: var(--snake-color-text-muted, #acacb7)"
+                                    @input="inputChange($event, item, 'high')"
+                                />
+                            </view>
 
-              <view class="tabs" v-if="item.value !== 'brandFilter'">
-                <block v-for="(item2, index2) in item.children" :key="index2">
-                  <view
-                    class="tabs-item filter-page__ellipsis"
-                    :class="{
-                      'tabs-item--active': filterParams[item.value].includes(item2.value),
-                    }"
-                    @click="selectHandle(item, item2)">
-                    {{ item2.label }}
-                  </view>
-                </block>
-              </view>
+                            <view class="tabs" v-if="item.value !== 'brandFilter'">
+                                <block v-for="(item2, index2) in item.children" :key="index2">
+                                    <view
+                                        class="tabs-item filter-page__ellipsis"
+                                        :class="{
+                                            'tabs-item--active': filterParams[item.value].includes(item2.value)
+                                        }"
+                                        @click="selectHandle(item, item2)"
+                                    >
+                                        {{ item2.label }}
+                                    </view>
+                                </block>
+                            </view>
+                        </view>
+                        <view class="fill-last" :style="{ height: fillHeight + 'px' }"></view>
+                    </scroll-view>
+
+                    <view class="title" v-if="filterList[leftIndex]">
+                        <text>{{ filterList[leftIndex].name }}</text>
+                        <text class="filter-page__count"
+                            >（已选{{ filterParams[filterList[leftIndex].value].length }}个）</text
+                        >
+                    </view>
+
+                    <snake-index-list-panel
+                        v-if="filterList.length - 1 === leftIndex"
+                        ref="uIndexListRef"
+                        :indexList="indexList"
+                        activeColor="var(--snake-color-text, #26273a)"
+                        inactiveColor="var(--snake-color-text-muted, #acacb7)"
+                    >
+                        <block v-for="(item, index) in brandGroupList" :key="index">
+                            <snake-index-anchor
+                                :index="indexList[index]"
+                                :text="indexList[index]"
+                                :customStyle="{ height: '44rpx', padding: '0 10px' }"
+                            ></snake-index-anchor>
+
+                            <template v-for="(cell, cellIndex) in item" :key="cellIndex">
+                                <view
+                                    class="filter-page__brand-cell"
+                                    @click.stop="
+                                        selectHandle(filterList[leftIndex], {
+                                            value: cell
+                                        })
+                                    "
+                                >
+                                    <view class="filter-page__brand-name" hover-class="u-hover-class">{{ cell }}</view>
+                                    <snake-icon
+                                        v-if="filterParams.brandFilter.includes(cell)"
+                                        name="checkmark"
+                                        size="28rpx"
+                                        color="var(--snake-color-primary, #06d290)"
+                                        custom-class="filter-page__brand-check"
+                                    ></snake-icon>
+                                </view>
+                            </template>
+                            <view class="filter-page__spacer-sm"></view>
+                        </block>
+                        <view class="filter-page__spacer-lg"></view>
+                    </snake-index-list-panel>
+                </view>
             </view>
-            <view class="fill-last" :style="{ height: fillHeight + 'px' }"></view>
-          </scroll-view>
+        </view>
 
-          <view class="title" v-if="filterList[leftIndex]">
-            <text>{{ filterList[leftIndex].name }}</text>
-            <text class="filter-page__count">（已选{{ filterParams[filterList[leftIndex].value].length }}个）</text>
-          </view>
+        <snake-overlay
+            :opacity="0"
+            v-model="showTooltip"
+            @click="showTooltip = false"
+            :z-index="11"
+            v-if="showTooltip"
+        ></snake-overlay>
 
-          <snake-index-list
-            v-if="filterList.length - 1 === leftIndex"
-            ref="uIndexListRef"
-            :indexList="indexList"
-            activeColor="var(--snake-color-text, #26273a)"
-            inactiveColor="var(--snake-color-text-muted, #acacb7)"
-            :scrollTop="scrollTop">
-            <block v-for="(item, index) in brandGroupList" :key="index">
-              <snake-index-anchor
-                :index="index"
-                :text="indexList[index]"
-                :customStyle="{ height: '44rpx', padding: '0 10px' }"></snake-index-anchor>
-
-              <template v-for="(cell, cellIndex) in item" :key="cellIndex">
-                <view
-                  class="filter-page__brand-cell"
-                  @click.stop="
-                    selectHandle(filterList[leftIndex], {
-                      value: cell,
-                    })
-                  ">
-                  <view class="filter-page__brand-name" hover-class="u-hover-class">{{ cell }}</view>
-                  <snake-icon
-                    v-if="filterParams.brandFilter.includes(cell)"
-                    name="checkmark"
+        <!-- 底部按钮 -->
+        <view class="filter-footer">
+            <view class="filter-page__save-row" @click="isDefaultSave = !isDefaultSave">
+                <snake-icon
+                    v-if="isDefaultSave"
+                    name="checkbox-mark"
                     size="28rpx"
                     color="var(--snake-color-primary, #06d290)"
-                    custom-class="filter-page__brand-check"></snake-icon>
-                </view>
-              </template>
-              <view class="filter-page__spacer-sm"></view>
-            </block>
-            <view class="filter-page__spacer-lg"></view>
-          </snake-index-list>
+                ></snake-icon>
+                <snake-icon
+                    v-else
+                    name="circle"
+                    size="28rpx"
+                    color="var(--snake-color-text-muted, #acacb7)"
+                ></snake-icon>
+                <text class="filter-page__save-text">保存为默认筛选</text>
+            </view>
+
+            <view class="action">
+                <snake-button
+                    type="primary"
+                    color="var(--snake-color-primary, #06D290)"
+                    plain
+                    customStyle="width: 168rpx; height: 76rpx;"
+                    @click="resetFilter"
+                    >重置</snake-button
+                >
+                <snake-button
+                    type="primary"
+                    customStyle="width: 228rpx; height: 76rpx; margin-left: 20rpx;"
+                    @click="confirmFilter"
+                >
+                    确定
+                </snake-button>
+            </view>
         </view>
-      </view>
     </view>
-
-    <snake-overlay :opacity="0" v-model="showTooltip" @click="showTooltip = false" :z-index="11" v-if="showTooltip"></snake-overlay>
-
-    <!-- 底部按钮 -->
-    <view class="filter-footer">
-      <view class="filter-page__save-row" @click="isDefaultSave = !isDefaultSave">
-        <snake-icon
-          v-if="isDefaultSave"
-          name="checkbox-mark"
-          size="28rpx"
-          color="var(--snake-color-primary, #06d290)"></snake-icon>
-        <snake-icon v-else name="circle" size="28rpx" color="var(--snake-color-text-muted, #acacb7)"></snake-icon>
-        <text class="filter-page__save-text">保存为默认筛选</text>
-      </view>
-
-      <view class="action">
-        <snake-button
-          type="primary"
-          color="var(--snake-color-primary, #06D290)"
-          plain
-          customStyle="width: 168rpx; height: 76rpx;"
-          @click="resetFilter">重置</snake-button>
-        <snake-button type="primary" customStyle="width: 228rpx; height: 76rpx; margin-left: 20rpx;" @click="confirmFilter">
-          确定
-        </snake-button>
-      </view>
-    </view>
-  </view>
 </template>
 
 <script>
@@ -158,537 +193,530 @@
 
 import { createCacheClient } from '../../../libs/runtime';
 import SnakeIndexAnchor from '../../snake-index-anchor/snake-index-anchor.vue';
-import SnakeIndexList from '../../snake-index-list/snake-index-list.vue';
+import SnakeIndexListPanel from '../../snake-index-list-panel/snake-index-list-panel.vue';
 const cacheManager = createCacheClient('snake-filter-sorts');
 export default {
-  emits: ['confirm'],
-  options: {
-    virtualHost: true,
-    addGlobalClass: true,
-    styleIsolation: 'shared',
-  },
-  components: { SnakeIndexAnchor, SnakeIndexList },
-  props: {
-    show: {
-      type: Boolean,
-      default: false,
+    emits: ['confirm'],
+    options: {
+        virtualHost: true,
+        addGlobalClass: true,
+        styleIsolation: 'shared'
     },
-    filters: {
-      type: Object,
-      default: () => ({}),
-    },
-    defaultParams: {
-      type: Object,
-      default: () => ({}),
-    },
-    // 页面滚动
-    scrollTop: {
-      type: Number,
-      default: 0,
-    },
-  },
-  data() {
-    return {
-      scrollHeight: 400,
-      scrollTopSize: 0,
-      fillHeight: 0, // 填充高度，用于最后一项低于滚动区域时使用
-      leftArray: [],
-      mainArray: [],
-      topArr: [],
-      leftIndex: 0,
-      scrollInto: '',
-      isDefaultSave: false,
-      showTooltip: false,
-      tagStyle: {
-        text: '',
-      },
-      // 价格筛选
-      priceValue: {
-        low: '',
-        high: '',
-      },
-      brandValues: [],
-      filterList: [],
-      filterParams: {},
-    };
-  },
-  computed: {
-    /* 计算左侧滚动位置定位 */
-    leftIntoView() {
-      return `left-${this.leftIndex > 3 ? this.leftIndex - 3 : 0}`;
-    },
-    /**
-     * 获取品牌分组列表
-     * @returns {Array} 品牌数据数组，按 hot -> 字母顺序 -> # 的顺序排列
-     */
-    brandGroupList() {
-      const brandData = this.filters?.brandFilter;
-      const indexList = Object.keys(brandData);
-      const filteredIndexes = indexList.filter((e) => !['hot', '#'].includes(e));
-
-      const result = filteredIndexes.map((key) => brandData[key]);
-
-      // 如果存在 hot 分组，将其插入到开头
-      if (indexList.includes('hot')) {
-        result.unshift(brandData.hot);
-      }
-
-      // 如果存在 # 分组，将其追加到末尾
-      if (indexList.includes('#')) {
-        result.push(brandData['#']);
-      }
-
-      return result;
-    },
-    /**
-     * 获取索引列表
-     * @returns {Array} 索引数组，按 hot -> 字母顺序 -> # 的顺序排列
-     */
-    indexList() {
-      const indexList = Object.keys(this.filters?.brandFilter);
-      const filteredIndexes = indexList.filter((e) => !['hot', '#'].includes(e));
-
-      const result = [...filteredIndexes];
-
-      // 如果存在 hot 分组，将其插入到开头
-      if (indexList.includes('hot')) {
-        result.unshift('hot');
-      }
-
-      // 如果存在 # 分组，将其追加到末尾
-      if (indexList.includes('#')) {
-        result.push('#');
-      }
-
-      return result;
-    },
-  },
-  watch: {
-    show: {
-      async handler(newVal) {
-        // #ifdef H5
-        document.body.style.overflow = newVal ? 'hidden' : 'unset';
-        // #endif
-
-        if (newVal) {
-          await uni.$snake.sleep(500);
-          await this.initScrollView();
-          await this.initData();
-          await uni.$snake.sleep(200);
-          await this.getElementTop();
-          if (this.leftIndex > 0) {
-            this.scrollInto = '';
-            this.$nextTick(() => {
-              this.scrollInto = `item-${this.leftIndex}`;
-            });
-          }
-        }
-      },
-      immediate: true,
-      deep: true,
-    },
-  },
-  methods: {
-    initData() {
-      const filterParamsCache = cacheManager.get('filterParams') || {};
-
-      const mainFilter = [
-        ...(this.filters?.mainFilter || []),
-        {
-          name: '品牌',
-          value: 'brandFilter',
+    components: { SnakeIndexAnchor, SnakeIndexListPanel },
+    props: {
+        show: {
+            type: Boolean,
+            default: false
         },
-      ];
-
-      this.filterList = mainFilter;
-
-      const obj = {};
-      this.filterList.forEach((item) => {
-        obj[item.value] = (filterParamsCache?.[item.value]?.length && filterParamsCache[item.value]) || [];
-        if (!obj[item.value].length) {
-          const value = this.defaultParams?.[item.value] || [];
-          obj[item.value] = Array.isArray(value) ? value : value.split?.(',');
+        filters: {
+            type: Object,
+            default: () => ({})
+        },
+        defaultParams: {
+            type: Object,
+            default: () => ({})
         }
-        this.filterParams = { ...obj };
-      });
     },
-    /* 初始化滚动区域 */
-    initScrollView() {
-      return new Promise((resolve) => {
-        let view = uni.createSelectorQuery().in(this);
-
-        // #ifdef MP-ALIPAY
-        view = uni.createSelectorQuery();
-        // #endif
-
-        view
-          .select('#scroll-panel')
-          .boundingClientRect((res) => {
-            // virtualHost 下 mp 端 selector 可能返回 null，回退默认高度避免 initData 中断
-            this.scrollTopSize = res?.top || 0;
-            this.scrollHeight = res?.height || this.scrollHeight;
-            setTimeout(() => {
-              resolve();
-            }, 100);
-          })
-          .exec();
-      });
+    data() {
+        return {
+            scrollHeight: 400,
+            scrollTopSize: 0,
+            fillHeight: 0, // 填充高度，用于最后一项低于滚动区域时使用
+            leftArray: [],
+            mainArray: [],
+            topArr: [],
+            leftIndex: 0,
+            scrollInto: '',
+            isDefaultSave: false,
+            showTooltip: false,
+            tagStyle: {
+                text: ''
+            },
+            // 价格筛选
+            priceValue: {
+                low: '',
+                high: ''
+            },
+            brandValues: [],
+            filterList: [],
+            filterParams: {}
+        };
     },
-    /* 获取元素顶部信息 */
-    getElementTop() {
-      new Promise((resolve) => {
-        let view = uni.createSelectorQuery().in(this);
+    computed: {
+        /* 计算左侧滚动位置定位 */
+        leftIntoView() {
+            return `left-${this.leftIndex > 3 ? this.leftIndex - 3 : 0}`;
+        },
+        /**
+         * 获取品牌分组列表
+         * @returns {Array} 品牌数据数组，按 hot -> 字母顺序 -> # 的顺序排列
+         */
+        brandGroupList() {
+            const brandData = this.filters?.brandFilter;
+            const indexList = Object.keys(brandData);
+            const filteredIndexes = indexList.filter(e => !['hot', '#'].includes(e));
 
-        // #ifdef MP-ALIPAY
-        view = uni.createSelectorQuery();
-        // #endif
+            const result = filteredIndexes.map(key => brandData[key]);
 
-        view
-          .selectAll('.main-item')
-          .boundingClientRect((data) => {
-            resolve(data);
-          })
-          .exec();
-      }).then((res) => {
-        const list = res || [];
-        const topArr = list.map((item) => {
-          return item.top - this.scrollTopSize; /* 减去滚动容器距离顶部的距离 */
-        });
-        this.topArr = topArr;
+            // 如果存在 hot 分组，将其插入到开头
+            if (indexList.includes('hot')) {
+                result.unshift(brandData.hot);
+            }
 
-        /* 获取最后一项的高度，设置填充高度。判断和填充时做了 +-20 的操作，是为了滚动时更好的定位 */
-        const last = list[list.length - 1]?.height || 0;
-        if (last - 20 < this.scrollHeight) {
-          this.fillHeight = this.scrollHeight - last + 20;
+            // 如果存在 # 分组，将其追加到末尾
+            if (indexList.includes('#')) {
+                result.push(brandData['#']);
+            }
+
+            return result;
+        },
+        /**
+         * 获取索引列表
+         * @returns {Array} 索引数组，按 hot -> 字母顺序 -> # 的顺序排列
+         */
+        indexList() {
+            const indexList = Object.keys(this.filters?.brandFilter);
+            const filteredIndexes = indexList.filter(e => !['hot', '#'].includes(e));
+
+            const result = [...filteredIndexes];
+
+            // 如果存在 hot 分组，将其插入到开头
+            if (indexList.includes('hot')) {
+                result.unshift('hot');
+            }
+
+            // 如果存在 # 分组，将其追加到末尾
+            if (indexList.includes('#')) {
+                result.push('#');
+            }
+
+            return result;
         }
-      });
     },
-    /* 主区域滚动监听 */
-    mainScroll(e) {
-      // 节流方法
-      clearTimeout(this.mainThrottle);
-      this.mainThrottle = setTimeout(() => {
-        scrollFn();
-      }, 10);
+    watch: {
+        show: {
+            async handler(newVal) {
+                // #ifdef H5
+                document.body.style.overflow = newVal ? 'hidden' : 'unset';
+                // #endif
 
-      const scrollFn = () => {
-        const top = e.detail.scrollTop;
-        let index = 0;
-        /* 查找当前滚动距离 */
-        for (let i = this.topArr.length - 1; i >= 0; i--) {
-          /* 在部分安卓设备上，因手机逻辑分辨率与rpx单位计算不是整数，滚动距离与有误差，增加2px来完善该问题 */
-          if (top + 2 >= this.topArr[i]) {
-            index = i;
-            break;
-          }
+                if (newVal) {
+                    await uni.$snake.sleep(500);
+                    await this.initScrollView();
+                    await this.initData();
+                    await uni.$snake.sleep(200);
+                    await this.getElementTop();
+                    if (this.leftIndex > 0) {
+                        this.scrollInto = '';
+                        this.$nextTick(() => {
+                            this.scrollInto = `item-${this.leftIndex}`;
+                        });
+                    }
+                }
+            },
+            immediate: true,
+            deep: true
         }
-        this.leftIndex = index < 0 ? 0 : index;
-      };
     },
-    /* 左侧导航点击 */
-    leftTap(e) {
-      const index = e.currentTarget.dataset.index;
+    methods: {
+        initData() {
+            const filterParamsCache = cacheManager.get('filterParams') || {};
 
-      if (this.filterList.length - 1 === this.leftIndex) {
-        this.leftIndex = index;
-      }
+            const mainFilter = [
+                ...(this.filters?.mainFilter || []),
+                {
+                    name: '品牌',
+                    value: 'brandFilter'
+                }
+            ];
 
-      this.scrollInto = `item-${index}`;
-    },
-    selectHandle(item, item2) {
-      if (this.filterParams[item.value].includes(item2.value)) {
-        this.filterParams[item.value].splice(this.filterParams[item.value].indexOf(item2.value), 1);
-      } else {
-        if (item.type === 'selector') this.filterParams[item.value] = [];
-        this.filterParams[item.value].push(item2.value);
-      }
+            this.filterList = mainFilter;
 
-      if (item.value === 'priceFilter') {
-        this.selectPrice({
-          low: item2.value.split('-')[0],
-          high: item2.value.split('-')[1],
-        });
-      }
-    },
-    inputChange(e, item, propName) {
-      const value = e.detail.value;
-      this.priceValue[propName] = value;
-      this.filterParams[item.value] = [`${this.priceValue?.low || 0}-${this.priceValue?.high || 0}`];
-    },
-    // 价格选择
-    selectPrice(item) {
-      if (this.priceValue.low === item.low && this.priceValue.high === item.high) {
-        this.priceValue = {};
-      } else {
-        this.priceValue = { ...item };
-      }
-    },
-    // 重置
-    resetFilter() {
-      Object.entries(this.filterParams).forEach(([key, value]) => {
-        if (value?.length) {
-          this.filterParams[key] = [];
+            const obj = {};
+            this.filterList.forEach(item => {
+                obj[item.value] = (filterParamsCache?.[item.value]?.length && filterParamsCache[item.value]) || [];
+                if (!obj[item.value].length) {
+                    const value = this.defaultParams?.[item.value] || [];
+                    obj[item.value] = Array.isArray(value) ? value : value.split?.(',');
+                }
+                this.filterParams = { ...obj };
+            });
+        },
+        /* 初始化滚动区域 */
+        initScrollView() {
+            return new Promise(resolve => {
+                let view = uni.createSelectorQuery().in(this);
+
+                // #ifdef MP-ALIPAY
+                view = uni.createSelectorQuery();
+                // #endif
+
+                view.select('#scroll-panel')
+                    .boundingClientRect(res => {
+                        // virtualHost 下 mp 端 selector 可能返回 null，回退默认高度避免 initData 中断
+                        this.scrollTopSize = res?.top || 0;
+                        this.scrollHeight = res?.height || this.scrollHeight;
+                        setTimeout(() => {
+                            resolve();
+                        }, 100);
+                    })
+                    .exec();
+            });
+        },
+        /* 获取元素顶部信息 */
+        getElementTop() {
+            new Promise(resolve => {
+                let view = uni.createSelectorQuery().in(this);
+
+                // #ifdef MP-ALIPAY
+                view = uni.createSelectorQuery();
+                // #endif
+
+                view.selectAll('.main-item')
+                    .boundingClientRect(data => {
+                        resolve(data);
+                    })
+                    .exec();
+            }).then(res => {
+                const list = res || [];
+                const topArr = list.map(item => {
+                    return item.top - this.scrollTopSize; /* 减去滚动容器距离顶部的距离 */
+                });
+                this.topArr = topArr;
+
+                /* 获取最后一项的高度，设置填充高度。判断和填充时做了 +-20 的操作，是为了滚动时更好的定位 */
+                const last = list[list.length - 1]?.height || 0;
+                if (last - 20 < this.scrollHeight) {
+                    this.fillHeight = this.scrollHeight - last + 20;
+                }
+            });
+        },
+        /* 主区域滚动监听 */
+        mainScroll(e) {
+            // 节流方法
+            clearTimeout(this.mainThrottle);
+            this.mainThrottle = setTimeout(() => {
+                scrollFn();
+            }, 10);
+
+            const scrollFn = () => {
+                const top = e.detail.scrollTop;
+                let index = 0;
+                /* 查找当前滚动距离 */
+                for (let i = this.topArr.length - 1; i >= 0; i--) {
+                    /* 在部分安卓设备上，因手机逻辑分辨率与rpx单位计算不是整数，滚动距离与有误差，增加2px来完善该问题 */
+                    if (top + 2 >= this.topArr[i]) {
+                        index = i;
+                        break;
+                    }
+                }
+                this.leftIndex = index < 0 ? 0 : index;
+            };
+        },
+        /* 左侧导航点击 */
+        leftTap(e) {
+            const index = e.currentTarget.dataset.index;
+
+            if (this.filterList.length - 1 === this.leftIndex) {
+                this.leftIndex = index;
+            }
+
+            this.scrollInto = `item-${index}`;
+        },
+        selectHandle(item, item2) {
+            if (this.filterParams[item.value].includes(item2.value)) {
+                this.filterParams[item.value].splice(this.filterParams[item.value].indexOf(item2.value), 1);
+            } else {
+                if (item.type === 'selector') this.filterParams[item.value] = [];
+                this.filterParams[item.value].push(item2.value);
+            }
+
+            if (item.value === 'priceFilter') {
+                this.selectPrice({
+                    low: item2.value.split('-')[0],
+                    high: item2.value.split('-')[1]
+                });
+            }
+        },
+        inputChange(e, item, propName) {
+            const value = e.detail.value;
+            this.priceValue[propName] = value;
+            this.filterParams[item.value] = [`${this.priceValue?.low || 0}-${this.priceValue?.high || 0}`];
+        },
+        // 价格选择
+        selectPrice(item) {
+            if (this.priceValue.low === item.low && this.priceValue.high === item.high) {
+                this.priceValue = {};
+            } else {
+                this.priceValue = { ...item };
+            }
+        },
+        // 重置
+        resetFilter() {
+            Object.entries(this.filterParams).forEach(([key, value]) => {
+                if (value?.length) {
+                    this.filterParams[key] = [];
+                }
+            });
+            cacheManager.delete('filterParams');
+        },
+        // 更多筛选 确认
+        confirmFilter() {
+            const params = {};
+            Object.entries(this.filterParams).forEach(([key, value]) => {
+                if (value?.length) {
+                    params[key] = value.join(',');
+                }
+            });
+            // 缓存48小时
+            if (this.isDefaultSave) {
+                cacheManager.set('filterParams', this.filterParams, 60 * 60 * 48);
+            }
+            this.$emit('confirm', params);
         }
-      });
-      cacheManager.delete('filterParams');
-    },
-    // 更多筛选 确认
-    confirmFilter() {
-      const params = {};
-      Object.entries(this.filterParams).forEach(([key, value]) => {
-        if (value?.length) {
-          params[key] = value.join(',');
-        }
-      });
-      // 缓存48小时
-      if (this.isDefaultSave) {
-        cacheManager.set('filterParams', this.filterParams, 60 * 60 * 48);
-      }
-      this.$emit('confirm', params);
-    },
-  },
+    }
 };
 </script>
 
 <style lang="scss" scoped>
 ::v-deep .index-anchor {
-  padding-left: 10rpx !important;
+    padding-left: 10rpx !important;
 }
 ::v-deep .index-list__sidebar .index-list__item {
-  width: 28rpx !important;
-  height: 28rpx !important;
-  font-size: 22rpx !important;
+    width: 28rpx !important;
+    height: 28rpx !important;
+    font-size: 22rpx !important;
 }
 
 ::v-deep .index-list__content {
-  height: 60vh !important;
+    height: 60vh !important;
 }
 
 /* 品牌勾选区（原依赖宿主 UnoCSS 原子类，迁移为组件语义类） */
 .filter-page__brand-cell {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 40rpx;
-  margin-top: 10rpx;
-  padding-left: 10rpx;
-  background-color: var(--snake-color-surface, #fff);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 40rpx;
+    margin-top: 10rpx;
+    padding-left: 10rpx;
+    background-color: var(--snake-color-surface, #fff);
 }
 
 .filter-page__brand-name {
-  font-size: 24rpx;
+    font-size: 24rpx;
 }
 
 .filter-page__brand-check {
-  padding-right: 96rpx;
+    padding-right: 96rpx;
 }
 
 .filter-page__spacer-sm {
-  height: 20rpx;
+    height: 20rpx;
 }
 
 .filter-page__spacer-lg {
-  height: 120rpx;
+    height: 120rpx;
 }
 
 /* 底部保存区 */
 .filter-page__save-row {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .filter-page__save-text {
-  margin-left: 10rpx;
-  font-size: 24rpx;
+    margin-left: 10rpx;
+    font-size: 24rpx;
 }
 
 /* 工具提示 */
 .filter-page__tooltip-wrap {
-  position: relative;
+    position: relative;
 }
 
 .filter-page__tooltip-icon {
-  margin-left: 10rpx;
+    margin-left: 10rpx;
 }
 
 .filter-page__tooltip-body {
-  padding: 14rpx;
+    padding: 14rpx;
 }
 
 .filter-page__ellipsis {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .filter-page__count {
-  font-weight: 300;
+    font-weight: 300;
 }
 
 .tooltip {
-  position: absolute;
-  top: 50rpx;
-  left: -100rpx;
-  z-index: 12;
-  width: calc(100vw - 188rpx - 50rpx);
-  min-width: 100%;
-  overflow-y: unset !important;
-  color: var(--snake-color-primary, #06D290);
+    position: absolute;
+    top: 50rpx;
+    left: -100rpx;
+    z-index: 12;
+    width: calc(100vw - 188rpx - 50rpx);
+    min-width: 100%;
+    overflow-y: unset !important;
+    color: var(--snake-color-primary, #06d290);
 }
 
 .tooltip::before {
-  position: absolute;
-  top: -10rpx;
-  left: 112rpx;
-  width: 0;
-  height: 0;
-  content: '';
-  border-right: 8px solid transparent;
-  border-bottom: 8px solid #eafff5;
-  border-left: 8px solid transparent;
+    position: absolute;
+    top: -10rpx;
+    left: 112rpx;
+    width: 0;
+    height: 0;
+    content: '';
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #eafff5;
+    border-left: 8px solid transparent;
 }
 
 .filter-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  background: var(--snake-color-surface, #fff);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--snake-color-surface, #fff);
 
-  & > view {
-    width: 100%;
-  }
+    & > view {
+        width: 100%;
+    }
 
-  .scroll-panel {
-    flex-grow: 1;
-    height: 0;
-    overflow: hidden;
-  }
+    .scroll-panel {
+        flex-grow: 1;
+        height: 0;
+        overflow: hidden;
+    }
 }
 
 .list-box {
-  display: flex;
-  flex-direction: row;
-  font-size: 28rpx;
+    display: flex;
+    flex-direction: row;
+    font-size: 28rpx;
 
-  .left {
-    box-sizing: border-box;
-    width: 188rpx;
-    line-height: normal;
-    background: var(--snake-color-background, #f6f6f6);
-
-    .item {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 80rpx;
-      font-family: PingFangSC-Regular;
-      font-size: 26rpx;
-      font-weight: 400;
-      color: var(--snake-color-text-secondary, #909399);
-
-      &.active {
-        font-family: PingFangSC-Medium;
-        font-weight: 500;
-        color: var(--snake-color-primary, #06D290);
-      }
-    }
-
-    .fill-last {
-      width: 100%;
-      height: 0;
-      background: none;
-    }
-  }
-  .main {
-    box-sizing: border-box;
-    flex-grow: 1;
-    width: 0;
-    padding-left: 20rpx;
-    background-color: var(--snake-color-surface, #fff);
-
-    .title {
-      display: flex;
-      align-items: center;
-      padding: 20rpx 0;
-      font-family: PingFangSC-Medium;
-      font-size: 26rpx;
-      font-weight: 500;
-      line-height: normal;
-      color: var(--snake-color-text, #26273a);
-      background-color: var(--snake-color-surface, #fff);
-    }
-
-    .tabs {
-      display: flex;
-      flex-wrap: wrap;
-      align-content: center;
-      align-items: center;
-      justify-content: flex-start;
-
-      .tabs-item {
+    .left {
         box-sizing: border-box;
-        width: 166rpx;
-        height: 60rpx;
-        margin-right: 10rpx;
-        margin-bottom: 10rpx;
-        font-family: PingFangSC-Regular;
-        font-size: 24rpx;
-        font-weight: 400;
-        line-height: 60rpx;
-        text-align: center;
-        background: var(--snake-color-surface-muted, #f6f6f6);
-        border: 1px solid var(--snake-color-border, #f6f6f6);
-        border-radius: 2rpx;
-      }
+        width: 188rpx;
+        line-height: normal;
+        background: var(--snake-color-background, #f6f6f6);
 
-      .tabs-item--active {
-        font-family: PingFangSC-Medium;
-        font-weight: 500;
-        color: var(--snake-color-primary, #06D290);
-        background: var(--snake-color-primary-light, rgba(6, 210, 144, 0.1));
-        border: 1px solid var(--snake-color-primary, #06D290);
-      }
+        .item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 80rpx;
+            font-family: PingFangSC-Regular;
+            font-size: 26rpx;
+            font-weight: 400;
+            color: var(--snake-color-text-secondary, #909399);
+
+            &.active {
+                font-family: PingFangSC-Medium;
+                font-weight: 500;
+                color: var(--snake-color-primary, #06d290);
+            }
+        }
+
+        .fill-last {
+            width: 100%;
+            height: 0;
+            background: none;
+        }
     }
-  }
+    .main {
+        box-sizing: border-box;
+        flex-grow: 1;
+        width: 0;
+        padding-left: 20rpx;
+        background-color: var(--snake-color-surface, #fff);
+
+        .title {
+            display: flex;
+            align-items: center;
+            padding: 20rpx 0;
+            font-family: PingFangSC-Medium;
+            font-size: 26rpx;
+            font-weight: 500;
+            line-height: normal;
+            color: var(--snake-color-text, #26273a);
+            background-color: var(--snake-color-surface, #fff);
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            align-content: center;
+            align-items: center;
+            justify-content: flex-start;
+
+            .tabs-item {
+                box-sizing: border-box;
+                width: 166rpx;
+                height: 60rpx;
+                margin-right: 10rpx;
+                margin-bottom: 10rpx;
+                font-family: PingFangSC-Regular;
+                font-size: 24rpx;
+                font-weight: 400;
+                line-height: 60rpx;
+                text-align: center;
+                background: var(--snake-color-surface-muted, #f6f6f6);
+                border: 1px solid var(--snake-color-border, #f6f6f6);
+                border-radius: 2rpx;
+            }
+
+            .tabs-item--active {
+                font-family: PingFangSC-Medium;
+                font-weight: 500;
+                color: var(--snake-color-primary, #06d290);
+                background: var(--snake-color-primary-light, rgba(6, 210, 144, 0.1));
+                border: 1px solid var(--snake-color-primary, #06d290);
+            }
+        }
+    }
 }
 
 .filter-footer {
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  height: 116rpx;
-  padding: 0 22rpx;
-  background: var(--snake-color-surface, #fff);
-  box-shadow: 0 -4px 12px 0 var(--snake-color-shadow, #00000008);
-
-  .action {
+    box-sizing: border-box;
     display: flex;
     align-items: center;
-  }
+    justify-content: space-between;
+    width: 100%;
+    height: 116rpx;
+    padding: 0 22rpx;
+    background: var(--snake-color-surface, #fff);
+    box-shadow: 0 -4px 12px 0 var(--snake-color-shadow, #00000008);
+
+    .action {
+        display: flex;
+        align-items: center;
+    }
 }
 
 .price-input-box {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20rpx;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20rpx;
 
-  .price-input-item {
-    box-sizing: border-box;
-    width: 229rpx;
-    height: 60rpx;
-    font-size: 26rpx;
-    color: var(--snake-color-text-muted, #acacb7);
-    text-align: center;
-    background-color: var(--snake-color-surface-muted, #f6f6f6);
-    border-radius: 2rpx;
-  }
-  .line {
-    width: 24rpx;
-    height: 4rpx;
-    margin: 0 20rpx;
-    background-color: #000;
-  }
+    .price-input-item {
+        box-sizing: border-box;
+        width: 229rpx;
+        height: 60rpx;
+        font-size: 26rpx;
+        color: var(--snake-color-text-muted, #acacb7);
+        text-align: center;
+        background-color: var(--snake-color-surface-muted, #f6f6f6);
+        border-radius: 2rpx;
+    }
+    .line {
+        width: 24rpx;
+        height: 4rpx;
+        margin: 0 20rpx;
+        background-color: #000;
+    }
 }
 </style>

@@ -4,7 +4,7 @@ preview: /pages/componentsA/indexAnchor/index
 
 # IndexAnchor 索引锚点
 
-定义 `IndexList` 中的分组位置，并根据父组件配置提供吸顶效果。
+定义索引列表中的分组位置，可在页面型 `IndexList` 或容器型 `IndexListPanel` 中使用。
 
 ## 平台兼容性
 
@@ -15,10 +15,10 @@ preview: /pages/componentsA/indexAnchor/index
 ## 基础用法
 
 ```vue
-<snake-index-list :index-list="['A']">
+<snake-index-list-panel :index-list="['A']">
   <snake-index-anchor index="A" text="A 类商品" />
   <view>Apple</view>
-</snake-index-list>
+</snake-index-list-panel>
 ```
 
 ## 自定义内容

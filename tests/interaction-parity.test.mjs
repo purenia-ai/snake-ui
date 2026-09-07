@@ -54,18 +54,25 @@ test('tabs and subsection expose keyboard navigation semantics', async () => {
     }
 });
 
-test('drop menu performs real measurement and index list handles touch navigation', async () => {
-    const [menu, item, list] = await Promise.all([
+test('drop menu performs real measurement and both index list modes handle touch navigation', async () => {
+    const [menu, item, list, panel] = await Promise.all([
         read('components/snake-drop-menu/snake-drop-menu.vue'),
         read('components/snake-drop-menu-item/types.ts'),
-        read('components/snake-index-list/snake-index-list.vue')
+        read('components/snake-index-list/snake-index-list.vue'),
+        read('components/snake-index-list-panel/snake-index-list-panel.vue')
     ]);
     assert.match(menu, /createSelectorQuery/);
     assert.match(menu, /boundingClientRect/);
     for (const name of ['modelValue', 'options', 'disabled']) assert.match(item, new RegExp(`${name}\\?`));
-    assert.match(list, /@touchstart\.stop\.prevent="touchSelect"/);
-    assert.match(list, /scrollTo/);
-    assert.match(list, /emit\('select'/);
+    for (const source of [list, panel]) {
+        assert.match(source, /@touchstart\.stop\.prevent="touchSelect"/);
+        assert.match(source, /scrollTo/);
+        assert.match(source, /emit\('select'/);
+    }
+    assert.match(list, /uni\.pageScrollTo/);
+    assert.doesNotMatch(list, /<scroll-view/);
+    assert.match(panel, /<scroll-view/);
+    assert.doesNotMatch(panel, /uni\.pageScrollTo/);
 });
 
 test('second parity batch remains independent from uView runtime', async () => {
@@ -78,6 +85,7 @@ test('second parity batch remains independent from uView runtime', async () => {
         'drop-menu',
         'drop-menu-item',
         'index-list',
+        'index-list-panel',
         'index-anchor'
     ];
     const source = (await Promise.all(names.map(name => read(`components/snake-${name}/snake-${name}.vue`)))).join(
@@ -133,8 +141,14 @@ test('auction actions and active activity retain the legacy blue accent', async 
 });
 
 test('commerce filter panel gives percentage-height content a definite containing height', async () => {
-    const filters = await read('components/snake-filter-sorts/snake-filter-sorts.vue');
+    const [filters, filterPage] = await Promise.all([
+        read('components/snake-filter-sorts/snake-filter-sorts.vue'),
+        read('components/snake-filter-sorts/components/filter-page.vue')
+    ]);
     assert.match(filters, /<snake-drop-menu-item[\s\S]*custom-style="height: 70vh"/);
+    assert.match(filterPage, /<snake-index-list-panel/);
+    assert.doesNotMatch(filterPage, /:scrollTop="scrollTop"/);
+    assert.match(filterPage, /:index="indexList\[index\]"/);
 });
 
 test('CMS sticky keeps legacy enable semantics and explicit navigation offset', async () => {

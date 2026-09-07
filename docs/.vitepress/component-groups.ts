@@ -56,6 +56,7 @@ export const componentGroups: ComponentGroup[] = [
             { name: 'DropMenu', title: '下拉菜单', link: '/components/drop-menu' },
             { name: 'DropMenuItem', title: '下拉菜单项', link: '/components/drop-menu-item' },
             { name: 'IndexList', title: '索引列表', link: '/components/index-list' },
+            { name: 'IndexListPanel', title: '容器索引列表', link: '/components/index-list-panel' },
             { name: 'IndexAnchor', title: '索引锚点', link: '/components/index-anchor' },
             { name: 'CellGroup', title: '单元格分组', link: '/components/cell-group' },
             { name: 'CellItem', title: '单元格条目', link: '/components/cell-item' },
