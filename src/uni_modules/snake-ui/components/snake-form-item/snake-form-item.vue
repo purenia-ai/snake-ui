@@ -2,7 +2,7 @@
 /**
  * @component SnakeFormItem
  * @description 连接标签、模型字段、输入控件和校验结果。推荐放在 `Form` 内，也可以作为普通布局容器使用。
- * @see /components/form-item
+ * @see /components/form
  */
 
 import { computed, inject, onBeforeUnmount, onMounted, provide, ref } from 'vue';

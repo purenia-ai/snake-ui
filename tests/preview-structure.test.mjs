@@ -8,7 +8,6 @@ const foundationComponents = [
     'button',
     'loading-icon',
     'skeleton',
-    'skeleton-item',
     'transition',
     'empty',
     'icon',
@@ -27,13 +26,10 @@ const foundationComponents = [
     'index-list',
     'index-anchor',
     'form',
-    'form-item',
     'input',
     'textarea',
     'checkbox',
-    'checkbox-group',
     'radio',
-    'radio-group',
     'switch',
     'slider',
     'cell-group',
@@ -93,8 +89,8 @@ test('component docs and example routes remain one-to-one', async () => {
         if (match) previews.push(match[1]);
     }
 
-    assert.equal(routes.length, 67);
-    assert.equal(previews.length, 67);
+    assert.equal(routes.length, 63);
+    assert.equal(previews.length, 63);
     assert.deepEqual([...new Set(previews)].sort(), [...new Set(routes)].sort());
 });
 
@@ -123,9 +119,9 @@ test('component overview page covers every example route and directory layout', 
     );
     const routes = exampleRoutes(pages);
 
-    assert.equal(configuredPaths.length, 67);
+    assert.equal(configuredPaths.length, 63);
     assert.deepEqual([...configuredPaths].sort(), [...routes].sort());
-    assert.equal(groupA.length, 46);
+    assert.equal(groupA.length, 42);
     assert.equal(groupB.length, 21);
     for (const directory of [
         ...groupA.map(name => ['componentsA', name]),
@@ -162,7 +158,7 @@ test('all example pages own their interactive demo configuration', async () => {
     const panel = await readFile(resolve(root, 'src/components/demo-control-panel/demo-control-panel.vue'), 'utf8');
     const pages = await examplePageSources();
 
-    assert.equal(pages.length, 67);
+    assert.equal(pages.length, 63);
     for (const page of pages) {
         assert.match(page, /<DemoPage/);
         assert.match(page, /<DemoControlPanel/);
@@ -369,7 +365,6 @@ test('foundation feedback previews expose grouped variants', async () => {
             'lazyImage',
             'loadingIcon',
             'skeleton',
-            'skeletonItem',
             'transition',
             'empty',
             'loadmore',
@@ -384,7 +379,6 @@ test('foundation feedback previews expose grouped variants', async () => {
     for (const component of [
         'loading-icon',
         'skeleton',
-        'skeleton-item',
         'transition',
         'icon',
         'image',
@@ -409,13 +403,10 @@ test('form control previews expose grouped variants', async () => {
     const extracted = await Promise.all(
         [
             'form',
-            'formItem',
             'input',
             'textarea',
             'checkbox',
-            'checkboxGroup',
             'radio',
-            'radioGroup',
             'switch',
             'slider'
         ].map(directory => readFile(resolve(root, 'src/pages/componentsA', directory, 'index.vue'), 'utf8'))
@@ -424,13 +415,10 @@ test('form control previews expose grouped variants', async () => {
 
     for (const component of [
         'form',
-        'form-item',
         'input',
         'textarea',
         'checkbox',
-        'checkbox-group',
         'radio',
-        'radio-group',
         'switch',
         'slider'
     ]) {

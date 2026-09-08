@@ -17,9 +17,10 @@ const rules = {
 const message = ref('请填写并提交表单');
 const controls: DemoControl[] = [
     { key: 'formBorder', label: '显示分隔线', type: 'switch', defaultValue: true },
-    { key: 'formTopLabel', label: '标签置顶', type: 'switch', defaultValue: false }
+    { key: 'formTopLabel', label: '标签置顶', type: 'switch', defaultValue: false },
+    { key: 'formRequired', label: '必填标识', type: 'switch', defaultValue: true }
 ];
-const state = reactive<Record<string, DemoValue>>({ formBorder: true, formTopLabel: false });
+const state = reactive<Record<string, DemoValue>>({ formBorder: true, formTopLabel: false, formRequired: true });
 const localizedControls = computed(() => {
     const _locale = localeName.value;
     return controls.map(control => ({ ...control, label: demoText(control.label) }));
@@ -61,7 +62,11 @@ function resetForm() {
                     :border-bottom="Boolean(state.formBorder)"
                     :label-position="state.formTopLabel ? 'top' : 'left'"
                 >
-                    <snake-form-item :label="isEnglish ? 'Name' : '姓名'" prop="name" required left-icon="info"
+                    <snake-form-item
+                        :label="isEnglish ? 'Name' : '姓名'"
+                        prop="name"
+                        :required="Boolean(state.formRequired)"
+                        left-icon="info"
                         ><snake-input
                             v-model="model.name"
                             :placeholder="isEnglish ? 'Enter your name' : '请输入姓名'"

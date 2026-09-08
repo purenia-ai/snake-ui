@@ -22,7 +22,6 @@ export const componentGroups: ComponentGroup[] = [
             { name: 'LazyImage', title: '懒加载图片', link: '/components/lazy-image' },
             { name: 'LoadingIcon', title: '加载图标', link: '/components/loading-icon' },
             { name: 'Skeleton', title: '骨架屏', link: '/components/skeleton' },
-            { name: 'SkeletonItem', title: '骨架占位', link: '/components/skeleton-item' },
             { name: 'Transition', title: '过渡动画', link: '/components/transition' },
             { name: 'Text', title: '文本', link: '/components/text' },
             { name: 'Link', title: '超链接', link: '/components/link' }
@@ -32,13 +31,10 @@ export const componentGroups: ComponentGroup[] = [
         title: '表单组件',
         items: [
             { name: 'Form', title: '表单', link: '/components/form' },
-            { name: 'FormItem', title: '表单项', link: '/components/form-item' },
             { name: 'Input', title: '输入框', link: '/components/input' },
             { name: 'Textarea', title: '文本域', link: '/components/textarea' },
             { name: 'Checkbox', title: '复选框', link: '/components/checkbox' },
-            { name: 'CheckboxGroup', title: '复选框组', link: '/components/checkbox-group' },
             { name: 'Radio', title: '单选框', link: '/components/radio' },
-            { name: 'RadioGroup', title: '单选框组', link: '/components/radio-group' },
             { name: 'Switch', title: '开关', link: '/components/switch' },
             { name: 'Slider', title: '滑动选择器', link: '/components/slider' },
             { name: 'Search', title: '搜索框', link: '/components/search' },

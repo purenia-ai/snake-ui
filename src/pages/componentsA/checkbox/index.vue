@@ -21,9 +21,14 @@ const controls: DemoControl[] = [
             { label: 'default', value: 'default' },
             { label: 'large', value: 'large' }
         ]
-    }
+    },
+    { key: 'choiceWrap', label: '每个换行', type: 'switch', defaultValue: false }
 ];
-const state = reactive<Record<string, DemoValue>>({ choiceDisabled: false, choiceSize: 'default' });
+const state = reactive<Record<string, DemoValue>>({
+    choiceDisabled: false,
+    choiceSize: 'default',
+    choiceWrap: false
+});
 const localizedControls = computed(() => {
     const _locale = localeName.value;
     return controls.map(control => ({ ...control, label: demoText(control.label) }));
@@ -45,10 +50,17 @@ function updateValue(key: string, nextValue: DemoValue) {
                     isEnglish ? 'Accept the user agreement' : '同意用户协议'
                 }}</snake-checkbox
                 ><text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ value }}</text
-                ><text class="demo-variant-title">{{ isEnglish ? 'Multiple selection' : '多选组合' }}</text
-                ><snake-checkbox-group v-model="fruits" :size="String(state.choiceSize)"
+                ><text class="demo-variant-title">{{ isEnglish ? 'Limited selection' : '限制选择数量' }}</text
+                ><snake-checkbox-group
+                    v-model="fruits"
+                    :size="String(state.choiceSize)"
+                    :wrap="Boolean(state.choiceWrap)"
+                    :max="2"
                     ><snake-checkbox name="apple">{{ isEnglish ? 'Apple' : '苹果' }}</snake-checkbox
-                    ><snake-checkbox name="pear">{{ isEnglish ? 'Pear' : '雪梨' }}</snake-checkbox></snake-checkbox-group
+                    ><snake-checkbox name="pear">{{ isEnglish ? 'Pear' : '雪梨' }}</snake-checkbox
+                    ><snake-checkbox name="lemon">{{
+                        isEnglish ? 'Lemon' : '柠檬'
+                    }}</snake-checkbox></snake-checkbox-group
                 ><text
                     >{{ isEnglish ? 'Selected: ' : '已选：'
                     }}{{ fruits.join(isEnglish ? ', ' : '、') || (isEnglish ? 'None' : '无') }}</text

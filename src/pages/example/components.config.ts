@@ -51,12 +51,6 @@ const componentGroups: SnakeComponentGroup[] = [
             ),
             item('/pages/componentsA/skeleton/index', 'Skeleton 骨架屏', 'Skeleton', '在首次加载时预显示页面结构。'),
             item(
-                '/pages/componentsA/skeletonItem/index',
-                'SkeletonItem 骨架占位',
-                'SkeletonItem',
-                '组合自定义骨架模板的基础占位单元。'
-            ),
-            item(
                 '/pages/componentsA/transition/index',
                 'Transition 过渡动画',
                 'Transition',
@@ -72,7 +66,6 @@ const componentGroups: SnakeComponentGroup[] = [
         icon: '✓',
         list: [
             item('/pages/componentsA/form/index', 'Form 表单', 'Form', '统一管理字段、规则校验、重置和错误状态。'),
-            item('/pages/componentsA/formItem/index', 'FormItem 表单项', 'FormItem', '连接标签、字段控件和校验结果。'),
             item('/pages/componentsA/input/index', 'Input 输入框', 'Input', '单行输入，支持清空、密码和前后插槽。'),
             item(
                 '/pages/componentsA/textarea/index',
@@ -81,14 +74,7 @@ const componentGroups: SnakeComponentGroup[] = [
                 '多行输入，支持自适应高度和字数统计。'
             ),
             item('/pages/componentsA/checkbox/index', 'Checkbox 复选框', 'Checkbox', '独立或成组选择多个值。'),
-            item(
-                '/pages/componentsA/checkboxGroup/index',
-                'CheckboxGroup 复选框组',
-                'CheckboxGroup',
-                '管理复选值和最大选择数。'
-            ),
             item('/pages/componentsA/radio/index', 'Radio 单选框', 'Radio', '独立或成组选择单个值。'),
-            item('/pages/componentsA/radioGroup/index', 'RadioGroup 单选框组', 'RadioGroup', '管理互斥单选值。'),
             item('/pages/componentsA/switch/index', 'Switch 开关', 'Switch', '切换布尔值或自定义开关值。'),
             item('/pages/componentsA/slider/index', 'Slider 滑动选择器', 'Slider', '通过点击或触摸拖动选择数值。'),
             item(

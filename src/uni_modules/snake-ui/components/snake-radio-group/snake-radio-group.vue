@@ -2,7 +2,7 @@
 /**
  * @component SnakeRadioGroup
  * @description radio 父组件，管理一组 Radio 的互斥值、禁用状态与布局。
- * @see /components/radio-group
+ * @see /components/radio
  */
 
 import { inject } from 'vue';

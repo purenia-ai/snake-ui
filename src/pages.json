@@ -36,7 +36,6 @@
                 { "path": "button/index", "style": { "navigationBarTitleText": "按钮" } },
                 { "path": "loadingIcon/index", "style": { "navigationBarTitleText": "加载图标" } },
                 { "path": "skeleton/index", "style": { "navigationBarTitleText": "骨架屏" } },
-                { "path": "skeletonItem/index", "style": { "navigationBarTitleText": "骨架占位" } },
                 { "path": "transition/index", "style": { "navigationBarTitleText": "过渡动画" } },
                 { "path": "text/index", "style": { "navigationBarTitleText": "文本" } },
                 { "path": "link/index", "style": { "navigationBarTitleText": "超链接" } },
@@ -73,13 +72,10 @@
                 { "path": "line/index", "style": { "navigationBarTitleText": "分隔线" } },
                 { "path": "lineProgress/index", "style": { "navigationBarTitleText": "线形进度条" } },
                 { "path": "form/index", "style": { "navigationBarTitleText": "表单" } },
-                { "path": "formItem/index", "style": { "navigationBarTitleText": "表单项" } },
                 { "path": "input/index", "style": { "navigationBarTitleText": "输入框" } },
                 { "path": "textarea/index", "style": { "navigationBarTitleText": "文本域" } },
                 { "path": "checkbox/index", "style": { "navigationBarTitleText": "复选框" } },
-                { "path": "checkboxGroup/index", "style": { "navigationBarTitleText": "复选框组" } },
                 { "path": "radio/index", "style": { "navigationBarTitleText": "单选框" } },
-                { "path": "radioGroup/index", "style": { "navigationBarTitleText": "单选框组" } },
                 { "path": "switch/index", "style": { "navigationBarTitleText": "开关" } },
                 { "path": "slider/index", "style": { "navigationBarTitleText": "滑动选择器" } }
             ]

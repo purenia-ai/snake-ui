@@ -288,7 +288,12 @@ const englishMessages: Record<string, string> = {
     当前剩余: 'Remaining',
     已结束: 'Finished',
     重新开始: 'Restart',
-    '用于活动截止等场景的倒计时，通过数字变化给用户明确的时间感受。': 'Counts down to an event deadline, giving users a clear sense of time through changing digits.'
+    '用于活动截止等场景的倒计时，通过数字变化给用户明确的时间感受。': 'Counts down to an event deadline, giving users a clear sense of time through changing digits.',
+    '快速模式': 'Quick mode',
+    '自定义模板': 'Custom template',
+    '占位形态': 'Variant',
+    '文本': 'Text',
+    '矩形': 'Rectangle'
 };
 
 Object.assign(englishMessages, {
@@ -338,13 +343,10 @@ Object.assign(englishMessages, {
     '单个或范围日期选择，支持农历与节日。': 'Selects a single date or a range, with lunar and festival support.',
     '组合字段控件，完成规则校验、错误展示、提交和重置。':
         'Combines fields with validation, error display, submit and reset.',
-    '连接标签、字段控件和校验错误。': 'Connects labels, field controls and validation errors.',
     '支持清空、密码、格式化和多种边框的单行输入。':
         'A single-line input with clear, password, formatting and border options.',
     '支持字数统计和自适应高度的多行文本输入。': 'A multiline input with character count and automatic height.',
     '可独立使用的复选框，也可放入 CheckboxGroup。': 'A standalone checkbox that can also be used in CheckboxGroup.',
-    '管理多个复选框值和最大选择数。': 'Manages multiple checkbox values and selection limits.',
-    '可独立使用的单选框，也可放入 RadioGroup。': 'A standalone radio that can also be used in RadioGroup.',
     '管理一组互斥的单选值。': 'Manages a mutually exclusive group of radio values.',
     '支持加载、禁用和自定义值的开关。': 'A switch with loading, disabled and custom-value support.',
     '通过点击或触摸拖动选择范围内的数值。': 'Selects a value in a range by clicking or dragging.',
@@ -406,13 +408,10 @@ const demoTitles: Record<string, string> = {
     calendar: 'Calendar',
     'count-down': 'Count Down',
     form: 'Form',
-    'form-item': 'Form Item',
     input: 'Input',
     textarea: 'Textarea',
     checkbox: 'Checkbox',
-    'checkbox-group': 'Checkbox Group',
     radio: 'Radio',
-    'radio-group': 'Radio Group',
     switch: 'Switch',
     slider: 'Slider',
     'snake-cms': 'Snake CMS',

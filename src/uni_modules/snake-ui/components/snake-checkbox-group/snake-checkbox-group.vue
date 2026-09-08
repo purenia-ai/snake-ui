@@ -2,7 +2,7 @@
 /**
  * @component SnakeCheckboxGroup
  * @description checkbox 父组件，管理一组 Checkbox 的数组值、最大选择数与布局。
- * @see /components/checkbox-group
+ * @see /components/checkbox
  */
 
 import { computed, inject, nextTick, onMounted, watch } from 'vue';

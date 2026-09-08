@@ -9,14 +9,30 @@ import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
 const controls: DemoControl[] = [
     { key: 'loading', label: '显示骨架', type: 'switch', defaultValue: true },
-    { key: 'animated', label: '流光动画', type: 'switch', defaultValue: true }
+    { key: 'animated', label: '流光动画', type: 'switch', defaultValue: true },
+    {
+        key: 'variant',
+        label: '占位形态',
+        type: 'select',
+        defaultValue: 'rect',
+        options: [
+            { label: '文本', value: 'text' },
+            { label: '矩形', value: 'rect' },
+            { label: '圆形', value: 'circle' },
+            { label: '图片', value: 'image' }
+        ]
+    }
 ];
 const state = reactive<Record<string, DemoValue>>(
     Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))
 );
 const localizedControls = computed(() => {
     const _locale = localeName.value;
-    return controls.map(control => ({ ...control, label: text(control.label) }));
+    return controls.map(control => ({
+        ...control,
+        label: text(control.label),
+        options: control.options?.map(option => ({ ...option, label: text(option.label) }))
+    }));
 });
 const title = computed(() => {
     const _locale = localeName.value;
@@ -54,6 +70,20 @@ function updateValue(key: string, value: DemoValue) {
                 </view>
             </snake-skeleton>
         </DemoSection>
+        <DemoSection variant="preview" :title="text('占位形态')">
+            <view class="demo-skeleton-item-showcase">
+                <snake-skeleton-item
+                    :variant="state.variant as any"
+                    height="120rpx"
+                    :animated="Boolean(state.animated)"
+                />
+                <snake-skeleton-item variant="circle" width="96rpx" height="96rpx" />
+                <snake-skeleton-item variant="text" width="70%" />
+                <snake-skeleton-item variant="rect" height="120rpx" />
+                <snake-skeleton-item variant="image" height="240rpx" radius="20rpx" />
+                <snake-skeleton-item variant="text" width="55%" :animated="false" />
+            </view>
+        </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
             <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
         </DemoSection>
@@ -62,10 +92,16 @@ function updateValue(key: string, value: DemoValue) {
 
 <style scoped>
 .demo-skeleton-showcase,
-.demo-card {
+.demo-card,
+.demo-skeleton-item-showcase {
     padding: 24rpx;
     border-radius: 16rpx;
     background: var(--snake-color-surface-muted);
+}
+.demo-skeleton-item-showcase {
+    display: flex;
+    flex-direction: column;
+    gap: 24rpx;
 }
 .demo-skeleton-content,
 .demo-card--loaded {

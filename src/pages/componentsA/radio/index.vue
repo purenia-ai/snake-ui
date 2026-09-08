@@ -20,9 +20,25 @@ const controls: DemoControl[] = [
             { label: 'default', value: 'default' },
             { label: 'large', value: 'large' }
         ]
+    },
+    { key: 'choiceWrap', label: '每个换行', type: 'switch', defaultValue: false },
+    {
+        key: 'choiceWidth',
+        label: '单项宽度',
+        type: 'select',
+        defaultValue: 'auto',
+        options: [
+            { label: 'auto', value: 'auto' },
+            { label: '240rpx', value: 240 }
+        ]
     }
 ];
-const state = reactive<Record<string, DemoValue>>({ choiceDisabled: false, choiceSize: 'default' });
+const state = reactive<Record<string, DemoValue>>({
+    choiceDisabled: false,
+    choiceSize: 'default',
+    choiceWrap: false,
+    choiceWidth: 'auto'
+});
 const localizedControls = computed(() => {
     const _locale = localeName.value;
     return controls.map(control => ({ ...control, label: demoText(control.label) }));
@@ -36,7 +52,7 @@ function updateValue(key: string, nextValue: DemoValue) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :eyebrow="text('表单组件')" :desc="text('单选框，需搭配 RadioGroup 使用。')"
+    <DemoPage :title="title" :eyebrow="text('表单组件')" :desc="text('管理一组互斥的单选值。')"
         ><DemoSection variant="preview" :title="text('演示效果')"
             ><view class="demo-control-stack demo-radio-showcase"
                 ><text class="demo-variant-title">{{ isEnglish ? 'Exclusive selection' : '互斥选择' }}</text
@@ -44,6 +60,8 @@ function updateValue(key: string, nextValue: DemoValue) {
                     v-model="value"
                     :disabled="Boolean(state.choiceDisabled)"
                     :size="String(state.choiceSize)"
+                    :wrap="Boolean(state.choiceWrap)"
+                    :width="state.choiceWidth === 'auto' ? 'auto' : Number(state.choiceWidth)"
                     ><snake-radio name="sweet">{{ isEnglish ? 'Sweet' : '鲜甜' }}</snake-radio
                     ><snake-radio name="spicy">{{ isEnglish ? 'Spicy' : '香辣' }}</snake-radio
                     ><snake-radio name="mild">{{ isEnglish ? 'Mild' : '清淡' }}</snake-radio></snake-radio-group

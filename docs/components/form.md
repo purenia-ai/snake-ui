@@ -4,7 +4,7 @@ preview: /pages/componentsA/form/index
 
 # Form 表单
 
-管理表单模型、字段规则、错误状态、提交校验和重置。与 `FormItem` 及 Snake UI 输入控件组合使用。
+`Form` 管理表单模型、字段规则、错误状态、提交校验和重置；`FormItem` 连接标签、模型字段、输入控件和校验结果，推荐放在 `Form` 内，也可以作为普通布局容器使用。
 
 ## 平台兼容性
 
@@ -52,7 +52,9 @@ async function submit() {
 
 ## API
 
-### Props
+### Form
+
+#### Props
 
 | 参数                                       | 说明                                      | 类型                 | 默认值         |
 | ------------------------------------------ | ----------------------------------------- | -------------------- | -------------- |
@@ -65,13 +67,13 @@ async function submit() {
 | `size`                                     | small/default/large                       | `string`             | `default`      |
 | `customClass` / `customStyle`              | 自定义类名和样式                          | `string \| style`    | `''`           |
 
-### Events
+#### Events
 
 | 事件名     | 说明         | 参数              |
 | ---------- | ------------ | ----------------- |
 | `validate` | 主动校验结束 | `(valid, errors)` |
 
-### Expose
+#### Expose
 
 | 方法                              | 说明                                               |
 | --------------------------------- | -------------------------------------------------- |
@@ -81,4 +83,34 @@ async function submit() {
 | `clearValidate(props?)`           | 清除字段错误                                       |
 | `setRules(rules)`                 | 动态替换规则                                       |
 
-源码：`src/uni_modules/snake-ui/components/snake-form/snake-form.vue`
+### FormItem
+
+#### Props
+
+| 参数                                       | 说明                    | 类型                 | 默认值    |
+| ------------------------------------------ | ----------------------- | -------------------- | --------- |
+| `label` / `prop`                           | 标签与 model 字段路径   | `string`             | `''`      |
+| `required`                                 | 显示必填星号            | `boolean`            | `false`   |
+| `leftIcon` / `rightIcon`                   | 左右图标                | `string`             | `''`      |
+| `labelPosition`                            | left/top，默认继承 Form | `string`             | -         |
+| `labelWidth` / `labelAlign` / `labelStyle` | 标签宽度、对齐和样式    | `UnitValue \| style` | 继承 Form |
+| `borderBottom` / `size`                    | 底边和尺寸              | `boolean \| string`  | 继承 Form |
+| `customClass` / `customStyle`              | 自定义类名和样式        | `string \| style`    | `''`      |
+
+#### Slots
+
+| 插槽             | 说明           |
+| ---------------- | -------------- |
+| `default`        | 字段控件       |
+| `label`          | 自定义标签     |
+| `left` / `right` | 内容区左右扩展 |
+
+#### Expose
+
+| 方法                 | 说明         |
+| -------------------- | ------------ |
+| `validate(trigger?)` | 校验当前字段 |
+| `resetField()`       | 恢复初始值   |
+| `clearValidate()`    | 清除错误     |
+
+源码：`src/uni_modules/snake-ui/components/snake-form/snake-form.vue`、`src/uni_modules/snake-ui/components/snake-form-item/snake-form-item.vue`
