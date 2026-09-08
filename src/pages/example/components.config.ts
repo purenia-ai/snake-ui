@@ -49,6 +49,13 @@ const componentGroups: SnakeComponentGroup[] = [
                 'LoadingIcon',
                 '统一展示组件和页面中的加载状态。'
             ),
+            item('/pages/componentsA/skeleton/index', 'Skeleton 骨架屏', 'Skeleton', '在首次加载时预显示页面结构。'),
+            item(
+                '/pages/componentsA/skeletonItem/index',
+                'SkeletonItem 骨架占位',
+                'SkeletonItem',
+                '组合自定义骨架模板的基础占位单元。'
+            ),
             item(
                 '/pages/componentsA/transition/index',
                 'Transition 过渡动画',

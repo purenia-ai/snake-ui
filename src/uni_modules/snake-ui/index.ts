@@ -15,6 +15,8 @@ export * from './components/snake-activity-list/types';
 export * from './components/snake-auxiliary-segmentation/types';
 export * from './components/snake-button/types';
 export * from './components/snake-loading-icon/types';
+export * from './components/snake-skeleton/types';
+export * from './components/snake-skeleton-item/types';
 export * from './components/snake-transition/types';
 export * from './components/snake-empty/types';
 export * from './components/snake-icon/types';

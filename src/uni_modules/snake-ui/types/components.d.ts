@@ -3,6 +3,8 @@ import type { SnakeActivityListEmits, SnakeActivityListProps } from '../componen
 import type { SnakeAuxiliarySegmentationProps } from '../components/snake-auxiliary-segmentation/types';
 import type { SnakeButtonEmits, SnakeButtonProps } from '../components/snake-button/types';
 import type { SnakeLoadingIconProps } from '../components/snake-loading-icon/types';
+import type { SnakeSkeletonProps } from '../components/snake-skeleton/types';
+import type { SnakeSkeletonItemProps } from '../components/snake-skeleton-item/types';
 import type { SnakeTransitionEmits, SnakeTransitionProps } from '../components/snake-transition/types';
 import type { SnakeEmptyProps } from '../components/snake-empty/types';
 import type { SnakeIconEmits, SnakeIconProps } from '../components/snake-icon/types';
@@ -70,6 +72,8 @@ import type { SnakeVideosProps } from '../components/snake-videos/types';
 
 export * from '../components/snake-button/types';
 export * from '../components/snake-loading-icon/types';
+export * from '../components/snake-skeleton/types';
+export * from '../components/snake-skeleton-item/types';
 export * from '../components/snake-transition/types';
 export * from '../components/snake-empty/types';
 export * from '../components/snake-icon/types';
@@ -175,6 +179,8 @@ export const SnakeFloatingBubble: SnakeComponent<SnakeFloatingBubbleProps>;
 export const SnakeVideos: SnakeComponent<SnakeVideosProps>;
 export const SnakeButton: SnakeComponent<SnakeButtonProps, SnakeButtonEmits>;
 export const SnakeLoadingIcon: SnakeComponent<SnakeLoadingIconProps>;
+export const SnakeSkeleton: SnakeComponent<SnakeSkeletonProps>;
+export const SnakeSkeletonItem: SnakeComponent<SnakeSkeletonItemProps>;
 export const SnakeTransition: SnakeComponent<SnakeTransitionProps, SnakeTransitionEmits>;
 export const SnakeEmpty: SnakeComponent<SnakeEmptyProps>;
 export const SnakeIcon: SnakeComponent<SnakeIconProps, SnakeIconEmits>;

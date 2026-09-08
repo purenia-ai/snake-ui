@@ -7,6 +7,8 @@ const root = resolve(import.meta.dirname, '..');
 const foundationComponents = [
     'button',
     'loading-icon',
+    'skeleton',
+    'skeleton-item',
     'transition',
     'empty',
     'icon',
@@ -92,8 +94,8 @@ test('component docs and example routes remain one-to-one', async () => {
         if (match) previews.push(match[1]);
     }
 
-    assert.equal(routes.length, 66);
-    assert.equal(previews.length, 66);
+    assert.equal(routes.length, 68);
+    assert.equal(previews.length, 68);
     assert.deepEqual([...new Set(previews)].sort(), [...new Set(routes)].sort());
 });
 
@@ -122,9 +124,9 @@ test('component overview page covers every example route and directory layout', 
     );
     const routes = exampleRoutes(pages);
 
-    assert.equal(configuredPaths.length, 66);
+    assert.equal(configuredPaths.length, 68);
     assert.deepEqual([...configuredPaths].sort(), [...routes].sort());
-    assert.equal(groupA.length, 45);
+    assert.equal(groupA.length, 47);
     assert.equal(groupB.length, 21);
     for (const directory of [
         ...groupA.map(name => ['componentsA', name]),
@@ -161,7 +163,7 @@ test('all example pages own their interactive demo configuration', async () => {
     const panel = await readFile(resolve(root, 'src/components/demo-control-panel/demo-control-panel.vue'), 'utf8');
     const pages = await examplePageSources();
 
-    assert.equal(pages.length, 66);
+    assert.equal(pages.length, 68);
     for (const page of pages) {
         assert.match(page, /<DemoPage/);
         assert.match(page, /<DemoControlPanel/);
@@ -367,6 +369,8 @@ test('foundation feedback previews expose grouped variants', async () => {
             'image',
             'lazyImage',
             'loadingIcon',
+            'skeleton',
+            'skeletonItem',
             'transition',
             'empty',
             'loadmore',
@@ -380,6 +384,8 @@ test('foundation feedback previews expose grouped variants', async () => {
 
     for (const component of [
         'loading-icon',
+        'skeleton',
+        'skeleton-item',
         'transition',
         'icon',
         'image',

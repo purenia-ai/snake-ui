@@ -35,6 +35,8 @@
             "pages": [
                 { "path": "button/index", "style": { "navigationBarTitleText": "按钮" } },
                 { "path": "loadingIcon/index", "style": { "navigationBarTitleText": "加载图标" } },
+                { "path": "skeleton/index", "style": { "navigationBarTitleText": "骨架屏" } },
+                { "path": "skeletonItem/index", "style": { "navigationBarTitleText": "骨架占位" } },
                 { "path": "transition/index", "style": { "navigationBarTitleText": "过渡动画" } },
                 { "path": "text/index", "style": { "navigationBarTitleText": "文本" } },
                 { "path": "link/index", "style": { "navigationBarTitleText": "超链接" } },

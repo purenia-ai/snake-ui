@@ -2,12 +2,12 @@
 
 ## 0.1.0（2026-09-08）
 
-- 67 个精选组件（46 个基础组件 + 21 个 CMS 装修组件），基于 Vue 3 + TypeScript 构建，功能丰富，多端兼容，让您快速集成，开箱即用
+- 69 个精选组件（48 个基础组件 + 21 个 CMS 装修组件），基于 Vue 3 + TypeScript 构建，功能丰富，多端兼容，让您快速集成，开箱即用
 - 兼容安卓、iOS、微信小程序、H5 等
 - 详尽的文档支持，现代化的演示效果
 - easycom 按需引入，精简打包体积
 
-基础组件（9）
+基础组件（11）
 
 - ConfigProvider 全局配置
 - Button 按钮
@@ -15,6 +15,8 @@
 - Image 图片
 - LazyImage 懒加载图片
 - LoadingIcon 加载图标
+- Skeleton 骨架屏
+- SkeletonItem 骨架占位
 - Transition 过渡动画
 - Text 文本
 - Link 超链接
