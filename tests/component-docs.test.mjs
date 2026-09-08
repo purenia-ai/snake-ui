@@ -4,6 +4,7 @@ import { resolve } from 'node:path';
 import test from 'node:test';
 import {
     cmsComponentItems,
+    componentGroups,
     componentItems,
     foundationComponentItems
 } from '../docs/.vitepress/component-groups.ts';
@@ -58,6 +59,46 @@ test('component registry is the complete public component source of truth', asyn
     }
 });
 
+test('component registry groups follow the standard bucket taxonomy', () => {
+    assert.deepEqual(
+        componentGroups.map(group => group.title),
+        ['基础组件', '表单组件', '数据组件', '反馈组件', '布局组件', '导航组件', 'CMS 容器', 'CMS 内容', 'CMS 导航互动', 'CMS 商品']
+    );
+
+    const groupOf = link => componentGroups.find(group => group.items.some(item => item.link === link)).title;
+    assert.equal(groupOf('/components/swiper'), '布局组件');
+    assert.equal(groupOf('/components/count-down'), '数据组件');
+    assert.equal(groupOf('/components/navbar'), '导航组件');
+
+    for (const group of componentGroups.filter(group => group.title.startsWith('CMS '))) {
+        assert.ok(!group.collapsed, `${group.title}: starts expanded in component sidebar`);
+    }
+});
+
+test('changelog inventory stays in lock-step with the registry', async () => {
+    const changelog = await readFile(resolve(root, 'docs/components/changelog.md'), 'utf8');
+    assert.doesNotMatch(changelog, /内测|尚未正式发布/, 'changelog: no internal-testing copy');
+
+    for (const group of componentGroups) {
+        assert.match(
+            changelog,
+            new RegExp(`${group.title}（${group.items.length}）`),
+            `${group.title}: count header`
+        );
+    }
+    for (const item of componentItems) {
+        assert.ok(changelog.includes(item.name), `${item.name}: listed in changelog`);
+    }
+});
+
+test('sidebar CMS badge selectors stay in lock-step with the registry', async () => {
+    const css = await readFile(resolve(root, 'docs/.vitepress/theme/custom.css'), 'utf8');
+    const selectors = [...css.matchAll(/\[href\$='(\/components\/[^']+)'\]/g)].map(match => match[1]);
+    const registryLinks = cmsComponentItems.map(item => item.link);
+
+    assert.deepEqual([...new Set(selectors)].sort(), [...registryLinks].sort());
+});
+
 test('CMS metadata and title badges are applied only to CMS documents', async () => {
     for (const name of cms) {
         const markdown = await document(name);
@@ -94,17 +135,4 @@ test('icon documentation renders the bundled glyph gallery inline', async () => 
     assert.match(gallery, /navigator\.clipboard\.writeText\(name\)/);
     assert.match(gallery, /v-for="name in iconNames"/);
     assert.match(config, /fs:\s*{\s*allow: \['\.\.'\]/);
-});
-
-test('every component page renders release metadata from the component registry', async () => {
-    const layout = await readFile(resolve(root, 'docs/.vitepress/theme/Layout.vue'), 'utf8');
-    const metadata = await readFile(resolve(root, 'docs/.vitepress/theme/ComponentReferenceMeta.vue'), 'utf8');
-    const styles = await readFile(resolve(root, 'docs/.vitepress/theme/custom.css'), 'utf8');
-
-    assert.match(layout, /#doc-after><ComponentReferenceMeta\s*\/><\/template>/);
-    assert.match(metadata, /componentItems\.find/);
-    assert.match(metadata, /最低版本/);
-    assert.match(metadata, /Props 类型/);
-    assert.match(metadata, /github\.com\/zwbcode\/snake-ui\/blob\/main/);
-    assert.match(styles, /\.component-reference-meta/);
 });

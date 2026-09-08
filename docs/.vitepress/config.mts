@@ -11,7 +11,8 @@ const componentSidebar = [
             { text: '配置', link: '/components/setting' },
             { text: '快速上手', link: '/components/quickstart' },
             { text: '内置样式', link: '/components/common' },
-            { text: '组件使用注意事项', link: '/components/note' }
+            { text: '组件使用注意事项', link: '/components/note' },
+            { text: '更新日志', link: '/components/changelog' }
         ]
     },
     ...componentGroups.map(group => ({
@@ -82,6 +83,7 @@ export default defineConfig({
                     items: [
                         { text: '介绍', link: '/guide/intro' },
                         { text: '运行环境与能力边界', link: '/guide/compatibility' },
+                        { text: '代码提示', link: '/guide/code-hint' },
                         { text: '设计理念', link: '/guide/design-principles' }
                     ]
                 },
@@ -90,6 +92,8 @@ export default defineConfig({
                     items: [
                         { text: '全局配置总览', link: '/guide/foundation' },
                         { text: '国际化', link: '/guide/internationalization' },
+                        { text: '虚拟根组件', link: '/guide/root' },
+                        { text: '扩展图标库', link: '/guide/custom-icon' },
                         { text: '多主题与暗黑模式', link: '/guide/multi-theme' },
                         { text: '主题生成器', link: '/guide/theme-generate' },
                         { text: '自定义样式', link: '/guide/custom-style' }

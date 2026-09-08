@@ -135,12 +135,14 @@ test('component overview page covers every example route and directory layout', 
     for (const group of [
         '基础组件',
         '表单组件',
-        '展示组件',
-        '反馈与浮层',
-        '导航与布局',
+        '数据组件',
+        '反馈组件',
+        '布局组件',
+        '导航组件',
+        'CMS 容器',
         'CMS 内容',
-        'CMS 营销',
-        '商品业务'
+        'CMS 导航互动',
+        'CMS 商品'
     ]) {
         assert.match(config, new RegExp(`groupName: '${group}'`));
     }

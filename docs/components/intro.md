@@ -9,4 +9,6 @@ Snake UI 提供覆盖基础交互、表单和商城装修场景的组件。输�
 
 第一次使用 Snake UI？请依次完成[安装](/components/install)、[配置](/components/setting)和[快速上手](/components/quickstart)，再从下方选择组件。
 
+商城装修组件位于下方的 CMS 分组，也可以从 [CMS 组件总览](/cms/components) 按装修场景查找。
+
 <ComponentOverview />

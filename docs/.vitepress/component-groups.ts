@@ -27,43 +27,6 @@ export const componentGroups: ComponentGroup[] = [
         ]
     },
     {
-        title: '数据展示',
-        items: [
-            { name: 'Swiper', title: '轮播图', link: '/components/swiper' },
-            { name: 'Loadmore', title: '加载更多', link: '/components/loadmore' },
-            { name: 'LineProgress', title: '线形进度条', link: '/components/line-progress' },
-            { name: 'ReadMore', title: '阅读更多', link: '/components/read-more' },
-            { name: 'Empty', title: '空状态', link: '/components/empty' }
-        ]
-    },
-    {
-        title: '反馈组件',
-        items: [
-            { name: 'NoticeBar', title: '通知栏', link: '/components/notice-bar' },
-            { name: 'Overlay', title: '遮罩层', link: '/components/overlay' },
-            { name: 'Popup', title: '弹出层', link: '/components/popup' },
-            { name: 'NoNetwork', title: '无网络提示', link: '/components/no-network' }
-        ]
-    },
-    {
-        title: '布局与导航',
-        items: [
-            { name: 'Navbar', title: '导航栏', link: '/components/navbar' },
-            { name: 'Sticky', title: '吸顶', link: '/components/sticky' },
-            { name: 'Tabs', title: '标签页', link: '/components/tabs' },
-            { name: 'Subsection', title: '分段器', link: '/components/subsection' },
-            { name: 'ButtonSort', title: '排序按钮', link: '/components/button-sort' },
-            { name: 'DropMenu', title: '下拉菜单', link: '/components/drop-menu' },
-            { name: 'DropMenuItem', title: '下拉菜单项', link: '/components/drop-menu-item' },
-            { name: 'IndexList', title: '索引列表', link: '/components/index-list' },
-            { name: 'IndexListPanel', title: '容器索引列表', link: '/components/index-list-panel' },
-            { name: 'IndexAnchor', title: '索引锚点', link: '/components/index-anchor' },
-            { name: 'CellGroup', title: '单元格分组', link: '/components/cell-group' },
-            { name: 'CellItem', title: '单元格条目', link: '/components/cell-item' },
-            { name: 'Line', title: '分隔线', link: '/components/line' }
-        ]
-    },
-    {
         title: '表单组件',
         items: [
             { name: 'Form', title: '表单', link: '/components/form' },
@@ -79,8 +42,50 @@ export const componentGroups: ComponentGroup[] = [
             { name: 'Search', title: '搜索框', link: '/components/search' },
             { name: 'Select', title: '列选择器', link: '/components/select' },
             { name: 'Upload', title: '文件上传', link: '/components/upload' },
-            { name: 'Calendar', title: '日历', link: '/components/calendar' },
+            { name: 'Calendar', title: '日历', link: '/components/calendar' }
+        ]
+    },
+    {
+        title: '数据组件',
+        items: [
+            { name: 'Loadmore', title: '加载更多', link: '/components/loadmore' },
+            { name: 'LineProgress', title: '线形进度条', link: '/components/line-progress' },
+            { name: 'ReadMore', title: '阅读更多', link: '/components/read-more' },
+            { name: 'Empty', title: '空状态', link: '/components/empty' },
             { name: 'CountDown', title: '倒计时', link: '/components/count-down' }
+        ]
+    },
+    {
+        title: '反馈组件',
+        items: [
+            { name: 'NoticeBar', title: '通知栏', link: '/components/notice-bar' },
+            { name: 'Overlay', title: '遮罩层', link: '/components/overlay' },
+            { name: 'Popup', title: '弹出层', link: '/components/popup' },
+            { name: 'NoNetwork', title: '无网络提示', link: '/components/no-network' }
+        ]
+    },
+    {
+        title: '布局组件',
+        items: [
+            { name: 'Swiper', title: '轮播图', link: '/components/swiper' },
+            { name: 'Sticky', title: '吸顶', link: '/components/sticky' },
+            { name: 'Line', title: '分隔线', link: '/components/line' },
+            { name: 'CellGroup', title: '单元格分组', link: '/components/cell-group' },
+            { name: 'CellItem', title: '单元格条目', link: '/components/cell-item' }
+        ]
+    },
+    {
+        title: '导航组件',
+        items: [
+            { name: 'Navbar', title: '导航栏', link: '/components/navbar' },
+            { name: 'Tabs', title: '标签页', link: '/components/tabs' },
+            { name: 'Subsection', title: '分段器', link: '/components/subsection' },
+            { name: 'ButtonSort', title: '排序按钮', link: '/components/button-sort' },
+            { name: 'DropMenu', title: '下拉菜单', link: '/components/drop-menu' },
+            { name: 'DropMenuItem', title: '下拉菜单项', link: '/components/drop-menu-item' },
+            { name: 'IndexList', title: '索引列表', link: '/components/index-list' },
+            { name: 'IndexListPanel', title: '容器索引列表', link: '/components/index-list-panel' },
+            { name: 'IndexAnchor', title: '索引锚点', link: '/components/index-anchor' }
         ]
     },
     {

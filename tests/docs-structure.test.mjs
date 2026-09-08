@@ -11,13 +11,17 @@ async function text(path) {
 
 test('component navigation exposes a complete getting-started group', async () => {
     const config = await text('docs/.vitepress/config.mts');
-    const pages = ['intro', 'install', 'setting', 'quickstart', 'common', 'note'];
+    const pages = ['intro', 'install', 'setting', 'quickstart', 'common', 'note', 'changelog'];
 
     assert.match(config, /const componentSidebar = \[\s*\{\s*text: '起步'/);
     for (const page of pages) {
         assert.ok(config.includes('/components/' + page));
         await access(resolve(root, 'docs/components', page + '.md'));
     }
+
+    const changelog = await text('docs/components/changelog.md');
+    assert.match(changelog, /^# 更新日志$/m);
+    assert.ok(changelog.length >= 400, 'changelog: meaningful content');
 });
 
 test('component getting-started pages remain connected', async () => {
@@ -28,6 +32,8 @@ test('component getting-started pages remain connected', async () => {
     assert.ok(intro.includes('[安装](/components/install)'));
     assert.ok(setting.includes('[快速上手](/components/quickstart)'));
     assert.ok(quickstart.includes('[组件总览](/components/intro)'));
+    assert.match(quickstart, /^## 关于 uni\.\$snake$/m);
+    assert.match(quickstart, /^## 不使用 easycom 单独引用组件$/m);
 });
 
 test('guide navigation exposes dedicated task groups', async () => {
@@ -48,6 +54,24 @@ test('dedicated guide pages remain connected', async () => {
     const legacyStart = await text('docs/guide/getting-started.md');
     assert.match(legacyStart, /^# 快速开始已迁移$/m);
     assert.ok(legacyStart.includes('[安装](/components/install)'));
+});
+
+test('guide exposes virtual root, icon extension, and editor hint pages', async () => {
+    const config = await text('docs/.vitepress/config.mts');
+    const expectations = new Map([
+        ['root', /SnakeRoot/],
+        ['custom-icon', /custom-prefix|customPrefix/],
+        ['code-hint', /easycom/]
+    ]);
+
+    for (const [page, content] of expectations) {
+        assert.ok(config.includes('/guide/' + page), `${page}: sidebar entry`);
+        await access(resolve(root, 'docs/guide', page + '.md'));
+        const markdown = await text(`docs/guide/${page}.md`);
+        assert.ok(markdown.split('\n').some(line => line.startsWith('# ')), `${page}: title`);
+        assert.ok(markdown.length >= 400, `${page}: meaningful content`);
+        assert.match(markdown, content, `${page}: core topic`);
+    }
 });
 
 test('top navigation owns independent guide, component, CMS, and tool domains', async () => {

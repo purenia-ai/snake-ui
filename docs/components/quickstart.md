@@ -37,6 +37,44 @@ function handleClick() {
 - 点击后出现提示：`app.use(SnakeUI)` 已执行，`uni.$snake` 已注入。
 - 控制台没有组件解析警告或样式编译错误。
 
+## 关于 uni.$snake
+
+执行 `app.use(SnakeUI)` 后，常用工具会挂载到 `uni.$snake`，页面和组件内可以直接调用：
+
+```ts
+uni.$snake.toast('操作成功');
+uni.$snake.navTo('/pages/index/index');
+```
+
+挂载的工具包括 `toast`、`navTo`、`guid`、`sleep`、`formatTime` 和 `sys` 等。模块代码中也可以绕过全局属性，按需导入同名函数，行为一致：
+
+```ts
+import { navTo, toast } from '@puresnake/snake-ui/libs';
+
+toast('操作成功');
+navTo('/pages/index/index');
+```
+
+## 不使用 easycom 单独引用组件
+
+easycom 是推荐用法，但某些场景（如类型提示受限、动态组件）可以显式引入：
+
+```vue
+<template>
+    <SnakeButton type="primary">显式引入</SnakeButton>
+</template>
+
+<script setup lang="ts">
+import SnakeButton from '@puresnake/snake-ui/components/snake-button/snake-button.vue';
+</script>
+```
+
+显式引入时模板中的标签名必须与 import 的组件名一致。`uni_modules` 安装改用本地相对路径：
+
+```ts
+import SnakeButton from './uni_modules/snake-ui/components/snake-button/snake-button.vue';
+```
+
 ## 下一步
 
 - 查找可用组件：[组件总览](/components/intro)

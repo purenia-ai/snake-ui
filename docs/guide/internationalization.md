@@ -10,6 +10,29 @@ Snake UI 内置简体中文 `zh-CN` 和英文 `en-US`，用于管理组件库自
 - 缺失词条按“当前语言 → `zh-CN` → 原始 key”回退。
 - 支持 `{name}` 和 `{0}` 形式的参数插值。
 
+## 内置语言包结构
+
+语言包由 `name`、`label` 与 `messages` 组成，`messages` 按组件域分组：
+
+```ts
+const zhCN: SnakeLocale = {
+    name: 'zh-CN',
+    label: '简体中文',
+    messages: {
+        common: { confirm: '确定', cancel: '取消', loading: '加载中', empty: '暂无数据' },
+        image: { loading: '图片加载中', error: '图片加载失败' },
+        modal: { title: '提示', confirmText: '确认', cancelText: '取消' },
+        network: { error: '网络请求失败', canceled: '请求已取消' },
+        search: { placeholder: '请输入关键字', actionText: '搜索' },
+        noNetwork: { tips: '哎呀，网络信号丢失', retry: '重试' },
+        calendar: { startText: '开始', endText: '结束', toolTip: '选择日期' }
+        // ... 其余组件域
+    }
+};
+```
+
+覆盖或扩展语言包时使用相同的分组结构，只需要提供要改的词条，其余字段与内置合并。
+
 ## 在应用入口配置
 
 ```ts

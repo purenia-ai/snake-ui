@@ -48,15 +48,27 @@ npm 安装时在 `App.vue` 引入完整样式：
 
 ## 定制单个组件
 
-支持样式扩展的组件通常提供 `custom-style` 和 `custom-class`。具体类型和作用节点以对应组件 API 为准。前者适合少量动态布局，后者适合较多静态规则。
+支持样式扩展的组件通常提供 `custom-style` 和 `custom-class`。具体类型和作用节点以对应组件 API 为准。
 
-不要通过深层选择器依赖组件内部类名；内部结构不是稳定的公共 API。
+- **`custom-style`**：内联样式字符串或对象，适合少量动态布局与样式绑定。
+- **`custom-class`**：添加到组件根节点的类名，适合较多静态规则，配合 `:deep()` 穿透作用域：
+
+```scss
+.my-page {
+    :deep(.my-tabs) {
+        background-color: #f7f8fa;
+        border-radius: 12rpx;
+    }
+}
+```
+
+优先级遵循 CSS 级联：`custom-style`（内联）> `custom-class`（类）> 组件默认样式。不要通过深层选择器依赖组件内部类名；内部结构不是稳定的公共 API。
 
 ## 让主题覆盖页面
 
 页面必须处于 `snake-config-provider` 的变量作用域内，主题和暗色模式才能完整传递。可以逐页包裹，也可以在 `App.root.vue` 中配合 `SnakeRoot` 插件统一注入。
 
-完整根组件配置见 [ConfigProvider](/components/config-provider)。
+完整根组件配置见 [ConfigProvider](/components/config-provider) 与[虚拟根组件](/guide/root)。
 
 ## 暗色模式注意事项
 
@@ -65,5 +77,15 @@ npm 安装时在 `App.vue` 引入完整样式：
 - 图片、渐变和第三方内容不会自动适配暗色，需要单独处理。
 - 在 `light`、`dark` 和 `auto` 三种策略下检查文字、边框、禁用态和遮罩。
 - H5、小程序和 App 的样式隔离与节点结构不同，发布前在实际目标端验证。
+
+## 样式不生效排查
+
+按顺序检查：
+
+1. 样式入口是否引入：`App.vue` 中 `@import` 路径与安装方式一致，且位于 style 有效内容最前面。
+2. 类名是否写对：`custom-class` 的值与选择器一致，`scoped` 下使用 `:deep()`。
+3. 变量是否存在：令牌名以 `--snake-` 开头，拼写与[多主题与暗黑模式](/guide/multi-theme)的色板一致。
+4. 主题是否覆盖到页面：页面根节点处于 `snake-config-provider` 作用域内，或启用了虚拟根组件。
+5. 平台差异：小程序样式隔离与 H5 不同，组件级修改在小程序真机上单独验证。
 
 需要生成完整明暗色板时使用[主题生成器](/guide/theme-generate)，样式没有生效时查看[常见问题](/guide/troubleshooting)。
