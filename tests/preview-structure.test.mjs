@@ -24,7 +24,6 @@ const foundationComponents = [
     'subsection',
     'button-sort',
     'drop-menu',
-    'drop-menu-item',
     'index-list',
     'index-anchor',
     'form',
@@ -94,8 +93,8 @@ test('component docs and example routes remain one-to-one', async () => {
         if (match) previews.push(match[1]);
     }
 
-    assert.equal(routes.length, 68);
-    assert.equal(previews.length, 68);
+    assert.equal(routes.length, 67);
+    assert.equal(previews.length, 67);
     assert.deepEqual([...new Set(previews)].sort(), [...new Set(routes)].sort());
 });
 
@@ -124,9 +123,9 @@ test('component overview page covers every example route and directory layout', 
     );
     const routes = exampleRoutes(pages);
 
-    assert.equal(configuredPaths.length, 68);
+    assert.equal(configuredPaths.length, 67);
     assert.deepEqual([...configuredPaths].sort(), [...routes].sort());
-    assert.equal(groupA.length, 47);
+    assert.equal(groupA.length, 46);
     assert.equal(groupB.length, 21);
     for (const directory of [
         ...groupA.map(name => ['componentsA', name]),
@@ -163,7 +162,7 @@ test('all example pages own their interactive demo configuration', async () => {
     const panel = await readFile(resolve(root, 'src/components/demo-control-panel/demo-control-panel.vue'), 'utf8');
     const pages = await examplePageSources();
 
-    assert.equal(pages.length, 68);
+    assert.equal(pages.length, 67);
     for (const page of pages) {
         assert.match(page, /<DemoPage/);
         assert.match(page, /<DemoControlPanel/);
@@ -448,7 +447,6 @@ test('navigation and layout previews expose grouped variants', async () => {
             'subsection',
             'buttonSort',
             'dropMenu',
-            'dropMenuItem',
             'indexList',
             'indexAnchor'
         ].map(directory => readFile(resolve(root, 'src/pages/componentsA', directory, 'index.vue'), 'utf8'))
@@ -461,7 +459,6 @@ test('navigation and layout previews expose grouped variants', async () => {
         'subsection',
         'button-sort',
         'drop-menu',
-        'drop-menu-item',
         'index-list',
         'index-anchor'
     ]) {

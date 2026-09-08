@@ -59,7 +59,6 @@
                 { "path": "subsection/index", "style": { "navigationBarTitleText": "分段选择器" } },
                 { "path": "buttonSort/index", "style": { "navigationBarTitleText": "排序按钮" } },
                 { "path": "dropMenu/index", "style": { "navigationBarTitleText": "下拉菜单" } },
-                { "path": "dropMenuItem/index", "style": { "navigationBarTitleText": "下拉菜单项" } },
                 { "path": "indexList/index", "style": { "navigationBarTitleText": "索引列表" } },
                 { "path": "indexListPanel/index", "style": { "navigationBarTitleText": "容器索引列表" } },
                 { "path": "indexAnchor/index", "style": { "navigationBarTitleText": "索引锚点" } },

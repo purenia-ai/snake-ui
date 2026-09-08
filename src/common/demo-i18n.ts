@@ -391,7 +391,6 @@ const demoTitles: Record<string, string> = {
     subsection: 'Subsection',
     'button-sort': 'Sort Button',
     'drop-menu': 'Dropdown Menu',
-    'drop-menu-item': 'Dropdown Menu Item',
     'index-list': 'Index List',
     'index-anchor': 'Index Anchor',
     'cell-group': 'Cell Group',

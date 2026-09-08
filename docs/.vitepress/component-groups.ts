@@ -84,7 +84,6 @@ export const componentGroups: ComponentGroup[] = [
             { name: 'Subsection', title: '分段器', link: '/components/subsection' },
             { name: 'ButtonSort', title: '排序按钮', link: '/components/button-sort' },
             { name: 'DropMenu', title: '下拉菜单', link: '/components/drop-menu' },
-            { name: 'DropMenuItem', title: '下拉菜单项', link: '/components/drop-menu-item' },
             { name: 'IndexList', title: '索引列表', link: '/components/index-list' },
             { name: 'IndexListPanel', title: '容器索引列表', link: '/components/index-list-panel' },
             { name: 'IndexAnchor', title: '索引锚点', link: '/components/index-anchor' }

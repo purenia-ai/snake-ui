@@ -61,14 +61,13 @@
 - CellGroup 单元格分组
 - CellItem 单元格条目
 
-导航组件（9）
+导航组件（8）
 
 - Navbar 导航栏
 - Tabs 标签页
 - Subsection 分段器
 - ButtonSort 排序按钮
 - DropMenu 下拉菜单
-- DropMenuItem 下拉菜单项
 - IndexList 索引列表
 - IndexListPanel 容器索引列表
 - IndexAnchor 索引锚点

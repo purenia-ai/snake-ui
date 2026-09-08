@@ -213,12 +213,6 @@ const componentGroups: SnakeComponentGroup[] = [
                 '协调多个下拉菜单项的展开与关闭。'
             ),
             item(
-                '/pages/componentsA/dropMenuItem/index',
-                'DropMenuItem 下拉菜单项',
-                'DropMenuItem',
-                '提供下拉触发器和内容面板。'
-            ),
-            item(
                 '/pages/componentsA/indexList/index',
                 'IndexList 索引列表',
                 'IndexList',
