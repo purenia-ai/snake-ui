@@ -1,6 +1,6 @@
 # 装修编辑器数据对接（SankeEditor）
 
-SankeEditor 负责编辑页面配置，Snake UI 负责在 C 端消费配置并渲染。本页只描述两者之间的数据契约与接入链路；编辑器自身 API 以其仓库文档为准。
+SankeEditor 负责编辑页面配置，Snake UI 负责在 C 端消费配置并渲染。新页面以编辑器 `components/v2` 输出为准；v1 只用于历史页面兼容。编辑器自身 API 以其仓库文档为准。
 
 ## 端到端链路
 
@@ -21,40 +21,39 @@ SankeEditor --save--> 宿主后端 --load--> 页面适配层 --> <snake-cms>
 
 ```ts
 {
-    component: 'hotzone',
+    component: 'v2.hotzone',
     text: '热区图',
-    type: '1-19',
-    style: 'hotzoneStyle',
-    setStyle: { /* 组件配置 */ },
+    type: '3-3',
+    props: {
+        image: 'https://example.com/map.png',
+        zones: []
+    },
     active: true
 }
 ```
 
-C 端主要消费 `component` 与 `setStyle`。`text`、`type`、`style` 和 `active` 属于编辑态元数据。隐藏和默认值规则见[组件数据约定](/cms/component-data)。
+C 端主要消费 `component`、`active` 与 `props`。`text` 和 `type` 用于编辑器展示和分类；面板路由键按约定推导，不应落库。完整规则见 [v2 页面数据协议](/cms/v2/data-contract)。
 
 ## 内置组件标识
 
-| `component`             | 渲染内容   | 额外依赖                                |
-| ----------------------- | ---------- | --------------------------------------- |
-| `commoditysearch`       | 商品搜索   | 无                                      |
-| `pictureads`            | 轮播广告   | 无                                      |
-| `graphicnavigation`     | 图文导航   | 无                                      |
-| `magiccube`             | 魔方布局   | 无                                      |
-| `notice`                | 公告       | 无                                      |
-| `videoss`               | 视频       | 内置别名到 `videos`                     |
-| `richtext`              | 富文本     | 无                                      |
-| `auxiliarysegmentation` | 辅助分割线 | 无                                      |
-| `follow`                | 关注       | 无                                      |
-| `suspension`            | 悬浮气泡   | `scroll-top`                            |
-| `jumpApplet`            | 小程序跳转 | link service                            |
-| `images`                | 图片展示   | 无                                      |
-| `hotzone`               | 热区图     | 外链需要 link service                   |
-| `custommodule`          | 自定义模块 | 命名插槽                                |
-| `coupon`                | 优惠券     | coupon/link service                     |
-| `goodslist`             | 商品区域   | commerce service，吸顶需要 `scroll-top` |
-| `pagePopup`             | 页面弹窗   | 无                                      |
+| `component`      | 渲染内容   | 额外依赖                  |
+| ---------------- | ---------- | ------------------------- |
+| `v2.images`      | 图片展示   | 图片链接需要 link service |
+| `v2.carousel`    | 轮播图     | 图片链接需要 link service |
+| `v2.video`       | 视频       | 无                        |
+| `v2.hotzone`     | 热区图     | link service              |
+| `v2.magiccube`   | 魔方布局   | link service              |
+| `v2.notice`      | 公告       | link service              |
+| `v2.divider`     | 分割线     | 无                        |
+| `v2.richtext`    | 富文本     | 无                        |
+| `v2.search`      | 搜索框     | link service              |
+| `v2.floatbutton` | 悬浮按钮   | link service              |
+| `v2.popup`       | 页面弹窗   | link service              |
+| `v2.custom`      | 自定义模块 | 命名插槽                  |
+| `v2.coupon`      | 优惠券     | coupon/link service       |
+| `v2.goodslist`   | 商品列表   | commerce service          |
 
-`listswitching` 不是当前内置 CMS 标识。旧数据可通过别名、normalizer 或 `extension` 插槽承接。
+字段详情见 [CMS v2 组件总览](/cms/v2/overview)。历史标识、aliases 和 normalizers 只用于 v1，集中记录在 [v1 旧版兼容](/cms/legacy/overview)。
 
 ## 注入业务服务
 
@@ -86,7 +85,7 @@ app.use(SnakeUI, {
 });
 ```
 
-也可以通过组件的 `cms-options` 覆盖当前页面。旧项目只提供 `request/cache/config` 时可启用 legacy 兼容层，并通过 `diagnostic` 收到迁移提示。
+也可以通过组件的 `cms-options` 覆盖当前页面。新项目建议设置 `legacy: false`；旧项目只提供 `request/cache/config` 时可保留 legacy 兼容层，并通过 `diagnostic` 收到迁移提示。
 
 ## 页面接入
 
@@ -107,7 +106,7 @@ app.use(SnakeUI, {
 
 ## 链接约定
 
-装修数据可能保存直接 `url`，也可能保存 `httpType + http`。站内链接可以使用 Snake UI 路由工具；外链、小程序和 scheme 应统一交给 link service，避免业务组件各自判断平台。
+v2 装修数据统一保存 `{ httpType, http }`。站内链接可以使用 Snake UI 路由工具；外链、小程序和 scheme 应统一交给 link service，避免业务组件各自判断平台。v1 裸 `url` 仅在兼容层处理。
 
 小程序外链通常需要宿主提供 web-view 承载页。`uni.navigateToMiniProgram` 也只在平台支持且权限正确时可用。
 
@@ -115,10 +114,11 @@ app.use(SnakeUI, {
 
 按以下优先级承接新标识：
 
-1. 通用组件进入 Snake UI，并加入 CMS 内置分发。
-2. 仅标识不同，通过 `cms.aliases` 映射。
-3. 数据结构不同，通过 `cms.normalizers` 转换或过滤。
-4. 业务私有组件通过 `extension` 作用域插槽渲染。
+1. 在 long-editor `components/v2/<name>` 增加 schema、preview 和 panel。
+2. 在 Snake UI 增加同名 v2 清单项、静态渲染分支和协议文档。
+3. 业务私有组件通过 `extension` 作用域插槽渲染。
+
+不要用 v1 alias 或 normalizer 承接新的 v2 数据结构。
 
 ## 上线检查
 

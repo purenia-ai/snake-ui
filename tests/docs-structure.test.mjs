@@ -68,7 +68,10 @@ test('guide exposes virtual root, icon extension, and editor hint pages', async 
         assert.ok(config.includes('/guide/' + page), `${page}: sidebar entry`);
         await access(resolve(root, 'docs/guide', page + '.md'));
         const markdown = await text(`docs/guide/${page}.md`);
-        assert.ok(markdown.split('\n').some(line => line.startsWith('# ')), `${page}: title`);
+        assert.ok(
+            markdown.split('\n').some(line => line.startsWith('# ')),
+            `${page}: title`
+        );
         assert.ok(markdown.length >= 400, `${page}: meaningful content`);
         assert.match(markdown, content, `${page}: core topic`);
     }
@@ -111,6 +114,40 @@ test('CMS domain exposes guides, component discovery, and legacy entry points', 
     }
 });
 
+test('CMS documentation treats v2 as the default and keeps v1 compatibility collapsed', async () => {
+    const config = await text('docs/.vitepress/config.mts');
+    const start = await text('docs/cms/getting-started.md');
+    const v2Position = config.indexOf("text: 'CMS v2 内容区块'");
+    const legacyPosition = config.indexOf("text: 'v1 旧版兼容'");
+
+    assert.ok(v2Position >= 0 && legacyPosition > v2Position, 'v2 groups precede legacy navigation');
+    assert.match(config.slice(legacyPosition), /collapsed: true/);
+    assert.match(start, /^# CMS v2 快速接入$/m);
+    assert.match(start, /component: 'v2\./);
+    assert.match(start, /props: \{/);
+
+    for (const page of ['overview', 'components']) {
+        await access(resolve(root, 'docs/cms/legacy', page + '.md'));
+    }
+});
+
+test('every CMS v2 runtime block has a dedicated contract page and sidebar entry', async () => {
+    const catalog = await text('src/uni_modules/snake-ui/libs/cms/blocks.ts');
+    const config = await text('docs/.vitepress/config.mts');
+    const types = [...catalog.matchAll(/'v2\.([a-z]+)':\s*\{\s*version:\s*2/g)].map(match => match[1]);
+
+    assert.equal(types.length, 14);
+    for (const name of types) {
+        const path = `docs/cms/v2/${name}.md`;
+        await access(resolve(root, path));
+        const markdown = await text(path);
+        assert.match(markdown, new RegExp(`v2\\.${name}`), `${name}: technical identifier`);
+        assert.match(markdown, /## 完整信封/, `${name}: full envelope`);
+        assert.match(markdown, /## Props/, `${name}: props contract`);
+        assert.ok(config.includes(`/cms/v2/${name}`), `${name}: sidebar entry`);
+    }
+});
+
 test('every tool navigation entry resolves to a dedicated document', async () => {
     const registry = await text('docs/.vitepress/tool-groups.ts');
     const links = [...registry.matchAll(new RegExp("link: '(/tools/[^']+)'", 'g'))].map(match => match[1]);
@@ -137,7 +174,9 @@ test('tool registry covers every documented public utility and composable', asyn
     const functionFiles = await readdir(resolve(root, 'src/uni_modules/snake-ui/libs/function'));
     const sources = (
         await Promise.all([
-            ...functionFiles.filter(file => file.endsWith('.ts')).map(file => text(`src/uni_modules/snake-ui/libs/function/${file}`)),
+            ...functionFiles
+                .filter(file => file.endsWith('.ts'))
+                .map(file => text(`src/uni_modules/snake-ui/libs/function/${file}`)),
             text('src/uni_modules/snake-ui/libs/hooks/index.ts'),
             text('src/uni_modules/snake-ui/libs/request/index.ts')
         ])

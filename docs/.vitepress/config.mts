@@ -27,18 +27,57 @@ const componentSidebar = [
 const cmsSidebar = [
     {
         text: '开始',
-        items: [{ text: 'CMS 快速接入', link: '/cms/getting-started' }]
+        items: [
+            { text: 'CMS v2 快速接入', link: '/cms/getting-started' },
+            { text: 'CMS v2 组件总览', link: '/cms/v2/overview' }
+        ]
     },
     {
-        text: '数据与编辑器',
+        text: '数据与服务',
         items: [
-            { text: '组件数据约定', link: '/cms/component-data' },
+            { text: 'v2 页面数据协议', link: '/cms/v2/data-contract' },
+            { text: 'v2 业务服务接入', link: '/cms/v2/services' },
             { text: '装修编辑器数据对接', link: '/cms/sanke-editor' }
         ]
     },
     {
-        text: '组件参考',
-        items: [{ text: 'CMS 组件总览', link: '/cms/components' }]
+        text: 'CMS v2 内容区块',
+        items: [
+            { text: 'Images 图片展示', link: '/cms/v2/images' },
+            { text: 'Carousel 轮播图', link: '/cms/v2/carousel' },
+            { text: 'Video 视频', link: '/cms/v2/video' },
+            { text: 'Hotzone 热区图', link: '/cms/v2/hotzone' },
+            { text: 'MagicCube 魔方', link: '/cms/v2/magiccube' },
+            { text: 'Notice 公告', link: '/cms/v2/notice' },
+            { text: 'Divider 分割线', link: '/cms/v2/divider' },
+            { text: 'RichText 富文本', link: '/cms/v2/richtext' }
+        ]
+    },
+    {
+        text: 'CMS v2 互动区块',
+        items: [
+            { text: 'Search 搜索框', link: '/cms/v2/search' },
+            { text: 'FloatButton 悬浮按钮', link: '/cms/v2/floatbutton' },
+            { text: 'Popup 页面弹窗', link: '/cms/v2/popup' },
+            { text: 'Custom 自定义模块', link: '/cms/v2/custom' }
+        ]
+    },
+    {
+        text: 'CMS v2 商城区块',
+        items: [
+            { text: 'Coupon 优惠券', link: '/cms/v2/coupon' },
+            { text: 'GoodsList 商品列表', link: '/cms/v2/goodslist' }
+        ]
+    },
+    {
+        text: 'v1 旧版兼容',
+        collapsed: true,
+        items: [
+            { text: 'v1 兼容说明', link: '/cms/legacy/overview' },
+            { text: 'v1 组件索引', link: '/cms/legacy/components' },
+            { text: '旧组件数据约定', link: '/cms/component-data' },
+            { text: '旧 CMS 组件总览', link: '/cms/components' }
+        ]
     }
 ];
 

@@ -128,7 +128,7 @@ import { addUnit, navTo, sleep, toast } from '@puresnake/snake-ui/libs';
 
 ### CMS 容器与基础设施
 
-`snake-cms` 是页面装修容器，负责解析配置、编排区块并连接宿主应用提供的 CMS 服务。
+`snake-cms` 是页面装修容器，负责解析配置、编排区块并连接宿主应用提供的 CMS 服务。新项目使用 `v2.*` 和 `props` 协议，详见 [CMS v2 组件总览](./docs/cms/v2/overview.md)。
 
 ### CMS 内容与导航区块
 
@@ -138,7 +138,7 @@ import { addUnit, navTo, sleep, toast } from '@puresnake/snake-ui/libs';
 
 `snake-follow`、`snake-goods-list`、`snake-activity-list`、`snake-filter-sorts`、`snake-list-switching`、`snake-coupon`。
 
-“CMS 区块”表示组件可以由页面装修配置驱动，并不表示只能在 `snake-cms` 内使用。这些组件仍可按各自 API 独立使用；涉及商品、优惠券和跳转等业务能力时，由宿主项目注入对应服务。请以组件文档中的 `datas`、`setStyle` 和 API 表为准。
+以上 `snake-*` 是公共组件 API；CMS v2 配置区块由 `snake-cms` 内部渲染，不作为独立 easycom 标签发布。v1 公共组件和 `setStyle` 资料仅用于历史项目兼容。
 
 ## 使用运行时工具
 
@@ -166,14 +166,17 @@ uni.$snake.toast('操作完成');
     :page-info="{ pageId: 'home' }"
     :page-components="[
         {
-            component: 'notice',
-            setStyle: {
+            component: 'v2.notice',
+            active: true,
+            props: {
                 direction: 'row',
                 noticeText: '今日上新',
                 textList: [],
-                backColor: '#effaf5',
-                textColor: '#176b4b',
-                pageMargin: 24
+                style: {
+                    backgroundColor: '#effaf5',
+                    textColor: '#176b4b',
+                    pageMargin: 24
+                }
             }
         }
     ]"
@@ -188,8 +191,8 @@ app.use(SnakeUI, {
     cms: {
         services: {
             commerce: {
-                async getGoods({ component, params }) {
-                    const data = await api.goods.list(component.setStyle.scene, params);
+                async getGoods({ params }) {
+                    const data = await api.goods.list(params);
                     return { items: data.items, total: data.total };
                 },
                 navigateGoods({ item }) {
@@ -201,7 +204,7 @@ app.use(SnakeUI, {
 });
 ```
 
-旧项目在只配置 `request` 时仍会自动启用 Joker 兼容适配器；该行为已弃用，新项目应显式配置 `cms.services`，或用 `cms: { legacy: false }` 关闭兼容。
+新项目应显式配置 `cms.services` 并设置 `cms: { legacy: false }`。旧项目在只配置 `request` 时仍可自动启用 Joker 兼容适配器；详情见 [v1 旧版兼容](./docs/cms/legacy/overview.md)。
 
 ## 本地开发
 

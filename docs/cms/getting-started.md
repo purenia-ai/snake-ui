@@ -1,4 +1,4 @@
-# CMS 快速接入
+# CMS v2 快速接入
 
 Snake CMS 用来把后端保存的页面装修配置渲染成 uni-app 页面。新页面使用 v2 `{ component: 'v2.*', props }` 协议；既有项目的 v1 `{ component, setStyle }` 页面在兼容期内仍可直接渲染。
 
@@ -191,7 +191,8 @@ CMS 会忽略过期请求结果，页面切换或重新初始化后，较早返�
 ## 下一步
 
 - [Snake CMS 组件 API](/components/snake-cms)：查看 Props、事件、Ref 方法和服务配置。
-- [组件数据约定](/cms/component-data)：了解字段、可见性和数据规范化规则。
+- [CMS v2 组件总览](/cms/v2/overview)：选择页面装修区块。
+- [v2 页面数据协议](/cms/v2/data-contract)：了解信封、链接和共享字段。
+- [v2 业务服务接入](/cms/v2/services)：接入商品、优惠券和跳转能力。
 - [装修编辑器数据对接](/cms/sanke-editor)：对接编辑器保存的数据和组件标识。
-- [CMS 组件总览](/cms/components)：查找可用于装修页面的组件。
 - [运行环境与能力边界](/guide/compatibility)：确认不同平台的可用能力。

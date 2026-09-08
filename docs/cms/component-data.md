@@ -1,5 +1,7 @@
 # 组件数据约定
 
+> 本页保留给 v1 历史链接。新项目请阅读 [CMS v2 页面数据协议](/cms/v2/data-contract)。
+
 Snake UI 同时使用普通 Props 和 CMS 配置对象。基础组件通常直接传 Props；CMS v2 把装修配置放在 `props`，冻结兼容的 v1 数据仍使用 `setStyle`。
 
 ## 普通 Props 与 `datas`
@@ -36,7 +38,13 @@ const pageComponents = [
         props: {
             layout: { mode: 'single', columns: 1 },
             style: { pageMargin: 0, gap: 0 },
-            items: [{ id: 'image-1', src: 'https://example.com/banner.png', link: { httpType: 10, http: '/pages/activity/index' } }]
+            items: [
+                {
+                    id: 'image-1',
+                    src: 'https://example.com/banner.png',
+                    link: { httpType: 10, http: '/pages/activity/index' }
+                }
+            ]
         }
     }
 ];
