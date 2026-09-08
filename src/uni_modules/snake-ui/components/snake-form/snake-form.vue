@@ -1,101 +1,119 @@
 <script setup lang="ts">
 /**
  * @component SnakeForm
- * @description 管理表单模型、字段规则、错误状态、提交校验和重置。与 `FormItem` 及 Snake UI 输入控件组合使用。
+ * @description 管理表单数据、校验规则与字段实例，行为与 uView Pro Form 对齐。
  * @see /components/form
  */
 
-import { computed, provide, ref, toRef, watch } from 'vue';
-import { snakeFormKey, type SnakeFormField } from '../../libs/internal/form';
-import type { SnakeFormEmits, SnakeFormExpose, SnakeFormProps, SnakeFormCallback } from './types';
+import { computed, provide, ref, toRef } from 'vue';
+import { useParent } from '../../libs/hooks/useCompRelation';
+import { toast } from '../../libs/function/toast';
+import { snakeFormKey } from '../../libs/internal/form';
+import type { SnakeFormCallback, SnakeFormError, SnakeFormProps, SnakeFormRules } from './types';
 
 defineOptions({ name: 'SnakeForm', options: { virtualHost: true, styleIsolation: 'shared' } });
 const props = withDefaults(defineProps<SnakeFormProps>(), {
     model: () => ({}),
     rules: () => ({}),
-    errorType: () => ['message'],
+    errorType: () => ['message', 'toast'],
     borderBottom: true,
     labelPosition: 'left',
-    labelWidth: 160,
+    labelWidth: 90,
     labelAlign: 'left',
-    labelStyle: '',
+    labelStyle: () => ({}),
     size: 'default',
     customClass: '',
     customStyle: ''
 });
-const emit = defineEmits<SnakeFormEmits>();
-const fields: SnakeFormField[] = [];
-const rulesState = ref(props.rules);
-const normalizedErrorType = computed(() => (Array.isArray(props.errorType) ? props.errorType : [props.errorType]));
-watch(
-    () => props.rules,
-    value => {
-        rulesState.value = value || {};
-    },
-    { deep: true }
-);
 
-function register(field: SnakeFormField) {
-    if (!fields.includes(field)) fields.push(field);
-}
-function unregister(field: SnakeFormField) {
-    const index = fields.indexOf(field);
-    if (index >= 0) fields.splice(index, 1);
-}
-function selectFields(names?: string | string[]) {
-    if (names == null) return [...fields];
-    const list = Array.isArray(names) ? names : [names];
-    return fields.filter(field => list.includes(field.prop));
-}
-async function collect(names?: string | string[]) {
-    return (await Promise.all(selectFields(names).map(field => field.validate()))).flat();
+useParent('SnakeForm');
+
+interface FormField {
+    prop: string;
+    validation(trigger?: string, callback?: (message: string) => void): void;
+    resetField(): void;
 }
 
-/**
- * 校验全部字段并同时兼容 Promise 与回调两种调用方式。
- * 校验失败时拒绝 Promise，使调用方可以用 try/catch 阻止后续提交。
- */
-async function validate(callback?: SnakeFormCallback): Promise<Record<string, unknown>> {
-    const errors = await collect();
-    const valid = errors.length === 0;
-    callback?.(valid, errors);
-    emit('validate', valid, errors);
-    if (!valid) return Promise.reject(errors);
-    return props.model;
+const fields = ref<FormField[]>([]);
+const rules = ref<SnakeFormRules>(props.rules);
+const model = computed(() => props.model);
+
+function setRules(newRules: SnakeFormRules) {
+    rules.value = newRules;
 }
 
-/** 仅校验指定字段；结果仍通过统一的 validate 事件上报。 */
-async function validateField(names: string | string[], callback?: SnakeFormCallback): Promise<void> {
-    const errors = await collect(names);
-    const valid = errors.length === 0;
-    callback?.(valid, errors);
-    emit('validate', valid, errors);
-    if (!valid) return Promise.reject(errors);
-}
-function resetFields(names?: string | string[]) {
-    selectFields(names).forEach(field => field.reset());
-}
-function clearValidate(names?: string | string[]) {
-    selectFields(names).forEach(field => field.clear());
-}
-function setRules(rules: SnakeFormProps['rules']) {
-    rulesState.value = rules || {};
+function addField(field: FormField) {
+    if (!fields.value.includes(field)) fields.value.push(field);
 }
 
+function removeField(field: Pick<FormField, 'prop'>) {
+    fields.value = fields.value.filter(item => item.prop !== field.prop);
+}
+
+function resetFields() {
+    fields.value.forEach(field => field.resetField?.());
+}
+
+function runValidation(targetFields: FormField[], callback?: SnakeFormCallback, showToast = false): Promise<boolean> {
+    return new Promise(resolve => {
+        let valid = true;
+        let count = 0;
+        const errors: SnakeFormError[] = [];
+        if (targetFields.length === 0) {
+            resolve(true);
+            callback?.(true, []);
+            return;
+        }
+        targetFields.forEach(field => {
+            field.validation('', message => {
+                if (message) {
+                    valid = false;
+                    errors.push({ prop: field.prop, message });
+                }
+                if (++count !== targetFields.length) return;
+                resolve(valid);
+                if (
+                    showToast &&
+                    !props.errorType.includes('none') &&
+                    props.errorType.includes('toast') &&
+                    errors.length > 0
+                ) {
+                    toast(errors[0].message);
+                }
+                callback?.(valid, errors);
+            });
+        });
+    });
+}
+
+function validate(callback?: SnakeFormCallback): Promise<boolean> {
+    return runValidation(fields.value, callback, true);
+}
+
+function validateField(prop: string | string[], callback?: SnakeFormCallback): Promise<boolean> {
+    const names = Array.isArray(prop) ? prop : [prop];
+    return runValidation(
+        fields.value.filter(field => names.includes(field.prop)),
+        callback
+    );
+}
+
+// Snake 输入控件仍通过注入读取表单尺寸和错误配置；字段生命周期由 uView 式公开方法驱动。
 provide(snakeFormKey, {
     model: toRef(props, 'model'),
-    rules: rulesState,
+    rules,
     size: toRef(props, 'size'),
-    errorType: normalizedErrorType,
+    errorType: toRef(props, 'errorType'),
     borderBottom: toRef(props, 'borderBottom'),
     labelPosition: toRef(props, 'labelPosition'),
     labelWidth: toRef(props, 'labelWidth'),
     labelAlign: toRef(props, 'labelAlign'),
     labelStyle: toRef(props, 'labelStyle'),
-    register,
-    unregister
+    register: field => addField(field as unknown as FormField),
+    unregister: field => removeField(field)
 });
-defineExpose<SnakeFormExpose>({ validate, validateField, resetFields, clearValidate, setRules });
+
+defineExpose({ setRules, resetFields, validate, validateField, addField, removeField, fields, rules, props, model });
 </script>
 
 <template>

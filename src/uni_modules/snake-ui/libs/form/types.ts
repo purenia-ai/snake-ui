@@ -24,7 +24,7 @@ export interface SnakeFormRule {
     max?: number;
     len?: number;
     enum?: unknown[];
-    pattern?: RegExp;
+    pattern?: RegExp | string;
     whitespace?: boolean;
     message?: string;
     trigger?: SnakeFormTrigger | SnakeFormTrigger[];
@@ -39,6 +39,8 @@ export interface SnakeFormRule {
         value: unknown,
         callback: SnakeFormValidatorCallback
     ) => SnakeFormValidatorResult | Promise<SnakeFormValidatorResult>;
+    fields?: SnakeFormRules;
+    defaultField?: SnakeFormRule | SnakeFormRule[];
 }
 
 export type SnakeFormRules = Record<string, SnakeFormRule | SnakeFormRule[]>;

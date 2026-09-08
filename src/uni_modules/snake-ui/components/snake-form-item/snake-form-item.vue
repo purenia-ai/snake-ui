@@ -1,112 +1,265 @@
 <script setup lang="ts">
 /**
  * @component SnakeFormItem
- * @description 连接标签、模型字段、输入控件和校验结果。推荐放在 `Form` 内，也可以作为普通布局容器使用。
+ * @description 表单字段容器，布局、尺寸和校验行为与 uView Pro FormItem 对齐。
  * @see /components/form
  */
 
-import { computed, inject, onBeforeUnmount, onMounted, provide, ref } from 'vue';
+import { computed, inject, nextTick, onBeforeUnmount, onMounted, provide, ref, useSlots } from 'vue';
 import { addUnit } from '../../libs/function/unit';
-import { cloneFormValue, getPathValue, setPathValue, validateFormValue, type SnakeFormTrigger } from '../../libs/form';
-import { snakeFormKey, type SnakeFormField } from '../../libs/internal/form';
+import { useChildren, useParent } from '../../libs/hooks/useCompRelation';
+import { getPathValue, type SnakeFormRule, type SnakeFormTrigger } from '../../libs/form';
+import Schema from '../../libs/form/async-validator.min';
+import { snakeFormKey } from '../../libs/internal/form';
 import { snakeFormItemKey } from '../../libs/internal/form-item';
 import SnakeIcon from '../snake-icon/snake-icon.vue';
-import type { SnakeFormItemExpose, SnakeFormItemProps } from './types';
+import type { SnakeFormItemProps } from './types';
+
+Schema.warning = () => {};
 
 defineOptions({ name: 'SnakeFormItem', options: { virtualHost: true, styleIsolation: 'shared' } });
 const props = withDefaults(defineProps<SnakeFormItemProps>(), {
+    customStyle: '',
+    customClass: '',
     label: '',
     prop: '',
-    required: false,
-    leftIcon: '',
+    borderBottom: '',
+    labelPosition: '',
+    labelWidth: '',
+    labelStyle: () => ({}),
+    labelAlign: '',
     rightIcon: '',
-    customClass: '',
-    customStyle: ''
+    leftIcon: '',
+    leftIconPrefix: 'sicon',
+    rightIconPrefix: 'sicon',
+    leftIconStyle: () => ({}),
+    rightIconStyle: () => ({}),
+    required: false,
+    size: ''
 });
-const form = inject(snakeFormKey);
-const error = ref('');
-const initialValue = ref<unknown>();
-const runId = ref(0);
-const size = computed(() => props.size || form?.size.value || 'default');
-const rules = computed(() => form?.rules.value[props.prop] || []);
-const isRequired = computed(
-    () => props.required || (Array.isArray(rules.value) ? rules.value : [rules.value]).some(rule => rule?.required)
-);
-const labelPosition = computed(() => props.labelPosition || form?.labelPosition.value || 'left');
-const labelWidth = computed(() => props.labelWidth ?? form?.labelWidth.value ?? 160);
-const labelAlign = computed(() => props.labelAlign || form?.labelAlign.value || 'left');
-const borderBottom = computed(() => props.borderBottom ?? form?.borderBottom.value ?? true);
-const errorTypes = computed(() => form?.errorType.value || ['message']);
-const errorVisible = computed(() => Boolean(error.value) && !errorTypes.value.includes('none'));
-const itemClass = computed(() => ({
-    'snake-form-item--top': labelPosition.value === 'top',
-    'snake-form-item--border': borderBottom.value,
-    'snake-form-item--error-border':
-        errorVisible.value && (errorTypes.value.includes('border') || errorTypes.value.includes('border-bottom'))
-}));
-const mergedLabelStyle = computed(() => [
-    { width: labelPosition.value === 'left' ? addUnit(labelWidth.value, 'rpx') : '100%', textAlign: labelAlign.value },
-    form?.labelStyle.value,
-    props.labelStyle
-]);
 
-/**
- * 执行当前字段校验。
- * runId 用于丢弃较早完成的异步规则结果，避免旧错误覆盖用户的新输入。
- */
-async function validate(trigger?: SnakeFormTrigger) {
-    if (!form || !props.prop) return [];
-    const current = ++runId.value;
-    const errors = await validateFormValue(
-        props.prop,
-        getPathValue(form.model.value, props.prop),
-        rules.value,
-        trigger
-    );
-    if (current === runId.value) error.value = errors[0]?.message || '';
-    return errors;
+const slots = useSlots();
+const form = inject(snakeFormKey, null);
+const { broadcast } = useParent('SnakeFormItem');
+const { parentExposed } = useChildren('SnakeFormItem', 'SnakeForm');
+
+const initialValue = ref<unknown>('');
+const validateState = ref<'success' | 'error' | 'validating' | ''>('');
+const validateMessage = ref('');
+
+const sizeConfig = {
+    small: { fontSize: 24, iconSize: 28, messageSize: 20 },
+    default: { fontSize: 28, iconSize: 32, messageSize: 24 },
+    large: { fontSize: 32, iconSize: 36, messageSize: 28 }
+} as const;
+
+const actualSize = computed(() => {
+    if (props.size !== '') return String(props.size);
+    return String(parentExposed.value?.props?.size || form?.size.value || 'default');
+});
+const presetSize = computed(() =>
+    actualSize.value in sizeConfig ? (actualSize.value as keyof typeof sizeConfig) : 'default'
+);
+const currentSizeConfig = computed(() => sizeConfig[presetSize.value]);
+const actualFontSize = computed(() =>
+    addUnit(actualSize.value in sizeConfig ? currentSizeConfig.value.fontSize : actualSize.value, 'rpx')
+);
+const currentIconSize = computed(() => currentSizeConfig.value.iconSize);
+const errorType = computed(() => parentExposed.value?.props?.errorType || form?.errorType.value || ['message']);
+const showError = (type: string) => !errorType.value.includes('none') && errorType.value.includes(type);
+const errorVisible = computed(() => validateState.value === 'error' && !errorType.value.includes('none'));
+
+const elLabelWidth = computed(() => {
+    if (props.labelWidth !== '' && props.labelWidth !== 0) return props.labelWidth;
+    return parentExposed.value?.props?.labelWidth || form?.labelWidth.value || 90;
+});
+const elLabelStyle = computed(() =>
+    Object.keys(props.labelStyle).length
+        ? props.labelStyle
+        : parentExposed.value?.props?.labelStyle || form?.labelStyle.value || {}
+);
+const elLabelPosition = computed(
+    () => props.labelPosition || parentExposed.value?.props?.labelPosition || form?.labelPosition.value || 'left'
+);
+const elLabelAlign = computed(
+    () => props.labelAlign || parentExposed.value?.props?.labelAlign || form?.labelAlign.value || 'left'
+);
+const elBorderBottom = computed(() =>
+    props.borderBottom !== ''
+        ? props.borderBottom
+        : (parentExposed.value?.props?.borderBottom ?? form?.borderBottom.value ?? false)
+);
+const labelWidth = computed(() =>
+    elLabelPosition.value === 'left'
+        ? (props.label === 'true' || props.label === '') && !slots.label
+            ? 'auto'
+            : addUnit(elLabelWidth.value, 'rpx')
+        : '100%'
+);
+
+function getRules(): SnakeFormRule[] {
+    const allRules = parentExposed.value?.rules?.value || form?.rules.value || {};
+    const dynamicPath = props.prop.replace(/(\.|^)(\d+)\./, '.defaultField.fields.');
+    const fieldRules = allRules[props.prop] || getPathValue(allRules, dynamicPath);
+    return ([] as SnakeFormRule[]).concat((fieldRules || []) as SnakeFormRule | SnakeFormRule[]);
 }
-function clearValidate() {
-    runId.value += 1;
-    error.value = '';
+
+function getFilteredRules(trigger = ''): SnakeFormRule[] {
+    const rules = getRules();
+    if (!trigger) return rules;
+    return rules.filter(rule => rule.trigger && ([] as string[]).concat(rule.trigger).includes(trigger));
+}
+
+function validation(trigger = '', callback: (message: string) => void = () => {}) {
+    const rules = getFilteredRules(trigger);
+    if (!rules.length) {
+        callback('');
+        return;
+    }
+    validateState.value = 'validating';
+    const value = getPathValue(parentExposed.value?.model?.value || form?.model.value, props.prop);
+    const validator = new Schema({ [props.prop]: rules });
+    void validator.validate({ [props.prop]: value }, { firstFields: true }, errors => {
+        validateState.value = errors ? 'error' : 'success';
+        validateMessage.value = errors?.[0]?.message || '';
+        broadcast('onFormItemError', validateState.value === 'error' && showError('border'));
+        callback(validateMessage.value);
+    });
+}
+
+function onFormBlur() {
+    validation('blur');
+}
+function onFormChange() {
+    validation('change');
 }
 function resetField() {
-    if (form && props.prop) setPathValue(form.model.value, props.prop, cloneFormValue(initialValue.value));
-    clearValidate();
-}
-async function notify(trigger: SnakeFormTrigger) {
-    await validate(trigger);
-}
-const field: SnakeFormField = { prop: props.prop, validate, reset: resetField, clear: clearValidate };
-onMounted(() => {
-    if (form && props.prop) {
-        initialValue.value = cloneFormValue(getPathValue(form.model.value, props.prop));
-        form.register(field);
+    const model = parentExposed.value?.model?.value || form?.model.value;
+    if (model && props.prop) {
+        const parts = props.prop.split('.');
+        let owner: any = model;
+        for (let index = 0; index < parts.length - 1; index += 1) owner = owner?.[parts[index]];
+        if (owner) owner[parts[parts.length - 1]] = initialValue.value;
     }
+    setTimeout(() => {
+        validateState.value = 'success';
+        validateMessage.value = '';
+    }, 50);
+}
+
+const exposedField = { validation, resetField, prop: props.prop };
+onMounted(() => {
+    nextTick(() => {
+        const parent = parentExposed.value;
+        if (!props.prop) return;
+        if (parent?.addField) parent.addField(exposedField);
+        else form?.register(exposedField as any);
+        initialValue.value = getPathValue(parent?.model?.value || form?.model.value, props.prop);
+    });
 });
-onBeforeUnmount(() => form?.unregister(field));
-provide(snakeFormItemKey, { error, errorVisible, size, notify });
-defineExpose<SnakeFormItemExpose>({ validate, resetField, clearValidate });
+onBeforeUnmount(() => {
+    if (!props.prop) return;
+    if (parentExposed.value?.removeField) parentExposed.value.removeField(exposedField);
+    else form?.unregister(exposedField as any);
+});
+
+function notify(trigger: SnakeFormTrigger): Promise<void> {
+    return new Promise(resolve => validation(trigger, () => resolve()));
+}
+provide(snakeFormItemKey, {
+    error: validateMessage,
+    errorVisible,
+    size: computed(() => presetSize.value),
+    notify
+});
+defineExpose({ validation, resetField, onFormBlur, onFormChange });
 </script>
 
 <template>
-    <view class="snake-form-item" :class="[customClass, itemClass]" :style="customStyle">
-        <view v-if="label || $slots.label" class="snake-form-item__label" :style="mergedLabelStyle"
-            ><text v-if="isRequired" class="snake-form-item__required">*</text
-            ><snake-icon v-if="leftIcon" :name="leftIcon" class="snake-form-item__left-icon" /><slot name="label"
-                ><text>{{ label }}</text></slot
-            ></view
+    <view
+        class="snake-form-item"
+        :class="[
+            {
+                'snake-form-item--border-bottom': elBorderBottom,
+                'snake-form-item--border-bottom-error': validateState === 'error' && showError('border-bottom'),
+                'snake-form-item--border-error': validateState === 'error' && showError('border')
+            },
+            customClass
+        ]"
+        :style="customStyle"
+    >
+        <view class="snake-form-item__body" :style="{ flexDirection: elLabelPosition === 'left' ? 'row' : 'column' }">
+            <view
+                class="snake-form-item__left"
+                :style="{
+                    width: labelWidth,
+                    flex: `0 0 ${labelWidth}`,
+                    marginBottom: elLabelPosition === 'left' ? 0 : '10rpx'
+                }"
+            >
+                <view
+                    v-if="required || leftIcon || label || $slots.label || $slots.leftIcon"
+                    class="snake-form-item__left-content"
+                >
+                    <text v-if="required" class="snake-form-item__required">*</text>
+                    <view v-if="leftIcon || $slots.leftIcon" class="snake-form-item__left-icon">
+                        <slot name="leftIcon">
+                            <snake-icon
+                                :name="leftIcon"
+                                :size="currentIconSize"
+                                :custom-prefix="leftIconPrefix"
+                                :custom-style="leftIconStyle"
+                            />
+                        </slot>
+                    </view>
+                    <view
+                        class="snake-form-item__label"
+                        :style="[
+                            elLabelStyle,
+                            { fontSize: actualFontSize },
+                            {
+                                justifyContent:
+                                    elLabelAlign === 'left'
+                                        ? 'flex-start'
+                                        : elLabelAlign === 'center'
+                                          ? 'center'
+                                          : 'flex-end'
+                            }
+                        ]"
+                    >
+                        <slot name="label">{{ label }}</slot>
+                    </view>
+                </view>
+            </view>
+            <view class="snake-form-item__right">
+                <view class="snake-form-item__content">
+                    <view class="snake-form-item__slot"><slot /></view>
+                    <view v-if="$slots.right || $slots.rightIcon || rightIcon" class="snake-form-item__right-icon">
+                        <slot name="rightIcon">
+                            <snake-icon
+                                v-if="rightIcon"
+                                :name="rightIcon"
+                                :size="currentIconSize"
+                                :custom-prefix="rightIconPrefix"
+                                :custom-style="rightIconStyle"
+                            />
+                        </slot>
+                        <slot name="right" />
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view
+            v-if="validateState === 'error' && showError('message')"
+            class="snake-form-item__message"
+            :style="{
+                paddingLeft: elLabelPosition === 'left' && label ? addUnit(elLabelWidth, 'rpx') : '0',
+                fontSize: addUnit(currentSizeConfig.messageSize, 'rpx'),
+                lineHeight: addUnit(currentSizeConfig.messageSize, 'rpx')
+            }"
         >
-        <view class="snake-form-item__body"
-            ><view class="snake-form-item__content"
-                ><slot name="left" /><slot /><slot name="right"
-                    ><snake-icon v-if="rightIcon" :name="rightIcon" /></slot></view
-            ><text
-                v-if="error && errorTypes.includes('message') && !errorTypes.includes('none')"
-                class="snake-form-item__error"
-                >{{ error }}</text
-            ></view
-        >
+            {{ validateMessage }}
+        </view>
     </view>
 </template>
 
@@ -114,58 +267,69 @@ defineExpose<SnakeFormItemExpose>({ validate, resetField, clearValidate });
 .snake-form-item {
     display: flex;
     box-sizing: border-box;
-    min-height: 96rpx;
-    align-items: flex-start;
-    padding: 0 24rpx;
-    background: var(--snake-color-surface, #fff);
-}
-.snake-form-item--top {
     flex-direction: column;
-    padding-top: 20rpx;
-}
-.snake-form-item--border {
-    border-bottom: 1px solid var(--snake-color-divider, #e4e7ed);
-}
-.snake-form-item--error-border {
-    border-color: var(--snake-color-error, #FA3534);
-}
-.snake-form-item__label {
-    display: flex;
-    flex: none;
-    box-sizing: border-box;
-    min-height: 96rpx;
-    align-items: center;
-    padding-right: 20rpx;
+    padding: 20rpx 0;
     color: var(--snake-color-text, #303133);
     font-size: 28rpx;
-    white-space: nowrap;
 }
-.snake-form-item--top .snake-form-item__label {
-    min-height: auto;
-    padding-bottom: 12rpx;
+.snake-form-item--border-bottom {
+    border-bottom: 1px solid var(--snake-color-divider, #e4e7ed);
 }
-.snake-form-item__required {
-    margin-right: 6rpx;
-    color: var(--snake-color-error, #FA3534);
+.snake-form-item--border-bottom-error {
+    border-color: var(--snake-color-error, #fa3534);
 }
-.snake-form-item__left-icon {
-    margin-right: 8rpx;
+.snake-form-item--border-error :deep(.snake-input--surround),
+.snake-form-item--border-error :deep(.snake-textarea--surround) {
+    border-color: var(--snake-color-error, #fa3534) !important;
 }
-.snake-form-item__body {
-    flex: 1;
-    min-width: 0;
-    padding: 18rpx 0;
-}
-.snake-form-item__content {
+.snake-form-item__body,
+.snake-form-item__left,
+.snake-form-item__left-content,
+.snake-form-item__label,
+.snake-form-item__right,
+.snake-form-item__content,
+.snake-form-item__slot,
+.snake-form-item__right-icon {
     display: flex;
-    min-height: 60rpx;
+}
+.snake-form-item__left,
+.snake-form-item__left-content,
+.snake-form-item__label,
+.snake-form-item__content,
+.snake-form-item__slot,
+.snake-form-item__right-icon {
     align-items: center;
 }
-.snake-form-item__error {
-    display: block;
+.snake-form-item__left-content,
+.snake-form-item__label,
+.snake-form-item__right,
+.snake-form-item__content,
+.snake-form-item__slot {
+    flex: 1;
+}
+.snake-form-item__left-content {
+    position: relative;
+    padding-right: 10rpx;
+}
+.snake-form-item__required {
+    position: absolute;
+    left: -16rpx;
     padding-top: 6rpx;
-    color: var(--snake-color-error, #FA3534);
-    font-size: 24rpx;
-    line-height: 1.4;
+    color: var(--snake-color-error, #fa3534);
+    vertical-align: middle;
+}
+.snake-form-item__left-icon {
+    display: flex;
+    align-items: center;
+    margin-right: 8rpx;
+}
+.snake-form-item__right-icon {
+    margin-left: 10rpx;
+    color: var(--snake-color-text-light, #c0c4cc);
+    font-size: 30rpx;
+}
+.snake-form-item__message {
+    margin-top: 12rpx;
+    color: var(--snake-color-error, #fa3534);
 }
 </style>

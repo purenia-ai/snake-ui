@@ -47,6 +47,18 @@ test('form validator covers built-in, trigger, sync, and async rules', async () 
         (await validateFormValue('code', 'bad', { asyncValidator: async () => new Error('异步校验失败') }))[0].message,
         '异步校验失败'
     );
+    assert.equal(
+        (
+            await validateFormValue('accounts', [{ name: '' }], {
+                type: 'array',
+                defaultField: {
+                    type: 'object',
+                    fields: { name: { required: true, message: '请输入账户名' } }
+                }
+            })
+        )[0].message,
+        '请输入账户名'
+    );
 });
 
 test('form control components expose independent contracts', async () => {
@@ -90,9 +102,30 @@ test('form exposes validation and field lifecycle APIs', async () => {
         read('components/snake-form/types.ts'),
         read('components/snake-form/snake-form.vue')
     ]);
-    for (const method of ['validate', 'validateField', 'resetFields', 'clearValidate', 'setRules'])
+    for (const method of ['validate', 'validateField', 'resetFields', 'setRules', 'addField', 'removeField'])
         assert.match(types + source, new RegExp(method));
     assert.match(source, /provide\(snakeFormKey/);
+    assert.match(source, /useParent\('SnakeForm'\)/);
+    assert.match(types, /validate\(callback\?: SnakeFormCallback\): Promise<boolean>/);
+    assert.doesNotMatch(types + source, /clearValidate/);
+    assert.match(source, /errorType: \(\) => \['message', 'toast'\]/);
+    assert.match(source, /labelWidth: 90/);
+});
+
+test('form item matches uView Pro layout, size, slots, and field protocol', async () => {
+    const [types, source] = await Promise.all([
+        read('components/snake-form-item/types.ts'),
+        read('components/snake-form-item/snake-form-item.vue')
+    ]);
+    assert.match(source, /useChildren\('SnakeFormItem', 'SnakeForm'\)/);
+    assert.match(source, /small: \{ fontSize: 24, iconSize: 28, messageSize: 20 \}/);
+    assert.match(source, /default: \{ fontSize: 28, iconSize: 32, messageSize: 24 \}/);
+    assert.match(source, /large: \{ fontSize: 32, iconSize: 36, messageSize: 28 \}/);
+    for (const name of ['leftIconPrefix', 'rightIconPrefix', 'leftIconStyle', 'rightIconStyle'])
+        assert.match(types, new RegExp(name));
+    for (const slot of ['leftIcon', 'rightIcon', 'right']) assert.match(source, new RegExp(`name="${slot}"`));
+    for (const method of ['validation', 'resetField', 'onFormBlur', 'onFormChange'])
+        assert.match(types + source, new RegExp(method));
 });
 
 test('selection controls use typed group protocols', async () => {
@@ -168,11 +201,14 @@ test('form controls keep readable rpx size defaults', async () => {
     assert.match(slider, /blockWidth: 30,/);
 });
 
-test('third parity batch remains independent from uView and async-validator', async () => {
-    const source = (await Promise.all(components.map(name => read(`components/snake-${name}/snake-${name}.vue`)))).join(
-        '\n'
+test('form ports async-validator while controls remain independent from uView', async () => {
+    const sourceByComponent = await Promise.all(
+        components.map(name => read(`components/snake-${name}/snake-${name}.vue`))
     );
-    assert.doesNotMatch(source, /uni\.\$u|uview-pro|async-validator|<u-/);
+    const formItem = sourceByComponent[components.indexOf('form-item')];
+    assert.match(formItem, /async-validator/);
+    assert.match(await read('libs/form/async-validator.min.js'), /function Schema/);
+    assert.doesNotMatch(sourceByComponent.join('\n'), /uni\.\$u|uview-pro|<u-/);
 });
 
 test('radio and checkbox render the iconfont checkmark', async () => {

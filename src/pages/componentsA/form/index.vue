@@ -9,22 +9,71 @@ import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
 const formRef = ref<any>();
-const model = reactive({ name: '', intro: '', fruit: ['apple'], flavor: 'sweet', enabled: true });
+const model = reactive({
+    name: '',
+    intro: '',
+    fruit: ['apple'],
+    flavor: 'sweet',
+    enabled: true,
+    accounts: [{ name: '' }]
+});
 const rules = {
     name: [{ required: true, message: '请输入姓名', trigger: ['change', 'blur'] }],
-    intro: [{ min: 5, message: '简介至少输入 5 个字', trigger: 'blur' }]
+    intro: [{ min: 5, message: '简介至少输入 5 个字', trigger: 'blur' }],
+    accounts: {
+        type: 'array' as const,
+        defaultField: {
+            type: 'object' as const,
+            fields: {
+                name: { required: true, message: '请输入账户名', trigger: ['change', 'blur'] }
+            }
+        }
+    }
 };
 const message = ref('请填写并提交表单');
 const controls: DemoControl[] = [
     { key: 'formBorder', label: '显示分隔线', type: 'switch', defaultValue: true },
     { key: 'formTopLabel', label: '标签置顶', type: 'switch', defaultValue: false },
-    { key: 'formRequired', label: '必填标识', type: 'switch', defaultValue: true }
+    { key: 'formRequired', label: '必填标识', type: 'switch', defaultValue: true },
+    {
+        key: 'formSize',
+        label: '表单尺寸',
+        type: 'select',
+        defaultValue: 'default',
+        options: [
+            { label: '小', value: 'small' },
+            { label: '默认', value: 'default' },
+            { label: '大', value: 'large' }
+        ]
+    },
+    {
+        key: 'formErrorType',
+        label: '错误提示',
+        type: 'select',
+        defaultValue: 'message',
+        options: [
+            { label: '文字', value: 'message' },
+            { label: 'Toast', value: 'toast' },
+            { label: '底边', value: 'border-bottom' },
+            { label: '输入框边框', value: 'border' }
+        ]
+    }
 ];
-const state = reactive<Record<string, DemoValue>>({ formBorder: true, formTopLabel: false, formRequired: true });
+const state = reactive<Record<string, DemoValue>>({
+    formBorder: true,
+    formTopLabel: false,
+    formRequired: true,
+    formSize: 'default',
+    formErrorType: 'message'
+});
 const localizedControls = computed(() => {
     const _locale = localeName.value;
     return controls.map(control => ({ ...control, label: demoText(control.label) }));
 });
+const formSize = computed(() => String(state.formSize) as 'small' | 'default' | 'large');
+const formErrorType = computed(
+    () => [String(state.formErrorType)] as Array<'message' | 'toast' | 'border-bottom' | 'border'>
+);
 const title = computed(() => {
     const _locale = localeName.value;
     return demoTitle('form', '表单');
@@ -33,12 +82,8 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 async function submitForm() {
-    try {
-        await formRef.value?.validate();
-        message.value = `校验通过：${model.name}`;
-    } catch {
-        message.value = '请检查表单中的错误提示';
-    }
+    const valid = await formRef.value?.validate();
+    message.value = valid ? `校验通过：${model.name}` : '请检查表单中的错误提示';
 }
 function resetForm() {
     formRef.value?.resetFields();
@@ -59,6 +104,8 @@ function resetForm() {
                     ref="formRef"
                     :model="model"
                     :rules="rules"
+                    :size="formSize"
+                    :error-type="formErrorType"
                     :border-bottom="Boolean(state.formBorder)"
                     :label-position="state.formTopLabel ? 'top' : 'left'"
                 >
@@ -92,7 +139,17 @@ function resetForm() {
                         ></snake-form-item
                     >
                     <snake-form-item :label="isEnglish ? 'Enabled' : '启用'" prop="enabled"
-                        ><snake-switch v-model="model.enabled"
+                        ><template #right><snake-switch v-model="model.enabled" /></template
+                    ></snake-form-item>
+                    <snake-form-item
+                        :label="isEnglish ? 'Account' : '账户'"
+                        prop="accounts.0.name"
+                        right-icon="arrow-right"
+                        :right-icon-style="{ color: 'var(--snake-color-text-muted)' }"
+                        ><template #leftIcon><snake-icon name="account" /></template
+                        ><snake-input
+                            v-model="model.accounts[0].name"
+                            :placeholder="isEnglish ? 'Enter account' : '请输入账户名'"
                     /></snake-form-item>
                 </snake-form>
                 <view class="demo-form__actions"

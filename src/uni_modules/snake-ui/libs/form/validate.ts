@@ -1,6 +1,7 @@
 import type {
     SnakeFormError,
     SnakeFormRule,
+    SnakeFormRules,
     SnakeFormTrigger,
     SnakeFormValidatorCallback,
     SnakeFormValidatorResult
@@ -29,7 +30,10 @@ function defaultMessage(rule: SnakeFormRule): string {
 function typeMatches(type: SnakeFormRule['type'], value: unknown): boolean {
     if (!type || type === 'any') return true;
     if (type === 'array') return Array.isArray(value);
-    if (type === 'date') return value instanceof Date && !Number.isNaN(value.getTime());
+    if (type === 'date') {
+        const date = typeof value === 'number' ? new Date(value) : value;
+        return date instanceof Date && !Number.isNaN(date.getTime());
+    }
     if (type === 'regexp') return value instanceof RegExp;
     if (type === 'integer') return typeof value === 'number' && Number.isInteger(value);
     if (type === 'float') return typeof value === 'number' && Number.isFinite(value);
@@ -37,6 +41,7 @@ function typeMatches(type: SnakeFormRule['type'], value: unknown): boolean {
     if (type === 'url') return typeof value === 'string' && urlPattern.test(value);
     if (type === 'email') return typeof value === 'string' && emailPattern.test(value);
     if (type === 'hex') return typeof value === 'string' && hexPattern.test(value);
+    if (type === 'number') return typeof value === 'number' && !Number.isNaN(value);
     return typeof value === type;
 }
 function normalizeCustomResult(result: SnakeFormValidatorResult, fallback: string): string | undefined {
@@ -96,8 +101,7 @@ export async function validateFormValue(
     for (const rule of list) {
         const value = rule.transform ? rule.transform(rawValue) : rawValue;
         let message: string | undefined;
-        if (rule.required && (empty(value) || (!rule.whitespace && typeof value === 'string' && !value.trim())))
-            message = rule.message || defaultMessage(rule);
+        if (rule.required && empty(value)) message = rule.message || defaultMessage(rule);
         else if (!empty(value)) {
             const length = lengthOf(value);
             if (!typeMatches(rule.type, value)) message = rule.message || defaultMessage(rule);
@@ -108,9 +112,33 @@ export async function validateFormValue(
                 message = rule.message || defaultMessage(rule);
             else if (rule.enum && !rule.enum.includes(value)) message = rule.message || defaultMessage(rule);
             else if (rule.pattern) {
-                rule.pattern.lastIndex = 0;
-                if (!rule.pattern.test(String(value))) message = rule.message || defaultMessage(rule);
+                const pattern = typeof rule.pattern === 'string' ? new RegExp(rule.pattern) : rule.pattern;
+                pattern.lastIndex = 0;
+                if (!pattern.test(String(value))) message = rule.message || defaultMessage(rule);
+            } else if (rule.whitespace && typeof value === 'string' && /^\s+$/.test(value)) {
+                message = rule.message || defaultMessage(rule);
             } else message = await runCustom(rule, value);
+
+            if (!message && value && (rule.fields || rule.defaultField) && typeof value === 'object') {
+                const childRules: SnakeFormRules = { ...(rule.fields || {}) };
+                if (rule.defaultField) {
+                    for (const key of Object.keys(value as Record<string, unknown>)) {
+                        if (!childRules[key]) childRules[key] = rule.defaultField;
+                    }
+                }
+                for (const [key, childRule] of Object.entries(childRules)) {
+                    const childErrors = await validateFormValue(
+                        `${prop}.${key}`,
+                        (value as Record<string, unknown>)[key],
+                        childRule,
+                        trigger
+                    );
+                    if (childErrors.length) {
+                        message = childErrors[0].message;
+                        break;
+                    }
+                }
+            }
         }
         if (message) {
             errors.push({ prop, message, rule });

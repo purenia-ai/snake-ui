@@ -4,7 +4,7 @@ preview: /pages/componentsA/form/index
 
 # Form 表单
 
-`Form` 管理表单模型、字段规则、错误状态、提交校验和重置；`FormItem` 连接标签、模型字段、输入控件和校验结果，推荐放在 `Form` 内，也可以作为普通布局容器使用。
+`Form` 用于管理表单模型和规则，`FormItem` 负责字段布局、校验状态与错误展示。组件行为与 uView Pro Form 保持一致。
 
 ## 平台兼容性
 
@@ -23,94 +23,87 @@ preview: /pages/componentsA/form/index
 ```
 
 ```ts
-const rules = {
-    'profile.name': [
-        { required: true, message: '请输入姓名', trigger: ['change', 'blur'] },
-        { min: 2, message: '至少输入两个字符', trigger: 'blur' }
-    ]
-};
-
-await formRef.value.validate();
-```
-
-规则支持 `required`、`type`、`min`、`max`、`len`、`pattern`、`enum`、`transform`、`validator` 和 `asyncValidator`。字段路径支持对象和数组嵌套。
-
-## 提交与错误处理
-
-```ts
-async function submit() {
-    try {
-        const values = await formRef.value.validate();
-        await save(values);
-    } catch (errors) {
-        // FormItem 会就近展示错误；页面可在这里滚动到第一个错误字段。
-    }
+const valid = await formRef.value.validate();
+if (valid) {
+    // 提交 model
 }
 ```
 
-标签必须描述输入目的，placeholder 只提供示例而不能代替标签。异步校验失败时应保留用户输入并给出可执行的修正提示。
+规则支持 `required`、`type`、`min`、`max`、`len`、`pattern`、`enum`、`transform`、`validator`、`asyncValidator`、`fields` 和 `defaultField`。字段 `prop` 支持 `profile.name`、`accounts.0.name` 等嵌套路径。
+
+## 动态深层校验
+
+```ts
+const rules = {
+    accounts: {
+        type: 'array',
+        required: true,
+        defaultField: {
+            type: 'object',
+            fields: {
+                name: { required: true, message: '请输入账户名', trigger: ['change', 'blur'] }
+            }
+        }
+    }
+};
+```
+
+对应动态字段使用 `prop="accounts.0.name"`。组件会从 `accounts.defaultField.fields.name` 查找规则。
+
+## 错误提示
+
+`errorType` 是数组，可组合以下值：
+
+- `message`：字段下方显示错误文字。
+- `toast`：全表校验时提示第一个错误。
+- `border-bottom`：字段底边变为错误色。
+- `border`：内部输入控件边框变为错误色。
+- `none`：隐藏全部错误提示。
 
 ## API
 
-### Form
+### Form Props
 
-#### Props
+| 参数            | 说明                     | 类型                        | 默认值                 |
+| --------------- | ------------------------ | --------------------------- | ---------------------- |
+| `model`         | 表单数据对象             | `object`                    | `{}`                   |
+| `rules`         | 校验规则                 | `SnakeFormRules`            | `{}`                   |
+| `errorType`     | 错误提示方式             | `SnakeFormErrorType[]`      | `['message', 'toast']` |
+| `borderBottom`  | 表单项默认显示底边       | `boolean`                   | `true`                 |
+| `labelPosition` | 标签位置                 | `left \| top`               | `left`                 |
+| `labelWidth`    | 标签宽度，数字单位为 rpx | `string \| number`          | `90`                   |
+| `labelAlign`    | 标签对齐                 | `left \| center \| right`   | `left`                 |
+| `labelStyle`    | 标签样式                 | `object`                    | `{}`                   |
+| `size`          | 表单尺寸                 | `small \| default \| large` | `default`              |
 
-| 参数                                       | 说明                                      | 类型                 | 默认值         |
-| ------------------------------------------ | ----------------------------------------- | -------------------- | -------------- |
-| `model`                                    | 表单数据对象                              | `object`             | `{}`           |
-| `rules`                                    | 按字段名配置的规则                        | `SnakeFormRules`     | `{}`           |
-| `errorType`                                | message/border/border-bottom/none，可组合 | `string \| string[]` | `['message']`  |
-| `borderBottom`                             | 表单项默认显示底边                        | `boolean`            | `true`         |
-| `labelPosition`                            | left/top                                  | `string`             | `left`         |
-| `labelWidth` / `labelAlign` / `labelStyle` | 标签宽度、对齐和样式                      | `UnitValue \| style` | `160` / `left` |
-| `size`                                     | small/default/large                       | `string`             | `default`      |
-| `customClass` / `customStyle`              | 自定义类名和样式                          | `string \| style`    | `''`           |
+### Form Expose
 
-#### Events
+| 方法                              | 说明                                            |
+| --------------------------------- | ----------------------------------------------- |
+| `setRules(rules)`                 | 动态替换规则                                    |
+| `resetFields()`                   | 重置全部已注册字段                              |
+| `validate(callback?)`             | 校验全部字段，返回 `Promise<boolean>`           |
+| `validateField(props, callback?)` | 校验一个或多个指定字段，返回 `Promise<boolean>` |
 
-| 事件名     | 说明         | 参数              |
-| ---------- | ------------ | ----------------- |
-| `validate` | 主动校验结束 | `(valid, errors)` |
+### FormItem Props
 
-#### Expose
+| 参数                                                         | 说明                              | 默认值    |
+| ------------------------------------------------------------ | --------------------------------- | --------- |
+| `label` / `prop`                                             | 标签和模型字段路径                | `''`      |
+| `required`                                                   | 仅显示必填星号                    | `false`   |
+| `borderBottom`                                               | 是否显示底边；空字符串时继承 Form | `''`      |
+| `labelPosition` / `labelWidth` / `labelAlign` / `labelStyle` | 标签布局；未设置时继承 Form       | -         |
+| `leftIcon` / `rightIcon`                                     | 左右图标                          | `''`      |
+| `leftIconPrefix` / `rightIconPrefix`                         | 自定义图标类前缀                  | `sicon`   |
+| `leftIconStyle` / `rightIconStyle`                           | 图标样式                          | `{}`      |
+| `size`                                                       | small/default/large 或自定义字号  | 继承 Form |
 
-| 方法                              | 说明                                               |
-| --------------------------------- | -------------------------------------------------- |
-| `validate(callback?)`             | 校验全部字段，成功返回 model，失败 reject 错误数组 |
-| `validateField(props, callback?)` | 校验指定字段                                       |
-| `resetFields(props?)`             | 恢复字段初始值并清错                               |
-| `clearValidate(props?)`           | 清除字段错误                                       |
-| `setRules(rules)`                 | 动态替换规则                                       |
+### FormItem Slots
 
-### FormItem
+`default`、`label`、`leftIcon`、`rightIcon`、`right`。
 
-#### Props
+### FormItem Expose
 
-| 参数                                       | 说明                    | 类型                 | 默认值    |
-| ------------------------------------------ | ----------------------- | -------------------- | --------- |
-| `label` / `prop`                           | 标签与 model 字段路径   | `string`             | `''`      |
-| `required`                                 | 显示必填星号            | `boolean`            | `false`   |
-| `leftIcon` / `rightIcon`                   | 左右图标                | `string`             | `''`      |
-| `labelPosition`                            | left/top，默认继承 Form | `string`             | -         |
-| `labelWidth` / `labelAlign` / `labelStyle` | 标签宽度、对齐和样式    | `UnitValue \| style` | 继承 Form |
-| `borderBottom` / `size`                    | 底边和尺寸              | `boolean \| string`  | 继承 Form |
-| `customClass` / `customStyle`              | 自定义类名和样式        | `string \| style`    | `''`      |
-
-#### Slots
-
-| 插槽             | 说明           |
-| ---------------- | -------------- |
-| `default`        | 字段控件       |
-| `label`          | 自定义标签     |
-| `left` / `right` | 内容区左右扩展 |
-
-#### Expose
-
-| 方法                 | 说明         |
-| -------------------- | ------------ |
-| `validate(trigger?)` | 校验当前字段 |
-| `resetField()`       | 恢复初始值   |
-| `clearValidate()`    | 清除错误     |
+`validation(trigger?, callback?)`、`resetField()`、`onFormBlur()`、`onFormChange()`。
 
 源码：`src/uni_modules/snake-ui/components/snake-form/snake-form.vue`、`src/uni_modules/snake-ui/components/snake-form-item/snake-form-item.vue`

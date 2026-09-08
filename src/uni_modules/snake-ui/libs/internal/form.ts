@@ -5,7 +5,7 @@ import type { SnakeStyleValue } from '../../types/global';
 export type SnakeFormSize = 'small' | 'default' | 'large';
 export type SnakeFormLabelPosition = 'left' | 'top';
 export type SnakeFormLabelAlign = 'left' | 'center' | 'right';
-export type SnakeFormErrorType = 'message' | 'border' | 'border-bottom' | 'none';
+export type SnakeFormErrorType = 'message' | 'border' | 'border-bottom' | 'none' | 'toast';
 
 export interface SnakeFormField {
     prop: string;
