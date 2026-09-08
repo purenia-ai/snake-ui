@@ -1,0 +1,10 @@
+<template><snake-coupon :datas="legacyData" :coupon-service="couponService" :link-service="linkService" :page-info="pageInfo" @error="$emit('error', $event)" @received="$emit('received')" /></template>
+<script setup lang="ts">
+/** @component CmsV2Coupon @description CMS v2 优惠券协议内部渲染器。 @see /cms/components */
+import { computed } from 'vue';
+import SnakeCoupon from '../../../snake-coupon/snake-coupon.vue';
+import type { SnakeCmsCouponService, SnakeCmsError, SnakeCmsLinkService, SnakeCmsPageInfo } from '../../../../libs/cms';
+const props = defineProps<{ data: Record<string, any>; couponService?: SnakeCmsCouponService; linkService?: SnakeCmsLinkService; pageInfo?: SnakeCmsPageInfo }>();
+defineEmits<{ error: [error: SnakeCmsError]; received: [] }>();
+const legacyData = computed(() => ({ modeType: props.data.mode || 'page', popupMode: props.data.popupMode || 'bottom', couponObj: props.data.coupon, beforeImage: props.data.before?.image || '', beforeUrl: props.data.before?.link?.http || '', afterImage: props.data.after?.image || '', afterUrl: props.data.after?.link?.http || '', type: String(props.data.after?.link?.httpType || 10) }));
+</script>

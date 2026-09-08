@@ -71,12 +71,12 @@
 - IndexListPanel 容器索引列表
 - IndexAnchor 索引锚点
 
-CMS 容器（2）
+CMS 容器与基础设施（2）
 
 - SnakeCms CMS 页面容器
 - CustomModule 自定义模块
 
-CMS 内容（8）
+CMS 内容区块（8）
 
 - Images 图片展示
 - Hotzone 热区图
@@ -87,7 +87,7 @@ CMS 内容（8）
 - Notice 公告
 - AuxiliarySegmentation 辅助分割线
 
-CMS 导航互动（6）
+CMS 导航互动区块（6）
 
 - GraphicNavigation 图文导航
 - CommoditySearch 商品搜索
@@ -96,7 +96,7 @@ CMS 导航互动（6）
 - JumpApplet 小程序跳转
 - Follow 关注
 
-CMS 商品（5）
+CMS 商城区块（5）
 
 - GoodsList 商品列表
 - ActivityList 活动列表

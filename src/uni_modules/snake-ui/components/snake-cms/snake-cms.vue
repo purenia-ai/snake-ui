@@ -115,6 +115,20 @@
             <snake-custom-module v-else-if="item.component === 'custommodule'" :datas="item.setStyle">
                 <slot :name="item.setStyle.slotName" :item="item" />
             </snake-custom-module>
+            <cms-v2-carousel v-else-if="item.component === 'v2.carousel'" :data="item.props" :link-service="options.services?.link" :page-info="pageInfo" />
+            <cms-v2-coupon v-else-if="item.component === 'v2.coupon'" :data="item.props" :coupon-service="options.services?.coupon" :link-service="options.services?.link" :page-info="pageInfo" @error="emit('error', $event)" />
+            <cms-v2-custom v-else-if="item.component === 'v2.custom'" :data="item.props"><slot :name="item.props.slotName || 'custom'" :item="item" /></cms-v2-custom>
+            <cms-v2-divider v-else-if="item.component === 'v2.divider'" :data="item.props" />
+            <cms-v2-floatbutton v-else-if="item.component === 'v2.floatbutton'" :data="item.props" :link-service="options.services?.link" :page-info="pageInfo" />
+            <cms-v2-goods-list v-else-if="item.component === 'v2.goodslist'" :data="item.props" :goods-list="goodsList" :tabs-current="tabsCurrent" :loading-status="goodsLoadingStatus" :status="status" :assets="options.assets" @tab-change="changeTab" @item-click="handleGoodsClick" @offer-click="handleOfferClick" />
+            <cms-v2-hotzone v-else-if="item.component === 'v2.hotzone'" :data="item.props" :link-service="options.services?.link" :page-info="pageInfo" />
+            <cms-v2-images v-else-if="item.component === 'v2.images'" :data="item.props" :link-service="options.services?.link" :page-info="pageInfo" />
+            <cms-v2-magiccube v-else-if="item.component === 'v2.magiccube'" :data="item.props" :link-service="options.services?.link" :page-info="pageInfo" />
+            <cms-v2-notice v-else-if="item.component === 'v2.notice'" :data="item.props" :link-service="options.services?.link" :page-info="pageInfo" />
+            <cms-v2-popup v-else-if="item.component === 'v2.popup'" :data="item.props" :link-service="options.services?.link" :page-info="pageInfo" />
+            <cms-v2-richtext v-else-if="item.component === 'v2.richtext'" :data="item.props" />
+            <cms-v2-search v-else-if="item.component === 'v2.search'" :data="item.props" :link-service="options.services?.link" :page-info="pageInfo" />
+            <cms-v2-video v-else-if="item.component === 'v2.video'" :data="item.props" />
             <slot v-else name="extension" :item="item" :page-info="pageInfo" />
         </template>
 
@@ -161,6 +175,20 @@ import SnakePictureAds from '../snake-picture-ads/snake-picture-ads.vue';
 import SnakeRichText from '../snake-rich-text/snake-rich-text.vue';
 import SnakeFloatingBubble from '../snake-floating-bubble/snake-floating-bubble.vue';
 import SnakeVideos from '../snake-videos/snake-videos.vue';
+import CmsV2Carousel from './blocks/v2/cms-v2-carousel.vue';
+import CmsV2Coupon from './blocks/v2/cms-v2-coupon.vue';
+import CmsV2Custom from './blocks/v2/cms-v2-custom.vue';
+import CmsV2Divider from './blocks/v2/cms-v2-divider.vue';
+import CmsV2Floatbutton from './blocks/v2/cms-v2-floatbutton.vue';
+import CmsV2GoodsList from './blocks/v2/cms-v2-goods-list.vue';
+import CmsV2Hotzone from './blocks/v2/cms-v2-hotzone.vue';
+import CmsV2Images from './blocks/v2/cms-v2-images.vue';
+import CmsV2Magiccube from './blocks/v2/cms-v2-magiccube.vue';
+import CmsV2Notice from './blocks/v2/cms-v2-notice.vue';
+import CmsV2Popup from './blocks/v2/cms-v2-popup.vue';
+import CmsV2Richtext from './blocks/v2/cms-v2-richtext.vue';
+import CmsV2Search from './blocks/v2/cms-v2-search.vue';
+import CmsV2Video from './blocks/v2/cms-v2-video.vue';
 import {
     normalizeSnakeCmsComponents,
     reportSnakeCmsDiagnostic,
@@ -212,7 +240,9 @@ const options = computed(() => resolveSnakeCmsOptions(props.cmsOptions));
 // 先规范化别名、扩展组件和重复商品区，模板只消费稳定的静态组件映射。
 const normalized = computed(() => normalizeSnakeCmsComponents(props.pageComponents, props.pageInfo, options.value));
 const components = computed(() => normalized.value.components);
-const commerceComponent = computed(() => components.value.find(item => item.component === 'goodslist'));
+const commerceComponent = computed(() =>
+    components.value.find(item => item.component === 'goodslist' || item.component === 'v2.goodslist')
+);
 const activeTabStyle = { color: 'var(--snake-color-text, #303133)', fontWeight: 600, fontSize: '32rpx' };
 const activeBarStyle = {
     width: '25px',

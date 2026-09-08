@@ -1,21 +1,12 @@
-export type SnakeCmsBuiltinComponent =
-    | 'commoditysearch'
-    | 'auxiliarysegmentation'
-    | 'richtext'
-    | 'graphicnavigation'
-    | 'images'
-    | 'hotzone'
-    | 'pictureads'
-    | 'magiccube'
-    | 'videos'
-    | 'notice'
-    | 'jumpApplet'
-    | 'follow'
-    | 'suspension'
-    | 'coupon'
-    | 'pagePopup'
-    | 'goodslist'
-    | 'custommodule';
+import type { SnakeCmsBuiltinComponent } from './blocks';
+
+export type {
+    SnakeCmsBlockCategory,
+    SnakeCmsBlockDefinition,
+    SnakeCmsBuiltinComponent,
+    SnakeCmsV1BuiltinComponent,
+    SnakeCmsV2BuiltinComponent
+} from './blocks';
 
 export interface SnakeCmsPageInfo {
     id?: string | number;
@@ -29,6 +20,8 @@ export interface SnakeCmsComponentConfig<Style extends Record<string, any> = Rec
     id?: string | number;
     component: string;
     setStyle?: Style;
+    props?: Record<string, any>;
+    active?: boolean;
     visible?: boolean;
     [key: string]: unknown;
 }
@@ -38,8 +31,10 @@ export interface SnakeCmsNormalizedComponent<Style extends Record<string, any> =
     'id' | 'setStyle'
 > {
     id: string;
+    version: 1 | 2;
     originalComponent: string;
     setStyle: Style;
+    props: Record<string, any>;
     builtin: boolean;
 }
 

@@ -62,7 +62,18 @@ test('component registry is the complete public component source of truth', asyn
 test('component registry groups follow the standard bucket taxonomy', () => {
     assert.deepEqual(
         componentGroups.map(group => group.title),
-        ['基础组件', '表单组件', '数据组件', '反馈组件', '布局组件', '导航组件', 'CMS 容器', 'CMS 内容', 'CMS 导航互动', 'CMS 商品']
+        [
+            '基础组件',
+            '表单组件',
+            '数据组件',
+            '反馈组件',
+            '布局组件',
+            '导航组件',
+            'CMS 容器与基础设施',
+            'CMS 内容区块',
+            'CMS 导航互动区块',
+            'CMS 商城区块'
+        ]
     );
 
     const groupOf = link => componentGroups.find(group => group.items.some(item => item.link === link)).title;

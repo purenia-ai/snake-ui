@@ -26,6 +26,7 @@ after(async () => {
 });
 
 const normalize = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/cms/normalize.ts');
+const blocks = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/cms/blocks.ts');
 const commerceModule = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/cms/use-commerce.ts');
 const runtime = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/runtime.ts');
 
@@ -45,6 +46,72 @@ test('CMS normalizes aliases, preserves extensions, and keeps only one commerce 
     assert.ok(result.diagnostics.some(item => item.code === 'duplicate-commerce-section'));
     assert.ok(result.diagnostics.some(item => item.code === 'unknown-component'));
     assert.equal(input[0].component, 'videoss');
+});
+
+test('CMS block catalog is the source of built-in identities and public component names', () => {
+    const expectedTypes = [
+        'commoditysearch',
+        'auxiliarysegmentation',
+        'richtext',
+        'graphicnavigation',
+        'images',
+        'hotzone',
+        'pictureads',
+        'magiccube',
+        'videos',
+        'notice',
+        'jumpApplet',
+        'follow',
+        'suspension',
+        'coupon',
+        'pagePopup',
+        'goodslist',
+        'custommodule',
+        'v2.carousel',
+        'v2.coupon',
+        'v2.custom',
+        'v2.divider',
+        'v2.floatbutton',
+        'v2.goodslist',
+        'v2.hotzone',
+        'v2.images',
+        'v2.magiccube',
+        'v2.notice',
+        'v2.popup',
+        'v2.richtext',
+        'v2.search',
+        'v2.video'
+    ];
+
+    assert.deepEqual(Object.keys(blocks.snakeCmsBlocks), expectedTypes);
+    assert.equal(blocks.isSnakeCmsBuiltinComponent('magiccube'), true);
+    assert.equal(blocks.isSnakeCmsBuiltinComponent('partner-card'), false);
+    assert.equal(normalize.snakeCmsBuiltinComponents, blocks.snakeCmsBuiltinComponents);
+    assert.equal(blocks.snakeCmsBlocks.suspension.componentName, 'snake-floating-bubble');
+    assert.ok(Object.values(blocks.snakeCmsBlocks).every(block => block.componentName.startsWith('snake-')));
+    assert.equal(Object.values(blocks.snakeCmsBlocks).filter(block => block.version === 2).length, 14);
+});
+
+test('CMS normalizes v1 and v2 components without collapsing their data envelopes', () => {
+    const result = normalize.normalizeSnakeCmsComponents([
+        { component: 'images', setStyle: { imageList: [{ src: 'legacy.png' }] } },
+        { component: 'v2.images', active: true, props: { layout: { mode: 'grid' }, items: [] } },
+        { component: 'v2.notice', active: false, props: { noticeText: 'hidden' } },
+        { component: 'v2.video', props: null }
+    ]);
+
+    assert.deepEqual(
+        result.components.map(item => [item.component, item.version]),
+        [
+            ['images', 1],
+            ['v2.images', 2],
+            ['v2.video', 2]
+        ]
+    );
+    assert.equal(result.components[0].setStyle.imageList[0].src, 'legacy.png');
+    assert.equal(result.components[1].props.layout.mode, 'grid');
+    assert.deepEqual(result.components[2].props, {});
+    assert.ok(result.diagnostics.some(item => item.component === 'v2.video' && item.code === 'invalid-component'));
 });
 
 test('CMS commerce controller paginates through a host service without mutating config', async () => {
@@ -92,6 +159,70 @@ test('CMS commerce controller paginates through a host service without mutating 
     );
     assert.equal(component.setStyle.listType, 'sale');
     assert.ok(states.includes('loading-more'));
+});
+
+test('CMS v2 commerce builds requests from props.query without reading legacy setStyle', async () => {
+    const requests = [];
+    const component = {
+        id: 'v2-goods',
+        version: 2,
+        component: 'v2.goodslist',
+        originalComponent: 'v2.goodslist',
+        builtin: true,
+        setStyle: {},
+        props: {
+            query: {
+                source: 'condition',
+                activityType: 'auction',
+                activityStatus: 'ing',
+                userRule: 'new',
+                low: 100,
+                high: 500,
+                categoryId: 'bags',
+                brands: [{ id: 1, name: 'Snake' }],
+                gender: ['male'],
+                pageSize: 12,
+                sort: 'newest'
+            },
+            display: { cardType: 'auction' },
+            bars: {},
+            style: {},
+            empty: { mode: 'default' }
+        }
+    };
+    const controller = commerceModule.useSnakeCmsCommerce({
+        pageInfo: () => ({ pageId: 'v2' }),
+        component: () => component,
+        options: () => ({
+            services: {
+                commerce: {
+                    async getGoods({ params }) {
+                        requests.push(params);
+                        return { items: [], hasMore: false };
+                    }
+                }
+            }
+        })
+    });
+
+    await controller.init();
+    assert.equal(requests[0].size, 12);
+    assert.equal(requests[0].low, 100);
+    assert.equal(requests[0].cateId, 'bags');
+    assert.equal(requests[0].activityType, 'auction');
+    assert.equal(requests[0].brandFilter, 'Snake');
+    assert.equal(requests[0].genderFilter, 'male');
+});
+
+test('every CMS v2 catalog entry has a static snake-cms branch and internal renderer', async () => {
+    const cmsRoot = resolve(import.meta.dirname, '../src/uni_modules/snake-ui/components/snake-cms');
+    const source = await readFile(join(cmsRoot, 'snake-cms.vue'), 'utf8');
+    const v2Blocks = Object.entries(blocks.snakeCmsBlocks).filter(([, definition]) => definition.version === 2);
+
+    for (const [type, definition] of v2Blocks) {
+        assert.ok(source.includes(`item.component === '${type}'`), `${type}: static branch`);
+        await readFile(join(cmsRoot, 'blocks/v2', `${definition.componentName.slice('snake-'.length)}.vue`), 'utf8');
+    }
 });
 
 test('Joker endpoints, routes, review flags, and CDN assets stay inside the legacy adapter', async () => {

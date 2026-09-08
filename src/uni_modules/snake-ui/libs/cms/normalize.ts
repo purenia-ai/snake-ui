@@ -1,4 +1,6 @@
 import { deepClone } from '../function';
+import { isSnakeCmsBuiltinComponent, snakeCmsBlocks } from './blocks';
+export { snakeCmsBuiltinComponents } from './blocks';
 import type {
     SnakeCmsBuiltinComponent,
     SnakeCmsComponentConfig,
@@ -7,26 +9,6 @@ import type {
     SnakeCmsOptions,
     SnakeCmsPageInfo
 } from './types';
-
-export const snakeCmsBuiltinComponents = new Set<SnakeCmsBuiltinComponent>([
-    'commoditysearch',
-    'auxiliarysegmentation',
-    'richtext',
-    'graphicnavigation',
-    'images',
-    'hotzone',
-    'pictureads',
-    'magiccube',
-    'videos',
-    'notice',
-    'jumpApplet',
-    'follow',
-    'suspension',
-    'coupon',
-    'pagePopup',
-    'goodslist',
-    'custommodule'
-]);
 
 export interface SnakeCmsNormalizeResult {
     components: SnakeCmsNormalizedComponent[];
@@ -81,11 +63,33 @@ export function normalizeSnakeCmsComponents(
         }
 
         const component = aliases[item.component] || item.component;
+        const version = item.component.startsWith('v2.') ? 2 : 1;
         const setStyle = item.setStyle && typeof item.setStyle === 'object' ? item.setStyle : {};
-        if (item.visible === false || setStyle.showComponent === false) return;
+        const hasValidV2Props = item.props !== null && typeof item.props === 'object' && !Array.isArray(item.props);
+        const componentProps = hasValidV2Props ? item.props || {} : {};
+        if (version === 1 && (item.visible === false || setStyle.showComponent === false)) return;
+        if (version === 2 && item.active === false) return;
 
-        const builtin = snakeCmsBuiltinComponents.has(component as SnakeCmsBuiltinComponent);
-        if (component === 'goodslist') {
+        const builtin = isSnakeCmsBuiltinComponent(component);
+        if (version === 2 && !hasValidV2Props) {
+            diagnostics.push({
+                code: 'invalid-component',
+                level: 'error',
+                index,
+                component,
+                message: `CMS v2 component "${component}" must contain an object props field.`
+            });
+        }
+        if (builtin && snakeCmsBlocks[component].version !== version) {
+            diagnostics.push({
+                code: 'invalid-component',
+                level: 'error',
+                index,
+                component,
+                message: `CMS component "${component}" has an invalid protocol version.`
+            });
+        }
+        if (component === 'goodslist' || component === 'v2.goodslist') {
             if (hasCommerceSection) {
                 diagnostics.push({
                     code: 'duplicate-commerce-section',
@@ -113,8 +117,10 @@ export function normalizeSnakeCmsComponents(
             ...item,
             id: String(item.id ?? `${component}-${index}`),
             component,
+            version,
             originalComponent,
             setStyle,
+            props: componentProps,
             builtin
         });
     });

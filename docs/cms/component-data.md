@@ -1,6 +1,6 @@
 # 组件数据约定
 
-Snake UI 同时使用普通 Props 和 CMS 配置对象。基础组件通常直接传 Props；装修组件常把编辑器产出的复杂配置放在 `datas` 或 `setStyle` 中。
+Snake UI 同时使用普通 Props 和 CMS 配置对象。基础组件通常直接传 Props；CMS v2 把装修配置放在 `props`，冻结兼容的 v1 数据仍使用 `setStyle`。
 
 ## 普通 Props 与 `datas`
 
@@ -25,7 +25,26 @@ Snake UI 同时使用普通 Props 和 CMS 配置对象。基础组件通常直�
 | `scrollTop`       | 吸顶、悬浮等组件使用的页面滚动距离 |
 | `stickyOffsetTop` | 吸顶区域的顶部偏移                 |
 
-最小数据结构：
+v2 最小数据结构：
+
+```ts
+const pageComponents = [
+    {
+        id: 'banner-1',
+        component: 'v2.images',
+        active: true,
+        props: {
+            layout: { mode: 'single', columns: 1 },
+            style: { pageMargin: 0, gap: 0 },
+            items: [{ id: 'image-1', src: 'https://example.com/banner.png', link: { httpType: 10, http: '/pages/activity/index' } }]
+        }
+    }
+];
+```
+
+新页面应使用 `v2.*` 技术标识和 `props`。`active === false` 时 CMS 跳过该区块。
+
+兼容期内仍支持 v1 数据：
 
 ```ts
 const pageInfo = { pageId: 'home' };
@@ -42,7 +61,7 @@ const pageComponents = [
 ];
 ```
 
-`component` 决定渲染哪个模块，`setStyle` 会作为该模块的配置数据。`visible === false` 或 `setStyle.showComponent === false` 时，CMS 会跳过该项。
+v1 的 `visible === false` 或 `setStyle.showComponent === false` 时，CMS 会跳过该项。v1 与 v2 可以混排，但同一页面只渲染第一个商品楼层。
 
 ## 在业务层规范化
 

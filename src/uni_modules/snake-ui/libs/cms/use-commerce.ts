@@ -42,6 +42,43 @@ export function useSnakeCmsCommerce(input: SnakeCmsCommerceControllerOptions) {
     let generation = 0;
     let busy = false;
 
+    function styleOf(component: SnakeCmsNormalizedComponent): Dictionary {
+        if (component.version !== 2) return component.setStyle;
+        const data = component.props || {};
+        const query = data.query || {};
+        const display = data.display || {};
+        const bars = data.bars || {};
+        const style = data.style || {};
+        return {
+            goodsListType: query.source === 'activity' ? 'activity' : 'activityCondition',
+            listType: display.cardType || 'sale',
+            subType: display.subType || '',
+            attendanceShow: display.showAttendance !== false,
+            commodityType: Number(display.columns) === 3 ? 1 : 0,
+            activitySessionShow: Boolean(bars.activitySession),
+            filterShow: bars.filter,
+            priceFilterShow: Boolean(bars.priceFilter),
+            tabShow: Boolean(bars.tabs?.enabled),
+            tabslist: Array.isArray(bars.tabs?.list) ? bars.tabs.list : [],
+            stickyDisabled: !bars.sticky,
+            pageMargin: style.pageMargin,
+            imageMargin: style.gap,
+            backgroundColor: style.backgroundColor,
+            listMode: data.empty?.mode,
+            emptySrc: data.empty?.image,
+            emptyText: data.empty?.text,
+            emptyColor: data.empty?.color,
+            filterParams: {
+                ...query,
+                pageSize: query.pageSize || 20,
+                activityUserRule: query.userRule,
+                sellingDay: query.sellingDays,
+                brandNames: Array.isArray(query.brands) ? query.brands.map((brand: Dictionary) => brand.name) : [],
+                genderFilter: query.gender
+            }
+        };
+    }
+
     const goodsLoadingStatus = computed(() => {
         if (status.value === 'initial-loading' || status.value === 'loading-more') return 'loading';
         if (status.value === 'no-more') return 'nomore';
@@ -79,7 +116,7 @@ export function useSnakeCmsCommerce(input: SnakeCmsCommerceControllerOptions) {
     }
 
     function buildFilterRequest(component: SnakeCmsNormalizedComponent, mode = ''): Dictionary {
-        const style = component.setStyle;
+        const style = styleOf(component);
         const params: Dictionary = {};
         if (style.goodsListType === 'activity' || goodsParams.value.activityId) {
             params.activityId = style.filterParams?.activityId || goodsParams.value.activityId || '';
@@ -93,7 +130,7 @@ export function useSnakeCmsCommerce(input: SnakeCmsCommerceControllerOptions) {
     }
 
     function buildGoodsRequest(component: SnakeCmsNormalizedComponent, mode = ''): Dictionary {
-        const style = component.setStyle;
+        const style = styleOf(component);
         const configured = style.filterParams || {};
         const params: Dictionary = {
             page: page.value,
@@ -134,7 +171,7 @@ export function useSnakeCmsCommerce(input: SnakeCmsCommerceControllerOptions) {
 
     async function loadActivities(component: SnakeCmsNormalizedComponent, currentGeneration: number): Promise<void> {
         const service = input.options().services?.commerce;
-        const style = component.setStyle;
+        const style = styleOf(component);
         if (!service?.getActivities || !style.activitySessionShow || style.listType !== 'auction') return;
         let result;
         try {
@@ -163,7 +200,7 @@ export function useSnakeCmsCommerce(input: SnakeCmsCommerceControllerOptions) {
 
     async function loadFilters(component: SnakeCmsNormalizedComponent, currentGeneration: number, mode = '') {
         const service = input.options().services?.commerce;
-        const style = component.setStyle;
+        const style = styleOf(component);
         if (!service?.getFilters || !(style.filterShow || style.filterShow === 'custom')) return;
         let result;
         try {
@@ -188,8 +225,9 @@ export function useSnakeCmsCommerce(input: SnakeCmsCommerceControllerOptions) {
             throw new CmsError('goods', 'CMS goods failed to load.', cause);
         }
         if (currentGeneration !== generation) return;
-        if (!append && (result.total || 0) <= 0 && ['forSale', 'downBuy'].includes(component.setStyle.listMode)) {
-            const mode = component.setStyle.listMode;
+        const style = styleOf(component);
+        if (!append && (result.total || 0) <= 0 && ['forSale', 'downBuy'].includes(style.listMode)) {
+            const mode = style.listMode;
             await loadFilters(component, currentGeneration, mode);
             try {
                 result = await service.getGoods({
@@ -203,7 +241,7 @@ export function useSnakeCmsCommerce(input: SnakeCmsCommerceControllerOptions) {
         if (currentGeneration !== generation) return;
         const items = result.items || [];
         goodsList.value = append ? goodsList.value.concat(items) : items;
-        const pageSize = Number(component.setStyle.filterParams?.pageSize || 10);
+        const pageSize = Number(style.filterParams?.pageSize || 10);
         const hasMore = result.hasMore ?? items.length >= pageSize;
         if (hasMore) {
             page.value += 1;
@@ -302,11 +340,11 @@ export function useSnakeCmsCommerce(input: SnakeCmsCommerceControllerOptions) {
     async function changeTab(index: number, list: Dictionary[]): Promise<void> {
         tabsCurrent.value = index;
         const item = list[index] || {};
-        goodsParams.value.categoryId = item.value || '';
+        goodsParams.value.categoryId = item.paramType === 'categoryId' || !item.paramType ? item.value || '' : '';
         filterParams.value = {};
-        tabsParams.value = Object.fromEntries(
-            (item.customList || []).map((entry: Dictionary) => [entry.customLabel, entry.customValue])
-        );
+        tabsParams.value = item.paramType
+            ? { [item.paramType]: item.value }
+            : Object.fromEntries((item.customList || []).map((entry: Dictionary) => [entry.customLabel, entry.customValue]));
         await refresh();
     }
 

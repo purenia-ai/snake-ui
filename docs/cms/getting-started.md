@@ -1,6 +1,6 @@
 # CMS 快速接入
 
-Snake CMS 用来把后端保存的页面装修配置渲染成 uni-app 页面。本页会完成一条最短接入链路：取得页面数据、在业务层规范化，然后交给 `<snake-cms>` 渲染。
+Snake CMS 用来把后端保存的页面装修配置渲染成 uni-app 页面。新页面使用 v2 `{ component: 'v2.*', props }` 协议；既有项目的 v1 `{ component, setStyle }` 页面在兼容期内仍可直接渲染。
 
 ```text
 装修编辑器 -> 业务后端 -> 页面接口 -> 数据适配 -> <snake-cms>
@@ -10,7 +10,7 @@ Snake UI 只负责渲染和调度。商品、优惠券和跳转等业务能力�
 
 ## 1. 准备页面数据
 
-CMS 页面由页面信息和有序组件数组组成。每个组件至少要有一个字符串类型的 `component`，`setStyle` 保存对应装修组件的配置。
+CMS 页面由页面信息和有序组件数组组成。每个组件至少要有一个字符串类型的 `component`；v2 使用 `props` 保存配置。
 
 ```ts
 import type { SnakeCmsComponentConfig, SnakeCmsPageInfo } from '@puresnake/snake-ui';
@@ -23,13 +23,18 @@ const pageInfo: SnakeCmsPageInfo = {
 const pageComponents: SnakeCmsComponentConfig[] = [
     {
         id: 'notice-1',
-        component: 'notice',
-        setStyle: {
+        component: 'v2.notice',
+        active: true,
+        props: {
             direction: 'row',
             noticeText: '今日上新',
             textList: [],
-            backColor: '#effaf5',
-            textColor: '#176b4b'
+            style: {
+                height: 72,
+                pageMargin: 10,
+                backgroundColor: '#effaf5',
+                textColor: '#176b4b'
+            }
         }
     }
 ];
@@ -53,7 +58,7 @@ function normalizeCmsPage(input: Record<string, unknown>) {
 }
 ```
 
-`visible === false` 或 `setStyle.showComponent === false` 的配置不会渲染。字段规则和默认值处理见[组件数据约定](/cms/component-data)。
+v2 的 `active === false` 不会渲染；v1 仍识别 `visible === false` 和 `setStyle.showComponent === false`。字段规则见[组件数据约定](/cms/component-data)。
 
 ## 2. 在页面中渲染
 
@@ -170,7 +175,7 @@ app.use(SnakeUI, {
 
 - `invalid-component`：配置项缺少字符串类型的 `component`。
 - `unknown-component`：没有内置组件、别名或扩展实现。
-- `duplicate-commerce-section`：页面包含多个 `goodslist`，只有第一个会渲染。
+- `duplicate-commerce-section`：页面包含多个 v1/v2 商品楼层，只有第一个会渲染。
 - `legacy-adapter`：项目仍在自动使用旧版兼容层。
 
 CMS 会忽略过期请求结果，页面切换或重新初始化后，较早返回的请求不会覆盖当前页面。具体状态、事件和 Ref 方法见 [Snake CMS 组件 API](/components/snake-cms)，排错步骤见[常见问题](/guide/troubleshooting)。

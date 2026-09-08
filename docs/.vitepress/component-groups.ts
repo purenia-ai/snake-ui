@@ -89,14 +89,14 @@ export const componentGroups: ComponentGroup[] = [
         ]
     },
     {
-        title: 'CMS 容器',
+        title: 'CMS 容器与基础设施',
         items: [
             { name: 'SnakeCms', title: 'CMS 页面容器', link: '/components/snake-cms', cms: true },
             { name: 'CustomModule', title: '自定义模块', link: '/components/custom-module', cms: true }
         ]
     },
     {
-        title: 'CMS 内容',
+        title: 'CMS 内容区块',
         items: [
             { name: 'Images', title: '图片展示', link: '/components/images', cms: true },
             { name: 'Hotzone', title: '热区图', link: '/components/hotzone', cms: true },
@@ -114,7 +114,7 @@ export const componentGroups: ComponentGroup[] = [
         ]
     },
     {
-        title: 'CMS 导航互动',
+        title: 'CMS 导航互动区块',
         items: [
             { name: 'GraphicNavigation', title: '图文导航', link: '/components/graphic-navigation', cms: true },
             { name: 'CommoditySearch', title: '商品搜索', link: '/components/commodity-search', cms: true },
@@ -125,7 +125,7 @@ export const componentGroups: ComponentGroup[] = [
         ]
     },
     {
-        title: 'CMS 商品',
+        title: 'CMS 商城区块',
         items: [
             { name: 'GoodsList', title: '商品列表', link: '/components/goods-list', cms: true },
             { name: 'ActivityList', title: '活动列表', link: '/components/activity-list', cms: true },

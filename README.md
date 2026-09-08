@@ -126,11 +126,19 @@ import { addUnit, navTo, sleep, toast } from '@puresnake/snake-ui/libs';
 
 `snake-form`、`snake-form-item`、`snake-input`、`snake-textarea`、`snake-checkbox`、`snake-checkbox-group`、`snake-radio`、`snake-radio-group`、`snake-switch`、`snake-slider`。
 
-### CMS 组件
+### CMS 容器与基础设施
 
-`snake-cms`、`snake-custom-module`、`snake-images`、`snake-picture-ads`、`snake-magic-cube`、`snake-videos`、`snake-rich-text`、`snake-notice`、`snake-auxiliary-segmentation`、`snake-graphic-navigation`、`snake-commodity-search`、`snake-suspension`、`snake-page-popup`、`snake-jump-applet`、`snake-follow`、`snake-goods-list`、`snake-activity-list`、`snake-filter-sorts`、`snake-list-switching`、`snake-coupon`。
+`snake-cms` 是页面装修容器，负责解析配置、编排区块并连接宿主应用提供的 CMS 服务。
 
-CMS 组件依赖业务数据结构或宿主项目适配器。请以对应文档中的 `datas`、`setStyle` 和 API 表为准。
+### CMS 内容与导航区块
+
+`snake-custom-module`、`snake-images`、`snake-hotzone`、`snake-picture-ads`、`snake-magic-cube`、`snake-videos`、`snake-rich-text`、`snake-notice`、`snake-auxiliary-segmentation`、`snake-graphic-navigation`、`snake-commodity-search`、`snake-floating-bubble`、`snake-page-popup`、`snake-jump-applet`。
+
+### CMS 商城区块
+
+`snake-follow`、`snake-goods-list`、`snake-activity-list`、`snake-filter-sorts`、`snake-list-switching`、`snake-coupon`。
+
+“CMS 区块”表示组件可以由页面装修配置驱动，并不表示只能在 `snake-cms` 内使用。这些组件仍可按各自 API 独立使用；涉及商品、优惠券和跳转等业务能力时，由宿主项目注入对应服务。请以组件文档中的 `datas`、`setStyle` 和 API 表为准。
 
 ## 使用运行时工具
 

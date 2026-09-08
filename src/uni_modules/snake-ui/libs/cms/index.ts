@@ -1,3 +1,4 @@
+export * from './blocks';
 export * from './types';
 export * from './config';
 export * from './normalize';
