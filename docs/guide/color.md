@@ -1,3 +1,7 @@
+---
+preview: /pages/other/color/index
+---
+
 <script setup lang="ts">
 const themes = [
     { name: 'Snake 绿', value: '#06D290', dark: '#2EBD7C', disabled: '#A6EBD3', light: '#EEFFE0', ink: '#FFFFFF' },

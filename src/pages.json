@@ -115,7 +115,10 @@
         },
         {
             "root": "pages/other",
-            "pages": [{ "path": "themeLocale/index", "style": { "navigationBarTitleText": "主题与语言" } }]
+            "pages": [
+                { "path": "themeLocale/index", "style": { "navigationBarTitleText": "主题与语言" } },
+                { "path": "color/index", "style": { "navigationBarTitleText": "色彩" } }
+            ]
         }
     ],
     "globalStyle": {
