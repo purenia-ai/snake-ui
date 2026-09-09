@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-/** @component CmsV2Divider @description CMS v2 空白与分割线内部渲染器。 @see /cms/components */
+/** @component CmsV2Divider @description CMS v2 空白与分割线内部渲染器。 @see /cms/overview */
 import { computed } from 'vue';
 import { rpx, type V2Record } from './shared';
 const props = defineProps<{ data: V2Record }>();

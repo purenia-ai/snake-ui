@@ -17,7 +17,6 @@
 /**
  * @component SnakeJumpApplet
  * @description 通过按钮或图片触发小程序、H5 URL Scheme 或企业微信承接页跳转。
- * @see /components/jump-applet
  */
 
 import { computed, onMounted } from 'vue';

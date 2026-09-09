@@ -22,7 +22,6 @@
 /**
  * @component SnakeAuxiliarySegmentation
  * @description 在装修页面中插入留白，或在留白区域中央绘制一条可配置分割线。
- * @see /components/auxiliary-segmentation
  */
 
 import { addUnit } from '../../libs/function/unit';

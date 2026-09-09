@@ -1,6 +1,6 @@
 <template><view class="cms-v2-video" :style="rootStyle"><video class="cms-v2-video__media" :src="data.src || ''" :poster="data.coverUrl || ''" :autoplay="!!data.autoplay" /></view></template>
 <script setup lang="ts">
-/** @component CmsV2Video @description CMS v2 视频内部渲染器。 @see /cms/components */
+/** @component CmsV2Video @description CMS v2 视频内部渲染器。 @see /cms/overview */
 import { computed } from 'vue';
 import { blockStyle, type V2Record } from './shared';
 const props = defineProps<{ data: V2Record }>();

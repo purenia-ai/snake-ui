@@ -2,7 +2,7 @@
     <view class="cms-v2-hotzone"><image class="cms-v2-hotzone__image" :src="data.image || ''" mode="widthFix" /><view v-for="(zone, index) in zones" :key="zone.id ?? index" class="cms-v2-hotzone__zone" :style="zoneStyle(zone)" @click="openV2Link(zone, linkService, pageInfo)" /></view>
 </template>
 <script setup lang="ts">
-/** @component CmsV2Hotzone @description CMS v2 热区图片内部渲染器。 @see /cms/components */
+/** @component CmsV2Hotzone @description CMS v2 热区图片内部渲染器。 @see /cms/overview */
 import { computed } from 'vue';
 import { openV2Link, type V2BlockProps, type V2Record } from './shared';
 const props = defineProps<V2BlockProps>();

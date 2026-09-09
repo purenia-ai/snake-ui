@@ -77,7 +77,7 @@ test('preview renderer uses an uncropped viewport root', async () => {
     assert.match(page, /\.demo-page\s*{[^}]*box-sizing:\s*border-box/s);
 });
 
-test('component docs and example routes remain one-to-one', async () => {
+test('documented components keep valid example routes while compatibility previews remain available', async () => {
     const pages = await readFile(resolve(root, 'src/pages.json'), 'utf8');
     const componentFiles = (await readdir(resolve(root, 'docs/components'))).filter(file => file.endsWith('.md'));
     const routes = exampleRoutes(pages);
@@ -90,8 +90,9 @@ test('component docs and example routes remain one-to-one', async () => {
     }
 
     assert.equal(routes.length, 63);
-    assert.equal(previews.length, 63);
-    assert.deepEqual([...new Set(previews)].sort(), [...new Set(routes)].sort());
+    assert.equal(previews.length, 43);
+    assert.equal(new Set(previews).size, previews.length);
+    for (const preview of previews) assert.ok(routes.includes(preview), `${preview}: missing example route`);
 });
 
 test('all public foundation components have docs, routes, and preview pages', async () => {
@@ -426,43 +427,22 @@ test('foundation feedback previews expose grouped variants', async () => {
 
 test('form control previews expose grouped variants', async () => {
     const extracted = await Promise.all(
-        [
-            'form',
-            'input',
-            'textarea',
-            'checkbox',
-            'radio',
-            'switch',
-            'slider'
-        ].map(directory => readFile(resolve(root, 'src/pages/componentsA', directory, 'index.vue'), 'utf8'))
+        ['form', 'input', 'textarea', 'checkbox', 'radio', 'switch', 'slider'].map(directory =>
+            readFile(resolve(root, 'src/pages/componentsA', directory, 'index.vue'), 'utf8')
+        )
     );
     const formSource = extracted.join('\n');
 
-    for (const component of [
-        'form',
-        'input',
-        'textarea',
-        'checkbox',
-        'radio',
-        'switch',
-        'slider'
-    ]) {
+    for (const component of ['form', 'input', 'textarea', 'checkbox', 'radio', 'switch', 'slider']) {
         assert.match(formSource, new RegExp(`demo-${component}-showcase`), `${component}: missing grouped showcase`);
     }
 });
 
 test('navigation and layout previews expose grouped variants', async () => {
     const extracted = await Promise.all(
-        [
-            'navbar',
-            'swiper',
-            'tabs',
-            'subsection',
-            'buttonSort',
-            'dropMenu',
-            'indexList',
-            'indexAnchor'
-        ].map(directory => readFile(resolve(root, 'src/pages/componentsA', directory, 'index.vue'), 'utf8'))
+        ['navbar', 'swiper', 'tabs', 'subsection', 'buttonSort', 'dropMenu', 'indexList', 'indexAnchor'].map(
+            directory => readFile(resolve(root, 'src/pages/componentsA', directory, 'index.vue'), 'utf8')
+        )
     );
     const navigationSource = extracted.join('\n');
     for (const component of [

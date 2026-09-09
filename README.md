@@ -6,7 +6,7 @@
 
 - Vue 3 + uni-app，支持 H5、微信小程序、App
 - 32 个公开基础、反馈、导航与表单组件
-- 21 个商城 CMS 业务组件
+- 14 个配置驱动的 CMS 页面区块
 - 支持 npm / `uni_modules` 使用方式
 - 支持 easycom 自动注册
 - Snake 主题、暗色模式、中英文、HTTP 与通用工具底座
@@ -126,19 +126,11 @@ import { addUnit, navTo, sleep, toast } from '@puresnake/snake-ui/libs';
 
 `snake-form`、`snake-form-item`、`snake-input`、`snake-textarea`、`snake-checkbox`、`snake-checkbox-group`、`snake-radio`、`snake-radio-group`、`snake-switch`、`snake-slider`。
 
-### CMS 容器与基础设施
+### CMS 页面装修
 
-`snake-cms` 是页面装修容器，负责解析配置、编排区块并连接宿主应用提供的 CMS 服务。新项目使用 `v2.*` 和 `props` 协议，详见 [CMS v2 组件总览](./docs/cms/v2/overview.md)。
+`snake-cms` 是页面装修容器，负责解析配置、编排区块并连接宿主应用提供的 CMS 服务。配置使用 `v2.*` 技术标识和 `props` 数据，详见 [CMS 组件总览](./docs/cms/overview.md)。
 
-### CMS 内容与导航区块
-
-`snake-custom-module`、`snake-images`、`snake-hotzone`、`snake-picture-ads`、`snake-magic-cube`、`snake-videos`、`snake-rich-text`、`snake-notice`、`snake-auxiliary-segmentation`、`snake-graphic-navigation`、`snake-commodity-search`、`snake-floating-bubble`、`snake-page-popup`、`snake-jump-applet`。
-
-### CMS 商城区块
-
-`snake-follow`、`snake-goods-list`、`snake-activity-list`、`snake-filter-sorts`、`snake-list-switching`、`snake-coupon`。
-
-以上 `snake-*` 是公共组件 API；CMS v2 配置区块由 `snake-cms` 内部渲染，不作为独立 easycom 标签发布。v1 公共组件和 `setStyle` 资料仅用于历史项目兼容。
+图片、轮播、视频、热区、魔方、公告、分割线、富文本、搜索、悬浮按钮、页面弹窗、自定义模块、优惠券和商品列表均由 `snake-cms` 内部渲染，不作为独立 easycom 标签发布。
 
 ## 使用运行时工具
 
@@ -204,7 +196,7 @@ app.use(SnakeUI, {
 });
 ```
 
-新项目应显式配置 `cms.services` 并设置 `cms: { legacy: false }`。旧项目在只配置 `request` 时仍可自动启用 Joker 兼容适配器；详情见 [v1 旧版兼容](./docs/cms/legacy/overview.md)。
+业务区块应显式配置所需的 `cms.services`；缺少服务时，静态内容仍可正常显示。
 
 ## 本地开发
 

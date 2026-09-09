@@ -129,7 +129,7 @@ onBeforeUnmount(() => {
                     >{{ selectedCategory }}共 {{ categoryCount }} 个组件</template
                 >
                 <template v-else-if="props.scope === 'cms'">共 {{ availableCount }} 个 CMS 组件</template>
-                <template v-else>共 {{ componentCount }} 个组件，包含商城与 CMS 业务模块</template>
+                <template v-else>共 {{ componentCount }} 个组件，覆盖通用交互与 CMS 页面容器</template>
             </p>
             <div class="component-filters" role="group" aria-label="按组件分类筛选">
                 <button

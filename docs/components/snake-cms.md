@@ -15,7 +15,7 @@ cms: true
 
 ## 基础用法
 
-新页面使用 v2 信封；纯展示页面不要求配置请求或缓存：
+页面配置使用 `{ component, active, props }` 信封；纯展示页面不要求配置请求或缓存：
 
 ```vue
 <snake-cms
@@ -55,10 +55,10 @@ app.use(SnakeUI, {
                     return { items: data.items };
                 },
                 async getFilters({ component, params }) {
-                    return api.filter.list(component.setStyle.scene, params);
+                    return api.filter.list(component.props.query, params);
                 },
                 async getGoods({ component, params }) {
-                    const data = await api.goods.list(component.setStyle.scene, params);
+                    const data = await api.goods.list(component.props.query, params);
                     return { items: data.items, total: data.total };
                 },
                 navigateGoods({ item, index, pageInfo }) {
@@ -123,14 +123,12 @@ app.use(SnakeUI, {
 
 ### Slots
 
-| 插槽名       | 说明                                | 参数                 |
-| ------------ | ----------------------------------- | -------------------- |
-| 配置的插槽名 | 渲染 v1 自定义模块或 v2 custom 内容 | `{ item }`           |
-| `extension`  | 渲染未注册的扩展组件                | `{ item, pageInfo }` |
+| 插槽名       | 说明                        | 参数                 |
+| ------------ | --------------------------- | -------------------- |
+| 配置的插槽名 | 渲染 `v2.custom` 自定义内容 | `{ item }`           |
+| `extension`  | 渲染未注册的扩展组件        | `{ item, pageInfo }` |
 
 ## 组件映射
-
-### v2 主协议
 
 | 配置键           | 能力               |
 | ---------------- | ------------------ |
@@ -149,30 +147,7 @@ app.use(SnakeUI, {
 | `v2.richtext`    | 富文本             |
 | `v2.custom`      | 自定义插槽         |
 
-v2 配置使用 `{ component, active, props }`。以下 v1 配置仅用于历史页面兼容，不再增加新能力。
-
-### v1 冻结兼容
-
-| 配置键                  | 渲染组件   |
-| ----------------------- | ---------- |
-| `commoditysearch`       | 商品搜索   |
-| `auxiliarysegmentation` | 辅助分割线 |
-| `richtext`              | 富文本     |
-| `graphicnavigation`     | 图文导航   |
-| `images`                | 图片展示   |
-| `pictureads`            | 轮播广告   |
-| `magiccube`             | 魔方布局   |
-| `videos`                | 视频       |
-| `notice`                | 公告       |
-| `jumpApplet`            | 小程序跳转 |
-| `follow`                | 关注       |
-| `suspension`            | 悬浮气泡   |
-| `coupon`                | 优惠券     |
-| `pagePopup`             | 页面弹窗   |
-| `goodslist`             | 商品组合区 |
-| `custommodule`          | 自定义模块 |
-
-旧键 `videoss` 会自动规范化为 `videos`，但新配置应统一使用 `videos`。页面只渲染第一个 `goodslist`，重复项会产生诊断并跳过。
+配置统一使用 `{ component, active, props }`。每个标识的完整字段见 [CMS 组件总览](/cms/overview)。
 
 ## 扩展组件
 
@@ -181,7 +156,7 @@ v2 配置使用 `{ component, active, props }`。以下 v1 配置仅用于历史
 ```vue
 <snake-cms :page-components="components">
   <template #extension="{ item, pageInfo }">
-    <partner-card v-if="item.component === 'partner-card'" :config="item.setStyle" :page="pageInfo" />
+    <partner-card v-if="item.component === 'partner-card'" :config="item.props" :page="pageInfo" />
   </template>
 </snake-cms>
 ```
@@ -191,12 +166,6 @@ v2 配置使用 `{ component, active, props }`。以下 v1 配置仅用于历史
 ## 状态与并发
 
 商品区状态为 `idle`、`initial-loading`、`ready`、`empty`、`loading-more`、`no-more` 或 `error`。每次初始化都会生成新的请求代次，旧请求即使晚返回也不会覆盖新页面数据。筛选缓存使用 `cachePrefix:pageId:componentId:filters` 命名空间。
-
-## 旧项目兼容
-
-0.x 在已配置 `request`、但未配置新 CMS 服务时，会自动启用 `createLegacyJokerCmsOptions()`。旧接口、详情路由、审核过滤和 CDN 资源全部隔离在该适配器中，并会在调试模式给出迁移提示。
-
-自动兼容仅用于过渡；移除前会先确认宿主侧实际用量，不预设删除版本。新项目请显式配置 `cms.services`；也可以设置 `cms: { legacy: false }` 禁止自动启用。
 
 ## 主题变量
 

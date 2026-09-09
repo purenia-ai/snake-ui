@@ -24,7 +24,7 @@ test('homepage statistics are derived from registries instead of invented metric
     const homepage = await text('docs/.vitepress/components/HomePage.vue');
 
     assert.match(homepage, /componentCount/);
-    assert.match(homepage, /filter\(item => item\.cms\)/);
+    assert.match(homepage, /cmsBlockCount/);
     assert.match(homepage, /toolGroups\.reduce/);
     assert.match(homepage, /supportedPlatforms\.length/);
     assert.match(homepage, /class="snake-stat-card__icon"/);

@@ -4,6 +4,7 @@ import ComponentOverview from '../components/ComponentOverview.vue';
 import ThemeGenerate from '../components/ThemeGenerate.vue';
 import HomePage from '../components/HomePage.vue';
 import IconGallery from '../components/IconGallery.vue';
+import RedirectPage from '../components/RedirectPage.vue';
 import './custom.css';
 
 export default {
@@ -14,5 +15,6 @@ export default {
         app.component('ThemeGenerate', ThemeGenerate);
         app.component('HomePage', HomePage);
         app.component('IconGallery', IconGallery);
+        app.component('RedirectPage', RedirectPage);
     }
 };

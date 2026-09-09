@@ -21,7 +21,6 @@
 /**
  * @component TreeSelect
  * @description 列表切换组件内部使用的树形分类选择器，负责节点测量、滚动定位和分类切换。
- * @see /components/list-switching
  */
 
 export default {

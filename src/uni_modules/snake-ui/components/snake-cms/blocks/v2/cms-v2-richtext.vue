@@ -1,6 +1,6 @@
 <template><view class="cms-v2-richtext" :style="rootStyle"><rich-text :nodes="data.content || ''" /></view></template>
 <script setup lang="ts">
-/** @component CmsV2Richtext @description CMS v2 富文本内部渲染器。 @see /cms/components */
+/** @component CmsV2Richtext @description CMS v2 富文本内部渲染器。 @see /cms/overview */
 import { computed } from 'vue';
 import type { V2Record } from './shared';
 const props = defineProps<{ data: V2Record }>();

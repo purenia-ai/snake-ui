@@ -61,27 +61,29 @@ const standardizedDocs = [
     'link',
     'textarea',
     'search',
-    'snake-cms',
-    'custom-module',
-    'images',
-    'hotzone',
-    'picture-ads',
-    'magic-cube',
-    'videos',
-    'rich-text',
-    'notice',
-    'auxiliary-segmentation',
-    'graphic-navigation',
-    'floating-bubble',
+    'snake-cms'
+];
+const undocumentedCmsComponents = [
     'activity-list',
-    'goods-list',
-    'coupon',
+    'auxiliary-segmentation',
     'commodity-search',
+    'coupon',
+    'custom-module',
     'filter-sorts',
-    'list-switching',
+    'floating-bubble',
     'follow',
+    'goods-list',
+    'graphic-navigation',
+    'hotzone',
+    'images',
     'jump-applet',
-    'page-popup'
+    'list-switching',
+    'magic-cube',
+    'notice',
+    'page-popup',
+    'picture-ads',
+    'rich-text',
+    'videos'
 ];
 
 async function document(name) {
@@ -179,13 +181,7 @@ test('high-use component docs follow the standard documentation shape', async ()
         'link',
         'textarea',
         'search',
-        'snake-cms',
-        'hotzone',
-        'activity-list',
-        'goods-list',
-        'coupon',
-        'filter-sorts',
-        'jump-applet'
+        'snake-cms'
     ]) {
         const markdown = await document(name);
         assert.match(markdown, /^#{3,4} Events$/m, `${name}: events`);
@@ -220,8 +216,7 @@ test('high-use component docs follow the standard documentation shape', async ()
         'lazy-image',
         'text',
         'link',
-        'snake-cms',
-        'custom-module'
+        'snake-cms'
     ]) {
         assert.match(await document(name), /^#{3,4} Slots$/m, `${name}: slots`);
     }
@@ -234,20 +229,15 @@ test('high-use component docs follow the standard documentation shape', async ()
     assert.match(await document('sticky'), /^### Expose$/m);
     assert.match(await document('drop-menu'), /^#### Expose$/m);
     assert.match(await document('snake-cms'), /^### Expose$/m);
-    assert.match(
-        await document('follow'),
-        /\|\s*—\s*\|\s*—\s*\|\s*√\s*\|\s*—\s*\|/,
-        'follow: only WeChat Mini Program is supported'
-    );
     for (const name of ['index-list', 'index-list-panel', 'count-down', 'slider', 'no-network', 'read-more']) {
         assert.match(await document(name), /^### (?:Expose|Methods)$/m, `${name}: exposed methods`);
     }
 });
 
-test('component registry is the complete public component source of truth', async () => {
-    assert.equal(componentItems.length, 64);
+test('component registry is the complete documented component source of truth', async () => {
+    assert.equal(componentItems.length, 44);
     assert.equal(foundation.length, 43);
-    assert.equal(cms.length, 21);
+    assert.equal(cms.length, 1);
     assert.equal(new Set(componentItems.map(item => item.link)).size, componentItems.length);
 
     const packageEntry = await readFile(resolve(root, 'src/uni_modules/snake-ui/index.ts'), 'utf8');
@@ -255,23 +245,18 @@ test('component registry is the complete public component source of truth', asyn
         const componentDirectory = toComponentDirectory(item);
         assert.match(packageEntry, new RegExp(`export \\* from './components/${componentDirectory}/types'`), item.name);
     }
+
+    for (const name of undocumentedCmsComponents) {
+        await assert.rejects(document(name), { code: 'ENOENT' });
+        await readFile(resolve(root, 'src/uni_modules/snake-ui/components', `snake-${name}`, `snake-${name}.vue`));
+        assert.match(packageEntry, new RegExp(`export \\* from './components/snake-${name}/types'`), name);
+    }
 });
 
 test('component registry groups follow the standard bucket taxonomy', () => {
     assert.deepEqual(
         componentGroups.map(group => group.title),
-        [
-            '基础组件',
-            '表单组件',
-            '数据组件',
-            '反馈组件',
-            '布局组件',
-            '导航组件',
-            'CMS 容器与基础设施',
-            'CMS 内容区块',
-            'CMS 导航互动区块',
-            'CMS 商城区块'
-        ]
+        ['基础组件', '表单组件', '数据组件', '反馈组件', '布局组件', '导航组件', 'CMS 容器']
     );
 
     const groupOf = link => componentGroups.find(group => group.items.some(item => item.link === link)).title;

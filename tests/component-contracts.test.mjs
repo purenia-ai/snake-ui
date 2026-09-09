@@ -119,8 +119,30 @@ test('every public type contract is documented for IDE consumers', async () => {
     }
 });
 
-test('every Vue component explains its role and documentation entry', async () => {
+test('every Vue component explains its role and documented components expose an entry', async () => {
     const componentRoot = new URL('components/', root);
+    const undocumentedCmsComponents = new Set([
+        'snake-activity-list',
+        'snake-auxiliary-segmentation',
+        'snake-commodity-search',
+        'snake-coupon',
+        'snake-custom-module',
+        'snake-filter-sorts',
+        'snake-floating-bubble',
+        'snake-follow',
+        'snake-goods-list',
+        'snake-graphic-navigation',
+        'snake-hotzone',
+        'snake-images',
+        'snake-jump-applet',
+        'snake-list-switching',
+        'snake-magic-cube',
+        'snake-notice',
+        'snake-page-popup',
+        'snake-picture-ads',
+        'snake-rich-text',
+        'snake-videos'
+    ]);
     const directories = (await readdir(componentRoot, { withFileTypes: true }))
         .filter(entry => entry.isDirectory() && entry.name.startsWith('snake-'))
         .map(entry => entry.name)
@@ -133,9 +155,14 @@ test('every Vue component explains its role and documentation entry', async () =
 
     for (const path of files) {
         const source = await readFile(new URL(path, root), 'utf8');
+        const component = path.split('/')[1];
         assert.match(source, /\/\*\*[\s\S]*@component (?:Snake\w+|FilterPage|TreeSelect)/, `${path}: 缺少组件说明`);
         assert.match(source, /@description \S+/, `${path}: 缺少用途说明`);
-        assert.match(source, /@see \/components\/[\w-]+/, `${path}: 缺少文档入口`);
+        if (undocumentedCmsComponents.has(component)) {
+            assert.doesNotMatch(source, /@see \/components\/[\w-]+/, `${path}: 不应链接已删除文档`);
+        } else {
+            assert.match(source, /@see \/components\/[\w-]+/, `${path}: 缺少文档入口`);
+        }
     }
 });
 

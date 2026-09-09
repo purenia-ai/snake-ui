@@ -1,6 +1,6 @@
 # 装修编辑器数据对接（SankeEditor）
 
-SankeEditor 负责编辑页面配置，Snake UI 负责在 C 端消费配置并渲染。新页面以编辑器 `components/v2` 输出为准；v1 只用于历史页面兼容。编辑器自身 API 以其仓库文档为准。
+SankeEditor 负责编辑页面配置，Snake UI 负责在 C 端消费配置并渲染。页面以编辑器 `components/v2` 输出为准，编辑器自身 API 以其仓库文档为准。
 
 ## 端到端链路
 
@@ -32,7 +32,7 @@ SankeEditor --save--> 宿主后端 --load--> 页面适配层 --> <snake-cms>
 }
 ```
 
-C 端主要消费 `component`、`active` 与 `props`。`text` 和 `type` 用于编辑器展示和分类；面板路由键按约定推导，不应落库。完整规则见 [v2 页面数据协议](/cms/v2/data-contract)。
+C 端主要消费 `component`、`active` 与 `props`。`text` 和 `type` 用于编辑器展示和分类；面板路由键按约定推导，不应落库。完整规则见 [页面数据协议](/cms/data-contract)。
 
 ## 内置组件标识
 
@@ -53,7 +53,7 @@ C 端主要消费 `component`、`active` 与 `props`。`text` 和 `type` 用于�
 | `v2.coupon`      | 优惠券     | coupon/link service       |
 | `v2.goodslist`   | 商品列表   | commerce service          |
 
-字段详情见 [CMS v2 组件总览](/cms/v2/overview)。历史标识、aliases 和 normalizers 只用于 v1，集中记录在 [v1 旧版兼容](/cms/legacy/overview)。
+字段详情见 [CMS 组件总览](/cms/overview)。
 
 ## 注入业务服务
 
@@ -85,7 +85,7 @@ app.use(SnakeUI, {
 });
 ```
 
-也可以通过组件的 `cms-options` 覆盖当前页面。新项目建议设置 `legacy: false`；旧项目只提供 `request/cache/config` 时可保留 legacy 兼容层，并通过 `diagnostic` 收到迁移提示。
+也可以通过组件的 `cms-options` 覆盖当前页面。
 
 ## 页面接入
 
@@ -106,7 +106,7 @@ app.use(SnakeUI, {
 
 ## 链接约定
 
-v2 装修数据统一保存 `{ httpType, http }`。站内链接可以使用 Snake UI 路由工具；外链、小程序和 scheme 应统一交给 link service，避免业务组件各自判断平台。v1 裸 `url` 仅在兼容层处理。
+装修数据统一保存 `{ httpType, http }`。站内链接可以使用 Snake UI 路由工具；外链、小程序和 scheme 应统一交给 link service，避免业务组件各自判断平台。
 
 小程序外链通常需要宿主提供 web-view 承载页。`uni.navigateToMiniProgram` 也只在平台支持且权限正确时可用。
 
@@ -115,10 +115,10 @@ v2 装修数据统一保存 `{ httpType, http }`。站内链接可以使用 Snak
 按以下优先级承接新标识：
 
 1. 在 long-editor `components/v2/<name>` 增加 schema、preview 和 panel。
-2. 在 Snake UI 增加同名 v2 清单项、静态渲染分支和协议文档。
+2. 在 Snake UI 增加同名清单项、静态渲染分支和协议文档。
 3. 业务私有组件通过 `extension` 作用域插槽渲染。
 
-不要用 v1 alias 或 normalizer 承接新的 v2 数据结构。
+新增字段必须进入正式协议，不要通过 alias 或 normalizer 隐式转换。
 
 ## 上线检查
 

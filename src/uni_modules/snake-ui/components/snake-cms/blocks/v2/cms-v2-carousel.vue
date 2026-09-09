@@ -7,7 +7,7 @@
     </view>
 </template>
 <script setup lang="ts">
-/** @component CmsV2Carousel @description CMS v2 图片轮播内部渲染器。 @see /cms/components */
+/** @component CmsV2Carousel @description CMS v2 图片轮播内部渲染器。 @see /cms/overview */
 import { computed, ref } from 'vue';
 import { blockStyle, openV2Link, type V2BlockProps } from './shared';
 const props = defineProps<V2BlockProps>();

@@ -1,6 +1,6 @@
 <template><image v-if="data.src" class="cms-v2-floatbutton" :style="buttonStyle" :src="data.src" mode="aspectFit" @click="openV2Link(data.link, linkService, pageInfo)" /></template>
 <script setup lang="ts">
-/** @component CmsV2Floatbutton @description CMS v2 悬浮按钮内部渲染器。 @see /cms/components */
+/** @component CmsV2Floatbutton @description CMS v2 悬浮按钮内部渲染器。 @see /cms/overview */
 import { computed } from 'vue';
 import { openV2Link, rpx, type V2BlockProps } from './shared';
 const props = defineProps<V2BlockProps>();

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress';
 import { onBeforeUnmount, ref } from 'vue';
-import { componentCount, componentGroups } from '../component-groups';
+import { cmsBlockCount } from '../cms-block-groups';
+import { componentCount } from '../component-groups';
 import { toolGroups } from '../tool-groups';
 
-const cmsCount = componentGroups.flatMap(group => group.items).filter(item => item.cms).length;
 const toolCount = toolGroups.reduce((total, group) => total + group.items.length, 0);
 const supportedPlatforms = [
     'H5',
@@ -30,7 +30,7 @@ const stats = [
         icon: 'M4 5.5 12 2l8 3.5-8 3.5-8-3.5Zm0 0V14l8 4 8-4V5.5M12 9v9'
     },
     {
-        value: cmsCount,
+        value: cmsBlockCount,
         suffix: '',
         label: 'CMS 模块',
         hint: '配置驱动页面装修',
@@ -60,15 +60,15 @@ const features = [
     },
     {
         eyebrow: '50+ components',
-        title: '商城组件体系',
-        details: '从基础交互到商品列表、活动、优惠券和弹窗，覆盖商城页面的高频组合场景。',
+        title: '通用组件体系',
+        details: '从基础交互到表单、反馈和导航，覆盖商城页面的高频组合场景。',
         link: '/components/intro'
     },
     {
         eyebrow: 'Contract driven',
         title: '真实源码契约',
         details: 'Props、事件与数据字段均依据当前源码整理，让文档、示例与运行时保持一致。',
-        link: '/cms/component-data'
+        link: '/cms/data-contract'
     },
     {
         eyebrow: 'Theme system',
@@ -91,9 +91,9 @@ const features = [
 ];
 const popular = [
     { name: 'SnakeCms', title: 'CMS 页面容器', tag: '核心', link: '/components/snake-cms' },
-    { name: 'MagicCube', title: '魔方布局', tag: 'CMS', link: '/components/magic-cube' },
-    { name: 'GoodsList', title: '商品列表', tag: '商城', link: '/components/goods-list' },
-    { name: 'PictureAds', title: '轮播广告', tag: '营销', link: '/components/picture-ads' },
+    { name: 'MagicCube', title: '魔方布局', tag: 'CMS', link: '/cms/magiccube' },
+    { name: 'GoodsList', title: '商品列表', tag: '商城', link: '/cms/goodslist' },
+    { name: 'Carousel', title: '轮播广告', tag: '营销', link: '/cms/carousel' },
     { name: 'useTheme', title: '主题管理', tag: 'Hook', link: '/tools/use-theme' },
     { name: 'snakeHttp', title: 'HTTP 请求', tag: '工具', link: '/tools/http' }
 ];

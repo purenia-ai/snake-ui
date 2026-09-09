@@ -1,6 +1,6 @@
 <template><snake-coupon :datas="legacyData" :coupon-service="couponService" :link-service="linkService" :page-info="pageInfo" @error="$emit('error', $event)" @received="$emit('received')" /></template>
 <script setup lang="ts">
-/** @component CmsV2Coupon @description CMS v2 优惠券协议内部渲染器。 @see /cms/components */
+/** @component CmsV2Coupon @description CMS v2 优惠券协议内部渲染器。 @see /cms/overview */
 import { computed } from 'vue';
 import SnakeCoupon from '../../../snake-coupon/snake-coupon.vue';
 import type { SnakeCmsCouponService, SnakeCmsError, SnakeCmsLinkService, SnakeCmsPageInfo } from '../../../../libs/cms';

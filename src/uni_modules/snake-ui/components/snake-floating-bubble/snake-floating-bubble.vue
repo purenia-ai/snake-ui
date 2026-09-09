@@ -20,7 +20,6 @@
 /**
  * @component SnakeFloatingBubble
  * @description 页面右侧的悬浮气泡。图片模式支持点击跳转与关闭（持久化），插槽模式承载自定义内容；滚动时向屏幕外收起，停止后恢复。
- * @see /components/floating-bubble
  */
 
 import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, useSlots, watch } from 'vue';

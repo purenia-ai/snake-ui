@@ -50,7 +50,6 @@
 /**
  * @component SnakeFilterSorts
  * @description 组合顶部快捷排序、价格排序和多维筛选面板，并向父级输出统一查询参数。
- * @see /components/filter-sorts
  */
 
 import { getCurrentInstance, onMounted, ref } from 'vue';

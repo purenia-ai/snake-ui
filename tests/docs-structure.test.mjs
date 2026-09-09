@@ -30,7 +30,7 @@ test('component getting-started pages remain connected', async () => {
     const quickstart = await text('docs/components/quickstart.md');
 
     assert.ok(intro.includes('[安装](/components/install)'));
-    assert.ok(intro.includes('[CMS v2 组件总览](/cms/v2/overview)'));
+    assert.ok(intro.includes('[CMS 组件总览](/cms/overview)'));
     assert.ok(!intro.includes('](/cms/components)'));
     assert.ok(setting.includes('[快速上手](/components/quickstart)'));
     assert.ok(quickstart.includes('[组件总览](/components/intro)'));
@@ -90,9 +90,9 @@ test('top navigation owns independent guide, component, CMS, and tool domains', 
     assert.ok(!config.includes("text: '工具', link: '/guide/tools'"));
 });
 
-test('CMS domain exposes guides, component discovery, and legacy entry points', async () => {
+test('CMS domain exposes the current guides and component catalog', async () => {
     const config = await text('docs/.vitepress/config.mts');
-    const pages = ['getting-started', 'component-data', 'sanke-editor', 'components'];
+    const pages = ['getting-started', 'overview', 'data-contract', 'services', 'sanke-editor'];
 
     for (const page of pages) {
         assert.ok(config.includes('/cms/' + page));
@@ -100,8 +100,6 @@ test('CMS domain exposes guides, component discovery, and legacy entry points', 
     }
 
     const overview = await text('docs/.vitepress/components/ComponentOverview.vue');
-    assert.match(overview, /type ComponentScope = 'all' \| 'cms'/);
-    assert.match(overview, /items\.filter\(item => item\.cms\)/);
     assert.match(overview, /:href="withBase\(item\.link\)"/);
     assert.match(overview, /const categoryOptions = computed/);
     assert.match(overview, /aria-label="按组件分类筛选"/);
@@ -111,11 +109,9 @@ test('CMS domain exposes guides, component discovery, and legacy entry points', 
     assert.match(overview, /window\.history\.replaceState/);
     assert.match(overview, /window\.addEventListener\('popstate', readUrlState\)/);
     assert.match(overview, /window\.removeEventListener\('popstate', readUrlState\)/);
-    assert.ok((await text('docs/cms/components.md')).includes('<ComponentOverview scope="cms" />'));
-
     const legacyPages = new Map([
         ['cms-usage', '/cms/getting-started'],
-        ['component-data', '/cms/component-data'],
+        ['component-data', '/cms/data-contract'],
         ['sanke-editor', '/cms/sanke-editor']
     ]);
     for (const [page, destination] of legacyPages) {
@@ -124,37 +120,49 @@ test('CMS domain exposes guides, component discovery, and legacy entry points', 
     }
 });
 
-test('CMS documentation treats v2 as the default and keeps v1 compatibility collapsed', async () => {
+test('CMS documentation presents one current protocol without version navigation', async () => {
     const config = await text('docs/.vitepress/config.mts');
     const start = await text('docs/cms/getting-started.md');
-    const v2Position = config.indexOf("text: 'CMS v2 内容区块'");
-    const legacyPosition = config.indexOf("text: 'v1 旧版兼容'");
 
-    assert.ok(v2Position >= 0 && legacyPosition > v2Position, 'v2 groups precede legacy navigation');
-    assert.match(config.slice(legacyPosition), /collapsed: true/);
-    assert.match(start, /^# CMS v2 快速接入$/m);
+    assert.doesNotMatch(config, /CMS v2|v1 旧版|\/cms\/v2\/|\/cms\/legacy\//);
+    assert.match(start, /^# CMS 快速接入$/m);
     assert.match(start, /component: 'v2\./);
     assert.match(start, /props: \{/);
 
-    for (const page of ['overview', 'components']) {
-        await access(resolve(root, 'docs/cms/legacy', page + '.md'));
+    for (const path of [
+        'docs/cms/legacy/overview.md',
+        'docs/cms/legacy/components.md',
+        'docs/cms/component-data.md',
+        'docs/cms/components.md'
+    ]) {
+        await assert.rejects(access(resolve(root, path)), { code: 'ENOENT' });
     }
 });
 
-test('every CMS v2 runtime block has a dedicated contract page and sidebar entry', async () => {
+test('every current CMS runtime block has a dedicated contract page and legacy route redirect', async () => {
     const catalog = await text('src/uni_modules/snake-ui/libs/cms/blocks.ts');
-    const config = await text('docs/.vitepress/config.mts');
+    const registry = await text('docs/.vitepress/cms-block-groups.ts');
     const types = [...catalog.matchAll(/'v2\.([a-z]+)':\s*\{\s*version:\s*2/g)].map(match => match[1]);
 
     assert.equal(types.length, 14);
     for (const name of types) {
-        const path = `docs/cms/v2/${name}.md`;
+        const path = `docs/cms/${name}.md`;
         await access(resolve(root, path));
         const markdown = await text(path);
         assert.match(markdown, new RegExp(`v2\\.${name}`), `${name}: technical identifier`);
         assert.match(markdown, /## 完整信封/, `${name}: full envelope`);
         assert.match(markdown, /## Props/, `${name}: props contract`);
-        assert.ok(config.includes(`/cms/v2/${name}`), `${name}: sidebar entry`);
+        assert.ok(registry.includes(`/cms/${name}`), `${name}: sidebar entry`);
+
+        const redirect = await text(`docs/cms/v2/${name}.md`);
+        assert.match(redirect, /^search: false$/m, `${name}: redirect excluded from search`);
+        assert.ok(redirect.includes(`<RedirectPage to="/cms/${name}" />`), `${name}: legacy route redirect`);
+    }
+
+    for (const page of ['overview', 'data-contract', 'services']) {
+        const redirect = await text(`docs/cms/v2/${page}.md`);
+        assert.match(redirect, /^search: false$/m, `${page}: redirect excluded from search`);
+        assert.ok(redirect.includes(`<RedirectPage to="/cms/${page}" />`), `${page}: legacy route redirect`);
     }
 });
 

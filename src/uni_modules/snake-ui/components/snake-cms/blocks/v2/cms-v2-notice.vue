@@ -6,7 +6,7 @@
     </view>
 </template>
 <script setup lang="ts">
-/** @component CmsV2Notice @description CMS v2 公告内部渲染器。 @see /cms/components */
+/** @component CmsV2Notice @description CMS v2 公告内部渲染器。 @see /cms/overview */
 import { computed } from 'vue';
 import { openV2Link, rpx, type V2BlockProps } from './shared';
 const props = defineProps<V2BlockProps>();

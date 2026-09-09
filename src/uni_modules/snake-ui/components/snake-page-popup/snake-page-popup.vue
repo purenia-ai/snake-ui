@@ -38,7 +38,6 @@
 /**
  * @component SnakePagePopup
  * @description 页面进入后立即展示居中或底部图片弹窗，并支持图片跳转。
- * @see /components/page-popup
  */
 
 import { onMounted, ref, watch } from 'vue';

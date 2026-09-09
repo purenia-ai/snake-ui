@@ -8,7 +8,6 @@
 /**
  * @component SnakeRichText
  * @description 使用 `mp-html` 渲染 CMS 提供的 HTML 内容。
- * @see /components/rich-text
  */
 
 import type { SnakeRichTextProps } from './types';

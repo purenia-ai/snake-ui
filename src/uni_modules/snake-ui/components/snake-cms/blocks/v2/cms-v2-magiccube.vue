@@ -1,6 +1,6 @@
 <template><view class="cms-v2-magiccube" :style="rootStyle"><view class="cms-v2-magiccube__grid" :style="gridStyle"><image v-for="(cell, index) in cells" :key="index" class="cms-v2-magiccube__cell" :style="cellStyle(index)" :src="activeImage(cell).src || ''" mode="aspectFill" @click="openV2Link(activeImage(cell).link, linkService, pageInfo)" /></view></view></template>
 <script setup lang="ts">
-/** @component CmsV2Magiccube @description CMS v2 魔方布局与定时投放内部渲染器。 @see /cms/components */
+/** @component CmsV2Magiccube @description CMS v2 魔方布局与定时投放内部渲染器。 @see /cms/overview */
 import { computed } from 'vue';
 import { blockStyle, openV2Link, rpx, type V2BlockProps, type V2Record } from './shared';
 const props = defineProps<V2BlockProps>();

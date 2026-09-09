@@ -2,7 +2,8 @@
 
 ## 0.1.0（2026-09-08）
 
-- 64 个精选组件（43 个基础组件 + 21 个 CMS 装修组件），基于 Vue 3 + TypeScript 构建，功能丰富，多端兼容，让您快速集成，开箱即用
+- 44 个重点文档入口（43 个通用组件 + 1 个 CMS 页面容器），基于 Vue 3 + TypeScript 构建
+- 14 个配置驱动的 CMS 页面区块，统一由 `snake-cms` 渲染
 - 兼容安卓、iOS、微信小程序、H5 等
 - 详尽的文档支持，现代化的演示效果
 - easycom 按需引入，精简打包体积
@@ -68,35 +69,6 @@
 - IndexListPanel 容器索引列表
 - IndexAnchor 索引锚点
 
-CMS 容器与基础设施（2）
+CMS 容器（1）
 
 - SnakeCms CMS 页面容器
-- CustomModule 自定义模块
-
-CMS 内容区块（8）
-
-- Images 图片展示
-- Hotzone 热区图
-- PictureAds 轮播广告
-- MagicCube 魔方布局
-- Videos 视频
-- RichText 富文本
-- Notice 公告
-- AuxiliarySegmentation 辅助分割线
-
-CMS 导航互动区块（6）
-
-- GraphicNavigation 图文导航
-- CommoditySearch 商品搜索
-- FloatingBubble 悬浮气泡
-- PagePopup 页面弹窗
-- JumpApplet 小程序跳转
-- Follow 关注
-
-CMS 商城区块（5）
-
-- GoodsList 商品列表
-- ActivityList 活动列表
-- FilterSorts 筛选排序
-- ListSwitching 列表切换
-- Coupon 优惠券

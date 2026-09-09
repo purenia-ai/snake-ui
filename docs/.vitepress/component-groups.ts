@@ -86,50 +86,8 @@ export const componentGroups: ComponentGroup[] = [
         ]
     },
     {
-        title: 'CMS 容器与基础设施',
-        items: [
-            { name: 'SnakeCms', title: 'CMS 页面容器', link: '/components/snake-cms', cms: true },
-            { name: 'CustomModule', title: '自定义模块', link: '/components/custom-module', cms: true }
-        ]
-    },
-    {
-        title: 'CMS 内容区块',
-        items: [
-            { name: 'Images', title: '图片展示', link: '/components/images', cms: true },
-            { name: 'Hotzone', title: '热区图', link: '/components/hotzone', cms: true },
-            { name: 'PictureAds', title: '轮播广告', link: '/components/picture-ads', cms: true },
-            { name: 'MagicCube', title: '魔方布局', link: '/components/magic-cube', cms: true },
-            { name: 'Videos', title: '视频', link: '/components/videos', cms: true },
-            { name: 'RichText', title: '富文本', link: '/components/rich-text', cms: true },
-            { name: 'Notice', title: '公告', link: '/components/notice', cms: true },
-            {
-                name: 'AuxiliarySegmentation',
-                title: '辅助分割线',
-                link: '/components/auxiliary-segmentation',
-                cms: true
-            }
-        ]
-    },
-    {
-        title: 'CMS 导航互动区块',
-        items: [
-            { name: 'GraphicNavigation', title: '图文导航', link: '/components/graphic-navigation', cms: true },
-            { name: 'CommoditySearch', title: '商品搜索', link: '/components/commodity-search', cms: true },
-            { name: 'FloatingBubble', title: '悬浮气泡', link: '/components/floating-bubble', cms: true },
-            { name: 'PagePopup', title: '页面弹窗', link: '/components/page-popup', cms: true },
-            { name: 'JumpApplet', title: '小程序跳转', link: '/components/jump-applet', cms: true },
-            { name: 'Follow', title: '关注', link: '/components/follow', cms: true }
-        ]
-    },
-    {
-        title: 'CMS 商城区块',
-        items: [
-            { name: 'GoodsList', title: '商品列表', link: '/components/goods-list', cms: true },
-            { name: 'ActivityList', title: '活动列表', link: '/components/activity-list', cms: true },
-            { name: 'FilterSorts', title: '筛选排序', link: '/components/filter-sorts', cms: true },
-            { name: 'ListSwitching', title: '列表切换', link: '/components/list-switching', cms: true },
-            { name: 'Coupon', title: '优惠券', link: '/components/coupon', cms: true }
-        ]
+        title: 'CMS 容器',
+        items: [{ name: 'SnakeCms', title: 'CMS 页面容器', link: '/components/snake-cms', cms: true }]
     }
 ];
 

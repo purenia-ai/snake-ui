@@ -40,14 +40,20 @@ app.use(SnakeUI, {
 });
 ```
 
-旧项目还可以传入 `request`、`cache` 和 `config` 适配器。它们用于既有业务组件和 CMS legacy 兼容路径，不是基础安装的必选项。
+`request`、`cache` 和 `config` 不是基础安装的必选项；CMS 业务能力统一通过上面的 `cms.services` 注入。
 
 ## 主题与暗色模式
 
 默认提供 Snake 主题，暗色策略支持 `light`、`dark` 和 `auto`：
 
 ```ts
-import { setSnakeDarkMode, setSnakeTheme, setSnakeThemeColor, toggleSnakeDarkMode, useTheme } from '@puresnake/snake-ui';
+import {
+    setSnakeDarkMode,
+    setSnakeTheme,
+    setSnakeThemeColor,
+    toggleSnakeDarkMode,
+    useTheme
+} from '@puresnake/snake-ui';
 
 setSnakeDarkMode('auto');
 setSnakeThemeColor({ primary: '#00b77a' });
@@ -124,7 +130,16 @@ await uni.$snake.sleep(300);
 可复用模块更推荐按需导入：
 
 ```ts
-import { debounce, deepMerge, mergeStyles, navTo, queryParams, useEmitter, useRouter, useToast } from '@puresnake/snake-ui';
+import {
+    debounce,
+    deepMerge,
+    mergeStyles,
+    navTo,
+    queryParams,
+    useEmitter,
+    useRouter,
+    useToast
+} from '@puresnake/snake-ui';
 ```
 
 常用的父子关系 hook 也可直接按需导入：

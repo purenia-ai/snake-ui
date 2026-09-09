@@ -4,13 +4,13 @@
 
 ## 先定位问题类型
 
-| 现象 | 优先检查 | 相关文档 |
-| ---- | -------- | -------- |
-| 组件未解析或没有样式 | 安装方式、easycom、SCSS 入口 | [快速开始](/components/quickstart) |
-| 主题颜色没有生效 | `theme.scss`、ConfigProvider、主题变量名 | [多主题与暗黑模式](/guide/multi-theme) |
-| CMS 页面为空 | v2 信封、组件标识、`diagnostic` 事件 | [CMS v2 总览](/cms/v2/overview) |
-| 商品/优惠券操作失败 | `cms.services` 注入和返回契约 | [业务服务接入](/cms/v2/services) |
-| 仅某个平台异常 | 条件编译、平台 API、真机基础库版本 | [运行环境与能力边界](/guide/compatibility) |
+| 现象                 | 优先检查                                 | 相关文档                                   |
+| -------------------- | ---------------------------------------- | ------------------------------------------ |
+| 组件未解析或没有样式 | 安装方式、easycom、SCSS 入口             | [快速开始](/components/quickstart)         |
+| 主题颜色没有生效     | `theme.scss`、ConfigProvider、主题变量名 | [多主题与暗黑模式](/guide/multi-theme)     |
+| CMS 页面为空         | 配置信封、组件标识、`diagnostic` 事件    | [CMS 总览](/cms/overview)                  |
+| 商品/优惠券操作失败  | `cms.services` 注入和返回契约            | [业务服务接入](/cms/services)              |
+| 仅某个平台异常       | 条件编译、平台 API、真机基础库版本       | [运行环境与能力边界](/guide/compatibility) |
 
 下面按常见症状展开排查。
 
@@ -96,15 +96,15 @@ Snake UI 使用 `snake-` 组件前缀与 `--snake-*` 变量命名空间，与其
 
 1. `pageComponents` 是否为数组。
 2. 每项是否包含字符串 `component`。
-3. 是否设置了 `visible: false` 或 `setStyle.showComponent: false`。
-4. `component` 是否属于内置标识或已配置别名。
+3. 是否设置了 `active: false`。
+4. `component` 是否属于内置标识。
 5. 是否监听 `diagnostic` 与 `error` 获取具体原因。
 
 未知组件可以通过 `extension` 插槽承接，不会自动变成内置组件。
 
 ## 10. 商品、优惠券或外链操作失败
 
-这些属于业务能力，不会由基础安装自动提供。优先通过 `cms.services.commerce`、`cms.services.coupon` 和 `cms.services.link` 注入；旧项目的 `request/cache/config` 只用于 legacy 兼容路径。
+这些属于业务能力，不会由基础安装自动提供。请通过 `cms.services.commerce`、`cms.services.coupon` 和 `cms.services.link` 注入。
 
 若错误名为 `SnakeUIRuntimeError`，错误消息会指出缺少的适配器及触发组件。
 

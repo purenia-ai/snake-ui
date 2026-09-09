@@ -72,7 +72,6 @@
 /**
  * @component SnakeActivityList
  * @description 横向展示拍卖活动入口、时间状态和当前选中项，并自动将当前项滚动到容器中部。
- * @see /components/activity-list
  */
 
 import SnakeIcon from '../snake-icon/snake-icon.vue';

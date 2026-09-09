@@ -24,7 +24,6 @@
 /**
  * @component SnakeImages
  * @description 根据当前运行平台选择图片配置，并支持点击跳转。
- * @see /components/images
  */
 
 import { computed } from 'vue';

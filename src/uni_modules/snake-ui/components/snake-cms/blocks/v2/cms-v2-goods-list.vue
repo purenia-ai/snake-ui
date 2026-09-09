@@ -7,7 +7,7 @@
     </view>
 </template>
 <script setup lang="ts">
-/** @component CmsV2GoodsList @description CMS v2 商品楼层内部渲染器。 @see /cms/components */
+/** @component CmsV2GoodsList @description CMS v2 商品楼层内部渲染器。 @see /cms/overview */
 import { computed } from 'vue';
 import SnakeEmpty from '../../../snake-empty/snake-empty.vue';
 import SnakeGoodsList from '../../../snake-goods-list/snake-goods-list.vue';

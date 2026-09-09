@@ -88,7 +88,6 @@
 /**
  * @component SnakePictureAds
  * @description 以纵向图片列表或 Snake UI Swiper 展示广告，支持列表、轮播和指示器配置。
- * @see /components/picture-ads
  */
 
 export default {

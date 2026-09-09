@@ -209,30 +209,7 @@ body {
 }
 
 .cms-badge,
-.VPSidebarItem
-    a:is(
-        [href$='/components/snake-cms'],
-        [href$='/components/custom-module'],
-        [href$='/components/images'],
-        [href$='/components/hotzone'],
-        [href$='/components/picture-ads'],
-        [href$='/components/magic-cube'],
-        [href$='/components/videos'],
-        [href$='/components/rich-text'],
-        [href$='/components/notice'],
-        [href$='/components/auxiliary-segmentation'],
-        [href$='/components/graphic-navigation'],
-        [href$='/components/commodity-search'],
-        [href$='/components/floating-bubble'],
-        [href$='/components/page-popup'],
-        [href$='/components/jump-applet'],
-        [href$='/components/follow'],
-        [href$='/components/goods-list'],
-        [href$='/components/activity-list'],
-        [href$='/components/filter-sorts'],
-        [href$='/components/list-switching'],
-        [href$='/components/coupon']
-    )::after {
+.VPSidebarItem a[href$='/components/snake-cms']::after {
     display: inline-block;
     margin-left: 5px;
     padding: 0 4px;
@@ -250,30 +227,7 @@ body {
     transform: translateY(-2px);
 }
 
-.VPSidebarItem
-    a:is(
-        [href$='/components/snake-cms'],
-        [href$='/components/custom-module'],
-        [href$='/components/images'],
-        [href$='/components/hotzone'],
-        [href$='/components/picture-ads'],
-        [href$='/components/magic-cube'],
-        [href$='/components/videos'],
-        [href$='/components/rich-text'],
-        [href$='/components/notice'],
-        [href$='/components/auxiliary-segmentation'],
-        [href$='/components/graphic-navigation'],
-        [href$='/components/commodity-search'],
-        [href$='/components/floating-bubble'],
-        [href$='/components/page-popup'],
-        [href$='/components/jump-applet'],
-        [href$='/components/follow'],
-        [href$='/components/goods-list'],
-        [href$='/components/activity-list'],
-        [href$='/components/filter-sorts'],
-        [href$='/components/list-switching'],
-        [href$='/components/coupon']
-    )::after {
+.VPSidebarItem a[href$='/components/snake-cms']::after {
     content: 'CMS';
 }
 

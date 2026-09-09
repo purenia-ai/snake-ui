@@ -1,6 +1,6 @@
-# CMS v2 快速接入
+# CMS 快速接入
 
-Snake CMS 用来把后端保存的页面装修配置渲染成 uni-app 页面。新页面使用 v2 `{ component: 'v2.*', props }` 协议；既有项目的 v1 `{ component, setStyle }` 页面在兼容期内仍可直接渲染。
+Snake CMS 用来把后端保存的页面装修配置渲染成 uni-app 页面。配置使用 `{ component: 'v2.*', active, props }` 信封，其中 `v2.*` 是运行时要求的组件标识。
 
 ```text
 装修编辑器 -> 业务后端 -> 页面接口 -> 数据适配 -> <snake-cms>
@@ -10,7 +10,7 @@ Snake UI 只负责渲染和调度。商品、优惠券和跳转等业务能力�
 
 ## 1. 准备页面数据
 
-CMS 页面由页面信息和有序组件数组组成。每个组件至少要有一个字符串类型的 `component`；v2 使用 `props` 保存配置。
+CMS 页面由页面信息和有序组件数组组成。每个组件至少要有一个字符串类型的 `component`，并使用 `props` 保存配置。
 
 ```ts
 import type { SnakeCmsComponentConfig, SnakeCmsPageInfo } from '@puresnake/snake-ui';
@@ -58,7 +58,7 @@ function normalizeCmsPage(input: Record<string, unknown>) {
 }
 ```
 
-v2 的 `active === false` 不会渲染；v1 仍识别 `visible === false` 和 `setStyle.showComponent === false`。字段规则见[组件数据约定](/cms/component-data)。
+`active === false` 的区块不会渲染。完整字段规则见[页面数据协议](/cms/data-contract)。
 
 ## 2. 在页面中渲染
 
@@ -158,7 +158,6 @@ const commerce: SnakeCmsCommerceService = {
 
 app.use(SnakeUI, {
     cms: {
-        legacy: false,
         services: { commerce },
         onDiagnostic(diagnostic) {
             console.warn('[CMS]', diagnostic);
@@ -175,8 +174,7 @@ app.use(SnakeUI, {
 
 - `invalid-component`：配置项缺少字符串类型的 `component`。
 - `unknown-component`：没有内置组件、别名或扩展实现。
-- `duplicate-commerce-section`：页面包含多个 v1/v2 商品楼层，只有第一个会渲染。
-- `legacy-adapter`：项目仍在自动使用旧版兼容层。
+- `duplicate-commerce-section`：页面包含多个商品楼层，只有第一个会渲染。
 
 CMS 会忽略过期请求结果，页面切换或重新初始化后，较早返回的请求不会覆盖当前页面。具体状态、事件和 Ref 方法见 [Snake CMS 组件 API](/components/snake-cms)，排错步骤见[常见问题](/guide/troubleshooting)。
 
@@ -191,8 +189,8 @@ CMS 会忽略过期请求结果，页面切换或重新初始化后，较早返�
 ## 下一步
 
 - [Snake CMS 组件 API](/components/snake-cms)：查看 Props、事件、Ref 方法和服务配置。
-- [CMS v2 组件总览](/cms/v2/overview)：选择页面装修区块。
-- [v2 页面数据协议](/cms/v2/data-contract)：了解信封、链接和共享字段。
-- [v2 业务服务接入](/cms/v2/services)：接入商品、优惠券和跳转能力。
+- [CMS 组件总览](/cms/overview)：选择页面装修区块。
+- [页面数据协议](/cms/data-contract)：了解信封、链接和共享字段。
+- [业务服务接入](/cms/services)：接入商品、优惠券和跳转能力。
 - [装修编辑器数据对接](/cms/sanke-editor)：对接编辑器保存的数据和组件标识。
 - [运行环境与能力边界](/guide/compatibility)：确认不同平台的可用能力。
