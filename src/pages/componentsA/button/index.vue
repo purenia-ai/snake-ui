@@ -93,62 +93,6 @@ function updateValue(key: string, value: DemoValue) {
                         Snake Button
                     </snake-button>
                 </view>
-                <view class="demo-button-section">
-                    <text class="demo-button-section__title">{{ isEnglish ? 'Button themes' : '按钮主题' }}</text>
-                    <view class="demo-button-grid">
-                        <snake-button type="default">Default</snake-button>
-                        <snake-button type="primary">Primary</snake-button>
-                        <snake-button type="success">Success</snake-button>
-                        <snake-button type="info">Info</snake-button>
-                        <snake-button type="warning">Warning</snake-button>
-                        <snake-button type="error">Error</snake-button>
-                    </view>
-                </view>
-                <view class="demo-button-section">
-                    <text class="demo-button-section__title">{{ isEnglish ? 'Plain buttons' : '镂空按钮' }}</text>
-                    <view class="demo-button-grid">
-                        <snake-button type="primary" plain>Primary</snake-button>
-                        <snake-button type="success" plain>Success</snake-button>
-                        <snake-button type="warning" plain>Warning</snake-button>
-                        <snake-button type="error" plain>Error</snake-button>
-                    </view>
-                </view>
-                <view class="demo-button-section">
-                    <text class="demo-button-section__title">{{ isEnglish ? 'Button sizes' : '按钮尺寸' }}</text>
-                    <view class="demo-button-grid">
-                        <snake-button size="large">Large</snake-button>
-                        <snake-button>Default</snake-button>
-                    </view>
-                    <view class="demo-button-flow">
-                        <snake-button size="medium">Medium</snake-button>
-                        <snake-button size="small">Small</snake-button>
-                        <snake-button size="mini">Mini</snake-button>
-                    </view>
-                </view>
-                <view class="demo-button-section">
-                    <text class="demo-button-section__title">{{ isEnglish ? 'Button shapes' : '按钮形状' }}</text>
-                    <view class="demo-button-grid">
-                        <snake-button shape="square">{{ isEnglish ? 'Rounded' : '圆角按钮' }}</snake-button>
-                        <snake-button shape="circle">{{ isEnglish ? 'Pill' : '胶囊按钮' }}</snake-button>
-                    </view>
-                </view>
-                <view class="demo-button-section">
-                    <text class="demo-button-section__title">{{ isEnglish ? 'Button states' : '按钮状态' }}</text>
-                    <view class="demo-button-grid">
-                        <snake-button disabled>{{ isEnglish ? 'Disabled' : '禁用状态' }}</snake-button>
-                        <snake-button loading>{{ isEnglish ? 'Loading' : '加载中' }}</snake-button>
-                        <snake-button type="success" loading>Loading</snake-button>
-                    </view>
-                </view>
-                <view class="demo-button-section">
-                    <text class="demo-button-section__title">{{ isEnglish ? 'Ripple' : '水波纹' }}</text>
-                    <view class="demo-button-grid">
-                        <snake-button ripple>{{ isEnglish ? 'Tap anywhere' : '点击任意位置' }}</snake-button>
-                        <snake-button type="info" ripple ripple-bg-color="rgba(255,255,255,.42)">
-                            {{ isEnglish ? 'Custom ripple' : '自定义水波纹' }}
-                        </snake-button>
-                    </view>
-                </view>
             </view></DemoSection
         >
         <DemoSection variant="controls" :title="text('参数配置')">
@@ -177,16 +121,4 @@ function updateValue(key: string, value: DemoValue) {
     line-height: 1.4;
 }
 
-.demo-button-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 18rpx;
-}
-
-.demo-button-flow {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 18rpx;
-}
 </style>

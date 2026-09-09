@@ -211,7 +211,7 @@ test('compact layout preserves the native page outline and dimensions', async ()
     assert.match(layout, /#layout-bottom><PreviewFrame\s*\/><\/template>/);
     assert.doesNotMatch(layout, /#aside-top><PreviewFrame\s*\/><\/template>/);
     assert.match(css, /--vp-sidebar-width:\s*240px/);
-    assert.match(css, /max-width:\s*680px/);
+    assert.match(css, /max-width:\s*700px/);
     assert.match(css, /--preview-phone-width:\s*calc\(375px/);
     assert.match(css, /transform:\s*scale\(var\(--preview-scale/);
     assert.match(frame, /const PHONE_WIDTH = 375/);
@@ -244,7 +244,12 @@ test('preview pages keep independent content, outline, and phone columns', async
         css,
         /\.snake-preview-layout \.VPDoc\.has-aside \.aside-container\s*,\s*\.snake-preview-layout \.VPDoc\.has-aside \.aside-curtain\s*{[^}]*width:\s*164px/s
     );
-    assert.match(css, /\.snake-preview-layout \.VPDoc \.content\s*{[^}]*min-width:\s*0/s);
+    assert.match(css, /\.snake-preview-layout \.VPDoc\s*{[^}]*padding-right:\s*0[^}]*padding-left:\s*0/s);
+    assert.match(
+        css,
+        /\.snake-preview-layout \.VPDoc \.content\s*{[^}]*flex:\s*1 1 732px[^}]*min-width:\s*0[^}]*padding-right:\s*16px[^}]*padding-left:\s*16px/s
+    );
+    assert.match(css, /\.snake-preview-layout \.VPDoc\.has-aside \.content-container\s*{[^}]*max-width:\s*700px/s);
     assert.match(css, /--preview-reserved-space:/);
     assert.match(
         css,
@@ -343,17 +348,18 @@ test('icon preview exposes the bundled glyph set with a restrained interactive g
     assert.match(renderer, /key: 'iconBold'/);
 });
 
-test('button preview presents the complete capability showcase', async () => {
+test('button preview presents one configurable button', async () => {
     const renderer = await readFile(resolve(root, 'src/pages/componentsA/button/index.vue'), 'utf8');
 
     assert.doesNotMatch(renderer, /loading-text|loading-mode|\bicon=|<snake-button[^>]*\scolor=|:block=/);
-    assert.match(renderer, /type="primary"/);
-    assert.match(renderer, /type="success" plain/);
-    assert.match(renderer, /size="mini"/);
-    assert.match(renderer, /shape="circle"/);
-    assert.match(renderer, /ripple-bg-color/);
-    assert.match(renderer, /demo-button-grid/);
-    assert.match(renderer, /demo-button-flow/);
+    assert.equal(renderer.match(/<snake-button\b/g)?.length, 1);
+    assert.match(renderer, /:type="String\(state\.type\)"/);
+    assert.match(renderer, /:size="state\.buttonSize as any"/);
+    assert.match(renderer, /:shape="state\.buttonShape as any"/);
+    for (const state of ['plain', 'disabled', 'loading', 'ripple']) {
+        assert.match(renderer, new RegExp(`:${state}="Boolean\\(state\\.${state}\\)"`));
+    }
+    assert.doesNotMatch(renderer, /demo-button-(?:grid|flow)/);
 });
 
 test('foundation feedback previews expose grouped variants', async () => {

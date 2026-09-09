@@ -550,8 +550,16 @@ body {
         padding-right: var(--preview-reserved-space);
     }
 
+    .snake-preview-layout .VPDoc {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
     .snake-preview-layout .VPDoc .content {
+        flex: 1 1 732px;
         min-width: 0;
+        padding-right: 16px;
+        padding-left: 16px;
     }
 
     .snake-preview-layout .VPDoc.has-aside .aside {
@@ -567,7 +575,7 @@ body {
     }
 
     .snake-preview-layout .VPDoc.has-aside .content-container {
-        max-width: 680px;
+        max-width: 700px;
     }
 }
 
