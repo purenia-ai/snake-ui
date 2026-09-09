@@ -2,7 +2,7 @@
 
 ## 0.1.0（2026-09-08）
 
-- 44 个重点文档入口（43 个通用组件 + 1 个 CMS 页面容器），基于 Vue 3 + TypeScript 构建
+- 43 个通用组件文档入口，基于 Vue 3 + TypeScript 构建
 - 14 个配置驱动的 CMS 页面区块，统一由 `snake-cms` 渲染
 - 兼容安卓、iOS、微信小程序、H5 等
 - 详尽的文档支持，现代化的演示效果
@@ -68,7 +68,3 @@
 - IndexList 索引列表
 - IndexListPanel 容器索引列表
 - IndexAnchor 索引锚点
-
-CMS 容器（1）
-
-- SnakeCms CMS 页面容器

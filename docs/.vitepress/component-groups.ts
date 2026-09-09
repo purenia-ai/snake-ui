@@ -2,7 +2,6 @@ export interface ComponentItem {
     name: string;
     title: string;
     link: `/components/${string}`;
-    cms?: boolean;
     since?: string;
 }
 
@@ -84,10 +83,6 @@ export const componentGroups: ComponentGroup[] = [
             { name: 'IndexListPanel', title: '容器索引列表', link: '/components/index-list-panel' },
             { name: 'IndexAnchor', title: '索引锚点', link: '/components/index-anchor' }
         ]
-    },
-    {
-        title: 'CMS 容器',
-        items: [{ name: 'SnakeCms', title: 'CMS 页面容器', link: '/components/snake-cms', cms: true }]
     }
 ];
 
@@ -95,5 +90,3 @@ export const componentCount = componentGroups.reduce((total, group) => total + g
 export const componentItems = componentGroups.flatMap(group =>
     group.items.map(item => ({ ...item, group: group.title, since: item.since || '0.1.0' }))
 );
-export const foundationComponentItems = componentItems.filter(item => !item.cms);
-export const cmsComponentItems = componentItems.filter(item => item.cms);

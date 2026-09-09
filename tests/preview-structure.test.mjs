@@ -90,7 +90,7 @@ test('documented components keep valid example routes while compatibility previe
     }
 
     assert.equal(routes.length, 62);
-    assert.equal(previews.length, 43);
+    assert.equal(previews.length, 42);
     assert.equal(new Set(previews).size, previews.length);
     for (const preview of previews) assert.ok(routes.includes(preview), `${preview}: missing example route`);
 });

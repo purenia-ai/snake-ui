@@ -2,12 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import test from 'node:test';
-import {
-    cmsComponentItems,
-    componentGroups,
-    componentItems,
-    foundationComponentItems
-} from '../docs/.vitepress/component-groups.ts';
+import { componentGroups, componentItems } from '../docs/.vitepress/component-groups.ts';
 
 const root = resolve(import.meta.dirname, '..');
 const toDocumentName = item => item.link.slice('/components/'.length);
@@ -15,8 +10,7 @@ const toComponentDirectory = item => {
     const documentName = toDocumentName(item);
     return documentName.startsWith('snake-') ? documentName : `snake-${documentName}`;
 };
-const foundation = foundationComponentItems.map(toDocumentName);
-const cms = cmsComponentItems.map(toDocumentName);
+const components = componentItems.map(toDocumentName);
 const standardizedDocs = [
     'button',
     'input',
@@ -60,8 +54,7 @@ const standardizedDocs = [
     'text',
     'link',
     'textarea',
-    'search',
-    'snake-cms'
+    'search'
 ];
 const undocumentedCmsComponents = [
     'activity-list',
@@ -90,7 +83,7 @@ async function document(name) {
 }
 
 test('all component docs contain the common detailed sections', async () => {
-    for (const name of [...foundation, ...cms]) {
+    for (const name of components) {
         const markdown = await document(name);
         if (name === 'button') {
             assert.match(markdown, /^## 平台兼容性$/m, `${name}: compatibility`);
@@ -179,8 +172,7 @@ test('high-use component docs follow the standard documentation shape', async ()
         'text',
         'link',
         'textarea',
-        'search',
-        'snake-cms'
+        'search'
     ]) {
         const markdown = await document(name);
         assert.match(markdown, /^#{3,4} Events$/m, `${name}: events`);
@@ -214,8 +206,7 @@ test('high-use component docs follow the standard documentation shape', async ()
         'image',
         'lazy-image',
         'text',
-        'link',
-        'snake-cms'
+        'link'
     ]) {
         assert.match(await document(name), /^#{3,4} Slots$/m, `${name}: slots`);
     }
@@ -227,16 +218,13 @@ test('high-use component docs follow the standard documentation shape', async ()
     assert.match(await document('tabs'), /^### Methods$/m);
     assert.match(await document('sticky'), /^### Expose$/m);
     assert.match(await document('drop-menu'), /^#### Expose$/m);
-    assert.match(await document('snake-cms'), /^### Expose$/m);
     for (const name of ['index-list', 'index-list-panel', 'count-down', 'slider', 'no-network', 'read-more']) {
         assert.match(await document(name), /^### (?:Expose|Methods)$/m, `${name}: exposed methods`);
     }
 });
 
 test('component registry is the complete documented component source of truth', async () => {
-    assert.equal(componentItems.length, 44);
-    assert.equal(foundation.length, 43);
-    assert.equal(cms.length, 1);
+    assert.equal(componentItems.length, 43);
     assert.equal(new Set(componentItems.map(item => item.link)).size, componentItems.length);
 
     const packageEntry = await readFile(resolve(root, 'src/uni_modules/snake-ui/index.ts'), 'utf8');
@@ -255,7 +243,7 @@ test('component registry is the complete documented component source of truth', 
 test('component registry groups follow the standard bucket taxonomy', () => {
     assert.deepEqual(
         componentGroups.map(group => group.title),
-        ['基础组件', '表单组件', '数据组件', '反馈组件', '布局组件', '导航组件', 'CMS 容器']
+        ['基础组件', '表单组件', '数据组件', '反馈组件', '布局组件', '导航组件']
     );
 
     const groupOf = link => componentGroups.find(group => group.items.some(item => item.link === link)).title;
@@ -263,9 +251,6 @@ test('component registry groups follow the standard bucket taxonomy', () => {
     assert.equal(groupOf('/components/count-down'), '数据组件');
     assert.equal(groupOf('/components/navbar'), '导航组件');
 
-    for (const group of componentGroups.filter(group => group.title.startsWith('CMS '))) {
-        assert.ok(!group.collapsed, `${group.title}: starts expanded in component sidebar`);
-    }
 });
 
 test('changelog inventory stays in lock-step with the registry', async () => {
@@ -280,21 +265,14 @@ test('changelog inventory stays in lock-step with the registry', async () => {
     }
 });
 
-test('sidebar CMS badge selectors stay in lock-step with the registry', async () => {
+test('component sidebar no longer treats the CMS container as a component entry', async () => {
     const css = await readFile(resolve(root, 'docs/.vitepress/theme/custom.css'), 'utf8');
-    const selectors = [...css.matchAll(/\[href\$='(\/components\/[^']+)'\]/g)].map(match => match[1]);
-    const registryLinks = cmsComponentItems.map(item => item.link);
-
-    assert.deepEqual([...new Set(selectors)].sort(), [...registryLinks].sort());
+    assert.doesNotMatch(css, /components\/snake-cms/);
+    assert.ok(!componentItems.some(item => item.link === '/components/snake-cms'));
 });
 
-test('CMS metadata and title badges are applied only to CMS documents', async () => {
-    for (const name of cms) {
-        const markdown = await document(name);
-        assert.match(markdown, /^cms:\s*true$/m, `${name}: cms metadata`);
-        assert.match(markdown, /^#\s+.+<span class="cms-badge">CMS<\/span>\s*$/m, `${name}: title badge`);
-    }
-    for (const name of foundation) {
+test('component documents do not use CMS metadata or title badges', async () => {
+    for (const name of components) {
         const markdown = await document(name);
         assert.doesNotMatch(markdown, /^cms:\s*true$/m, `${name}: no cms metadata`);
         assert.doesNotMatch(markdown, /cms-badge/, `${name}: no cms badge`);
@@ -302,7 +280,7 @@ test('CMS metadata and title badges are applied only to CMS documents', async ()
 });
 
 test('component docs describe the Snake UI runtime instead of removed uView APIs', async () => {
-    for (const name of [...foundation, ...cms]) {
+    for (const name of components) {
         const markdown = await document(name);
         assert.doesNotMatch(
             markdown,

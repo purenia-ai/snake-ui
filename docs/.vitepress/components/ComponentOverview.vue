@@ -3,17 +3,6 @@ import { withBase } from 'vitepress';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { componentCount, componentGroups, type ComponentGroup, type ComponentItem } from '../component-groups';
 
-type ComponentScope = 'all' | 'cms';
-
-const props = withDefaults(
-    defineProps<{
-        scope?: ComponentScope;
-    }>(),
-    {
-        scope: 'all'
-    }
-);
-
 interface FilteredGroup extends ComponentGroup {
     items: ComponentItem[];
 }
@@ -22,16 +11,7 @@ const query = ref('');
 const selectedCategory = ref('all');
 let mounted = false;
 
-const availableGroups = computed<FilteredGroup[]>(() => {
-    if (props.scope === 'all') return componentGroups;
-
-    return componentGroups
-        .map(group => ({
-            ...group,
-            items: group.items.filter(item => item.cms)
-        }))
-        .filter(group => group.items.length > 0);
-});
+const availableGroups = computed<FilteredGroup[]>(() => componentGroups);
 const availableCount = computed(() => availableGroups.value.reduce((total, group) => total + group.items.length, 0));
 const categoryOptions = computed(() => [
     { label: '全部', value: 'all', count: availableCount.value },
@@ -108,7 +88,7 @@ onBeforeUnmount(() => {
     <div class="component-overview">
         <div class="component-search">
             <label class="component-search__label" for="component-search-input">
-                {{ props.scope === 'cms' ? '搜索 CMS 组件' : '搜索全部组件' }}
+                搜索全部组件
             </label>
             <div class="component-search__control">
                 <svg aria-hidden="true" viewBox="0 0 24 24">
@@ -128,8 +108,7 @@ onBeforeUnmount(() => {
                 <template v-else-if="selectedCategory !== 'all'"
                     >{{ selectedCategory }}共 {{ categoryCount }} 个组件</template
                 >
-                <template v-else-if="props.scope === 'cms'">共 {{ availableCount }} 个 CMS 组件</template>
-                <template v-else>共 {{ componentCount }} 个组件，覆盖通用交互与 CMS 页面容器</template>
+                <template v-else>共 {{ componentCount }} 个通用组件</template>
             </p>
             <div class="component-filters" role="group" aria-label="按组件分类筛选">
                 <button
@@ -157,7 +136,6 @@ onBeforeUnmount(() => {
                             <strong>{{ item.name }}</strong>
                             <span>{{ item.title }}</span>
                         </span>
-                        <span v-if="item.cms" class="component-card__badge">CMS</span>
                         <svg aria-hidden="true" viewBox="0 0 20 20">
                             <path d="m7.5 5 5 5-5 5" />
                         </svg>
@@ -397,18 +375,6 @@ onBeforeUnmount(() => {
     line-height: 18px;
     text-overflow: ellipsis;
     white-space: nowrap;
-}
-
-.component-card__badge {
-    flex: 0 0 auto;
-    margin-left: 8px;
-    padding: 1px 5px;
-    border: 1px solid color-mix(in srgb, var(--vp-c-brand-1) 38%, transparent);
-    border-radius: 4px;
-    color: var(--vp-c-brand-1);
-    font-size: 9px;
-    font-weight: 700;
-    line-height: 15px;
 }
 
 .component-card > svg {

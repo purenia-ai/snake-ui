@@ -166,7 +166,7 @@ app.use(SnakeUI, {
 });
 ```
 
-`coupon` 和 `link` 的方法签名、返回结构及完整示例见 [Snake CMS 组件 API](/components/snake-cms)。业务服务必须返回规范结构，不要让装修组件依赖后端原始响应。
+`coupon` 和 `link` 的方法签名、返回结构及完整示例见 [CMS 容器 API](/cms/overview#api)。业务服务必须返回规范结构，不要让装修组件依赖后端原始响应。
 
 ## 4. 处理诊断与失败
 
@@ -176,7 +176,7 @@ app.use(SnakeUI, {
 - `unknown-component`：没有内置组件、别名或扩展实现。
 - `duplicate-commerce-section`：页面包含多个商品楼层，只有第一个会渲染。
 
-CMS 会忽略过期请求结果，页面切换或重新初始化后，较早返回的请求不会覆盖当前页面。具体状态、事件和 Ref 方法见 [Snake CMS 组件 API](/components/snake-cms)，排错步骤见[常见问题](/guide/troubleshooting)。
+CMS 会忽略过期请求结果，页面切换或重新初始化后，较早返回的请求不会覆盖当前页面。具体状态、事件和 Ref 方法见 [CMS 容器 API](/cms/overview#api)，排错步骤见[常见问题](/guide/troubleshooting)。
 
 ## 上线前检查
 
@@ -188,7 +188,7 @@ CMS 会忽略过期请求结果，页面切换或重新初始化后，较早返�
 
 ## 下一步
 
-- [Snake CMS 组件 API](/components/snake-cms)：查看 Props、事件、Ref 方法和服务配置。
+- [CMS 容器 API](/cms/overview#api)：查看 Props、事件、Ref 方法和服务配置。
 - [CMS 组件总览](/cms/overview)：选择页面装修区块。
 - [页面数据协议](/cms/data-contract)：了解信封、链接和共享字段。
 - [业务服务接入](/cms/services)：接入商品、优惠券和跳转能力。

@@ -120,6 +120,21 @@ test('CMS domain exposes the current guides and component catalog', async () => 
     }
 });
 
+test('CMS overview owns the container API and the old component route redirects', async () => {
+    const overview = await text('docs/cms/overview.md');
+    const redirect = await text('docs/components/snake-cms.md');
+
+    for (const section of ['平台兼容性', '基础用法', '注入业务服务', 'API', '扩展组件', '状态与并发', '主题变量']) {
+        assert.match(overview, new RegExp(`^## ${section}$`, 'm'), section);
+    }
+    assert.match(overview, /^### Props$/m);
+    assert.match(overview, /^### Events$/m);
+    assert.match(overview, /^### Expose$/m);
+    assert.match(overview, /^### Slots$/m);
+    assert.match(redirect, /^search: false$/m);
+    assert.ok(redirect.includes('<RedirectPage to="/cms/overview" />'));
+});
+
 test('CMS documentation presents one current protocol without version navigation', async () => {
     const config = await text('docs/.vitepress/config.mts');
     const start = await text('docs/cms/getting-started.md');
