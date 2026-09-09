@@ -4,6 +4,7 @@ cms: true
 ---
 
 # 小程序跳转 <span class="cms-badge">CMS</span>
+
 通过按钮或图片触发小程序、H5 URL Scheme 或企业微信承接页跳转。
 
 ## 运行前提
@@ -12,9 +13,9 @@ cms: true
 
 ## 平台兼容性
 
-| H5 | 微信小程序 | App |
-| :-: | :-: | :-: |
-| 支持 | 支持 | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 > 表格表示组件可通过当前工程编译。涉及跳转、开放能力、原生媒体或业务接口的功能，仍需按下文条件在目标平台验证。
 
@@ -22,17 +23,17 @@ cms: true
 
 ```vue
 <snake-jump-applet
-  :datas="{
-    isButton: true,
-    title: '打开小程序',
-    textColor: '#ffffff',
-    btnColor: '#06D290',
-    appId: 'wx0000000000000000',
-    path: 'pages/home/index',
-    query: '?source=cms',
-    isAuto: false,
-    isWeCom: false,
-  }"
+    :datas="{
+        isButton: true,
+        title: '打开小程序',
+        textColor: '#ffffff',
+        btnColor: '#06D290',
+        appId: 'wx0000000000000000',
+        path: 'pages/home/index',
+        query: '?source=cms',
+        isAuto: false,
+        isWeCom: false
+    }"
 />
 ```
 
@@ -44,22 +45,26 @@ cms: true
 
 ### Props
 
-| 参数 | 说明 | 类型 | 默认值 | 可选值 |
-| --- | --- | --- | --- | --- |
-| `datas` | 展示和跳转配置 | `Object` | 未声明 | - |
+| 参数    | 说明           | 类型     | 默认值 | 可选值 |
+| ------- | -------------- | -------- | ------ | ------ |
+| `datas` | 展示和跳转配置 | `Object` | 未声明 | -      |
 
 ### `datas` 字段
 
-| 字段 | 说明 |
-| --- | --- |
-| `isButton` | 使用按钮或图片作为入口 |
-| `title`、`textColor`、`btnColor` | 按钮文案与颜色 |
-| `imageUrl` | 图片入口地址 |
-| `isAuto` | 挂载后是否立即跳转 |
-| `isWeCom` | 是否走企业微信 H5 上报与承接页逻辑 |
-| `appId`、`path`、`query` | 目标小程序和页面参数 |
+| 字段                             | 说明                               |
+| -------------------------------- | ---------------------------------- |
+| `isButton`                       | 使用按钮或图片作为入口             |
+| `title`、`textColor`、`btnColor` | 按钮文案与颜色                     |
+| `imageUrl`                       | 图片入口地址                       |
+| `isAuto`                         | 挂载后是否立即跳转                 |
+| `isWeCom`                        | 是否走企业微信 H5 上报与承接页逻辑 |
+| `appId`、`path`、`query`         | 目标小程序和页面参数               |
 
-组件未向父级发送事件。
+### Events
+
+| 事件名  | 触发时机                 | 参数            |
+| ------- | ------------------------ | --------------- |
+| `error` | 小程序或外部链接跳转失败 | `SnakeCmsError` |
 
 ## 注意事项
 
@@ -67,5 +72,9 @@ cms: true
 - H5 URL Scheme 依赖后端 `/user/weixin/generateUrlScheme`。
 - 企业微信分支会向 `${config.baseUrl}/juliang` 上报并跳转业务 WebView。
 - 源码在 `uni.request` 成功回调中不判断响应内容，只要请求完成就继续导航。
+
+## 主题变量
+
+组件未直接使用 CSS 主题变量。按钮文字、按钮背景和图片入口通过 `datas` 字段配置。
 
 源码：`src/uni_modules/snake-ui/components/snake-jump-applet/snake-jump-applet.vue`

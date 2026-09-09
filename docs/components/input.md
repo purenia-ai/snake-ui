@@ -6,15 +6,11 @@ preview: /pages/componentsA/input/index
 
 基于 uni-app input，支持清空、密码显示、格式化、前后插槽和 Form 校验联动。
 
-## 何时使用
-
-用于单行文本、数字或密码输入。多行内容使用 Textarea；需要标签、校验信息和统一布局时，将 Input 放在 FormItem 中。
-
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 ## 基础用法
 
@@ -56,11 +52,25 @@ preview: /pages/componentsA/input/index
 
 ### Slots
 
-`prefix`、`suffix` 分别替换前后图标区域。
+| 名称     | 说明               |
+| -------- | ------------------ |
+| `prefix` | 替换输入框前置图标 |
+| `suffix` | 替换输入框后置图标 |
 
-## 无障碍
+## 主题变量
 
-不要只依赖 `placeholder` 说明字段含义，应由 FormItem 的标签或页面文字提供持久名称。错误状态应同时展示可读提示；密码显示按钮和清空按钮已提供可操作语义。
+Input 复用全局主题令牌：
+
+| 变量                        | 用途                      |
+| --------------------------- | ------------------------- |
+| `--snake-color-text`        | 输入文字颜色              |
+| `--snake-color-text-light`  | 占位文字颜色              |
+| `--snake-color-text-muted`  | 操作图标颜色              |
+| `--snake-color-disabled-bg` | 禁用背景色                |
+| `--snake-color-divider`     | 默认边框颜色              |
+| `--snake-color-primary`     | 聚焦边框颜色              |
+| `--snake-color-error`       | 校验失败边框颜色          |
+| `--snake-radius-md`         | `surround` 模式的圆角大小 |
 
 ## 类型定义
 

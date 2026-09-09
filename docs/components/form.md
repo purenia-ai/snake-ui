@@ -8,9 +8,9 @@ preview: /pages/componentsA/form/index
 
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 ## 基础用法
 
@@ -85,6 +85,12 @@ const rules = {
 | `validate(callback?)`             | 校验全部字段，返回 `Promise<boolean>`           |
 | `validateField(props, callback?)` | 校验一个或多个指定字段，返回 `Promise<boolean>` |
 
+### Form Slots
+
+| 名称      | 说明       |
+| --------- | ---------- |
+| `default` | 表单项内容 |
+
 ### FormItem Props
 
 | 参数                                                         | 说明                              | 默认值    |
@@ -100,10 +106,27 @@ const rules = {
 
 ### FormItem Slots
 
-`default`、`label`、`leftIcon`、`rightIcon`、`right`。
+| 名称        | 说明                 |
+| ----------- | -------------------- |
+| `default`   | 表单控件             |
+| `label`     | 自定义标签内容       |
+| `leftIcon`  | 自定义左侧图标       |
+| `rightIcon` | 自定义右侧图标       |
+| `right`     | 表单项最右侧扩展内容 |
 
 ### FormItem Expose
 
 `validation(trigger?, callback?)`、`resetField()`、`onFormBlur()`、`onFormChange()`。
+
+## 主题变量
+
+Form 容器没有独立视觉令牌，FormItem 直接使用以下全局变量：
+
+| 变量                       | 用途               |
+| -------------------------- | ------------------ |
+| `--snake-color-text`       | 标签文字颜色       |
+| `--snake-color-text-light` | 辅助文字颜色       |
+| `--snake-color-divider`    | 表单项分隔线       |
+| `--snake-color-error`      | 必填标记和错误状态 |
 
 源码：`src/uni_modules/snake-ui/components/snake-form/snake-form.vue`、`src/uni_modules/snake-ui/components/snake-form-item/snake-form-item.vue`

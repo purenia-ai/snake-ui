@@ -8,9 +8,9 @@ preview: /pages/componentsA/lazyImage/index
 
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 ## 基础用法
 
@@ -42,6 +42,23 @@ preview: /pages/componentsA/lazyImage/index
 
 `src`、`mode`、`width`、`height`、`radius`、`fade`、`duration` 与 Image 含义一致；`loadingImg` 和 `errorImg` 设置占位资源，`threshold`（默认 `100`）控制视口预加载距离，`index` 用于区分列表项，`customStyle` 自定义容器样式。
 
-`click`、`load`、`error` 均返回 `(event, index)`，保留原始事件作为第一个参数；`load` 和 `error` 仅对应真实 `src`。支持 `loading`、`error` 插槽。
+### Events
+
+| 事件名  | 触发时机         | 参数             |
+| ------- | ---------------- | ---------------- |
+| `click` | 点击图片         | `(event, index)` |
+| `load`  | 真实图片加载成功 | `(event, index)` |
+| `error` | 真实图片加载失败 | `(event, index)` |
+
+### Slots
+
+| 插槽名    | 说明               |
+| --------- | ------------------ |
+| `loading` | 自定义加载占位内容 |
+| `error`   | 自定义失败回退内容 |
+
+## 主题变量
+
+组件未直接使用 CSS 主题变量，加载结果由内部 Image 组件渲染并继承其主题样式。
 
 源码：`src/uni_modules/snake-ui/components/snake-lazy-image/snake-lazy-image.vue`

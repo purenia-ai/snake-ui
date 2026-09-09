@@ -4,6 +4,7 @@ cms: true
 ---
 
 # 辅助分割线 <span class="cms-badge">CMS</span>
+
 在装修页面中插入留白，或在留白区域中央绘制一条可配置分割线。
 
 ## 运行前提
@@ -12,9 +13,9 @@ cms: true
 
 ## 平台兼容性
 
-| H5 | 微信小程序 | App |
-| :-: | :-: | :-: |
-| 支持 | 支持 | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 > 表格表示组件可通过当前工程编译。涉及跳转、开放能力、原生媒体或业务接口的功能，仍需按下文条件在目标平台验证。
 
@@ -22,14 +23,14 @@ cms: true
 
 ```vue
 <snake-auxiliary-segmentation
-  :datas="{
-    blankHeight: 32,
-    paddType: 1,
-    bgColor: '#ffffff',
-    segmentationtype: 1,
-    bordertp: 'dashed',
-    auxliarColor: '#d9e3dd',
-  }"
+    :datas="{
+        blankHeight: 32,
+        paddType: 1,
+        bgColor: '#ffffff',
+        segmentationtype: 1,
+        bordertp: 'dashed',
+        auxliarColor: '#d9e3dd'
+    }"
 />
 ```
 
@@ -41,25 +42,29 @@ cms: true
 
 ### Props
 
-| 参数 | 说明 | 类型 | 默认值 | 可选值 |
-| --- | --- | --- | --- | --- |
-| `datas` | 分割区域配置 | `Object` | 未声明 | - |
+| 参数    | 说明         | 类型     | 默认值 | 可选值 |
+| ------- | ------------ | -------- | ------ | ------ |
+| `datas` | 分割区域配置 | `Object` | 未声明 | -      |
 
 ### `datas` 字段
 
-| 字段 | 说明 |
-| --- | --- |
-| `blankHeight` | 区域高度，经 Snake UI `addUnit` 转换 |
-| `paddType` | 为 `0` 时无左右内边距，否则为 `15px` |
-| `bgColor` | 背景色 |
-| `segmentationtype` | 为 `1` 时显示分割线 |
-| `bordertp` | CSS `border-top-style` 值 |
-| `auxliarColor` | 分割线颜色 |
+| 字段               | 说明                                 |
+| ------------------ | ------------------------------------ |
+| `blankHeight`      | 区域高度，经 Snake UI `addUnit` 转换 |
+| `paddType`         | 为 `0` 时无左右内边距，否则为 `15px` |
+| `bgColor`          | 背景色                               |
+| `segmentationtype` | 为 `1` 时显示分割线                  |
+| `bordertp`         | CSS `border-top-style` 值            |
+| `auxliarColor`     | 分割线颜色                           |
 
 组件未声明事件和插槽。
 
 ## 注意事项
 
 尺寸通过 Snake UI `addUnit` 统一补充单位；数值按当前组件约定转换，字符串可直接带 `rpx`、`px` 或 `%`。
+
+## 主题变量
+
+组件未直接使用 CSS 主题变量。通过 `datas.bgColor`、`auxliarColor`、`bordertp` 和尺寸字段配置外观。
 
 源码：`src/uni_modules/snake-ui/components/snake-auxiliary-segmentation/snake-auxiliary-segmentation.vue`

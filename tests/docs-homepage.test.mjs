@@ -37,7 +37,17 @@ test('homepage links use the canonical documentation and repository addresses', 
     assert.match(homepage, /withBase\(path\)/);
     assert.match(homepage, /https:\/\/m\.puresnake\.com\/snake-ui\/h5\//);
     assert.match(homepage, /https:\/\/github\.com\/zwbcode\/snake-ui/);
+    assert.match(homepage, /internalLink\('\/components\/quickstart'\)/);
+    assert.doesNotMatch(homepage, /internalLink\('\/guide\/getting-started'\)/);
     assert.doesNotMatch(homepage, /r2nd\.github\.io/);
+});
+
+test('homepage exposes a copyable package installation command', async () => {
+    const homepage = await text('docs/.vitepress/components/HomePage.vue');
+
+    assert.match(homepage, /pnpm add @puresnake\/snake-ui/);
+    assert.match(homepage, /navigator\.clipboard\.writeText\(installCommand\)/);
+    assert.match(homepage, /aria-live="polite"/);
 });
 
 test('homepage styles cover themes, narrow screens, and reduced motion', async () => {
@@ -47,4 +57,6 @@ test('homepage styles cover themes, narrow screens, and reduced motion', async (
     assert.match(styles, /@media \(max-width: 640px\)/);
     assert.match(styles, /@media \(prefers-reduced-motion: reduce\)/);
     assert.match(styles, /\.snake-orbit__halo/);
+    assert.match(styles, /\.snake-feature-card:hover/);
+    assert.match(styles, /transition: none !important/);
 });

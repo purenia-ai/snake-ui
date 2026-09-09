@@ -8,9 +8,9 @@ preview: /pages/componentsA/indexAnchor/index
 
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 ## 基础用法
 
@@ -46,5 +46,12 @@ preview: /pages/componentsA/indexAnchor/index
 | 插槽名    | 说明                       |
 | --------- | -------------------------- |
 | `default` | useSlot 为 true 时替换文字 |
+
+## 主题变量
+
+| 变量名                     | 说明         |
+| -------------------------- | ------------ |
+| `--snake-color-text`       | 锚点文字颜色 |
+| `--snake-color-background` | 锚点背景颜色 |
 
 源码：`src/uni_modules/snake-ui/components/snake-index-anchor/snake-index-anchor.vue`

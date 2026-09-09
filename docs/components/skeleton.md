@@ -8,9 +8,9 @@ preview: /pages/componentsA/skeleton/index
 
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 ## 基础用法
 
@@ -70,13 +70,20 @@ preview: /pages/componentsA/skeleton/index
 
 #### Props
 
-| 参数          | 说明                       | 类型                                | 默认值 |
-| ------------- | -------------------------- | ----------------------------------- | ------ |
-| `variant`     | 占位形态                   | `text \| rect \| circle \| image`  | `text` |
-| `width`       | 宽度，数字按 px            | `string \| number`                 | 按形态 |
-| `height`      | 高度，数字按 px            | `string \| number`                 | 按形态 |
-| `radius`      | 圆角，数字按 px            | `string \| number`                 | 按形态 |
-| `animated`    | 动画开关，默认继承骨架容器 | `boolean`                           | `true` |
-| `customStyle` | 根节点样式                 | `string \| object \| array`        | `''`   |
+| 参数          | 说明                       | 类型                              | 默认值 |
+| ------------- | -------------------------- | --------------------------------- | ------ |
+| `variant`     | 占位形态                   | `text \| rect \| circle \| image` | `text` |
+| `width`       | 宽度，数字按 px            | `string \| number`                | 按形态 |
+| `height`      | 高度，数字按 px            | `string \| number`                | 按形态 |
+| `radius`      | 圆角，数字按 px            | `string \| number`                | 按形态 |
+| `animated`    | 动画开关，默认继承骨架容器 | `boolean`                         | `true` |
+| `customStyle` | 根节点样式                 | `string \| object \| array`       | `''`   |
+
+## 主题变量
+
+| 变量                         | 用途           |
+| ---------------------------- | -------------- |
+| `--snake-skeleton-color`     | 骨架基础背景色 |
+| `--snake-skeleton-highlight` | 流光高亮颜色   |
 
 源码：`src/uni_modules/snake-ui/components/snake-skeleton/snake-skeleton.vue`、`src/uni_modules/snake-ui/components/snake-skeleton-item/snake-skeleton-item.vue`

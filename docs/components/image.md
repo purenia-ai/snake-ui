@@ -8,14 +8,22 @@ preview: /pages/componentsA/image/index
 
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 ## 基础用法
 
 ```vue
-<snake-image src="/static/logo.png" alt="Snake UI 标志" width="100%" height="320rpx" mode="aspectFill" :radius="16" preview />
+<snake-image
+    src="/static/logo.png"
+    alt="Snake UI 标志"
+    width="100%"
+    height="320rpx"
+    mode="aspectFill"
+    :radius="16"
+    preview
+/>
 <snake-image src="/static/avatar.png" alt="用户头像" width="120rpx" height="120rpx" shape="circle" />
 ```
 
@@ -39,10 +47,26 @@ preview: /pages/componentsA/image/index
 | `preview` / `previewUrls`                 | 点击预览及图片集合 | `boolean / string[]`              | `false`            |
 | `bgColor` / `customClass` / `customStyle` | 背景和自定义样式   | 多类型                            | 主题默认值         |
 
-事件包括 `load(event)`、`error(event)` 和 `click(event)`。
+### Events
 
-## 无障碍与性能
+| 事件名  | 触发时机     | 参数    |
+| ------- | ------------ | ------- |
+| `load`  | 图片加载成功 | `event` |
+| `error` | 图片加载失败 | `event` |
+| `click` | 点击图片     | `event` |
 
-内容图片应填写简短的 `alt`；装饰图片保留空字符串。首屏以下图片建议启用 `lazyLoad`，固定展示区域时同时提供 `width` 与 `height`，减少布局跳动。
+### Slots
+
+| 插槽名    | 说明               |
+| --------- | ------------------ |
+| `loading` | 自定义加载状态     |
+| `error`   | 自定义加载失败状态 |
+
+## 主题变量
+
+| 变量名                        | 说明               |
+| ----------------------------- | ------------------ |
+| `--snake-color-surface-muted` | 图片容器默认背景色 |
+| `--snake-color-text-muted`    | 状态图标默认颜色   |
 
 源码：`src/uni_modules/snake-ui/components/snake-image/snake-image.vue`

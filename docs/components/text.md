@@ -8,9 +8,9 @@ preview: /pages/componentsA/text/index
 
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 ## 基础用法
 
@@ -38,41 +38,55 @@ preview: /pages/componentsA/text/index
 
 ### Props
 
-| 参数                | 说明                                   | 类型                                  | 默认值                     |
-| ------------------- | -------------------------------------- | ------------------------------------- | -------------------------- |
-| `type`              | 主题颜色                               | `primary \| warning \| success \| info \| error \| main \| content \| tips \| light` | `''` |
-| `show`              | 是否显示文本                           | `boolean`                             | `true`                     |
-| `text`              | 显示的值                               | `string \| number`                    | `''`                       |
-| `prefixIcon` / `suffixIcon` | 前置/后置图标                   | `string`                              | `''`                       |
-| `mode`              | 文本处理模式                           | `text \| price \| phone \| name \| date \| link` | `text`            |
-| `href`              | mode 为 link 时的链接地址              | `string`                              | `''`                       |
-| `format`            | 格式化规则，encrypt 或函数             | `string \| function`                  | `''`                       |
-| `call`              | mode 为 phone 时点击是否拨打电话       | `boolean`                             | `false`                    |
-| `openType`          | 小程序打开方式                         | `string`                              | `''`                       |
-| `bold`              | 是否粗体                               | `boolean`                             | `false`                    |
-| `block`             | 是否块状显示                           | `boolean`                             | `false`                    |
-| `lines`             | 显示行数，超出显示省略号               | `string \| number`                    | `''`                       |
-| `color`             | 文本颜色                               | `string`                              | `--snake-color-text`       |
-| `size`              | 字体大小                               | `string \| number`                    | `28`                       |
-| `iconStyle` / `textStyle` | 图标/文字样式                      | `object \| array \| string`           | 默认图标样式 / `{}`        |
-| `decoration`        | 文字装饰                               | `none \| underline \| line-through`   | `none`                     |
-| `margin`            | 外边距                                 | `object \| string \| number`          | `0`                        |
-| `lineHeight`        | 行高                                   | `string \| number`                    | `''`                       |
-| `align`             | 对齐方式                               | `left \| center \| right`             | `left`                     |
-| `wordWrap`          | 换行方式                               | `break-word \| normal \| anywhere`    | `normal`                   |
-| `customClass` / `customStyle` | 自定义类名和样式               | `string \| object \| array`           | `''`                       |
+| 参数                          | 说明                             | 类型                                                                                 | 默认值               |
+| ----------------------------- | -------------------------------- | ------------------------------------------------------------------------------------ | -------------------- |
+| `type`                        | 主题颜色                         | `primary \| warning \| success \| info \| error \| main \| content \| tips \| light` | `''`                 |
+| `show`                        | 是否显示文本                     | `boolean`                                                                            | `true`               |
+| `text`                        | 显示的值                         | `string \| number`                                                                   | `''`                 |
+| `prefixIcon` / `suffixIcon`   | 前置/后置图标                    | `string`                                                                             | `''`                 |
+| `mode`                        | 文本处理模式                     | `text \| price \| phone \| name \| date \| link`                                     | `text`               |
+| `href`                        | mode 为 link 时的链接地址        | `string`                                                                             | `''`                 |
+| `format`                      | 格式化规则，encrypt 或函数       | `string \| function`                                                                 | `''`                 |
+| `call`                        | mode 为 phone 时点击是否拨打电话 | `boolean`                                                                            | `false`              |
+| `openType`                    | 小程序打开方式                   | `string`                                                                             | `''`                 |
+| `bold`                        | 是否粗体                         | `boolean`                                                                            | `false`              |
+| `block`                       | 是否块状显示                     | `boolean`                                                                            | `false`              |
+| `lines`                       | 显示行数，超出显示省略号         | `string \| number`                                                                   | `''`                 |
+| `color`                       | 文本颜色                         | `string`                                                                             | `--snake-color-text` |
+| `size`                        | 字体大小                         | `string \| number`                                                                   | `28`                 |
+| `iconStyle` / `textStyle`     | 图标/文字样式                    | `object \| array \| string`                                                          | 默认图标样式 / `{}`  |
+| `decoration`                  | 文字装饰                         | `none \| underline \| line-through`                                                  | `none`               |
+| `margin`                      | 外边距                           | `object \| string \| number`                                                         | `0`                  |
+| `lineHeight`                  | 行高                             | `string \| number`                                                                   | `''`                 |
+| `align`                       | 对齐方式                         | `left \| center \| right`                                                            | `left`               |
+| `wordWrap`                    | 换行方式                         | `break-word \| normal \| anywhere`                                                   | `normal`             |
+| `customClass` / `customStyle` | 自定义类名和样式                 | `string \| object \| array`                                                          | `''`                 |
 
 ### Events
 
-| 事件名            | 触发时机           | 参数      |
-| ----------------- | ------------------ | --------- |
-| `click`           | 点击文本           | -         |
+| 事件名                                                                               | 触发时机              | 参数           |
+| ------------------------------------------------------------------------------------ | --------------------- | -------------- |
+| `click`                                                                              | 点击文本              | -              |
 | `getuserinfo` / `contact` / `getphonenumber` / `error` / `launchapp` / `opensetting` | openType 对应原生事件 | `event.detail` |
 
 ### Slots
 
-| 名称    | 说明               |
-| ------- | ------------------ |
-| default | 替换默认显示内容   |
+| 名称    | 说明             |
+| ------- | ---------------- |
+| default | 替换默认显示内容 |
+
+## 主题变量
+
+| 变量名                         | 说明                 |
+| ------------------------------ | -------------------- |
+| `--snake-color-text`           | 默认文字及 main 颜色 |
+| `--snake-color-text-secondary` | content 及图标颜色   |
+| `--snake-color-text-muted`     | tips 颜色            |
+| `--snake-color-text-light`     | light 颜色           |
+| `--snake-color-primary`        | primary 颜色         |
+| `--snake-color-success`        | success 颜色         |
+| `--snake-color-warning`        | warning 颜色         |
+| `--snake-color-error`          | error 颜色           |
+| `--snake-color-info`           | info 颜色            |
 
 源码：`src/uni_modules/snake-ui/components/snake-text/snake-text.vue`

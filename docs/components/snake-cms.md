@@ -9,9 +9,9 @@ cms: true
 
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 ## 基础用法
 
@@ -99,7 +99,7 @@ app.use(SnakeUI, {
 | `stickyOffsetTop` | 商品区吸顶顶部偏移                     | `number`                    | `0`    | -      |
 | `cmsOptions`      | 当前实例的服务、别名、资源和规范化配置 | `SnakeCmsOptions`           | `{}`   | -      |
 
-## Events
+### Events
 
 | 事件           | 参数                  | 说明                               |
 | -------------- | --------------------- | ---------------------------------- |
@@ -110,7 +110,7 @@ app.use(SnakeUI, {
 | `goods-click`  | `{ item, index }`     | 点击商品；随后调用宿主导航服务     |
 | `offer-click`  | `{ item, index }`     | 点击拍卖报价；随后调用宿主导航服务 |
 
-## Ref 方法
+### Expose
 
 | 方法                            | 说明                         |
 | ------------------------------- | ---------------------------- |
@@ -121,26 +121,33 @@ app.use(SnakeUI, {
 
 同时暴露只读的 `auctionSetParams`。
 
+### Slots
+
+| 插槽名       | 说明                                | 参数                 |
+| ------------ | ----------------------------------- | -------------------- |
+| 配置的插槽名 | 渲染 v1 自定义模块或 v2 custom 内容 | `{ item }`           |
+| `extension`  | 渲染未注册的扩展组件                | `{ item, pageInfo }` |
+
 ## 组件映射
 
 ### v2 主协议
 
-| 配置键 | 能力 |
-| --- | --- |
-| `v2.carousel` | 轮播图 |
-| `v2.images` | 单图/图片网格 |
-| `v2.video` | 视频 |
-| `v2.hotzone` | 热区图 |
-| `v2.magiccube` | 魔方布局与定时投放 |
-| `v2.notice` | 公告 |
-| `v2.divider` | 空白/分割线 |
-| `v2.search` | 商品搜索 |
-| `v2.floatbutton` | 悬浮按钮 |
-| `v2.popup` | 页面弹窗 |
-| `v2.coupon` | 优惠券 |
-| `v2.goodslist` | 商品楼层 |
-| `v2.richtext` | 富文本 |
-| `v2.custom` | 自定义插槽 |
+| 配置键           | 能力               |
+| ---------------- | ------------------ |
+| `v2.carousel`    | 轮播图             |
+| `v2.images`      | 单图/图片网格      |
+| `v2.video`       | 视频               |
+| `v2.hotzone`     | 热区图             |
+| `v2.magiccube`   | 魔方布局与定时投放 |
+| `v2.notice`      | 公告               |
+| `v2.divider`     | 空白/分割线        |
+| `v2.search`      | 商品搜索           |
+| `v2.floatbutton` | 悬浮按钮           |
+| `v2.popup`       | 页面弹窗           |
+| `v2.coupon`      | 优惠券             |
+| `v2.goodslist`   | 商品楼层           |
+| `v2.richtext`    | 富文本             |
+| `v2.custom`      | 自定义插槽         |
 
 v2 配置使用 `{ component, active, props }`。以下 v1 配置仅用于历史页面兼容，不再增加新能力。
 
@@ -190,5 +197,14 @@ v2 配置使用 `{ component, active, props }`。以下 v1 配置仅用于历史
 0.x 在已配置 `request`、但未配置新 CMS 服务时，会自动启用 `createLegacyJokerCmsOptions()`。旧接口、详情路由、审核过滤和 CDN 资源全部隔离在该适配器中，并会在调试模式给出迁移提示。
 
 自动兼容仅用于过渡；移除前会先确认宿主侧实际用量，不预设删除版本。新项目请显式配置 `cms.services`；也可以设置 `cms: { legacy: false }` 禁止自动启用。
+
+## 主题变量
+
+| 变量名                         | 说明                       |
+| ------------------------------ | -------------------------- |
+| `--snake-color-background`     | 页面及商品区默认背景色     |
+| `--snake-color-text`           | 激活标签文字颜色           |
+| `--snake-color-text-secondary` | 未激活标签文字颜色         |
+| `--snake-color-primary`        | 商品筛选等强调状态的主题色 |
 
 源码：`src/uni_modules/snake-ui/components/snake-cms/snake-cms.vue`

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress';
+import { onBeforeUnmount, ref } from 'vue';
 import { componentCount, componentGroups } from '../component-groups';
 import { toolGroups } from '../tool-groups';
 
@@ -79,7 +80,7 @@ const features = [
         eyebrow: 'Vue 3 + TypeScript',
         title: '现代工程体验',
         details: '面向 Vue 3、TypeScript 与组合式 API，提供清晰、可维护的组件和工具接口。',
-        link: '/guide/getting-started'
+        link: '/components/quickstart'
     },
     {
         eyebrow: 'H5 · App · Mini Program',
@@ -97,6 +98,25 @@ const popular = [
     { name: 'snakeHttp', title: 'HTTP 请求', tag: '工具', link: '/tools/http' }
 ];
 const internalLink = (path: string) => withBase(path);
+const installCommand = 'pnpm add @puresnake/snake-ui';
+const copyStatus = ref('');
+let copyTimer: ReturnType<typeof setTimeout> | undefined;
+
+async function copyInstallCommand() {
+    try {
+        if (!navigator.clipboard) throw new Error('Clipboard API unavailable');
+        await navigator.clipboard.writeText(installCommand);
+        copyStatus.value = '已复制';
+    } catch {
+        copyStatus.value = '复制失败，请手动复制';
+    }
+    if (copyTimer) clearTimeout(copyTimer);
+    copyTimer = setTimeout(() => (copyStatus.value = ''), 2400);
+}
+
+onBeforeUnmount(() => {
+    if (copyTimer) clearTimeout(copyTimer);
+});
 </script>
 
 <template>
@@ -115,7 +135,7 @@ const internalLink = (path: string) => withBase(path);
                         <span>Vue 3</span><span>TypeScript</span><span>uni-app</span><span>CMS Ready</span>
                     </div>
                     <div class="snake-hero__actions">
-                        <a class="snake-button snake-button--brand" :href="internalLink('/guide/getting-started')"
+                        <a class="snake-button snake-button--brand" :href="internalLink('/components/quickstart')"
                             >开发指南 <span>→</span></a
                         >
                         <a class="snake-button snake-button--soft" :href="internalLink('/components/intro')"
@@ -128,6 +148,11 @@ const internalLink = (path: string) => withBase(path);
                             rel="noreferrer"
                             >在线演示 ↗</a
                         >
+                    </div>
+                    <div class="snake-install" aria-label="安装 Snake UI">
+                        <code>{{ installCommand }}</code>
+                        <button type="button" @click="copyInstallCommand">{{ copyStatus || '复制' }}</button>
+                        <span class="snake-install__status" aria-live="polite">{{ copyStatus }}</span>
                     </div>
                 </div>
                 <div class="snake-orbit" aria-hidden="true">
@@ -268,7 +293,7 @@ const internalLink = (path: string) => withBase(path);
                     <h2>选择你的下一步</h2>
                 </header>
                 <div class="snake-next__grid">
-                    <a :href="internalLink('/guide/getting-started')"
+                    <a :href="internalLink('/components/quickstart')"
                         ><span>01</span>
                         <div>
                             <b>开发指南</b>

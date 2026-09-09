@@ -8,9 +8,9 @@ preview: /pages/componentsA/loadingIcon/index
 
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 ## 基础用法
 
@@ -39,6 +39,14 @@ preview: /pages/componentsA/loadingIcon/index
 | `duration`       | 旋转周期，单位 ms      | `number`                    | `1000`           |
 | `customStyle`    | 根节点样式             | `string \| object \| array` | `''`             |
 
-组件支持 H5、微信小程序和 App。
+## 主题变量
+
+| 变量                       | 用途           |
+| -------------------------- | -------------- |
+| `--snake-color-primary`    | 默认活动颜色   |
+| `--snake-color-border`     | 默认非活动颜色 |
+| `--snake-color-text-muted` | 默认文字颜色   |
+
+`color`、`inactiveColor` 和 `textColor` 可以覆盖单个实例的颜色。
 
 源码：`src/uni_modules/snake-ui/components/snake-loading-icon/snake-loading-icon.vue`

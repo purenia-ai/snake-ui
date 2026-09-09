@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress';
-import { computed, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { componentCount, componentGroups, type ComponentGroup, type ComponentItem } from '../component-groups';
 
 type ComponentScope = 'all' | 'cms';
@@ -19,6 +19,8 @@ interface FilteredGroup extends ComponentGroup {
 }
 
 const query = ref('');
+const selectedCategory = ref('all');
+let mounted = false;
 
 const availableGroups = computed<FilteredGroup[]>(() => {
     if (props.scope === 'all') return componentGroups;
@@ -31,11 +33,21 @@ const availableGroups = computed<FilteredGroup[]>(() => {
         .filter(group => group.items.length > 0);
 });
 const availableCount = computed(() => availableGroups.value.reduce((total, group) => total + group.items.length, 0));
+const categoryOptions = computed(() => [
+    { label: '全部', value: 'all', count: availableCount.value },
+    ...availableGroups.value.map(group => ({ label: group.title, value: group.title, count: group.items.length }))
+]);
+const categoryGroups = computed(() =>
+    selectedCategory.value === 'all'
+        ? availableGroups.value
+        : availableGroups.value.filter(group => group.title === selectedCategory.value)
+);
+const categoryCount = computed(() => categoryGroups.value.reduce((total, group) => total + group.items.length, 0));
 const normalizedQuery = computed(() => query.value.trim().toLocaleLowerCase());
 const filteredGroups = computed<FilteredGroup[]>(() => {
-    if (!normalizedQuery.value) return availableGroups.value;
+    if (!normalizedQuery.value) return categoryGroups.value;
 
-    return availableGroups.value
+    return categoryGroups.value
         .map(group => ({
             ...group,
             items: group.items.filter(item => {
@@ -51,6 +63,45 @@ const resultCount = computed(() => filteredGroups.value.reduce((total, group) =>
 function clearQuery() {
     query.value = '';
 }
+
+function selectCategory(category: string) {
+    selectedCategory.value = category;
+}
+
+function readUrlState() {
+    if (typeof window === 'undefined') return;
+    const params = new URL(window.location.href).searchParams;
+    const category = params.get('category');
+    query.value = params.get('q') || '';
+    selectedCategory.value = availableGroups.value.some(group => group.title === category) ? String(category) : 'all';
+}
+
+function writeUrlState() {
+    if (typeof window === 'undefined') return;
+    const url = new URL(window.location.href);
+    const search = query.value.trim();
+    if (search) url.searchParams.set('q', search);
+    else url.searchParams.delete('q');
+    if (selectedCategory.value !== 'all') url.searchParams.set('category', selectedCategory.value);
+    else url.searchParams.delete('category');
+    window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+}
+
+watch([query, selectedCategory], () => {
+    if (mounted) writeUrlState();
+});
+
+onMounted(() => {
+    readUrlState();
+    mounted = true;
+    writeUrlState();
+    window.addEventListener('popstate', readUrlState);
+});
+
+onBeforeUnmount(() => {
+    mounted = false;
+    if (typeof window !== 'undefined') window.removeEventListener('popstate', readUrlState);
+});
 </script>
 
 <template>
@@ -74,9 +125,24 @@ function clearQuery() {
             </div>
             <p class="component-search__meta" aria-live="polite">
                 <template v-if="normalizedQuery">找到 {{ resultCount }} 个组件</template>
+                <template v-else-if="selectedCategory !== 'all'"
+                    >{{ selectedCategory }}共 {{ categoryCount }} 个组件</template
+                >
                 <template v-else-if="props.scope === 'cms'">共 {{ availableCount }} 个 CMS 组件</template>
                 <template v-else>共 {{ componentCount }} 个组件，包含商城与 CMS 业务模块</template>
             </p>
+            <div class="component-filters" role="group" aria-label="按组件分类筛选">
+                <button
+                    v-for="option in categoryOptions"
+                    :key="option.value"
+                    type="button"
+                    :class="{ 'is-active': selectedCategory === option.value }"
+                    :aria-pressed="selectedCategory === option.value"
+                    @click="selectCategory(option.value)"
+                >
+                    {{ option.label }}<span>{{ option.count }}</span>
+                </button>
+            </div>
         </div>
 
         <div v-if="filteredGroups.length" class="component-groups">
@@ -102,7 +168,8 @@ function clearQuery() {
 
         <div v-else class="component-empty" role="status">
             <span>没有找到“{{ query.trim() }}”相关的组件</span>
-            <button type="button" @click="clearQuery">清空搜索</button>
+            <button v-if="normalizedQuery" type="button" @click="clearQuery">清空搜索</button>
+            <button v-else type="button" @click="selectCategory('all')">查看全部</button>
         </div>
     </div>
 </template>
@@ -197,6 +264,52 @@ function clearQuery() {
     margin: 9px 0 0;
     color: var(--vp-c-text-3);
     font-size: 12px;
+}
+
+.component-filters {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+    padding-bottom: 2px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+
+.component-filters button {
+    display: inline-flex;
+    flex: 0 0 auto;
+    min-height: 38px;
+    align-items: center;
+    gap: 6px;
+    padding: 0 12px;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 8px;
+    color: var(--vp-c-text-2);
+    background: var(--vp-c-bg);
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    transition:
+        border-color 160ms ease,
+        color 160ms ease,
+        background-color 160ms ease;
+}
+
+.component-filters button span {
+    color: var(--vp-c-text-3);
+    font-size: 11px;
+}
+
+.component-filters button:hover,
+.component-filters button.is-active {
+    border-color: var(--vp-c-brand-1);
+    color: var(--vp-c-brand-1);
+    background: var(--vp-c-brand-soft);
+}
+
+.component-filters button:focus-visible {
+    outline: 2px solid var(--vp-c-brand-1);
+    outline-offset: 2px;
 }
 
 .component-group {
@@ -330,6 +443,17 @@ function clearQuery() {
         grid-template-columns: 1fr;
     }
 
+    .component-search__control input {
+        font-size: 16px;
+    }
+
+    .component-search__control button,
+    .component-empty button,
+    .component-filters button {
+        min-height: 44px;
+        padding: 0 10px;
+    }
+
     .component-group {
         margin-top: 30px;
     }
@@ -337,7 +461,8 @@ function clearQuery() {
 
 @media (prefers-reduced-motion: reduce) {
     .component-card,
-    .component-search__control {
+    .component-search__control,
+    .component-filters button {
         transition: none;
     }
 }

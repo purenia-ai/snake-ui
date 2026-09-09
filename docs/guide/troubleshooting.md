@@ -1,6 +1,18 @@
 # 常见问题
 
-先根据症状检查安装路径、插件注册、全局样式和 easycom。CMS 问题再检查数据与业务服务。本文会持续补充常见问题。
+先根据症状检查安装路径、插件注册、全局样式和 easycom。CMS 问题再检查数据与业务服务。
+
+## 先定位问题类型
+
+| 现象 | 优先检查 | 相关文档 |
+| ---- | -------- | -------- |
+| 组件未解析或没有样式 | 安装方式、easycom、SCSS 入口 | [快速开始](/components/quickstart) |
+| 主题颜色没有生效 | `theme.scss`、ConfigProvider、主题变量名 | [多主题与暗黑模式](/guide/multi-theme) |
+| CMS 页面为空 | v2 信封、组件标识、`diagnostic` 事件 | [CMS v2 总览](/cms/v2/overview) |
+| 商品/优惠券操作失败 | `cms.services` 注入和返回契约 | [业务服务接入](/cms/v2/services) |
+| 仅某个平台异常 | 条件编译、平台 API、真机基础库版本 | [运行环境与能力边界](/guide/compatibility) |
+
+下面按常见症状展开排查。
 
 ## 1. 组件未解析
 

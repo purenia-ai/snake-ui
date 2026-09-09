@@ -7,19 +7,15 @@ cms: true
 
 组合顶部快捷排序、价格排序和多维筛选面板，并向父级输出统一查询参数。
 
-## 何时使用
-
-用于商品列表上方的排序与多维条件筛选。只有一两个固定条件时，优先使用 Tabs 或普通按钮，减少弹层操作成本。
-
 ## 运行前提
 
 依赖 Vue `<script setup>`、uni-app 节点与滚动 API，以及包内筛选面板和私有交互组件。默认筛选通过安装 Snake UI 时传入的 `cache` 适配器保存。
 
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 > 表格表示组件可通过当前工程编译。涉及跳转、开放能力、原生媒体或业务接口的功能，仍需按下文条件在目标平台验证。
 
@@ -90,10 +86,23 @@ const filters = {
 
 内部下拉菜单方法名按现有接口调用为 `colseAll`。H5 打开筛选面板时会修改 `document.body.style.overflow`；SSR 文档不执行该组件。
 
-H5 端快捷排序项带有工具栏与按钮语义，可通过 Tab 聚焦，并使用 Enter 或空格键选择；`aria-pressed` 会反映当前排序状态。
-
 ## 类型定义
 
 从包根导入 `SnakeFilterSortsProps`、`SnakeFilterSortsEmits` 与筛选数据类型。`change` 返回的是新的查询快照，宿主应用应以该快照重新请求列表，而不是依赖组件内部状态。
+
+## 主题变量
+
+| 变量名                         | 说明                 |
+| ------------------------------ | -------------------- |
+| `--snake-color-primary`        | 激活排序及选中项颜色 |
+| `--snake-color-primary-light`  | 选中项浅色背景       |
+| `--snake-color-background`     | 筛选分类区背景       |
+| `--snake-color-surface`        | 面板及底栏背景       |
+| `--snake-color-surface-muted`  | 筛选项默认背景       |
+| `--snake-color-text`           | 主要文字颜色         |
+| `--snake-color-text-secondary` | 次级文字颜色         |
+| `--snake-color-text-muted`     | 占位及禁用文字颜色   |
+| `--snake-color-border`         | 筛选项边框颜色       |
+| `--snake-color-shadow`         | 底部操作栏阴影颜色   |
 
 源码：`src/uni_modules/snake-ui/components/snake-filter-sorts/snake-filter-sorts.vue`、`src/uni_modules/snake-ui/components/snake-filter-sorts/filter-page.vue`

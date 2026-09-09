@@ -8,9 +8,9 @@ preview: /pages/componentsA/swiper/index
 
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 ## 基础用法
 
@@ -69,5 +69,9 @@ preview: /pages/componentsA/swiper/index
 | 插槽名      | 说明           |
 | ----------- | -------------- |
 | `indicator` | 替换内置指示器 |
+
+## 主题变量
+
+组件未直接使用 CSS 主题变量。可通过 `indicatorColor`、`indicatorActiveColor`、`bgColor` 和 `customStyle` 调整视觉样式。
 
 源码：`src/uni_modules/snake-ui/components/snake-swiper/snake-swiper.vue`

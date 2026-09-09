@@ -8,9 +8,9 @@ preview: /pages/componentsA/transition/index
 
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 ## 基础用法
 
@@ -37,8 +37,23 @@ preview: /pages/componentsA/transition/index
 | `customClass`    | 自定义类名                 | `string`                     | `''`           |
 | `customStyle`    | 根节点样式                 | `string \| object \| array`  | `''`           |
 
-## Events
+### Events
 
-进入阶段依次触发 `before-enter`、`enter`、`after-enter`；离开阶段依次触发 `before-leave`、`leave`、`after-leave`。动画被反向切换时触发 `enter-cancelled` 或 `leave-cancelled`，点击根节点触发 `click`。
+| 事件名                                   | 触发时机             | 参数    |
+| ---------------------------------------- | -------------------- | ------- |
+| `before-enter` / `enter` / `after-enter` | 进入动画各阶段       | -       |
+| `before-leave` / `leave` / `after-leave` | 离开动画各阶段       | -       |
+| `enter-cancelled` / `leave-cancelled`    | 动画被反向切换而取消 | -       |
+| `click`                                  | 点击根节点           | `event` |
+
+### Slots
+
+| 插槽名    | 说明           |
+| --------- | -------------- |
+| `default` | 执行过渡的内容 |
+
+## 主题变量
+
+组件未直接使用 CSS 主题变量。可通过 `customClass` 和 `customStyle` 设置内容容器样式。
 
 源码：`src/uni_modules/snake-ui/components/snake-transition/snake-transition.vue`

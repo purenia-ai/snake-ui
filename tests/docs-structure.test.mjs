@@ -30,6 +30,8 @@ test('component getting-started pages remain connected', async () => {
     const quickstart = await text('docs/components/quickstart.md');
 
     assert.ok(intro.includes('[安装](/components/install)'));
+    assert.ok(intro.includes('[CMS v2 组件总览](/cms/v2/overview)'));
+    assert.ok(!intro.includes('](/cms/components)'));
     assert.ok(setting.includes('[快速上手](/components/quickstart)'));
     assert.ok(quickstart.includes('[组件总览](/components/intro)'));
     assert.match(quickstart, /^## 关于 uni\.\$snake$/m);
@@ -101,6 +103,14 @@ test('CMS domain exposes guides, component discovery, and legacy entry points', 
     assert.match(overview, /type ComponentScope = 'all' \| 'cms'/);
     assert.match(overview, /items\.filter\(item => item\.cms\)/);
     assert.match(overview, /:href="withBase\(item\.link\)"/);
+    assert.match(overview, /const categoryOptions = computed/);
+    assert.match(overview, /aria-label="按组件分类筛选"/);
+    assert.match(overview, /:aria-pressed="selectedCategory === option\.value"/);
+    assert.match(overview, /url\.searchParams\.set\('q', search\)/);
+    assert.match(overview, /url\.searchParams\.set\('category', selectedCategory\.value\)/);
+    assert.match(overview, /window\.history\.replaceState/);
+    assert.match(overview, /window\.addEventListener\('popstate', readUrlState\)/);
+    assert.match(overview, /window\.removeEventListener\('popstate', readUrlState\)/);
     assert.ok((await text('docs/cms/components.md')).includes('<ComponentOverview scope="cms" />'));
 
     const legacyPages = new Map([

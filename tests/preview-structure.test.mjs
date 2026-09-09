@@ -271,6 +271,20 @@ test('development preview follows the docs host for LAN access', async () => {
     assert.doesNotMatch(frame, /http:\/\/localhost:5173\/preview\//);
 });
 
+test('desktop preview exposes accessible manual recovery after a timeout', async () => {
+    const frame = await readFile(resolve(root, 'docs/.vitepress/theme/PreviewFrame.vue'), 'utf8');
+
+    assert.match(frame, /const retryCount = ref\(0\)/);
+    assert.match(frame, /const previewKey = computed/);
+    assert.match(frame, /:key="previewKey"/);
+    assert.match(frame, /function retryPreview\(\)/);
+    assert.match(frame, /retryCount\.value \+= 1/);
+    assert.match(frame, /role="status"/);
+    assert.match(frame, /aria-live="polite"/);
+    assert.match(frame, /@click="retryPreview">重新连接/);
+    assert.match(frame, /:href="previewUrl"[^>]+target="_blank"[^>]*>新窗口打开/);
+});
+
 test('production preview is emitted below the documentation base path', async () => {
     const frame = await readFile(resolve(root, 'docs/.vitepress/theme/PreviewFrame.vue'), 'utf8');
     const buildScript = await readFile(resolve(root, 'scripts/build-docs-preview.cjs'), 'utf8');
@@ -352,13 +366,18 @@ test('button preview presents one configurable button', async () => {
     const renderer = await readFile(resolve(root, 'src/pages/componentsA/button/index.vue'), 'utf8');
 
     assert.doesNotMatch(renderer, /loading-text|loading-mode|\bicon=|<snake-button[^>]*\scolor=|:block=/);
-    assert.equal(renderer.match(/<snake-button\b/g)?.length, 1);
+    assert.equal(renderer.match(/^\s*<snake-button\b/gm)?.length, 1);
     assert.match(renderer, /:type="String\(state\.type\)"/);
     assert.match(renderer, /:size="state\.buttonSize as any"/);
     assert.match(renderer, /:shape="state\.buttonShape as any"/);
     for (const state of ['plain', 'disabled', 'loading', 'ripple']) {
         assert.match(renderer, new RegExp(`:${state}="Boolean\\(state\\.${state}\\)"`));
     }
+    assert.match(renderer, /const currentCode = computed/);
+    assert.match(renderer, /uni\.setClipboardData/);
+    assert.match(renderer, /function resetState\(\)/);
+    assert.match(renderer, /复制代码/);
+    assert.match(renderer, /恢复默认/);
     assert.doesNotMatch(renderer, /demo-button-(?:grid|flow)/);
 });
 

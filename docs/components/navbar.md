@@ -8,9 +8,9 @@ preview: /pages/componentsA/navbar/index
 
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 ## 基础用法
 
@@ -59,5 +59,13 @@ preview: /pages/componentsA/navbar/index
 | 事件名 | 触发时机       | 参数    |
 | ------ | -------------- | ------- |
 | `back` | 点击返回区域时 | `event` |
+
+## 主题变量
+
+| 变量名                  | 说明                 |
+| ----------------------- | -------------------- |
+| `--snake-color-text`    | 返回图标与标题默认色 |
+| `--snake-color-surface` | 导航栏默认背景色     |
+| `--snake-color-divider` | 底部分隔线颜色       |
 
 源码：`src/uni_modules/snake-ui/components/snake-navbar/snake-navbar.vue`

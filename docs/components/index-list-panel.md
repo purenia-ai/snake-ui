@@ -8,9 +8,9 @@ preview: /pages/componentsA/indexListPanel/index
 
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 ## 基础用法
 
@@ -55,5 +55,19 @@ preview: /pages/componentsA/indexListPanel/index
 | ------------------------ | -------------------------- |
 | `scrollTo(indexOrValue)` | 滚动到序号或索引值         |
 | `update()`               | 内容尺寸变化后重新测量锚点 |
+
+### Slots
+
+| 插槽名    | 说明                     |
+| --------- | ------------------------ |
+| `default` | 索引锚点及对应的分组内容 |
+
+## 主题变量
+
+| 变量名                        | 说明                   |
+| ----------------------------- | ---------------------- |
+| `--snake-color-primary`       | 当前索引默认颜色       |
+| `--snake-color-text-muted`    | 未激活索引默认颜色     |
+| `--snake-color-primary-light` | 当前索引提示层背景颜色 |
 
 源码：`src/uni_modules/snake-ui/components/snake-index-list-panel/snake-index-list-panel.vue`

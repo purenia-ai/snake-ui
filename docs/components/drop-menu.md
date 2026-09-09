@@ -8,9 +8,9 @@ preview: /pages/componentsA/dropMenu/index
 
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 ## 基础用法
 
@@ -100,5 +100,15 @@ const beforeToggle = ({ resolve }) => resolve(userHasPermission);
 | 插槽名    | 说明                   |
 | --------- | ---------------------- |
 | `default` | 替换自动生成的选项列表 |
+
+## 主题变量
+
+| 变量名                         | 说明                   |
+| ------------------------------ | ---------------------- |
+| `--snake-color-primary`        | 激活标题和选中项颜色   |
+| `--snake-color-text-secondary` | 默认标题及选项文字颜色 |
+| `--snake-color-surface`        | 菜单栏和下拉面板背景色 |
+| `--snake-color-divider`        | 菜单栏及选项分隔线颜色 |
+| `--snake-color-shadow`         | 下拉面板阴影颜色       |
 
 源码：`src/uni_modules/snake-ui/components/snake-drop-menu/snake-drop-menu.vue`、`src/uni_modules/snake-ui/components/snake-drop-menu-item/snake-drop-menu-item.vue`

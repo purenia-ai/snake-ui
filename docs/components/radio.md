@@ -6,15 +6,11 @@ preview: /pages/componentsA/radio/index
 
 `RadioGroup` 与 `Radio` 成对使用：容器管理一组互斥的单选值、禁用状态、颜色与布局，`Radio` 通过 `name` 参与互斥选择。
 
-## 何时使用
-
-用于一组选项中必须或最多选择一项的场景。允许多选时使用 Checkbox；选项很多或空间紧张时可考虑下拉选择组件。
-
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 ## 基础用法
 
@@ -34,18 +30,18 @@ preview: /pages/componentsA/radio/index
 
 #### Props
 
-| 参数                          | 说明                     | 类型              | 默认值      |
-| ----------------------------- | ------------------------ | ----------------- | ----------- |
-| `modelValue`                  | 当前选中的 name          | `string \| number` | `''`      |
-| `disabled`                    | 全组禁用                 | `boolean`         | `false`     |
-| `activeColor`                 | 选中状态下的颜色         | `string`          | 主题色      |
-| `size`                        | 整体尺寸 small/default/large | `string`       | `''`        |
-| `labelDisabled`               | 是否禁止点击标签选中     | `boolean`         | `false`     |
-| `shape`                       | circle/square 形状       | `string`          | `'circle'`  |
-| `iconSize`                    | 勾号大小，单位 rpx       | `UnitValue`       | `''`        |
-| `width`                       | 每个 radio 占组宽度      | `UnitValue`       | `'auto'`    |
-| `wrap`                        | 是否每个 radio 都换行    | `boolean`         | `false`     |
-| `customClass` / `customStyle` | 自定义类名和样式         | `string \| style` | `''`        |
+| 参数                          | 说明                         | 类型               | 默认值     |
+| ----------------------------- | ---------------------------- | ------------------ | ---------- |
+| `modelValue`                  | 当前选中的 name              | `string \| number` | `''`       |
+| `disabled`                    | 全组禁用                     | `boolean`          | `false`    |
+| `activeColor`                 | 选中状态下的颜色             | `string`           | 主题色     |
+| `size`                        | 整体尺寸 small/default/large | `string`           | `''`       |
+| `labelDisabled`               | 是否禁止点击标签选中         | `boolean`          | `false`    |
+| `shape`                       | circle/square 形状           | `string`           | `'circle'` |
+| `iconSize`                    | 勾号大小，单位 rpx           | `UnitValue`        | `''`       |
+| `width`                       | 每个 radio 占组宽度          | `UnitValue`        | `'auto'`   |
+| `wrap`                        | 是否每个 radio 都换行        | `boolean`          | `false`    |
+| `customClass` / `customStyle` | 自定义类名和样式             | `string \| style`  | `''`       |
 
 #### Events
 
@@ -59,16 +55,16 @@ preview: /pages/componentsA/radio/index
 
 #### Props
 
-| 参数                          | 说明                                     | 类型               | 默认值      |
-| ----------------------------- | ---------------------------------------- | ------------------ | ----------- |
-| `label`                       | 展示标签文本                             | `string`           | `''`        |
-| `value` / `name`              | 兼容旧 API 的值 / 数据项标识，`value` 非空时优先 | `string \| number` | `''`        |
-| `shape`                       | circle/square 形状                       | `string`           | 继承 Group  |
-| `disabled` / `labelDisabled`  | 禁用 / 禁止点击标签选中                  | `boolean`          | `false`     |
-| `activeColor`                 | 选中颜色，设置后覆盖父级 activeColor     | `string`           | 主题色      |
-| `iconSize` / `labelSize`      | 勾号与标签字号，单位 rpx                 | `UnitValue`        | 按 size 预设 |
-| `size`                        | 整体尺寸 small/default/large             | `string`           | 继承 Group  |
-| `customClass` / `customStyle` | 自定义类名和样式                         | `string \| style`  | `''`        |
+| 参数                          | 说明                                             | 类型               | 默认值       |
+| ----------------------------- | ------------------------------------------------ | ------------------ | ------------ |
+| `label`                       | 展示标签文本                                     | `string`           | `''`         |
+| `value` / `name`              | 兼容旧 API 的值 / 数据项标识，`value` 非空时优先 | `string \| number` | `''`         |
+| `shape`                       | circle/square 形状                               | `string`           | 继承 Group   |
+| `disabled` / `labelDisabled`  | 禁用 / 禁止点击标签选中                          | `boolean`          | `false`      |
+| `activeColor`                 | 选中颜色，设置后覆盖父级 activeColor             | `string`           | 主题色       |
+| `iconSize` / `labelSize`      | 勾号与标签字号，单位 rpx                         | `UnitValue`        | 按 size 预设 |
+| `size`                        | 整体尺寸 small/default/large                     | `string`           | 继承 Group   |
+| `customClass` / `customStyle` | 自定义类名和样式                                 | `string \| style`  | `''`         |
 
 #### Events
 
@@ -77,6 +73,17 @@ preview: /pages/componentsA/radio/index
 #### Slots
 
 默认插槽用于标签内容。
+
+## 主题变量
+
+| 变量                        | 用途                   |
+| --------------------------- | ---------------------- |
+| `--snake-color-primary`     | 默认选中颜色           |
+| `--snake-color-border`      | 未选中和禁用边框       |
+| `--snake-color-disabled-bg` | 禁用状态背景与图标颜色 |
+| `--snake-color-text`        | 标签文字颜色           |
+
+`activeColor` 会覆盖当前实例或分组的默认主题色。
 
 ## 类型定义
 

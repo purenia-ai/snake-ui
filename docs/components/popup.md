@@ -8,9 +8,9 @@ preview: /pages/componentsA/popup/index
 
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 ## 基础用法
 
@@ -34,8 +34,6 @@ preview: /pages/componentsA/popup/index
 | `mode`                                        | 弹出方向           | `string`  | `center`                    |
 | `duration` / `zIndex` / `bgColor`             | 动画、层级和背景   | 多类型    | `300 / 10075 / 主题表面色`  |
 | `round` / `zoom`                              | 圆角与中心缩放     | 多类型    | `false / true`              |
-
-`round` 为数字或字符串时按 rpx 处理，`true` 使用主题大圆角 token。center 模式四角全圆；四边模式只圆远离屏幕边缘的一侧（bottom 只圆上两角），避免贴边角被圆掉露出页面背景。四边弹层进出场为整块 100% 滑入滑出。
 | `closeable` / `closeIcon` / `closeIconPos`    | 关闭按钮参数       | 多类型    | `false / close / top-right` |
 | `closeOnClickOverlay`                         | 点击遮罩关闭       | `boolean` | `true`                      |
 | `overlay` / `overlayOpacity` / `overlayStyle` | 遮罩参数           | 多类型    | `true / 0.5 / ''`           |
@@ -43,8 +41,39 @@ preview: /pages/componentsA/popup/index
 | `safeAreaInsetBottom` / `safeAreaInsetTop`    | 安全区             | `boolean` | `false`                     |
 | `customClass` / `customStyle`                 | 面板类名和样式     | 多类型    | `''`                        |
 
-## Events 与方法
+`round` 为数字或字符串时按 rpx 处理，`true` 使用主题大圆角令牌。center 模式四角全圆；四边模式只圆远离屏幕边缘的一侧。四边弹层进出场为整块滑入或滑出。
 
-状态开始变化时触发 `open` 或 `close` 及 `change({ show })`，动画完成后触发 `opened` 或 `closed`，点击遮罩触发 `click-overlay(event)`。组件实例暴露 `open()`、`close()`；同时支持 `v-model`。
+### Events
+
+| 事件名              | 说明                | 参数       |
+| ------------------- | ------------------- | ---------- |
+| `update:modelValue` | 更新 `v-model`      | `boolean`  |
+| `update:show`       | 更新兼容状态 `show` | `boolean`  |
+| `open` / `close`    | 显示状态开始变化    | -          |
+| `opened` / `closed` | 进入或离开动画完成  | -          |
+| `change`            | 显示状态改变        | `{ show }` |
+| `click-overlay`     | 点击遮罩            | 原生事件   |
+
+### Slots
+
+| 名称      | 说明     |
+| --------- | -------- |
+| `default` | 弹层内容 |
+
+### Expose
+
+| 方法      | 说明     |
+| --------- | -------- |
+| `open()`  | 打开弹层 |
+| `close()` | 关闭弹层 |
+
+## 主题变量
+
+| 变量                       | 用途                  |
+| -------------------------- | --------------------- |
+| `--snake-color-surface`    | 默认面板背景          |
+| `--snake-color-text-muted` | 默认关闭图标颜色      |
+| `--snake-radius-large`     | `round="true"` 的圆角 |
+| `--snake-z-index-popup`    | 样式层的默认弹层层级  |
 
 源码：`src/uni_modules/snake-ui/components/snake-popup/snake-popup.vue`

@@ -8,9 +8,9 @@ preview: /pages/componentsA/subsection/index
 
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 ## 基础用法
 
@@ -52,5 +52,15 @@ H5 中当前分段可通过 Tab 聚焦，左右方向键会循环切换，并自
 | ---------------- | ---------------- | ------- |
 | `change`         | 选中新的可用选项 | `index` |
 | `update:current` | 选中索引更新     | `index` |
+
+## 主题变量
+
+| 变量名                         | 说明                     |
+| ------------------------------ | ------------------------ |
+| `--snake-color-primary`        | 激活文字及描边颜色       |
+| `--snake-color-text-secondary` | 未激活文字颜色           |
+| `--snake-color-surface-muted`  | 按钮模式轨道背景色       |
+| `--snake-color-surface`        | 描边模式背景色           |
+| `--snake-color-white`          | 按钮模式激活文字默认颜色 |
 
 源码：`src/uni_modules/snake-ui/components/snake-subsection/snake-subsection.vue`

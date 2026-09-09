@@ -7,19 +7,15 @@ cms: true
 
 以自适应卡片网格展示直购、新品或拍卖商品，包含库存、价格、标签和出价状态。
 
-## 何时使用
-
-用于 CMS 商品区的纯展示与点击上报。数据请求、分页、空状态和详情跳转应由 `snake-cms` 或宿主页面管理，不建议在列表组件内直接发起业务请求。
-
 ## 运行前提
 
 依赖 Snake UI LazyImage、uni-app 基础组件和运行时图片处理逻辑。部分状态图使用源码内置 CDN 地址。
 
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 > 表格表示组件可通过当前工程编译。涉及跳转、开放能力、原生媒体或业务接口的功能，仍需按下文条件在目标平台验证。
 
@@ -72,10 +68,23 @@ cms: true
 - 图片处理会把 `http:` 替换为 `https:`，并为指定 CDN 域名追加 OSS 样式参数。
 - 组件直接读取 `item.image` 并调用字符串方法，商品数据应保证图片字段存在。
 - 远程默认图和标签图的可用性会影响视觉结果，但不影响文档构建。
-- H5 端商品卡片可通过 Tab 聚焦，Enter 或空格键触发与点击一致的 `item-click` 事件；可访问名称优先使用商品名称。
 
 ## 类型定义
 
 从包根导入 `SnakeGoodsListProps`、`SnakeGoodsListEmits` 和 `SnakeGoodsListItem`。接入后端数据时建议先建立显式映射，避免把接口响应对象直接透传给模板。
+
+## 主题变量
+
+| 变量名                         | 说明                 |
+| ------------------------------ | -------------------- |
+| `--snake-color-background`     | 列表默认背景色       |
+| `--snake-color-surface`        | 商品卡片背景色       |
+| `--snake-color-surface-muted`  | 禁用及弱化状态背景色 |
+| `--snake-color-text`           | 商品名称和价格文字色 |
+| `--snake-color-text-secondary` | 商品次级信息颜色     |
+| `--snake-color-text-muted`     | 弱提示及禁用文字色   |
+| `--snake-color-border`         | 弱化状态边框颜色     |
+| `--snake-color-error`          | 拍卖与价格强调色     |
+| `--snake-color-white`          | 强调背景上的反色文字 |
 
 源码：`src/uni_modules/snake-ui/components/snake-goods-list/snake-goods-list.vue`

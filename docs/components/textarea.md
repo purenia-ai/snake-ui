@@ -8,9 +8,9 @@ preview: /pages/componentsA/textarea/index
 
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 ## 基础用法
 
@@ -44,5 +44,18 @@ preview: /pages/componentsA/textarea/index
 | `focus` / `blur` / `linechange`          | 焦点和行数变化         | 原生事件         |
 | `confirm`                                | 键盘确认               | `(value, event)` |
 | `keyboardheightchange`                   | 键盘高度变化           | 原生事件         |
+
+## 主题变量
+
+| 变量名                      | 说明             |
+| --------------------------- | ---------------- |
+| `--snake-color-text`        | 输入文字颜色     |
+| `--snake-color-text-light`  | 占位文字颜色     |
+| `--snake-color-text-muted`  | 字数统计颜色     |
+| `--snake-color-divider`     | 默认边框颜色     |
+| `--snake-color-primary`     | 聚焦边框颜色     |
+| `--snake-color-error`       | 校验失败边框颜色 |
+| `--snake-color-disabled-bg` | 禁用状态背景色   |
+| `--snake-radius-md`         | 容器圆角         |
 
 源码：`src/uni_modules/snake-ui/components/snake-textarea/snake-textarea.vue`

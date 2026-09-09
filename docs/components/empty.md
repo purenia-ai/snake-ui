@@ -8,9 +8,9 @@ preview: /pages/componentsA/empty/index
 
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 ## 基础用法
 
@@ -55,5 +55,14 @@ preview: /pages/componentsA/empty/index
 | `icon`    | 完全替换默认图片或图标 |
 | `default` | 替换默认提示文字       |
 | `bottom`  | 文字下方操作区         |
+
+## 主题变量
+
+| 变量                       | 用途             |
+| -------------------------- | ---------------- |
+| `--snake-color-text-light` | 默认图标颜色     |
+| `--snake-color-text-muted` | 默认提示文字颜色 |
+
+`iconColor`、`color` 和 `textColor` 可以覆盖单个实例的颜色。
 
 源码：`src/uni_modules/snake-ui/components/snake-empty/snake-empty.vue`

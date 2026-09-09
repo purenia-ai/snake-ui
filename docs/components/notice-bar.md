@@ -8,9 +8,9 @@ preview: /pages/componentsA/noticeBar/index
 
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 ## 基础用法
 
@@ -62,5 +62,16 @@ preview: /pages/componentsA/noticeBar/index
 | `change`  | 纵向通知切换 | 当前索引 |
 | `close`   | 点击关闭图标 | -        |
 | `getMore` | 点击更多图标 | -        |
+
+## 主题变量
+
+| 变量                              | 用途               |
+| --------------------------------- | ------------------ |
+| `--snake-color-<type>`            | 对应类型的文字颜色 |
+| `--snake-color-<type>-light`      | 对应类型的浅色背景 |
+| `--snake-color-notice`            | 主题文字回退值     |
+| `--snake-color-notice-background` | 主题背景回退值     |
+
+`color` 和 `bgColor` 会覆盖单个实例的主题颜色。
 
 源码：`src/uni_modules/snake-ui/components/snake-notice-bar/snake-notice-bar.vue`

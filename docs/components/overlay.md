@@ -8,9 +8,9 @@ preview: /pages/componentsA/overlay/index
 
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 ## 基础用法
 
@@ -22,6 +22,8 @@ preview: /pages/componentsA/overlay/index
 
 ## API
 
+### Props
+
 | 参数                          | 说明                 | 类型      | 默认值        |
 | ----------------------------- | -------------------- | --------- | ------------- |
 | `modelValue` / `show`         | 显示状态和兼容别名   | `boolean` | `false`       |
@@ -30,8 +32,26 @@ preview: /pages/componentsA/overlay/index
 | `lockScroll`                  | 是否阻止遮罩区域滚动 | `boolean` | `true`        |
 | `customClass` / `customStyle` | 自定义类名和样式     | 多类型    | `''`          |
 
-Props 包括 `modelValue`、兼容别名 `show`、`opacity`（默认 `0.5`）、`zIndex`（`10070`）、`duration`（`300`）、`lockScroll`（`true`）、`customClass` 和 `customStyle`。
+### Events
 
-点击触发 `click(event)`、`update:modelValue(false)` 和 `update:show(false)`；动画结束触发 `opened`、`closed`。默认插槽用于遮罩内容，内容需要自行使用 `@click.stop` 阻止关闭。
+| 事件名              | 说明               | 参数     |
+| ------------------- | ------------------ | -------- |
+| `update:modelValue` | 点击后关闭 v-model | `false`  |
+| `update:show`       | 更新兼容状态       | `false`  |
+| `click`             | 点击遮罩           | 原生事件 |
+| `opened`            | 进入动画结束       | -        |
+| `closed`            | 离开动画结束       | -        |
+
+### Slots
+
+| 名称      | 说明       |
+| --------- | ---------- |
+| `default` | 遮罩层内容 |
+
+插槽内容需要自行使用 `@click.stop` 阻止点击后关闭遮罩。
+
+## 主题变量
+
+Overlay 没有直接使用 CSS 主题变量。遮罩透明度、层级和自定义外观分别通过 `opacity`、`zIndex` 与 `customStyle` 配置。
 
 源码：`src/uni_modules/snake-ui/components/snake-overlay/snake-overlay.vue`

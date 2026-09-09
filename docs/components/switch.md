@@ -8,9 +8,9 @@ preview: /pages/componentsA/switch/index
 
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 ## 基础用法
 
@@ -41,5 +41,14 @@ H5 中组件可通过 Tab 聚焦，并使用 Enter 或空格切换。`disabled` 
 | ------------------------------ | ------------------------ | ----- |
 | `update:modelValue` / `change` | 状态更新                 | 新值  |
 | `click`                        | 点击组件，禁用时也会触发 | event |
+
+## 主题变量
+
+| 变量                    | 用途               |
+| ----------------------- | ------------------ |
+| `--snake-color-primary` | 默认开启颜色与焦点 |
+| `--snake-color-border`  | 默认关闭颜色       |
+
+`activeColor` 和 `inactiveColor` 可以覆盖单个实例的对应颜色。
 
 源码：`src/uni_modules/snake-ui/components/snake-switch/snake-switch.vue`

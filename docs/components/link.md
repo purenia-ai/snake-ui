@@ -8,9 +8,9 @@ preview: /pages/componentsA/link/index
 
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 ## 基础用法
 
@@ -24,16 +24,16 @@ preview: /pages/componentsA/link/index
 
 ### Props
 
-| 参数          | 说明                           | 类型               | 默认值                    |
-| ------------- | ------------------------------ | ------------------ | ------------------------- |
-| `text`        | 超链接文字                     | `string \| number` | `''`                      |
-| `color`       | 文字颜色                       | `string`           | `--snake-color-primary`   |
-| `fontSize`    | 字体大小，数值按 rpx 处理      | `string \| number` | `28`                      |
-| `underLine`   | 是否显示下划线                 | `boolean`          | `false`                   |
-| `href`        | 要跳转的链接                   | `string`           | `''`                      |
-| `mpTips`      | 小程序复制到粘贴板后的提示语   | `string`           | 语言包默认值              |
-| `lineColor`   | 下划线颜色，默认同文字颜色     | `string`           | `''`                      |
-| `defaultClick`| 是否默认点击跳转               | `boolean`          | `true`                    |
+| 参数           | 说明                         | 类型               | 默认值                  |
+| -------------- | ---------------------------- | ------------------ | ----------------------- |
+| `text`         | 超链接文字                   | `string \| number` | `''`                    |
+| `color`        | 文字颜色                     | `string`           | `--snake-color-primary` |
+| `fontSize`     | 字体大小，数值按 rpx 处理    | `string \| number` | `28`                    |
+| `underLine`    | 是否显示下划线               | `boolean`          | `false`                 |
+| `href`         | 要跳转的链接                 | `string`           | `''`                    |
+| `mpTips`       | 小程序复制到粘贴板后的提示语 | `string`           | 语言包默认值            |
+| `lineColor`    | 下划线颜色，默认同文字颜色   | `string`           | `''`                    |
+| `defaultClick` | 是否默认点击跳转             | `boolean`          | `true`                  |
 
 ### Events
 
@@ -43,8 +43,14 @@ preview: /pages/componentsA/link/index
 
 ### Slots
 
-| 名称    | 说明           |
-| ------- | -------------- |
-| default | 超链接内容     |
+| 名称    | 说明       |
+| ------- | ---------- |
+| default | 超链接内容 |
+
+## 主题变量
+
+| 变量名                  | 说明           |
+| ----------------------- | -------------- |
+| `--snake-color-primary` | 超链接默认颜色 |
 
 源码：`src/uni_modules/snake-ui/components/snake-link/snake-link.vue`

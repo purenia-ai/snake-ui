@@ -17,6 +17,72 @@ const toComponentDirectory = item => {
 };
 const foundation = foundationComponentItems.map(toDocumentName);
 const cms = cmsComponentItems.map(toDocumentName);
+const standardizedDocs = [
+    'button',
+    'input',
+    'form',
+    'popup',
+    'upload',
+    'checkbox',
+    'radio',
+    'switch',
+    'select',
+    'calendar',
+    'overlay',
+    'notice-bar',
+    'empty',
+    'loading-icon',
+    'skeleton',
+    'navbar',
+    'tabs',
+    'subsection',
+    'sticky',
+    'swiper',
+    'line',
+    'cell-group',
+    'cell-item',
+    'button-sort',
+    'drop-menu',
+    'index-list',
+    'index-list-panel',
+    'index-anchor',
+    'count-down',
+    'line-progress',
+    'slider',
+    'loadmore',
+    'no-network',
+    'read-more',
+    'transition',
+    'config-provider',
+    'icon',
+    'image',
+    'lazy-image',
+    'text',
+    'link',
+    'textarea',
+    'search',
+    'snake-cms',
+    'custom-module',
+    'images',
+    'hotzone',
+    'picture-ads',
+    'magic-cube',
+    'videos',
+    'rich-text',
+    'notice',
+    'auxiliary-segmentation',
+    'graphic-navigation',
+    'floating-bubble',
+    'activity-list',
+    'goods-list',
+    'coupon',
+    'commodity-search',
+    'filter-sorts',
+    'list-switching',
+    'follow',
+    'jump-applet',
+    'page-popup'
+];
 
 async function document(name) {
     return readFile(resolve(root, 'docs/components', `${name}.md`), 'utf8');
@@ -29,7 +95,9 @@ test('all component docs contain the common detailed sections', async () => {
             assert.match(markdown, /^## 平台兼容性$/m, `${name}: compatibility`);
             assert.match(markdown, /^## 基础用法$/m, `${name}: basic usage`);
             assert.match(markdown, /^## API$/m, `${name}: API`);
-            assert.match(markdown, /\| 参数 \| 说明 \| 类型 \| 默认值 \|/, `${name}: props table`);
+            assert.match(markdown, /\|\s*参数\s*\|\s*说明\s*\|\s*类型\s*\|\s*默认值\s*\|/, `${name}: props table`);
+            assert.match(markdown, /^### Slots$/m, `${name}: slots`);
+            assert.match(markdown, /^## 主题变量$/m, `${name}: theme variables`);
             assert.match(markdown, /源码：`src\/uni_modules\/snake-ui\/components\//, `${name}: source path`);
             continue;
         }
@@ -43,6 +111,136 @@ test('all component docs contain the common detailed sections', async () => {
             `${name}: complete props table or explicit no-props statement`
         );
         assert.match(markdown, /源码：`src\/uni_modules\/snake-ui\/components\//, `${name}: source path`);
+    }
+});
+
+test('high-use component docs follow the standard documentation shape', async () => {
+    assert.deepEqual(
+        [...standardizedDocs].sort(),
+        componentItems.map(toDocumentName).sort(),
+        'every public component doc is covered by the standard'
+    );
+
+    for (const name of standardizedDocs) {
+        const markdown = await document(name);
+        assert.match(markdown, /^## 平台兼容性$/m, `${name}: compatibility`);
+        assert.match(
+            markdown,
+            /\|\s*H5\s*\|\s*App\s*\|\s*微信小程序\s*\|\s*支付宝小程序\s*\|/,
+            `${name}: platform table`
+        );
+        assert.match(
+            markdown,
+            /\|\s*(?:√|—)\s*\|\s*(?:√|—)\s*\|\s*(?:√|—)\s*\|\s*(?:√|—)\s*\|/,
+            `${name}: platform support matrix`
+        );
+        assert.doesNotMatch(markdown, /QQ 小程序/, `${name}: omitted QQ Mini Program`);
+        assert.match(markdown, /^## (?:基础|基本)用法$/m, `${name}: basic usage`);
+        assert.match(markdown, /^## API$/m, `${name}: API`);
+        assert.match(markdown, /^#{3,4} (?:Form )?Props$/m, `${name}: props`);
+        assert.match(markdown, /^## 主题变量$/m, `${name}: theme variables`);
+        assert.doesNotMatch(markdown, /^## (?:何时使用|无障碍)$/m, `${name}: omitted sections`);
+        assert.match(markdown, /源码：`src\/uni_modules\/snake-ui\/components\//, `${name}: source path`);
+    }
+
+    for (const name of [
+        'button',
+        'input',
+        'popup',
+        'upload',
+        'checkbox',
+        'radio',
+        'switch',
+        'select',
+        'calendar',
+        'overlay',
+        'notice-bar',
+        'navbar',
+        'tabs',
+        'subsection',
+        'sticky',
+        'swiper',
+        'cell-item',
+        'button-sort',
+        'drop-menu',
+        'index-list',
+        'index-list-panel',
+        'count-down',
+        'slider',
+        'loadmore',
+        'no-network',
+        'read-more',
+        'transition',
+        'config-provider',
+        'icon',
+        'image',
+        'lazy-image',
+        'text',
+        'link',
+        'textarea',
+        'search',
+        'snake-cms',
+        'hotzone',
+        'activity-list',
+        'goods-list',
+        'coupon',
+        'filter-sorts',
+        'jump-applet'
+    ]) {
+        const markdown = await document(name);
+        assert.match(markdown, /^#{3,4} Events$/m, `${name}: events`);
+    }
+
+    for (const name of [
+        'button',
+        'input',
+        'popup',
+        'upload',
+        'checkbox',
+        'radio',
+        'calendar',
+        'overlay',
+        'empty',
+        'skeleton',
+        'navbar',
+        'sticky',
+        'swiper',
+        'cell-group',
+        'cell-item',
+        'drop-menu',
+        'index-list',
+        'index-list-panel',
+        'index-anchor',
+        'line-progress',
+        'slider',
+        'read-more',
+        'transition',
+        'config-provider',
+        'image',
+        'lazy-image',
+        'text',
+        'link',
+        'snake-cms',
+        'custom-module'
+    ]) {
+        assert.match(await document(name), /^#{3,4} Slots$/m, `${name}: slots`);
+    }
+
+    assert.match(await document('form'), /^### Form Expose$/m);
+    assert.match(await document('form'), /^### FormItem Slots$/m);
+    assert.match(await document('popup'), /^### Expose$/m);
+    assert.match(await document('upload'), /^### Methods$/m);
+    assert.match(await document('tabs'), /^### Methods$/m);
+    assert.match(await document('sticky'), /^### Expose$/m);
+    assert.match(await document('drop-menu'), /^#### Expose$/m);
+    assert.match(await document('snake-cms'), /^### Expose$/m);
+    assert.match(
+        await document('follow'),
+        /\|\s*—\s*\|\s*—\s*\|\s*√\s*\|\s*—\s*\|/,
+        'follow: only WeChat Mini Program is supported'
+    );
+    for (const name of ['index-list', 'index-list-panel', 'count-down', 'slider', 'no-network', 'read-more']) {
+        assert.match(await document(name), /^### (?:Expose|Methods)$/m, `${name}: exposed methods`);
     }
 });
 
@@ -91,11 +289,7 @@ test('changelog inventory stays in lock-step with the registry', async () => {
     assert.doesNotMatch(changelog, /内测|尚未正式发布/, 'changelog: no internal-testing copy');
 
     for (const group of componentGroups) {
-        assert.match(
-            changelog,
-            new RegExp(`${group.title}（${group.items.length}）`),
-            `${group.title}: count header`
-        );
+        assert.match(changelog, new RegExp(`${group.title}（${group.items.length}）`), `${group.title}: count header`);
     }
     for (const item of componentItems) {
         assert.ok(changelog.includes(item.name), `${item.name}: listed in changelog`);

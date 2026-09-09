@@ -8,9 +8,9 @@ preview: /pages/componentsA/sticky/index
 
 ## 平台兼容性
 
-|  H5  | 微信小程序 | App  |
-| :--: | :--------: | :--: |
-| 支持 |    支持    | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 ## 基础用法
 
@@ -34,6 +34,28 @@ preview: /pages/componentsA/sticky/index
 | `index`                       | 事件携带的业务索引             | `string \| number` | `0`                |
 | `customClass` / `customStyle` | 自定义类名和样式               | 多类型             | `''`               |
 
-进入与离开固定状态时触发 `fixed(detail)`、`unfixed(detail)`，两者同时触发 `change(detail)`；`detail` 为 `{ isFixed, index }`。实例暴露异步 `update()`，内容尺寸改变后可主动重新测量。
+### Events
+
+| 事件名    | 触发时机         | 参数                 |
+| --------- | ---------------- | -------------------- |
+| `fixed`   | 进入固定状态     | `{ isFixed, index }` |
+| `unfixed` | 离开固定状态     | `{ isFixed, index }` |
+| `change`  | 固定状态发生变化 | `{ isFixed, index }` |
+
+### Slots
+
+| 插槽名    | 说明     |
+| --------- | -------- |
+| `default` | 吸顶内容 |
+
+### Expose
+
+| 方法       | 说明                           |
+| ---------- | ------------------------------ |
+| `update()` | 内容尺寸改变后异步重新测量位置 |
+
+## 主题变量
+
+组件未直接使用 CSS 主题变量。可通过 `bgColor` 设置背景，并通过 `customStyle` 覆盖其他视觉样式。
 
 源码：`src/uni_modules/snake-ui/components/snake-sticky/snake-sticky.vue`

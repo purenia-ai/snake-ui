@@ -4,6 +4,7 @@ cms: true
 ---
 
 # 魔方布局 <span class="cms-badge">CMS</span>
+
 按照预设类型将多张图片组合成 CMS 魔方区域，并支持按星期和每日时间段筛选素材。
 
 ## 运行前提
@@ -12,9 +13,9 @@ cms: true
 
 ## 平台兼容性
 
-| H5 | 微信小程序 | App |
-| :-: | :-: | :-: |
-| 支持 | 支持 | 支持 |
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
 
 > 表格表示组件可通过当前工程编译。涉及跳转、开放能力、原生媒体或业务接口的功能，仍需按下文条件在目标平台验证。
 
@@ -22,19 +23,17 @@ cms: true
 
 ```vue
 <snake-magic-cube
-  :datas="{
-    rubiksCubeType: 1,
-    heights: 360,
-    pageMargin: 20,
-    imgMargin: 8,
-    borderRadius: 12,
-    bgColor: '#ffffff',
-    imageTypeObj: {
-      imageList: [
-        { src: 'https://example.com/cube-1.png', url: '/pages/activity/one' },
-      ],
-    },
-  }"
+    :datas="{
+        rubiksCubeType: 1,
+        heights: 360,
+        pageMargin: 20,
+        imgMargin: 8,
+        borderRadius: 12,
+        bgColor: '#ffffff',
+        imageTypeObj: {
+            imageList: [{ src: 'https://example.com/cube-1.png', url: '/pages/activity/one' }]
+        }
+    }"
 />
 ```
 
@@ -46,21 +45,21 @@ cms: true
 
 ### Props
 
-| 参数 | 说明 | 类型 | 默认值 | 可选值 |
-| --- | --- | --- | --- | --- |
-| `datas` | 魔方类型、尺寸和素材配置 | `Object` | 未声明 | - |
+| 参数    | 说明                     | 类型     | 默认值 | 可选值 |
+| ------- | ------------------------ | -------- | ------ | ------ |
+| `datas` | 魔方类型、尺寸和素材配置 | `Object` | 未声明 | -      |
 
 ### 主要 `datas` 字段
 
-| 字段 | 说明 |
-| --- | --- |
-| `rubiksCubeType` | 选择模板中的魔方布局分支 |
-| `imageTypeObj` | 当前布局使用的图片配置对象 |
-| `heights` | 整体高度，经 Snake UI 单位换算处理 |
-| `topHeight`、`topHeights` | 部分上下分区布局的比例 |
-| `pageMargin`、`imgMargin`、`borderRadius` | 页面边距、图片间距和圆角 |
-| `bgColor` | 背景色 |
-| `rowNum`、`interval` | 部分轮播/行布局配置 |
+| 字段                                      | 说明                               |
+| ----------------------------------------- | ---------------------------------- |
+| `rubiksCubeType`                          | 选择模板中的魔方布局分支           |
+| `imageTypeObj`                            | 当前布局使用的图片配置对象         |
+| `heights`                                 | 整体高度，经 Snake UI 单位换算处理 |
+| `topHeight`、`topHeights`                 | 部分上下分区布局的比例             |
+| `pageMargin`、`imgMargin`、`borderRadius` | 页面边距、图片间距和圆角           |
+| `bgColor`                                 | 背景色                             |
+| `rowNum`、`interval`                      | 部分轮播/行布局配置                |
 
 ### 素材时间规则
 
@@ -73,5 +72,9 @@ cms: true
 - 时间过滤使用设备本地时间，并将素材时间的时分秒套用到当天。
 - 同时缺少开始或结束时间的嵌套素材不会进入定时展示列表。
 - 布局类型对应固定模板，`imageTypeObj` 的嵌套结构应与后台装修配置保持一致。
+
+## 主题变量
+
+组件未直接使用 CSS 主题变量。通过 `datas.bgColor`、间距、圆角和素材配置控制外观。
 
 源码：`src/uni_modules/snake-ui/components/snake-magic-cube/snake-magic-cube.vue`
