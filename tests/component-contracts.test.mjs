@@ -52,7 +52,7 @@ test('every public component exposes an independent type contract', async () => 
     const packageEntry = await readFile(new URL('index.ts', root), 'utf8');
     const declarationEntry = await readFile(new URL('types/components.d.ts', root), 'utf8');
 
-    assert.equal(directories.length, 71);
+    assert.equal(directories.length, 70);
     for (const component of directories) {
         const types = await readFile(new URL(`components/${component}/types.ts`, root), 'utf8');
         assert.match(types, /export (?:interface|type) Snake/, `${component}: missing public contract`);
@@ -132,7 +132,6 @@ test('every Vue component explains its role and documented components expose an 
         'snake-follow',
         'snake-goods-list',
         'snake-graphic-navigation',
-        'snake-hotzone',
         'snake-images',
         'snake-jump-applet',
         'snake-list-switching',

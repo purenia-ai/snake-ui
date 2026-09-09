@@ -74,7 +74,6 @@ const undocumentedCmsComponents = [
     'follow',
     'goods-list',
     'graphic-navigation',
-    'hotzone',
     'images',
     'jump-applet',
     'list-switching',

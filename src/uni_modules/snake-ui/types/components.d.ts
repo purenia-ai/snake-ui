@@ -104,7 +104,6 @@ export * from '../components/snake-link/types';
 export * from '../components/snake-text/types';
 export * from '../components/snake-calendar/types';
 export * from '../components/snake-count-down/types';
-export * from '../components/snake-hotzone/types';
 export * from '../components/snake-index-list/types';
 export * from '../components/snake-index-list-panel/types';
 export * from '../components/snake-index-anchor/types';
@@ -164,7 +163,6 @@ export const SnakeFilterSorts: SnakeComponent<SnakeFilterSortsProps, SnakeFilter
 export const SnakeFollow: SnakeComponent<SnakeFollowProps>;
 export const SnakeGoodsList: SnakeComponent<SnakeGoodsListProps, SnakeGoodsListEmits>;
 export const SnakeGraphicNavigation: SnakeComponent<SnakeGraphicNavigationProps>;
-export const SnakeHotzone: SnakeComponent;
 export const SnakeImages: SnakeComponent<SnakeImagesProps>;
 export const SnakeJumpApplet: SnakeComponent<SnakeJumpAppletProps, SnakeJumpAppletEmits>;
 export const SnakeListSwitching: SnakeComponent<SnakeListSwitchingProps, SnakeListSwitchingEmits>;

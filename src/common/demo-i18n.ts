@@ -353,8 +353,6 @@ Object.assign(englishMessages, {
     '根据页面装修配置按顺序渲染完整的 CMS 页面。': 'Renders a complete CMS page from decoration configuration.',
     '通过命名插槽接入业务自定义内容。': 'Uses named slots to integrate custom business content.',
     '按照装修数据展示单图或多图内容。': 'Displays one or more images from decoration data.',
-    '在背景图上按百分比热区点击跳转，热区与链接由装修编辑器配置。':
-        'Adds percentage-based links over an image from editor configuration.',
     '用于焦点广告轮播，支持间距、圆角和播放间隔。': 'A hero ad carousel with spacing, radius and interval controls.',
     '通过可配置宫格组合营销图片和入口。': 'Combines marketing images and links in a configurable grid.',
     '在装修页面中承载视频播放内容。': 'Hosts video content inside a decorated page.',
@@ -417,7 +415,6 @@ const demoTitles: Record<string, string> = {
     'snake-cms': 'Snake CMS',
     'custom-module': 'Custom Module',
     images: 'Images',
-    hotzone: 'Hot Zone',
     'picture-ads': 'Picture Ads',
     'magic-cube': 'Magic Cube',
     videos: 'Videos',

@@ -34,7 +34,6 @@ export const snakeCmsBlocks = {
         standalone: true
     },
     images: { version: 1, category: 'content', componentName: 'snake-images', standalone: true },
-    hotzone: { version: 1, category: 'content', componentName: 'snake-hotzone', standalone: true },
     pictureads: { version: 1, category: 'content', componentName: 'snake-picture-ads', standalone: true },
     magiccube: { version: 1, category: 'content', componentName: 'snake-magic-cube', standalone: true },
     videos: { version: 1, category: 'content', componentName: 'snake-videos', standalone: true },

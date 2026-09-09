@@ -55,7 +55,6 @@ test('CMS block catalog is the source of built-in identities and public componen
         'richtext',
         'graphicnavigation',
         'images',
-        'hotzone',
         'pictureads',
         'magiccube',
         'videos',

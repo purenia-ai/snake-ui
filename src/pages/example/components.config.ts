@@ -252,13 +252,6 @@ const componentGroups: SnakeComponentGroup[] = [
                 true
             ),
             item(
-                '/pages/componentsB/hotzone/index',
-                'Hotzone 热区图',
-                'Hotzone',
-                '在背景图上按百分比热区点击跳转，链接由装修编辑器配置。',
-                true
-            ),
-            item(
                 '/pages/componentsB/pictureAds/index',
                 'PictureAds 轮播广告',
                 'PictureAds',

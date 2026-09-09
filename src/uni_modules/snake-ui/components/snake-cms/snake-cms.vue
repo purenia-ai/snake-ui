@@ -9,12 +9,6 @@
             <snake-rich-text v-else-if="item.component === 'richtext'" :datas="item.setStyle" />
             <snake-graphic-navigation v-else-if="item.component === 'graphicnavigation'" :datas="item.setStyle" />
             <snake-images v-else-if="item.component === 'images'" :datas="item.setStyle" />
-            <snake-hotzone
-                v-else-if="item.component === 'hotzone'"
-                :datas="item.setStyle"
-                :link-service="options.services?.link"
-                :page-info="pageInfo"
-            />
             <snake-picture-ads v-else-if="item.component === 'pictureads'" :datas="item.setStyle" />
             <snake-magic-cube v-else-if="item.component === 'magiccube'" :datas="item.setStyle" />
             <snake-videos v-else-if="item.component === 'videos'" :datas="item.setStyle" />
@@ -165,7 +159,6 @@ import SnakeFilterSorts from '../snake-filter-sorts/snake-filter-sorts.vue';
 import SnakeFollow from '../snake-follow/snake-follow.vue';
 import SnakeGoodsList from '../snake-goods-list/snake-goods-list.vue';
 import SnakeGraphicNavigation from '../snake-graphic-navigation/snake-graphic-navigation.vue';
-import SnakeHotzone from '../snake-hotzone/snake-hotzone.vue';
 import SnakeImages from '../snake-images/snake-images.vue';
 import SnakeJumpApplet from '../snake-jump-applet/snake-jump-applet.vue';
 import SnakeMagicCube from '../snake-magic-cube/snake-magic-cube.vue';
