@@ -43,7 +43,7 @@ export const snakeLightPalette: SnakeThemeColor = {
     divider: '#E4E7ED',
     mask: 'rgba(0, 0, 0, 0.4)',
     shadow: 'rgba(0, 0, 0, 0.1)',
-    background: '#F3F4F6',
+    background: '#F6F6F6',
     surface: '#ffffff',
     surfaceMuted: '#F1F1F1',
     notice: '#FF9900',

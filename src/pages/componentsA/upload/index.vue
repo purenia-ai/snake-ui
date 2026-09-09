@@ -227,7 +227,7 @@ function formatFileSize(bytes?: number) {
 
 <style scoped>
 .upload-demo-page {
-    background: var(--snake-color-background, #f3f4f6);
+    background: var(--snake-color-background, #f6f6f6);
 }
 .upload-demo {
     margin: 0 -24rpx;

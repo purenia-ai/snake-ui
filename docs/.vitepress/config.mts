@@ -89,7 +89,8 @@ export default defineConfig({
                         { text: '介绍', link: '/guide/intro' },
                         { text: '运行环境与能力边界', link: '/guide/compatibility' },
                         { text: '代码提示', link: '/guide/code-hint' },
-                        { text: '设计理念', link: '/guide/design-principles' }
+                        { text: '设计理念', link: '/guide/design-principles' },
+                        { text: '色彩', link: '/guide/color' }
                     ]
                 },
                 {
