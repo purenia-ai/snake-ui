@@ -6,8 +6,9 @@ import { componentGroups, componentItems } from '../docs/.vitepress/component-gr
 
 const root = resolve(import.meta.dirname, '..');
 const toDocumentName = item => item.link.slice('/components/'.length);
-const toComponentDirectory = item => {
+const toComponentDirectories = item => {
     const documentName = toDocumentName(item);
+    if (documentName === 'cell') return ['snake-cell-group', 'snake-cell-item'];
     return documentName.startsWith('snake-') ? documentName : `snake-${documentName}`;
 };
 const components = componentItems.map(toDocumentName);
@@ -33,8 +34,7 @@ const standardizedDocs = [
     'sticky',
     'swiper',
     'line',
-    'cell-group',
-    'cell-item',
+    'cell',
     'button-sort',
     'drop-menu',
     'index-list',
@@ -154,7 +154,7 @@ test('high-use component docs follow the standard documentation shape', async ()
         'subsection',
         'sticky',
         'swiper',
-        'cell-item',
+        'cell',
         'button-sort',
         'drop-menu',
         'index-list',
@@ -192,8 +192,7 @@ test('high-use component docs follow the standard documentation shape', async ()
         'navbar',
         'sticky',
         'swiper',
-        'cell-group',
-        'cell-item',
+        'cell',
         'drop-menu',
         'index-list',
         'index-list-panel',
@@ -224,13 +223,21 @@ test('high-use component docs follow the standard documentation shape', async ()
 });
 
 test('component registry is the complete documented component source of truth', async () => {
-    assert.equal(componentItems.length, 43);
+    assert.equal(componentItems.length, 42);
     assert.equal(new Set(componentItems.map(item => item.link)).size, componentItems.length);
 
     const packageEntry = await readFile(resolve(root, 'src/uni_modules/snake-ui/index.ts'), 'utf8');
     for (const item of componentItems) {
-        const componentDirectory = toComponentDirectory(item);
-        assert.match(packageEntry, new RegExp(`export \\* from './components/${componentDirectory}/types'`), item.name);
+        const componentDirectories = toComponentDirectories(item);
+        for (const componentDirectory of Array.isArray(componentDirectories)
+            ? componentDirectories
+            : [componentDirectories]) {
+            assert.match(
+                packageEntry,
+                new RegExp(`export \\* from './components/${componentDirectory}/types'`),
+                item.name
+            );
+        }
     }
 
     for (const name of undocumentedCmsComponents) {
@@ -250,7 +257,6 @@ test('component registry groups follow the standard bucket taxonomy', () => {
     assert.equal(groupOf('/components/swiper'), '布局组件');
     assert.equal(groupOf('/components/count-down'), '数据组件');
     assert.equal(groupOf('/components/navbar'), '导航组件');
-
 });
 
 test('changelog inventory stays in lock-step with the registry', async () => {

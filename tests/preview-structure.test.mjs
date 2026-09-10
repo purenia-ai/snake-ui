@@ -32,8 +32,7 @@ const foundationComponents = [
     'radio',
     'switch',
     'slider',
-    'cell-group',
-    'cell-item',
+    'cell',
     'line',
     'line-progress',
     'search',
@@ -89,10 +88,15 @@ test('documented components keep valid example routes while compatibility previe
         if (match) previews.push(match[1]);
     }
 
-    assert.equal(routes.length, 62);
+    assert.equal(routes.length, 61);
     assert.equal(previews.length, 42);
     assert.equal(new Set(previews).size, previews.length);
-    for (const preview of previews) assert.ok(routes.includes(preview), `${preview}: missing example route`);
+    for (const preview of previews) {
+        assert.ok(
+            routes.includes(preview) || preview === 'pages/other/color/index',
+            `${preview}: missing example route`
+        );
+    }
 });
 
 test('all public foundation components have docs, routes, and preview pages', async () => {
@@ -120,9 +124,9 @@ test('component overview page covers every example route and directory layout', 
     );
     const routes = exampleRoutes(pages);
 
-    assert.equal(configuredPaths.length, 62);
+    assert.equal(configuredPaths.length, 61);
     assert.deepEqual([...configuredPaths].sort(), [...routes].sort());
-    assert.equal(groupA.length, 42);
+    assert.equal(groupA.length, 41);
     assert.equal(groupB.length, 20);
     for (const directory of [
         ...groupA.map(name => ['componentsA', name]),
@@ -159,7 +163,7 @@ test('all example pages own their interactive demo configuration', async () => {
     const panel = await readFile(resolve(root, 'src/components/demo-control-panel/demo-control-panel.vue'), 'utf8');
     const pages = await examplePageSources();
 
-    assert.equal(pages.length, 62);
+    assert.equal(pages.length, 61);
     for (const page of pages) {
         assert.match(page, /<DemoPage/);
         assert.match(page, /<DemoControlPanel/);

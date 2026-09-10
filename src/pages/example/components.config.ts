@@ -84,7 +84,12 @@ const componentGroups: SnakeComponentGroup[] = [
                 '集成占位、清除与操作按钮的常用搜索输入。'
             ),
             item('/pages/componentsA/select/index', 'Select 列选择器', 'Select', '单列、多列与多列联动的底部选择器。'),
-            item('/pages/componentsA/upload/index', 'Upload 文件上传', 'Upload', '上传图片、视频和文件，支持 OSS 适配器。'),
+            item(
+                '/pages/componentsA/upload/index',
+                'Upload 文件上传',
+                'Upload',
+                '上传图片、视频和文件，支持 OSS 适配器。'
+            ),
             item(
                 '/pages/componentsA/calendar/index',
                 'Calendar 日历',
@@ -117,12 +122,7 @@ const componentGroups: SnakeComponentGroup[] = [
                 '长内容先收起一部分，点击展开全文。'
             ),
             item('/pages/componentsA/empty/index', 'Empty 空状态', 'Empty', '空数据占位并提供清晰的下一步提示。'),
-            item(
-                '/pages/componentsA/countDown/index',
-                'CountDown 倒计时',
-                'Count Down',
-                '用于活动截止等场景的倒计时。'
-            )
+            item('/pages/componentsA/countDown/index', 'CountDown 倒计时', 'Count Down', '用于活动截止等场景的倒计时。')
         ]
     },
     {
@@ -130,12 +130,7 @@ const componentGroups: SnakeComponentGroup[] = [
         groupNameEn: 'Feedback',
         icon: '◉',
         list: [
-            item(
-                '/pages/componentsA/noticeBar/index',
-                'NoticeBar 通知栏',
-                'NoticeBar',
-                '支持横向通知与纵向多条轮播。'
-            ),
+            item('/pages/componentsA/noticeBar/index', 'NoticeBar 通知栏', 'NoticeBar', '支持横向通知与纵向多条轮播。'),
             item('/pages/componentsA/overlay/index', 'Overlay 遮罩层', 'Overlay', '隔离当前页面与浮层操作。'),
             item('/pages/componentsA/popup/index', 'Popup 弹出层', 'Popup', '支持从不同方向出现并承载业务内容。'),
             item(
@@ -160,16 +155,10 @@ const componentGroups: SnakeComponentGroup[] = [
                 '以横向或竖向线条分隔内容块，支持半像素细线。'
             ),
             item(
-                '/pages/componentsA/cellGroup/index',
-                'CellGroup 单元格分组',
-                'CellGroup',
-                '将一组单元格组合为带标题和外边框的分组。'
-            ),
-            item(
-                '/pages/componentsA/cellItem/index',
-                'CellItem 单元格条目',
-                'CellItem',
-                '带图标、标题、描述和箭头的单行列表条目。'
+                '/pages/componentsA/cell/index',
+                'Cell 单元格',
+                'Cell',
+                '组合单元格条目与分组容器，用于设置和个人中心等列表场景。'
             )
         ]
     },

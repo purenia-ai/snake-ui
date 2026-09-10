@@ -10,6 +10,8 @@ const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
 const clickedIndex = ref<string | number>('');
 const controls: DemoControl[] = [
+    { key: 'cgTitle', label: '分组标题', type: 'input', defaultValue: '', placeholder: '请输入分组标题' },
+    { key: 'cgBorder', label: '外边框', type: 'switch', defaultValue: true },
     {
         key: 'ciIcon',
         label: '左侧图标',
@@ -18,7 +20,7 @@ const controls: DemoControl[] = [
         options: [
             { label: '无图标', value: '' },
             { label: '手机', value: 'phone' },
-            { label: '图片', value: 'page' }
+            { label: '页面', value: 'page' }
         ]
     },
     { key: 'ciTitle', label: '标题', type: 'input', defaultValue: '单元格标题', placeholder: '请输入标题' },
@@ -51,7 +53,7 @@ const localizedControls = computed(() => {
 });
 const title = computed(() => {
     const _locale = localeName.value;
-    return demoTitle('cell-item', '单元格条目');
+    return demoTitle('cell', '单元格');
 });
 function updateValue(key: string, value: DemoValue) {
     state[key] = value;
@@ -65,12 +67,12 @@ function cellClicked(index: string | number) {
     <DemoPage
         :title="title"
         :eyebrow="text('导航与布局')"
-        :desc="text('带图标、标题、描述和箭头的单行列表条目。')"
+        :desc="text('组合单元格条目与分组容器，用于设置和个人中心等列表场景。')"
     >
         <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-stack demo-cell-item-showcase">
+            <view class="demo-stack demo-cell-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
-                <snake-cell-group>
+                <snake-cell-group :title="String(state.cgTitle)" :border="Boolean(state.cgBorder)">
                     <snake-cell-item
                         :icon="String(state.ciIcon)"
                         :title="String(state.ciTitle)"
@@ -81,25 +83,25 @@ function cellClicked(index: string | number) {
                         :center="Boolean(state.ciCenter)"
                         value="内容"
                         index="live"
-                        @click="cellClicked" />
+                        @click="cellClicked"
+                    />
                 </snake-cell-group>
-                <text class="demo-variant-title">{{ isEnglish ? 'Click feedback' : '点击反馈' }}</text>
-                <text class="demo-variant-sub">{{ text('点击条目') }}：{{ clickedIndex || '—' }}</text>
-                <text class="demo-variant-title">{{ isEnglish ? 'Variants' : '变体示例' }}</text>
-                <snake-cell-group title="个人中心">
+                <text class="demo-variant-title">{{ isEnglish ? 'Grouped cells' : '分组示例' }}</text>
+                <snake-cell-group :title="isEnglish ? 'Personal center' : '个人中心'">
                     <snake-cell-item icon="phone" title="手机号码" value="138****8000" />
                     <snake-cell-item title="地址管理" value="收货地址" index="1" @click="cellClicked" />
                     <snake-cell-item title="必填示例" required :arrow="false" index="2" @click="cellClicked">
                         <template #right-icon>
-                            <view class="demo-cell-tag">自定义</view>
+                            <view class="demo-cell-tag">{{ isEnglish ? 'Custom' : '自定义' }}</view>
                         </template>
                     </snake-cell-item>
                 </snake-cell-group>
+                <text class="demo-variant-sub">{{ text('点击条目') }}：{{ clickedIndex || '—' }}</text>
             </view>
         </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')"
-            ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue"
-        /></DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
     </DemoPage>
 </template>
 

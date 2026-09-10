@@ -67,8 +67,7 @@ export const componentGroups: ComponentGroup[] = [
             { name: 'Swiper', title: '轮播图', link: '/components/swiper' },
             { name: 'Sticky', title: '吸顶', link: '/components/sticky' },
             { name: 'Line', title: '分隔线', link: '/components/line' },
-            { name: 'CellGroup', title: '单元格分组', link: '/components/cell-group' },
-            { name: 'CellItem', title: '单元格条目', link: '/components/cell-item' }
+            { name: 'Cell', title: '单元格', link: '/components/cell' }
         ]
     },
     {

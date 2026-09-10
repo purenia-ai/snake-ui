@@ -50,13 +50,12 @@
 - Popup 弹出层
 - NoNetwork 无网络提示
 
-布局组件（5）
+布局组件（4）
 
 - Swiper 轮播图
 - Sticky 吸顶
 - Line 分隔线
-- CellGroup 单元格分组
-- CellItem 单元格条目
+- Cell 单元格
 
 导航组件（8）
 

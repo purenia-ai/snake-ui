@@ -288,12 +288,13 @@ const englishMessages: Record<string, string> = {
     当前剩余: 'Remaining',
     已结束: 'Finished',
     重新开始: 'Restart',
-    '用于活动截止等场景的倒计时，通过数字变化给用户明确的时间感受。': 'Counts down to an event deadline, giving users a clear sense of time through changing digits.',
-    '快速模式': 'Quick mode',
-    '自定义模板': 'Custom template',
-    '占位形态': 'Variant',
-    '文本': 'Text',
-    '矩形': 'Rectangle'
+    '用于活动截止等场景的倒计时，通过数字变化给用户明确的时间感受。':
+        'Counts down to an event deadline, giving users a clear sense of time through changing digits.',
+    快速模式: 'Quick mode',
+    自定义模板: 'Custom template',
+    占位形态: 'Variant',
+    文本: 'Text',
+    矩形: 'Rectangle'
 };
 
 Object.assign(englishMessages, {
@@ -326,10 +327,10 @@ Object.assign(englishMessages, {
         'A dropdown item provides a trigger, content panel and close event.',
     '通过右侧索引快速定位列表中的分组内容。': 'Uses the side index to jump between grouped list content.',
     '索引锚点定义分组位置，需要放在 IndexList 内使用。': 'Defines group anchors inside an IndexList.',
-    '将一组单元格组合为带标题和外边框的分组。': 'Groups cells with a title and outer borders.',
+    '组合单元格条目与分组容器，用于设置和个人中心等列表场景。':
+        'Combines cell items and groups for settings, personal centers and similar lists.',
     '以横向或竖向线条分隔内容块，支持半像素细线。': 'Separates content with horizontal or vertical hairlines.',
-    '以线形进度展示任务完成情况，支持条纹与百分比。':
-        'Shows task progress as a bar with stripes and a percentage.',
+    '以线形进度展示任务完成情况，支持条纹与百分比。': 'Shows task progress as a bar with stripes and a percentage.',
     '带图标、标题、描述和箭头的单行列表条目。': 'A list row with icon, title, description and arrow.',
     '集成占位、清除与操作按钮的常用搜索输入。':
         'A common search input with placeholder, clear control and action button.',
@@ -337,8 +338,7 @@ Object.assign(englishMessages, {
     '长内容先收起一部分，点击展开全文。': 'Collapses long content and expands it on demand.',
     '自动监听网络状态，断网时全屏提示并支持重试。':
         'Watches network status and shows a full-screen prompt with retry when offline.',
-    '价格、脱敏、日期与链接等常用文本场景。':
-        'Handles common text scenarios such as price, masking, dates and links.',
+    '价格、脱敏、日期与链接等常用文本场景。': 'Handles common text scenarios such as price, masking, dates and links.',
     '跨端打开链接或复制到粘贴板。': 'Opens links across platforms or copies them to the clipboard.',
     '单个或范围日期选择，支持农历与节日。': 'Selects a single date or a range, with lunar and festival support.',
     '组合字段控件，完成规则校验、错误展示、提交和重置。':
@@ -393,8 +393,7 @@ const demoTitles: Record<string, string> = {
     'drop-menu': 'Dropdown Menu',
     'index-list': 'Index List',
     'index-anchor': 'Index Anchor',
-    'cell-group': 'Cell Group',
-    'cell-item': 'Cell Item',
+    cell: 'Cell',
     line: 'Divider',
     'line-progress': 'Line Progress',
     search: 'Search',
