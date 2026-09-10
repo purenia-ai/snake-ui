@@ -18,10 +18,13 @@ const componentSidebar = [
     },
     ...componentGroups.map(group => ({
         text: group.title,
-        items: group.items.map(item => ({
-            text: `${item.name} ${item.title}`,
-            link: item.link
-        }))
+        items: [
+            ...(group.title === '基础组件' ? [{ text: 'Color 色彩', link: '/components/color' }] : []),
+            ...group.items.map(item => ({
+                text: `${item.name} ${item.title}`,
+                link: item.link
+            }))
+        ]
     }))
 ];
 
@@ -89,8 +92,7 @@ export default defineConfig({
                         { text: '介绍', link: '/guide/intro' },
                         { text: '运行环境与能力边界', link: '/guide/compatibility' },
                         { text: '代码提示', link: '/guide/code-hint' },
-                        { text: '设计理念', link: '/guide/design-principles' },
-                        { text: '色彩', link: '/guide/color' }
+                        { text: '设计理念', link: '/guide/design-principles' }
                     ]
                 },
                 {
