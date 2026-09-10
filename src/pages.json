@@ -147,11 +147,11 @@
         "backgroundColor": "#FFFFFF",
         "borderStyle": "white",
         "list": [
-            { "pagePath": "pages/example/components", "text": "组件" },
-            { "pagePath": "pages/example/tools", "text": "工具" },
-            { "pagePath": "pages/example/scenes", "text": "场景" },
-            { "pagePath": "pages/example/templates", "text": "模板" },
-            { "pagePath": "pages/example/about", "text": "关于" }
+            { "pagePath": "pages/example/components" },
+            { "pagePath": "pages/example/tools" },
+            { "pagePath": "pages/example/scenes" },
+            { "pagePath": "pages/example/templates" },
+            { "pagePath": "pages/example/about" }
         ]
     }
 }

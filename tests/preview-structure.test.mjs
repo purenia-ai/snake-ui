@@ -185,7 +185,10 @@ test('component demos use one restrained shared presentation system', async () =
     assert.doesNotMatch(theme, /snake-demo-nav-gradient|snake-demo-page-tint|snake-demo-card-shadow/);
     assert.match(page, /demo-page-header__title/);
     assert.match(page, /backgroundColor:\s*'var\(--snake-color-primary\)'/);
-    assert.match(page, /backgroundImage:\s*'linear-gradient\(90deg, var\(--snake-color-primary-dark\), var\(--snake-color-primary-disabled\)\)'/);
+    assert.match(
+        page,
+        /backgroundImage:\s*'linear-gradient\(90deg, var\(--snake-color-primary-dark\), var\(--snake-color-primary-disabled\)\)'/
+    );
     assert.doesNotMatch(page, /background-image:\s*\$snake-page-tint/);
     assert.match(section, /DemoSectionVariant = 'default' \| 'preview' \| 'controls'/);
     assert.match(section, /demo-section--preview[^}]*border-bottom:\s*1rpx dashed/s);
@@ -360,7 +363,7 @@ test('icon preview exposes the bundled glyph set with a restrained interactive g
     const renderer = await readFile(resolve(root, 'src/pages/componentsA/icon/index.vue'), 'utf8');
 
     assert.match(renderer, /const selectedIcon = ref\('search'\)/);
-    assert.match(renderer, /const iconNames = \[/);
+    assert.match(renderer, /import \{ iconNames \} from .+snake-icon\/icon-names/);
     assert.match(renderer, /grid-template-columns: repeat\(3, minmax\(0, 1fr\)\)/);
     assert.match(renderer, /'demo-icon-item--active': selectedIcon === name/);
     assert.match(renderer, /@click="selectedIcon = name"/);

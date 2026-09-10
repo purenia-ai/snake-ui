@@ -29,6 +29,7 @@ const standardizedDocs = [
     'loading-icon',
     'skeleton',
     'navbar',
+    'tabbar',
     'tabs',
     'subsection',
     'sticky',
@@ -150,6 +151,7 @@ test('high-use component docs follow the standard documentation shape', async ()
         'overlay',
         'notice-bar',
         'navbar',
+        'tabbar',
         'tabs',
         'subsection',
         'sticky',
@@ -223,7 +225,7 @@ test('high-use component docs follow the standard documentation shape', async ()
 });
 
 test('component registry is the complete documented component source of truth', async () => {
-    assert.equal(componentItems.length, 42);
+    assert.equal(componentItems.length, 43);
     assert.equal(new Set(componentItems.map(item => item.link)).size, componentItems.length);
 
     const packageEntry = await readFile(resolve(root, 'src/uni_modules/snake-ui/index.ts'), 'utf8');
@@ -257,6 +259,7 @@ test('component registry groups follow the standard bucket taxonomy', () => {
     assert.equal(groupOf('/components/swiper'), '布局组件');
     assert.equal(groupOf('/components/count-down'), '数据组件');
     assert.equal(groupOf('/components/navbar'), '导航组件');
+    assert.equal(groupOf('/components/tabbar'), '导航组件');
 });
 
 test('changelog inventory stays in lock-step with the registry', async () => {

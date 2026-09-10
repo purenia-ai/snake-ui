@@ -1,27 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import '../../../src/uni_modules/snake-ui/iconfont.css';
-
-const iconNames = [
-    'search',
-    'checkbox-mark',
-    'success',
-    'warning',
-    'info',
-    'close',
-    'plus',
-    'minus',
-    'edit',
-    'trash',
-    'eye',
-    'eye-off',
-    'eye-outline',
-    'eye-off-outline',
-    'arrow-left',
-    'arrow-right',
-    'arrow-up',
-    'arrow-down'
-] as const;
+import { iconNames } from '../../../src/uni_modules/snake-ui/components/snake-icon/icon-names';
 
 const copiedIcon = ref('');
 let resetTimer: ReturnType<typeof setTimeout> | undefined;

@@ -303,11 +303,14 @@ test('published styles avoid wxss-unsupported universal selectors', async () => 
     }
 });
 
-test('icon follows the uView Pro contract with the complete bundled glyph set', async () => {
+test('icon loads the complete bundled glyph set globally', async () => {
     const source = await readFile(new URL('components/snake-icon/snake-icon.vue', root), 'utf8');
+    const namesSource = await readFile(new URL('components/snake-icon/icon-names.ts', root), 'utf8');
     const types = await readFile(new URL('components/snake-icon/types.ts', root), 'utf8');
     const stylesheet = await readFile(new URL('iconfont.css', root), 'utf8');
-    assert.ok(source.includes("@import '../../iconfont.css'"));
+    const app = await readFile(new URL('../src/App.vue', import.meta.url), 'utf8');
+    assert.ok(app.includes("@import './uni_modules/snake-ui/iconfont.css'"));
+    assert.ok(!source.includes("@import '../../iconfont.css'"));
     assert.ok(source.includes("props.name.includes('/')"));
     assert.ok(source.includes("emit('click', props.index || event)"));
     assert.ok(source.includes("emit('touchstart', props.index || event)"));
@@ -316,6 +319,9 @@ test('icon follows the uView Pro contract with the complete bundled glyph set', 
     assert.match(stylesheet, /font-family: ["']snake-iconfont["']/);
     assert.match(stylesheet, /\.sicon-checkbox-mark::?before/);
     assert.match(stylesheet, /x-font-woff2/);
+    const fontNames = [...stylesheet.matchAll(/\.sicon-([\w-]+):before/g)].map(([, name]) => name);
+    const listedNames = [...namesSource.matchAll(/'([\w-]+)'/g)].map(([, name]) => name);
+    assert.deepEqual(listedNames, fontNames, 'icon names stay in sync with iconfont.css');
     assert.ok(types.includes("'left' | 'right' | 'top' | 'bottom'"));
     assert.ok(types.includes("default: 'sicon'"));
     assert.ok(types.includes('showDecimalIcon'));

@@ -1,16 +1,36 @@
-<script setup lang="ts">
-/**
- * @component Icon
- * @description 字体及图片图标组件。
- * @see /components/icon
- */
-import { computed } from 'vue';
-import { addUnit } from '../../libs/function/unit';
-import { toStyle } from '../../libs/function/style';
-import { IconProps } from './types';
+<template>
+    <view
+        :style="toStyle(customStyle)"
+        class="snake-icon"
+        :class="['snake-icon--' + labelPos, customClass]"
+        @click="onClick"
+    >
+        <image v-if="isImg" class="snake-icon__img" :src="props.name" :mode="imgMode" :style="imgStyle" />
+        <text
+            v-else
+            class="snake-icon__icon"
+            :class="iconClass"
+            :style="toStyle(iconStyle)"
+            :hover-class="hoverClass"
+            @touchstart="onTouchstart"
+        >
+            <text
+                v-if="showDecimalIcon"
+                class="snake-icon__decimal"
+                :class="decimalIconClass"
+                :style="toStyle(decimalIconStyle)"
+                :hover-class="hoverClass"
+            />
+        </text>
+        <text v-if="label !== ''" class="snake-icon__label" :style="labelStyle">
+            {{ label }}
+        </text>
+    </view>
+</template>
 
-defineOptions({
-    name: 'Icon',
+<script lang="ts">
+export default {
+    name: 'snake-icon',
     options: {
         addGlobalClass: true,
         // #ifndef MP-TOUTIAO
@@ -18,40 +38,68 @@ defineOptions({
         // #endif
         styleIsolation: 'shared'
     }
-});
+};
+</script>
 
-const props = defineProps(IconProps);
+<script setup lang="ts">
+/**
+ * @component Icon
+ * @description 支持字体图标、图片图标、标签和百分比裁切效果的图标组件。
+ * @see /components/icon
+ */
+import { computed } from 'vue';
+import { addUnit } from '../../libs/function/unit';
+import { toStyle } from '../../libs/function/style';
+import { IconProps } from './types';
+
 const emit = defineEmits<{
     (event: 'click', index: string | number | unknown): void;
     (event: 'touchstart', index: string | number | unknown): void;
 }>();
+
+const props = defineProps(IconProps);
 const themeTypes = ['primary', 'success', 'error', 'warning', 'info'];
 
 const iconClass = computed(() => {
-    let classes: string[] | string = [`${props.customPrefix}-${props.name}`];
+    let classes: string[] | string = [];
+    classes.push(`${props.customPrefix}-${props.name}`);
     classes.push(props.customPrefix === 'sicon' ? 'snake-iconfont' : props.customPrefix);
-    const color = props.showDecimalIcon ? props.inactiveColor : props.color;
-    if (color && themeTypes.includes(color)) classes.push(`snake-icon__icon--${color}`);
+
+    if (props.showDecimalIcon && props.inactiveColor && themeTypes.includes(props.inactiveColor)) {
+        classes.push(`snake-icon__icon--${props.inactiveColor}`);
+    } else if (props.color && themeTypes.includes(props.color)) {
+        classes.push(`snake-icon__icon--${props.color}`);
+    }
+
     // #ifdef MP-ALIPAY || MP-TOUTIAO || MP-BAIDU
-    classes = classes.join(' ');
+    classes = (classes as string[]).join(' ');
     // #endif
     return classes;
 });
+
 const iconStyle = computed(() => {
     const style: Record<string, string> = {
         fontSize: props.size === 'inherit' ? 'inherit' : addUnit(props.size, 'rpx'),
         fontWeight: props.bold ? 'bold' : 'normal',
         top: addUnit(props.top, 'rpx')
     };
-    const color = props.showDecimalIcon ? props.inactiveColor : props.color;
-    if (color && !themeTypes.includes(color)) style.color = color;
+
+    if (props.showDecimalIcon && props.inactiveColor && !themeTypes.includes(props.inactiveColor)) {
+        style.color = props.inactiveColor;
+    } else if (props.color && !themeTypes.includes(props.color)) {
+        style.color = props.color;
+    }
+
     return style;
 });
+
 const isImg = computed(() => props.name.includes('/'));
+
 const imgStyle = computed(() => ({
-    width: addUnit(props.width || props.size, 'rpx'),
-    height: addUnit(props.height || props.size, 'rpx')
+    width: props.width ? addUnit(props.width, 'rpx') : addUnit(props.size, 'rpx'),
+    height: props.height ? addUnit(props.height, 'rpx') : addUnit(props.size, 'rpx')
 }));
+
 const decimalIconStyle = computed(() => {
     const style: Record<string, string> = {
         fontSize: props.size === 'inherit' ? 'inherit' : addUnit(props.size, 'rpx'),
@@ -59,18 +107,30 @@ const decimalIconStyle = computed(() => {
         top: addUnit(props.top, 'rpx'),
         width: `${props.percent}%`
     };
-    if (props.color && !themeTypes.includes(props.color)) style.color = props.color;
+
+    if (props.color && !themeTypes.includes(props.color)) {
+        style.color = props.color;
+    }
+
     return style;
 });
+
 const decimalIconClass = computed(() => {
-    let classes: string[] | string = [`${props.customPrefix}-${props.name}`];
+    let classes: string[] | string = [];
+    classes.push(`${props.customPrefix}-${props.name}`);
     classes.push(props.customPrefix === 'sicon' ? 'snake-iconfont' : props.customPrefix);
-    classes.push(props.color && themeTypes.includes(props.color) ? `snake-icon__icon--${props.color}` : 'snake-icon__icon--primary');
+    classes.push(
+        props.color && themeTypes.includes(props.color)
+            ? `snake-icon__icon--${props.color}`
+            : 'snake-icon__icon--primary'
+    );
+
     // #ifdef MP-ALIPAY || MP-TOUTIAO || MP-BAIDU
-    classes = classes.join(' ');
+    classes = (classes as string[]).join(' ');
     // #endif
     return classes;
 });
+
 const labelStyle = computed(() => ({
     color: props.labelColor,
     fontSize: addUnit(props.labelSize, 'rpx'),
@@ -83,36 +143,76 @@ const labelStyle = computed(() => ({
 function onClick(event: unknown) {
     emit('click', props.index || event);
 }
+
 function onTouchstart(event: unknown) {
     emit('touchstart', props.index || event);
 }
 </script>
 
-<template>
-    <view :style="toStyle(customStyle)" class="snake-icon" :class="['snake-icon--' + labelPos, customClass]" @click="onClick">
-        <image v-if="isImg" class="snake-icon__img" :src="name" :mode="imgMode" :style="imgStyle" />
-        <text v-else class="snake-icon__icon" :class="iconClass" :style="toStyle(iconStyle)" :hover-class="hoverClass" @touchstart="onTouchstart">
-            <text v-if="showDecimalIcon" class="snake-icon__decimal" :class="decimalIconClass" :style="toStyle(decimalIconStyle)" :hover-class="hoverClass" />
-        </text>
-        <text v-if="label !== ''" class="snake-icon__label" :style="labelStyle">{{ label }}</text>
-    </view>
-</template>
+<style scoped lang="scss">
+.snake-icon {
+    display: inline-flex;
+    align-items: center;
 
-<style scoped>
-@import '../../iconfont.css';
+    &--left {
+        flex-direction: row-reverse;
+        align-items: center;
+    }
 
-.snake-icon { display: inline-flex; align-items: center; }
-.snake-icon--left { flex-direction: row-reverse; align-items: center; }
-.snake-icon--right { flex-direction: row; align-items: center; }
-.snake-icon--top { flex-direction: column-reverse; justify-content: center; }
-.snake-icon--bottom { flex-direction: column; justify-content: center; }
-.snake-icon__icon { position: relative; }
-.snake-icon__icon--primary { color: var(--snake-color-primary, #06d290); }
-.snake-icon__icon--success { color: var(--snake-color-success, #19be6b); }
-.snake-icon__icon--error { color: var(--snake-color-error, #fa3534); }
-.snake-icon__icon--warning { color: var(--snake-color-warning, #ff9900); }
-.snake-icon__icon--info { color: var(--snake-color-info, #909399); }
-.snake-icon__decimal { position: absolute; top: 0; left: 0; display: inline-block; overflow: hidden; }
-.snake-icon__img { height: auto; will-change: transform; }
-.snake-icon__label { line-height: 1; }
+    &--right {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    &--top {
+        flex-direction: column-reverse;
+        justify-content: center;
+    }
+
+    &--bottom {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    &__icon {
+        position: relative;
+
+        &--primary {
+            color: var(--snake-color-primary, #06d290);
+        }
+
+        &--success {
+            color: var(--snake-color-success, #19be6b);
+        }
+
+        &--error {
+            color: var(--snake-color-error, #fa3534);
+        }
+
+        &--warning {
+            color: var(--snake-color-warning, #ff9900);
+        }
+
+        &--info {
+            color: var(--snake-color-info, #909399);
+        }
+    }
+
+    &__decimal {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: inline-block;
+        overflow: hidden;
+    }
+
+    &__img {
+        height: auto;
+        will-change: transform;
+    }
+
+    &__label {
+        line-height: 1;
+    }
+}
 </style>

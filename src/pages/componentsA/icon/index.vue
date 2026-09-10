@@ -5,6 +5,7 @@ import type { DemoControl, DemoValue } from '../../../common/demo-types';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
+import { iconNames } from '../../../uni_modules/snake-ui/components/snake-icon/icon-names';
 
 const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
@@ -57,26 +58,6 @@ function updateValue(key: string, value: DemoValue) {
 }
 
 const selectedIcon = ref('search');
-const iconNames = [
-    'search',
-    'checkbox-mark',
-    'checkmark-circle',
-    'warning',
-    'info',
-    'close',
-    'plus',
-    'minus',
-    'edit',
-    'trash',
-    'eye',
-    'eye-off',
-    'eye-outline',
-    'eye-off-outline',
-    'arrow-left',
-    'arrow-right',
-    'arrow-up',
-    'arrow-down'
-] as const;
 </script>
 
 <template>

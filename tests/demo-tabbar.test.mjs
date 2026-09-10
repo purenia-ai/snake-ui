@@ -9,17 +9,17 @@ const read = path => readFile(resolve(root, path), 'utf8');
 test('demo app registers five primary tab pages', async () => {
     const pages = await read('src/pages.json');
 
-    for (const [pagePath, text] of [
-        ['pages/example/components', '组件'],
-        ['pages/example/tools', '工具'],
-        ['pages/example/scenes', '场景'],
-        ['pages/example/templates', '模板'],
-        ['pages/example/about', '关于']
+    for (const pagePath of [
+        'pages/example/components',
+        'pages/example/tools',
+        'pages/example/scenes',
+        'pages/example/templates',
+        'pages/example/about'
     ]) {
         assert.match(pages, new RegExp(`"pagePath":\\s*"${pagePath}"`));
-        assert.match(pages, new RegExp(`"pagePath":\\s*"${pagePath}",\\s*"text":\\s*"${text}"`));
     }
     assert.match(pages, /"tabBar"\s*:/);
+    assert.doesNotMatch(pages, /"pagePath":\s*"pages\/example\/(?:components|tools|scenes|templates|about)",\s*"text"/);
     assert.match(pages, /"root":\s*"pages\/library"/);
     assert.match(pages, /"root":\s*"pages\/other"/);
 });
@@ -50,7 +50,12 @@ test('primary pages share the custom themed tabbar', async () => {
     assert.match(shell, /uni\.switchTab/);
     assert.match(tabbar, /safe-area-inset-bottom/);
     assert.match(tabbar, /var\(--snake-color-primary/);
+    assert.match(tabbar, /selectedIconPath/);
+    assert.match(tabbar, /customIcon/);
     assert.match(shell, /snake-tabbar/);
+    assert.match(shell, /:mid-button="true"/);
+    assert.match(shell, /midButton: true/);
+    assert.match(shell, /selectedIconPath: 'setting-fill'/);
     assert.match(components, /current-tab=['"]components['"]/);
     assert.match(tools, /current-tab=['"]tools['"]/);
     assert.match(scenes, /current-tab=['"]scenes['"]/);

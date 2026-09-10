@@ -74,6 +74,7 @@ export const componentGroups: ComponentGroup[] = [
         title: '导航组件',
         items: [
             { name: 'Navbar', title: '导航栏', link: '/components/navbar' },
+            { name: 'Tabbar', title: '底部导航栏', link: '/components/tabbar' },
             { name: 'Tabs', title: '标签页', link: '/components/tabs' },
             { name: 'Subsection', title: '分段器', link: '/components/subsection' },
             { name: 'ButtonSort', title: '排序按钮', link: '/components/button-sort' },

@@ -4,7 +4,7 @@ preview: /pages/componentsA/icon/index
 
 # Icon 图标
 
-`snake-icon` 使用标准图标组件契约，支持内置字体图标、图片图标、标签及 DecimalIcon。
+`snake-icon` 支持内置字体图标、图片图标、标签和百分比裁切效果。内置字体的类名前缀为 `sicon`，图标名称与下方图标集中的名称一一对应。
 
 ## 平台兼容性
 
@@ -21,7 +21,7 @@ preview: /pages/componentsA/icon/index
 <snake-icon name="https://example.com/icon.png" width="40" height="40" />
 ```
 
-`name` 中包含 `/` 时按图片图标渲染。自定义字体图标可通过 `custom-prefix` 指定字体类前缀。
+`name` 中包含 `/` 时按图片图标渲染。字体图标会生成 `sicon-${name}` 类名，例如 `name="search"` 对应 `sicon-search`。自定义字体图标可通过 `custom-prefix` 指定字体类前缀。
 
 ## 图标集
 
@@ -47,7 +47,7 @@ preview: /pages/componentsA/icon/index
 | `imgMode` / `width` / `height`                              | 图片图标参数                            | 多类型             | `widthFix` / `''` / `''` |
 | `top`                                                       | 垂直位置微调                            | `string \| number` | `0`                      |
 | `showDecimalIcon`                                           | 是否显示部分填充图标                    | `boolean`          | `false`                  |
-| `inactiveColor` / `percent`                                 | DecimalIcon 底色及百分比                | 多类型             | 分割线色 / `50`          |
+| `inactiveColor` / `percent`                                 | 裁切图标的底色及填充百分比              | 多类型             | 分割线色 / `50`          |
 | `customClass` / `customStyle`                               | 自定义类名和根节点样式                  | 多类型             | 空值                     |
 
 ### Events

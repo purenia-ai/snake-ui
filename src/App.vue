@@ -12,6 +12,7 @@ onHide(() => {
 </script>
 <style lang="scss">
 @import './uni_modules/snake-ui/index.scss';
+@import './uni_modules/snake-ui/iconfont.css';
 @import './common/demo.scss';
 
 page {

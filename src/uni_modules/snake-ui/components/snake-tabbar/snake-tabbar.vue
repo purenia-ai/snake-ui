@@ -4,7 +4,7 @@
  * @description 底部导航栏，提供跨端安全区、激活态、徽标和禁用状态。
  * @see /components/tabbar
  */
-import { computed } from 'vue';
+import { computed, getCurrentInstance } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import SnakeIcon from '../snake-icon/snake-icon.vue';
 import type { TabbarEmits, TabbarItem, TabbarProps } from './types';
@@ -16,72 +16,134 @@ defineOptions({
 
 const props = withDefaults(defineProps<TabbarProps>(), {
     items: () => [],
+    list: () => [],
     current: '',
+    modelValue: 0,
+    show: true,
     fixed: true,
     safeAreaInsetBottom: true,
     customStyle: '',
     customClass: '',
     activeColor: 'var(--snake-color-primary, #06D290)',
     inactiveColor: 'var(--snake-color-text-muted, #909399)',
+    bgColor: 'var(--snake-color-surface)',
+    borderTop: true,
+    midButton: false,
+    iconSize: 40,
+    midButtonSize: 100,
+    textSize: 22,
+    gap: 5,
     height: 104,
     zIndex: 120
 });
 
 const emit = defineEmits<TabbarEmits>();
+const tabItems = computed(() => (props.items.length ? props.items : props.list));
+const usesModelValue = computed(() => 'modelValue' in (getCurrentInstance()?.vnode.props ?? {}));
+const currentPage = computed(() => {
+    const pages = getCurrentPages();
+    return pages.length ? `/${pages[pages.length - 1].route}` : '';
+});
 const rootStyle = computed(() => [
     {
         '--snake-tabbar-active': props.activeColor,
         '--snake-tabbar-inactive': props.inactiveColor,
-        zIndex: props.zIndex
+        zIndex: props.zIndex,
+        backgroundColor: props.bgColor
     },
     props.customStyle
 ]);
 
-function isActive(key: string | number) {
-    return key === props.current;
+function isActive(item: TabbarItem, index: number) {
+    if (item.pagePath) return item.pagePath === currentPage.value;
+    if (usesModelValue.value) return index === props.modelValue;
+    return item.key === props.current;
 }
 
-function clickItem(item: TabbarItem) {
+function iconName(item: TabbarItem, index: number) {
+    const normal = item.iconPath ?? item.icon;
+    return isActive(item, index) ? item.selectedIconPath || normal : normal;
+}
+
+function iconPrefix(item: TabbarItem) {
+    if (typeof item.customIcon === 'string') return item.customIcon;
+    return item.customIcon ? 'custom-icon' : 'sicon';
+}
+
+function itemIconSize(item: TabbarItem) {
+    if (props.midButton && item.midButton) return props.midButtonSize;
+    return item.iconSize ?? props.iconSize;
+}
+
+function itemTextSize(item: TabbarItem) {
+    return item.textSize ?? props.textSize;
+}
+
+function itemKey(item: TabbarItem, index: number) {
+    return item.key ?? index;
+}
+
+function clickItem(item: TabbarItem, index: number) {
     if (item.disabled) return;
-    emit('change', item.key, item);
+    emit('change', itemKey(item, index), item);
+    if (!item.pagePath) emit('update:modelValue', index);
 }
 </script>
 
 <template>
     <view
+        v-if="show"
         :class="['snake-tabbar-spacer', { 'snake-tabbar-spacer--safe': safeAreaInsetBottom && fixed }]"
         :style="{ height: fixed ? addUnit(height, 'rpx') : '0' }"
     />
     <view
+        v-if="show"
         :class="[
             'snake-tabbar',
             customClass,
-            { 'snake-tabbar--fixed': fixed, 'snake-tabbar--safe': safeAreaInsetBottom }
+            {
+                'snake-tabbar--fixed': fixed,
+                'snake-tabbar--safe': safeAreaInsetBottom,
+                'snake-tabbar--border': borderTop
+            }
         ]"
         :style="rootStyle"
         role="navigation"
     >
         <view class="snake-tabbar__inner" :style="{ height: addUnit(height, 'rpx') }">
             <view
-                v-for="item in items"
-                :key="String(item.key)"
+                v-for="(item, index) in tabItems"
+                :key="String(itemKey(item, index))"
                 :class="[
                     'snake-tabbar__item',
-                    { 'snake-tabbar__item--active': isActive(item.key), 'snake-tabbar__item--disabled': item.disabled }
+                    {
+                        'snake-tabbar__item--active': isActive(item, index),
+                        'snake-tabbar__item--disabled': item.disabled,
+                        'snake-tabbar__item--mid': midButton && item.midButton
+                    }
                 ]"
                 hover-class="snake-tabbar__item--hover"
-                :aria-label="item.text"
-                :aria-current="isActive(item.key) ? 'page' : undefined"
-                @click="clickItem(item)"
+                :aria-label="item.text || ''"
+                :aria-current="isActive(item, index) ? 'page' : undefined"
+                @click="clickItem(item, index)"
             >
-                <view class="snake-tabbar__icon-wrap"
-                    ><SnakeIcon v-if="item.icon" :name="item.icon" :size="20" :bold="isActive(item.key)" /><text
-                        v-if="item.badge !== undefined"
+                <view class="snake-tabbar__icon-wrap" :style="{ gap: addUnit(item.gap ?? gap, 'rpx') }"
+                    ><SnakeIcon
+                        v-if="iconName(item, index)"
+                        :name="iconName(item, index)"
+                        :size="itemIconSize(item)"
+                        :bold="isActive(item, index)"
+                        :color="isActive(item, index) ? activeColor : inactiveColor"
+                        :custom-prefix="iconPrefix(item)"
+                    /><text
+                        v-if="item.badge !== undefined || item.count !== undefined || item.isDot"
                         class="snake-tabbar__badge"
-                        >{{ item.badge }}</text
+                        >{{ item.isDot ? '' : (item.badge ?? item.count) }}</text
                     ></view
                 >
-                <text class="snake-tabbar__label">{{ item.text }}</text>
+                <text class="snake-tabbar__label" :style="{ fontSize: addUnit(itemTextSize(item), 'rpx') }">{{
+                    item.text
+                }}</text>
             </view>
         </view>
     </view>
@@ -95,10 +157,11 @@ function clickItem(item: TabbarItem) {
     height: calc(104rpx + env(safe-area-inset-bottom)) !important;
 }
 .snake-tabbar {
-    border-top: 1px solid var(--snake-color-divider);
-    background: var(--snake-color-surface);
     box-shadow: 0 -6rpx 24rpx rgba(6, 39, 28, 0.07);
     color: var(--snake-tabbar-inactive);
+}
+.snake-tabbar--border {
+    border-top: 1px solid var(--snake-color-divider);
 }
 .snake-tabbar--fixed {
     position: fixed;
@@ -134,6 +197,18 @@ function clickItem(item: TabbarItem) {
 }
 .snake-tabbar__item--disabled {
     opacity: 0.45;
+}
+.snake-tabbar__item--mid {
+    position: relative;
+}
+.snake-tabbar__item--mid .snake-tabbar__icon-wrap {
+    position: absolute;
+    top: -55rpx;
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 50%;
+    background: var(--snake-color-surface);
+    box-shadow: 0 0 0 1px var(--snake-color-divider);
 }
 .snake-tabbar__item--hover {
     background: var(--snake-color-surface-muted);
