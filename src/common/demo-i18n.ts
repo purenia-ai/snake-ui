@@ -95,6 +95,15 @@ const englishMessages: Record<string, string> = {
     网络异常: 'Network error',
     搜索为空: 'No search results',
     提示文字: 'Message',
+    提示图片: 'Prompt image',
+    内置图片: 'Built-in image',
+    示例图片: 'Example image',
+    如何查看真实效果: 'How to view the real state',
+    '关闭手机的 Wi-Fi 和移动数据后，可查看全屏断网提示。':
+        'Turn off Wi-Fi and mobile data to view the full-screen offline prompt.',
+    '组件在线时自动隐藏；断网后点击重试会触发事件反馈。':
+        'The component hides while online; retrying offline emits an event confirmation.',
+    已触发重试事件: 'Retry event emitted',
     输入空状态文案: 'Enter an empty-state message',
     显示图标: 'Show icon',
     图标大小: 'Icon size',

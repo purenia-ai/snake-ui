@@ -7,10 +7,18 @@ import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 
 const { localeName, text } = useDemoLocale();
-const isEnglish = computed(() => localeName.value === 'en-US');
 const controls: DemoControl[] = [
     { key: 'nnTips', label: '提示文字', type: 'input', defaultValue: '', placeholder: '请输入提示文字' },
-    { key: 'nnZIndex', label: '层级值', type: 'slider', defaultValue: 10080, min: 1000, max: 10090, step: 10 }
+    {
+        key: 'nnImage',
+        label: '提示图片',
+        type: 'select',
+        defaultValue: '',
+        options: [
+            { label: '内置图片', value: '' },
+            { label: '示例图片', value: '/static/logo.png' }
+        ]
+    }
 ];
 const state = reactive<Record<string, DemoValue>>(
     Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))
@@ -30,28 +38,20 @@ const title = computed(() => {
 function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
+
+function handleRetry() {
+    uni.showToast({ title: text('已触发重试事件'), icon: 'none', position: 'top' });
+}
 </script>
 
 <template>
-    <DemoPage
-        :title="title"
-        :eyebrow="text('反馈与浮层')"
-        :desc="text('自动监听网络状态，断网时全屏提示并支持重试。')"
-    >
+    <DemoPage :title="title" :eyebrow="text('反馈与浮层')" :desc="text('自动监听网络状态，断网时全屏提示并支持重试。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack demo-no-network-showcase">
-                <text class="demo-variant-title">{{ text('触发条件') }}</text>
-                <text class="demo-variant-sub">{{ text('断网时自动全屏展示') }}，{{ isEnglish ? 'the preview below shows the layout' : '以下为组件离线时的静态效果示意' }}</text>
-                <!-- 组件在线时自动隐藏，此处同时渲染一份静态示意便于预览 -->
-                <snake-no-network :tips="String(state.nnTips)" :z-index="Number(state.nnZIndex)" @retry="() => {}" />
-                <view class="demo-nn-mock">
-                    <image
-                        class="demo-nn-mock__icon"
-                        src="https://cdn.puresnake.com/joker/recycle/like.png"
-                        mode="widthFix" />
-                    <text class="demo-nn-mock__tips">{{ String(state.nnTips) || (isEnglish ? 'Ooops, network disconnected' : '哎呀，网络信号丢失') }}</text>
-                    <view class="demo-nn-mock__retry">{{ text('重试') }}</view>
-                </view>
+                <text class="demo-variant-title">{{ text('如何查看真实效果') }}</text>
+                <text class="demo-variant-sub">{{ text('关闭手机的 Wi-Fi 和移动数据后，可查看全屏断网提示。') }}</text>
+                <text class="demo-variant-sub">{{ text('组件在线时自动隐藏；断网后点击重试会触发事件反馈。') }}</text>
+                <snake-no-network :tips="String(state.nnTips)" :image="String(state.nnImage)" @retry="handleRetry" />
             </view>
         </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')"
@@ -75,26 +75,5 @@ function updateValue(key: string, value: DemoValue) {
 .demo-variant-sub {
     color: var(--snake-color-text-muted);
     font-size: 24rpx;
-}
-.demo-nn-mock {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 60rpx 0;
-}
-.demo-nn-mock__icon {
-    width: 200rpx;
-}
-.demo-nn-mock__tips {
-    padding: 24rpx 0;
-    font-size: 28rpx;
-    color: var(--snake-color-text-muted);
-}
-.demo-nn-mock__retry {
-    padding: 6rpx 30rpx;
-    font-size: 28rpx;
-    color: var(--snake-color-text-muted);
-    border: 1px solid var(--snake-color-text-muted);
-    border-radius: 3px;
 }
 </style>

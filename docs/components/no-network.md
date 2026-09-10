@@ -4,7 +4,9 @@ preview: /pages/componentsA/noNetwork/index
 
 # NoNetwork 无网络提示
 
-无网络提示组件，无需任何配置，引入即可。自动监听网络状态，断网时全屏展示提示，并支持重试。
+无网络提示组件。它自动监听网络状态：网络恢复时不渲染；断网时以固定定位的全屏遮罩提示用户，并提供重试入口。
+
+适合放在页面根节点，用于订单、内容详情等网络不可用时无法继续操作的页面。
 
 ## 平台兼容性
 
@@ -12,14 +14,50 @@ preview: /pages/componentsA/noNetwork/index
 | :-: | :-: | :--------: | :----------: |
 |  √  |  √  |     √      |      √       |
 
+::: warning 原生组件限制
+
+普通的 fixed 遮罩无法覆盖 `video`、`map` 等原生组件。此类页面请由业务侧使用 `cover-view` 或对应平台的原生覆盖方案处理。
+
+:::
+
 ## 基础用法
 
 ```vue
-<snake-no-network />
+<template>
+    <view>
+        <view class="page-content">这里是页面正式内容</view>
+        <snake-no-network @retry="handleRetry" />
+    </view>
+</template>
+
+<script setup lang="ts">
+function handleRetry() {
+    // 组件已重新检测网络；可在此刷新当前页面的数据。
+}
+</script>
 ```
 
-组件在线时自动隐藏；断网时全屏展示图片、提示语与重试按钮。点击重试会重新检测网络，
-未恢复时提示无网络连接，恢复后提示已连接，并触发 `retry` 事件。
+组件在线时自动隐藏。断网时会全屏展示图片、提示语和重试按钮；点击重试后，组件会重新检测网络并触发 `retry` 事件。建议在事件回调中刷新当前页面的数据。
+
+### 自定义提示语与图片
+
+```vue
+<snake-no-network tips="网络连接已中断，请检查后重试" image="data:image/png;base64,..." @retry="reloadPageData" />
+```
+
+`image` 可传入图片 URL 或 base64；未传入时使用内置断网插图。
+
+### 如何测试
+
+1. 将组件放入需要保护的页面根节点。
+2. 在真机上关闭 Wi-Fi 与移动数据，或在模拟器中切换为离线状态。
+3. 返回页面查看全屏断网提示；恢复网络后提示会自动隐藏。
+
+::: tip
+
+头条小程序不支持网络状态变化监听，因此不支持本组件。
+
+:::
 
 ## API
 
