@@ -381,6 +381,30 @@ Object.assign(englishMessages, {
     '展示优惠券状态并提供领取入口。': 'Displays coupon status and a claim action.'
 });
 
+Object.assign(englishMessages, {
+    首页: 'Home',
+    场景: 'Scenes',
+    模板: 'Templates',
+    关于: 'About',
+    业务场景: 'Business scenes',
+    页面模板: 'Page templates',
+    '用现有组件快速组合真实的商城与 CMS 场景': 'Compose real commerce and CMS scenes with existing components',
+    '可直接参考的商城与 CMS 页面组合': 'Ready-to-use commerce and CMS page compositions',
+    搜索工具: 'Search tools',
+    没有找到相关工具: 'No matching tools',
+    商品业务: 'Commerce',
+    内容营销: 'Content & marketing',
+    模板预览: 'Template preview',
+    使用的组件: 'Components used',
+    '点击组件卡片查看独立 API 演示': 'Open a component card to view its API demo',
+    示例页面: 'Demo pages',
+    技术栈: 'Stack',
+    开源协议: 'License',
+    链接已复制: 'Link copied',
+    访问代码仓库: 'Visit repository',
+    个组件: 'components'
+});
+
 const demoTitles: Record<string, string> = {
     button: 'Button',
     'loading-icon': 'Loading Icon',

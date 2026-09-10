@@ -6,6 +6,7 @@ defineOptions({ name: 'ExampleAbout' });
 
 const { text } = useDemoLocale();
 const docsUrl = 'https://m.puresnake.com/snake-ui/';
+const repositoryUrl = 'https://github.com/zwbcode/snake-ui';
 const capabilities = [
     'Vue 3 与 uni-app 跨端',
     '商城与 CMS 组件',
@@ -19,6 +20,15 @@ function copyDocsUrl() {
         data: docsUrl,
         success: () => uni.showToast({ title: text('文档地址已复制'), icon: 'success' })
     });
+}
+
+function openExternal(url: string) {
+    // #ifdef H5
+    window.open(url, '_blank');
+    // #endif
+    // #ifndef H5
+    uni.setClipboardData({ data: url, success: () => uni.showToast({ title: text('链接已复制'), icon: 'none' }) });
+    // #endif
 }
 </script>
 
@@ -39,6 +49,21 @@ function copyDocsUrl() {
             </view>
         </view>
 
+        <view class="about-stats">
+            <view
+                ><text class="about-stats__value">71</text
+                ><text class="about-stats__label">{{ text('示例页面') }}</text></view
+            >
+            <view
+                ><text class="about-stats__value">Vue 3</text
+                ><text class="about-stats__label">{{ text('技术栈') }}</text></view
+            >
+            <view
+                ><text class="about-stats__value">MIT</text
+                ><text class="about-stats__label">{{ text('开源协议') }}</text></view
+            >
+        </view>
+
         <view class="section">
             <text class="section__title">{{ text('主要能力') }}</text>
             <view v-for="capability in capabilities" :key="capability" class="capability">
@@ -51,6 +76,9 @@ function copyDocsUrl() {
             <text class="section__title">{{ text('在线文档') }}</text>
             <text class="docs-url">{{ docsUrl }}</text>
             <snake-button type="primary" plain @click="copyDocsUrl">{{ text('复制文档地址') }}</snake-button>
+            <snake-button class="link-button" plain @click="openExternal(repositoryUrl)">{{
+                text('访问代码仓库')
+            }}</snake-button>
         </view>
     </DemoPage>
 </template>
@@ -59,12 +87,34 @@ function copyDocsUrl() {
 @import '../../common/demo.scss';
 
 .brand-card,
-.section {
+.section,
+.about-stats {
     margin: 4rpx 8rpx 24rpx;
     padding: 28rpx;
     border: 1px solid var(--snake-color-divider);
     border-radius: 16rpx;
     background: var(--snake-color-surface);
+}
+.about-stats {
+    display: flex;
+    justify-content: space-between;
+    padding: 24rpx 12rpx;
+    text-align: center;
+}
+.about-stats > view {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 6rpx;
+}
+.about-stats__value {
+    color: var(--snake-color-primary-deep);
+    font-size: 34rpx;
+    font-weight: 750;
+}
+.about-stats__label {
+    color: var(--snake-color-text-muted);
+    font-size: 22rpx;
 }
 
 .brand-card {
@@ -84,6 +134,9 @@ function copyDocsUrl() {
 .section__title,
 .docs-url {
     display: block;
+}
+.link-button {
+    margin-top: 14rpx;
 }
 
 .brand-card__name {

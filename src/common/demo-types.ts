@@ -24,4 +24,26 @@ export interface DemoDefinition {
     controls: DemoControl[];
 }
 
-export type DemoTab = 'components' | 'tools' | 'about';
+export type DemoTab = 'components' | 'tools' | 'scenes' | 'templates' | 'about';
+
+export type DemoCatalogBadge = 'new' | 'cms' | 'business';
+
+export interface DemoCatalogItem {
+    key: string;
+    path: string;
+    title: string;
+    titleEn: string;
+    desc: string;
+    icon?: string;
+    category?: string;
+    tags?: string[];
+    badge?: DemoCatalogBadge;
+}
+
+export interface DemoCatalogGroup {
+    key: string;
+    title: string;
+    titleEn: string;
+    icon: string;
+    items: DemoCatalogItem[];
+}

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 type DemoSectionVariant = 'default' | 'preview' | 'controls';
 
-withDefaults(defineProps<{ title?: string; bare?: boolean; variant?: DemoSectionVariant }>(), {
+withDefaults(defineProps<{ title?: string; description?: string; bare?: boolean; variant?: DemoSectionVariant }>(), {
     title: '',
     bare: false,
     variant: 'default'
@@ -10,8 +10,9 @@ withDefaults(defineProps<{ title?: string; bare?: boolean; variant?: DemoSection
 
 <template>
     <view v-if="!bare" :class="['demo-section', `demo-section--${variant}`]">
-        <view v-if="title" class="demo-section__head">
+        <view v-if="title || description" class="demo-section__head">
             <text class="demo-section__title">{{ title }}</text>
+            <text v-if="description" class="demo-section__description">{{ description }}</text>
         </view>
         <view class="demo-section__wrap">
             <slot />
@@ -42,6 +43,12 @@ withDefaults(defineProps<{ title?: string; bare?: boolean; variant?: DemoSection
     color: var(--snake-color-text);
     font-size: 30rpx;
     font-weight: 600;
+}
+.demo-section__description {
+    display: block;
+    margin-top: 6rpx;
+    color: var(--snake-color-text-muted);
+    font-size: 22rpx;
 }
 
 .demo-section__wrap {

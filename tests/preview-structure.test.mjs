@@ -182,10 +182,10 @@ test('component demos use one restrained shared presentation system', async () =
     const panel = await readFile(resolve(root, 'src/components/demo-control-panel/demo-control-panel.vue'), 'utf8');
     const pages = (await examplePageSources()).join('\n');
 
-    assert.match(theme, /--snake-demo-nav-background:\s*var\(--snake-color-primary/);
     assert.doesNotMatch(theme, /snake-demo-nav-gradient|snake-demo-page-tint|snake-demo-card-shadow/);
     assert.match(page, /demo-page-header__title/);
-    assert.ok(page.includes('--snake-demo-nav-background'));
+    assert.match(page, /backgroundColor:\s*'var\(--snake-color-primary\)'/);
+    assert.match(page, /backgroundImage:\s*'linear-gradient\(90deg, var\(--snake-color-primary-dark\), var\(--snake-color-primary-disabled\)\)'/);
     assert.doesNotMatch(page, /background-image:\s*\$snake-page-tint/);
     assert.match(section, /DemoSectionVariant = 'default' \| 'preview' \| 'controls'/);
     assert.match(section, /demo-section--preview[^}]*border-bottom:\s*1rpx dashed/s);
@@ -316,15 +316,16 @@ test('docs and preview shell use the approved brand green system', async () => {
     assert.doesNotMatch(css, /preview-panel__header|preview-live-pulse/);
     assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
     assert.match(frame, /preview-phone__system-status/);
+    assert.match(frame, /snake-ui:preview-navbar-theme/);
+    assert.match(frame, /:style="systemStatusStyle"/);
     assert.match(frame, /preview-phone__battery/);
     assert.match(frame, /<svg class="preview-phone__wifi" viewBox="0 0 16 16"/);
     assert.match(css, /\.preview-phone__island\s*{[^}]*top:\s*31px/s);
     assert.match(css, /\.preview-phone\s*{[^}]*padding:\s*54px 9px 18px/s);
     assert.match(css, /\.preview-phone iframe,\s*\.preview-phone__status\s*{[^}]*border-radius:\s*0 0 25px 25px/s);
-    assert.match(demoTheme, /--snake-demo-nav-background:\s*var\(--snake-color-primary,\s*#06d290\)/i);
-    assert.match(demoTheme, /--snake-demo-nav-text:\s*#073b2a/i);
-
-    assert.match(demoPage, /color:\s*var\(--snake-demo-nav-text\)/);
+    assert.doesNotMatch(demoTheme, /snake-demo-nav-/);
+    assert.match(demoPage, /:background="background"/);
+    assert.match(demoPage, /title-color="#ffffff"/);
 });
 
 test('mobile preview and locale guide expose one persistent bilingual experience', async () => {

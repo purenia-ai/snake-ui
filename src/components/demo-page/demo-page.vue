@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onBeforeUnmount, onMounted, reactive, toRefs, watch } from 'vue';
 import { color, darkMode, systemDark, themeStyle } from '../../uni_modules/snake-ui';
 import type { DemoTab } from '../../common/demo-types';
 import { useDemoLocale } from '../../common/demo-i18n';
-import DemoTabbar from '../demo-tabbar/demo-tabbar.vue';
 
-withDefaults(
+const props = withDefaults(
     defineProps<{
         title?: string;
         eyebrow?: string;
@@ -27,6 +26,7 @@ withDefaults(
         currentTab: 'components'
     }
 );
+const { title, eyebrow, desc, viewport, navBack, navHome, tabbar, currentTab } = toRefs(props);
 
 /*
  * 外壳组合变量必须内联到页面根节点:uni-app H5 会把 `page` 选择器编译成
@@ -34,14 +34,52 @@ withDefaults(
  * 仅写在 :root / .snake-theme-dark 上的深色覆写无法穿透到页面内容。
  * 导航纯色使用 common/demo.scss 中的私有变量,不受代换影响。
  */
-const isDark = computed(() =>
-    darkMode.value === 'auto' ? systemDark.value : darkMode.value === 'dark'
-);
+const isDark = computed(() => (darkMode.value === 'auto' ? systemDark.value : darkMode.value === 'dark'));
 const shellThemeStyle = computed(() => ({
     ...themeStyle.value,
     '--snake-demo-accent-text': isDark.value ? color.primary : color.primaryDeep
 }));
+const background = reactive({
+    backgroundColor: 'var(--snake-color-primary)',
+    backgroundImage: 'linear-gradient(90deg, var(--snake-color-primary-dark), var(--snake-color-primary-disabled))'
+});
+
+function postPreviewNavbarTheme() {
+    if (typeof window === 'undefined' || window.parent === window) return;
+    window.parent.postMessage(
+        {
+            type: 'snake-ui:preview-navbar-theme',
+            backgroundColor: color.primary,
+            backgroundImage: `linear-gradient(90deg, ${color.primaryDark}, ${color.primaryDisabled})`,
+            color: '#ffffff'
+        },
+        '*'
+    );
+}
+
+function handlePreviewThemeRequest(event: MessageEvent<{ type?: string }>) {
+    if (event.data?.type === 'snake-ui:request-preview-navbar-theme') postPreviewNavbarTheme();
+}
+
+watch(() => [color.primary, color.primaryDark, color.primaryDisabled], postPreviewNavbarTheme, { immediate: true });
+onMounted(() => window.addEventListener('message', handlePreviewThemeRequest));
+onBeforeUnmount(() => window.removeEventListener('message', handlePreviewThemeRequest));
+
 const { nextLocaleLabel, switchLocale, text } = useDemoLocale();
+const tabItems = computed(() => [
+    { key: 'components', text: text('组件'), icon: 'list' },
+    { key: 'tools', text: text('工具'), icon: 'setting' },
+    { key: 'scenes', text: text('场景'), icon: 'grid' },
+    { key: 'templates', text: text('模板'), icon: 'file-text' },
+    { key: 'about', text: text('关于'), icon: 'info' }
+]);
+const tabRoutes: Record<DemoTab, string> = {
+    components: '/pages/example/components',
+    tools: '/pages/example/tools',
+    scenes: '/pages/example/scenes',
+    templates: '/pages/example/templates',
+    about: '/pages/example/about'
+};
 
 function goBack() {
     if (getCurrentPages().length > 1) {
@@ -54,6 +92,11 @@ function goBack() {
 function goHome() {
     uni.reLaunch({ url: '/pages/example/components' });
 }
+
+function switchTab(key: string | number) {
+    const route = tabRoutes[String(key) as DemoTab];
+    if (route && key !== currentTab.value) uni.switchTab({ url: route });
+}
 </script>
 
 <template>
@@ -62,11 +105,10 @@ function goHome() {
             <snake-navbar
                 :title="title"
                 :is-back="navBack"
-                :fixed="false"
                 :custom-back="goBack"
-                :background="'var(--snake-demo-nav-background)'"
-                title-color="var(--snake-demo-nav-text)"
-                back-icon-color="var(--snake-demo-nav-text)"
+                :background="background"
+                title-color="#ffffff"
+                back-icon-color="#ffffff"
                 :border-bottom="false"
                 title-bold
             >
@@ -94,7 +136,7 @@ function goHome() {
 
             <view class="demo-body">
                 <slot />
-                <DemoTabbar v-if="tabbar" :current="currentTab" />
+                <snake-tabbar v-if="tabbar" :items="tabItems" :current="currentTab" @change="switchTab" />
             </view>
         </template>
         <slot v-else />
@@ -126,7 +168,7 @@ function goHome() {
 
 .demo-nav__locale {
     min-width: 58rpx;
-    color: var(--snake-demo-nav-text);
+    color: #fff;
     font-size: 24rpx;
     font-weight: 650;
 }
@@ -143,11 +185,11 @@ function goHome() {
 }
 
 .demo-nav__hit--hover {
-    background: var(--snake-demo-nav-hover);
+    background: rgba(255, 255, 255, 0.16);
 }
 
 .demo-nav__home {
-    color: var(--snake-demo-nav-text);
+    color: #fff;
     font-size: 26rpx;
     font-weight: 500;
 }

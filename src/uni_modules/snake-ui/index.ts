@@ -30,6 +30,7 @@ export * from './components/snake-popup/types';
 export * from './components/snake-sticky/types';
 export * from './components/snake-swiper/types';
 export * from './components/snake-tabs/types';
+export * from './components/snake-tabbar/types';
 export * from './components/snake-upload/types';
 export * from './components/snake-subsection/types';
 export * from './components/snake-button-sort/types';

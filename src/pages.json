@@ -22,6 +22,20 @@
             }
         },
         {
+            "path": "pages/example/scenes",
+            "style": {
+                "navigationBarTitleText": "场景",
+                "navigationStyle": "custom"
+            }
+        },
+        {
+            "path": "pages/example/templates",
+            "style": {
+                "navigationBarTitleText": "模板",
+                "navigationStyle": "custom"
+            }
+        },
+        {
             "path": "pages/example/about",
             "style": {
                 "navigationBarTitleText": "关于",
@@ -135,6 +149,8 @@
         "list": [
             { "pagePath": "pages/example/components", "text": "组件" },
             { "pagePath": "pages/example/tools", "text": "工具" },
+            { "pagePath": "pages/example/scenes", "text": "场景" },
+            { "pagePath": "pages/example/templates", "text": "模板" },
             { "pagePath": "pages/example/about", "text": "关于" }
         ]
     }

@@ -6,12 +6,14 @@ import { resolve } from 'node:path';
 const root = resolve(import.meta.dirname, '..');
 const read = path => readFile(resolve(root, path), 'utf8');
 
-test('demo app registers three primary tab pages', async () => {
+test('demo app registers five primary tab pages', async () => {
     const pages = await read('src/pages.json');
 
     for (const [pagePath, text] of [
         ['pages/example/components', '组件'],
         ['pages/example/tools', '工具'],
+        ['pages/example/scenes', '场景'],
+        ['pages/example/templates', '模板'],
         ['pages/example/about', '关于']
     ]) {
         assert.match(pages, new RegExp(`"pagePath":\\s*"${pagePath}"`));
@@ -34,21 +36,25 @@ test('page tree has no obsolete top-level demo directories', async () => {
 });
 
 test('primary pages share the custom themed tabbar', async () => {
-    const [tabbar, shell, components, tools, about] = await Promise.all([
-        read('src/components/demo-tabbar/demo-tabbar.vue'),
+    const [tabbar, shell, components, tools, scenes, templates, about] = await Promise.all([
+        read('src/uni_modules/snake-ui/components/snake-tabbar/snake-tabbar.vue'),
         read('src/components/demo-page/demo-page.vue'),
         read('src/pages/example/components.vue'),
         read('src/pages/example/tools.vue'),
+        read('src/pages/example/scenes.vue'),
+        read('src/pages/example/templates.vue'),
         read('src/pages/example/about.vue')
     ]);
 
-    assert.match(tabbar, /uni\.switchTab/);
-    assert.match(tabbar, /uni\.hideTabBar/);
+    assert.match(tabbar, /defineProps<TabbarProps>/);
+    assert.match(shell, /uni\.switchTab/);
     assert.match(tabbar, /safe-area-inset-bottom/);
-    assert.match(tabbar, /var\(--snake-color-primary\)/);
-    assert.match(shell, /DemoTabbar/);
+    assert.match(tabbar, /var\(--snake-color-primary/);
+    assert.match(shell, /snake-tabbar/);
     assert.match(components, /current-tab=['"]components['"]/);
     assert.match(tools, /current-tab=['"]tools['"]/);
+    assert.match(scenes, /current-tab=['"]scenes['"]/);
+    assert.match(templates, /current-tab=['"]templates['"]/);
     assert.match(about, /current-tab=['"]about['"]/);
     assert.match(about, /https:\/\/m\.puresnake\.com\/snake-ui\//);
     assert.doesNotMatch(about, /r2nd\.github\.io/);

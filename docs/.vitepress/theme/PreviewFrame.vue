@@ -8,6 +8,12 @@ const { frontmatter, title } = useData();
 const loaded = ref(false);
 const timedOut = ref(false);
 const retryCount = ref(0);
+const previewFrame = ref<HTMLIFrameElement>();
+const systemStatusStyle = ref({
+    backgroundColor: '#06D290',
+    backgroundImage: 'linear-gradient(90deg, #2EBD7C, #A6EBD3)',
+    color: '#ffffff'
+});
 let timer: ReturnType<typeof setTimeout> | undefined;
 
 // 手机壳基准宽度为 375px,视口空间不足时保持真机比例缩放,视口空间不足时按断点+高度等比缩放。
@@ -56,6 +62,22 @@ function markLoaded() {
     loaded.value = true;
     timedOut.value = false;
     if (timer) clearTimeout(timer);
+    previewFrame.value?.contentWindow?.postMessage({ type: 'snake-ui:request-preview-navbar-theme' }, '*');
+}
+
+function receivePreviewNavbarTheme(
+    event: MessageEvent<{
+        type?: string;
+        backgroundColor?: string;
+        backgroundImage?: string;
+        color?: string;
+    }>
+) {
+    if (event.source !== previewFrame.value?.contentWindow || event.data?.type !== 'snake-ui:preview-navbar-theme')
+        return;
+    const { backgroundColor, backgroundImage, color } = event.data;
+    if (!backgroundColor || !backgroundImage || !color) return;
+    systemStatusStyle.value = { backgroundColor, backgroundImage, color };
 }
 
 function retryPreview() {
@@ -68,10 +90,14 @@ onMounted(() => {
     if (props.mobile) return;
     updateScale();
     window.addEventListener('resize', updateScale);
+    window.addEventListener('message', receivePreviewNavbarTheme);
 });
 onBeforeUnmount(() => {
     if (timer) clearTimeout(timer);
-    if (!props.mobile && typeof window !== 'undefined') window.removeEventListener('resize', updateScale);
+    if (!props.mobile && typeof window !== 'undefined') {
+        window.removeEventListener('resize', updateScale);
+        window.removeEventListener('message', receivePreviewNavbarTheme);
+    }
 });
 </script>
 
@@ -81,7 +107,7 @@ onBeforeUnmount(() => {
     </a>
     <section v-else-if="previewUrl" class="preview-panel" aria-label="组件实时预览">
         <div class="preview-phone">
-            <div class="preview-phone__system-status" aria-hidden="true">
+            <div class="preview-phone__system-status" :style="systemStatusStyle" aria-hidden="true">
                 <span class="preview-phone__time">9:41</span>
                 <span class="preview-phone__indicators">
                     <i class="preview-phone__signal" />
@@ -98,6 +124,7 @@ onBeforeUnmount(() => {
             </div>
             <div class="preview-phone__island" />
             <iframe
+                ref="previewFrame"
                 :key="previewKey"
                 :src="previewUrl"
                 :title="`${title} 实时预览`"

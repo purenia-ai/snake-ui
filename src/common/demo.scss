@@ -1,22 +1,16 @@
 /*
  * Demo 外壳私有结构 token。
  * 颜色单一事实来源:snake-ui/theme.scss 的 --snake-color-* 体系,
- * 此处仅保留 demo 外壳的布局与导航组合变量,随库主题自动换肤。
+ * 此处仅保留 demo 外壳必要的组合变量,其余颜色直接使用主题 token。
  */
 :root,
 page {
     --snake-demo-accent-text: var(--snake-color-primary-deep, #007a55);
-    --snake-demo-nav-text: #073b2a;
-    --snake-demo-nav-hover: rgba(7, 59, 42, 0.12);
-    --snake-demo-nav-background: var(--snake-color-primary, #06d290);
 }
 
-/* 暗色模式(runtime 在 html 上加 snake-theme-dark class):保持单一品牌绿与足够对比。 */
+/* 暗色模式(runtime 在 html 上加 snake-theme-dark class)。 */
 .snake-theme-dark {
     --snake-demo-accent-text: var(--snake-color-primary, #06d290);
-    --snake-demo-nav-text: #073b2a;
-    --snake-demo-nav-hover: rgba(7, 59, 42, 0.16);
-    --snake-demo-nav-background: var(--snake-color-primary, #06d290);
 }
 
 /* 供 @import 消费的 SCSS 桥接别名。 */

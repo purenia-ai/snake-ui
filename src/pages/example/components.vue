@@ -5,21 +5,20 @@ import { demoText, useDemoLocale } from '../../common/demo-i18n';
 import rawGroups from './components.config';
 
 defineOptions({ name: 'ExampleComponents' });
-import {
-    currentTheme,
-    isDarkMode,
-    setTheme,
-    themes,
-    toggleDarkMode
-} from '../../uni_modules/snake-ui';
+import { currentTheme, isDarkMode, setTheme, themes, toggleDarkMode } from '../../uni_modules/snake-ui';
 
 const groups = ref(rawGroups);
 const searchText = ref('');
+const activeGroup = ref('all');
+const groupFilters = computed(() => [
+    { key: 'all', label: '全部', count: groups.value.reduce((sum, group) => sum + group.list.length, 0) },
+    ...groups.value.map(group => ({ key: group.groupNameEn, label: group.groupName, count: group.list.length }))
+]);
 
 const filteredGroups = computed(() => {
     const keyword = searchText.value.trim().toLowerCase();
-    if (!keyword) return groups.value;
     return groups.value
+        .filter(group => activeGroup.value === 'all' || group.groupNameEn === activeGroup.value)
         .map(group => ({
             ...group,
             list: group.list.filter(item => {
@@ -61,6 +60,19 @@ const clearSearch = () => {
         :nav-home="false"
     >
         <view class="overview">
+            <view class="components-hero">
+                <view class="components-hero__content"
+                    ><text class="components-hero__eyebrow">SNAKE / COMPONENTS</text
+                    ><text class="components-hero__title">为跨端业务而生的组件</text
+                    ><text class="components-hero__desc"
+                        >从基础交互到 CMS 营销模块，打开一个页面就能看到真实用法。</text
+                    ></view
+                >
+                <view class="components-hero__metric"
+                    ><text>{{ resultCount }}</text
+                    ><text>{{ text('个组件') }}</text></view
+                >
+            </view>
             <view class="theme-switcher">
                 <view
                     v-for="theme in themes"
@@ -77,6 +89,16 @@ const clearSearch = () => {
                 <button class="foundation-actions__button" @click="toggleDarkMode">{{ themeLabel }}</button>
                 <button class="foundation-actions__button" @click="switchLocale">{{ nextLocaleLabel }}</button>
             </view>
+            <scroll-view class="group-filters" scroll-x :show-scrollbar="false">
+                <view
+                    v-for="filter in groupFilters"
+                    :key="filter.key"
+                    :class="['group-filter', { 'group-filter--active': activeGroup === filter.key }]"
+                    @click="activeGroup = filter.key"
+                    ><text>{{ text(filter.label) }}</text
+                    ><text class="group-filter__count">{{ filter.count }}</text></view
+                >
+            </scroll-view>
             <view class="search-box">
                 <text class="search-box__icon">⌕</text>
                 <input
@@ -134,6 +156,102 @@ const clearSearch = () => {
 
 .overview {
     padding: 0 4px 28px;
+}
+.components-hero {
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    min-height: 180rpx;
+    margin: 0 0 20rpx;
+    padding: 30rpx;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-radius: 22rpx;
+    color: #effff8;
+    background: linear-gradient(135deg, var(--snake-color-primary-deeper), var(--snake-color-primary-deep));
+}
+.components-hero::after {
+    position: absolute;
+    width: 260rpx;
+    height: 260rpx;
+    right: -80rpx;
+    top: -120rpx;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 50%;
+    content: '';
+    box-shadow:
+        0 0 0 34rpx rgba(255, 255, 255, 0.05),
+        0 0 0 68rpx rgba(255, 255, 255, 0.04);
+}
+.components-hero__content {
+    position: relative;
+    z-index: 1;
+    max-width: 76%;
+}
+.components-hero__eyebrow,
+.components-hero__title,
+.components-hero__desc {
+    display: block;
+}
+.components-hero__eyebrow {
+    color: rgba(239, 255, 248, 0.7);
+    font-size: 19rpx;
+    letter-spacing: 4rpx;
+}
+.components-hero__title {
+    margin-top: 10rpx;
+    font-size: 38rpx;
+    font-weight: 750;
+    line-height: 1.25;
+}
+.components-hero__desc {
+    margin-top: 10rpx;
+    color: rgba(239, 255, 248, 0.78);
+    font-size: 23rpx;
+    line-height: 1.5;
+}
+.components-hero__metric {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    color: rgba(239, 255, 248, 0.75);
+    font-size: 21rpx;
+}
+.components-hero__metric text:first-child {
+    color: #fff;
+    font-size: 46rpx;
+    font-weight: 750;
+    line-height: 1;
+}
+.group-filters {
+    display: flex;
+    width: 100%;
+    margin-bottom: 20rpx;
+    white-space: nowrap;
+}
+.group-filter {
+    display: inline-flex;
+    margin-right: 10rpx;
+    padding: 12rpx 18rpx;
+    align-items: center;
+    gap: 8rpx;
+    border: 1px solid var(--snake-color-divider);
+    border-radius: 999rpx;
+    color: var(--snake-color-text-secondary);
+    background: var(--snake-color-surface);
+    font-size: 23rpx;
+}
+.group-filter--active {
+    border-color: var(--snake-color-primary);
+    color: var(--snake-color-primary-deep);
+    background: var(--snake-color-primary-light);
+    font-weight: 650;
+}
+.group-filter__count {
+    color: var(--snake-color-text-muted);
+    font-size: 19rpx;
 }
 .theme-switcher {
     display: flex;
