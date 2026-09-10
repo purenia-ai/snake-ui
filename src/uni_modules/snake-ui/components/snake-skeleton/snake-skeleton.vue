@@ -1,18 +1,18 @@
 <script setup lang="ts">
 /**
- * @component SnakeSkeleton
+ * @component Skeleton
  * @description 在首次加载数据时展示结构占位，支持快速段落模式和自定义骨架模板。
  * @see /components/skeleton
  */
 
 import { computed, provide } from 'vue';
-import SnakeSkeletonItem from '../snake-skeleton-item/snake-skeleton-item.vue';
+import SkeletonItem from '../snake-skeleton-item/snake-skeleton-item.vue';
 import { SNAKE_SKELETON_CONTEXT } from '../snake-skeleton-item/types';
-import type { SnakeSkeletonProps, SnakeSkeletonSize } from './types';
+import type { SkeletonProps, SkeletonSize } from './types';
 
-defineOptions({ name: 'SnakeSkeleton', options: { virtualHost: true, styleIsolation: 'shared' } });
+defineOptions({ name: 'Skeleton', options: { virtualHost: true, styleIsolation: 'shared' } });
 
-const props = withDefaults(defineProps<SnakeSkeletonProps>(), {
+const props = withDefaults(defineProps<SkeletonProps>(), {
     loading: true,
     animated: true,
     title: true,
@@ -46,12 +46,12 @@ const rowItems = computed(() => {
 });
 
 function resolveRowValue(
-    value: SnakeSkeletonSize | SnakeSkeletonSize[],
+    value: SkeletonSize | SkeletonSize[],
     index: number,
     count: number,
-    fallback: SnakeSkeletonSize,
+    fallback: SkeletonSize,
     shortenLastRow: boolean
-): SnakeSkeletonSize {
+): SkeletonSize {
     if (Array.isArray(value)) {
         return value[index] ?? (shortenLastRow && index === count - 1 ? '70%' : fallback);
     }
@@ -64,7 +64,7 @@ function resolveRowValue(
         <template v-if="loading">
             <slot v-if="$slots.template" name="template" />
             <view v-else class="snake-skeleton__wrapper">
-                <SnakeSkeletonItem
+                <SkeletonItem
                     v-if="avatar"
                     variant="circle"
                     :width="avatarSize"
@@ -73,13 +73,13 @@ function resolveRowValue(
                     custom-style="flex: none; margin-right: 15px"
                 />
                 <view class="snake-skeleton__content">
-                    <SnakeSkeletonItem
+                    <SkeletonItem
                         v-if="title"
                         variant="text"
                         :width="titleWidth"
                         :height="titleHeight"
                     />
-                    <SnakeSkeletonItem
+                    <SkeletonItem
                         v-for="(item, index) in rowItems"
                         :key="index"
                         variant="text"

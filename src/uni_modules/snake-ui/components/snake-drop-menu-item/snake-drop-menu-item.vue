@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * @component SnakeDropMenuItem
+ * @component DropMenuItem
  * @description 提供菜单触发器、遮罩和内容面板，必须作为 `DropMenu` 的直接子组件使用。可通过 options 快速生成选项，也可完全自定义内容。
  * @see /components/drop-menu
  */
@@ -8,13 +8,13 @@
 import { computed, inject, onBeforeUnmount, watch, type CSSProperties } from 'vue';
 import zIndex from '../../libs/config/zIndex';
 import { addUnit } from '../../libs/function/unit';
-import { snakeDropMenuKey } from '../../libs/internal/drop-menu';
-import SnakeIcon from '../snake-icon/snake-icon.vue';
-import SnakeTransition from '../snake-transition/snake-transition.vue';
-import type { SnakeDropMenuItemEmits, SnakeDropMenuItemProps } from './types';
+import { dropMenuKey } from '../../libs/internal/drop-menu';
+import Icon from '../snake-icon/snake-icon.vue';
+import Transition from '../snake-transition/snake-transition.vue';
+import type { DropMenuItemEmits, DropMenuItemProps } from './types';
 
-defineOptions({ name: 'SnakeDropMenuItem', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = withDefaults(defineProps<SnakeDropMenuItemProps>(), {
+defineOptions({ name: 'DropMenuItem', options: { virtualHost: true, styleIsolation: 'shared' } });
+const props = withDefaults(defineProps<DropMenuItemProps>(), {
     title: '',
     options: () => [],
     disabled: false,
@@ -22,8 +22,8 @@ const props = withDefaults(defineProps<SnakeDropMenuItemProps>(), {
     beforeToggle: undefined,
     customStyle: ''
 });
-const emit = defineEmits<SnakeDropMenuItemEmits>();
-const menu = inject(snakeDropMenuKey);
+const emit = defineEmits<DropMenuItemEmits>();
+const menu = inject(dropMenuKey);
 const itemId = Symbol('snake-drop-menu-item');
 const itemIndex = menu?.register(itemId) ?? -1;
 const isOpen = computed(() => menu?.activeItem.value === itemId || props.show === true);

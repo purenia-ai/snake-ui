@@ -1,21 +1,21 @@
-import type { SnakeCmsCouponService, SnakeCmsError, SnakeCmsLinkService, SnakeCmsPageInfo } from '../snake-cms/types';
+import type { CmsCouponService, CmsError, CmsLinkService, CmsPageInfo } from '../snake-cms/types';
 
-/** SnakeCoupon 组件的公开属性。 */
-export interface SnakeCouponProps<Data extends Record<string, any> = Record<string, any>> {
+/** Coupon 组件的公开属性。 */
+export interface CouponProps<Data extends Record<string, any> = Record<string, any>> {
     /** CMS 装修组件配置数据。 */
     datas?: Data;
     /** coupon service 配置。 */
-    couponService?: SnakeCmsCouponService;
+    couponService?: CmsCouponService;
     /** link service 配置。 */
-    linkService?: SnakeCmsLinkService;
+    linkService?: CmsLinkService;
     /** CMS 页面上下文信息。 */
-    pageInfo?: SnakeCmsPageInfo;
+    pageInfo?: CmsPageInfo;
 }
 
-/** SnakeCoupon 组件的事件契约。 */
-export interface SnakeCouponEmits {
+/** Coupon 组件的事件契约。 */
+export interface CouponEmits {
     /** error 事件携带的参数。 */
-    error: [error: SnakeCmsError];
+    error: [error: CmsError];
     /** received 事件携带的参数。 */
     received: [];
 }

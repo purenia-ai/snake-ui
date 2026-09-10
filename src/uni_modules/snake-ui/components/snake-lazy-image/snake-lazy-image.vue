@@ -1,18 +1,18 @@
 <script setup lang="ts">
 /**
- * @component SnakeLazyImage
+ * @component LazyImage
  * @description 图片进入视口阈值后才设置真实地址，适合商品长列表。组件优先使用 `uni.createIntersectionObserver`，不支持时安全降级为立即加载。
  * @see /components/lazy-image
  */
 
 import { getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue';
 import { addUnit } from '../../libs/function/unit';
-import SnakeImage from '../snake-image/snake-image.vue';
-import type { SnakeLazyImageEmits, SnakeLazyImageProps } from './types';
+import Image from '../snake-image/snake-image.vue';
+import type { LazyImageEmits, LazyImageProps } from './types';
 
-defineOptions({ name: 'SnakeLazyImage', options: { virtualHost: true, styleIsolation: 'shared' } });
+defineOptions({ name: 'LazyImage', options: { virtualHost: true, styleIsolation: 'shared' } });
 
-const props = withDefaults(defineProps<SnakeLazyImageProps>(), {
+const props = withDefaults(defineProps<LazyImageProps>(), {
     src: '',
     loadingImg: '',
     errorImg: '',
@@ -26,7 +26,7 @@ const props = withDefaults(defineProps<SnakeLazyImageProps>(), {
     duration: 300,
     customStyle: ''
 });
-const emit = defineEmits<SnakeLazyImageEmits>();
+const emit = defineEmits<LazyImageEmits>();
 const visible = ref(false);
 const instance = getCurrentInstance();
 let observer: any;

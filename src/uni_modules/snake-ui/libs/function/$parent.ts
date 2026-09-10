@@ -6,15 +6,15 @@
 // 注意：本文件属于 function/ 基础层，会被 node 直载测试加载，禁止 import 'vue'；
 // 调用方（组件内）自行传入 getCurrentInstance() 结果，与 getRect(selector, instance) 约定一致。
 
-export interface SnakeParentLike {
-    parent?: SnakeParentLike | null;
+export interface ParentLike {
+    parent?: ParentLike | null;
     type?: { name?: string };
 }
 
 export function $parent(
     componentName?: string,
-    instance?: SnakeParentLike | null
-): SnakeParentLike | null | undefined {
+    instance?: ParentLike | null
+): ParentLike | null | undefined {
     let parent = instance?.parent ?? null;
 
     if (!componentName) return parent;

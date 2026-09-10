@@ -36,16 +36,16 @@
 
 <script setup lang="ts">
 /**
- * @component SnakePagePopup
+ * @component PagePopup
  * @description 页面进入后立即展示居中或底部图片弹窗，并支持图片跳转。
  */
 
 import { onMounted, ref, watch } from 'vue';
-import type { SnakePagePopupProps } from './types';
+import type { PagePopupProps } from './types';
 
-defineOptions({ name: 'SnakePagePopup', options: { virtualHost: true, styleIsolation: 'shared' } });
+defineOptions({ name: 'PagePopup', options: { virtualHost: true, styleIsolation: 'shared' } });
 
-const props = withDefaults(defineProps<SnakePagePopupProps>(), {
+const props = withDefaults(defineProps<PagePopupProps>(), {
     datas: () => ({})
 });
 const show = ref(true);

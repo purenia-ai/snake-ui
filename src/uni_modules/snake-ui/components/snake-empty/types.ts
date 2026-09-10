@@ -1,8 +1,8 @@
 import type { UnitValue } from '../../libs/function/unit';
-import type { SnakeStyleValue } from '../../types/global';
+import type { StyleValue } from '../../types/global';
 
-/** SnakeEmptyMode 类型定义。 */
-export type SnakeEmptyMode =
+/** EmptyMode 类型定义。 */
+export type EmptyMode =
     | 'data'
     | 'list'
     | 'search'
@@ -17,12 +17,12 @@ export type SnakeEmptyMode =
     | 'address'
     | 'car';
 
-/** SnakeEmpty 组件的公开属性。 */
-export interface SnakeEmptyProps {
+/** Empty 组件的公开属性。 */
+export interface EmptyProps {
     /** 是否显示组件。 */
     show?: boolean;
     /** 组件展示模式。 */
-    mode?: SnakeEmptyMode;
+    mode?: EmptyMode;
     /** 资源地址。 */
     src?: string;
     /** 图标名称。 */
@@ -44,5 +44,5 @@ export interface SnakeEmptyProps {
     /** 根节点自定义类名。 */
     customClass?: string;
     /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
+    customStyle?: StyleValue;
 }

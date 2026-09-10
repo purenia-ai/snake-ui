@@ -1,17 +1,17 @@
-export type SnakeEventHandler<Payload = unknown> = (payload: Payload) => void;
+export type EventHandler<Payload = unknown> = (payload: Payload) => void;
 
-export function createSnakeEmitter() {
-    const events = new Map<string, Set<SnakeEventHandler>>();
+export function createEmitter() {
+    const events = new Map<string, Set<EventHandler>>();
     return {
-        on<Payload>(name: string, handler: SnakeEventHandler<Payload>) {
+        on<Payload>(name: string, handler: EventHandler<Payload>) {
             const handlers = events.get(name) || new Set();
-            handlers.add(handler as SnakeEventHandler);
+            handlers.add(handler as EventHandler);
             events.set(name, handlers);
-            return () => handlers.delete(handler as SnakeEventHandler);
+            return () => handlers.delete(handler as EventHandler);
         },
-        off<Payload>(name: string, handler?: SnakeEventHandler<Payload>) {
+        off<Payload>(name: string, handler?: EventHandler<Payload>) {
             if (!handler) events.delete(name);
-            else events.get(name)?.delete(handler as SnakeEventHandler);
+            else events.get(name)?.delete(handler as EventHandler);
         },
         emit<Payload>(name: string, payload: Payload) {
             events.get(name)?.forEach(handler => handler(payload));
@@ -22,4 +22,4 @@ export function createSnakeEmitter() {
     };
 }
 
-export const snakeEmitter = createSnakeEmitter();
+export const emitter = createEmitter();

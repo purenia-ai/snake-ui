@@ -1,14 +1,14 @@
 import type { UnitValue } from '../../libs/function/unit';
-import type { SnakeImageMode, SnakeStyleValue } from '../../types/global';
+import type { ImageMode, StyleValue } from '../../types/global';
 
-/** SnakeImage 组件的公开属性。 */
-export interface SnakeImageProps {
+/** Image 组件的公开属性。 */
+export interface ImageProps {
     /** 资源地址。 */
     src?: string;
     /** 图片替代文本。 */
     alt?: string;
     /** 组件展示模式。 */
-    mode?: SnakeImageMode;
+    mode?: ImageMode;
     /** 组件宽度。 */
     width?: UnitValue;
     /** 组件高度。 */
@@ -44,11 +44,11 @@ export interface SnakeImageProps {
     /** 根节点自定义类名。 */
     customClass?: string;
     /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
+    customStyle?: StyleValue;
 }
 
-/** SnakeImage 组件的事件契约。 */
-export interface SnakeImageEmits {
+/** Image 组件的事件契约。 */
+export interface ImageEmits {
     /** load 事件携带的参数。 */
     load: [event: unknown];
     /** error 事件携带的参数。 */

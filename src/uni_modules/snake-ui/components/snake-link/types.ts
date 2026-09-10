@@ -1,7 +1,7 @@
 import type { ExtractPropTypes, PropType } from 'vue';
 
-/** snakeLinkProps 运行时属性及默认值。 */
-export const snakeLinkProps = {
+/** linkProps 运行时属性及默认值。 */
+export const linkProps = {
     /** 超链接文字。 */
     text: { type: [String, Number] as PropType<string | number>, default: '' },
     /** 文字颜色。 */
@@ -20,11 +20,11 @@ export const snakeLinkProps = {
     defaultClick: { type: Boolean, default: true }
 } as const;
 
-/** SnakeLink 组件的公开属性。 */
-export type SnakeLinkProps = ExtractPropTypes<typeof snakeLinkProps>;
+/** Link 组件的公开属性。 */
+export type LinkProps = ExtractPropTypes<typeof linkProps>;
 
-/** SnakeLink 组件的事件契约。 */
-export interface SnakeLinkEmits {
+/** Link 组件的事件契约。 */
+export interface LinkEmits {
     /** defaultClick 为 false 时点击触发，携带链接地址。 */
     click: [href: string];
 }

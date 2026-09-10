@@ -47,26 +47,26 @@
 
 <script setup lang="ts">
 /**
- * @component SnakeCoupon
+ * @component Coupon
  * @description 检查领取资格，以页面图片或弹窗形式展示优惠券，并在领取后执行内部或外部跳转。
  */
 
 import { computed, onMounted, ref, watch } from 'vue';
-import { resolveSnakeCmsOptions } from '../../libs/cms';
+import { resolveCmsOptions } from '../../libs/cms';
 import { sleep, toast } from '../../libs/function/platform';
 import {
-    SnakeCmsError,
+    CmsError,
 } from '../snake-cms/types';
-import type { SnakeCouponEmits, SnakeCouponProps } from './types';
+import type { CouponEmits, CouponProps } from './types';
 
-defineOptions({ name: 'SnakeCoupon', options: { virtualHost: true, styleIsolation: 'shared' } });
+defineOptions({ name: 'Coupon', options: { virtualHost: true, styleIsolation: 'shared' } });
 
 const props = withDefaults(
-    defineProps<SnakeCouponProps>(),
+    defineProps<CouponProps>(),
     { datas: () => ({}), couponService: undefined, linkService: undefined, pageInfo: () => ({}) }
 );
-const emit = defineEmits<SnakeCouponEmits>();
-const resolved = computed(() => resolveSnakeCmsOptions());
+const emit = defineEmits<CouponEmits>();
+const resolved = computed(() => resolveCmsOptions());
 const couponService = computed(() => props.couponService || resolved.value.services?.coupon);
 const linkService = computed(() => props.linkService || resolved.value.services?.link);
 const isCouponCheck = ref(true);
@@ -90,7 +90,7 @@ async function getCouponCheck(): Promise<void> {
             show.value = true;
         }
     } catch (cause) {
-        emit('error', new SnakeCmsError('coupon', '优惠券状态加载失败', cause));
+        emit('error', new CmsError('coupon', '优惠券状态加载失败', cause));
     }
 }
 
@@ -113,7 +113,7 @@ async function handleReceiveCoupon(): Promise<void> {
         return;
     }
     if (!couponService.value) {
-        const error = new SnakeCmsError('coupon', '未配置 CMS 优惠券服务');
+        const error = new CmsError('coupon', '未配置 CMS 优惠券服务');
         emit('error', error);
         toast(error.message);
         return;
@@ -132,7 +132,7 @@ async function handleReceiveCoupon(): Promise<void> {
         await sleep(1000);
         await openAfterAction();
     } catch (cause) {
-        const error = new SnakeCmsError('coupon', '优惠券领取失败', cause);
+        const error = new CmsError('coupon', '优惠券领取失败', cause);
         emit('error', error);
         toast(error.message);
     }

@@ -30,9 +30,9 @@ await uni.$snake.sleep(300);
 ## HTTP 与 Hooks
 
 ```ts
-import { snakeHttp, useLocale, useTheme } from '@puresnake/snake-ui';
+import { http, useLocale, useTheme } from '@puresnake/snake-ui';
 
-const profile = await snakeHttp.get<User>('/profile');
+const profile = await http.get<User>('/profile');
 const { setLocale } = useLocale();
 const { toggleDarkMode } = useTheme();
 ```

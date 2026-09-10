@@ -7,15 +7,15 @@
 
 <script setup lang="ts">
 /**
- * @component SnakeCustomModule
+ * @component CustomModule
  * @description 为 CMS 配置中的自定义内容提供一个通用插槽容器。
  */
 
-import type { SnakeCustomModuleProps, SnakeCustomModuleSlots } from './types';
+import type { CustomModuleProps, CustomModuleSlots } from './types';
 
-defineOptions({ name: 'SnakeCustomModule', options: { virtualHost: true, styleIsolation: 'shared' } });
-withDefaults(defineProps<SnakeCustomModuleProps>(), { datas: () => ({}) });
-defineSlots<SnakeCustomModuleSlots>();
+defineOptions({ name: 'CustomModule', options: { virtualHost: true, styleIsolation: 'shared' } });
+withDefaults(defineProps<CustomModuleProps>(), { datas: () => ({}) });
+defineSlots<CustomModuleSlots>();
 </script>
 
 <style scoped lang="scss">

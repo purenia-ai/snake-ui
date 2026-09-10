@@ -1,14 +1,14 @@
 <script setup lang="ts">
 /**
- * @component SnakeCellGroup
- * @description 单元格分组容器，一般搭配 SnakeCellItem 用于列表场景，支持分组标题与上下外边框。
+ * @component CellGroup
+ * @description 单元格分组容器，一般搭配 CellItem 用于列表场景，支持分组标题与上下外边框。
  * @see /components/cell
  */
 
-import { snakeCellGroupProps } from './types';
+import { cellGroupProps } from './types';
 
-defineOptions({ name: 'SnakeCellGroup', options: { virtualHost: true, styleIsolation: 'shared' } });
-defineProps(snakeCellGroupProps);
+defineOptions({ name: 'CellGroup', options: { virtualHost: true, styleIsolation: 'shared' } });
+defineProps(cellGroupProps);
 </script>
 
 <template>

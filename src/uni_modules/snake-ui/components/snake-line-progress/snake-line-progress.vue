@@ -1,15 +1,15 @@
 <script setup lang="ts">
 /**
- * @component SnakeLineProgress
+ * @component LineProgress
  * @description 线形进度条，用于展示操作或任务的当前进度，支持主题色预设、条纹与百分比展示。
  * @see /components/line-progress
  */
 
 import { computed, useSlots } from 'vue';
-import { snakeLineProgressProps } from './types';
+import { lineProgressProps } from './types';
 
-defineOptions({ name: 'SnakeLineProgress', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = defineProps(snakeLineProgressProps);
+defineOptions({ name: 'LineProgress', options: { virtualHost: true, styleIsolation: 'shared' } });
+const props = defineProps(lineProgressProps);
 const slots = useSlots();
 
 /** 激活部分的宽度与颜色，主题预设优先于 activeColor。 */

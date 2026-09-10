@@ -193,7 +193,7 @@
 
 <script>
 /**
- * @component SnakeGoodsList
+ * @component GoodsList
  * @description 以自适应卡片网格展示直购、新品或拍卖商品，包含库存、价格、标签和出价状态。
  */
 

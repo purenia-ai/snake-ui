@@ -90,20 +90,20 @@ app.use(SnakeUI, {
 
 | 参数              | 说明                                   | 类型                        | 默认值 |
 | ----------------- | -------------------------------------- | --------------------------- | ------ |
-| `pageInfo`        | 页面 ID、名称和页面级业务信息          | `SnakeCmsPageInfo`          | `{}`   |
-| `pageComponents`  | 按顺序排列的装修配置                   | `SnakeCmsComponentConfig[]` | `[]`   |
+| `pageInfo`        | 页面 ID、名称和页面级业务信息          | `CmsPageInfo`          | `{}`   |
+| `pageComponents`  | 按顺序排列的装修配置                   | `CmsComponentConfig[]` | `[]`   |
 | `scrollTop`       | 页面滚动位置                           | `number`                    | `0`    |
 | `stickyOffsetTop` | 商品区吸顶顶部偏移                     | `number`                    | `0`    |
-| `cmsOptions`      | 当前实例的服务、别名、资源和规范化配置 | `SnakeCmsOptions`           | `{}`   |
+| `cmsOptions`      | 当前实例的服务、别名、资源和规范化配置 | `CmsOptions`           | `{}`   |
 
 ### Events
 
 | 事件           | 参数                  | 说明                               |
 | -------------- | --------------------- | ---------------------------------- |
-| `ready`        | `SnakeCmsStateChange` | 本轮初始化首次进入可展示状态       |
-| `state-change` | `SnakeCmsStateChange` | 加载状态、页码或商品数量变化       |
-| `diagnostic`   | `SnakeCmsDiagnostic`  | 配置无效、未知组件或重复商品区     |
-| `error`        | `SnakeCmsError`       | 活动、筛选、商品、优惠券或跳转失败 |
+| `ready`        | `CmsStateChange` | 本轮初始化首次进入可展示状态       |
+| `state-change` | `CmsStateChange` | 加载状态、页码或商品数量变化       |
+| `diagnostic`   | `CmsDiagnostic`  | 配置无效、未知组件或重复商品区     |
+| `error`        | `CmsError`       | 活动、筛选、商品、优惠券或跳转失败 |
 | `goods-click`  | `{ item, index }`     | 点击商品；随后调用宿主导航服务     |
 | `offer-click`  | `{ item, index }`     | 点击拍卖报价；随后调用宿主导航服务 |
 

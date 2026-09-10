@@ -1,5 +1,5 @@
-/** SnakeActivityList 数据项。 */
-export interface SnakeActivityListItem extends Record<string, any> {
+/** ActivityList 数据项。 */
+export interface ActivityListItem extends Record<string, any> {
     /** 数据唯一标识。 */
     id: string | number;
     /** 数据项名称或唯一标识。 */
@@ -14,16 +14,16 @@ export interface SnakeActivityListItem extends Record<string, any> {
     endTime?: number;
 }
 
-/** SnakeActivityList 组件的公开属性。 */
-export interface SnakeActivityListProps {
+/** ActivityList 组件的公开属性。 */
+export interface ActivityListProps {
     /** 用于渲染的数据列表。 */
-    list?: SnakeActivityListItem[];
+    list?: ActivityListItem[];
     /** 当前激活项索引。 */
     current?: string | number;
 }
 
-/** SnakeActivityList 组件的事件契约。 */
-export interface SnakeActivityListEmits {
+/** ActivityList 组件的事件契约。 */
+export interface ActivityListEmits {
     /** change 事件携带的参数。 */
-    change: [item: SnakeActivityListItem, index: number];
+    change: [item: ActivityListItem, index: number];
 }

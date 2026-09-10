@@ -1,18 +1,18 @@
 <script setup lang="ts">
 /**
- * @component SnakeIndexList
+ * @component IndexList
  * @description 跟随页面滚动的索引列表，通过右侧索引快速定位分组内容，并与 IndexAnchor 配合实现吸顶。
  * @see /components/index-list
  */
 
 import { computed, getCurrentInstance, nextTick, onMounted, provide, ref, toRef, watch, type CSSProperties } from 'vue';
 import zIndex from '../../libs/config/zIndex';
-import { indexFromTouch, offsetTopPx, resolveIndex, snakeIndexListKey } from '../../libs/internal/index-list';
-import type { SnakeIndexListEmits, SnakeIndexListProps, SnakeIndexValue } from './types';
+import { indexFromTouch, offsetTopPx, resolveIndex, indexListKey } from '../../libs/internal/index-list';
+import type { IndexListEmits, IndexListProps, IndexValue } from './types';
 
-defineOptions({ name: 'SnakeIndexList', options: { virtualHost: true, styleIsolation: 'shared' } });
+defineOptions({ name: 'IndexList', options: { virtualHost: true, styleIsolation: 'shared' } });
 
-const props = withDefaults(defineProps<SnakeIndexListProps>(), {
+const props = withDefaults(defineProps<IndexListProps>(), {
     indexList: () => [],
     scrollTop: 0,
     zIndex: zIndex.indexListSticky,
@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<SnakeIndexListProps>(), {
     customClass: '',
     customStyle: ''
 });
-const emit = defineEmits<SnakeIndexListEmits>();
+const emit = defineEmits<IndexListEmits>();
 const instance = getCurrentInstance();
 const activeIndex = ref(-1);
 const touching = ref(false);
@@ -36,7 +36,7 @@ const anchorTops = ref<number[]>([]);
 const anchorHeights = ref<number[]>([]);
 const currentScrollTop = computed(() => Number(props.scrollTop) || 0);
 const currentOffsetTop = computed(() => offsetTopPx(props.offsetTop));
-const anchorId = (value: SnakeIndexValue) => `snake-index-anchor-${String(value).replace(/[^a-zA-Z0-9_-]/g, '-')}`;
+const anchorId = (value: IndexValue) => `snake-index-anchor-${String(value).replace(/[^a-zA-Z0-9_-]/g, '-')}`;
 
 function setActive(index: number, selected = false) {
     if (!props.indexList.length || index < 0 || index >= props.indexList.length) return;
@@ -61,7 +61,7 @@ function updateActive() {
     else activeIndex.value = -1;
 }
 
-function scrollTo(indexOrValue: number | SnakeIndexValue) {
+function scrollTo(indexOrValue: number | IndexValue) {
     const index = resolveIndex(indexOrValue, props.indexList);
     if (index < 0 || index >= anchorTops.value.length) return;
     setActive(index, true);
@@ -103,11 +103,11 @@ async function update() {
     });
 }
 
-function indexOfAnchor(value: SnakeIndexValue) {
+function indexOfAnchor(value: IndexValue) {
     return props.indexList.indexOf(value);
 }
 
-function anchorStyle(value: SnakeIndexValue): CSSProperties {
+function anchorStyle(value: IndexValue): CSSProperties {
     const index = indexOfAnchor(value);
     if (!props.sticky || index < 0 || index !== activeIndex.value) return {};
     const height = anchorHeights.value[index] || 0;
@@ -125,12 +125,12 @@ function anchorStyle(value: SnakeIndexValue): CSSProperties {
     };
 }
 
-function wrapperStyle(value: SnakeIndexValue): CSSProperties {
+function wrapperStyle(value: IndexValue): CSSProperties {
     const index = indexOfAnchor(value);
     return props.sticky && index === activeIndex.value ? { height: `${anchorHeights.value[index] || 0}px` } : {};
 }
 
-provide(snakeIndexListKey, {
+provide(indexListKey, {
     activeIndex,
     sticky: toRef(props, 'sticky'),
     offsetTop: toRef(props, 'offsetTop'),

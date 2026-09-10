@@ -2,9 +2,9 @@
 <script setup lang="ts">
 /** @component CmsV2Coupon @description CMS v2 优惠券协议内部渲染器。 @see /cms/overview */
 import { computed } from 'vue';
-import SnakeCoupon from '../../../snake-coupon/snake-coupon.vue';
-import type { SnakeCmsCouponService, SnakeCmsError, SnakeCmsLinkService, SnakeCmsPageInfo } from '../../../../libs/cms';
-const props = defineProps<{ data: Record<string, any>; couponService?: SnakeCmsCouponService; linkService?: SnakeCmsLinkService; pageInfo?: SnakeCmsPageInfo }>();
-defineEmits<{ error: [error: SnakeCmsError]; received: [] }>();
+import Coupon from '../../../snake-coupon/snake-coupon.vue';
+import type { CmsCouponService, CmsError, CmsLinkService, CmsPageInfo } from '../../../../libs/cms';
+const props = defineProps<{ data: Record<string, any>; couponService?: CmsCouponService; linkService?: CmsLinkService; pageInfo?: CmsPageInfo }>();
+defineEmits<{ error: [error: CmsError]; received: [] }>();
 const legacyData = computed(() => ({ modeType: props.data.mode || 'page', popupMode: props.data.popupMode || 'bottom', couponObj: props.data.coupon, beforeImage: props.data.before?.image || '', beforeUrl: props.data.before?.link?.http || '', afterImage: props.data.after?.image || '', afterUrl: props.data.after?.link?.http || '', type: String(props.data.after?.link?.httpType || 10) }));
 </script>

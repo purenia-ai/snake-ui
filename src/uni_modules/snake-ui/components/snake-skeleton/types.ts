@@ -1,10 +1,10 @@
-import type { SnakeStyleValue } from '../../types/global';
+import type { StyleValue } from '../../types/global';
 
-/** SnakeSkeleton 支持的尺寸值。 */
-export type SnakeSkeletonSize = number | string;
+/** Skeleton 支持的尺寸值。 */
+export type SkeletonSize = number | string;
 
-/** SnakeSkeleton 组件的公开属性。 */
-export interface SnakeSkeletonProps {
+/** Skeleton 组件的公开属性。 */
+export interface SkeletonProps {
     /** 是否显示骨架内容。 */
     loading?: boolean;
     /** 是否启用流光动画。 */
@@ -12,21 +12,21 @@ export interface SnakeSkeletonProps {
     /** 是否显示默认标题占位。 */
     title?: boolean;
     /** 默认标题宽度。 */
-    titleWidth?: SnakeSkeletonSize;
+    titleWidth?: SkeletonSize;
     /** 默认标题高度。 */
-    titleHeight?: SnakeSkeletonSize;
+    titleHeight?: SkeletonSize;
     /** 默认段落行数。 */
     rows?: number;
     /** 默认段落宽度；数组可逐行配置。 */
-    rowsWidth?: SnakeSkeletonSize | SnakeSkeletonSize[];
+    rowsWidth?: SkeletonSize | SkeletonSize[];
     /** 默认段落高度；数组可逐行配置。 */
-    rowsHeight?: SnakeSkeletonSize | SnakeSkeletonSize[];
+    rowsHeight?: SkeletonSize | SkeletonSize[];
     /** 是否显示默认头像占位。 */
     avatar?: boolean;
     /** 默认头像尺寸。 */
-    avatarSize?: SnakeSkeletonSize;
+    avatarSize?: SkeletonSize;
     /** 默认头像形状。 */
     avatarShape?: 'circle' | 'square';
     /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
+    customStyle?: StyleValue;
 }

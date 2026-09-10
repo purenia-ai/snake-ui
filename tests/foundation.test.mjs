@@ -64,36 +64,36 @@ const request = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/reque
 
 test('theme initializes Snake tokens and switches dark mode reactively', () => {
     storage.clear();
-    theme.resetSnakeTheme();
-    theme.initSnakeTheme({ primary: '#123456' });
-    assert.equal(theme.snakeColor.primary, '#123456');
-    assert.equal(theme.snakeCssVars.value['--snake-color-primary'], '#123456');
-    theme.setSnakeDarkMode('dark');
-    assert.equal(theme.isSnakeDarkMode(), true);
-    assert.equal(theme.snakeCssVars.value['--snake-theme-mode'], 'dark');
+    theme.resetTheme();
+    theme.initTheme({ primary: '#123456' });
+    assert.equal(theme.color.primary, '#123456');
+    assert.equal(theme.cssVars.value['--snake-color-primary'], '#123456');
+    theme.setDarkMode('dark');
+    assert.equal(theme.isDarkMode(), true);
+    assert.equal(theme.cssVars.value['--snake-theme-mode'], 'dark');
     assert.equal(storage.get('snake-ui-dark-mode'), 'dark');
 });
 
 test('theme accepts config-only options without treating them as color tokens', () => {
     storage.clear();
-    theme.resetSnakeTheme();
-    theme.initSnakeTheme({ defaultDarkMode: 'dark', force: true });
-    assert.equal(theme.isSnakeDarkMode(), true);
-    assert.equal(theme.snakeColor.primary, theme.snakeDarkPalette.primary);
-    assert.equal('defaultDarkMode' in theme.snakeColor, false);
+    theme.resetTheme();
+    theme.initTheme({ defaultDarkMode: 'dark', force: true });
+    assert.equal(theme.isDarkMode(), true);
+    assert.equal(theme.color.primary, theme.darkPalette.primary);
+    assert.equal('defaultDarkMode' in theme.color, false);
 });
 
 test('locale uses current language, Chinese fallback, and replacements', () => {
     storage.clear();
-    locale.resetSnakeLocale();
-    locale.initSnakeLocale([{ name: 'test', messages: { greeting: 'Hello {name}' } }]);
-    assert.equal(locale.setSnakeLocale('test'), true);
+    locale.resetLocale();
+    locale.initLocale([{ name: 'test', messages: { greeting: 'Hello {name}' } }]);
+    assert.equal(locale.setLocale('test'), true);
     assert.equal(storage.get('snake-ui-locale'), 'test');
-    assert.equal(locale.snakeTranslate('greeting', { name: 'Snake' }), 'Hello Snake');
-    assert.equal(locale.snakeTranslate('common.confirm'), '确定');
-    assert.equal(locale.snakeTranslate('select.confirmText'), '确认');
-    assert.equal(locale.snakeTranslate('calendar.sat'), '六');
-    assert.equal(locale.snakeTranslate('missing.key'), 'missing.key');
+    assert.equal(locale.translate('greeting', { name: 'Snake' }), 'Hello Snake');
+    assert.equal(locale.translate('common.confirm'), '确定');
+    assert.equal(locale.translate('select.confirmText'), '确认');
+    assert.equal(locale.translate('calendar.sat'), '六');
+    assert.equal(locale.translate('missing.key'), 'missing.key');
 });
 
 test('foundation utilities clone, merge, style, and color values', () => {
@@ -158,14 +158,14 @@ test('styleUtils merges css strings and objects in both directions', () => {
 });
 
 test('$parent walks the instance chain by component name', () => {
-    const chain = { type: { name: 'SnakeList' }, parent: { type: { name: 'SnakeForm' } } };
-    assert.equal(functions.$parent('SnakeForm', chain), chain.parent);
+    const chain = { type: { name: 'List' }, parent: { type: { name: 'Form' } } };
+    assert.equal(functions.$parent('Form', chain), chain.parent);
     assert.equal(functions.$parent(undefined, chain), chain.parent);
     assert.equal(functions.$parent('Missing', chain), null);
     // uView 语义：数字 0 视为「未传」回落父组件值，false 视为「已传」覆盖
     const inherited = functions.getParent.call(
-        { $parent: { $options: { name: 'SnakeList' }, gap: 10, bold: true } },
-        'SnakeList',
+        { $parent: { $options: { name: 'List' }, gap: 10, bold: true } },
+        'List',
         { gap: 0, bold: false }
     );
     assert.deepEqual(inherited, { gap: 10, bold: false });
@@ -306,23 +306,65 @@ test('time helpers handle 10-digit timestamps and safe identifiers', () => {
 });
 
 test('http keeps legacy adapter support and rejects interceptor cancellation', async () => {
-    request.snakeHttp.reset();
-    request.configureSnakeHttp(
-        { config: { baseUrl: '/api' } },
+    request.http.reset();
+    request.configureHttp(
+        { config: { baseUrl: '/api', meta: { originalData: false } } },
         {
             get: async (url, params) => ({ url, params }),
             post: async (url, data) => ({ url, data })
         }
     );
-    assert.deepEqual(await request.snakeHttp.get('/health', { ready: true }), {
+    assert.deepEqual(await request.http.get('/health', { ready: true }), {
         url: '/api/health',
         params: { ready: true }
     });
-    request.snakeHttp.setInterceptor({ request: () => false });
+    request.http.setInterceptor({ request: () => false });
     await assert.rejects(
-        request.snakeHttp.get('/blocked'),
-        error => error instanceof request.SnakeHttpError && error.kind === 'canceled'
+        request.http.get('/blocked'),
+        error => error instanceof request.RequestError && error.kind === 'canceled'
     );
+});
+
+test('http matches uView defaults, plugin injection, and AutoHttp API generation', async () => {
+    request.http.reset();
+    request.http.setTransport(async options => ({
+        statusCode: options.url === '/created' ? 201 : 200,
+        data: { url: options.url, method: options.method },
+        header: {}
+    }));
+    assert.equal(request.configureHttp, request.configureHttp);
+    assert.ok(request.http instanceof request.Request);
+    assert.ok(new request.Request() instanceof request.Request);
+    assert.equal(request.default, request.httpPlugin);
+    const created = await request.http.request({ url: '/created' });
+    assert.deepEqual({ statusCode: created.statusCode, data: created.data, header: created.header }, {
+        statusCode: 201,
+        data: { url: '/created', method: 'POST' },
+        header: {}
+    });
+    assert.equal(created.config?.url, '/created');
+    assert.deepEqual(await request.http.get('/goods', { page: 2 }, { meta: { originalData: false } }), {
+        url: '/goods',
+        method: 'GET'
+    });
+
+    const app = { config: { globalProperties: {} } };
+    request.httpPlugin.install(app, { requestConfig: { baseUrl: '/api' } });
+    assert.equal(app.config.globalProperties.$http, request.http);
+
+    const api = new request.AutoHttp.Builder(request.http).dispatch({
+        detail: { url: '/goods', method: 'GET' }
+    });
+    assert.deepEqual(await api.detail({ meta: { originalData: false } }), { url: '/api/goods', method: 'GET' });
+
+    const restfulApi = new request.AutoHttp.Builder(request.http).dispatch({
+        detail: { url: '/goods', method: 'GET' }
+    });
+    assert.deepEqual(await restfulApi.detail({ url: () => '/1', meta: { originalData: false } }), {
+        url: '/api/goods/1',
+        method: 'GET'
+    });
+    request.http.reset();
 });
 
 test('theme variables are injected once at the page level via snake-config-provider', async () => {
@@ -342,7 +384,7 @@ test('theme variables are injected once at the page level via snake-config-provi
     const injected = [];
     for (const file of await vueFiles(componentsRoot)) {
         const source = await readFile(file, 'utf8');
-        if (source.includes('$snakeThemeStyle')) injected.push(file);
+        if (source.includes('$themeStyle')) injected.push(file);
     }
     assert.equal(injected.length, 1);
     assert.ok(injected[0].endsWith('snake-config-provider.vue'));

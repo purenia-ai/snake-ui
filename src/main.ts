@@ -1,13 +1,13 @@
 import { createSSRApp } from 'vue';
 import App from './App.vue';
 import SnakeUI from './uni_modules/snake-ui';
-import { mockSnakeUIOptions } from './common/mock-adapters';
-import { migrateSnakeThemePresetStorage } from './snake-ui.theme';
+import { mockUIOptions } from './common/mock-adapters';
+import { migrateThemePresetStorage } from './snake-ui.theme';
 
 export function createApp() {
-    migrateSnakeThemePresetStorage();
+    migrateThemePresetStorage();
     const app = createSSRApp(App);
-    app.use(SnakeUI, mockSnakeUIOptions);
+    app.use(SnakeUI, mockUIOptions);
     return {
         app
     };

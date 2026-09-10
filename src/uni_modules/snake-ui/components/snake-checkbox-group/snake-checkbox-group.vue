@@ -1,17 +1,17 @@
 <script setup lang="ts">
 /**
- * @component SnakeCheckboxGroup
+ * @component CheckboxGroup
  * @description checkbox 父组件，管理一组 Checkbox 的数组值、最大选择数与布局。
  * @see /components/checkbox
  */
 
 import { computed, inject, nextTick, onMounted, watch } from 'vue';
 import { useDebounce, useParent } from '../../libs/hooks';
-import { snakeFormItemKey } from '../../libs/internal/form-item';
-import type { SnakeCheckboxGroupEmits, SnakeCheckboxGroupProps } from './types';
+import { formItemKey } from '../../libs/internal/form-item';
+import type { CheckboxGroupEmits, CheckboxGroupProps } from './types';
 
 defineOptions({
-    name: 'SnakeCheckboxGroup',
+    name: 'CheckboxGroup',
     options: {
         addGlobalClass: true,
         // #ifndef MP-TOUTIAO
@@ -21,7 +21,7 @@ defineOptions({
     }
 });
 
-const props = withDefaults(defineProps<SnakeCheckboxGroupProps>(), {
+const props = withDefaults(defineProps<CheckboxGroupProps>(), {
     customStyle: '',
     customClass: '',
     max: 999,
@@ -36,11 +36,11 @@ const props = withDefaults(defineProps<SnakeCheckboxGroupProps>(), {
     iconSize: ''
 });
 
-const emit = defineEmits<SnakeCheckboxGroupEmits>();
-const formItem = inject(snakeFormItemKey, null);
+const emit = defineEmits<CheckboxGroupEmits>();
+const formItem = inject(formItemKey, null);
 
 // 使用父组件 Hook
-const { children, broadcast } = useParent('SnakeCheckboxGroup');
+const { children, broadcast } = useParent('CheckboxGroup');
 
 /**
  * 根据 modelValue 设置子组件状态

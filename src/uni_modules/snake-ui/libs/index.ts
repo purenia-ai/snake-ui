@@ -1,15 +1,21 @@
 export {
-    SnakeUIRuntimeError,
-    configureSnakeUI,
-    getSnakeConfig,
-    getSnakeUIOptions,
-    installSnakeUIRuntime,
-    requireSnakeCache,
-    requireSnakeRequest,
-    resetSnakeUIRuntime,
-    snakeUIOptionsKey
+    RuntimeError,
+    configureRuntime,
+    getRuntimeConfig,
+    getRuntimeOptions,
+    installRuntime,
+    requireCache,
+    requireRequest,
+    resetRuntime,
+    runtimeOptionsKey,
 } from './runtime';
-export type { SnakeCacheAdapter, SnakeRequestAdapter, SnakeUIConfig, SnakeUIOptions } from './runtime';export * from './foundation';
+export type {
+    CacheAdapter,
+    RequestAdapter,
+    RuntimeConfig,
+    RuntimeOptions,
+} from './runtime';
+export * from './foundation';
 export * from './config';
 export * from './function';
 export * from './hooks';

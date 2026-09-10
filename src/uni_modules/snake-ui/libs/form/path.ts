@@ -1,6 +1,6 @@
-export type SnakeFormPath = string | Array<string | number>;
+export type FormPath = string | Array<string | number>;
 
-export function toPath(path: SnakeFormPath): Array<string | number> {
+export function toPath(path: FormPath): Array<string | number> {
     if (Array.isArray(path)) return [...path];
     return String(path)
         .replace(/\[(\d+)\]/g, '.$1')
@@ -9,14 +9,14 @@ export function toPath(path: SnakeFormPath): Array<string | number> {
         .map(item => (/^\d+$/.test(item) ? Number(item) : item));
 }
 
-export function getPathValue(target: unknown, path: SnakeFormPath): unknown {
+export function getPathValue(target: unknown, path: FormPath): unknown {
     return toPath(path).reduce<unknown>(
         (value, key) => (value == null ? undefined : (value as Record<string | number, unknown>)[key]),
         target
     );
 }
 
-export function setPathValue(target: unknown, path: SnakeFormPath, value: unknown): boolean {
+export function setPathValue(target: unknown, path: FormPath, value: unknown): boolean {
     const parts = toPath(path);
     if (!target || typeof target !== 'object' || !parts.length) return false;
     let cursor = target as Record<string | number, unknown>;

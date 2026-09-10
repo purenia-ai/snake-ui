@@ -17,6 +17,6 @@ declare global {
 declare module 'vue' {
   interface ComponentCustomProperties {
     $snake: typeof import('./uni_modules/snake-ui/libs').snake
-    $snakeThemeStyle: Record<string, string>
+    $themeStyle: Record<string, string>
   }
 }

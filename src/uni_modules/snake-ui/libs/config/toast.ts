@@ -1,8 +1,8 @@
 /**
  * snake-toast 函数式调用约定（事件名 + 载荷类型）。
  * @description
- * - useToast() 通过 snakeEmitter 派发事件
- * - <snake-toast global /> / <snake-toast page /> 通过 snakeEmitter 监听并转调自身 show/hide
+ * - useToast() 通过 emitter 派发事件
+ * - <snake-toast global /> / <snake-toast page /> 通过 emitter 监听并转调自身 show/hide
  *
  * 该模块放在 libs 层（而非 components），是为了让 `useToast` 组合式函数与
  * `snake-toast` 组件共享同一套事件名与载荷，同时保持「libs 不反向依赖 components」的分层约束。
@@ -39,7 +39,7 @@ function getCurrentPage(): string {
  * snake-toast 函数式调用载荷类型。
  * @description 与 `snake-toast` 组件的 props 对应（除 modelValue 外），`title` 兼容 `show('文本')` 的字符串形式。
  */
-export interface SnakeToastPayload {
+export interface ToastPayload {
     /** 提示文本。 */
     title?: string;
     /** 提示类型，success/error/warning/info/primary/''（默认空，深色底白字）。 */

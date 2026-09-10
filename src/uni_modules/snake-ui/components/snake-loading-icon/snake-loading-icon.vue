@@ -1,17 +1,17 @@
 <script setup lang="ts">
 /**
- * @component SnakeLoadingIcon
+ * @component LoadingIcon
  * @description 统一的加载状态组件，供 Button、Image 以及业务页面复用，支持圆环和花朵两种形态。
  * @see /components/loading-icon
  */
 
 import { computed, type CSSProperties } from 'vue';
 import { addUnit } from '../../libs/function/unit';
-import type { SnakeLoadingIconProps } from './types';
+import type { LoadingIconProps } from './types';
 
-defineOptions({ name: 'SnakeLoadingIcon', options: { virtualHost: true, styleIsolation: 'shared' } });
+defineOptions({ name: 'LoadingIcon', options: { virtualHost: true, styleIsolation: 'shared' } });
 
-const props = withDefaults(defineProps<SnakeLoadingIconProps>(), {
+const props = withDefaults(defineProps<LoadingIconProps>(), {
     show: true,
     mode: 'circle',
     color: 'var(--snake-color-primary, #06D290)',

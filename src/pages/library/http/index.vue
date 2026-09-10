@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
-import { SnakeHttpError, SnakeRequest } from '../../../uni_modules/snake-ui';
+import { Request, RequestError } from '../../../uni_modules/snake-ui';
 
-const client = new SnakeRequest();
+const client = new Request();
 const output = ref('点击按钮发起本地 Mock 请求');
 client.setTransport(async options => {
     await new Promise(resolve => setTimeout(resolve, 400));
@@ -18,7 +18,7 @@ async function request(path: string) {
         output.value = JSON.stringify(await client.get(path), null, 2);
     } catch (error) {
         output.value =
-            error instanceof SnakeHttpError ? `${error.kind}: ${error.statusCode} ${error.message}` : String(error);
+            error instanceof RequestError ? `${error.kind}: ${error.statusCode} ${error.message}` : String(error);
     }
 }
 </script>

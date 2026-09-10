@@ -1,23 +1,23 @@
 <script setup lang="ts">
 /**
- * @component SnakeSubsection
+ * @component Subsection
  * @description 用于在少量互斥选项之间快速切换，支持按钮式滑块和描边分段两种模式。
  * @see /components/subsection
  */
 
 import { computed } from 'vue';
 import { addUnit } from '../../libs/function/unit';
-import type { SnakeSubsectionEmits, SnakeSubsectionItem, SnakeSubsectionOption, SnakeSubsectionProps } from './types';
+import type { SubsectionEmits, SubsectionItem, SubsectionOption, SubsectionProps } from './types';
 
 defineOptions({
-    name: 'SnakeSubsection',
+    name: 'Subsection',
     options: {
         virtualHost: true,
         styleIsolation: 'shared'
     }
 });
 
-const props = withDefaults(defineProps<SnakeSubsectionProps>(), {
+const props = withDefaults(defineProps<SubsectionProps>(), {
     list: () => [],
     current: 0,
     mode: 'button',
@@ -33,7 +33,7 @@ const props = withDefaults(defineProps<SnakeSubsectionProps>(), {
     customStyle: ''
 });
 
-const emit = defineEmits<SnakeSubsectionEmits>();
+const emit = defineEmits<SubsectionEmits>();
 
 const activeIndex = computed(() => {
     if (!props.list.length) return 0;
@@ -71,15 +71,15 @@ const sliderRadius = computed(() => {
     return '0';
 });
 
-function optionName(option: SnakeSubsectionOption): string {
+function optionName(option: SubsectionOption): string {
     return typeof option === 'string' ? option : option.name;
 }
 
-function isDisabled(option: SnakeSubsectionOption): boolean {
-    return typeof option === 'object' && Boolean((option as SnakeSubsectionItem).disabled);
+function isDisabled(option: SubsectionOption): boolean {
+    return typeof option === 'object' && Boolean((option as SubsectionItem).disabled);
 }
 
-function itemStyle(option: SnakeSubsectionOption, index: number) {
+function itemStyle(option: SubsectionOption, index: number) {
     const selected = index === activeIndex.value;
     return {
         color:
@@ -95,7 +95,7 @@ function itemStyle(option: SnakeSubsectionOption, index: number) {
     };
 }
 
-function select(option: SnakeSubsectionOption, index: number) {
+function select(option: SubsectionOption, index: number) {
     if (isDisabled(option) || index === activeIndex.value) return;
     emit('update:current', index);
     emit('change', index);

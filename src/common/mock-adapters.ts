@@ -1,4 +1,4 @@
-import type { SnakeUIOptions } from '../uni_modules/snake-ui';
+import type { RuntimeOptions } from '../uni_modules/snake-ui';
 import snakeThemePresets from '../snake-ui.theme';
 
 interface CacheEntry {
@@ -27,7 +27,7 @@ function responseFor(url: string) {
     return { success: true, data: { items: [], total: 0 } };
 }
 
-export const mockSnakeUIOptions: SnakeUIOptions = {
+export const mockUIOptions: RuntimeOptions = {
     theme: {
         themes: snakeThemePresets,
         defaultTheme: 'snake',

@@ -1,25 +1,25 @@
 <script setup lang="ts">
 /**
- * @component SnakeSelect
- * @description 列选择器，用于单列、多列、多列联动的选择场景，基于原生 picker-view 与 SnakePopup 实现。
+ * @component Select
+ * @description 列选择器，用于单列、多列、多列联动的选择场景，基于原生 picker-view 与 Popup 实现。
  * @see /components/select
  */
 
 import { computed, ref, watch } from 'vue';
 import zIndex from '../../libs/config/zIndex';
 import { useLocale } from '../../libs/hooks/useLocale';
-import SnakePopup from '../snake-popup/snake-popup.vue';
-import { snakeSelectProps, type SnakeSelectEmits, type SnakeSelectItem, type SnakeSelectResult } from './types';
+import Popup from '../snake-popup/snake-popup.vue';
+import { selectProps, type SelectEmits, type SelectItem, type SelectResult } from './types';
 
 defineOptions({ name: 'SnakeSelect', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = defineProps(snakeSelectProps);
-const emit = defineEmits<SnakeSelectEmits>();
+const props = defineProps(selectProps);
+const emit = defineEmits<SelectEmits>();
 const { t } = useLocale('select');
 
 // 用于列改变时保存当前索引，下一次变化时比较得出是哪一列发生了变化
 const defaultSelector = ref<number[]>([0]);
 // picker-view 的列数据
-const columnData = ref<SnakeSelectItem[][]>([]);
+const columnData = ref<SelectItem[][]>([]);
 // 控制 picker 是否渲染（等待初始化完成），确保原生 picker-view 在数据就绪后才创建
 const readyToRender = ref(false);
 // 保存用户上次确认的索引，首次打开会使用 props.defaultValue
@@ -27,7 +27,7 @@ const savedSelector = ref<number[] | null>(
   props.defaultValue && props.defaultValue.length ? props.defaultValue.slice() : null
 );
 // 每次队列发生变化时，保存选择的结果
-const selectValue = ref<SnakeSelectResult[]>([]);
+const selectValue = ref<SelectResult[]>([]);
 // 上一次列变化时的 index
 const lastSelectIndex = ref<number[]>([]);
 // 列数
@@ -100,10 +100,10 @@ function setColumnNum() {
   else if (props.mode === 'mutil-column') columnNum.value = props.list.length;
   else if (props.mode === 'mutil-column-auto') {
     let num = 1;
-    let column: SnakeSelectItem[] | unknown = props.list;
+    let column: SelectItem[] | unknown = props.list;
     // 只要有元素并且第一个元素有 children 属性，继续遍历
     while (Array.isArray(column) && column[0] && typeof column[0] === 'object' && props.childName in column[0]) {
-      column = (column[0] as SnakeSelectItem)[props.childName];
+      column = (column[0] as SelectItem)[props.childName];
       num++;
     }
     columnNum.value = num;
@@ -112,22 +112,22 @@ function setColumnNum() {
 
 /** 获取需要展示在 picker 中的列数据。 */
 function setColumnData() {
-  const data: SnakeSelectItem[][] = [];
+  const data: SelectItem[][] = [];
   selectValue.value = [];
   if (props.mode === 'mutil-column-auto') {
-    let column: SnakeSelectItem[] | unknown =
+    let column: SelectItem[] | unknown =
       props.list[defaultSelector.value.length ? defaultSelector.value[0] : 0];
     for (let i = 0; i < columnNum.value; i++) {
       if (i === 0) {
         data[i] = is2DList(props.list) ? props.list[i] || [] : props.list;
-        column = column && typeof column === 'object' ? (column as SnakeSelectItem)[props.childName] : [];
+        column = column && typeof column === 'object' ? (column as SelectItem)[props.childName] : [];
       } else {
         data[i] = Array.isArray(column) ? column : [];
         column =
           Array.isArray(column) &&
           column[defaultSelector.value[i]] &&
           typeof column[defaultSelector.value[i]] === 'object'
-            ? (column[defaultSelector.value[i]] as SnakeSelectItem)[props.childName]
+            ? (column[defaultSelector.value[i]] as SelectItem)[props.childName]
             : [];
       }
     }
@@ -144,7 +144,7 @@ function setColumnData() {
 function setSelectValue() {
   for (let i = 0; i < columnNum.value; i++) {
     const tmp = columnData.value[i][defaultSelector.value[i]];
-    const result: SnakeSelectResult = {
+    const result: SelectResult = {
       value: tmp ? tmp[props.valueName] : null,
       label: tmp ? tmp[props.labelName] : null
     };
@@ -170,14 +170,14 @@ function columnChange(event: { detail: { value: number[] } }) {
       const prevIdx = i - 1 === index ? columnIndex[index] : 0;
       columnData.value[i] =
         Array.isArray(prevCol) && prevCol[prevIdx] && typeof prevCol[prevIdx] === 'object'
-          ? ((prevCol[prevIdx] as SnakeSelectItem)[props.childName] as SnakeSelectItem[])
+          ? ((prevCol[prevIdx] as SelectItem)[props.childName] as SelectItem[])
           : [];
       defaultSelector.value[i] = 0;
     }
     // 历遍过程中 columnData 连锁变化可能触发多次 columnChange，只有数据稳定后的结果才是正确的
     columnIndex.map((_item, idx) => {
       const data = columnData.value[idx][columnIndex[idx]];
-      const result: SnakeSelectResult = {
+      const result: SelectResult = {
         value: data ? data[props.valueName] : null,
         label: data ? data[props.labelName] : null
       };
@@ -187,7 +187,7 @@ function columnChange(event: { detail: { value: number[] } }) {
     lastSelectIndex.value = [...columnIndex];
   } else if (props.mode === 'single-column') {
     const data = columnData.value[0][columnIndex[0]];
-    const result: SnakeSelectResult = {
+    const result: SelectResult = {
       value: data ? data[props.valueName] : null,
       label: data ? data[props.labelName] : null
     };
@@ -196,7 +196,7 @@ function columnChange(event: { detail: { value: number[] } }) {
   } else if (props.mode === 'mutil-column') {
     columnIndex.map((_item, idx) => {
       const data = columnData.value[idx][columnIndex[idx]];
-      const result: SnakeSelectResult = {
+      const result: SelectResult = {
         value: data ? data[props.valueName] : null,
         label: data ? data[props.labelName] : null
       };
@@ -231,7 +231,7 @@ function getResult(event: 'confirm' | 'cancel') {
 }
 
 /** 类型守卫：是否为二维列表。 */
-function is2DList(list: SnakeSelectItem[] | SnakeSelectItem[][]): list is SnakeSelectItem[][] {
+function is2DList(list: SelectItem[] | SelectItem[][]): list is SelectItem[][] {
   return Array.isArray(list) && list.length > 0 && Array.isArray(list[0]);
 }
 </script>

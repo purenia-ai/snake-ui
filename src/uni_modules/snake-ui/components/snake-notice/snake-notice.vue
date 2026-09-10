@@ -17,16 +17,16 @@
 
 <script setup lang="ts">
 /**
- * @component SnakeNotice
+ * @component Notice
  * @description 使用 Snake UI NoticeBar 展示单条横向公告或多条纵向轮播公告。
  */
 
 import { computed } from 'vue';
 import { navTo } from '../../libs/function/platform';
-import type { SnakeNoticeProps } from './types';
+import type { NoticeProps } from './types';
 
-defineOptions({ name: 'SnakeNotice', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = withDefaults(defineProps<SnakeNoticeProps>(), { datas: () => ({}) });
+defineOptions({ name: 'Notice', options: { virtualHost: true, styleIsolation: 'shared' } });
+const props = withDefaults(defineProps<NoticeProps>(), { datas: () => ({}) });
 const noticeList = computed(() => {
   if (props.datas.direction === 'row') {
     return Array.isArray(props.datas.noticeText) ? props.datas.noticeText : [props.datas.noticeText || ''];

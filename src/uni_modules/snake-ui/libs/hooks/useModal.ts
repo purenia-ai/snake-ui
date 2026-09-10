@@ -6,11 +6,11 @@ import {
     SNAKE_MODAL_GLOBAL_EVENT_HIDE,
     SNAKE_MODAL_GLOBAL_EVENT_CLEAR_LOADING,
     getEventWithCurrentPage,
-    type SnakeModalPayload
+    type ModalPayload
 } from '../config/modal';
-import { snakeEmitter } from '../function/emitter';
+import { emitter } from '../function/emitter';
 
-export type UseModalShowOptions = SnakeModalPayload;
+export type UseModalShowOptions = ModalPayload;
 
 export type UseModal = {
     /**
@@ -85,19 +85,19 @@ export function useModal(optionsOrGlobal: UseModalOptions | boolean = true): Use
 
     function emitShow(payload: UseModalShowOptions) {
         if (showEvent) {
-            snakeEmitter.emit(showEvent, payload);
+            emitter.emit(showEvent, payload);
         }
     }
 
     function emitHide() {
         if (hideEvent) {
-            snakeEmitter.emit(hideEvent, undefined);
+            emitter.emit(hideEvent, undefined);
         }
     }
 
     function emitClearLoading() {
         if (clearLoadingEvent) {
-            snakeEmitter.emit(clearLoadingEvent, undefined);
+            emitter.emit(clearLoadingEvent, undefined);
         }
     }
 

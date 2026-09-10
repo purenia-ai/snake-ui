@@ -58,7 +58,7 @@
 
 <script>
 /**
- * @component SnakeGraphicNavigation
+ * @component GraphicNavigation
  * @description 使用图片与文字组成入口导航，并根据小程序审核状态过滤特定入口。
  */
 

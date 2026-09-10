@@ -199,4 +199,4 @@ export const test = {
     string
 };
 
-export type SnakeTestSuite = typeof test;
+export type TestSuite = typeof test;

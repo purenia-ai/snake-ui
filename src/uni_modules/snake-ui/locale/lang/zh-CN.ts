@@ -1,6 +1,6 @@
-import type { SnakeLocale } from '../../libs/config/types';
+import type { Locale } from '../../libs/config/types';
 
-const zhCN: SnakeLocale = {
+const zhCN: Locale = {
     name: 'zh-CN',
     label: '简体中文',
     messages: {

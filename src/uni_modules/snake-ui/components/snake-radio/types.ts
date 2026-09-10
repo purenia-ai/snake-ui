@@ -1,11 +1,11 @@
 import type { ExtractPropTypes, PropType } from 'vue';
 import type { UnitValue } from '../../libs/function/unit';
-import type { SnakeStyleValue } from '../../types/global';
+import type { StyleValue } from '../../types/global';
 
-/** snakeRadioProps 运行时属性及默认值。 */
-export const snakeRadioProps = {
+/** radioProps 运行时属性及默认值。 */
+export const radioProps = {
     /** 根节点自定义样式。 */
-    customStyle: { type: [String, Object, Array] as PropType<SnakeStyleValue>, default: () => ({}) },
+    customStyle: { type: [String, Object, Array] as PropType<StyleValue>, default: () => ({}) },
     /** 根节点自定义类名。 */
     customClass: { type: String, default: '' },
     /** 展示标签文本。 */
@@ -30,13 +30,13 @@ export const snakeRadioProps = {
     size: { type: [String, Number] as PropType<string | number>, default: '' }
 } as const;
 
-/** SnakeRadioResolved 组件的公开属性。 */
-export type SnakeRadioResolvedProps = ExtractPropTypes<typeof snakeRadioProps>;
+/** RadioResolved 组件的公开属性。 */
+export type RadioResolvedProps = ExtractPropTypes<typeof radioProps>;
 
-/** SnakeRadio 组件的公开属性。 */
-export interface SnakeRadioProps {
+/** Radio 组件的公开属性。 */
+export interface RadioProps {
     /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
+    customStyle?: StyleValue;
     /** 根节点自定义类名。 */
     customClass?: string;
     /** 展示标签文本。 */
@@ -61,8 +61,8 @@ export interface SnakeRadioProps {
     size?: string | number;
 }
 
-/** SnakeRadio 组件的事件契约。 */
-export interface SnakeRadioEmits {
+/** Radio 组件的事件契约。 */
+export interface RadioEmits {
     /** 未选中变为选中时触发，携带当前 radio 的 name。 */
     change: [value: string | number];
 }

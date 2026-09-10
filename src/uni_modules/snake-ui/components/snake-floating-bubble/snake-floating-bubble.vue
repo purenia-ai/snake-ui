@@ -18,16 +18,16 @@
 
 <script setup lang="ts">
 /**
- * @component SnakeFloatingBubble
+ * @component FloatingBubble
  * @description 页面右侧的悬浮气泡。图片模式支持点击跳转与关闭（持久化），插槽模式承载自定义内容；滚动时向屏幕外收起，停止后恢复。
  */
 
 import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, useSlots, watch } from 'vue';
-import type { SnakeFloatingBubbleProps } from './types';
+import type { FloatingBubbleProps } from './types';
 
-defineOptions({ name: 'SnakeFloatingBubble', options: { virtualHost: true, styleIsolation: 'shared' } });
+defineOptions({ name: 'FloatingBubble', options: { virtualHost: true, styleIsolation: 'shared' } });
 
-const props = withDefaults(defineProps<SnakeFloatingBubbleProps>(), {
+const props = withDefaults(defineProps<FloatingBubbleProps>(), {
     datas: () => ({}),
     scrollTop: 0,
     bottom: '80rpx',

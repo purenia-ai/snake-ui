@@ -22,17 +22,17 @@
 
 <script setup lang="ts">
 /**
- * @component SnakeImages
+ * @component Images
  * @description 根据当前运行平台选择图片配置，并支持点击跳转。
  */
 
 import { computed } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import { navTo } from '../../libs/function/platform';
-import type { SnakeImagesProps } from './types';
+import type { ImagesProps } from './types';
 
-defineOptions({ name: 'SnakeImages', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = withDefaults(defineProps<SnakeImagesProps>(), { datas: () => ({}) });
+defineOptions({ name: 'Images', options: { virtualHost: true, styleIsolation: 'shared' } });
+const props = withDefaults(defineProps<ImagesProps>(), { datas: () => ({}) });
 const platform = computed(() => {
       let value = 'h5';
       // #ifdef APP-PLUS

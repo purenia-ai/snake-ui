@@ -1,18 +1,18 @@
 <script setup lang="ts">
 /**
- * @component SnakeInput
+ * @component Input
  * @description 基于 uni-app input，支持清空、密码显示、格式化、前后插槽和 Form 校验联动。
  * @see /components/input
  */
 
 import { computed, inject, ref, watch } from 'vue';
 import { addUnit } from '../../libs/function/unit';
-import { snakeFormItemKey } from '../../libs/internal/form-item';
-import SnakeIcon from '../snake-icon/snake-icon.vue';
-import type { SnakeInputEmits, SnakeInputProps } from './types';
+import { formItemKey } from '../../libs/internal/form-item';
+import Icon from '../snake-icon/snake-icon.vue';
+import type { InputEmits, InputProps } from './types';
 
 defineOptions({ name: 'SnakeInput', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = withDefaults(defineProps<SnakeInputProps>(), {
+const props = withDefaults(defineProps<InputProps>(), {
     modelValue: '',
     type: 'text',
     password: false,
@@ -46,8 +46,8 @@ const props = withDefaults(defineProps<SnakeInputProps>(), {
     customClass: '',
     customStyle: ''
 });
-const emit = defineEmits<SnakeInputEmits>();
-const formItem = inject(snakeFormItemKey, null);
+const emit = defineEmits<InputEmits>();
+const formItem = inject(formItemKey, null);
 const focused = ref(false);
 const composing = ref(false);
 const passwordVisible = ref(false);

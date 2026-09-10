@@ -1,10 +1,10 @@
 import type { ExtractPropTypes, PropType } from 'vue';
-import type { SnakeStyleValue } from '../../types/global';
+import type { StyleValue } from '../../types/global';
 
-/** SnakeCalendarMode 类型定义。 */
-export type SnakeCalendarMode = 'date' | 'range';
-/** SnakeCalendarLunar 农历信息。 */
-export interface SnakeCalendarLunar {
+/** CalendarMode 类型定义。 */
+export type CalendarMode = 'date' | 'range';
+/** CalendarLunar 农历信息。 */
+export interface CalendarLunar {
     /** 农历日中文。 */
     dayCn: string;
     /** 星期中文。 */
@@ -20,8 +20,8 @@ export interface SnakeCalendarLunar {
     /** 农历年。 */
     year: number;
 }
-/** SnakeCalendarChangeDate 单选模式 change 事件载荷。 */
-export interface SnakeCalendarChangeDate {
+/** CalendarChangeDate 单选模式 change 事件载荷。 */
+export interface CalendarChangeDate {
     /** 选中年。 */
     year: number;
     /** 选中月。 */
@@ -37,10 +37,10 @@ export interface SnakeCalendarChangeDate {
     /** 是否今天。 */
     isToday: boolean;
     /** 农历信息。 */
-    lunar: SnakeCalendarLunar | null;
+    lunar: CalendarLunar | null;
 }
-/** SnakeCalendarChangeRange 范围模式 change 事件载荷。 */
-export interface SnakeCalendarChangeRange {
+/** CalendarChangeRange 范围模式 change 事件载荷。 */
+export interface CalendarChangeRange {
     /** 开始年。 */
     startYear: number;
     /** 开始月。 */
@@ -62,15 +62,15 @@ export interface SnakeCalendarChangeRange {
     /** 结束日期星期文本。 */
     endWeek: string;
     /** 开始日期农历信息。 */
-    startLunar: SnakeCalendarLunar | null;
+    startLunar: CalendarLunar | null;
     /** 结束日期农历信息。 */
-    endLunar: SnakeCalendarLunar | null;
+    endLunar: CalendarLunar | null;
 }
 
-/** snakeCalendarProps 运行时属性及默认值。 */
-export const snakeCalendarProps = {
+/** calendarProps 运行时属性及默认值。 */
+export const calendarProps = {
     /** 根节点自定义样式。 */
-    customStyle: { type: [String, Object, Array] as PropType<SnakeStyleValue>, default: '' },
+    customStyle: { type: [String, Object, Array] as PropType<StyleValue>, default: '' },
     /** 根节点自定义类名。 */
     customClass: { type: String, default: '' },
     /** 是否开启底部安全区适配。 */
@@ -86,7 +86,7 @@ export const snakeCalendarProps = {
     /** 是否允许切换月份。 */
     changeMonth: { type: Boolean, default: true },
     /** 选择模式，date 单个日期，range 日期范围。 */
-    mode: { type: String as PropType<SnakeCalendarMode>, default: 'date' },
+    mode: { type: String as PropType<CalendarMode>, default: 'date' },
     /** 可切换的最大年份。 */
     maxYear: { type: [Number, String] as PropType<number | string>, default: 2050 },
     /** 可切换的最小年份。 */
@@ -173,11 +173,11 @@ export const snakeCalendarProps = {
     useDateSlot: { type: Boolean, default: false }
 } as const;
 
-/** SnakeCalendar 组件的公开属性。 */
-export type SnakeCalendarProps = ExtractPropTypes<typeof snakeCalendarProps>;
+/** Calendar 组件的公开属性。 */
+export type CalendarProps = ExtractPropTypes<typeof calendarProps>;
 
-/** SnakeCalendar 组件的事件契约。 */
-export interface SnakeCalendarEmits {
+/** Calendar 组件的事件契约。 */
+export interface CalendarEmits {
     /** 双向绑定值更新。 */
     'update:modelValue': [value: boolean];
     /** 弹窗通过按钮收起时触发（兼容 input 语义）。 */
@@ -185,5 +185,5 @@ export interface SnakeCalendarEmits {
     /** 点击遮罩或关闭按钮收起时触发。 */
     close: [];
     /** 选择结果变化时触发。 */
-    change: [value: SnakeCalendarChangeDate | SnakeCalendarChangeRange];
+    change: [value: CalendarChangeDate | CalendarChangeRange];
 }

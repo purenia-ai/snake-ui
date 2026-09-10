@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * @component SnakeFormItem
+ * @component FormItem
  * @description 表单字段容器，布局、尺寸和校验行为与 uView Pro FormItem 对齐。
  * @see /components/form
  */
@@ -8,17 +8,17 @@
 import { computed, inject, nextTick, onBeforeUnmount, onMounted, provide, ref, useSlots } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import { useChildren, useParent } from '../../libs/hooks/useCompRelation';
-import { getPathValue, type SnakeFormRule, type SnakeFormTrigger } from '../../libs/form';
+import { getPathValue, type FormRule, type FormTrigger } from '../../libs/form';
 import Schema from '../../libs/form/async-validator.min';
-import { snakeFormKey } from '../../libs/internal/form';
-import { snakeFormItemKey } from '../../libs/internal/form-item';
-import SnakeIcon from '../snake-icon/snake-icon.vue';
-import type { SnakeFormItemProps } from './types';
+import { formKey } from '../../libs/internal/form';
+import { formItemKey } from '../../libs/internal/form-item';
+import Icon from '../snake-icon/snake-icon.vue';
+import type { FormItemProps } from './types';
 
 Schema.warning = () => {};
 
-defineOptions({ name: 'SnakeFormItem', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = withDefaults(defineProps<SnakeFormItemProps>(), {
+defineOptions({ name: 'FormItem', options: { virtualHost: true, styleIsolation: 'shared' } });
+const props = withDefaults(defineProps<FormItemProps>(), {
     customStyle: '',
     customClass: '',
     label: '',
@@ -39,9 +39,9 @@ const props = withDefaults(defineProps<SnakeFormItemProps>(), {
 });
 
 const slots = useSlots();
-const form = inject(snakeFormKey, null);
-const { broadcast } = useParent('SnakeFormItem');
-const { parentExposed } = useChildren('SnakeFormItem', 'SnakeForm');
+const form = inject(formKey, null);
+const { broadcast } = useParent('FormItem');
+const { parentExposed } = useChildren('FormItem', 'Form');
 
 const initialValue = ref<unknown>('');
 const validateState = ref<'success' | 'error' | 'validating' | ''>('');
@@ -97,14 +97,14 @@ const labelWidth = computed(() =>
         : '100%'
 );
 
-function getRules(): SnakeFormRule[] {
+function getRules(): FormRule[] {
     const allRules = parentExposed.value?.rules?.value || form?.rules.value || {};
     const dynamicPath = props.prop.replace(/(\.|^)(\d+)\./, '.defaultField.fields.');
     const fieldRules = allRules[props.prop] || getPathValue(allRules, dynamicPath);
-    return ([] as SnakeFormRule[]).concat((fieldRules || []) as SnakeFormRule | SnakeFormRule[]);
+    return ([] as FormRule[]).concat((fieldRules || []) as FormRule | FormRule[]);
 }
 
-function getFilteredRules(trigger = ''): SnakeFormRule[] {
+function getFilteredRules(trigger = ''): FormRule[] {
     const rules = getRules();
     if (!trigger) return rules;
     return rules.filter(rule => rule.trigger && ([] as string[]).concat(rule.trigger).includes(trigger));
@@ -163,10 +163,10 @@ onBeforeUnmount(() => {
     else form?.unregister(exposedField as any);
 });
 
-function notify(trigger: SnakeFormTrigger): Promise<void> {
+function notify(trigger: FormTrigger): Promise<void> {
     return new Promise(resolve => validation(trigger, () => resolve()));
 }
-provide(snakeFormItemKey, {
+provide(formItemKey, {
     error: validateMessage,
     errorVisible,
     size: computed(() => presetSize.value),

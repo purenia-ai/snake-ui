@@ -1,8 +1,8 @@
 /**
  * snake-modal 函数式调用约定（事件名 + 载荷类型）。
  * @description
- * - useModal() 通过 snakeEmitter 派发事件
- * - <snake-modal global /> / <snake-modal page /> 通过 snakeEmitter 监听并转调自身 show/hide
+ * - useModal() 通过 emitter 派发事件
+ * - <snake-modal global /> / <snake-modal page /> 通过 emitter 监听并转调自身 show/hide
  *
  * 该模块放在 libs 层（而非 components），是为了让 `useModal` 组合式函数与
  * `snake-modal` 组件共享同一套事件名与载荷，同时保持「libs 不反向依赖 components」的分层约束。
@@ -41,7 +41,7 @@ function getCurrentPage(): string {
  * snake-modal 函数式调用载荷类型。
  * @description 与 `snake-modal` 组件的 props 一一对应（除 modelValue 外），额外支持确认/取消回调。
  */
-export interface SnakeModalPayload {
+export interface ModalPayload {
     /** 标题。 */
     title?: string;
     /** 内容。 */

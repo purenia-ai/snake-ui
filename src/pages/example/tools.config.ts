@@ -1,11 +1,11 @@
-export interface SnakeToolItem {
+export interface ToolItem {
     icon: string;
     title: string;
     desc: string;
     url: string;
 }
 
-const tools: SnakeToolItem[] = [
+const tools: ToolItem[] = [
     { icon: 'page', title: 'HTTP 请求', desc: '配置、传输层与错误模型', url: '/pages/library/http/index' },
     {
         icon: 'clock',

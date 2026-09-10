@@ -3,7 +3,7 @@ import DemoPage from '../../components/demo-page/demo-page.vue';
 import { useDemoLocale } from '../../common/demo-i18n';
 import tools from './tools.config';
 
-defineOptions({ name: 'SnakeExampleTools' });
+defineOptions({ name: 'ExampleTools' });
 
 const { text } = useDemoLocale();
 const openTool = (url: string) => uni.navigateTo({ url });

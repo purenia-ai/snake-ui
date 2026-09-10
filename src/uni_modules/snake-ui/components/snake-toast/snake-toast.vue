@@ -32,7 +32,7 @@
 
 <script setup lang="ts">
 /**
- * @component SnakeToast
+ * @component Toast
  * @description 消息提示，支持声明式 ref 调用与函数式 useToast() 调用，用于成功、错误、警告、加载等轻提示。
  * @see /components/toast
  */
@@ -44,23 +44,23 @@ import { toStyle } from '../../libs/function/style';
 import { deepMerge } from '../../libs/function/deepMerge';
 import { type2icon } from '../../libs/function/type2icon';
 import { route } from '../../libs/function/route';
-import { snakeEmitter } from '../../libs/function/emitter';
-import SnakeLoadingIcon from '../snake-loading-icon/snake-loading-icon.vue';
-import SnakeIcon from '../snake-icon/snake-icon.vue';
-import { snakeToastProps } from './types';
-import type { SnakeToastExpose } from './types';
+import { emitter } from '../../libs/function/emitter';
+import LoadingIcon from '../snake-loading-icon/snake-loading-icon.vue';
+import Icon from '../snake-icon/snake-icon.vue';
+import { toastProps } from './types';
+import type { ToastExpose } from './types';
 import {
     SNAKE_TOAST_EVENT_HIDE,
     SNAKE_TOAST_EVENT_SHOW,
     SNAKE_TOAST_GLOBAL_EVENT_HIDE,
     SNAKE_TOAST_GLOBAL_EVENT_SHOW,
     getEventWithCurrentPage,
-    type SnakeToastPayload
+    type ToastPayload
 } from '../../libs/config/toast';
 
-defineOptions({ name: 'SnakeToast', options: { virtualHost: true, styleIsolation: 'shared' } });
+defineOptions({ name: 'Toast', options: { virtualHost: true, styleIsolation: 'shared' } });
 
-const props = defineProps(snakeToastProps);
+const props = defineProps(toastProps);
 
 // 是否已经初始化事件监听
 const isInit = ref(false);
@@ -156,11 +156,11 @@ function timeEnd() {
 
 /**
  * 函数式调用支持：
- * - useToast() 内部通过 snakeEmitter 派发「全局」事件，仅由 App 根部的 <snake-toast global /> 承接
+ * - useToast() 内部通过 emitter 派发「全局」事件，仅由 App 根部的 <snake-toast global /> 承接
  * - 页面级 <snake-toast page /> 监听「页面级」事件
  * - 不影响原有 ref.show()/ref.hide() 使用方式
  */
-function onServiceShow(payload: SnakeToastPayload) {
+function onServiceShow(payload: ToastPayload) {
     show(payload || {});
 }
 
@@ -198,10 +198,10 @@ function startListeners() {
     }
     isInit.value = true;
     if (showEvent.value) {
-        snakeEmitter.on(showEvent.value, onServiceShow);
+        emitter.on(showEvent.value, onServiceShow);
     }
     if (hideEvent.value) {
-        snakeEmitter.on(hideEvent.value, onServiceHide);
+        emitter.on(hideEvent.value, onServiceHide);
     }
 }
 
@@ -212,10 +212,10 @@ function stopListeners() {
     }
     isInit.value = false;
     if (showEvent.value) {
-        snakeEmitter.off(showEvent.value, onServiceShow);
+        emitter.off(showEvent.value, onServiceShow);
     }
     if (hideEvent.value) {
-        snakeEmitter.off(hideEvent.value, onServiceHide);
+        emitter.off(hideEvent.value, onServiceHide);
     }
 }
 
@@ -235,7 +235,7 @@ onBeforeUnmount(() => {
     stopListeners();
 });
 
-defineExpose<SnakeToastExpose>({
+defineExpose<ToastExpose>({
     show,
     hide,
     close: hide

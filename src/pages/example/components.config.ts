@@ -1,6 +1,6 @@
 // 分包目录负责路由组织；该配置只表达用户可理解的语义分类。
 // 分组与文档站组件侧边栏（docs/.vitepress/component-groups.ts）保持一致。
-export interface SnakeComponentItem {
+export interface ComponentItem {
     path: string;
     title: string;
     titleEn: string;
@@ -8,14 +8,14 @@ export interface SnakeComponentItem {
     cms?: boolean;
 }
 
-export interface SnakeComponentGroup {
+export interface ComponentGroup {
     groupName: string;
     groupNameEn: string;
     icon: string;
-    list: SnakeComponentItem[];
+    list: ComponentItem[];
 }
 
-const item = (path: string, title: string, titleEn: string, desc: string, cms = false): SnakeComponentItem => ({
+const item = (path: string, title: string, titleEn: string, desc: string, cms = false): ComponentItem => ({
     path,
     title,
     titleEn,
@@ -23,7 +23,7 @@ const item = (path: string, title: string, titleEn: string, desc: string, cms = 
     cms
 });
 
-const componentGroups: SnakeComponentGroup[] = [
+const componentGroups: ComponentGroup[] = [
     {
         groupName: '基础组件',
         groupNameEn: 'Foundation',

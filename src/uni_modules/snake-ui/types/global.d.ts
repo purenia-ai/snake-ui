@@ -1,10 +1,10 @@
 import type { CSSProperties } from 'vue';
 
 /** uni-app 组件可接受的行内样式值。 */
-export type SnakeStyleValue = string | CSSProperties | SnakeStyleValue[];
+export type StyleValue = string | CSSProperties | StyleValue[];
 
 /** uni-app image 组件支持的常用裁剪模式。 */
-export type SnakeImageMode =
+export type ImageMode =
     | 'scaleToFill'
     | 'aspectFit'
     | 'aspectFill'

@@ -33,8 +33,8 @@ test('snake-upload exposes the joker compatibility bridge', async () => {
 
 test('snake-upload publishes a vendor-neutral custom request contract', async () => {
     const source = await readFile(typesUrl, 'utf8');
-    assert.match(source, /export type SnakeUploadRequest =/);
-    assert.match(source, /files: readonly SnakeUploadFileItem\[\]/);
+    assert.match(source, /export type UploadRequest =/);
+    assert.match(source, /files: readonly UploadFileItem\[\]/);
     assert.match(source, /onProgress: \(percent: number\) => void/);
-    assert.match(source, /uploadRequest: \{ type: Function as PropType<SnakeUploadRequest>/);
+    assert.match(source, /uploadRequest: \{ type: Function as PropType<UploadRequest>/);
 });

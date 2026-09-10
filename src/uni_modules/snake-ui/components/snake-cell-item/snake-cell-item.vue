@@ -1,17 +1,17 @@
 <script setup lang="ts">
 /**
- * @component SnakeCellItem
- * @description 单元格条目，一般搭配 SnakeCellGroup 用于列表场景，支持图标、标题、描述、右侧内容与箭头。
+ * @component CellItem
+ * @description 单元格条目，一般搭配 CellGroup 用于列表场景，支持图标、标题、描述、右侧内容与箭头。
  * @see /components/cell
  */
 
 import { computed, useSlots } from 'vue';
-import SnakeIcon from '../snake-icon/snake-icon.vue';
-import { snakeCellItemProps, type SnakeCellItemEmits } from './types';
+import Icon from '../snake-icon/snake-icon.vue';
+import { cellItemProps, type CellItemEmits } from './types';
 
-defineOptions({ name: 'SnakeCellItem', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = defineProps(snakeCellItemProps);
-const emit = defineEmits<SnakeCellItemEmits>();
+defineOptions({ name: 'CellItem', options: { virtualHost: true, styleIsolation: 'shared' } });
+const props = defineProps(cellItemProps);
+const emit = defineEmits<CellItemEmits>();
 const slots = useSlots();
 
 /** 箭头旋转样式。 */

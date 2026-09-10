@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * @component SnakeRadio
+ * @component Radio
  * @description radio 单选框，通过 `name` 参与 RadioGroup 互斥选择。
  * @see /components/radio
  */
@@ -8,13 +8,13 @@
 import { computed, inject } from 'vue';
 import { useChildren } from '../../libs/hooks';
 import { addUnit } from '../../libs/function/unit';
-import { snakeFormKey } from '../../libs/internal/form';
-import SnakeIcon from '../snake-icon/snake-icon.vue';
-import { snakeRadioProps } from './types';
-import type { SnakeRadioEmits } from './types';
+import { formKey } from '../../libs/internal/form';
+import Icon from '../snake-icon/snake-icon.vue';
+import { radioProps } from './types';
+import type { RadioEmits } from './types';
 
 defineOptions({
-    name: 'SnakeRadio',
+    name: 'Radio',
     options: {
         addGlobalClass: true,
         // #ifndef MP-TOUTIAO
@@ -24,12 +24,12 @@ defineOptions({
     }
 });
 
-const props = defineProps(snakeRadioProps);
-const emit = defineEmits<SnakeRadioEmits>();
+const props = defineProps(radioProps);
+const emit = defineEmits<RadioEmits>();
 
 // 使用组件关系 hooks 获取父组件
-const { parentExposed } = useChildren('SnakeRadio', 'SnakeRadioGroup');
-const form = inject(snakeFormKey, null);
+const { parentExposed } = useChildren('Radio', 'RadioGroup');
+const form = inject(formKey, null);
 
 // radio 的 value 值，id
 const radioValue = computed(() => {

@@ -1,15 +1,15 @@
-type SnakeGlobalAPI = typeof import('../libs/foundation').snake;
+type GlobalAPI = typeof import('../libs/foundation').snake;
 
 declare global {
     interface Uni {
-        $snake: SnakeGlobalAPI;
+        $snake: GlobalAPI;
     }
 }
 
 declare module '@vue/runtime-core' {
     interface ComponentCustomProperties {
-        $snake: SnakeGlobalAPI;
-        $snakeThemeStyle: Readonly<Record<string, string>>;
+        $snake: GlobalAPI;
+        $themeStyle: Readonly<Record<string, string>>;
     }
 }
 

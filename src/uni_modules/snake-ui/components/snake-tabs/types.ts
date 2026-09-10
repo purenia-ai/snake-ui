@@ -1,9 +1,9 @@
 import type { CSSProperties } from 'vue';
 import type { UnitValue } from '../../libs/function/unit';
-import type { SnakeStyleValue } from '../../types/global';
+import type { StyleValue } from '../../types/global';
 
 /** Tabs 对象数据项。 */
-export interface SnakeTabItem extends Record<string, unknown> {
+export interface TabItem extends Record<string, unknown> {
     /** 默认标签字段。 */
     name?: string | number;
     /** 默认徽标字段。 */
@@ -12,16 +12,16 @@ export interface SnakeTabItem extends Record<string, unknown> {
     hidden?: boolean;
 }
 
-/** SnakeTabs 组件的公开属性。 */
-export interface SnakeTabsProps {
+/** Tabs 组件的公开属性。 */
+export interface TabsProps {
     /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
+    customStyle?: StyleValue;
     /** 根节点自定义类名。 */
     customClass?: string;
     /** 是否允许横向拖动。 */
     isScroll?: boolean;
     /** 标签对象数组。 */
-    list?: SnakeTabItem[];
+    list?: TabItem[];
     /** 当前激活索引。 */
     current?: number | string;
     /** 导航栏高度。 */
@@ -62,14 +62,14 @@ export interface SnakeTabsProps {
     itemWidth?: UnitValue;
 }
 
-/** SnakeTabs 组件事件。 */
-export interface SnakeTabsEmits {
+/** Tabs 组件事件。 */
+export interface TabsEmits {
     /** 点击非当前标签时返回新索引。 */
     change: [index: number];
 }
 
-/** SnakeTabs 暴露的方法。 */
-export interface SnakeTabsExpose {
+/** Tabs 暴露的方法。 */
+export interface TabsExpose {
     /** 重新测量全部标签。 */
     init: () => Promise<void>;
     /** 执行标签点击逻辑。 */

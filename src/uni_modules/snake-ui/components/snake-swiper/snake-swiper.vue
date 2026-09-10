@@ -1,29 +1,29 @@
 <script setup lang="ts">
 /**
- * @component SnakeSwiper
+ * @component Swiper
  * @description 基于 uni-app swiper 封装，支持图片或对象数据、自定义指示器、标题和 3D 卡片效果。
  * @see /components/swiper
  */
 
 import { computed, ref, watch } from 'vue';
 import { addUnit } from '../../libs/function/unit';
-import type { SnakeSwiperEmits, SnakeSwiperItem, SnakeSwiperProps } from './types';
+import type { SwiperEmits, SwiperItem, SwiperProps } from './types';
 
-defineOptions({ name: 'SnakeSwiper', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = withDefaults(defineProps<SnakeSwiperProps>(), {
+defineOptions({ name: 'Swiper', options: { virtualHost: true, styleIsolation: 'shared' } });
+const props = withDefaults(defineProps<SwiperProps>(), {
   list: () => [], current: 0, height: 300, autoplay: true, interval: 3000, duration: 500, circular: true,
   indicator: false, mode: 'round', indicatorPos: 'bottomCenter', indicatorColor: 'rgba(255,255,255,.55)',
   indicatorActiveColor: '#fff', name: 'url', radius: 0, previousMargin: '0px', nextMargin: '0px',
   effect3d: false, effect3dPreviousMargin: 50, imgMode: 'aspectFill', showTitle: false, bgColor: 'transparent',
   titleStyle: '', customClass: '', customStyle: '',
 });
-const emit = defineEmits<SnakeSwiperEmits>();
+const emit = defineEmits<SwiperEmits>();
 const active = ref(Number(props.current) || 0);
 watch(() => props.current, value => (active.value = Number(value) || 0));
 const actualRadius = computed(() => props.borderRadius ?? props.radius);
 const rootStyle = computed(() => [{ height: addUnit(props.height, 'rpx'), borderRadius: addUnit(actualRadius.value, 'rpx'), backgroundColor: props.bgColor }, props.customStyle]);
-const source = (item: SnakeSwiperItem) => typeof item === 'string' ? item : String(item?.[props.name] ?? item?.image ?? item?.src ?? item?.url ?? '');
-const itemTitle = (item: SnakeSwiperItem) => typeof item === 'string' ? '' : String(item?.title ?? item?.text ?? '');
+const source = (item: SwiperItem) => typeof item === 'string' ? item : String(item?.[props.name] ?? item?.image ?? item?.src ?? item?.url ?? '');
+const itemTitle = (item: SwiperItem) => typeof item === 'string' ? '' : String(item?.title ?? item?.text ?? '');
 const showIndicator = computed(() => typeof props.indicator === 'object' || props.indicator === true);
 const margin = computed(() => props.effect3d ? addUnit(props.effect3dPreviousMargin, 'rpx') : props.previousMargin);
 const indicatorClass = computed(() => `snake-swiper__indicator--${props.indicatorPos}`);

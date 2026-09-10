@@ -748,7 +748,7 @@
 
 <script>
 /**
- * @component SnakeListSwitching
+ * @component ListSwitching
  * @description 提供多种商品列表布局、分类切换、角标和购买按钮样式，是一个配置面较大的复合展示组件。
  */
 

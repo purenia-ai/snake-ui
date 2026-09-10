@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * @component SnakeCheckbox
+ * @component Checkbox
  * @description checkbox 复选框，可独立 v-model 使用，也可放入 CheckboxGroup 参与多选。
  * @see /components/checkbox
  */
@@ -8,13 +8,13 @@
 import { computed, inject, ref, watch } from 'vue';
 import { useChildren } from '../../libs/hooks';
 import { addUnit } from '../../libs/function/unit';
-import { snakeFormKey } from '../../libs/internal/form';
-import SnakeIcon from '../snake-icon/snake-icon.vue';
-import { snakeCheckboxProps } from './types';
-import type { SnakeCheckboxEmits } from './types';
+import { formKey } from '../../libs/internal/form';
+import Icon from '../snake-icon/snake-icon.vue';
+import { checkboxProps } from './types';
+import type { CheckboxEmits } from './types';
 
 defineOptions({
-    name: 'SnakeCheckbox',
+    name: 'Checkbox',
     options: {
         addGlobalClass: true,
         // #ifndef MP-TOUTIAO
@@ -24,13 +24,13 @@ defineOptions({
     }
 });
 
-const props = defineProps(snakeCheckboxProps);
-const emit = defineEmits<SnakeCheckboxEmits>();
+const props = defineProps(checkboxProps);
+const emit = defineEmits<CheckboxEmits>();
 // checkbox 是否选中，true/false
 const checkedValue = ref(props.modelValue);
 // 使用组件关系 hooks 获取父组件
-const { parentExposed } = useChildren('SnakeCheckbox', 'SnakeCheckboxGroup');
-const form = inject(snakeFormKey, null);
+const { parentExposed } = useChildren('Checkbox', 'CheckboxGroup');
+const form = inject(formKey, null);
 
 // checkbox 的 value 值，id
 const checkboxValue = computed(() => {

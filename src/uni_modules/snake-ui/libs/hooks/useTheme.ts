@@ -1,31 +1,31 @@
 import { computed } from 'vue';
 import {
-    currentSnakeTheme,
-    initSnakeTheme,
-    isSnakeDarkMode,
-    setSnakeDarkMode,
-    setSnakeTheme,
-    setSnakeThemeColor,
-    snakeColor,
-    snakeCssVars,
-    snakeDarkMode,
-    snakeThemes,
-    toggleSnakeDarkMode
+    currentTheme,
+    initTheme,
+    isDarkMode,
+    setDarkMode,
+    setTheme,
+    setThemeColor,
+    color,
+    cssVars,
+    darkMode,
+    themes,
+    toggleDarkMode
 } from '../config/theme';
 
 export function useTheme() {
     return {
-        currentTheme: currentSnakeTheme,
-        themes: snakeThemes,
-        darkMode: snakeDarkMode,
-        color: snakeColor,
-        cssVars: snakeCssVars,
-        themeStyle: computed(() => snakeCssVars.value),
-        initTheme: initSnakeTheme,
-        setTheme: setSnakeTheme,
-        setThemeColor: setSnakeThemeColor,
-        setDarkMode: setSnakeDarkMode,
-        toggleDarkMode: toggleSnakeDarkMode,
-        isInDarkMode: isSnakeDarkMode
+        currentTheme: currentTheme,
+        themes: themes,
+        darkMode: darkMode,
+        color: color,
+        cssVars: cssVars,
+        themeStyle: computed(() => cssVars.value),
+        initTheme: initTheme,
+        setTheme: setTheme,
+        setThemeColor: setThemeColor,
+        setDarkMode: setDarkMode,
+        toggleDarkMode: toggleDarkMode,
+        isInDarkMode: isDarkMode
     };
 }

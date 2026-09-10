@@ -5,7 +5,7 @@
  * 数值以 snake-ui 组件当前生效的默认值为准。
  */
 
-export interface SnakeZIndexConfig {
+export interface ZIndexConfig {
     /** 提示气泡层级。 */
     toast: number;
     /** 无网络提示层级。 */
@@ -28,7 +28,7 @@ export interface SnakeZIndexConfig {
     dropdown: number;
 }
 
-const zIndex: SnakeZIndexConfig = {
+const zIndex: ZIndexConfig = {
     toast: 10090,
     noNetwork: 10080,
     popup: 10075,

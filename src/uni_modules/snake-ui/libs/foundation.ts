@@ -1,69 +1,70 @@
 import type { App } from 'vue';
-import type { SnakeUIOptions } from './runtime';
+import type { RuntimeOptions } from './runtime';
 import { snake as runtimeSnake } from './runtime';
-import { snakeConfig, setSnakeConfig, SNAKE_UI_VERSION } from './config/state';
+import { config, setConfig, SNAKE_UI_VERSION } from './config/state';
 import zIndex from './config/zIndex';
 import {
-    currentSnakeTheme,
-    initSnakeTheme,
-    isSnakeDarkMode,
-    setSnakeDarkMode,
-    setSnakeTheme,
-    setSnakeThemeColor,
-    snakeColor,
-    snakeCssVars,
-    snakeDarkMode,
-    snakeThemes,
-    toggleSnakeDarkMode
+    currentTheme,
+    initTheme,
+    isDarkMode,
+    setDarkMode,
+    setTheme,
+    setThemeColor,
+    color,
+    cssVars,
+    darkMode,
+    themes,
+    toggleDarkMode
 } from './config/theme';
 import * as functions from './function';
-import { snakeEmitter } from './function/emitter';
+import { emitter } from './function/emitter';
 import * as hooks from './hooks';
-import { currentSnakeLocale, initSnakeLocale, setSnakeLocale, snakeLocales, snakeTranslate } from '../locale';
-import { configureSnakeHttp, snakeHttp } from './request';
-import { configureSnakeCms } from './cms';
+import { currentLocale, initLocale, setLocale, locales, translate } from '../locale';
+import { configureHttp, http } from './request';
+import { configureCms } from './cms';
 
-export const snakeFoundation = {
+export const foundation = {
     ...functions,
     ...hooks,
-    color: snakeColor,
-    config: snakeConfig,
+    color: color,
+    config: config,
     zIndex,
     version: SNAKE_UI_VERSION,
     type: ['primary', 'success', 'error', 'warning', 'info'],
     date: functions.formatTime,
-    emitter: snakeEmitter,
-    http: snakeHttp,
-    themes: snakeThemes,
-    currentTheme: currentSnakeTheme,
-    darkMode: snakeDarkMode,
-    cssVars: snakeCssVars,
-    locales: snakeLocales,
-    currentLocale: currentSnakeLocale,
-    initTheme: initSnakeTheme,
-    setTheme: setSnakeTheme,
-    setThemeColor: setSnakeThemeColor,
-    setDarkMode: setSnakeDarkMode,
-    toggleDarkMode: toggleSnakeDarkMode,
-    isInDarkMode: isSnakeDarkMode,
-    initLocales: initSnakeLocale,
-    setLocale: setSnakeLocale,
-    t: snakeTranslate
+    emitter: emitter,
+    http,
+    themes: themes,
+    currentTheme: currentTheme,
+    darkMode: darkMode,
+    cssVars: cssVars,
+    locales: locales,
+    currentLocale: currentLocale,
+    initTheme: initTheme,
+    setTheme: setTheme,
+    setThemeColor: setThemeColor,
+    setDarkMode: setDarkMode,
+    toggleDarkMode: toggleDarkMode,
+    isInDarkMode: isDarkMode,
+    initLocales: initLocale,
+    setLocale: setLocale,
+    t: translate
 };
 
-export type SnakeFoundationAPI = typeof snakeFoundation;
-export const snake = Object.assign(runtimeSnake, snakeFoundation) as typeof runtimeSnake & SnakeFoundationAPI;
+export type FoundationAPI = typeof foundation;
+export const snake = Object.assign(runtimeSnake, foundation) as typeof runtimeSnake & FoundationAPI;
 
-export function installSnakeUIFoundation(app: App, options: SnakeUIOptions = {}): void {
-    setSnakeConfig({ debugMode: options.debugMode ?? false });
-    initSnakeTheme(options.theme);
-    initSnakeLocale(options.locale);
-    configureSnakeHttp(options.http, options.request);
-    configureSnakeCms(options.cms);
-    Object.defineProperty(app.config.globalProperties, '$snakeThemeStyle', {
+export function installUIFoundation(app: App, options: RuntimeOptions = {}): void {
+    setConfig({ debugMode: options.debugMode ?? false });
+    initTheme(options.theme);
+    initLocale(options.locale);
+    configureHttp(options.http, options.request);
+    (app.config.globalProperties as Record<string, unknown>).$http = http;
+    configureCms(options.cms);
+    Object.defineProperty(app.config.globalProperties, '$themeStyle', {
         configurable: true,
-        get: () => snakeCssVars.value
+        get: () => cssVars.value
     });
-    app.provide('snake-ui-theme', currentSnakeTheme);
-    app.provide('snake-ui-locale', currentSnakeLocale);
+    app.provide('snake-ui-theme', currentTheme);
+    app.provide('snake-ui-locale', currentLocale);
 }

@@ -1,18 +1,18 @@
-import type { SnakeStyleValue } from '../../types/global';
+import type { StyleValue } from '../../types/global';
 
-/** SnakePopupMode 类型定义。 */
-export type SnakePopupMode = 'center' | 'top' | 'right' | 'bottom' | 'left';
-/** SnakePopupCloseIconPosition 类型定义。 */
-export type SnakePopupCloseIconPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+/** PopupMode 类型定义。 */
+export type PopupMode = 'center' | 'top' | 'right' | 'bottom' | 'left';
+/** PopupCloseIconPosition 类型定义。 */
+export type PopupCloseIconPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 
-/** SnakePopup 组件的公开属性。 */
-export interface SnakePopupProps {
+/** Popup 组件的公开属性。 */
+export interface PopupProps {
     /** 双向绑定的当前值。 */
     modelValue?: boolean;
     /** 是否显示组件。 */
     show?: boolean;
     /** 组件展示模式。 */
-    mode?: SnakePopupMode;
+    mode?: PopupMode;
     /** 背景颜色。 */
     bgColor?: string;
     /** 组件层级。 */
@@ -32,7 +32,7 @@ export interface SnakePopupProps {
     /** 关闭按钮图标尺寸。 */
     closeIconSize?: number | string;
     /** 关闭按钮所在位置。 */
-    closeIconPos?: SnakePopupCloseIconPosition;
+    closeIconPos?: PopupCloseIconPosition;
     /** 点击遮罩时是否关闭组件。 */
     closeOnClickOverlay?: boolean;
     /** 是否显示遮罩层。 */
@@ -42,7 +42,7 @@ export interface SnakePopupProps {
     /** 是否阻止遮罩区域的触摸滚动。 */
     lockScroll?: boolean;
     /** 遮罩层自定义样式。 */
-    overlayStyle?: SnakeStyleValue;
+    overlayStyle?: StyleValue;
     /** 是否适配底部安全区域。 */
     safeAreaInsetBottom?: boolean;
     /** 是否适配顶部安全区域。 */
@@ -50,17 +50,17 @@ export interface SnakePopupProps {
     /** 根节点自定义类名。 */
     customClass?: string;
     /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
+    customStyle?: StyleValue;
 }
 
-/** SnakePopupChange 事件详情。 */
-export interface SnakePopupChangeDetail {
+/** PopupChange 事件详情。 */
+export interface PopupChangeDetail {
     /** 是否显示组件。 */
     show: boolean;
 }
 
-/** SnakePopup 组件的事件契约。 */
-export interface SnakePopupEmits {
+/** Popup 组件的事件契约。 */
+export interface PopupEmits {
     /** update:modelValue 事件携带的参数。 */
     'update:modelValue': [value: boolean];
     /** update:show 事件携带的参数。 */
@@ -74,13 +74,13 @@ export interface SnakePopupEmits {
     /** closed 事件携带的参数。 */
     closed: [];
     /** change 事件携带的参数。 */
-    change: [detail: SnakePopupChangeDetail];
+    change: [detail: PopupChangeDetail];
     /** click-overlay 事件携带的参数。 */
     'click-overlay': [event: unknown];
 }
 
-/** SnakePopup 组件实例公开的方法和状态。 */
-export interface SnakePopupExpose {
+/** Popup 组件实例公开的方法和状态。 */
+export interface PopupExpose {
     /** open 方法。 */
     open(): void;
     /** close 方法。 */

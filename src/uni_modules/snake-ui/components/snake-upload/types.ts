@@ -1,15 +1,15 @@
 import type { ExtractPropTypes, PropType } from 'vue';
-import type { SnakeImageMode, SnakeStyleValue } from '../../types/global';
+import type { ImageMode, StyleValue } from '../../types/global';
 
 /** 可选择的文件类别。 */
-export type SnakeUploadAcceptType = 'image' | 'video' | 'file' | 'media' | 'all';
+export type UploadAcceptType = 'image' | 'video' | 'file' | 'media' | 'all';
 /** 标准化后的文件类别。 */
-export type SnakeUploadFileType = 'image' | 'video' | 'file';
+export type UploadFileType = 'image' | 'video' | 'file';
 /** 文件在上传队列中的状态。 */
-export type SnakeUploadStatus = 'ready' | 'uploading' | 'success' | 'failed';
+export type UploadStatus = 'ready' | 'uploading' | 'success' | 'failed';
 
 /** Snake Upload 使用的文件记录。 */
-export interface SnakeUploadFileItem extends Record<string, unknown> {
+export interface UploadFileItem extends Record<string, unknown> {
     /** 预览或上传完成后的 URL。 */
     url?: string;
     /** 本地临时文件路径。 */
@@ -19,9 +19,9 @@ export interface SnakeUploadFileItem extends Record<string, unknown> {
     /** 文件字节数。 */
     size?: number;
     /** 标准化文件类别。 */
-    fileType?: SnakeUploadFileType;
+    fileType?: UploadFileType;
     /** 队列状态。 */
-    status?: SnakeUploadStatus;
+    status?: UploadStatus;
     /** 0 到 100 的上传进度。 */
     progress?: number;
     /** 是否上传失败。 */
@@ -39,11 +39,11 @@ export interface SnakeUploadFileItem extends Record<string, unknown> {
 }
 
 /** 自定义上传适配器的运行上下文。 */
-export interface SnakeUploadRequestContext {
+export interface UploadRequestContext {
     /** 当前文件索引。 */
     index: number;
     /** 当前文件列表快照。 */
-    files: readonly SnakeUploadFileItem[];
+    files: readonly UploadFileItem[];
     /** 表单文件字段名。 */
     name: string;
     /** 备用上传地址。 */
@@ -57,7 +57,7 @@ export interface SnakeUploadRequestContext {
 }
 
 /** 自定义上传适配器的标准成功结果。 */
-export interface SnakeUploadRequestResult extends Record<string, unknown> {
+export interface UploadRequestResult extends Record<string, unknown> {
     /** 上传完成后的公开访问地址。 */
     url: string;
     /** OSS 或业务接口的原始响应。 */
@@ -67,14 +67,14 @@ export interface SnakeUploadRequestResult extends Record<string, unknown> {
 }
 
 /** 自定义上传函数，可用于 OSS、腾讯云、七牛或业务上传接口。 */
-export type SnakeUploadRequest = (
-    file: SnakeUploadFileItem,
-    context: SnakeUploadRequestContext
-) => Promise<SnakeUploadRequestResult | string>;
+export type UploadRequest = (
+    file: UploadFileItem,
+    context: UploadRequestContext
+) => Promise<UploadRequestResult | string>;
 
 /** Snake Upload 的运行时 props 定义。 */
-export const snakeUploadProps = {
-    customStyle: { type: [String, Object] as PropType<SnakeStyleValue>, default: '' },
+export const uploadProps = {
+    customStyle: { type: [String, Object] as PropType<StyleValue>, default: '' },
     customClass: { type: String, default: '' },
     width: { type: [Number, String], default: 200 },
     height: { type: [Number, String], default: 200 },
@@ -86,7 +86,7 @@ export const snakeUploadProps = {
     delBgColor: { type: String, default: 'var(--snake-color-error, #fa3534)' },
     delIcon: { type: String, default: 'close' },
     delColor: { type: String, default: '#fff' },
-    imageMode: { type: String as PropType<SnakeImageMode>, default: 'aspectFill' },
+    imageMode: { type: String as PropType<ImageMode>, default: 'aspectFill' },
     customBtn: { type: Boolean, default: false },
     uploadText: { type: String, default: '' },
     action: { type: String, default: '' },
@@ -102,22 +102,22 @@ export const snakeUploadProps = {
     previewFile: { type: Boolean, default: true },
     multiple: { type: Boolean, default: true },
     maxSize: { type: [Number, String], default: Number.MAX_VALUE },
-    modelValue: { type: Array as PropType<SnakeUploadFileItem[]>, default: () => [] },
-    fileList: { type: Array as PropType<SnakeUploadFileItem[]>, default: () => [] },
+    modelValue: { type: Array as PropType<UploadFileItem[]>, default: () => [] },
+    fileList: { type: Array as PropType<UploadFileItem[]>, default: () => [] },
     limitType: { type: Array as PropType<string[]>, default: () => [] },
     autoUpload: { type: Boolean, default: true },
     showTips: { type: Boolean, default: true },
     showConfirm: { type: Boolean, default: true },
     beforeUpload: {
-        type: Function as PropType<(index: number, files: SnakeUploadFileItem[]) => boolean | Promise<unknown>>,
+        type: Function as PropType<(index: number, files: UploadFileItem[]) => boolean | Promise<unknown>>,
         default: undefined
     },
     beforeRemove: {
-        type: Function as PropType<(index: number, files: SnakeUploadFileItem[]) => boolean | Promise<unknown>>,
+        type: Function as PropType<(index: number, files: UploadFileItem[]) => boolean | Promise<unknown>>,
         default: undefined
     },
     toJson: { type: Boolean, default: true },
-    accept: { type: String as PropType<SnakeUploadAcceptType>, default: 'image' },
+    accept: { type: String as PropType<UploadAcceptType>, default: 'image' },
     showFileName: { type: Boolean, default: true },
     showFileSize: { type: Boolean, default: false },
     fileIconMap: {
@@ -130,17 +130,17 @@ export const snakeUploadProps = {
     extension: { type: Array as PropType<string[]>, default: () => [] },
     imageShape: { type: String as PropType<'square' | 'circle'>, default: 'square' },
     customChoose: { type: Boolean, default: false },
-    uploadRequest: { type: Function as PropType<SnakeUploadRequest>, default: undefined },
+    uploadRequest: { type: Function as PropType<UploadRequest>, default: undefined },
     isCustomUpload: { type: Boolean, default: false }
 };
 
 /** Snake Upload 的公开属性类型。 */
-export type SnakeUploadProps = ExtractPropTypes<typeof snakeUploadProps>;
+export type UploadProps = ExtractPropTypes<typeof uploadProps>;
 
 /** 通过组件 ref 可调用的方法。 */
-export interface SnakeUploadExpose {
+export interface UploadExpose {
     /** 当前内部文件列表。 */
-    lists: SnakeUploadFileItem[];
+    lists: UploadFileItem[];
     /** 清空文件列表。 */
     clear: () => void;
     /** 上传所有待上传文件。 */
@@ -156,7 +156,7 @@ export interface SnakeUploadExpose {
     /** 打开文件选择器。 */
     selectFile: () => void;
     /** 将外部选择的文件加入上传队列。 */
-    addFiles: (files: SnakeUploadFileItem[]) => void;
+    addFiles: (files: UploadFileItem[]) => void;
     /** 兼容旧组件，将文件交给 beforeRead/afterRead 流程。 */
-    onBeforeRead: (file: SnakeUploadFileItem | SnakeUploadFileItem[]) => void;
+    onBeforeRead: (file: UploadFileItem | UploadFileItem[]) => void;
 }

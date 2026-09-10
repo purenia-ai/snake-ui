@@ -1,8 +1,8 @@
-export type SnakeCmsBlockCategory = 'content' | 'navigation' | 'commerce' | 'custom';
+export type CmsBlockCategory = 'content' | 'navigation' | 'commerce' | 'custom';
 
-export interface SnakeCmsBlockDefinition {
+export interface CmsBlockDefinition {
     version: 1 | 2;
-    category: SnakeCmsBlockCategory;
+    category: CmsBlockCategory;
     componentName: `snake-${string}`;
     standalone: boolean;
 }
@@ -13,7 +13,7 @@ export interface SnakeCmsBlockDefinition {
  * Keep this catalog free of Vue imports so it can be consumed by types,
  * diagnostics and tooling without changing mini-program bundling behavior.
  */
-export const snakeCmsBlocks = {
+export const cmsBlocks = {
     commoditysearch: {
         version: 1,
         category: 'navigation',
@@ -84,20 +84,20 @@ export const snakeCmsBlocks = {
     },
     'v2.search': { version: 2, category: 'navigation', componentName: 'snake-cms-v2-search', standalone: false },
     'v2.video': { version: 2, category: 'content', componentName: 'snake-cms-v2-video', standalone: false }
-} as const satisfies Record<string, SnakeCmsBlockDefinition>;
+} as const satisfies Record<string, CmsBlockDefinition>;
 
-export type SnakeCmsBuiltinComponent = keyof typeof snakeCmsBlocks;
-export type SnakeCmsV1BuiltinComponent = {
-    [Key in SnakeCmsBuiltinComponent]: (typeof snakeCmsBlocks)[Key]['version'] extends 1 ? Key : never;
-}[SnakeCmsBuiltinComponent];
-export type SnakeCmsV2BuiltinComponent = {
-    [Key in SnakeCmsBuiltinComponent]: (typeof snakeCmsBlocks)[Key]['version'] extends 2 ? Key : never;
-}[SnakeCmsBuiltinComponent];
+export type CmsBuiltinComponent = keyof typeof cmsBlocks;
+export type CmsV1BuiltinComponent = {
+    [Key in CmsBuiltinComponent]: (typeof cmsBlocks)[Key]['version'] extends 1 ? Key : never;
+}[CmsBuiltinComponent];
+export type CmsV2BuiltinComponent = {
+    [Key in CmsBuiltinComponent]: (typeof cmsBlocks)[Key]['version'] extends 2 ? Key : never;
+}[CmsBuiltinComponent];
 
-export const snakeCmsBuiltinComponents = new Set<SnakeCmsBuiltinComponent>(
-    Object.keys(snakeCmsBlocks) as SnakeCmsBuiltinComponent[]
+export const cmsBuiltinComponents = new Set<CmsBuiltinComponent>(
+    Object.keys(cmsBlocks) as CmsBuiltinComponent[]
 );
 
-export function isSnakeCmsBuiltinComponent(component: string): component is SnakeCmsBuiltinComponent {
-    return snakeCmsBuiltinComponents.has(component as SnakeCmsBuiltinComponent);
+export function isCmsBuiltinComponent(component: string): component is CmsBuiltinComponent {
+    return cmsBuiltinComponents.has(component as CmsBuiltinComponent);
 }

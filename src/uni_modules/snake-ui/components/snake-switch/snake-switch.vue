@@ -1,17 +1,17 @@
 <script setup lang="ts">
 /**
- * @component SnakeSwitch
+ * @component Switch
  * @description 切换 boolean、字符串或数字状态，支持加载、禁用、自定义值和短震动反馈。
  * @see /components/switch
  */
 
 import { computed, inject } from 'vue';
 import { addUnit } from '../../libs/function/unit';
-import { snakeFormItemKey } from '../../libs/internal/form-item';
-import SnakeLoadingIcon from '../snake-loading-icon/snake-loading-icon.vue';
-import type { SnakeSwitchEmits, SnakeSwitchProps } from './types';
+import { formItemKey } from '../../libs/internal/form-item';
+import LoadingIcon from '../snake-loading-icon/snake-loading-icon.vue';
+import type { SwitchEmits, SwitchProps } from './types';
 defineOptions({ name: 'SnakeSwitch', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = withDefaults(defineProps<SnakeSwitchProps>(), {
+const props = withDefaults(defineProps<SwitchProps>(), {
     modelValue: false,
     activeValue: true,
     inactiveValue: false,
@@ -24,8 +24,8 @@ const props = withDefaults(defineProps<SnakeSwitchProps>(), {
     customClass: '',
     customStyle: ''
 });
-const emit = defineEmits<SnakeSwitchEmits>();
-const formItem = inject(snakeFormItemKey, null);
+const emit = defineEmits<SwitchEmits>();
+const formItem = inject(formItemKey, null);
 const checked = computed(() => Object.is(props.modelValue, props.activeValue));
 const resolvedSize = computed(() => {
     const size = props.size || formItem?.size.value || 50;

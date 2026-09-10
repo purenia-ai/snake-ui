@@ -1,7 +1,7 @@
 import type { ExtractPropTypes, PropType } from 'vue';
 
-/** snakeModalProps 运行时属性及默认值。 */
-export const snakeModalProps = {
+/** modalProps 运行时属性及默认值。 */
+export const modalProps = {
     /** 根节点自定义样式。 */
     customStyle: { type: [String, Object, Array] as PropType<string | Record<string, any> | unknown[]>, default: () => ({}) },
     /** 根节点自定义类名。 */
@@ -54,11 +54,11 @@ export const snakeModalProps = {
     page: { type: [Boolean, String] as PropType<boolean | string>, default: false }
 };
 
-/** SnakeModal 组件公开属性。 */
-export type SnakeModalProps = ExtractPropTypes<typeof snakeModalProps>;
+/** Modal 组件公开属性。 */
+export type ModalProps = ExtractPropTypes<typeof modalProps>;
 
-/** SnakeModal 组件的事件契约。 */
-export interface SnakeModalEmits {
+/** Modal 组件的事件契约。 */
+export interface ModalEmits {
     /** update:modelValue 事件携带的参数。 */
     'update:modelValue': [value: boolean];
     /** confirm 事件。 */

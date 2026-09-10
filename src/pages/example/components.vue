@@ -4,13 +4,13 @@ import DemoPage from '../../components/demo-page/demo-page.vue';
 import { demoText, useDemoLocale } from '../../common/demo-i18n';
 import rawGroups from './components.config';
 
-defineOptions({ name: 'SnakeExampleComponents' });
+defineOptions({ name: 'ExampleComponents' });
 import {
-    currentSnakeTheme,
-    isSnakeDarkMode,
-    setSnakeTheme,
-    snakeThemes,
-    toggleSnakeDarkMode
+    currentTheme,
+    isDarkMode,
+    setTheme,
+    themes,
+    toggleDarkMode
 } from '../../uni_modules/snake-ui';
 
 const groups = ref(rawGroups);
@@ -43,7 +43,7 @@ const filteredGroups = computed(() => {
 const resultCount = computed(() => filteredGroups.value.reduce((sum, group) => sum + group.list.length, 0));
 const { localeName, nextLocaleLabel, switchLocale, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
-const themeLabel = computed(() => text(isSnakeDarkMode() ? '浅色' : '深色'));
+const themeLabel = computed(() => text(isDarkMode() ? '浅色' : '深色'));
 const chineseTitle = (title: string, titleEn: string) => title.replace(titleEn, '').trim();
 const openComponent = (path: string) => uni.navigateTo({ url: path });
 const clearSearch = () => {
@@ -63,10 +63,10 @@ const clearSearch = () => {
         <view class="overview">
             <view class="theme-switcher">
                 <view
-                    v-for="theme in snakeThemes"
+                    v-for="theme in themes"
                     :key="theme.name"
-                    :class="['theme-dot', { 'theme-dot--active': currentSnakeTheme?.name === theme.name }]"
-                    @click="setSnakeTheme(theme.name)"
+                    :class="['theme-dot', { 'theme-dot--active': currentTheme?.name === theme.name }]"
+                    @click="setTheme(theme.name)"
                 >
                     <view class="theme-dot__color" :style="{ background: theme.color?.primary }" />
                     <text class="theme-dot__label">{{ text(theme.label || theme.name) }}</text>
@@ -74,7 +74,7 @@ const clearSearch = () => {
             </view>
             <view class="foundation-actions">
                 <text class="foundation-actions__hint">{{ text('主题与语言') }}</text>
-                <button class="foundation-actions__button" @click="toggleSnakeDarkMode">{{ themeLabel }}</button>
+                <button class="foundation-actions__button" @click="toggleDarkMode">{{ themeLabel }}</button>
                 <button class="foundation-actions__button" @click="switchLocale">{{ nextLocaleLabel }}</button>
             </view>
             <view class="search-box">

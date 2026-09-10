@@ -6,7 +6,7 @@
 <script setup lang="ts">
 /** @component CmsV2Popup @description CMS v2 页面弹窗内部渲染器。 @see /cms/overview */
 import { ref } from 'vue';
-import SnakePopup from '../../../snake-popup/snake-popup.vue';
+import Popup from '../../../snake-popup/snake-popup.vue';
 import { openV2Link, type V2BlockProps } from './shared';
 defineProps<V2BlockProps>();
 const show = ref(true);

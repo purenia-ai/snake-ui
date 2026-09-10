@@ -61,7 +61,7 @@ test('dedicated guide pages remain connected', async () => {
 test('guide exposes virtual root, icon extension, and editor hint pages', async () => {
     const config = await text('docs/.vitepress/config.mts');
     const expectations = new Map([
-        ['root', /SnakeRoot/],
+        ['root', /Root/],
         ['custom-icon', /custom-prefix|customPrefix/],
         ['code-hint', /easycom/]
     ]);

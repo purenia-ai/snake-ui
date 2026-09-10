@@ -1,10 +1,10 @@
-import type { SnakeIndexListEmits, SnakeIndexListExpose, SnakeIndexListProps } from '../snake-index-list/types';
+import type { IndexListEmits, IndexListExpose, IndexListProps } from '../snake-index-list/types';
 
-/** SnakeIndexListPanel 组件的公开属性。 */
-export interface SnakeIndexListPanelProps extends SnakeIndexListProps {}
+/** IndexListPanel 组件的公开属性。 */
+export interface IndexListPanelProps extends IndexListProps {}
 
-/** SnakeIndexListPanel 组件的事件契约。 */
-export type SnakeIndexListPanelEmits = SnakeIndexListEmits;
+/** IndexListPanel 组件的事件契约。 */
+export type IndexListPanelEmits = IndexListEmits;
 
-/** SnakeIndexListPanel 组件实例公开的方法。 */
-export type SnakeIndexListPanelExpose = SnakeIndexListExpose;
+/** IndexListPanel 组件实例公开的方法。 */
+export type IndexListPanelExpose = IndexListExpose;

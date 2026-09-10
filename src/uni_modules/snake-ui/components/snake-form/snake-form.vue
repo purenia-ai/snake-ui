@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * @component SnakeForm
+ * @component Form
  * @description 管理表单数据、校验规则与字段实例，行为与 uView Pro Form 对齐。
  * @see /components/form
  */
@@ -8,11 +8,11 @@
 import { computed, provide, ref, toRef } from 'vue';
 import { useParent } from '../../libs/hooks/useCompRelation';
 import { toast } from '../../libs/function/toast';
-import { snakeFormKey } from '../../libs/internal/form';
-import type { SnakeFormCallback, SnakeFormError, SnakeFormProps, SnakeFormRules } from './types';
+import { formKey } from '../../libs/internal/form';
+import type { FormCallback, FormError, FormProps, FormRules } from './types';
 
 defineOptions({ name: 'SnakeForm', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = withDefaults(defineProps<SnakeFormProps>(), {
+const props = withDefaults(defineProps<FormProps>(), {
     model: () => ({}),
     rules: () => ({}),
     errorType: () => ['message', 'toast'],
@@ -26,7 +26,7 @@ const props = withDefaults(defineProps<SnakeFormProps>(), {
     customStyle: ''
 });
 
-useParent('SnakeForm');
+useParent('Form');
 
 interface FormField {
     prop: string;
@@ -35,10 +35,10 @@ interface FormField {
 }
 
 const fields = ref<FormField[]>([]);
-const rules = ref<SnakeFormRules>(props.rules);
+const rules = ref<FormRules>(props.rules);
 const model = computed(() => props.model);
 
-function setRules(newRules: SnakeFormRules) {
+function setRules(newRules: FormRules) {
     rules.value = newRules;
 }
 
@@ -54,11 +54,11 @@ function resetFields() {
     fields.value.forEach(field => field.resetField?.());
 }
 
-function runValidation(targetFields: FormField[], callback?: SnakeFormCallback, showToast = false): Promise<boolean> {
+function runValidation(targetFields: FormField[], callback?: FormCallback, showToast = false): Promise<boolean> {
     return new Promise(resolve => {
         let valid = true;
         let count = 0;
-        const errors: SnakeFormError[] = [];
+        const errors: FormError[] = [];
         if (targetFields.length === 0) {
             resolve(true);
             callback?.(true, []);
@@ -86,11 +86,11 @@ function runValidation(targetFields: FormField[], callback?: SnakeFormCallback, 
     });
 }
 
-function validate(callback?: SnakeFormCallback): Promise<boolean> {
+function validate(callback?: FormCallback): Promise<boolean> {
     return runValidation(fields.value, callback, true);
 }
 
-function validateField(prop: string | string[], callback?: SnakeFormCallback): Promise<boolean> {
+function validateField(prop: string | string[], callback?: FormCallback): Promise<boolean> {
     const names = Array.isArray(prop) ? prop : [prop];
     return runValidation(
         fields.value.filter(field => names.includes(field.prop)),
@@ -99,7 +99,7 @@ function validateField(prop: string | string[], callback?: SnakeFormCallback): P
 }
 
 // Snake 输入控件仍通过注入读取表单尺寸和错误配置；字段生命周期由 uView 式公开方法驱动。
-provide(snakeFormKey, {
+provide(formKey, {
     model: toRef(props, 'model'),
     rules,
     size: toRef(props, 'size'),

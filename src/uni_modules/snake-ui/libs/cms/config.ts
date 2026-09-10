@@ -1,7 +1,7 @@
 import { deepMerge } from '../function';
-import type { SnakeCmsOptions } from './types';
+import type { CmsOptions } from './types';
 
-const DEFAULT_CMS_OPTIONS: SnakeCmsOptions = {
+const DEFAULT_CMS_OPTIONS: CmsOptions = {
     aliases: { videoss: 'videos' },
     normalizers: {},
     services: {},
@@ -10,17 +10,17 @@ const DEFAULT_CMS_OPTIONS: SnakeCmsOptions = {
     legacy: 'auto'
 };
 
-let globalCmsOptions: SnakeCmsOptions = deepMerge(DEFAULT_CMS_OPTIONS, {});
+let globalCmsOptions: CmsOptions = deepMerge(DEFAULT_CMS_OPTIONS, {});
 
-export function configureSnakeCms(options?: SnakeCmsOptions): SnakeCmsOptions {
+export function configureCms(options?: CmsOptions): CmsOptions {
     globalCmsOptions = deepMerge(globalCmsOptions, options || {});
     return globalCmsOptions;
 }
 
-export function getSnakeCmsOptions(instance?: SnakeCmsOptions): SnakeCmsOptions {
+export function getCmsOptions(instance?: CmsOptions): CmsOptions {
     return deepMerge(globalCmsOptions, instance || {});
 }
 
-export function resetSnakeCmsOptions(): void {
+export function resetCmsOptions(): void {
     globalCmsOptions = deepMerge(DEFAULT_CMS_OPTIONS, {});
 }

@@ -15,27 +15,27 @@
 
 <script setup lang="ts">
 /**
- * @component SnakeJumpApplet
+ * @component JumpApplet
  * @description 通过按钮或图片触发小程序、H5 URL Scheme 或企业微信承接页跳转。
  */
 
 import { computed, onMounted } from 'vue';
-import { resolveSnakeCmsOptions } from '../../libs/cms';
+import { resolveCmsOptions } from '../../libs/cms';
 import { toast } from '../../libs/function/platform';
 import {
-    SnakeCmsError,
-    type SnakeCmsLinkAction,
+    CmsError,
+    type CmsLinkAction,
 } from '../snake-cms/types';
-import type { SnakeJumpAppletEmits, SnakeJumpAppletProps } from './types';
+import type { JumpAppletEmits, JumpAppletProps } from './types';
 
-defineOptions({ name: 'SnakeJumpApplet', options: { virtualHost: true, styleIsolation: 'shared' } });
+defineOptions({ name: 'JumpApplet', options: { virtualHost: true, styleIsolation: 'shared' } });
 
 const props = withDefaults(
-    defineProps<SnakeJumpAppletProps>(),
+    defineProps<JumpAppletProps>(),
     { datas: () => ({}), linkService: undefined, pageInfo: () => ({}) }
 );
-const emit = defineEmits<SnakeJumpAppletEmits>();
-const service = computed(() => props.linkService || resolveSnakeCmsOptions().services?.link);
+const emit = defineEmits<JumpAppletEmits>();
+const service = computed(() => props.linkService || resolveCmsOptions().services?.link);
 
 async function jump(): Promise<void> {
     if (!props.datas.path) {
@@ -47,12 +47,12 @@ async function jump(): Promise<void> {
         return;
     }
     if (!service.value) {
-        const error = new SnakeCmsError('link', '未配置 CMS 跳转服务');
+        const error = new CmsError('link', '未配置 CMS 跳转服务');
         emit('error', error);
         toast(error.message);
         return;
     }
-    let action: SnakeCmsLinkAction;
+    let action: CmsLinkAction;
     if (props.datas.isWeCom) {
         action = { type: 'external', url: props.datas.path };
     } else {
@@ -75,7 +75,7 @@ async function jump(): Promise<void> {
     try {
         await service.value.open(action, { pageInfo: props.pageInfo });
     } catch (cause) {
-        const error = new SnakeCmsError('link', '页面跳转失败', cause);
+        const error = new CmsError('link', '页面跳转失败', cause);
         emit('error', error);
         toast(error.message);
     }

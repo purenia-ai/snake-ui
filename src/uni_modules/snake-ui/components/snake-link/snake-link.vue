@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * @component SnakeLink
+ * @component Link
  * @description 超链接，不同平台有不同表现形式：App 通过内置浏览器打开，小程序复制链接到粘贴板并提示，H5 使用 window.open。
  * @see /components/link
  */
@@ -8,11 +8,11 @@
 import { computed } from 'vue';
 import { toast } from '../../libs/function/toast';
 import { useLocale } from '../../libs/hooks/useLocale';
-import { snakeLinkProps, type SnakeLinkEmits } from './types';
+import { linkProps, type LinkEmits } from './types';
 
 defineOptions({ name: 'SnakeLink', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = defineProps(snakeLinkProps);
-const emit = defineEmits<SnakeLinkEmits>();
+const props = defineProps(linkProps);
+const emit = defineEmits<LinkEmits>();
 const { t } = useLocale('link');
 
 const mpTipsValue = computed(() => props.mpTips || t('mpTips'));

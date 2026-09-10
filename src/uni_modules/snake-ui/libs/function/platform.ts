@@ -12,10 +12,10 @@ export { getRect } from './getRect';
 export { toast } from './toast';
 export { getSystemInfo, sys, os } from './system';
 export type {
-    SnakeRouteOptions,
-    SnakeRouteParamValue,
-    SnakeRouteParams,
-    SnakeRouteType
+    RouteOptions,
+    RouteParamValue,
+    RouteParams,
+    RouteType
 } from './route';
 export { navTo, route } from './route';
 export { getQueryParams } from './queryParams';

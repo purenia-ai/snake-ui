@@ -1,5 +1,5 @@
-/** SnakeGraphicNavigation 数据项。 */
-export interface SnakeGraphicNavigationItem {
+/** GraphicNavigation 数据项。 */
+export interface GraphicNavigationItem {
     /** 资源地址。 */
     src?: string;
     /** 展示文本。 */
@@ -8,12 +8,12 @@ export interface SnakeGraphicNavigationItem {
     url?: string;
 }
 
-/** SnakeGraphicNavigation 配置数据。 */
-export interface SnakeGraphicNavigationData {
+/** GraphicNavigation 配置数据。 */
+export interface GraphicNavigationData {
     /** img style 配置。 */
     imgStyle?: 0 | 1;
     /** image list 配置。 */
-    imageList?: SnakeGraphicNavigationItem[];
+    imageList?: GraphicNavigationItem[];
     /** background color 配置。 */
     backgroundColor?: string;
     /** img margin 配置。 */
@@ -30,8 +30,8 @@ export interface SnakeGraphicNavigationData {
     textHeight?: number;
 }
 
-/** SnakeGraphicNavigation 组件的公开属性。 */
-export interface SnakeGraphicNavigationProps {
+/** GraphicNavigation 组件的公开属性。 */
+export interface GraphicNavigationProps {
     /** CMS 装修组件配置数据。 */
-    datas?: SnakeGraphicNavigationData;
+    datas?: GraphicNavigationData;
 }

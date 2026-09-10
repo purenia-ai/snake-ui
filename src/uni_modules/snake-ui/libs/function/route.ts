@@ -1,6 +1,6 @@
 import { getQueryParams } from './queryParams';
 
-export type SnakeRouteType =
+export type RouteType =
   | 'navigateTo'
   | 'to'
   | 'redirect'
@@ -10,21 +10,21 @@ export type SnakeRouteType =
   | 'reLaunch'
   | 'navigateBack'
   | 'back';
-export type SnakeRouteParamValue = string | number | boolean | null | undefined;
-export type SnakeRouteParams = Record<string, SnakeRouteParamValue | readonly SnakeRouteParamValue[]>;
+export type RouteParamValue = string | number | boolean | null | undefined;
+export type RouteParams = Record<string, RouteParamValue | readonly RouteParamValue[]>;
 
-export interface SnakeRouteOptions {
-  type?: SnakeRouteType;
+export interface RouteOptions {
+  type?: RouteType;
   url?: string;
-  params?: SnakeRouteParams;
+  params?: RouteParams;
   delta?: number;
   animationType?: string;
   animationDuration?: number;
 }
 
-type SnakeNavigationMethod = 'navigateTo' | 'redirectTo' | 'switchTab' | 'reLaunch' | 'navigateBack';
+type NavigationMethod = 'navigateTo' | 'redirectTo' | 'switchTab' | 'reLaunch' | 'navigateBack';
 
-const routeTypeMap: Record<SnakeRouteType, SnakeNavigationMethod> = {
+const routeTypeMap: Record<RouteType, NavigationMethod> = {
   navigateTo: 'navigateTo',
   to: 'navigateTo',
   redirect: 'redirectTo',
@@ -36,7 +36,7 @@ const routeTypeMap: Record<SnakeRouteType, SnakeNavigationMethod> = {
   back: 'navigateBack',
 };
 
-function appendQueryParams(url: string, params?: SnakeRouteParams): string {
+function appendQueryParams(url: string, params?: RouteParams): string {
   if (!params) return url;
   const entries: string[] = [];
   Object.entries(params).forEach(([key, rawValue]) => {
@@ -58,10 +58,10 @@ function routeError(message: string): Error {
   return new Error(`[Snake UI] ${message}`);
 }
 
-export function route(url: string, params?: SnakeRouteParams): Promise<void>;
-export function route(options: SnakeRouteOptions): Promise<void>;
-export function route(input: string | SnakeRouteOptions, params?: SnakeRouteParams): Promise<void> {
-  const options: SnakeRouteOptions = typeof input === 'string' ? { url: input, params } : input || {};
+export function route(url: string, params?: RouteParams): Promise<void>;
+export function route(options: RouteOptions): Promise<void>;
+export function route(input: string | RouteOptions, params?: RouteParams): Promise<void> {
+  const options: RouteOptions = typeof input === 'string' ? { url: input, params } : input || {};
   const requestedType = options.type || 'navigateTo';
   const method = routeTypeMap[requestedType];
   if (!method) return Promise.reject(routeError(`Unsupported route type: ${String(requestedType)}.`));

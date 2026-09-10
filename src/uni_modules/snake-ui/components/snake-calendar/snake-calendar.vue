@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * @component SnakeCalendar
+ * @component Calendar
  * @description 日历，用于单个日期或日期范围的选择，包裹在底部弹层中，支持农历、节日、打卡签到与自定义插槽。
  * @see /components/calendar
  */
@@ -9,20 +9,20 @@ import { computed, onMounted, ref, useSlots, watch } from 'vue';
 import zIndex from '../../libs/config/zIndex';
 import { useLocale } from '../../libs/hooks/useLocale';
 import Calendar from '../../libs/util/calendar';
-import SnakeButton from '../snake-button/snake-button.vue';
-import SnakeIcon from '../snake-icon/snake-icon.vue';
-import SnakePopup from '../snake-popup/snake-popup.vue';
+import Button from '../snake-button/snake-button.vue';
+import Icon from '../snake-icon/snake-icon.vue';
+import Popup from '../snake-popup/snake-popup.vue';
 import {
-  snakeCalendarProps,
-  type SnakeCalendarChangeDate,
-  type SnakeCalendarChangeRange,
-  type SnakeCalendarEmits,
-  type SnakeCalendarLunar
+  calendarProps,
+  type CalendarChangeDate,
+  type CalendarChangeRange,
+  type CalendarEmits,
+  type CalendarLunar
 } from './types';
 
-defineOptions({ name: 'SnakeCalendar', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = defineProps(snakeCalendarProps);
-const emit = defineEmits<SnakeCalendarEmits>();
+defineOptions({ name: 'Calendar', options: { virtualHost: true, styleIsolation: 'shared' } });
+const props = defineProps(calendarProps);
+const emit = defineEmits<CalendarEmits>();
 const slots = useSlots();
 const { t } = useLocale('calendar');
 
@@ -32,7 +32,7 @@ const weekday = ref(1);
 const weekdayArr = ref<number[]>([]);
 const days = ref(0);
 const daysArr = ref<number[]>([]);
-const lunarArr = ref<SnakeCalendarLunar[]>([]);
+const lunarArr = ref<CalendarLunar[]>([]);
 const year = ref(2020);
 const month = ref(0);
 // 当前月有多少天
@@ -477,7 +477,7 @@ function changeData() {
 }
 
 /** 获取农历。 */
-function getLunar(yearNum: number, monthNum: number, dayNum: number): SnakeCalendarLunar {
+function getLunar(yearNum: number, monthNum: number, dayNum: number): CalendarLunar {
   const val = Calendar.solar2lunar(yearNum, monthNum, dayNum) as {
     IDayCn: string;
     ncWeek: string;
@@ -579,7 +579,7 @@ function btnFix(show: boolean) {
       isToday = true;
     }
     const lunar = props.showLunar ? getLunar(y, m, d) : null;
-    const payload: SnakeCalendarChangeDate = {
+    const payload: CalendarChangeDate = {
       year: y,
       month: m,
       day: d,
@@ -596,13 +596,13 @@ function btnFix(show: boolean) {
     const startWeek = getWeekText(startDateStr);
     const endDateStr = `${endYear.value}-${formatNum(endMonth.value)}-${formatNum(endDay.value)}`;
     const endWeek = getWeekText(endDateStr);
-    let startLunar: SnakeCalendarLunar | null = null;
-    let endLunar: SnakeCalendarLunar | null = null;
+    let startLunar: CalendarLunar | null = null;
+    let endLunar: CalendarLunar | null = null;
     if (props.showLunar) {
       startLunar = getLunar(startYear.value, startMonth.value, startDay.value);
       endLunar = getLunar(endYear.value, endMonth.value, endDay.value);
     }
-    const payload: SnakeCalendarChangeRange = {
+    const payload: CalendarChangeRange = {
       startYear: startYear.value,
       startMonth: startMonth.value,
       startDay: startDay.value,

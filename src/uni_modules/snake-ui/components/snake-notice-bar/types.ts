@@ -1,11 +1,11 @@
 import type { UnitValue } from '../../libs/function/unit';
-import type { SnakeStyleValue } from '../../types/global';
-/** SnakeNoticeBarMode 类型定义。 */
-export type SnakeNoticeBarMode = 'horizontal' | 'vertical';
-/** SnakeNoticeBarDirection 类型定义。 */
-export type SnakeNoticeBarDirection = 'row' | 'column';
-/** SnakeNoticeBar 组件的公开属性。 */
-export interface SnakeNoticeBarProps {
+import type { StyleValue } from '../../types/global';
+/** NoticeBarMode 类型定义。 */
+export type NoticeBarMode = 'horizontal' | 'vertical';
+/** NoticeBarDirection 类型定义。 */
+export type NoticeBarDirection = 'row' | 'column';
+/** NoticeBar 组件的公开属性。 */
+export interface NoticeBarProps {
     /** 用于渲染的数据列表。 */
     list?: string[];
     /** 展示文本。 */
@@ -13,9 +13,9 @@ export interface SnakeNoticeBarProps {
     /** 组件类型或展示模式。 */
     type?: 'primary' | 'success' | 'warning' | 'error' | 'info';
     /** 组件展示模式。 */
-    mode?: SnakeNoticeBarMode;
+    mode?: NoticeBarMode;
     /** 内容排列或滚动方向。 */
-    direction?: SnakeNoticeBarDirection;
+    direction?: NoticeBarDirection;
     /** 是否显示组件。 */
     show?: boolean;
     /** 是否自动播放。 */
@@ -53,10 +53,10 @@ export interface SnakeNoticeBarProps {
     /** 根节点自定义类名。 */
     customClass?: string;
     /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
+    customStyle?: StyleValue;
 }
-/** SnakeNoticeBar 组件的事件契约。 */
-export interface SnakeNoticeBarEmits {
+/** NoticeBar 组件的事件契约。 */
+export interface NoticeBarEmits {
     /** click 事件携带的参数。 */
     click: [index: number];
     /** change 事件携带的参数。 */

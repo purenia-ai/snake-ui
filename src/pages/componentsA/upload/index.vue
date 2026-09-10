@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { SnakeUploadExpose, SnakeUploadFileItem, SnakeUploadRequest } from '../../../uni_modules/snake-ui';
+import type { UploadExpose, UploadFileItem, UploadRequest } from '../../../uni_modules/snake-ui';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 
 const demoImage = 'https://cdn.puresnake.com/joker/recycle/like.png';
@@ -14,23 +14,23 @@ const successfulFile = (name: string, size: number, fileType: 'image' | 'video' 
     error: false
 });
 
-const imageFiles = ref<SnakeUploadFileItem[]>([successfulFile('snake-ui.png', 86 * 1024, 'image', demoImage)]);
-const documentFiles = ref<SnakeUploadFileItem[]>([
+const imageFiles = ref<UploadFileItem[]>([successfulFile('snake-ui.png', 86 * 1024, 'image', demoImage)]);
+const documentFiles = ref<UploadFileItem[]>([
     successfulFile('组件设计说明.pdf', 2.4 * 1024 * 1024, 'file', 'https://example.com/design.pdf')
 ]);
-const videoFiles = ref<SnakeUploadFileItem[]>([]);
-const manualFiles = ref<SnakeUploadFileItem[]>([]);
-const customButtonFiles = ref<SnakeUploadFileItem[]>([]);
-const customListFiles = ref<SnakeUploadFileItem[]>([
+const videoFiles = ref<UploadFileItem[]>([]);
+const manualFiles = ref<UploadFileItem[]>([]);
+const customButtonFiles = ref<UploadFileItem[]>([]);
+const customListFiles = ref<UploadFileItem[]>([
     successfulFile('季度产品报告.pdf', 3.2 * 1024 * 1024, 'file', 'https://example.com/report.pdf'),
     successfulFile('组件接口清单.docx', 468 * 1024, 'file', 'https://example.com/component-spec.docx')
 ]);
 
-const manualUploadRef = ref<SnakeUploadExpose | null>(null);
-const customListUploadRef = ref<SnakeUploadExpose | null>(null);
+const manualUploadRef = ref<UploadExpose | null>(null);
+const customListUploadRef = ref<UploadExpose | null>(null);
 
 // 演示上传适配器；真实项目可在此获取 STS 并上传到 OSS、COS 或业务服务器。
-const mockUpload: SnakeUploadRequest = async (file, { onProgress }) => {
+const mockUpload: UploadRequest = async (file, { onProgress }) => {
     onProgress(30);
     await delay(180);
     onProgress(70);

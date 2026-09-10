@@ -1,18 +1,18 @@
 <script setup lang="ts">
 /**
- * @component SnakeEmpty
+ * @component Empty
  * @description 用于列表、搜索结果或异常页面没有内容时提供统一反馈。内置多种语义模式，也支持图片、图标和插槽定制。
  * @see /components/empty
  */
 
 import { computed } from 'vue';
 import { addUnit } from '../../libs/function/unit';
-import { snakeTranslate } from '../../locale';
-import SnakeIcon from '../snake-icon/snake-icon.vue';
-import type { SnakeEmptyProps } from './types';
+import { translate } from '../../locale';
+import Icon from '../snake-icon/snake-icon.vue';
+import type { EmptyProps } from './types';
 
-defineOptions({ name: 'SnakeEmpty', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = withDefaults(defineProps<SnakeEmptyProps>(), {
+defineOptions({ name: 'Empty', options: { virtualHost: true, styleIsolation: 'shared' } });
+const props = withDefaults(defineProps<EmptyProps>(), {
     show: true,
     mode: 'data',
     src: '',
@@ -42,7 +42,7 @@ const modeTexts: Record<string, string> = {
     address: '暂无地址',
     car: '购物车是空的'
 };
-const displayText = computed(() => props.text || modeTexts[props.mode] || snakeTranslate('common.empty'));
+const displayText = computed(() => props.text || modeTexts[props.mode] || translate('common.empty'));
 const source = computed(() => props.src || props.icon);
 const isImage = computed(() => /^(https?:|data:|\/|\.\/|\.\.\/)/i.test(source.value));
 const modeIcons: Record<string, string> = {

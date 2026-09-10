@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * @component SnakeNavbar
+ * @component Navbar
  * @description 用于页面顶部导航，支持状态栏安全区、返回操作、固定定位、标题及左右插槽。
  * @see /components/navbar
  */
@@ -8,12 +8,12 @@
 import { computed } from 'vue';
 import zIndex from '../../libs/config/zIndex';
 import { addUnit } from '../../libs/function/unit';
-import SnakeIcon from '../snake-icon/snake-icon.vue';
-import type { SnakeNavbarEmits, SnakeNavbarProps } from './types';
+import Icon from '../snake-icon/snake-icon.vue';
+import type { NavbarEmits, NavbarProps } from './types';
 
-defineOptions({ name: 'SnakeNavbar', options: { virtualHost: true, styleIsolation: 'shared' } });
+defineOptions({ name: 'Navbar', options: { virtualHost: true, styleIsolation: 'shared' } });
 
-const props = withDefaults(defineProps<SnakeNavbarProps>(), {
+const props = withDefaults(defineProps<NavbarProps>(), {
     title: '',
     height: 44,
     backIconColor: 'var(--snake-color-text, #303133)',
@@ -36,7 +36,7 @@ const props = withDefaults(defineProps<SnakeNavbarProps>(), {
     customClass: '',
     customStyle: ''
 });
-const emit = defineEmits<SnakeNavbarEmits>();
+const emit = defineEmits<NavbarEmits>();
 
 const systemInfo = uni.getSystemInfoSync();
 const statusBarHeight = computed(() => (props.safeAreaInsetTop ? Number(systemInfo.statusBarHeight) || 0 : 0));

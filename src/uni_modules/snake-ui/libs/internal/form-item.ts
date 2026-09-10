@@ -1,12 +1,12 @@
 import type { InjectionKey, Ref } from 'vue';
-import type { SnakeFormTrigger } from '../form';
-import type { SnakeFormSize } from './form';
+import type { FormTrigger } from '../form';
+import type { FormSize } from './form';
 
-export interface SnakeFormItemContext {
+export interface FormItemContext {
     error: Ref<string>;
     errorVisible: Ref<boolean>;
-    size: Ref<SnakeFormSize>;
-    notify(trigger: SnakeFormTrigger): Promise<void>;
+    size: Ref<FormSize>;
+    notify(trigger: FormTrigger): Promise<void>;
 }
 
-export const snakeFormItemKey: InjectionKey<SnakeFormItemContext> = Symbol('snake-form-item');
+export const formItemKey: InjectionKey<FormItemContext> = Symbol('snake-form-item');

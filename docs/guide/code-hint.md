@@ -11,7 +11,7 @@ Snake UI 面向 Vue 3 + TypeScript 开发，组件标签、属性、事件和工
 <snake-tabs :list="tabs" :current="0" />
 ```
 
-IDE（Volar）会把 easycom 规则解析到真实的 `.vue` 组件文件，组件内部通过 `defineProps<SnakeXxxProps>()` 声明的类型即为模板补全来源：属性名、类型、必填性和事件签名都能获得校验与补全。
+IDE（Volar）会把 easycom 规则解析到真实的 `.vue` 组件文件，组件内部通过 `defineProps<XxxProps>()` 声明的类型即为模板补全来源：属性名、类型、必填性和事件签名都能获得校验与补全。
 
 ## 类型提示
 
@@ -19,8 +19,8 @@ IDE（Volar）会把 easycom 规则解析到真实的 `.vue` 组件文件，组�
 
 `@puresnake/snake-ui` 的 `package.json` 声明了 `types: index.d.ts`，TypeScript 会自动解析到全部组件与全局类型：
 
-- 每个组件导出自己的 `SnakeXxxProps` 与 `SnakeXxxEmits` 类型。
-- 全局 API 声明为 `uni.$snake` 与模板中的 `$snake`、`$snakeThemeStyle`。
+- 每个组件导出自己的 `XxxProps` 与 `XxxEmits` 类型。
+- 全局 API 声明为 `uni.$snake` 与模板中的 `$snake`、`$themeStyle`。
 - npm 安装走包的 types 入口；uni_modules 本地安装由 IDE 直接读取源码类型，无需额外配置。
 
 ### 按需导入组件类型
@@ -28,9 +28,9 @@ IDE（Volar）会把 easycom 规则解析到真实的 `.vue` 组件文件，组�
 把 props 和事件抽成对象时，直接导入对应类型：
 
 ```ts
-import type { SnakeTabsEmits, SnakeTabsProps } from '@puresnake/snake-ui';
+import type { TabsEmits, TabsProps } from '@puresnake/snake-ui';
 
-const tabsProps: SnakeTabsProps = {
+const tabsProps: TabsProps = {
     list: [{ name: '推荐' }],
     current: 0
 };

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * @component SnakeText
+ * @component Text
  * @description 文本，集成文本类常用功能：价格、手机号脱敏、姓名脱敏、日期格式化、超链接与拨打电话。
  * @see /components/text
  */
@@ -12,13 +12,13 @@ import { formatName, formatPrice } from '../../libs/function/format';
 import { toStyle } from '../../libs/function/style';
 import { timeFormat } from '../../libs/function/timeFormat';
 import { test as testSuite } from '../../libs/function/test';
-import SnakeIcon from '../snake-icon/snake-icon.vue';
-import SnakeLink from '../snake-link/snake-link.vue';
-import { snakeTextProps, type SnakeTextEmits } from './types';
+import Icon from '../snake-icon/snake-icon.vue';
+import Link from '../snake-link/snake-link.vue';
+import { textProps, type TextEmits } from './types';
 
 defineOptions({ name: 'SnakeText', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = defineProps(snakeTextProps);
-const emit = defineEmits<SnakeTextEmits>();
+const props = defineProps(textProps);
+const emit = defineEmits<TextEmits>();
 
 // 是否 nvue 环境
 const isNvue = computed(() => {

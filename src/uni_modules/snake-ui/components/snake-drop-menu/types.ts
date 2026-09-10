@@ -1,7 +1,7 @@
 import type { UnitValue } from '../../libs/function/unit';
-import type { SnakeStyleValue } from '../../types/global';
-/** SnakeDropMenu 组件的公开属性。 */
-export interface SnakeDropMenuProps {
+import type { StyleValue } from '../../types/global';
+/** DropMenu 组件的公开属性。 */
+export interface DropMenuProps {
     /** 激活状态颜色。 */
     activeColor?: string;
     /** 未激活状态颜色。 */
@@ -27,17 +27,17 @@ export interface SnakeDropMenuProps {
     /** 根节点自定义类名。 */
     customClass?: string;
     /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
+    customStyle?: StyleValue;
 }
-/** SnakeDropMenu 组件的事件契约。 */
-export interface SnakeDropMenuEmits {
+/** DropMenu 组件的事件契约。 */
+export interface DropMenuEmits {
     /** open 事件携带的参数。 */
     open: [index: number];
     /** close 事件携带的参数。 */
     close: [index: number];
 }
-/** SnakeDropMenu 组件实例公开的方法和状态。 */
-export interface SnakeDropMenuExpose {
+/** DropMenu 组件实例公开的方法和状态。 */
+export interface DropMenuExpose {
     /** updateDropMenuRect 方法。 */
     updateDropMenuRect(): Promise<void>;
     /** colseAll 方法。 */

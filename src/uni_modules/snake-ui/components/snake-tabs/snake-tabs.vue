@@ -1,15 +1,15 @@
 <script setup lang="ts">
 /**
- * @component SnakeTabs
+ * @component Tabs
  * @description tabs 标签组件，支持横向滚动、激活项居中、徽标和滑块。
  * @see /components/tabs
  */
 import { computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { addUnit } from '../../libs/function/unit';
-import type { SnakeTabItem, SnakeTabsEmits, SnakeTabsProps } from './types';
+import type { TabItem, TabsEmits, TabsProps } from './types';
 
 defineOptions({
-    name: 'SnakeTabs',
+    name: 'Tabs',
     options: {
         addGlobalClass: true,
         // #ifndef MP-TOUTIAO
@@ -19,7 +19,7 @@ defineOptions({
     }
 });
 
-const props = withDefaults(defineProps<SnakeTabsProps>(), {
+const props = withDefaults(defineProps<TabsProps>(), {
     customStyle: '',
     customClass: '',
     isScroll: true,
@@ -45,7 +45,7 @@ const props = withDefaults(defineProps<SnakeTabsProps>(), {
     itemWidth: 'auto'
 });
 
-const emit = defineEmits<SnakeTabsEmits>();
+const emit = defineEmits<TabsEmits>();
 const instance = getCurrentInstance();
 const scrollLeft = ref(0);
 const tabQueryInfo = ref<UniApp.NodeInfo[]>([]);
@@ -72,15 +72,15 @@ const tabBarStyle = computed(() => [
     props.barStyle
 ]);
 
-function itemValue(item: SnakeTabItem, key: string, fallback: 'name' | 'count') {
+function itemValue(item: TabItem, key: string, fallback: 'name' | 'count') {
     return item[key] || item[fallback];
 }
 
-function badgeCount(item: SnakeTabItem) {
+function badgeCount(item: TabItem) {
     return itemValue(item, props.count, 'count') || 0;
 }
 
-function badgeText(item: SnakeTabItem) {
+function badgeText(item: TabItem) {
     if (props.isDot) return '';
     const value = badgeCount(item);
     return Number(value) > 99 ? '99+' : value;

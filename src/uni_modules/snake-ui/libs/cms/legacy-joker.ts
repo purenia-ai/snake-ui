@@ -1,12 +1,12 @@
-import type { SnakeUIOptions } from '../runtime';
-import { getSnakeUIOptions, SnakeUIRuntimeError } from '../runtime';
+import type { RuntimeOptions } from '../runtime';
+import { getRuntimeOptions, RuntimeError } from '../runtime';
 import { getQueryParams, navTo } from '../function/platform';
 import type {
-    SnakeCmsCommerceService,
-    SnakeCmsCouponService,
-    SnakeCmsLinkAction,
-    SnakeCmsLinkService,
-    SnakeCmsOptions
+    CmsCommerceService,
+    CmsCouponService,
+    CmsLinkAction,
+    CmsLinkService,
+    CmsOptions
 } from './types';
 
 interface LegacyResponse<T = any> {
@@ -15,13 +15,13 @@ interface LegacyResponse<T = any> {
     msg?: string;
 }
 
-function resolveOptions(options?: Pick<SnakeUIOptions, 'request' | 'cache' | 'config'>) {
-    return options || getSnakeUIOptions();
+function resolveOptions(options?: Pick<RuntimeOptions, 'request' | 'cache' | 'config'>) {
+    return options || getRuntimeOptions();
 }
 
-function requireRequest(options?: Pick<SnakeUIOptions, 'request'>) {
+function requireRequest(options?: Pick<RuntimeOptions, 'request'>) {
     const request = resolveOptions(options).request;
-    if (!request) throw new SnakeUIRuntimeError('snake-cms legacy adapter', 'request');
+    if (!request) throw new RuntimeError('snake-cms legacy adapter', 'request');
     return request;
 }
 
@@ -30,7 +30,7 @@ function unwrap<T>(response: LegacyResponse<T>, fallback: string): T {
     return response?.data as T;
 }
 
-function createCommerce(options?: Pick<SnakeUIOptions, 'request'>): SnakeCmsCommerceService {
+function createCommerce(options?: Pick<RuntimeOptions, 'request'>): CmsCommerceService {
     return {
         async getActivities(context) {
             const response = await requireRequest(options).get<LegacyResponse<{ items?: Record<string, any>[] }>>(
@@ -64,7 +64,7 @@ function createCommerce(options?: Pick<SnakeUIOptions, 'request'>): SnakeCmsComm
     };
 }
 
-function createCoupon(options?: Pick<SnakeUIOptions, 'request'>): SnakeCmsCouponService {
+function createCoupon(options?: Pick<RuntimeOptions, 'request'>): CmsCouponService {
     return {
         async check({ config }) {
             const response = await requireRequest(options).get<LegacyResponse<{ result?: boolean }>>(
@@ -83,7 +83,7 @@ function createCoupon(options?: Pick<SnakeUIOptions, 'request'>): SnakeCmsCoupon
     };
 }
 
-async function openMiniProgram(action: SnakeCmsLinkAction): Promise<void> {
+async function openMiniProgram(action: CmsLinkAction): Promise<void> {
     if (typeof uni === 'undefined' || typeof uni.navigateToMiniProgram !== 'function') return;
     await new Promise<void>((resolve, reject) => {
         uni.navigateToMiniProgram({
@@ -97,7 +97,7 @@ async function openMiniProgram(action: SnakeCmsLinkAction): Promise<void> {
     });
 }
 
-function createLink(options?: Pick<SnakeUIOptions, 'request' | 'config'>): SnakeCmsLinkService {
+function createLink(options?: Pick<RuntimeOptions, 'request' | 'config'>): CmsLinkService {
     return {
         async open(action) {
             if (action.type === 'navigate') {
@@ -147,8 +147,8 @@ function createLink(options?: Pick<SnakeUIOptions, 'request' | 'config'>): Snake
 
 /** @deprecated Compatibility bridge for the historical r2nd-joker CMS contract. */
 export function createLegacyJokerCmsOptions(
-    options?: Pick<SnakeUIOptions, 'request' | 'cache' | 'config'>
-): SnakeCmsOptions {
+    options?: Pick<RuntimeOptions, 'request' | 'cache' | 'config'>
+): CmsOptions {
     return {
         legacy: true,
         services: {

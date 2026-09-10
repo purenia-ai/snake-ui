@@ -1,11 +1,11 @@
 # 事件总线
 
-`createSnakeEmitter()` 创建隔离的同步事件总线；`snakeEmitter` 是框架提供的共享实例。
+`createEmitter()` 创建隔离的同步事件总线；`emitter` 是框架提供的共享实例。
 
 ```ts
-import { createSnakeEmitter } from '@puresnake/snake-ui';
+import { createEmitter } from '@puresnake/snake-ui';
 
-const emitter = createSnakeEmitter();
+const emitter = createEmitter();
 const off = emitter.on<{ id: number }>('order:updated', payload => {
     console.log(payload.id);
 });

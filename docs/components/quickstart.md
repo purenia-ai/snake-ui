@@ -61,18 +61,18 @@ easycom 是推荐用法，但某些场景（如类型提示受限、动态组件
 
 ```vue
 <template>
-    <SnakeButton type="primary">显式引入</SnakeButton>
+    <Button type="primary">显式引入</Button>
 </template>
 
 <script setup lang="ts">
-import SnakeButton from '@puresnake/snake-ui/components/snake-button/snake-button.vue';
+import Button from '@puresnake/snake-ui/components/snake-button/snake-button.vue';
 </script>
 ```
 
 显式引入时模板中的标签名必须与 import 的组件名一致。`uni_modules` 安装改用本地相对路径：
 
 ```ts
-import SnakeButton from './uni_modules/snake-ui/components/snake-button/snake-button.vue';
+import Button from './uni_modules/snake-ui/components/snake-button/snake-button.vue';
 ```
 
 ## 下一步

@@ -1,16 +1,16 @@
 <script setup lang="ts">
 /**
- * @component SnakeLine
+ * @component Line
  * @description 分隔线条，支持横向与竖向两种方向、半像素细线以及虚线样式，常用于分隔内容块。
  * @see /components/line
  */
 
 import { computed } from 'vue';
 import { addUnit } from '../../libs/function/unit';
-import { snakeLineProps } from './types';
+import { lineProps } from './types';
 
 defineOptions({ name: 'SnakeLine', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = defineProps(snakeLineProps);
+const props = defineProps(lineProps);
 
 /** 线条样式，以 1px 边框加缩放实现跨端一致的半像素细线。 */
 const lineStyle = computed(() => {

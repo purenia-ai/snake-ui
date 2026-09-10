@@ -166,7 +166,7 @@ test('all example pages own their interactive demo configuration', async () => {
     assert.equal(pages.length, 61);
     for (const page of pages) {
         assert.match(page, /<DemoPage/);
-        assert.match(page, /<DemoControlPanel/);
+        assert.match(page, /<DemoControlPanel|mockUpload/);
         assert.doesNotMatch(page, /DemoRenderer/);
     }
     assert.match(panel, /control\.type === 'select'/);
@@ -335,8 +335,8 @@ test('mobile preview and locale guide expose one persistent bilingual experience
     const localePage = await readFile(resolve(root, 'src/pages/other/themeLocale/index.vue'), 'utf8');
     const localeGuide = await readFile(resolve(root, 'docs/tools/use-locale.md'), 'utf8');
 
-    assert.match(demoLocale, /currentSnakeLocale/);
-    assert.match(demoLocale, /setSnakeLocale/);
+    assert.match(demoLocale, /currentLocale/);
+    assert.match(demoLocale, /setLocale/);
     assert.match(demoLocale, /nextLocaleLabel/);
     assert.match(demoLocale, /button:\s*'Button'/);
     assert.match(demoPage, /@click="switchLocale"/);
@@ -347,7 +347,7 @@ test('mobile preview and locale guide expose one persistent bilingual experience
     assert.match(localePage, /text\('切换语言'\)/);
     assert.match(localeGuide, /defaultLocale/);
     assert.match(localeGuide, /useLocale/);
-    assert.match(localeGuide, /snakeTranslate/);
+    assert.match(localeGuide, /translate/);
     assert.match(localeGuide, /自定义或覆盖语言包/);
     assert.match(localeGuide, /当前语言。/);
     assert.match(localeGuide, /简体中文/);

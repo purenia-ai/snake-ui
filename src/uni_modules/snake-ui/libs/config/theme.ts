@@ -1,11 +1,11 @@
 import { computed, reactive, ref } from 'vue';
-import { isSnakeDebugMode, snakeConfig } from './state';
-import type { SnakeDarkMode, SnakeTheme, SnakeThemeColor, SnakeThemeOption } from './types';
+import { isDebugMode, config } from './state';
+import type { DarkMode, Theme, ThemeColor, ThemeOption } from './types';
 
 const THEME_STORAGE_KEY = 'snake-ui-theme';
 const DARK_MODE_STORAGE_KEY = 'snake-ui-dark-mode';
 
-export const snakeLightPalette: SnakeThemeColor = {
+export const lightPalette: ThemeColor = {
     // 品牌绿七档（自有品牌色，保留）
     primary: '#06D290',
     primaryDark: '#2EBD7C',
@@ -50,7 +50,7 @@ export const snakeLightPalette: SnakeThemeColor = {
     noticeBackground: '#FDF6EC'
 };
 
-export const snakeDarkPalette: SnakeThemeColor = {
+export const darkPalette: ThemeColor = {
     // 品牌绿七档（暗色下仍保持品牌绿，自有体系）
     primary: '#06D290',
     primaryDark: '#2EE6A8',
@@ -95,26 +95,26 @@ export const snakeDarkPalette: SnakeThemeColor = {
     noticeBackground: '#2B1F05'
 };
 
-export const defaultSnakeTheme: SnakeTheme = {
+export const defaultTheme: Theme = {
     name: 'snake',
     label: 'Snake 绿',
     description: 'Snake UI 默认明暗主题',
-    color: snakeLightPalette,
-    darkColor: snakeDarkPalette
+    color: lightPalette,
+    darkColor: darkPalette
 };
 
-export const snakeThemes = ref<SnakeTheme[]>([defaultSnakeTheme]);
-export const currentSnakeTheme = ref<SnakeTheme>(defaultSnakeTheme);
-export const snakeDarkMode = ref<SnakeDarkMode>('light');
-export const snakeSystemDark = ref(false);
-export const snakeColor = reactive<SnakeThemeColor>({ ...snakeLightPalette });
-export const snakeCssVars = ref<Record<string, string>>({});
+export const themes = ref<Theme[]>([defaultTheme]);
+export const currentTheme = ref<Theme>(defaultTheme);
+export const darkMode = ref<DarkMode>('light');
+export const systemDark = ref(false);
+export const color = reactive<ThemeColor>({ ...lightPalette });
+export const cssVars = ref<Record<string, string>>({});
 
 let listenersReady = false;
 let initialized = false;
 let lastCssKeys: string[] = [];
 
-const tokenNames: Record<keyof SnakeThemeColor, string> = {
+const tokenNames: Record<keyof ThemeColor, string> = {
     primary: '--snake-color-primary',
     primaryDark: '--snake-color-primary-dark',
     primaryDeep: '--snake-color-primary-deep',
@@ -161,7 +161,7 @@ function readStorage<T>(key: string): T | undefined {
         const value = uni.getStorageSync(key);
         return value === '' || value == null ? undefined : (value as T);
     } catch (error) {
-        if (isSnakeDebugMode('warn')) console.warn(`[Snake UI] failed to read ${key}`, error);
+        if (isDebugMode('warn')) console.warn(`[Snake UI] failed to read ${key}`, error);
         return undefined;
     }
 }
@@ -172,7 +172,7 @@ function writeStorage(key: string, value: unknown): void {
             uni.setStorageSync(key, value);
         }
     } catch (error) {
-        if (isSnakeDebugMode('warn')) console.warn(`[Snake UI] failed to write ${key}`, error);
+        if (isDebugMode('warn')) console.warn(`[Snake UI] failed to write ${key}`, error);
     }
 }
 
@@ -185,7 +185,7 @@ function detectSystemDark(): boolean {
             return (uni.getSystemInfoSync() as { theme?: string }).theme === 'dark';
         }
     } catch (error) {
-        if (isSnakeDebugMode('warn')) console.warn('[Snake UI] failed to detect system theme', error);
+        if (isDebugMode('warn')) console.warn('[Snake UI] failed to detect system theme', error);
     }
     return false;
 }
@@ -193,43 +193,43 @@ function detectSystemDark(): boolean {
 function prepareListeners(): void {
     if (listenersReady) return;
     listenersReady = true;
-    snakeSystemDark.value = detectSystemDark();
+    systemDark.value = detectSystemDark();
     try {
         if (typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
             const media = window.matchMedia('(prefers-color-scheme: dark)');
             media.addEventListener?.('change', event => {
-                snakeSystemDark.value = event.matches;
-                if (snakeDarkMode.value === 'auto') applySnakeTheme();
+                systemDark.value = event.matches;
+                if (darkMode.value === 'auto') applyTheme();
             });
         }
         if (typeof uni !== 'undefined' && typeof uni.onThemeChange === 'function') {
             uni.onThemeChange(event => {
-                snakeSystemDark.value = event.theme === 'dark';
-                if (snakeDarkMode.value === 'auto') applySnakeTheme();
+                systemDark.value = event.theme === 'dark';
+                if (darkMode.value === 'auto') applyTheme();
             });
         }
     } catch (error) {
-        if (isSnakeDebugMode('warn')) console.warn('[Snake UI] failed to watch system theme', error);
+        if (isDebugMode('warn')) console.warn('[Snake UI] failed to watch system theme', error);
     }
 }
 
-function normalizeTheme(theme: SnakeTheme): SnakeTheme {
+function normalizeTheme(theme: Theme): Theme {
     return {
         ...theme,
-        color: { ...snakeLightPalette, ...theme.color },
-        darkColor: { ...snakeDarkPalette, ...theme.darkColor }
+        color: { ...lightPalette, ...theme.color },
+        darkColor: { ...darkPalette, ...theme.darkColor }
     };
 }
 
-function mergeThemes(custom: SnakeTheme[]): SnakeTheme[] {
-    const map = new Map<string, SnakeTheme>([[defaultSnakeTheme.name, defaultSnakeTheme]]);
+function mergeThemes(custom: Theme[]): Theme[] {
+    const map = new Map<string, Theme>([[defaultTheme.name, defaultTheme]]);
     custom.forEach(theme => map.set(theme.name, normalizeTheme(theme)));
     return Array.from(map.values());
 }
 
 function activeMode(): 'light' | 'dark' {
-    if (snakeDarkMode.value === 'auto') return snakeSystemDark.value ? 'dark' : 'light';
-    return snakeDarkMode.value;
+    if (darkMode.value === 'auto') return systemDark.value ? 'dark' : 'light';
+    return darkMode.value;
 }
 
 function toRgbTriplet(value: string): string | undefined {
@@ -239,11 +239,11 @@ function toRgbTriplet(value: string): string | undefined {
     return `${(hex >> 16) & 255}, ${(hex >> 8) & 255}, ${hex & 255}`;
 }
 
-function createCssVars(theme: SnakeTheme, mode: 'light' | 'dark'): Record<string, string> {
-    const palette = (mode === 'dark' ? theme.darkColor : theme.color) as SnakeThemeColor;
+function createCssVars(theme: Theme, mode: 'light' | 'dark'): Record<string, string> {
+    const palette = (mode === 'dark' ? theme.darkColor : theme.color) as ThemeColor;
     const result: Record<string, string> = { '--snake-theme-mode': mode };
     Object.entries(palette).forEach(([key, value]) => {
-        const name = tokenNames[key as keyof SnakeThemeColor];
+        const name = tokenNames[key as keyof ThemeColor];
         if (name && value != null) {
             result[name] = String(value);
             const rgb = toRgbTriplet(String(value));
@@ -265,87 +265,87 @@ function flushDocument(vars: Record<string, string>, mode: 'light' | 'dark'): vo
     root.classList.add(`snake-theme-${mode}`);
 }
 
-export function applySnakeTheme(): void {
+export function applyTheme(): void {
     const mode = activeMode();
-    const palette = (mode === 'dark' ? currentSnakeTheme.value.darkColor : currentSnakeTheme.value.color) as
-        SnakeThemeColor | undefined;
-    Object.assign(snakeColor, mode === 'dark' ? snakeDarkPalette : snakeLightPalette, palette || {});
-    const vars = createCssVars(currentSnakeTheme.value, mode);
-    snakeCssVars.value = vars;
+    const palette = (mode === 'dark' ? currentTheme.value.darkColor : currentTheme.value.color) as
+        ThemeColor | undefined;
+    Object.assign(color, mode === 'dark' ? darkPalette : lightPalette, palette || {});
+    const vars = createCssVars(currentTheme.value, mode);
+    cssVars.value = vars;
     flushDocument(vars, mode);
 }
 
-export function initSnakeTheme(option?: SnakeThemeOption): void {
+export function initTheme(option?: ThemeOption): void {
     prepareListeners();
-    let themes: SnakeTheme[] = [];
-    let defaultTheme = snakeConfig.defaultTheme;
-    let defaultDarkMode = snakeConfig.defaultDarkMode;
+    let themeEntries: Theme[] = [];
+    let defaultThemeName = config.defaultTheme;
+    let defaultDarkMode = config.defaultDarkMode;
     let force = false;
 
     if (Array.isArray(option)) {
-        themes = option;
+        themeEntries = option;
     } else if (
         option &&
         typeof option === 'object' &&
         ('themes' in option || 'defaultTheme' in option || 'defaultDarkMode' in option || 'force' in option)
     ) {
-        themes = option.themes || [];
-        defaultTheme = option.defaultTheme || defaultTheme;
+        themeEntries = option.themes || [];
+        defaultThemeName = option.defaultTheme || defaultThemeName;
         defaultDarkMode = option.defaultDarkMode || defaultDarkMode;
         force = Boolean(option.force);
     } else if (option && typeof option === 'object') {
-        themes = [{ ...defaultSnakeTheme, color: { ...defaultSnakeTheme.color, ...option } }];
+        themeEntries = [{ ...defaultTheme, color: { ...defaultTheme.color, ...option } }];
     }
 
-    if (!initialized || force || themes.length) snakeThemes.value = mergeThemes(themes);
+    if (!initialized || force || themeEntries.length) themes.value = mergeThemes(themeEntries);
     const savedTheme = force ? undefined : readStorage<string>(THEME_STORAGE_KEY);
-    const savedMode = force ? undefined : readStorage<SnakeDarkMode>(DARK_MODE_STORAGE_KEY);
-    currentSnakeTheme.value =
-        snakeThemes.value.find(theme => theme.name === (savedTheme || defaultTheme)) || snakeThemes.value[0];
-    snakeDarkMode.value = savedMode || defaultDarkMode;
+    const savedMode = force ? undefined : readStorage<DarkMode>(DARK_MODE_STORAGE_KEY);
+    currentTheme.value =
+        themes.value.find(theme => theme.name === (savedTheme || defaultThemeName)) || themes.value[0];
+    darkMode.value = savedMode || defaultDarkMode;
     initialized = true;
-    applySnakeTheme();
+    applyTheme();
 }
 
-export function setSnakeTheme(name: string): boolean {
-    const theme = snakeThemes.value.find(item => item.name === name);
+export function setTheme(name: string): boolean {
+    const theme = themes.value.find(item => item.name === name);
     if (!theme) return false;
-    currentSnakeTheme.value = theme;
+    currentTheme.value = theme;
     writeStorage(THEME_STORAGE_KEY, name);
-    applySnakeTheme();
+    applyTheme();
     return true;
 }
 
-export function setSnakeDarkMode(mode: SnakeDarkMode): void {
-    snakeDarkMode.value = mode;
+export function setDarkMode(mode: DarkMode): void {
+    darkMode.value = mode;
     writeStorage(DARK_MODE_STORAGE_KEY, mode);
-    applySnakeTheme();
+    applyTheme();
 }
 
-export function toggleSnakeDarkMode(): void {
-    setSnakeDarkMode(activeMode() === 'dark' ? 'light' : 'dark');
+export function toggleDarkMode(): void {
+    setDarkMode(activeMode() === 'dark' ? 'light' : 'dark');
 }
 
-export function isSnakeDarkMode(): boolean {
+export function isDarkMode(): boolean {
     return activeMode() === 'dark';
 }
 
-export function setSnakeThemeColor(colors: Partial<SnakeThemeColor>): void {
+export function setThemeColor(colors: Partial<ThemeColor>): void {
     const key = activeMode() === 'dark' ? 'darkColor' : 'color';
-    currentSnakeTheme.value = {
-        ...currentSnakeTheme.value,
-        [key]: { ...currentSnakeTheme.value[key], ...colors }
+    currentTheme.value = {
+        ...currentTheme.value,
+        [key]: { ...currentTheme.value[key], ...colors }
     };
-    applySnakeTheme();
+    applyTheme();
 }
 
-export const snakeThemeStyle = computed<Record<string, string>>(() => snakeCssVars.value);
+export const themeStyle = computed<Record<string, string>>(() => cssVars.value);
 
-export function resetSnakeTheme(): void {
+export function resetTheme(): void {
     initialized = false;
-    snakeThemes.value = [defaultSnakeTheme];
-    currentSnakeTheme.value = defaultSnakeTheme;
-    snakeDarkMode.value = 'light';
-    snakeSystemDark.value = false;
-    applySnakeTheme();
+    themes.value = [defaultTheme];
+    currentTheme.value = defaultTheme;
+    darkMode.value = 'light';
+    systemDark.value = false;
+    applyTheme();
 }

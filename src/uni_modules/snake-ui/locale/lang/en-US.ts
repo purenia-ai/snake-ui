@@ -1,6 +1,6 @@
-import type { SnakeLocale } from '../../libs/config/types';
+import type { Locale } from '../../libs/config/types';
 
-const enUS: SnakeLocale = {
+const enUS: Locale = {
     name: 'en-US',
     label: 'English',
     messages: {

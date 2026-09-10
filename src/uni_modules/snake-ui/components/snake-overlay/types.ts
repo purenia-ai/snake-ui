@@ -1,7 +1,7 @@
-import type { SnakeStyleValue } from '../../types/global';
+import type { StyleValue } from '../../types/global';
 
-/** SnakeOverlay 组件的公开属性。 */
-export interface SnakeOverlayProps {
+/** Overlay 组件的公开属性。 */
+export interface OverlayProps {
     /** 双向绑定的当前值。 */
     modelValue?: boolean;
     /** 是否显示组件。 */
@@ -17,11 +17,11 @@ export interface SnakeOverlayProps {
     /** 根节点自定义类名。 */
     customClass?: string;
     /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
+    customStyle?: StyleValue;
 }
 
-/** SnakeOverlay 组件的事件契约。 */
-export interface SnakeOverlayEmits {
+/** Overlay 组件的事件契约。 */
+export interface OverlayEmits {
     /** update:modelValue 事件携带的参数。 */
     'update:modelValue': [value: boolean];
     /** update:show 事件携带的参数。 */

@@ -1,13 +1,13 @@
-import { currentSnakeLocale, initSnakeLocale, setSnakeLocale, snakeLocales, snakeTranslate } from '../../locale';
+import { currentLocale, initLocale, setLocale, locales, translate as translateMessage } from '../../locale';
 
 export function useLocale(namespace?: string) {
     const translate = (key: string, replacements?: Record<string, unknown> | unknown[], locale?: string) =>
-        snakeTranslate(namespace ? `${namespace}.${key}` : key, replacements, locale);
+        translateMessage(namespace ? `${namespace}.${key}` : key, replacements, locale);
     return {
-        currentLocale: currentSnakeLocale,
-        locales: snakeLocales,
+        currentLocale: currentLocale,
+        locales: locales,
         t: translate,
-        initLocales: initSnakeLocale,
-        setLocale: setSnakeLocale
+        initLocales: initLocale,
+        setLocale: setLocale
     };
 }

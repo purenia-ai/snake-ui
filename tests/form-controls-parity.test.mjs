@@ -64,7 +64,7 @@ test('form validator covers built-in, trigger, sync, and async rules', async () 
 test('form control components expose independent contracts', async () => {
     const sources = await Promise.all(components.map(name => read(`components/snake-${name}/types.ts`)));
     for (const [index, source] of sources.entries()) {
-        assert.match(source, /export interface Snake/);
+        assert.match(source, /export interface [A-Z]/);
         assert.doesNotMatch(source, /uview-pro|uni\.\$u/);
         assert.ok(source.length > 120, `${components[index]} should expose a real typed contract`);
     }
@@ -89,7 +89,7 @@ test('form controls are exported from type and declaration entries', async () =>
         'Switch',
         'Slider'
     ]) {
-        assert.match(declaration, new RegExp(`Snake${name}`));
+        assert.match(declaration, new RegExp(`Snake${name}:`));
     }
     for (const path of components) {
         assert.match(runtime, new RegExp(`export \\* from './components/snake-${path}/types'`));
@@ -104,9 +104,9 @@ test('form exposes validation and field lifecycle APIs', async () => {
     ]);
     for (const method of ['validate', 'validateField', 'resetFields', 'setRules', 'addField', 'removeField'])
         assert.match(types + source, new RegExp(method));
-    assert.match(source, /provide\(snakeFormKey/);
-    assert.match(source, /useParent\('SnakeForm'\)/);
-    assert.match(types, /validate\(callback\?: SnakeFormCallback\): Promise<boolean>/);
+    assert.match(source, /provide\(formKey/);
+    assert.match(source, /useParent\('Form'\)/);
+    assert.match(types, /validate\(callback\?: FormCallback\): Promise<boolean>/);
     assert.doesNotMatch(types + source, /clearValidate/);
     assert.match(source, /errorType: \(\) => \['message', 'toast'\]/);
     assert.match(source, /labelWidth: 90/);
@@ -117,7 +117,7 @@ test('form item matches uView Pro layout, size, slots, and field protocol', asyn
         read('components/snake-form-item/types.ts'),
         read('components/snake-form-item/snake-form-item.vue')
     ]);
-    assert.match(source, /useChildren\('SnakeFormItem', 'SnakeForm'\)/);
+    assert.match(source, /useChildren\('FormItem', 'Form'\)/);
     assert.match(source, /small: \{ fontSize: 24, iconSize: 28, messageSize: 20 \}/);
     assert.match(source, /default: \{ fontSize: 28, iconSize: 32, messageSize: 24 \}/);
     assert.match(source, /large: \{ fontSize: 32, iconSize: 36, messageSize: 28 \}/);
@@ -136,12 +136,12 @@ test('selection controls use typed group protocols', async () => {
         read('components/snake-radio-group/snake-radio-group.vue')
     ]);
     // checkbox 对齐 uView Pro：父子通过 useCompRelation 关系链通信
-    assert.match(checkbox, /useChildren\('SnakeCheckbox', 'SnakeCheckboxGroup'\)/);
-    assert.match(checkboxGroup, /useParent\('SnakeCheckboxGroup'\)/);
+    assert.match(checkbox, /useChildren\('Checkbox', 'CheckboxGroup'\)/);
+    assert.match(checkboxGroup, /useParent\('CheckboxGroup'\)/);
     assert.match(checkboxGroup, /syncChildrenSelection/);
     // radio 对齐 uView Pro：父子通过 useCompRelation 关系链通信
-    assert.match(radio, /useChildren\('SnakeRadio', 'SnakeRadioGroup'\)/);
-    assert.match(radioGroup, /useParent\('SnakeRadioGroup'\)/);
+    assert.match(radio, /useChildren\('Radio', 'RadioGroup'\)/);
+    assert.match(radioGroup, /useParent\('RadioGroup'\)/);
     assert.match(radioGroup, /defineExpose\(\{ props, getData, setValue \}\)/);
 });
 

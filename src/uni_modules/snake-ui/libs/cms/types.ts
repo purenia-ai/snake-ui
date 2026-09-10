@@ -1,14 +1,14 @@
-import type { SnakeCmsBuiltinComponent } from './blocks';
+import type { CmsBuiltinComponent } from './blocks';
 
 export type {
-    SnakeCmsBlockCategory,
-    SnakeCmsBlockDefinition,
-    SnakeCmsBuiltinComponent,
-    SnakeCmsV1BuiltinComponent,
-    SnakeCmsV2BuiltinComponent
+    CmsBlockCategory,
+    CmsBlockDefinition,
+    CmsBuiltinComponent,
+    CmsV1BuiltinComponent,
+    CmsV2BuiltinComponent
 } from './blocks';
 
-export interface SnakeCmsPageInfo {
+export interface CmsPageInfo {
     id?: string | number;
     pageId?: string | number;
     name?: string;
@@ -16,7 +16,7 @@ export interface SnakeCmsPageInfo {
     [key: string]: unknown;
 }
 
-export interface SnakeCmsComponentConfig<Style extends Record<string, any> = Record<string, any>> {
+export interface CmsComponentConfig<Style extends Record<string, any> = Record<string, any>> {
     id?: string | number;
     component: string;
     setStyle?: Style;
@@ -26,8 +26,8 @@ export interface SnakeCmsComponentConfig<Style extends Record<string, any> = Rec
     [key: string]: unknown;
 }
 
-export interface SnakeCmsNormalizedComponent<Style extends Record<string, any> = Record<string, any>> extends Omit<
-    SnakeCmsComponentConfig<Style>,
+export interface CmsNormalizedComponent<Style extends Record<string, any> = Record<string, any>> extends Omit<
+    CmsComponentConfig<Style>,
     'id' | 'setStyle'
 > {
     id: string;
@@ -38,11 +38,11 @@ export interface SnakeCmsNormalizedComponent<Style extends Record<string, any> =
     builtin: boolean;
 }
 
-export type SnakeCmsDiagnosticCode =
+export type CmsDiagnosticCode =
     'invalid-component' | 'unknown-component' | 'normalizer-error' | 'duplicate-commerce-section' | 'legacy-adapter';
 
-export interface SnakeCmsDiagnostic {
-    code: SnakeCmsDiagnosticCode;
+export interface CmsDiagnostic {
+    code: CmsDiagnosticCode;
     level: 'warn' | 'error';
     message: string;
     index?: number;
@@ -50,61 +50,61 @@ export interface SnakeCmsDiagnostic {
     cause?: unknown;
 }
 
-export type SnakeCmsStatus = 'idle' | 'initial-loading' | 'ready' | 'empty' | 'loading-more' | 'no-more' | 'error';
+export type CmsStatus = 'idle' | 'initial-loading' | 'ready' | 'empty' | 'loading-more' | 'no-more' | 'error';
 
-/** SnakeCmsStateChange 类型定义。 */
-export interface SnakeCmsStateChange {
+/** CmsStateChange 类型定义。 */
+export interface CmsStateChange {
     /** 当前状态。 */
-    status: SnakeCmsStatus;
+    status: CmsStatus;
     /** page 配置。 */
     page: number;
     /** item count 配置。 */
     itemCount: number;
 }
 
-export interface SnakeCmsServiceContext {
-    pageInfo: Readonly<SnakeCmsPageInfo>;
-    component: Readonly<SnakeCmsNormalizedComponent>;
+export interface CmsServiceContext {
+    pageInfo: Readonly<CmsPageInfo>;
+    component: Readonly<CmsNormalizedComponent>;
     generation: number;
 }
 
-export interface SnakeCmsActivityResult<Item = Record<string, any>> {
+export interface CmsActivityResult<Item = Record<string, any>> {
     items: Item[];
 }
 
-export interface SnakeCmsGoodsResult<Item = Record<string, any>> {
+export interface CmsGoodsResult<Item = Record<string, any>> {
     items: Item[];
     total?: number;
     hasMore?: boolean;
 }
 
-export interface SnakeCmsCommerceService<
+export interface CmsCommerceService<
     Activity = Record<string, any>,
     Filters = Record<string, any>,
     Goods = Record<string, any>
 > {
     getActivities?(
-        context: SnakeCmsServiceContext & { params: Record<string, unknown> }
-    ): Promise<SnakeCmsActivityResult<Activity>>;
-    getFilters?(context: SnakeCmsServiceContext & { params: Record<string, unknown> }): Promise<Filters>;
+        context: CmsServiceContext & { params: Record<string, unknown> }
+    ): Promise<CmsActivityResult<Activity>>;
+    getFilters?(context: CmsServiceContext & { params: Record<string, unknown> }): Promise<Filters>;
     getGoods(
-        context: SnakeCmsServiceContext & { params: Record<string, unknown> }
-    ): Promise<SnakeCmsGoodsResult<Goods>>;
-    navigateGoods?(context: SnakeCmsServiceContext & { item: Goods; index: number }): void | Promise<void>;
+        context: CmsServiceContext & { params: Record<string, unknown> }
+    ): Promise<CmsGoodsResult<Goods>>;
+    navigateGoods?(context: CmsServiceContext & { item: Goods; index: number }): void | Promise<void>;
 }
 
-export interface SnakeCmsCouponService {
+export interface CmsCouponService {
     check(context: {
         config: Record<string, any>;
-        pageInfo?: SnakeCmsPageInfo;
+        pageInfo?: CmsPageInfo;
     }): Promise<{ claimable: boolean; message?: string }>;
     receive(context: {
         config: Record<string, any>;
-        pageInfo?: SnakeCmsPageInfo;
+        pageInfo?: CmsPageInfo;
     }): Promise<{ success: boolean; message?: string }>;
 }
 
-export interface SnakeCmsLinkAction {
+export interface CmsLinkAction {
     type: 'navigate' | 'mini-program' | 'external' | 'scheme';
     url?: string;
     appId?: string;
@@ -114,21 +114,21 @@ export interface SnakeCmsLinkAction {
     [key: string]: unknown;
 }
 
-export interface SnakeCmsLinkService {
+export interface CmsLinkService {
     open(
-        action: SnakeCmsLinkAction,
-        context?: { component?: SnakeCmsNormalizedComponent; pageInfo?: SnakeCmsPageInfo }
+        action: CmsLinkAction,
+        context?: { component?: CmsNormalizedComponent; pageInfo?: CmsPageInfo }
     ): void | Promise<void>;
-    createScheme?(action: SnakeCmsLinkAction): Promise<string>;
+    createScheme?(action: CmsLinkAction): Promise<string>;
 }
 
-export interface SnakeCmsServices {
-    commerce?: SnakeCmsCommerceService;
-    coupon?: SnakeCmsCouponService;
-    link?: SnakeCmsLinkService;
+export interface CmsServices {
+    commerce?: CmsCommerceService;
+    coupon?: CmsCouponService;
+    link?: CmsLinkService;
 }
 
-export interface SnakeCmsAssets {
+export interface CmsAssets {
     backToTop?: string;
     activityAll?: string;
     goodsLoading?: string;
@@ -139,28 +139,28 @@ export interface SnakeCmsAssets {
     goodsPopular?: string;
 }
 
-export type SnakeCmsNormalizer = (
-    component: SnakeCmsComponentConfig,
-    context: { index: number; pageInfo: Readonly<SnakeCmsPageInfo> }
-) => SnakeCmsComponentConfig | null | undefined;
+export type CmsNormalizer = (
+    component: CmsComponentConfig,
+    context: { index: number; pageInfo: Readonly<CmsPageInfo> }
+) => CmsComponentConfig | null | undefined;
 
-export interface SnakeCmsOptions {
-    aliases?: Record<string, SnakeCmsBuiltinComponent>;
-    normalizers?: Record<string, SnakeCmsNormalizer>;
-    services?: SnakeCmsServices;
-    assets?: SnakeCmsAssets;
+export interface CmsOptions {
+    aliases?: Record<string, CmsBuiltinComponent>;
+    normalizers?: Record<string, CmsNormalizer>;
+    services?: CmsServices;
+    assets?: CmsAssets;
     cachePrefix?: string;
     legacy?: boolean | 'auto';
-    onDiagnostic?: (diagnostic: SnakeCmsDiagnostic) => void;
+    onDiagnostic?: (diagnostic: CmsDiagnostic) => void;
 }
 
-export class SnakeCmsError extends Error {
+export class CmsError extends Error {
     readonly stage: 'normalize' | 'activities' | 'filters' | 'goods' | 'coupon' | 'link';
     readonly cause?: unknown;
 
-    constructor(stage: SnakeCmsError['stage'], message: string, cause?: unknown) {
+    constructor(stage: CmsError['stage'], message: string, cause?: unknown) {
         super(message, cause === undefined ? undefined : { cause });
-        this.name = 'SnakeCmsError';
+        this.name = 'CmsError';
         this.stage = stage;
         this.cause = cause;
     }

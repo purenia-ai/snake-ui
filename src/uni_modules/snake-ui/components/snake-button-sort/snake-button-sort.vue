@@ -10,19 +10,19 @@
 
 <script setup lang="ts">
 /**
- * @component SnakeButtonSort
+ * @component ButtonSort
  * @description 用于在默认、升序和降序状态之间循环切换。
  * @see /components/button-sort
  */
 
 import { computed, ref } from 'vue';
-import type { SnakeButtonSortEmits, SnakeButtonSortProps, SnakeButtonSortValue } from './types';
+import type { ButtonSortEmits, ButtonSortProps, ButtonSortValue } from './types';
 
 defineOptions({ name: 'snake-button-sort', options: { virtualHost: true, styleIsolation: 'shared' } });
 
-const props = withDefaults(defineProps<SnakeButtonSortProps>(), { title: '', titleColor: '' });
-const emit = defineEmits<SnakeButtonSortEmits>();
-const value = ref<SnakeButtonSortValue>('');
+const props = withDefaults(defineProps<ButtonSortProps>(), { title: '', titleColor: '' });
+const emit = defineEmits<ButtonSortEmits>();
+const value = ref<ButtonSortValue>('');
 
 // 标题颜色默认走 scoped 里的主题文字色，仅当传入 titleColor 时覆盖。
 const labelStyle = computed(() => (props.titleColor ? { color: props.titleColor } : undefined));

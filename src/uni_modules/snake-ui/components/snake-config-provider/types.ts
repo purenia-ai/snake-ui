@@ -1,20 +1,20 @@
-import type { SnakeDarkMode } from '../../libs/config/types';
-import type { SnakeStyleValue } from '../../types/global';
+import type { DarkMode } from '../../libs/config/types';
+import type { StyleValue } from '../../types/global';
 
-/** SnakeConfigProvider 组件的公开属性。 */
-export interface SnakeConfigProviderProps {
+/** ConfigProvider 组件的公开属性。 */
+export interface ConfigProviderProps {
     /** 初始化/切换暗黑模式(light | dark | auto),不传则沿用当前引擎状态 */
-    darkMode?: SnakeDarkMode;
+    darkMode?: DarkMode;
     /** 初始化/切换主题名(需已通过 app.use 注册主题),不传则沿用当前主题 */
     currentTheme?: string;
     /** 根节点自定义类名。 */
     customClass?: string;
     /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
+    customStyle?: StyleValue;
 }
 
-/** SnakeConfigProvider 组件的事件契约。 */
-export interface SnakeConfigProviderEmits {
+/** ConfigProvider 组件的事件契约。 */
+export interface ConfigProviderEmits {
     /** theme-change 事件携带的参数。 */
     'theme-change': [themeName: string];
     /** mode-change 事件携带的参数。 */

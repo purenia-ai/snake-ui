@@ -68,7 +68,7 @@
 
 <script setup lang="ts">
 /**
- * @component SnakeModal
+ * @component Modal
  * @description 弹出模态框，支持声明式 v-model 与函数式 useModal() 调用，用于消息提示、消息确认及页面内交互。
  * @see /components/modal
  */
@@ -79,11 +79,11 @@ import zIndex from '../../libs/config/zIndex';
 import { addUnit } from '../../libs/function/unit';
 import { toStyle } from '../../libs/function/style';
 import { useLocale } from '../../libs/hooks/useLocale';
-import { snakeEmitter } from '../../libs/function/emitter';
-import SnakePopup from '../snake-popup/snake-popup.vue';
-import SnakeLoadingIcon from '../snake-loading-icon/snake-loading-icon.vue';
-import { snakeModalProps } from './types';
-import type { SnakeModalEmits } from './types';
+import { emitter } from '../../libs/function/emitter';
+import Popup from '../snake-popup/snake-popup.vue';
+import LoadingIcon from '../snake-loading-icon/snake-loading-icon.vue';
+import { modalProps } from './types';
+import type { ModalEmits } from './types';
 import {
     SNAKE_MODAL_EVENT_CLEAR_LOADING,
     SNAKE_MODAL_EVENT_HIDE,
@@ -92,13 +92,13 @@ import {
     SNAKE_MODAL_GLOBAL_EVENT_HIDE,
     SNAKE_MODAL_GLOBAL_EVENT_SHOW,
     getEventWithCurrentPage,
-    type SnakeModalPayload
+    type ModalPayload
 } from '../../libs/config/modal';
 
-defineOptions({ name: 'SnakeModal', options: { addGlobalClass: true, virtualHost: true, styleIsolation: 'shared' } });
+defineOptions({ name: 'Modal', options: { addGlobalClass: true, virtualHost: true, styleIsolation: 'shared' } });
 
-const props = defineProps(snakeModalProps);
-const emit = defineEmits<SnakeModalEmits>();
+const props = defineProps(modalProps);
+const emit = defineEmits<ModalEmits>();
 const slots = useSlots();
 
 const { t } = useLocale('modal');
@@ -162,7 +162,7 @@ const MERGE_PROPS_KEYS = [
 ] as const;
 
 // 函数式调用时的临时配置
-const tempConfig = ref<Partial<SnakeModalPayload>>({});
+const tempConfig = ref<Partial<ModalPayload>>({});
 
 // 函数式调用时的内部显示状态（用于 global/page 模式）
 const internalShow = ref(false);
@@ -293,7 +293,7 @@ function clearLoading() {
 /**
  * 函数式调用显示 modal
  */
-function onServiceShow(payload: SnakeModalPayload) {
+function onServiceShow(payload: ModalPayload) {
     userOnConfirm = payload.onConfirm ?? null;
     userOnCancel = payload.onCancel ?? null;
 
@@ -330,13 +330,13 @@ function startListeners() {
     }
     isInit.value = true;
     if (showEvent.value) {
-        snakeEmitter.on(showEvent.value, onServiceShow);
+        emitter.on(showEvent.value, onServiceShow);
     }
     if (hideEvent.value) {
-        snakeEmitter.on(hideEvent.value, onServiceHide);
+        emitter.on(hideEvent.value, onServiceHide);
     }
     if (clearLoadingEvent.value) {
-        snakeEmitter.on(clearLoadingEvent.value, clearLoading);
+        emitter.on(clearLoadingEvent.value, clearLoading);
     }
 }
 
@@ -347,13 +347,13 @@ function stopListeners() {
     }
     isInit.value = false;
     if (showEvent.value) {
-        snakeEmitter.off(showEvent.value, onServiceShow);
+        emitter.off(showEvent.value, onServiceShow);
     }
     if (hideEvent.value) {
-        snakeEmitter.off(hideEvent.value, onServiceHide);
+        emitter.off(hideEvent.value, onServiceHide);
     }
     if (clearLoadingEvent.value) {
-        snakeEmitter.off(clearLoadingEvent.value, clearLoading);
+        emitter.off(clearLoadingEvent.value, clearLoading);
     }
 }
 

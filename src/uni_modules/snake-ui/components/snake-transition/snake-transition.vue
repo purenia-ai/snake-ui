@@ -1,16 +1,16 @@
 <script setup lang="ts">
 /**
- * @component SnakeTransition
+ * @component Transition
  * @description 跨端内容进出场动画，Overlay 和 Popup 均使用该组件。离场完成前节点会继续保留，因此不会出现弹层瞬间消失的问题。
  * @see /components/transition
  */
 
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
-import type { SnakeTransitionDuration, SnakeTransitionEmits, SnakeTransitionProps } from './types';
+import type { TransitionDuration, TransitionEmits, TransitionProps } from './types';
 
-defineOptions({ name: 'SnakeTransition', options: { virtualHost: true, styleIsolation: 'shared' } });
+defineOptions({ name: 'Transition', options: { virtualHost: true, styleIsolation: 'shared' } });
 
-const props = withDefaults(defineProps<SnakeTransitionProps>(), {
+const props = withDefaults(defineProps<TransitionProps>(), {
     show: true,
     name: 'fade',
     duration: 300,
@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<SnakeTransitionProps>(), {
     customClass: '',
     customStyle: ''
 });
-const emit = defineEmits<SnakeTransitionEmits>();
+const emit = defineEmits<TransitionEmits>();
 
 type Phase = 'enter' | 'leave' | '';
 const rendered = ref(props.show);
@@ -30,7 +30,7 @@ let fallbackTimer: ReturnType<typeof setTimeout> | undefined;
 
 const durations = computed(() => {
     if (typeof props.duration === 'number') return { enter: props.duration, leave: props.duration };
-    const value = props.duration as SnakeTransitionDuration;
+    const value = props.duration as TransitionDuration;
     return { enter: value.enter ?? 300, leave: value.leave ?? value.enter ?? 300 };
 });
 const currentDuration = computed(() => (phase.value === 'leave' ? durations.value.leave : durations.value.enter));

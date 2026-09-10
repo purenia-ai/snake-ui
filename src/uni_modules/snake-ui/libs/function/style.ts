@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'vue';
 
 /** 可归一为样式声明集合的输入：声明字符串、样式对象（含 CSSProperties）或其数组。 */
-export type SnakeStyleSource = string | CSSProperties | Record<string, unknown> | SnakeStyleSource[] | null | undefined;
+export type StyleSource = string | CSSProperties | Record<string, unknown> | StyleSource[] | null | undefined;
 
 export function kebabCase(value: string): string {
     return value
@@ -10,7 +10,7 @@ export function kebabCase(value: string): string {
         .toLowerCase();
 }
 
-export function addStyle(style: SnakeStyleSource, target: 'object' | 'string' = 'object'): Record<string, string> | string {
+export function addStyle(style: StyleSource, target: 'object' | 'string' = 'object'): Record<string, string> | string {
     if (target === 'string') return typeof style === 'string' ? style : toStyle(style);
     if (Array.isArray(style)) return toStyle(style);
     if (typeof style !== 'string') {
@@ -27,10 +27,10 @@ export function addStyle(style: SnakeStyleSource, target: 'object' | 'string' = 
     }, {});
 }
 
-export function toStyle(...styles: Array<SnakeStyleSource>): string {
+export function toStyle(...styles: Array<StyleSource>): string {
     // 兼容旧用法：单个数组整体传入时（如 [object, string]）解构展开
     if (styles.length === 1 && Array.isArray(styles[0])) {
-        styles = (styles[0] as SnakeStyleSource[]).slice();
+        styles = (styles[0] as StyleSource[]).slice();
     }
     const declarations = new Map<string, string>();
     styles.forEach(style => {

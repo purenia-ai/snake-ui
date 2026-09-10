@@ -1,7 +1,7 @@
-import type { SnakeStyleValue } from '../../types/global';
+import type { StyleValue } from '../../types/global';
 
-/** SnakeTransitionPreset 类型定义。 */
-export type SnakeTransitionPreset =
+/** TransitionPreset 类型定义。 */
+export type TransitionPreset =
     | 'fade'
     | 'fade-up'
     | 'fade-down'
@@ -14,22 +14,22 @@ export type SnakeTransitionPreset =
     | 'zoom-in'
     | 'zoom-out';
 
-/** SnakeTransitionDuration 类型定义。 */
-export interface SnakeTransitionDuration {
+/** TransitionDuration 类型定义。 */
+export interface TransitionDuration {
     /** enter 配置。 */
     enter?: number;
     /** leave 配置。 */
     leave?: number;
 }
 
-/** SnakeTransition 组件的公开属性。 */
-export interface SnakeTransitionProps {
+/** Transition 组件的公开属性。 */
+export interface TransitionProps {
     /** 是否显示组件。 */
     show?: boolean;
     /** 数据项名称或唯一标识。 */
-    name?: SnakeTransitionPreset;
+    name?: TransitionPreset;
     /** 动画持续时间。 */
-    duration?: number | SnakeTransitionDuration;
+    duration?: number | TransitionDuration;
     /** 动画缓动函数。 */
     timingFunction?: string;
     /** delay 配置。 */
@@ -39,11 +39,11 @@ export interface SnakeTransitionProps {
     /** 根节点自定义类名。 */
     customClass?: string;
     /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
+    customStyle?: StyleValue;
 }
 
-/** SnakeTransition 组件的事件契约。 */
-export interface SnakeTransitionEmits {
+/** Transition 组件的事件契约。 */
+export interface TransitionEmits {
     /** before-enter 事件携带的参数。 */
     'before-enter': [];
     /** enter 事件携带的参数。 */

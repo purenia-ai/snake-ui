@@ -1,8 +1,8 @@
 import type { UnitValue } from '../../libs/function/unit';
-import type { SnakeStyleValue } from '../../types/global';
+import type { StyleValue } from '../../types/global';
 
-/** SnakeSticky 组件的公开属性。 */
-export interface SnakeStickyProps {
+/** Sticky 组件的公开属性。 */
+export interface StickyProps {
     /** 吸顶或定位的顶部偏移量，数值按 rpx 处理，带 px 后缀时按 px 处理。 */
     offsetTop?: UnitValue;
     /** 自定义导航栏高度，单位 px。 */
@@ -20,29 +20,29 @@ export interface SnakeStickyProps {
     /** 根节点自定义类名。 */
     customClass?: string;
     /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
+    customStyle?: StyleValue;
 }
 
-/** SnakeStickyChange 事件详情。 */
-export interface SnakeStickyChangeDetail {
+/** StickyChange 事件详情。 */
+export interface StickyChangeDetail {
     /** is fixed 配置。 */
     isFixed: boolean;
     /** 当前数据项索引。 */
     index: number | string;
 }
 
-/** SnakeSticky 组件的事件契约。 */
-export interface SnakeStickyEmits {
+/** Sticky 组件的事件契约。 */
+export interface StickyEmits {
     /** fixed 事件携带的参数。 */
-    fixed: [detail: SnakeStickyChangeDetail];
+    fixed: [detail: StickyChangeDetail];
     /** unfixed 事件携带的参数。 */
-    unfixed: [detail: SnakeStickyChangeDetail];
+    unfixed: [detail: StickyChangeDetail];
     /** change 事件携带的参数。 */
-    change: [detail: SnakeStickyChangeDetail];
+    change: [detail: StickyChangeDetail];
 }
 
-/** SnakeSticky 组件实例公开的方法和状态。 */
-export interface SnakeStickyExpose {
+/** Sticky 组件实例公开的方法和状态。 */
+export interface StickyExpose {
     /** update 方法。 */
     update(): Promise<void>;
 }

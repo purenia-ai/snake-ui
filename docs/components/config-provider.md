@@ -1,6 +1,6 @@
 # ConfigProvider 全局配置
 
-`snake-config-provider` 是 Snake UI 主题系统的页面入口组件，负责把当前主题的 CSS 变量注入页面，并根据主题模式附加明亮或暗黑类名。将它与 `SnakeRoot` 插件配合使用，可以让主题配置自动作用于每个页面，无需逐页添加组件。
+`snake-config-provider` 是 Snake UI 主题系统的页面入口组件，负责把当前主题的 CSS 变量注入页面，并根据主题模式附加明亮或暗黑类名。将它与 `Root` 插件配合使用，可以让主题配置自动作用于每个页面，无需逐页添加组件。
 
 ## 平台兼容性
 
@@ -14,30 +14,30 @@
 
 ```vue
 <script setup lang="ts">
-import SnakeConfigProvider from './uni_modules/snake-ui/components/snake-config-provider/snake-config-provider.vue';
+import ConfigProvider from './uni_modules/snake-ui/components/snake-config-provider/snake-config-provider.vue';
 </script>
 
 <template>
-    <SnakeConfigProvider>
+    <ConfigProvider>
         <view class="page">页面内容</view>
-    </SnakeConfigProvider>
+    </ConfigProvider>
 </template>
 ```
 
 ## 配合虚拟根组件
 
-uni-app 没有可直接包裹所有页面的应用级根组件。推荐在 `src/App.root.vue` 中保留页面插槽，再通过 `SnakeRoot` 插件为每个页面自动注入全局根组件。
+uni-app 没有可直接包裹所有页面的应用级根组件。推荐在 `src/App.root.vue` 中保留页面插槽，再通过 `Root` 插件为每个页面自动注入全局根组件。
 
 ```vue
 <!-- src/App.root.vue -->
 <script setup lang="ts">
-import SnakeConfigProvider from './uni_modules/snake-ui/components/snake-config-provider/snake-config-provider.vue';
+import ConfigProvider from './uni_modules/snake-ui/components/snake-config-provider/snake-config-provider.vue';
 </script>
 
 <template>
-    <SnakeConfigProvider>
+    <ConfigProvider>
         <slot />
-    </SnakeConfigProvider>
+    </ConfigProvider>
 </template>
 ```
 
@@ -46,10 +46,10 @@ import SnakeConfigProvider from './uni_modules/snake-ui/components/snake-config-
 ```ts
 import { defineConfig } from 'vite';
 import Uni from '@dcloudio/vite-plugin-uni';
-import { SnakeRoot } from './src/uni_modules/snake-ui/plugins';
+import { Root } from './src/uni_modules/snake-ui/plugins';
 
 export default defineConfig({
-    plugins: [SnakeRoot(), Uni()]
+    plugins: [Root(), Uni()]
 });
 ```
 
@@ -60,9 +60,9 @@ export default defineConfig({
 组件默认只注入主题变量，不会改变当前主题。需要由外层控制主题时，可以传入已注册的主题名和暗黑模式：
 
 ```vue
-<SnakeConfigProvider current-theme="brand" dark-mode="auto">
+<ConfigProvider current-theme="brand" dark-mode="auto">
     <slot />
-</SnakeConfigProvider>
+</ConfigProvider>
 ```
 
 `current-theme` 必须对应通过 `app.use(SnakeUI, { theme })` 注册的主题名。`dark-mode="auto"` 会在平台支持时跟随系统主题。
@@ -72,17 +72,17 @@ export default defineConfig({
 当 `current-theme` 或 `dark-mode` props 促使组件切换主题时，会分别触发 `theme-change` 和 `mode-change`：
 
 ```vue
-<SnakeConfigProvider
+<ConfigProvider
     :current-theme="themeName"
     :dark-mode="darkMode"
     @theme-change="name => console.log('主题已切换', name)"
     @mode-change="mode => console.log('当前渲染模式', mode)"
 >
     <slot />
-</SnakeConfigProvider>
+</ConfigProvider>
 ```
 
-这两个事件描述的是组件对 props 的同步结果。通过 `setSnakeTheme()`、`setSnakeDarkMode()` 或 `useTheme()` 在组件外部切换主题时，请直接监听对应的响应式状态。
+这两个事件描述的是组件对 props 的同步结果。通过 `setTheme()`、`setDarkMode()` 或 `useTheme()` 在组件外部切换主题时，请直接监听对应的响应式状态。
 
 ## 工作原理
 
@@ -93,7 +93,7 @@ export default defineConfig({
 
 ## 常见场景
 
-- **应用全局主题**：在 `App.root.vue` 中使用一次，并配合 `SnakeRoot` 自动覆盖所有页面。
+- **应用全局主题**：在 `App.root.vue` 中使用一次，并配合 `Root` 自动覆盖所有页面。
 - **独立页面入口**：不启用根组件插件时，在需要主题变量的页面外层显式包裹。
 - **受控主题设置**：由设置页维护主题名和暗黑模式，通过 props 同步到主题引擎。
 - **局部样式扩展**：使用 `custom-class` 或 `custom-style` 补充根节点布局，同时继续继承主题变量。
@@ -129,7 +129,7 @@ export default defineConfig({
 ## 类型定义
 
 ```ts
-import type { SnakeConfigProviderEmits, SnakeConfigProviderProps } from '@puresnake/snake-ui';
+import type { ConfigProviderEmits, ConfigProviderProps } from '@puresnake/snake-ui';
 ```
 
 ## 主题变量

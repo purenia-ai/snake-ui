@@ -1,16 +1,16 @@
 import type { UnitValue } from '../../libs/function/unit';
-import type { SnakeStyleValue } from '../../types/global';
-import type { SnakeFormSize } from '../../libs/internal/form';
-/** SnakeInputType 类型定义。 */
-export type SnakeInputType = 'text' | 'number' | 'idcard' | 'digit' | 'password' | 'nickname';
-/** SnakeInputShape 类型定义。 */
-export type SnakeInputShape = 'square' | 'circle';
-/** SnakeInput 组件的公开属性。 */
-export interface SnakeInputProps {
+import type { StyleValue } from '../../types/global';
+import type { FormSize } from '../../libs/internal/form';
+/** InputType 类型定义。 */
+export type InputType = 'text' | 'number' | 'idcard' | 'digit' | 'password' | 'nickname';
+/** InputShape 类型定义。 */
+export type InputShape = 'square' | 'circle';
+/** Input 组件的公开属性。 */
+export interface InputProps {
     /** 双向绑定的当前值。 */
     modelValue?: string | number;
     /** 组件类型或展示模式。 */
-    type?: SnakeInputType;
+    type?: InputType;
     /** password 配置。 */
     password?: boolean;
     /** 输入为空时的占位文本。 */
@@ -30,9 +30,9 @@ export interface SnakeInputProps {
     /** 边框展示模式。 */
     border?: 'none' | 'surround' | 'bottom';
     /** 组件形状。 */
-    shape?: SnakeInputShape;
+    shape?: InputShape;
     /** 组件尺寸。 */
-    size?: SnakeFormSize;
+    size?: FormSize;
     /** 内容颜色。 */
     color?: string;
     /** 占位文本颜色。 */
@@ -74,10 +74,10 @@ export interface SnakeInputProps {
     /** 根节点自定义类名。 */
     customClass?: string;
     /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
+    customStyle?: StyleValue;
 }
-/** SnakeInput 组件的事件契约。 */
-export interface SnakeInputEmits {
+/** Input 组件的事件契约。 */
+export interface InputEmits {
     /** update:modelValue 事件携带的参数。 */
     'update:modelValue': [value: string];
     /** input 事件携带的参数。 */

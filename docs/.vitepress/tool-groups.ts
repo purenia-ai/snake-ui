@@ -23,7 +23,7 @@ export const toolGroups: ToolGroup[] = [
             {
                 text: 'HTTP 请求',
                 link: '/tools/http',
-                apis: ['SnakeRequest', 'SnakeHttpError', 'snakeHttp', 'configureSnakeHttp']
+                apis: ['Request', 'RequestError', 'http', 'configureHttp']
             }
         ]
     },
@@ -54,7 +54,7 @@ export const toolGroups: ToolGroup[] = [
                 link: '/tools/platform',
                 apis: ['clipboard', 'sys', 'os', 'sleep', 'toast', 'type2icon', 'getSystemInfo']
             },
-            { text: '事件总线', link: '/tools/emitter', apis: ['createSnakeEmitter', 'snakeEmitter'] }
+            { text: '事件总线', link: '/tools/emitter', apis: ['createEmitter', 'emitter'] }
         ]
     },
     {

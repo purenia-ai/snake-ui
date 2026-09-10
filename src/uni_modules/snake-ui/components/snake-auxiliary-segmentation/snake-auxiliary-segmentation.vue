@@ -20,15 +20,15 @@
 
 <script setup lang="ts">
 /**
- * @component SnakeAuxiliarySegmentation
+ * @component AuxiliarySegmentation
  * @description 在装修页面中插入留白，或在留白区域中央绘制一条可配置分割线。
  */
 
 import { addUnit } from '../../libs/function/unit';
-import type { SnakeAuxiliarySegmentationProps } from './types';
+import type { AuxiliarySegmentationProps } from './types';
 
-defineOptions({ name: 'SnakeAuxiliarySegmentation', options: { virtualHost: true, styleIsolation: 'shared' } });
-withDefaults(defineProps<SnakeAuxiliarySegmentationProps>(), { datas: () => ({}) });
+defineOptions({ name: 'AuxiliarySegmentation', options: { virtualHost: true, styleIsolation: 'shared' } });
+withDefaults(defineProps<AuxiliarySegmentationProps>(), { datas: () => ({}) });
 </script>
 
 <style scoped lang="scss">

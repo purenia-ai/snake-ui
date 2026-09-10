@@ -1,5 +1,5 @@
 import { ref, reactive, getCurrentInstance, onUnmounted, nextTick, computed, onMounted } from 'vue';
-import { isSnakeDebugMode } from '../config/state';
+import { isDebugMode } from '../config/state';
 
 /**
  * 组件父子关系注册表（useParent/useChildren 机制，按组件 name 链查找父上下文）。
@@ -36,7 +36,7 @@ const PARENT_CONTEXT_SYMBOL = Symbol('snake_parent_context');
 // 每个组件实例的 child id 缓存，避免同个组件中多次调用 useChildren 时生成不同 id
 const CHILD_ID_SYMBOL = Symbol('snake_child_id');
 
-type SnakeComponentInstance = {
+type ComponentInstance = {
     type?: { name?: string; __name?: string };
     proxy?: Record<PropertyKey, any> | null;
     exposed?: Record<string, any> | null;
@@ -50,7 +50,7 @@ function generateInstanceId(componentName: string): string {
 }
 
 /** 查找父组件实例。 */
-function findParentInstance(name: string, instance: SnakeComponentInstance): any {
+function findParentInstance(name: string, instance: ComponentInstance): any {
     if (!instance) return null;
 
     let parent = instance.parent;
@@ -65,16 +65,16 @@ function findParentInstance(name: string, instance: SnakeComponentInstance): any
 }
 
 /** 获取父组件上下文。 */
-function getParentContext(name: string, instance: SnakeComponentInstance): ParentContext | null {
+function getParentContext(name: string, instance: ComponentInstance): ParentContext | null {
     const parentInstance = findParentInstance(name, instance);
     return parentInstance?.proxy?.[PARENT_CONTEXT_SYMBOL] || null;
 }
 
 /** 递归查找所有指定名称的子组件。 */
-function findAllChildComponents(componentName: string, instance: SnakeComponentInstance): any[] {
+function findAllChildComponents(componentName: string, instance: ComponentInstance): any[] {
     const components: any[] = [];
 
-    function traverse(currentInstance: SnakeComponentInstance) {
+    function traverse(currentInstance: ComponentInstance) {
         if (!currentInstance?.subTree) return;
 
         const subTree = currentInstance.subTree?.children || [];
@@ -93,7 +93,7 @@ function findAllChildComponents(componentName: string, instance: SnakeComponentI
     }
 
     traverse(instance);
-    if (isSnakeDebugMode()) console.log(`Found ${components.length} ${componentName} components`);
+    if (isDebugMode()) console.log(`Found ${components.length} ${componentName} components`);
     return components;
 }
 
@@ -122,7 +122,7 @@ export function useParent(componentName?: string) {
                   .filter(Boolean) as ChildContext[])
             : Array.from(childrenMap.values());
 
-        if (isSnakeDebugMode())
+        if (isDebugMode())
             console.log(`Parent ${name} broadcasting event: ${event} to ${targetChildren.length} children`);
 
         targetChildren.forEach(child => {
@@ -131,17 +131,17 @@ export function useParent(componentName?: string) {
                 try {
                     exposed[event](data);
                 } catch (error) {
-                    if (isSnakeDebugMode('error')) console.error(`Error calling child method ${event}:`, error);
+                    if (isDebugMode('error')) console.error(`Error calling child method ${event}:`, error);
                 }
             }
         });
     };
 
     const broadcastToChildren = (componentName: string, event: string, data?: any) => {
-        if (isSnakeDebugMode())
+        if (isDebugMode())
             console.log(`Parent ${name} broadcasting event: ${event} to all ${componentName} components`);
 
-        const childComponents = findAllChildComponents(componentName, instance as SnakeComponentInstance);
+        const childComponents = findAllChildComponents(componentName, instance as ComponentInstance);
         let successCount = 0;
 
         childComponents.forEach(childComponent => {
@@ -151,12 +151,12 @@ export function useParent(componentName?: string) {
                     exposed[event](data);
                     successCount++;
                 } catch (error) {
-                    if (isSnakeDebugMode('error')) console.error(`Error calling ${componentName} method ${event}:`, error);
+                    if (isDebugMode('error')) console.error(`Error calling ${componentName} method ${event}:`, error);
                 }
             }
         });
 
-        if (isSnakeDebugMode())
+        if (isDebugMode())
             console.log(
                 `Parent ${name} successfully called ${successCount} of ${childComponents.length} ${componentName} components`
             );
@@ -168,7 +168,7 @@ export function useParent(componentName?: string) {
             if (!childrenMap.has(child.id)) {
                 childrenMap.set(child.id, child);
                 children.push(child);
-                if (isSnakeDebugMode()) console.log(`Parent ${name} added child: ${child.name}`);
+                if (isDebugMode()) console.log(`Parent ${name} added child: ${child.name}`);
             }
         },
         removeChild(childId: string) {
@@ -176,7 +176,7 @@ export function useParent(componentName?: string) {
                 childrenMap.delete(childId);
                 const index = children.findIndex(c => c.id === childId);
                 if (index > -1) children.splice(index, 1);
-                if (isSnakeDebugMode()) console.log(`Parent ${name} removed child: ${childId}`);
+                if (isDebugMode()) console.log(`Parent ${name} removed child: ${childId}`);
             }
         },
         broadcast,
@@ -209,7 +209,7 @@ export function useParent(componentName?: string) {
         if (instance.proxy) {
             delete (instance.proxy as any)[PARENT_CONTEXT_SYMBOL];
         }
-        if (isSnakeDebugMode()) console.log(`Parent ${name} unmounted and cleaned up`);
+        if (isDebugMode()) console.log(`Parent ${name} unmounted and cleaned up`);
     });
 
     return {
@@ -248,10 +248,10 @@ export function useChildren(componentName?: string, parentName?: string) {
 
     const createSimulatedParentContext = (parentInstance: any): ParentContext => ({
         name: parentInstance?.type?.name || parentInstance?.type?.__name || 'unknown',
-        addChild: () => isSnakeDebugMode() && console.log('Simulated parent added child'),
-        removeChild: () => isSnakeDebugMode() && console.log('Simulated parent removed child'),
-        broadcast: () => isSnakeDebugMode() && console.log('Simulated parent broadcasting'),
-        broadcastToChildren: () => isSnakeDebugMode() && console.log('Simulated parent broadcasting to children'),
+        addChild: () => isDebugMode() && console.log('Simulated parent added child'),
+        removeChild: () => isDebugMode() && console.log('Simulated parent removed child'),
+        broadcast: () => isDebugMode() && console.log('Simulated parent broadcasting'),
+        broadcastToChildren: () => isDebugMode() && console.log('Simulated parent broadcasting to children'),
         getChildren: () => [],
         getExposed: () => parentInstance?.exposed || {},
         getChildExposed: () => ({}),
@@ -272,21 +272,21 @@ export function useChildren(componentName?: string, parentName?: string) {
 
     const findParent = (): ParentContext | null => {
         if (parentName) {
-            const parentContext = getParentContext(parentName, instance as SnakeComponentInstance);
+            const parentContext = getParentContext(parentName, instance as ComponentInstance);
             if (parentContext) {
                 if (!parentContext.getInstance) {
-                    parentContext.getInstance = () => findParentInstance(parentName, instance as SnakeComponentInstance);
+                    parentContext.getInstance = () => findParentInstance(parentName, instance as ComponentInstance);
                 }
                 return parentContext;
             }
 
-            const parentInstance = findParentInstance(parentName, instance as SnakeComponentInstance);
+            const parentInstance = findParentInstance(parentName, instance as ComponentInstance);
             if (parentInstance) {
                 return createSimulatedParentContext(parentInstance);
             }
         }
 
-        let current = instance.parent as SnakeComponentInstance;
+        let current = instance.parent as ComponentInstance;
         while (current) {
             const context = (current.proxy as any)?.[PARENT_CONTEXT_SYMBOL];
             if (context) {
@@ -309,10 +309,10 @@ export function useChildren(componentName?: string, parentName?: string) {
                 parent.addChild(childContext);
             }
             getParentExposed();
-            if (isSnakeDebugMode()) console.log(`Child ${name || 'anonymous'} linked to parent ${parent.name}`);
+            if (isDebugMode()) console.log(`Child ${name || 'anonymous'} linked to parent ${parent.name}`);
             return true;
         }
-        if (isSnakeDebugMode()) console.log(`Child ${name || 'anonymous'} no parent found, working in standalone mode`);
+        if (isDebugMode()) console.log(`Child ${name || 'anonymous'} no parent found, working in standalone mode`);
         return false;
     };
 
@@ -323,7 +323,7 @@ export function useChildren(componentName?: string, parentName?: string) {
                 try {
                     exposed[event](data, instanceId, name);
                 } catch (error) {
-                    if (isSnakeDebugMode('error')) console.error(`Error calling parent method ${event}:`, error);
+                    if (isDebugMode('error')) console.error(`Error calling parent method ${event}:`, error);
                 }
             }
         }
@@ -349,7 +349,7 @@ export function useChildren(componentName?: string, parentName?: string) {
         getExposed
     };
 
-    if (isSnakeDebugMode()) console.log(`Child ${name || 'anonymous'} registered, looking for parent`);
+    if (isDebugMode()) console.log(`Child ${name || 'anonymous'} registered, looking for parent`);
 
     onMounted(() => {
         const connected = linkParent();
@@ -365,7 +365,7 @@ export function useChildren(componentName?: string, parentName?: string) {
         if (parentRef.value?.removeChild) {
             parentRef.value.removeChild(instanceId);
         }
-        if (isSnakeDebugMode()) console.log(`Child ${name || 'anonymous'} unmounted`);
+        if (isDebugMode()) console.log(`Child ${name || 'anonymous'} unmounted`);
     });
 
     return {
@@ -388,10 +388,10 @@ export function hasParent(parentName?: string): boolean {
     if (!instance) return false;
 
     if (parentName) {
-        return getParentContext(parentName, instance as SnakeComponentInstance) !== null;
+        return getParentContext(parentName, instance as ComponentInstance) !== null;
     }
 
-    let current = instance.parent as SnakeComponentInstance;
+    let current = instance.parent as ComponentInstance;
     while (current) {
         if ((current.proxy as any)?.[PARENT_CONTEXT_SYMBOL]) return true;
         current = current.parent;
@@ -404,20 +404,20 @@ export function hasParent(parentName?: string): boolean {
  */
 export function getParentContextByName(parentName: string): ParentContext | null {
     const instance = getCurrentInstance();
-    return instance ? getParentContext(parentName, instance as SnakeComponentInstance) : null;
+    return instance ? getParentContext(parentName, instance as ComponentInstance) : null;
 }
 
 /**
  * 热更新清理函数。
  */
 export function cleanupComponentRelations(): void {
-    if (isSnakeDebugMode()) console.log('Cleaning up component relations for hot reload');
+    if (isDebugMode()) console.log('Cleaning up component relations for hot reload');
 }
 
 // 热更新处理（仅 H5 vite 环境存在）
 if (import.meta.hot) {
     import.meta.hot.accept(() => {
-        if (isSnakeDebugMode()) console.log('Hot reload detected, relations will be automatically reconnected');
+        if (isDebugMode()) console.log('Hot reload detected, relations will be automatically reconnected');
     });
 }
 

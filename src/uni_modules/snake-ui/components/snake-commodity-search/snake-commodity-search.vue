@@ -69,7 +69,7 @@
 
 <script>
 /**
- * @component SnakeCommoditySearch
+ * @component CommoditySearch
  * @description 提供可吸顶的商城搜索栏，支持输入搜索、热词轮播、右侧图片和快捷图标。
  */
 

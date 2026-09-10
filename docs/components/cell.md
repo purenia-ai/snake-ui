@@ -4,7 +4,7 @@ preview: /pages/componentsA/cell/index
 
 # Cell 单元格
 
-Cell 组件由 `SnakeCellItem` 和 `SnakeCellGroup` 组成：前者用于展示单条信息或入口，后者负责将多条内容组织为带标题和外边框的分组。推荐两者搭配使用；`SnakeCellItem` 也可以独立使用。
+Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信息或入口，后者负责将多条内容组织为带标题和外边框的分组。推荐两者搭配使用；`CellItem` 也可以独立使用。
 
 ## 平台兼容性
 
@@ -40,7 +40,7 @@ Cell 组件由 `SnakeCellItem` 和 `SnakeCellGroup` 组成：前者用于展示�
 
 ## 分组标题与边框
 
-`SnakeCellGroup` 的 `title` 用于展示分组标题，`border` 控制分组内容上下边框。它可以包裹 `SnakeCellItem`，也可包裹其他任意内容。
+`CellGroup` 的 `title` 用于展示分组标题，`border` 控制分组内容上下边框。它可以包裹 `CellItem`，也可包裹其他任意内容。
 
 ```vue
 <snake-cell-group title="设置喜好" :border="false">

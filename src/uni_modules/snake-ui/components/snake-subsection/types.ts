@@ -1,28 +1,28 @@
 import type { UnitValue } from '../../libs/function/unit';
-import type { SnakeStyleValue } from '../../types/global';
+import type { StyleValue } from '../../types/global';
 
-/** SnakeSubsectionMode 类型定义。 */
-export type SnakeSubsectionMode = 'button' | 'subsection';
+/** SubsectionMode 类型定义。 */
+export type SubsectionMode = 'button' | 'subsection';
 
-/** SnakeSubsection 数据项。 */
-export interface SnakeSubsectionItem {
+/** Subsection 数据项。 */
+export interface SubsectionItem {
     /** 数据项名称或唯一标识。 */
     name: string;
     /** 是否禁用交互。 */
     disabled?: boolean;
 }
 
-/** SnakeSubsection 可选项。 */
-export type SnakeSubsectionOption = string | SnakeSubsectionItem;
+/** Subsection 可选项。 */
+export type SubsectionOption = string | SubsectionItem;
 
-/** SnakeSubsection 组件的公开属性。 */
-export interface SnakeSubsectionProps {
+/** Subsection 组件的公开属性。 */
+export interface SubsectionProps {
     /** 用于渲染的数据列表。 */
-    list?: SnakeSubsectionOption[];
+    list?: SubsectionOption[];
     /** 当前激活项索引。 */
     current?: number | string;
     /** 组件展示模式。 */
-    mode?: SnakeSubsectionMode;
+    mode?: SubsectionMode;
     /** 激活状态颜色。 */
     activeColor?: string;
     /** 未激活状态颜色。 */
@@ -42,11 +42,11 @@ export interface SnakeSubsectionProps {
     /** 根节点自定义类名。 */
     customClass?: string;
     /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
+    customStyle?: StyleValue;
 }
 
-/** SnakeSubsection 组件的事件契约。 */
-export interface SnakeSubsectionEmits {
+/** Subsection 组件的事件契约。 */
+export interface SubsectionEmits {
     /** change 事件携带的参数。 */
     change: [index: number];
     /** update:current 事件携带的参数。 */

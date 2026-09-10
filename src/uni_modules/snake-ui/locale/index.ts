@@ -1,6 +1,6 @@
 import { ref } from 'vue';
-import { isSnakeDebugMode, snakeConfig } from '../libs/config/state';
-import type { SnakeLocale, SnakeLocaleOption } from '../libs/config/types';
+import { isDebugMode, config } from '../libs/config/state';
+import type { Locale, LocaleOption } from '../libs/config/types';
 import enUS from './lang/en-US';
 import zhCN from './lang/zh-CN';
 
@@ -8,8 +8,8 @@ const LOCALE_STORAGE_KEY = 'snake-ui-locale';
 
 export { enUS, zhCN };
 
-export const snakeLocales = ref<SnakeLocale[]>([zhCN, enUS]);
-export const currentSnakeLocale = ref<SnakeLocale>(zhCN);
+export const locales = ref<Locale[]>([zhCN, enUS]);
+export const currentLocale = ref<Locale>(zhCN);
 
 let initialized = false;
 
@@ -19,7 +19,7 @@ function readLocale(): string | undefined {
             return uni.getStorageSync(LOCALE_STORAGE_KEY) || undefined;
         }
     } catch (error) {
-        if (isSnakeDebugMode('warn')) console.warn('[Snake UI] failed to read locale', error);
+        if (isDebugMode('warn')) console.warn('[Snake UI] failed to read locale', error);
     }
     return undefined;
 }
@@ -30,7 +30,7 @@ function writeLocale(name: string): void {
             uni.setStorageSync(LOCALE_STORAGE_KEY, name);
         }
     } catch (error) {
-        if (isSnakeDebugMode('warn')) console.warn('[Snake UI] failed to persist locale', error);
+        if (isDebugMode('warn')) console.warn('[Snake UI] failed to persist locale', error);
     }
 }
 
@@ -46,8 +46,8 @@ function deepMergeMessages(base: Record<string, unknown>, patch: Record<string, 
     return result;
 }
 
-function mergeLocales(custom: SnakeLocale[]): SnakeLocale[] {
-    const map = new Map<string, SnakeLocale>([
+function mergeLocales(custom: Locale[]): Locale[] {
+    const map = new Map<string, Locale>([
         [zhCN.name, zhCN],
         [enUS.name, enUS]
     ]);
@@ -62,37 +62,37 @@ function mergeLocales(custom: SnakeLocale[]): SnakeLocale[] {
     return Array.from(map.values());
 }
 
-export function initSnakeLocale(option?: SnakeLocaleOption): void {
-    let locales: SnakeLocale[] = [];
-    let defaultLocale = snakeConfig.defaultLocale;
+export function initLocale(option?: LocaleOption): void {
+    let localeEntries: Locale[] = [];
+    let defaultLocale = config.defaultLocale;
     let force = false;
     if (typeof option === 'string') {
         defaultLocale = option;
     } else if (Array.isArray(option)) {
-        locales = option;
+        localeEntries = option;
     } else if (option) {
-        locales = option.locales || [];
+        localeEntries = option.locales || [];
         defaultLocale = option.defaultLocale || defaultLocale;
         force = Boolean(option.force);
     }
-    if (!initialized || force || locales.length) snakeLocales.value = mergeLocales(locales);
+    if (!initialized || force || localeEntries.length) locales.value = mergeLocales(localeEntries);
     const initialName = (force ? undefined : readLocale()) || defaultLocale;
-    currentSnakeLocale.value =
-        snakeLocales.value.find(locale => locale.name === initialName) ||
-        snakeLocales.value.find(locale => locale.name === 'zh-CN') ||
-        snakeLocales.value[0];
+    currentLocale.value =
+        locales.value.find(locale => locale.name === initialName) ||
+        locales.value.find(locale => locale.name === 'zh-CN') ||
+        locales.value[0];
     initialized = true;
 }
 
-export function setSnakeLocale(name: string): boolean {
-    const locale = snakeLocales.value.find(item => item.name === name);
+export function setLocale(name: string): boolean {
+    const locale = locales.value.find(item => item.name === name);
     if (!locale) return false;
-    currentSnakeLocale.value = locale;
+    currentLocale.value = locale;
     writeLocale(name);
     return true;
 }
 
-function readMessage(locale: SnakeLocale | undefined, key: string): string | undefined {
+function readMessage(locale: Locale | undefined, key: string): string | undefined {
     let current: unknown = locale?.messages;
     for (const part of key.split('.')) {
         if (!current || typeof current !== 'object') return undefined;
@@ -101,15 +101,15 @@ function readMessage(locale: SnakeLocale | undefined, key: string): string | und
     return typeof current === 'string' ? current : undefined;
 }
 
-export function snakeTranslate(
+export function translate(
     key: string,
     replacements?: Record<string, unknown> | unknown[],
     localeName?: string
 ): string {
     const selected = localeName
-        ? snakeLocales.value.find(locale => locale.name === localeName)
-        : currentSnakeLocale.value;
-    const fallback = snakeLocales.value.find(locale => locale.name === 'zh-CN');
+        ? locales.value.find(locale => locale.name === localeName)
+        : currentLocale.value;
+    const fallback = locales.value.find(locale => locale.name === 'zh-CN');
     let result = readMessage(selected, key) || readMessage(fallback, key) || key;
     if (Array.isArray(replacements)) {
         replacements.forEach((value, index) => {
@@ -123,8 +123,8 @@ export function snakeTranslate(
     return result;
 }
 
-export function resetSnakeLocale(): void {
+export function resetLocale(): void {
     initialized = false;
-    snakeLocales.value = [zhCN, enUS];
-    currentSnakeLocale.value = zhCN;
+    locales.value = [zhCN, enUS];
+    currentLocale.value = zhCN;
 }

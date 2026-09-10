@@ -1,19 +1,19 @@
 <script setup lang="ts">
 /**
- * @component SnakeButton
+ * @component Button
  * @description 跨端按钮。
  * @see /components/button
  */
 import { computed, getCurrentInstance, nextTick, ref } from 'vue';
 import { toStyle } from '../../libs/function/style';
-import { snakeButtonProps } from './types';
-import type { SnakeButtonEmits } from './types';
+import { buttonProps } from './types';
+import type { ButtonEmits } from './types';
 
 defineOptions({ name: 'SnakeButton', options: { addGlobalClass: true, virtualHost: true, styleIsolation: 'shared' } });
 
-const props = defineProps(snakeButtonProps);
-const emit = defineEmits<SnakeButtonEmits>();
-const emitNative = emit as unknown as (name: Exclude<keyof SnakeButtonEmits, 'click'>, event: unknown) => void;
+const props = defineProps(buttonProps);
+const emit = defineEmits<ButtonEmits>();
+const emitNative = emit as unknown as (name: Exclude<keyof ButtonEmits, 'click'>, event: unknown) => void;
 const instance = getCurrentInstance();
 const rippleTop = ref(0);
 const rippleLeft = ref(0);
@@ -66,7 +66,7 @@ function getWaveQuery(event: unknown) {
         .exec();
 }
 
-function forward(name: Exclude<keyof SnakeButtonEmits, 'click'>, event: unknown) {
+function forward(name: Exclude<keyof ButtonEmits, 'click'>, event: unknown) {
     emitNative(name, event);
 }
 function getAuthorize(event: unknown) {

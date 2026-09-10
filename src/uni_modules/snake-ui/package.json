@@ -35,6 +35,11 @@
       "import": "./libs/index.ts",
       "default": "./libs/index.ts"
     },
+    "./request": {
+      "types": "./libs/request/index.ts",
+      "import": "./libs/request/index.ts",
+      "default": "./libs/request/index.ts"
+    },
     "./types": "./types/index.d.ts",
     "./types/*": "./types/*.d.ts",
     "./plugins": {

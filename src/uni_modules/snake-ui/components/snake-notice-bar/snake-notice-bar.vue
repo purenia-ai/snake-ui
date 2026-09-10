@@ -1,17 +1,17 @@
 <script setup lang="ts">
 /**
- * @component SnakeNoticeBar
+ * @component NoticeBar
  * @description 用于公告、活动提示和多条消息轮播，支持横向跑马灯、纵向轮播、关闭与更多操作。
  * @see /components/notice-bar
  */
 
 import { computed, ref } from 'vue';
 import { addUnit } from '../../libs/function/unit';
-import SnakeIcon from '../snake-icon/snake-icon.vue';
-import type { SnakeNoticeBarEmits, SnakeNoticeBarProps } from './types';
+import Icon from '../snake-icon/snake-icon.vue';
+import type { NoticeBarEmits, NoticeBarProps } from './types';
 
-defineOptions({ name: 'SnakeNoticeBar', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = withDefaults(defineProps<SnakeNoticeBarProps>(), {
+defineOptions({ name: 'NoticeBar', options: { virtualHost: true, styleIsolation: 'shared' } });
+const props = withDefaults(defineProps<NoticeBarProps>(), {
     list: () => [],
     text: '',
     type: 'warning',
@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<SnakeNoticeBarProps>(), {
     customClass: '',
     customStyle: ''
 });
-const emit = defineEmits<SnakeNoticeBarEmits>();
+const emit = defineEmits<NoticeBarEmits>();
 const current = ref(0);
 const items = computed(() =>
     props.list.length ? props.list : Array.isArray(props.text) ? props.text : [props.text].filter(Boolean)

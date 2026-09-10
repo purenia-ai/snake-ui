@@ -2,7 +2,7 @@
     <view
         :class="['snake-config-provider', `snake-theme-${mode}`, customClass]"
         :data-snake-theme-mode="mode"
-        :style="[$snakeThemeStyle, customStyle]"
+        :style="[$themeStyle, customStyle]"
     >
         <slot />
     </view>
@@ -10,8 +10,8 @@
 
 <script setup lang="ts">
 /**
- * @component SnakeConfigProvider
- * @description `snake-config-provider` 是 Snake UI 主题系统的页面入口组件，负责把当前主题的 CSS 变量注入页面，并根据主题模式附加明亮或暗黑类名。将它与 `SnakeRoot` 插件配合使用，可以让主题配置自动作用于每个页面，无需逐页添加组件。
+ * @component ConfigProvider
+ * @description `snake-config-provider` 是 Snake UI 主题系统的页面入口组件，负责把当前主题的 CSS 变量注入页面，并根据主题模式附加明亮或暗黑类名。将它与 `Root` 插件配合使用，可以让主题配置自动作用于每个页面，无需逐页添加组件。
  * @see /components/config-provider
  */
 
@@ -28,28 +28,28 @@
  * (含 storage 持久化),便于在 App.root.vue 中声明式固定初始主题。
  */
 import { computed, onMounted, watch } from 'vue';
-import { currentSnakeTheme, setSnakeDarkMode, setSnakeTheme, snakeDarkMode, snakeSystemDark } from '../../libs/config/theme';
-import type { SnakeConfigProviderEmits, SnakeConfigProviderProps } from './types';
+import { currentTheme, setDarkMode, setTheme, darkMode, systemDark } from '../../libs/config/theme';
+import type { ConfigProviderEmits, ConfigProviderProps } from './types';
 
-defineOptions({ name: 'SnakeConfigProvider', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = withDefaults(defineProps<SnakeConfigProviderProps>(), {
+defineOptions({ name: 'ConfigProvider', options: { virtualHost: true, styleIsolation: 'shared' } });
+const props = withDefaults(defineProps<ConfigProviderProps>(), {
     darkMode: undefined,
     currentTheme: '',
     customClass: '',
     customStyle: ''
 });
-const emit = defineEmits<SnakeConfigProviderEmits>();
+const emit = defineEmits<ConfigProviderEmits>();
 
 const mode = computed<'light' | 'dark'>(() =>
-    snakeDarkMode.value === 'auto' ? (snakeSystemDark.value ? 'dark' : 'light') : snakeDarkMode.value
+    darkMode.value === 'auto' ? (systemDark.value ? 'dark' : 'light') : darkMode.value
 );
 
 function bootstrap() {
-    if (props.currentTheme && props.currentTheme !== currentSnakeTheme.value.name) {
-        if (setSnakeTheme(props.currentTheme)) emit('theme-change', props.currentTheme);
+    if (props.currentTheme && props.currentTheme !== currentTheme.value.name) {
+        if (setTheme(props.currentTheme)) emit('theme-change', props.currentTheme);
     }
-    if (props.darkMode && props.darkMode !== snakeDarkMode.value) {
-        setSnakeDarkMode(props.darkMode);
+    if (props.darkMode && props.darkMode !== darkMode.value) {
+        setDarkMode(props.darkMode);
         emit('mode-change', mode.value);
     }
 }

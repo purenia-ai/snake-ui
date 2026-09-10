@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * @component SnakeReadMore
+ * @component ReadMore
  * @description 阅读更多，用于内容较长时预先收起一部分、点击展开全部内容的场景，支持自定义提示与阴影。
  * @see /components/read-more
  */
@@ -9,12 +9,12 @@ import { computed, getCurrentInstance, nextTick, onMounted, ref, watch } from 'v
 import { guid } from '../../libs/function/guid';
 import { getRect } from '../../libs/function/getRect';
 import { useLocale } from '../../libs/hooks/useLocale';
-import SnakeIcon from '../snake-icon/snake-icon.vue';
-import { snakeReadMoreProps, type SnakeReadMoreEmits, type SnakeReadMoreExpose } from './types';
+import Icon from '../snake-icon/snake-icon.vue';
+import { readMoreProps, type ReadMoreEmits, type ReadMoreExpose } from './types';
 
-defineOptions({ name: 'SnakeReadMore', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = defineProps(snakeReadMoreProps);
-const emit = defineEmits<SnakeReadMoreEmits>();
+defineOptions({ name: 'ReadMore', options: { virtualHost: true, styleIsolation: 'shared' } });
+const props = defineProps(readMoreProps);
+const emit = defineEmits<ReadMoreEmits>();
 const { t } = useLocale('readMore');
 
 // 是否需要隐藏一部分内容
@@ -57,7 +57,7 @@ function init() {
   });
 }
 
-defineExpose<SnakeReadMoreExpose>({ init });
+defineExpose<ReadMoreExpose>({ init });
 
 /** 展开或收起内容，发出 open/close 事件。 */
 function toggleReadMore() {

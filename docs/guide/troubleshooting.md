@@ -71,7 +71,7 @@ import { navTo, toast } from '@puresnake/snake-ui/libs';
 - 确认已安装 Snake UI 插件并注册主题。
 - 页面根节点需要获得主题 CSS 变量；全局主题场景推荐使用 `snake-config-provider` 包裹页面根部，或启用[虚拟根组件](/guide/root)。
 - 检查业务样式是否写死十六进制颜色，改用 `var(--snake-color-*)`。
-- 检查主题 `name` 是否存在，`setSnakeTheme(name)` 返回 `false` 表示没有找到该主题。
+- 检查主题 `name` 是否存在，`setTheme(name)` 返回 `false` 表示没有找到该主题。
 
 详见[多主题与暗黑模式](/guide/multi-theme)。
 
@@ -106,7 +106,7 @@ Snake UI 使用 `snake-` 组件前缀与 `--snake-*` 变量命名空间，与其
 
 这些属于业务能力，不会由基础安装自动提供。请通过 `cms.services.commerce`、`cms.services.coupon` 和 `cms.services.link` 注入。
 
-若错误名为 `SnakeUIRuntimeError`，错误消息会指出缺少的适配器及触发组件。
+若错误名为 `UIRuntimeError`，错误消息会指出缺少的适配器及触发组件。
 
 ## 11. 小程序外链打不开
 

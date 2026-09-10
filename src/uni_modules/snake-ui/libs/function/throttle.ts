@@ -1,9 +1,9 @@
-import type { SnakeCancelableFunction } from './debounce';
+import type { CancelableFunction } from './debounce';
 
 export function throttle<Args extends unknown[]>(
     callback: (...args: Args) => void,
     wait = 300
-): SnakeCancelableFunction<Args> {
+): CancelableFunction<Args> {
     let lastCall = 0;
     let timer: ReturnType<typeof setTimeout> | undefined;
     const wrapped = ((...args: Args) => {
@@ -22,7 +22,7 @@ export function throttle<Args extends unknown[]>(
                 callback(...args);
             }, remaining);
         }
-    }) as SnakeCancelableFunction<Args>;
+    }) as CancelableFunction<Args>;
     wrapped.cancel = () => {
         if (timer) clearTimeout(timer);
         timer = undefined;

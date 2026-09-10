@@ -24,19 +24,19 @@ const runtimeSource = (await readFile(join(sourceRoot, 'runtime.ts'), 'utf8'))
 await writeFile(join(testRoot, 'runtime.ts'), runtimeSource)
 
 const {
-  configureSnakeUI,
-  getSnakeConfig,
-  requireSnakeCache,
-  requireSnakeRequest,
-  resetSnakeUIRuntime,
+  configureRuntime,
+  getRuntimeConfig,
+  requireCache,
+  requireRequest,
+  resetRuntime,
   snake,
-  SnakeUIRuntimeError,
+  RuntimeError,
 } = await import(`${new URL(`file:///${join(testRoot, 'runtime.ts').replaceAll('\\', '/')}`)}?test=${Date.now()}`)
 
 process.on('exit', () => { void rm(testRoot, { recursive: true, force: true }) })
 
 test('runtime exposes configured adapters', async () => {
-  resetSnakeUIRuntime()
+  resetRuntime()
   const request = {
     async get() { return { ok: true } },
     async post() { return { ok: true } },
@@ -47,20 +47,20 @@ test('runtime exposes configured adapters', async () => {
     set(key, value) { values.set(key, value) },
     delete(key) { values.delete(key) },
   }
-  configureSnakeUI({ request, cache, config: { baseUrl: '/api' } })
-  assert.equal(requireSnakeRequest('test'), request)
-  assert.equal(requireSnakeCache('test'), cache)
-  assert.equal(getSnakeConfig('test').baseUrl, '/api')
-  assert.deepEqual(await requireSnakeRequest('test').get('/health'), { ok: true })
+  configureRuntime({ request, cache, config: { baseUrl: '/api' } })
+  assert.equal(requireRequest('test'), request)
+  assert.equal(requireCache('test'), cache)
+  assert.equal(getRuntimeConfig('test').baseUrl, '/api')
+  assert.deepEqual(await requireRequest('test').get('/health'), { ok: true })
   assert.equal(typeof snake.route, 'function')
   assert.equal(typeof snake.queryParams, 'function')
   assert.equal(typeof snake.timeFrom, 'function')
 })
 
 test('runtime reports a missing capability with component context', () => {
-  resetSnakeUIRuntime()
-  assert.throws(() => requireSnakeCache('snake-filter-sorts'), (error) => {
-    assert.ok(error instanceof SnakeUIRuntimeError)
+  resetRuntime()
+  assert.throws(() => requireCache('snake-filter-sorts'), (error) => {
+    assert.ok(error instanceof RuntimeError)
     assert.equal(error.component, 'snake-filter-sorts')
     assert.equal(error.capability, 'cache')
     return true

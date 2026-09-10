@@ -1,5 +1,5 @@
 import type { InjectionKey, Ref } from 'vue';
-export interface SnakeDropMenuContext {
+export interface DropMenuContext {
     activeItem: Ref<symbol | null>;
     highlighted: Ref<number | undefined>;
     menuTop: Ref<number>;
@@ -19,4 +19,4 @@ export interface SnakeDropMenuContext {
     close(): void;
     updateRect(): Promise<void>;
 }
-export const snakeDropMenuKey: InjectionKey<SnakeDropMenuContext> = Symbol('snake-drop-menu');
+export const dropMenuKey: InjectionKey<DropMenuContext> = Symbol('snake-drop-menu');

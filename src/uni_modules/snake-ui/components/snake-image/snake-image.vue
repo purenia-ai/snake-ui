@@ -1,19 +1,19 @@
 <script setup lang="ts">
 /**
- * @component SnakeImage
+ * @component Image
  * @description 封装 uni-app `image`，提供加载、失败、淡入、圆角、圆形、WebP、长按菜单和图片预览能力。`src` 变化时会自动重置状态。
  * @see /components/image
  */
 
 import { computed, ref, watch } from 'vue';
 import { addUnit } from '../../libs/function/unit';
-import SnakeIcon from '../snake-icon/snake-icon.vue';
-import SnakeLoadingIcon from '../snake-loading-icon/snake-loading-icon.vue';
-import type { SnakeImageEmits, SnakeImageProps } from './types';
+import Icon from '../snake-icon/snake-icon.vue';
+import LoadingIcon from '../snake-loading-icon/snake-loading-icon.vue';
+import type { ImageEmits, ImageProps } from './types';
 
 defineOptions({ name: 'SnakeImage', options: { virtualHost: true, styleIsolation: 'shared' } });
 
-const props = withDefaults(defineProps<SnakeImageProps>(), {
+const props = withDefaults(defineProps<ImageProps>(), {
     src: '',
     alt: '',
     mode: 'scaleToFill',
@@ -35,7 +35,7 @@ const props = withDefaults(defineProps<SnakeImageProps>(), {
     customClass: '',
     customStyle: ''
 });
-const emit = defineEmits<SnakeImageEmits>();
+const emit = defineEmits<ImageEmits>();
 const loading = ref(Boolean(props.src));
 const failed = ref(!props.src);
 

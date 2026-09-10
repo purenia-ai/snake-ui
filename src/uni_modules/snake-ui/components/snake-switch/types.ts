@@ -1,22 +1,22 @@
 import type { UnitValue } from '../../libs/function/unit';
-import type { SnakeStyleValue } from '../../types/global';
-import type { SnakeFormSize } from '../../libs/internal/form';
-/** SnakeSwitchValue 类型定义。 */
-export type SnakeSwitchValue = boolean | string | number;
-/** SnakeSwitch 组件的公开属性。 */
-export interface SnakeSwitchProps {
+import type { StyleValue } from '../../types/global';
+import type { FormSize } from '../../libs/internal/form';
+/** SwitchValue 类型定义。 */
+export type SwitchValue = boolean | string | number;
+/** Switch 组件的公开属性。 */
+export interface SwitchProps {
     /** 双向绑定的当前值。 */
-    modelValue?: SnakeSwitchValue;
+    modelValue?: SwitchValue;
     /** active value 配置。 */
-    activeValue?: SnakeSwitchValue;
+    activeValue?: SwitchValue;
     /** inactive value 配置。 */
-    inactiveValue?: SnakeSwitchValue;
+    inactiveValue?: SwitchValue;
     /** 是否显示加载状态。 */
     loading?: boolean;
     /** 是否禁用交互。 */
     disabled?: boolean;
     /** 组件尺寸。 */
-    size?: UnitValue | SnakeFormSize;
+    size?: UnitValue | FormSize;
     /** 激活状态颜色。 */
     activeColor?: string;
     /** 未激活状态颜色。 */
@@ -28,14 +28,14 @@ export interface SnakeSwitchProps {
     /** 根节点自定义类名。 */
     customClass?: string;
     /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
+    customStyle?: StyleValue;
 }
-/** SnakeSwitch 组件的事件契约。 */
-export interface SnakeSwitchEmits {
+/** Switch 组件的事件契约。 */
+export interface SwitchEmits {
     /** update:modelValue 事件携带的参数。 */
-    'update:modelValue': [value: SnakeSwitchValue];
+    'update:modelValue': [value: SwitchValue];
     /** change 事件携带的参数。 */
-    change: [value: SnakeSwitchValue];
+    change: [value: SwitchValue];
     /** click 事件携带的参数。 */
     click: [event: unknown];
 }

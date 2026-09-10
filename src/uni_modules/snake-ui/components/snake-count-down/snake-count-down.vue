@@ -64,20 +64,20 @@
 
 <script setup lang="ts">
 /**
- * @component SnakeCountDown
+ * @component CountDown
  * @description 倒计时组件，用于活动截止等场景，通过数字变化给用户明确的时间感受；支持时分秒显示开关、分隔符形态与样式定制。
  * @see /components/count-down
  */
 
 import { computed, onMounted, ref, watch } from 'vue';
 import { useLocale } from '../../libs/hooks/useLocale';
-import { snakeCountDownProps } from './types';
-import type { SnakeCountDownEmits, SnakeCountDownExpose } from './types';
+import { countDownProps } from './types';
+import type { CountDownEmits, CountDownExpose } from './types';
 
-defineOptions({ name: 'SnakeCountDown', options: { virtualHost: true, styleIsolation: 'shared' } });
+defineOptions({ name: 'CountDown', options: { virtualHost: true, styleIsolation: 'shared' } });
 
-const props = defineProps(snakeCountDownProps);
-const emit = defineEmits<SnakeCountDownEmits>();
+const props = defineProps(countDownProps);
+const emit = defineEmits<CountDownEmits>();
 const { t } = useLocale('countDown');
 
 const d = ref('00'); // 天
@@ -184,7 +184,7 @@ function clearTimer() {
     }
 }
 
-defineExpose<SnakeCountDownExpose>({
+defineExpose<CountDownExpose>({
     start,
     end
 });

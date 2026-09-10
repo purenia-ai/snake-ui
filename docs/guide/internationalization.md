@@ -4,7 +4,7 @@ Snake UI 内置简体中文 `zh-CN` 和英文 `en-US`，用于管理组件库自
 
 ## 核心行为
 
-- 通过 `setSnakeLocale()` 或 `useLocale()` 响应式切换。
+- 通过 `setLocale()` 或 `useLocale()` 响应式切换。
 - 用户选择自动保存在 `@puresnake/snake-ui-locale`。
 - 同名语言包与内置词条深度合并。
 - 缺失词条按“当前语言 → `zh-CN` → 原始 key”回退。
@@ -15,7 +15,7 @@ Snake UI 内置简体中文 `zh-CN` 和英文 `en-US`，用于管理组件库自
 语言包由 `name`、`label` 与 `messages` 组成，`messages` 按组件域分组：
 
 ```ts
-const zhCN: SnakeLocale = {
+const zhCN: Locale = {
     name: 'zh-CN',
     label: '简体中文',
     messages: {
@@ -50,9 +50,9 @@ app.use(SnakeUI, {
 ## 运行时切换
 
 ```ts
-import { setSnakeLocale } from '@puresnake/snake-ui';
+import { setLocale } from '@puresnake/snake-ui';
 
-const changed = setSnakeLocale('en-US');
+const changed = setLocale('en-US');
 ```
 
 语言已注册时返回 `true` 并持久化选择；名称不存在时返回 `false`，当前语言保持不变。
@@ -92,11 +92,11 @@ app.use(SnakeUI, {
 ## 翻译和参数插值
 
 ```ts
-import { snakeTranslate, useLocale } from '@puresnake/snake-ui';
+import { translate, useLocale } from '@puresnake/snake-ui';
 
-snakeTranslate('common.confirm');
-snakeTranslate('checkout.welcome', { name: 'Snake' });
-snakeTranslate('pagination.total', [20]);
+translate('common.confirm');
+translate('checkout.welcome', { name: 'Snake' });
+translate('pagination.total', [20]);
 
 const { t } = useLocale('checkout');
 t('welcome', { name: 'Snake' }); // checkout.welcome
@@ -111,7 +111,7 @@ Snake UI 只管理组件库文案。业务页面可以继续使用 `vue-i18n` �
 ```ts
 function changeLocale(locale: 'zh-CN' | 'en-US') {
     i18n.global.locale.value = locale;
-    setSnakeLocale(locale);
+    setLocale(locale);
     uni.setLocale?.(locale === 'zh-CN' ? 'zh-Hans' : 'en');
 }
 ```
@@ -120,10 +120,10 @@ function changeLocale(locale: 'zh-CN' | 'en-US') {
 
 | API | 作用 |
 | --- | --- |
-| `setSnakeLocale(name)` | 切换并持久化已注册语言，返回是否成功 |
-| `snakeTranslate(key, replacements?, localeName?)` | 翻译词条并执行参数替换 |
+| `setLocale(name)` | 切换并持久化已注册语言，返回是否成功 |
+| `translate(key, replacements?, localeName?)` | 翻译词条并执行参数替换 |
 | `useLocale(namespace?)` | 获取当前语言、语言列表、`t()` 和切换方法 |
-| `currentSnakeLocale` | 当前语言的响应式引用 |
-| `snakeLocales` | 已注册语言列表的响应式引用 |
+| `currentLocale` | 当前语言的响应式引用 |
+| `locales` | 已注册语言列表的响应式引用 |
 
 全局配置入口见[全局配置总览](/guide/foundation)。

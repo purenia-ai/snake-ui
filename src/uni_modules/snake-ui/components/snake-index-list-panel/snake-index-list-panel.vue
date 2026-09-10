@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * @component SnakeIndexListPanel
+ * @component IndexListPanel
  * @description 用于弹窗和定高区域的索引列表，自身管理内部 scroll-view，不依赖页面滚动位置。
  * @see /components/index-list-panel
  */
@@ -18,13 +18,13 @@ import {
 } from 'vue';
 import zIndex from '../../libs/config/zIndex';
 import { addUnit } from '../../libs/function/unit';
-import { indexFromTouch, offsetTopPx, resolveIndex, snakeIndexListKey } from '../../libs/internal/index-list';
-import type { SnakeIndexValue } from '../snake-index-list/types';
-import type { SnakeIndexListPanelEmits, SnakeIndexListPanelProps } from './types';
+import { indexFromTouch, offsetTopPx, resolveIndex, indexListKey } from '../../libs/internal/index-list';
+import type { IndexValue } from '../snake-index-list/types';
+import type { IndexListPanelEmits, IndexListPanelProps } from './types';
 
-defineOptions({ name: 'SnakeIndexListPanel', options: { virtualHost: true, styleIsolation: 'shared' } });
+defineOptions({ name: 'IndexListPanel', options: { virtualHost: true, styleIsolation: 'shared' } });
 
-const props = withDefaults(defineProps<SnakeIndexListPanelProps>(), {
+const props = withDefaults(defineProps<IndexListPanelProps>(), {
     indexList: () => [],
     scrollTop: 0,
     zIndex: zIndex.indexListSticky,
@@ -36,7 +36,7 @@ const props = withDefaults(defineProps<SnakeIndexListPanelProps>(), {
     customClass: '',
     customStyle: ''
 });
-const emit = defineEmits<SnakeIndexListPanelEmits>();
+const emit = defineEmits<IndexListPanelEmits>();
 const instance = getCurrentInstance();
 const activeIndex = ref(props.indexList.length ? 0 : -1);
 const scrollIntoView = ref('');
@@ -46,7 +46,7 @@ const railHeight = ref(0);
 const anchorOffsets = ref<number[]>([]);
 const touching = ref(false);
 let measureTimer: ReturnType<typeof setTimeout> | undefined;
-const anchorId = (value: SnakeIndexValue) =>
+const anchorId = (value: IndexValue) =>
     `snake-index-panel-anchor-${String(value).replace(/[^a-zA-Z0-9_-]/g, '-')}`;
 
 function setActive(index: number, selected = false) {
@@ -58,7 +58,7 @@ function setActive(index: number, selected = false) {
     if (selected) emit('select', props.indexList[index]);
 }
 
-function scrollTo(indexOrValue: number | SnakeIndexValue) {
+function scrollTo(indexOrValue: number | IndexValue) {
     const index = resolveIndex(indexOrValue, props.indexList);
     if (index < 0) return;
     setActive(index, true);
@@ -121,11 +121,11 @@ async function update() {
     });
 }
 
-function indexOfAnchor(value: SnakeIndexValue) {
+function indexOfAnchor(value: IndexValue) {
     return props.indexList.indexOf(value);
 }
 
-function anchorStyle(value: SnakeIndexValue): CSSProperties {
+function anchorStyle(value: IndexValue): CSSProperties {
     const index = indexOfAnchor(value);
     return {
         position: props.sticky ? 'sticky' : 'relative',
@@ -135,7 +135,7 @@ function anchorStyle(value: SnakeIndexValue): CSSProperties {
     };
 }
 
-provide(snakeIndexListKey, {
+provide(indexListKey, {
     activeIndex,
     sticky: toRef(props, 'sticky'),
     offsetTop: toRef(props, 'offsetTop'),

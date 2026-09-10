@@ -48,16 +48,16 @@ app.use(SnakeUI, {
 
 ```ts
 import {
-    setSnakeDarkMode,
-    setSnakeTheme,
-    setSnakeThemeColor,
-    toggleSnakeDarkMode,
+    setDarkMode,
+    setTheme,
+    setThemeColor,
+    toggleDarkMode,
     useTheme
 } from '@puresnake/snake-ui';
 
-setSnakeDarkMode('auto');
-setSnakeThemeColor({ primary: '#00b77a' });
-setSnakeTheme('snake');
+setDarkMode('auto');
+setThemeColor({ primary: '#00b77a' });
+setTheme('snake');
 
 const { color, darkMode, isDark, setDarkMode } = useTheme();
 ```
@@ -69,10 +69,10 @@ const { color, darkMode, isDark, setDarkMode } = useTheme();
 内置 `zh-CN` 和 `en-US`。语言选择会持久化，缺失词条按“当前语言 → 中文 → key”回退。
 
 ```ts
-import { setSnakeLocale, snakeTranslate, useLocale } from '@puresnake/snake-ui';
+import { setLocale, translate, useLocale } from '@puresnake/snake-ui';
 
-setSnakeLocale('en-US');
-snakeTranslate('common.confirm'); // Confirm
+setLocale('en-US');
+translate('common.confirm'); // Confirm
 
 const { locale, setLocale, t } = useLocale();
 ```
@@ -98,13 +98,13 @@ app.use(SnakeUI, {
 
 ## HTTP
 
-`snakeHttp` 默认使用 `uni.request`。2xx 响应返回 `data`；非 2xx、网络失败和拦截器取消都会拒绝 Promise。
+`http` 默认使用 `uni.request`。默认返回完整响应；传入 `meta.originalData: false` 时，HTTP 200 返回 `data`，其他状态、网络失败和拦截器取消都会拒绝 Promise。
 
 ```ts
-import { snakeHttp } from '@puresnake/snake-ui';
+import { http } from '@puresnake/snake-ui';
 
-const list = await snakeHttp.get('/goods', { page: 1 });
-await snakeHttp.post(
+const list = await http.get('/goods', { page: 1 });
+await http.post(
     '/goods',
     { name: 'Snake' },
     {

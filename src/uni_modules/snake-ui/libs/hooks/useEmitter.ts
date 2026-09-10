@@ -1,5 +1,5 @@
-import { snakeEmitter } from '../function';
+import { emitter } from '../function';
 
 export function useEmitter() {
-    return snakeEmitter;
+    return emitter;
 }

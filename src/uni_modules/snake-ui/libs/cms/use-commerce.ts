@@ -1,23 +1,22 @@
 import { computed, ref } from 'vue';
 import type {
-    SnakeCmsError,
-    SnakeCmsNormalizedComponent,
-    SnakeCmsOptions,
-    SnakeCmsPageInfo,
-    SnakeCmsStateChange,
-    SnakeCmsStatus
+    CmsNormalizedComponent,
+    CmsOptions,
+    CmsPageInfo,
+    CmsStateChange,
+    CmsStatus
 } from './types';
-import { SnakeCmsError as CmsError } from './types';
-import { getSnakeUIOptions } from '../runtime';
+import { CmsError } from './types';
+import { getRuntimeOptions } from '../runtime';
 
 type Dictionary = Record<string, any>;
 
-export interface SnakeCmsCommerceControllerOptions {
-    pageInfo: () => SnakeCmsPageInfo;
-    component: () => SnakeCmsNormalizedComponent | undefined;
-    options: () => SnakeCmsOptions;
-    onStateChange?: (state: SnakeCmsStateChange) => void;
-    onError?: (error: SnakeCmsError) => void;
+export interface CmsCommerceControllerOptions {
+    pageInfo: () => CmsPageInfo;
+    component: () => CmsNormalizedComponent | undefined;
+    options: () => CmsOptions;
+    onStateChange?: (state: CmsStateChange) => void;
+    onError?: (error: CmsError) => void;
 }
 
 function valuesToQuery(input: unknown): Dictionary {
@@ -27,14 +26,14 @@ function valuesToQuery(input: unknown): Dictionary {
     );
 }
 
-export function useSnakeCmsCommerce(input: SnakeCmsCommerceControllerOptions) {
+export function useCmsCommerce(input: CmsCommerceControllerOptions) {
     const goodsList = ref<Dictionary[]>([]);
     const filtersData = ref<Dictionary>({});
     const activityList = ref<Dictionary[]>([]);
     const activityCurrent = ref<string | number>('001');
     const tabsCurrent = ref(0);
     const auctionSetParams = ref<Dictionary>({});
-    const status = ref<SnakeCmsStatus>('idle');
+    const status = ref<CmsStatus>('idle');
     const page = ref(1);
     const goodsParams = ref<Dictionary>({});
     const filterParams = ref<Dictionary>({});
@@ -42,7 +41,7 @@ export function useSnakeCmsCommerce(input: SnakeCmsCommerceControllerOptions) {
     let generation = 0;
     let busy = false;
 
-    function styleOf(component: SnakeCmsNormalizedComponent): Dictionary {
+    function styleOf(component: CmsNormalizedComponent): Dictionary {
         if (component.version !== 2) return component.setStyle;
         const data = component.props || {};
         const query = data.query || {};
@@ -85,37 +84,37 @@ export function useSnakeCmsCommerce(input: SnakeCmsCommerceControllerOptions) {
         return 'loadmore';
     });
 
-    function snapshot(): SnakeCmsStateChange {
+    function snapshot(): CmsStateChange {
         return { status: status.value, page: page.value, itemCount: goodsList.value.length };
     }
 
-    function setStatus(next: SnakeCmsStatus): void {
+    function setStatus(next: CmsStatus): void {
         status.value = next;
         input.onStateChange?.(snapshot());
     }
 
-    function context(component: SnakeCmsNormalizedComponent, currentGeneration: number) {
+    function context(component: CmsNormalizedComponent, currentGeneration: number) {
         return { component, pageInfo: input.pageInfo(), generation: currentGeneration };
     }
 
-    function cacheKey(component: SnakeCmsNormalizedComponent): string {
+    function cacheKey(component: CmsNormalizedComponent): string {
         const pageInfo = input.pageInfo();
         const pageId = pageInfo.pageId ?? pageInfo.id ?? 'default';
         return `${input.options().cachePrefix || 'snake-ui:cms'}:${pageId}:${component.id}:filters`;
     }
 
-    function restoreFilters(component: SnakeCmsNormalizedComponent): void {
-        const cache = getSnakeUIOptions().cache;
+    function restoreFilters(component: CmsNormalizedComponent): void {
+        const cache = getRuntimeOptions().cache;
         if (!cache) return;
         const cached = cache.get(cacheKey(component)) ?? cache.get('filterParams');
         filterParams.value = valuesToQuery(cached);
     }
 
-    function persistFilters(component: SnakeCmsNormalizedComponent, value: Dictionary): void {
-        getSnakeUIOptions().cache?.set(cacheKey(component), value);
+    function persistFilters(component: CmsNormalizedComponent, value: Dictionary): void {
+        getRuntimeOptions().cache?.set(cacheKey(component), value);
     }
 
-    function buildFilterRequest(component: SnakeCmsNormalizedComponent, mode = ''): Dictionary {
+    function buildFilterRequest(component: CmsNormalizedComponent, mode = ''): Dictionary {
         const style = styleOf(component);
         const params: Dictionary = {};
         if (style.goodsListType === 'activity' || goodsParams.value.activityId) {
@@ -129,7 +128,7 @@ export function useSnakeCmsCommerce(input: SnakeCmsCommerceControllerOptions) {
         return params;
     }
 
-    function buildGoodsRequest(component: SnakeCmsNormalizedComponent, mode = ''): Dictionary {
+    function buildGoodsRequest(component: CmsNormalizedComponent, mode = ''): Dictionary {
         const style = styleOf(component);
         const configured = style.filterParams || {};
         const params: Dictionary = {
@@ -169,7 +168,7 @@ export function useSnakeCmsCommerce(input: SnakeCmsCommerceControllerOptions) {
         return params;
     }
 
-    async function loadActivities(component: SnakeCmsNormalizedComponent, currentGeneration: number): Promise<void> {
+    async function loadActivities(component: CmsNormalizedComponent, currentGeneration: number): Promise<void> {
         const service = input.options().services?.commerce;
         const style = styleOf(component);
         if (!service?.getActivities || !style.activitySessionShow || style.listType !== 'auction') return;
@@ -198,7 +197,7 @@ export function useSnakeCmsCommerce(input: SnakeCmsCommerceControllerOptions) {
         }
     }
 
-    async function loadFilters(component: SnakeCmsNormalizedComponent, currentGeneration: number, mode = '') {
+    async function loadFilters(component: CmsNormalizedComponent, currentGeneration: number, mode = '') {
         const service = input.options().services?.commerce;
         const style = styleOf(component);
         if (!service?.getFilters || !(style.filterShow || style.filterShow === 'custom')) return;
@@ -214,7 +213,7 @@ export function useSnakeCmsCommerce(input: SnakeCmsCommerceControllerOptions) {
         if (currentGeneration === generation) filtersData.value = result || {};
     }
 
-    async function loadGoods(component: SnakeCmsNormalizedComponent, currentGeneration: number, append: boolean) {
+    async function loadGoods(component: CmsNormalizedComponent, currentGeneration: number, append: boolean) {
         const service = input.options().services?.commerce;
         if (!service) throw new CmsError('goods', 'A CMS commerce service is required for goodslist.');
         const request = buildGoodsRequest(component);
@@ -251,7 +250,7 @@ export function useSnakeCmsCommerce(input: SnakeCmsCommerceControllerOptions) {
         }
     }
 
-    function fail(stage: SnakeCmsError['stage'], cause: unknown): void {
+    function fail(stage: CmsError['stage'], cause: unknown): void {
         const error =
             cause instanceof CmsError
                 ? cause

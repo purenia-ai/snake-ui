@@ -2,7 +2,7 @@
 import DemoPage from '../../components/demo-page/demo-page.vue';
 import { useDemoLocale } from '../../common/demo-i18n';
 
-defineOptions({ name: 'SnakeExampleAbout' });
+defineOptions({ name: 'ExampleAbout' });
 
 const { text } = useDemoLocale();
 const docsUrl = 'https://m.puresnake.com/snake-ui/';

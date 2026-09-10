@@ -1,16 +1,16 @@
 <script setup lang="ts">
 /**
- * @component SnakeSlider
+ * @component Slider
  * @description 通过轨道点击或触摸拖动选择数值，支持步长、数值气泡、边界值与自定义滑块。
  * @see /components/slider
  */
 
 import { computed, getCurrentInstance, inject, onMounted, ref, watch } from 'vue';
 import { addUnit } from '../../libs/function/unit';
-import { snakeFormItemKey } from '../../libs/internal/form-item';
-import type { SnakeSliderEmits, SnakeSliderExpose, SnakeSliderProps } from './types';
-defineOptions({ name: 'SnakeSlider', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = withDefaults(defineProps<SnakeSliderProps>(), {
+import { formItemKey } from '../../libs/internal/form-item';
+import type { SliderEmits, SliderExpose, SliderProps } from './types';
+defineOptions({ name: 'Slider', options: { virtualHost: true, styleIsolation: 'shared' } });
+const props = withDefaults(defineProps<SliderProps>(), {
     modelValue: 0,
     min: 0,
     max: 100,
@@ -29,8 +29,8 @@ const props = withDefaults(defineProps<SnakeSliderProps>(), {
     customClass: '',
     customStyle: ''
 });
-const emit = defineEmits<SnakeSliderEmits>();
-const formItem = inject(snakeFormItemKey, null);
+const emit = defineEmits<SliderEmits>();
+const formItem = inject(formItemKey, null);
 const instance = getCurrentInstance();
 const trackLeft = ref(0);
 const trackWidth = ref(0);
@@ -144,7 +144,7 @@ function adjust(direction: -1 | 1) {
     void formItem?.notify('change');
 }
 onMounted(() => void update());
-defineExpose<SnakeSliderExpose>({ update });
+defineExpose<SliderExpose>({ update });
 </script>
 <template>
     <view

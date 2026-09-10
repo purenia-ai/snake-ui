@@ -4,10 +4,10 @@
 
 ## 链接服务
 
-CMS 区块把 `{ httpType, http }` 转换为 `SnakeCmsLinkAction`：`10` 对应 `navigate`，`11` 对应 `external`。
+CMS 区块把 `{ httpType, http }` 转换为 `CmsLinkAction`：`10` 对应 `navigate`，`11` 对应 `external`。
 
 ```ts
-const link: SnakeCmsLinkService = {
+const link: CmsLinkService = {
     open(action) {
         if (action.type === 'navigate' && action.url) return uni.navigateTo({ url: action.url });
         if (action.type === 'external' && action.url) {
@@ -22,7 +22,7 @@ const link: SnakeCmsLinkService = {
 `v2.goodslist.props.query` 会被整理为分页请求参数交给 `commerce.getGoods`。宿主负责把后端响应转换为 `{ items, total?, hasMore? }`。
 
 ```ts
-const commerce: SnakeCmsCommerceService = {
+const commerce: CmsCommerceService = {
     async getGoods({ params, pageInfo }) {
         const response = await api.goods.list({ ...params, pageId: pageInfo.pageId });
         return { items: response.items || [], total: response.total, hasMore: response.hasMore };
@@ -38,7 +38,7 @@ const commerce: SnakeCmsCommerceService = {
 ## 优惠券服务
 
 ```ts
-const coupon: SnakeCmsCouponService = {
+const coupon: CmsCouponService = {
     async check({ config }) {
         return api.coupon.check(config.coupon?.id);
     },

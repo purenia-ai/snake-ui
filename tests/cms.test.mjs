@@ -37,7 +37,7 @@ test('CMS normalizes aliases, preserves extensions, and keeps only one commerce 
         { component: 'goodslist', setStyle: {} },
         { component: 'partner-card', setStyle: { title: 'extension' } }
     ];
-    const result = normalize.normalizeSnakeCmsComponents(input);
+    const result = normalize.normalizeCmsComponents(input);
     assert.deepEqual(
         result.components.map(item => item.component),
         ['videos', 'goodslist', 'partner-card']
@@ -82,17 +82,17 @@ test('CMS block catalog is the source of built-in identities and public componen
         'v2.video'
     ];
 
-    assert.deepEqual(Object.keys(blocks.snakeCmsBlocks), expectedTypes);
-    assert.equal(blocks.isSnakeCmsBuiltinComponent('magiccube'), true);
-    assert.equal(blocks.isSnakeCmsBuiltinComponent('partner-card'), false);
-    assert.equal(normalize.snakeCmsBuiltinComponents, blocks.snakeCmsBuiltinComponents);
-    assert.equal(blocks.snakeCmsBlocks.suspension.componentName, 'snake-floating-bubble');
-    assert.ok(Object.values(blocks.snakeCmsBlocks).every(block => block.componentName.startsWith('snake-')));
-    assert.equal(Object.values(blocks.snakeCmsBlocks).filter(block => block.version === 2).length, 14);
+    assert.deepEqual(Object.keys(blocks.cmsBlocks), expectedTypes);
+    assert.equal(blocks.isCmsBuiltinComponent('magiccube'), true);
+    assert.equal(blocks.isCmsBuiltinComponent('partner-card'), false);
+    assert.equal(normalize.cmsBuiltinComponents, blocks.cmsBuiltinComponents);
+    assert.equal(blocks.cmsBlocks.suspension.componentName, 'snake-floating-bubble');
+    assert.ok(Object.values(blocks.cmsBlocks).every(block => block.componentName.startsWith('snake-')));
+    assert.equal(Object.values(blocks.cmsBlocks).filter(block => block.version === 2).length, 14);
 });
 
 test('CMS normalizes v1 and v2 components without collapsing their data envelopes', () => {
-    const result = normalize.normalizeSnakeCmsComponents([
+    const result = normalize.normalizeCmsComponents([
         { component: 'images', setStyle: { imageList: [{ src: 'legacy.png' }] } },
         { component: 'v2.images', active: true, props: { layout: { mode: 'grid' }, items: [] } },
         { component: 'v2.notice', active: false, props: { noticeText: 'hidden' } },
@@ -115,8 +115,8 @@ test('CMS normalizes v1 and v2 components without collapsing their data envelope
 
 test('CMS commerce controller paginates through a host service without mutating config', async () => {
     const values = new Map();
-    runtime.resetSnakeUIRuntime();
-    runtime.configureSnakeUI({
+    runtime.resetRuntime();
+    runtime.configureRuntime({
         cache: {
             get: key => values.get(key),
             set: (key, value) => values.set(key, value),
@@ -131,7 +131,7 @@ test('CMS commerce controller paginates through a host service without mutating 
         setStyle: { listType: 'sale', filterParams: { pageSize: 2 } }
     };
     const states = [];
-    const controller = commerceModule.useSnakeCmsCommerce({
+    const controller = commerceModule.useCmsCommerce({
         pageInfo: () => ({ pageId: 'home' }),
         component: () => component,
         options: () => ({
@@ -189,7 +189,7 @@ test('CMS v2 commerce builds requests from props.query without reading legacy se
             empty: { mode: 'default' }
         }
     };
-    const controller = commerceModule.useSnakeCmsCommerce({
+    const controller = commerceModule.useCmsCommerce({
         pageInfo: () => ({ pageId: 'v2' }),
         component: () => component,
         options: () => ({
@@ -216,7 +216,7 @@ test('CMS v2 commerce builds requests from props.query without reading legacy se
 test('every CMS v2 catalog entry has a static snake-cms branch and internal renderer', async () => {
     const cmsRoot = resolve(import.meta.dirname, '../src/uni_modules/snake-ui/components/snake-cms');
     const source = await readFile(join(cmsRoot, 'snake-cms.vue'), 'utf8');
-    const v2Blocks = Object.entries(blocks.snakeCmsBlocks).filter(([, definition]) => definition.version === 2);
+    const v2Blocks = Object.entries(blocks.cmsBlocks).filter(([, definition]) => definition.version === 2);
 
     for (const [type, definition] of v2Blocks) {
         assert.ok(source.includes(`item.component === '${type}'`), `${type}: static branch`);

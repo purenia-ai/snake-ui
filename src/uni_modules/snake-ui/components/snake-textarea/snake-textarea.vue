@@ -1,17 +1,17 @@
 <script setup lang="ts">
 /**
- * @component SnakeTextarea
+ * @component Textarea
  * @description 用于多行文本输入，支持固定或自适应高度、字数统计和 Form 校验联动。
  * @see /components/textarea
  */
 
 import { computed, inject, ref, watch } from 'vue';
 import { addUnit } from '../../libs/function/unit';
-import { snakeFormItemKey } from '../../libs/internal/form-item';
-import type { SnakeTextareaEmits, SnakeTextareaProps } from './types';
+import { formItemKey } from '../../libs/internal/form-item';
+import type { TextareaEmits, TextareaProps } from './types';
 
 defineOptions({ name: 'SnakeTextarea', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = withDefaults(defineProps<SnakeTextareaProps>(), {
+const props = withDefaults(defineProps<TextareaProps>(), {
     modelValue: '',
     placeholder: '请输入内容',
     placeholderStyle: '',
@@ -39,8 +39,8 @@ const props = withDefaults(defineProps<SnakeTextareaProps>(), {
     customClass: '',
     customStyle: ''
 });
-const emit = defineEmits<SnakeTextareaEmits>();
-const formItem = inject(snakeFormItemKey, null);
+const emit = defineEmits<TextareaEmits>();
+const formItem = inject(formItemKey, null);
 const innerValue = ref(String(props.modelValue ?? ''));
 const focused = ref(false);
 const composing = ref(false);

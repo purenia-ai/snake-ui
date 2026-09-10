@@ -1,12 +1,12 @@
 import type { ExtractPropTypes, PropType } from 'vue';
-import type { SnakeStyleValue } from '../../types/global';
+import type { StyleValue } from '../../types/global';
 
-/** snakeCountDownProps 运行时属性及默认值。 */
-export const snakeCountDownProps = {
+/** countDownProps 运行时属性及默认值。 */
+export const countDownProps = {
     /** 根节点自定义类名。 */
     customClass: { type: String, default: '' },
     /** 根节点自定义样式。 */
-    customStyle: { type: [String, Object, Array] as PropType<SnakeStyleValue>, default: '' },
+    customStyle: { type: [String, Object, Array] as PropType<StyleValue>, default: '' },
     /** 倒计时剩余秒数。 */
     timestamp: { type: [Number, String] as PropType<number | string>, default: 0 },
     /** 是否挂载后自动开始倒计时。 */
@@ -41,15 +41,15 @@ export const snakeCountDownProps = {
     hideZeroDay: { type: Boolean, default: false }
 } as const;
 
-/** SnakeCountDownResolved 组件的解析属性。 */
-export type SnakeCountDownResolvedProps = ExtractPropTypes<typeof snakeCountDownProps>;
+/** CountDownResolved 组件的解析属性。 */
+export type CountDownResolvedProps = ExtractPropTypes<typeof countDownProps>;
 
-/** SnakeCountDown 组件的公开属性。 */
-export interface SnakeCountDownProps {
+/** CountDown 组件的公开属性。 */
+export interface CountDownProps {
     /** 根节点自定义类名。 */
     customClass?: string;
     /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
+    customStyle?: StyleValue;
     /** 倒计时剩余秒数。 */
     timestamp?: number | string;
     /** 是否挂载后自动开始倒计时。 */
@@ -84,16 +84,16 @@ export interface SnakeCountDownProps {
     hideZeroDay?: boolean;
 }
 
-/** SnakeCountDown 组件的事件契约。 */
-export interface SnakeCountDownEmits {
+/** CountDown 组件的事件契约。 */
+export interface CountDownEmits {
     /** 倒计时结束时触发。 */
     end: [];
     /** 每秒触发一次，参数为剩余秒数。 */
     change: [seconds: number];
 }
 
-/** SnakeCountDown 组件暴露的方法。 */
-export interface SnakeCountDownExpose {
+/** CountDown 组件暴露的方法。 */
+export interface CountDownExpose {
     /** 开始倒计时。 */
     start: () => void;
     /** 结束倒计时。 */

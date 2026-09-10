@@ -12,9 +12,9 @@ test('first parity batch exposes reusable transition and loading foundations', a
         read('components/snake-transition/snake-transition.vue'),
         read('components/snake-loading-icon/snake-loading-icon.vue')
     ]);
-    for (const [name, dir] of [['SnakeTransition', 'snake-transition'], ['SnakeLoadingIcon', 'snake-loading-icon']]) {
+    for (const [name, dir] of [['Transition', 'snake-transition'], ['LoadingIcon', 'snake-loading-icon']]) {
         assert.match(entry, new RegExp(`export \\* from './components/${dir}/types'`));
-        assert.match(declarations, new RegExp(`export const ${name}:`));
+        assert.match(declarations, new RegExp(`export const Snake${name}:`));
     }
     assert.match(transition, /after-enter/);
     assert.match(transition, /after-leave/);

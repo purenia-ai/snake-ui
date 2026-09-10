@@ -1,7 +1,7 @@
 import type { ExtractPropTypes, PropType } from 'vue';
 
-/** snakeLineProgressProps 运行时属性及默认值。 */
-export const snakeLineProgressProps = {
+/** lineProgressProps 运行时属性及默认值。 */
+export const lineProgressProps = {
     /** 进度条两端是否显示半圆形。 */
     round: { type: Boolean, default: true },
     /** 主题颜色，如设置则 activeColor 失效，可选 primary/success/warning/error/info。 */
@@ -22,5 +22,5 @@ export const snakeLineProgressProps = {
     stripedActive: { type: Boolean, default: false }
 } as const;
 
-/** SnakeLineProgress 组件的公开属性。 */
-export type SnakeLineProgressProps = ExtractPropTypes<typeof snakeLineProgressProps>;
+/** LineProgress 组件的公开属性。 */
+export type LineProgressProps = ExtractPropTypes<typeof lineProgressProps>;

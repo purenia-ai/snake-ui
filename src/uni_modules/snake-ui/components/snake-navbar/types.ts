@@ -1,8 +1,8 @@
 import type { UnitValue } from '../../libs/function/unit';
-import type { SnakeStyleValue } from '../../types/global';
+import type { StyleValue } from '../../types/global';
 
-/** SnakeNavbar 组件的公开属性。 */
-export interface SnakeNavbarProps {
+/** Navbar 组件的公开属性。 */
+export interface NavbarProps {
     /** 标题文本。 */
     title?: string;
     /** 组件高度。 */
@@ -16,7 +16,7 @@ export interface SnakeNavbarProps {
     /** back text 配置。 */
     backText?: string;
     /** back text style 配置。 */
-    backTextStyle?: SnakeStyleValue;
+    backTextStyle?: StyleValue;
     /** title width 配置。 */
     titleWidth?: UnitValue;
     /** title color 配置。 */
@@ -28,7 +28,7 @@ export interface SnakeNavbarProps {
     /** is back 配置。 */
     isBack?: boolean;
     /** background 配置。 */
-    background?: SnakeStyleValue;
+    background?: StyleValue;
     /** 是否使用固定定位。 */
     fixed?: boolean;
     /** immersive 配置。 */
@@ -44,11 +44,11 @@ export interface SnakeNavbarProps {
     /** 根节点自定义类名。 */
     customClass?: string;
     /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
+    customStyle?: StyleValue;
 }
 
-/** SnakeNavbar 组件的事件契约。 */
-export interface SnakeNavbarEmits {
+/** Navbar 组件的事件契约。 */
+export interface NavbarEmits {
     /** back 事件携带的参数。 */
     back: [event: unknown];
 }

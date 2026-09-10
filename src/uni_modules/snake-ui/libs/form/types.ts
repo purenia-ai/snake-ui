@@ -1,5 +1,5 @@
-export type SnakeFormTrigger = 'change' | 'blur';
-export type SnakeFormRuleType =
+export type FormTrigger = 'change' | 'blur';
+export type FormRuleType =
     | 'string'
     | 'number'
     | 'boolean'
@@ -14,12 +14,12 @@ export type SnakeFormRuleType =
     | 'hex'
     | 'email'
     | 'any';
-export type SnakeFormValidatorResult = boolean | string | Error | void;
-export type SnakeFormValidatorCallback = (error?: string | Error) => void;
+export type FormValidatorResult = boolean | string | Error | void;
+export type FormValidatorCallback = (error?: string | Error) => void;
 
-export interface SnakeFormRule {
+export interface FormRule {
     required?: boolean;
-    type?: SnakeFormRuleType;
+    type?: FormRuleType;
     min?: number;
     max?: number;
     len?: number;
@@ -27,25 +27,25 @@ export interface SnakeFormRule {
     pattern?: RegExp | string;
     whitespace?: boolean;
     message?: string;
-    trigger?: SnakeFormTrigger | SnakeFormTrigger[];
+    trigger?: FormTrigger | FormTrigger[];
     transform?: (value: unknown) => unknown;
     validator?: (
-        rule: SnakeFormRule,
+        rule: FormRule,
         value: unknown,
-        callback: SnakeFormValidatorCallback
-    ) => SnakeFormValidatorResult | Promise<SnakeFormValidatorResult>;
+        callback: FormValidatorCallback
+    ) => FormValidatorResult | Promise<FormValidatorResult>;
     asyncValidator?: (
-        rule: SnakeFormRule,
+        rule: FormRule,
         value: unknown,
-        callback: SnakeFormValidatorCallback
-    ) => SnakeFormValidatorResult | Promise<SnakeFormValidatorResult>;
-    fields?: SnakeFormRules;
-    defaultField?: SnakeFormRule | SnakeFormRule[];
+        callback: FormValidatorCallback
+    ) => FormValidatorResult | Promise<FormValidatorResult>;
+    fields?: FormRules;
+    defaultField?: FormRule | FormRule[];
 }
 
-export type SnakeFormRules = Record<string, SnakeFormRule | SnakeFormRule[]>;
-export interface SnakeFormError {
+export type FormRules = Record<string, FormRule | FormRule[]>;
+export interface FormError {
     prop: string;
     message: string;
-    rule?: SnakeFormRule;
+    rule?: FormRule;
 }

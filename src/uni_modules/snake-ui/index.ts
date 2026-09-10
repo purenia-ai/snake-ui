@@ -1,16 +1,16 @@
 import type { App } from 'vue';
-import { installSnakeUIFoundation, installSnakeUIRuntime, type SnakeUIOptions } from './libs';
+import { installRuntime, installUIFoundation, type RuntimeOptions } from './libs';
 
 const SnakeUI = {
-    install(app: App, options: SnakeUIOptions = {}): void {
-        installSnakeUIFoundation(app, options);
-        installSnakeUIRuntime(app, options);
+    install(app: App, options: RuntimeOptions = {}): void {
+        installUIFoundation(app, options);
+        installRuntime(app, options);
     }
 };
 
 export default SnakeUI;
 
-export type { SnakeImageMode, SnakeStyleValue } from './types/global';
+export type { ImageMode, StyleValue } from './types/global';
 export * from './components/snake-activity-list/types';
 export * from './components/snake-auxiliary-segmentation/types';
 export * from './components/snake-button/types';

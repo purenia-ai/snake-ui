@@ -46,15 +46,15 @@
 
 <script setup lang="ts">
 /**
- * @component SnakeVideos
+ * @component Videos
  * @description 显示视频首帧封面，点击后在全屏弹层中播放视频。
  */
 
 import { ref } from 'vue';
-import type { SnakeVideosProps } from './types';
+import type { VideosProps } from './types';
 
-defineOptions({ name: 'SnakeVideos', options: { virtualHost: true, styleIsolation: 'shared' } });
-withDefaults(defineProps<SnakeVideosProps>(), { datas: () => ({}), scrollTop: 0 });
+defineOptions({ name: 'Videos', options: { virtualHost: true, styleIsolation: 'shared' } });
+withDefaults(defineProps<VideosProps>(), { datas: () => ({}), scrollTop: 0 });
 const show = ref(false);
 function open() { show.value = true; }
 function close() { show.value = false; }

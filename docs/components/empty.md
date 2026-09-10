@@ -27,7 +27,7 @@ preview: /pages/componentsA/empty/index
 </snake-empty>
 ```
 
-`src` 和 `icon` 均可覆盖模式图标；`src` 更适合图片地址，`icon` 可传 SnakeIcon 名称。
+`src` 和 `icon` 均可覆盖模式图标；`src` 更适合图片地址，`icon` 可传 Icon 名称。
 
 ## API
 

@@ -1,16 +1,16 @@
 <script setup lang="ts">
 /**
- * @component SnakeIcon
+ * @component Icon
  * @description 字体及图片图标组件。
  * @see /components/icon
  */
 import { computed } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import { toStyle } from '../../libs/function/style';
-import { SnakeIconProps } from './types';
+import { IconProps } from './types';
 
 defineOptions({
-    name: 'SnakeIcon',
+    name: 'Icon',
     options: {
         addGlobalClass: true,
         // #ifndef MP-TOUTIAO
@@ -20,7 +20,7 @@ defineOptions({
     }
 });
 
-const props = defineProps(SnakeIconProps);
+const props = defineProps(IconProps);
 const emit = defineEmits<{
     (event: 'click', index: string | number | unknown): void;
     (event: 'touchstart', index: string | number | unknown): void;

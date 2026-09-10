@@ -193,8 +193,8 @@
  */
 
 import { createCacheClient } from '../../../libs/runtime';
-import SnakeIndexAnchor from '../../snake-index-anchor/snake-index-anchor.vue';
-import SnakeIndexListPanel from '../../snake-index-list-panel/snake-index-list-panel.vue';
+import IndexAnchor from '../../snake-index-anchor/snake-index-anchor.vue';
+import IndexListPanel from '../../snake-index-list-panel/snake-index-list-panel.vue';
 const cacheManager = createCacheClient('snake-filter-sorts');
 export default {
     emits: ['confirm'],
@@ -203,7 +203,7 @@ export default {
         addGlobalClass: true,
         styleIsolation: 'shared'
     },
-    components: { SnakeIndexAnchor, SnakeIndexListPanel },
+    components: { SnakeIndexAnchor: IndexAnchor, SnakeIndexListPanel: IndexListPanel },
     props: {
         show: {
             type: Boolean,

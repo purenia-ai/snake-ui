@@ -1,18 +1,18 @@
 import { reactive } from 'vue';
-import type { SnakeDebugLevel } from './types';
+import type { DebugLevel } from './types';
 
 export const SNAKE_UI_VERSION = '0.3.0';
 
-export interface SnakeAppConfig {
+export interface AppConfig {
     v: string;
     version: string;
     defaultTheme: string;
     defaultDarkMode: 'light' | 'dark' | 'auto';
     defaultLocale: string;
-    debugMode: boolean | SnakeDebugLevel | SnakeDebugLevel[];
+    debugMode: boolean | DebugLevel | DebugLevel[];
 }
 
-export const snakeConfig = reactive<SnakeAppConfig>({
+export const config = reactive<AppConfig>({
     v: SNAKE_UI_VERSION,
     version: SNAKE_UI_VERSION,
     defaultTheme: 'snake',
@@ -21,13 +21,13 @@ export const snakeConfig = reactive<SnakeAppConfig>({
     debugMode: false
 });
 
-export function setSnakeConfig(options: Partial<SnakeAppConfig>): void {
-    Object.assign(snakeConfig, options);
+export function setConfig(options: Partial<AppConfig>): void {
+    Object.assign(config, options);
 }
 
-export function isSnakeDebugMode(level: SnakeDebugLevel = 'log'): boolean {
-    if (snakeConfig.debugMode === true) return true;
-    if (snakeConfig.debugMode === false) return false;
-    if (Array.isArray(snakeConfig.debugMode)) return snakeConfig.debugMode.includes(level);
-    return snakeConfig.debugMode === level;
+export function isDebugMode(level: DebugLevel = 'log'): boolean {
+    if (config.debugMode === true) return true;
+    if (config.debugMode === false) return false;
+    if (Array.isArray(config.debugMode)) return config.debugMode.includes(level);
+    return config.debugMode === level;
 }

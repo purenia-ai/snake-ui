@@ -58,29 +58,29 @@ export function createApp() {
 主题、国际化和 HTTP 也支持直接调用：
 
 ```ts
-import { setSnakeDarkMode, setSnakeLocale, snakeHttp } from '@puresnake/snake-ui';
+import { http, setDarkMode, setLocale } from '@puresnake/snake-ui';
 
-setSnakeDarkMode('auto');
-setSnakeLocale('en-US');
-const data = await snakeHttp.get('/goods');
+setDarkMode('auto');
+setLocale('en-US');
+const data = await http.get('/goods');
 ```
 
 适配器接口：
 
 ```ts
-interface SnakeRequestAdapter {
+interface RequestAdapter {
     get<T = unknown>(url: string, params?: Record<string, unknown>): Promise<T>;
     post<T = unknown>(url: string, data?: Record<string, unknown>): Promise<T>;
 }
 
-interface SnakeCacheAdapter {
+interface CacheAdapter {
     get<T = unknown>(key: string): T | undefined;
     set<T = unknown>(key: string, value: T, ttlSeconds?: number): void;
     delete(key: string): void;
 }
 ```
 
-缺少业务组件需要的适配器时，组件会抛出包含组件名和适配器名称的 `SnakeUIRuntimeError`。
+缺少业务组件需要的适配器时，组件会抛出包含组件名和适配器名称的 `UIRuntimeError`。
 
 ## easycom 自动注册
 
@@ -111,7 +111,7 @@ interface SnakeCacheAdapter {
 组件推荐使用 easycom 标签；如需手动导入，按组件路径引入：
 
 ```ts
-import SnakeButton from '@puresnake/snake-ui/components/snake-button/snake-button.vue';
+import Button from '@puresnake/snake-ui/components/snake-button/snake-button.vue';
 
 import { addUnit, navTo, sleep, toast } from '@puresnake/snake-ui/libs';
 ```
@@ -256,7 +256,7 @@ src/uni_modules/snake-ui/
 ├─ components/        # easycom 组件入口，固定为 snake-x/snake-x.vue
 ├─ libs/
 │  ├─ function/       # 单职责工具模块，index.ts 只聚合导出
-│  ├─ hooks/          # useSnakeX hooks
+│  ├─ hooks/          # useX hooks
 │  ├─ css/            # 主题与平台样式
 │  ├─ config/         # 配置、主题状态与类型
 │  ├─ request/        # HTTP 客户端

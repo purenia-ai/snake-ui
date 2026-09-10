@@ -1,10 +1,10 @@
 import type { UnitValue } from '../../libs/function/unit';
-import type { SnakeStyleValue } from '../../types/global';
+import type { StyleValue } from '../../types/global';
 
-/** SnakeCheckboxGroup 组件的公开属性。 */
-export interface SnakeCheckboxGroupProps {
+/** CheckboxGroup 组件的公开属性。 */
+export interface CheckboxGroupProps {
     /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
+    customStyle?: StyleValue;
     /** 根节点自定义类名。 */
     customClass?: string;
     /** 绑定值，选中的 checkbox name 组成的数组，支持 v-model。 */
@@ -31,8 +31,8 @@ export interface SnakeCheckboxGroupProps {
     iconSize?: UnitValue;
 }
 
-/** SnakeCheckboxGroup 组件的事件契约。 */
-export interface SnakeCheckboxGroupEmits {
+/** CheckboxGroup 组件的事件契约。 */
+export interface CheckboxGroupEmits {
     /** 更新当前选中值数组。 */
     'update:modelValue': [value: (string | number)[]];
     /** 任一个 checkbox 状态发生变化时触发，回调为选中的 name 数组。 */

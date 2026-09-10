@@ -1,19 +1,19 @@
 import type { ExtractPropTypes, PropType } from 'vue';
-import type { SnakeStyleValue } from '../../types/global';
+import type { StyleValue } from '../../types/global';
 
-/** SnakeSearchShape 类型定义。 */
-export type SnakeSearchShape = 'round' | 'square';
-/** SnakeSearchInputAlign 类型定义。 */
-export type SnakeSearchInputAlign = 'left' | 'center' | 'right';
+/** SearchShape 类型定义。 */
+export type SearchShape = 'round' | 'square';
+/** SearchInputAlign 类型定义。 */
+export type SearchInputAlign = 'left' | 'center' | 'right';
 
-/** snakeSearchProps 运行时属性及默认值。 */
-export const snakeSearchProps = {
+/** searchProps 运行时属性及默认值。 */
+export const searchProps = {
     /** 根节点自定义样式。 */
-    customStyle: { type: [String, Object, Array] as PropType<SnakeStyleValue>, default: '' },
+    customStyle: { type: [String, Object, Array] as PropType<StyleValue>, default: '' },
     /** 根节点自定义类名。 */
     customClass: { type: String, default: '' },
     /** 搜索框形状，round 圆形，square 方形。 */
-    shape: { type: String as PropType<SnakeSearchShape>, default: 'round' },
+    shape: { type: String as PropType<SearchShape>, default: 'round' },
     /** 搜索框背景色。 */
     bgColor: { type: String, default: 'var(--snake-color-surface-muted, #f2f3f6)' },
     /** 占位提示文字。 */
@@ -25,11 +25,11 @@ export const snakeSearchProps = {
     /** 是否在搜索框右侧显示操作按钮。 */
     showAction: { type: Boolean, default: true },
     /** 右侧操作按钮的样式，对象形式。 */
-    actionStyle: { type: [Object, Array] as PropType<SnakeStyleValue>, default: () => ({}) },
+    actionStyle: { type: [Object, Array] as PropType<StyleValue>, default: () => ({}) },
     /** 右侧操作按钮文字。 */
     actionText: { type: String, default: '' },
     /** 输入框内容水平对齐方式。 */
-    inputAlign: { type: String as PropType<SnakeSearchInputAlign>, default: 'left' },
+    inputAlign: { type: String as PropType<SearchInputAlign>, default: 'left' },
     /** 是否禁用输入框。 */
     disabled: { type: Boolean, default: false },
     /** 开启 showAction 时，是否在 input 获取焦点时才显示操作按钮。 */
@@ -41,7 +41,7 @@ export const snakeSearchProps = {
     /** 搜索框高度，数值按 rpx 处理。 */
     height: { type: [Number, String] as PropType<number | string>, default: 64 },
     /** 输入框的样式，可以定义文字颜色、大小等，对象形式。 */
-    inputStyle: { type: [Object, Array] as PropType<SnakeStyleValue>, default: () => ({}) },
+    inputStyle: { type: [Object, Array] as PropType<StyleValue>, default: () => ({}) },
     /** 输入框最大能输入的长度，-1 为不限制长度。 */
     maxlength: { type: [Number, String] as PropType<number | string>, default: '-1' },
     /** 搜索图标的颜色，默认同输入框字体颜色。 */
@@ -58,11 +58,11 @@ export const snakeSearchProps = {
     adjustPosition: { type: Boolean, default: true }
 } as const;
 
-/** SnakeSearch 组件的公开属性。 */
-export type SnakeSearchProps = ExtractPropTypes<typeof snakeSearchProps>;
+/** Search 组件的公开属性。 */
+export type SearchProps = ExtractPropTypes<typeof searchProps>;
 
-/** SnakeSearch 组件的事件契约。 */
-export interface SnakeSearchEmits {
+/** Search 组件的事件契约。 */
+export interface SearchEmits {
     /** 双向绑定值更新。 */
     'update:modelValue': [value: string];
     /** 输入事件，携带输入框内容。 */

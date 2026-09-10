@@ -48,11 +48,11 @@ test('demo themes use the approved names and uView Pro palettes', () => {
 test('legacy demo theme ids migrate once to their closest replacement', () => {
     for (const [legacy, replacement] of Object.entries({ pupple: 'purple', blue: 'dark', red: 'rose' })) {
         storage.set('snake-ui-theme', legacy);
-        assert.equal(themePresets.migrateSnakeThemePresetStorage(), replacement);
+        assert.equal(themePresets.migrateThemePresetStorage(), replacement);
         assert.equal(storage.get('snake-ui-theme'), replacement);
     }
 
     storage.set('snake-ui-theme', 'orange');
-    assert.equal(themePresets.migrateSnakeThemePresetStorage(), undefined);
+    assert.equal(themePresets.migrateThemePresetStorage(), undefined);
     assert.equal(storage.get('snake-ui-theme'), 'orange');
 });

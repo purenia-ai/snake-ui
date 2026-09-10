@@ -1,8 +1,8 @@
 import type { UnitValue } from '../../libs/function/unit';
-import type { SnakeImageMode, SnakeStyleValue } from '../../types/global';
+import type { ImageMode, StyleValue } from '../../types/global';
 
-/** SnakeLazyImage 组件的公开属性。 */
-export interface SnakeLazyImageProps {
+/** LazyImage 组件的公开属性。 */
+export interface LazyImageProps {
     /** 资源地址。 */
     src?: string;
     /** 进入视口前显示的占位图片地址，不触发真实图片加载事件。 */
@@ -14,7 +14,7 @@ export interface SnakeLazyImageProps {
     /** 当前数据项索引。 */
     index?: number | string;
     /** 组件展示模式。 */
-    mode?: SnakeImageMode;
+    mode?: ImageMode;
     /** 组件宽度。 */
     width?: UnitValue;
     /** 组件高度。 */
@@ -26,11 +26,11 @@ export interface SnakeLazyImageProps {
     /** 动画持续时间。 */
     duration?: number;
     /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
+    customStyle?: StyleValue;
 }
 
-/** SnakeLazyImage 组件的事件契约。 */
-export interface SnakeLazyImageEmits {
+/** LazyImage 组件的事件契约。 */
+export interface LazyImageEmits {
     /** click 事件携带的参数。 */
     click: [event: unknown, index: number | string];
     /** load 事件携带的参数。 */

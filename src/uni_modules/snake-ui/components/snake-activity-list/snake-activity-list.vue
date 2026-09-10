@@ -70,16 +70,16 @@
 
 <script>
 /**
- * @component SnakeActivityList
+ * @component ActivityList
  * @description 横向展示拍卖活动入口、时间状态和当前选中项，并自动将当前项滚动到容器中部。
  */
 
-import SnakeIcon from '../snake-icon/snake-icon.vue';
+import Icon from '../snake-icon/snake-icon.vue';
 
 export default {
     name: 'activity-list',
     options: { virtualHost: true, styleIsolation: 'shared' },
-    components: { SnakeIcon },
+    components: { SnakeIcon: Icon },
     emits: ['change'],
     props: {
         list: {

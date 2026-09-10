@@ -45,21 +45,21 @@ const nextLocale = computed(() => (currentLocale.value.name === 'zh-CN' ? 'en-US
 也可以在组件外直接切换：
 
 ```ts
-import { setSnakeLocale } from '@puresnake/snake-ui';
+import { setLocale } from '@puresnake/snake-ui';
 
-setSnakeLocale('en-US');
+setLocale('en-US');
 ```
 
-传入未注册的语言时，`setSnakeLocale()` 返回 `false`，并保持当前语言不变。
+传入未注册的语言时，`setLocale()` 返回 `false`，并保持当前语言不变。
 
 ## 翻译和插值
 
-直接使用 `snakeTranslate()`，或者通过 `useLocale()` 获取 `t()`：
+直接使用 `translate()`，或者通过 `useLocale()` 获取 `t()`：
 
 ```ts
-import { snakeTranslate, useLocale } from '@puresnake/snake-ui';
+import { translate, useLocale } from '@puresnake/snake-ui';
 
-snakeTranslate('common.confirm'); // 当前为 en-US 时返回 Confirm
+translate('common.confirm'); // 当前为 en-US 时返回 Confirm
 
 const { t } = useLocale('checkout');
 t('welcome', { name: 'Snake' }); // 读取 checkout.welcome，并替换 {name}

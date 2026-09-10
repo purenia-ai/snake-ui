@@ -1,17 +1,17 @@
 <script setup lang="ts">
 /**
- * @component SnakeRadioGroup
+ * @component RadioGroup
  * @description radio 父组件，管理一组 Radio 的互斥值、禁用状态与布局。
  * @see /components/radio
  */
 
 import { inject } from 'vue';
 import { useParent } from '../../libs/hooks';
-import { snakeFormItemKey } from '../../libs/internal/form-item';
-import type { SnakeRadioGroupEmits, SnakeRadioGroupProps } from './types';
+import { formItemKey } from '../../libs/internal/form-item';
+import type { RadioGroupEmits, RadioGroupProps } from './types';
 
 defineOptions({
-    name: 'SnakeRadioGroup',
+    name: 'RadioGroup',
     options: {
         addGlobalClass: true,
         // #ifndef MP-TOUTIAO
@@ -21,7 +21,7 @@ defineOptions({
     }
 });
 
-const props = withDefaults(defineProps<SnakeRadioGroupProps>(), {
+const props = withDefaults(defineProps<RadioGroupProps>(), {
     customStyle: '',
     customClass: '',
     disabled: false,
@@ -35,11 +35,11 @@ const props = withDefaults(defineProps<SnakeRadioGroupProps>(), {
     wrap: false
 });
 
-const emit = defineEmits<SnakeRadioGroupEmits>();
-const formItem = inject(snakeFormItemKey, null);
+const emit = defineEmits<RadioGroupEmits>();
+const formItem = inject(formItemKey, null);
 
 // 注册父组件上下文，供子组件 useChildren 链接
-useParent('SnakeRadioGroup');
+useParent('RadioGroup');
 
 /**
  * 父组件数据，供子组件使用

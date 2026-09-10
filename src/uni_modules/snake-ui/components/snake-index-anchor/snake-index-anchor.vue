@@ -1,21 +1,21 @@
 <script setup lang="ts">
 /**
- * @component SnakeIndexAnchor
+ * @component IndexAnchor
  * @description 定义 `IndexList` 中的分组位置，并根据父组件配置提供吸顶效果。
  * @see /components/index-anchor
  */
 
 import { computed, inject } from 'vue';
-import { snakeIndexListKey } from '../../libs/internal/index-list';
-import type { SnakeIndexAnchorProps } from './types';
-defineOptions({ name: 'SnakeIndexAnchor', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = withDefaults(defineProps<SnakeIndexAnchorProps>(), {
+import { indexListKey } from '../../libs/internal/index-list';
+import type { IndexAnchorProps } from './types';
+defineOptions({ name: 'IndexAnchor', options: { virtualHost: true, styleIsolation: 'shared' } });
+const props = withDefaults(defineProps<IndexAnchorProps>(), {
     text: '',
     useSlot: false,
     customClass: '',
     customStyle: ''
 });
-const list = inject(snakeIndexListKey);
+const list = inject(indexListKey);
 const anchorId = computed(() => list?.anchorId(props.index) ?? `snake-index-anchor-${props.index}`);
 const active = computed(() => list?.isActive(props.index) ?? false);
 const wrapperStyle = computed(() => list?.wrapperStyle(props.index) ?? {});

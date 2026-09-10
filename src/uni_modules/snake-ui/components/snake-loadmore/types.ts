@@ -1,10 +1,10 @@
 import type { UnitValue } from '../../libs/function/unit';
-import type { SnakeStyleValue } from '../../types/global';
+import type { StyleValue } from '../../types/global';
 
-/** SnakeLoadmoreStatus 类型定义。 */
-export type SnakeLoadmoreStatus = 'loadmore' | 'loading' | 'nomore';
-/** SnakeLoadmoreText 类型定义。 */
-export interface SnakeLoadmoreText {
+/** LoadmoreStatus 类型定义。 */
+export type LoadmoreStatus = 'loadmore' | 'loading' | 'nomore';
+/** LoadmoreText 类型定义。 */
+export interface LoadmoreText {
     /** loadmore 配置。 */
     loadmore?: string;
     /** 是否显示加载状态。 */
@@ -12,12 +12,12 @@ export interface SnakeLoadmoreText {
     /** nomore 配置。 */
     nomore?: string;
 }
-/** SnakeLoadmore 组件的公开属性。 */
-export interface SnakeLoadmoreProps {
+/** Loadmore 组件的公开属性。 */
+export interface LoadmoreProps {
     /** 当前状态。 */
-    status?: SnakeLoadmoreStatus;
+    status?: LoadmoreStatus;
     /** load text 配置。 */
-    loadText?: string | SnakeLoadmoreText;
+    loadText?: string | LoadmoreText;
     /** 加载状态下显示的文本。 */
     loadingText?: string;
     /** nomore text 配置。 */
@@ -43,12 +43,12 @@ export interface SnakeLoadmoreProps {
     /** 根节点自定义类名。 */
     customClass?: string;
     /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
+    customStyle?: StyleValue;
 }
-/** SnakeLoadmore 组件的事件契约。 */
-export interface SnakeLoadmoreEmits {
+/** Loadmore 组件的事件契约。 */
+export interface LoadmoreEmits {
     /** loadmore 事件携带的参数。 */
     loadmore: [];
     /** click 事件携带的参数。 */
-    click: [status: SnakeLoadmoreStatus];
+    click: [status: LoadmoreStatus];
 }

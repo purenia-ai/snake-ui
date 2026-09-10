@@ -93,14 +93,14 @@ Snake UI 用统一的色彩 token 表达品牌、状态、文字与界面层级�
 ```
 
 ```ts
-import { snakeColor, useTheme } from '@puresnake/snake-ui';
+import { color, useTheme } from '@puresnake/snake-ui';
 
 const { color } = useTheme();
-console.log(snakeColor.primary, color.primary);
+console.log(color.primary, color.primary);
 ```
 
 ::: tip 多主题与暗黑模式
-通过 `--snake-color-*` 或 `snakeColor` 读取颜色，不要在业务代码复制暗色值。主题配置方式见[多主题与暗黑模式](/guide/multi-theme)。
+通过 `--snake-color-*` 或 `color` 读取颜色，不要在业务代码复制暗色值。主题配置方式见[多主题与暗黑模式](/guide/multi-theme)。
 :::
 
 <style scoped>

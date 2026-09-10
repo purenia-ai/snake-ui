@@ -1,21 +1,21 @@
 import type { CSSProperties, InjectionKey, Ref } from 'vue';
 
-export type SnakeIndexValue = string | number;
+export type IndexValue = string | number;
 
-export interface SnakeIndexListContext {
+export interface IndexListContext {
     activeIndex: Ref<number>;
     sticky: Ref<boolean>;
     offsetTop: Ref<string | number | null | undefined>;
     zIndex: Ref<number>;
-    anchorId(index: SnakeIndexValue): string;
-    anchorStyle(index: SnakeIndexValue): CSSProperties;
-    wrapperStyle(index: SnakeIndexValue): CSSProperties;
-    isActive(index: SnakeIndexValue): boolean;
+    anchorId(index: IndexValue): string;
+    anchorStyle(index: IndexValue): CSSProperties;
+    wrapperStyle(index: IndexValue): CSSProperties;
+    isActive(index: IndexValue): boolean;
 }
 
-export const snakeIndexListKey: InjectionKey<SnakeIndexListContext> = Symbol('snake-index-list');
+export const indexListKey: InjectionKey<IndexListContext> = Symbol('snake-index-list');
 
-export function resolveIndex(indexOrValue: number | SnakeIndexValue, indexList: SnakeIndexValue[]): number {
+export function resolveIndex(indexOrValue: number | IndexValue, indexList: IndexValue[]): number {
     if (
         typeof indexOrValue === 'number' &&
         Number.isInteger(indexOrValue) &&

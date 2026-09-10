@@ -4,11 +4,11 @@ import {
     SNAKE_TOAST_GLOBAL_EVENT_HIDE,
     SNAKE_TOAST_GLOBAL_EVENT_SHOW,
     getEventWithCurrentPage,
-    type SnakeToastPayload
+    type ToastPayload
 } from '../config/toast';
-import { snakeEmitter } from '../function/emitter';
+import { emitter } from '../function/emitter';
 
-export type UseToastShowOptions = SnakeToastPayload;
+export type UseToastShowOptions = ToastPayload;
 
 export type UseToast = {
     /**
@@ -77,13 +77,13 @@ export function useToast(optionsOrGlobal: UseToastOptions | boolean = true): Use
 
     function emitShow(payload: UseToastShowOptions) {
         if (showEvent) {
-            snakeEmitter.emit(showEvent, payload);
+            emitter.emit(showEvent, payload);
         }
     }
 
     function emitHide() {
         if (hideEvent) {
-            snakeEmitter.emit(hideEvent, undefined);
+            emitter.emit(hideEvent, undefined);
         }
     }
 

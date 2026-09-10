@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * @component SnakePopup
+ * @component Popup
  * @description 基于 Overlay 与 Transition 的正式弹层，支持中心和四边弹出、圆角、关闭图标、安全区以及完整生命周期。
  * @see /components/popup
  */
@@ -9,14 +9,14 @@ import { computed, getCurrentInstance, ref, watch } from 'vue';
 import type { CSSProperties } from 'vue';
 import zIndex from '../../libs/config/zIndex';
 import { addUnit } from '../../libs/function/unit';
-import SnakeIcon from '../snake-icon/snake-icon.vue';
-import SnakeOverlay from '../snake-overlay/snake-overlay.vue';
-import SnakeTransition from '../snake-transition/snake-transition.vue';
-import type { SnakePopupEmits, SnakePopupProps } from './types';
+import Icon from '../snake-icon/snake-icon.vue';
+import Overlay from '../snake-overlay/snake-overlay.vue';
+import Transition from '../snake-transition/snake-transition.vue';
+import type { PopupEmits, PopupProps } from './types';
 
-defineOptions({ name: 'SnakePopup', options: { virtualHost: true, styleIsolation: 'shared' } });
+defineOptions({ name: 'Popup', options: { virtualHost: true, styleIsolation: 'shared' } });
 
-const props = withDefaults(defineProps<SnakePopupProps>(), {
+const props = withDefaults(defineProps<PopupProps>(), {
     modelValue: false,
     mode: 'center',
     bgColor: 'var(--snake-color-surface, #fff)',
@@ -39,7 +39,7 @@ const props = withDefaults(defineProps<SnakePopupProps>(), {
     customClass: '',
     customStyle: ''
 });
-const emit = defineEmits<SnakePopupEmits>();
+const emit = defineEmits<PopupEmits>();
 // Vue 3 对未传递的 Boolean prop 做 boolean casting（值为 false 而非 undefined），
 // 不能用空值合并把 show 兜底到 modelValue：未绑定 show 时 v-model 通道会被 false 短路。
 // 这里在 setup 时检测父组件是否真的绑定了 show，绑定则 show 优先，否则走 v-model(modelValue)。

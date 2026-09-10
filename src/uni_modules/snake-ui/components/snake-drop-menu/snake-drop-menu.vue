@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * @component SnakeDropMenu
+ * @component DropMenu
  * @description 负责多个 `DropMenuItem` 的布局、互斥展开和弹层定位。面板打开前会真实测量菜单底部位置，适用于普通布局和吸顶布局。
  * @see /components/drop-menu
  */
@@ -8,11 +8,11 @@
 import { getCurrentInstance, onMounted, provide, ref, toRef, watch } from 'vue';
 import zIndex from '../../libs/config/zIndex';
 import { addUnit } from '../../libs/function/unit';
-import { snakeDropMenuKey } from '../../libs/internal/drop-menu';
-import type { SnakeDropMenuEmits, SnakeDropMenuExpose, SnakeDropMenuProps } from './types';
+import { dropMenuKey } from '../../libs/internal/drop-menu';
+import type { DropMenuEmits, DropMenuExpose, DropMenuProps } from './types';
 
-defineOptions({ name: 'SnakeDropMenu', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = withDefaults(defineProps<SnakeDropMenuProps>(), {
+defineOptions({ name: 'DropMenu', options: { virtualHost: true, styleIsolation: 'shared' } });
+const props = withDefaults(defineProps<DropMenuProps>(), {
     activeColor: 'var(--snake-color-primary, #06D290)',
     inactiveColor: 'var(--snake-color-text-secondary, #606266)',
     closeOnClickMask: true,
@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<SnakeDropMenuProps>(), {
     customClass: '',
     customStyle: ''
 });
-const emit = defineEmits<SnakeDropMenuEmits>();
+const emit = defineEmits<DropMenuEmits>();
 const instance = getCurrentInstance();
 const activeItem = ref<symbol | null>(null);
 const highlighted = ref<number>();
@@ -77,7 +77,7 @@ watch(activeItem, (value, previous) => {
         emit('open', indexOf(value));
     }
 });
-provide(snakeDropMenuKey, {
+provide(dropMenuKey, {
     activeItem,
     highlighted,
     menuTop,
@@ -98,7 +98,7 @@ provide(snakeDropMenuKey, {
     updateRect: updateDropMenuRect
 });
 onMounted(() => void updateDropMenuRect());
-defineExpose<SnakeDropMenuExpose>({ updateDropMenuRect, colseAll, close, open, highlight });
+defineExpose<DropMenuExpose>({ updateDropMenuRect, colseAll, close, open, highlight });
 </script>
 
 <template>

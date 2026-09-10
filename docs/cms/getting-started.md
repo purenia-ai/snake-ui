@@ -13,14 +13,14 @@ Snake UI 只负责渲染和调度。商品、优惠券和跳转等业务能力�
 CMS 页面由页面信息和有序组件数组组成。每个组件至少要有一个字符串类型的 `component`，并使用 `props` 保存配置。
 
 ```ts
-import type { SnakeCmsComponentConfig, SnakeCmsPageInfo } from '@puresnake/snake-ui';
+import type { CmsComponentConfig, CmsPageInfo } from '@puresnake/snake-ui';
 
-const pageInfo: SnakeCmsPageInfo = {
+const pageInfo: CmsPageInfo = {
     pageId: 'home',
     name: '商城首页'
 };
 
-const pageComponents: SnakeCmsComponentConfig[] = [
+const pageComponents: CmsComponentConfig[] = [
     {
         id: 'notice-1',
         component: 'v2.notice',
@@ -51,8 +51,8 @@ function normalizeCmsPage(input: Record<string, unknown>) {
             pageId: String(input.pageId || 'default'),
             name: String(input.name || '')
         },
-        pageComponents: rawComponents.filter((item): item is SnakeCmsComponentConfig =>
-            Boolean(item && typeof item === 'object' && typeof (item as SnakeCmsComponentConfig).component === 'string')
+        pageComponents: rawComponents.filter((item): item is CmsComponentConfig =>
+            Boolean(item && typeof item === 'object' && typeof (item as CmsComponentConfig).component === 'string')
         )
     };
 }
@@ -69,17 +69,17 @@ function normalizeCmsPage(input: Record<string, unknown>) {
 import { onLoad, onPageScroll, onReachBottom, onPullDownRefresh } from '@dcloudio/uni-app';
 import { ref } from 'vue';
 import type {
-    SnakeCmsComponentConfig,
-    SnakeCmsDiagnostic,
-    SnakeCmsError,
-    SnakeCmsExposed,
-    SnakeCmsPageInfo
+    CmsComponentConfig,
+    CmsDiagnostic,
+    CmsError,
+    CmsExposed,
+    CmsPageInfo
 } from '@puresnake/snake-ui';
 import { api } from '@/services/api';
 
-const cmsRef = ref<SnakeCmsExposed>();
-const pageInfo = ref<SnakeCmsPageInfo>({});
-const pageComponents = ref<SnakeCmsComponentConfig[]>([]);
+const cmsRef = ref<CmsExposed>();
+const pageInfo = ref<CmsPageInfo>({});
+const pageComponents = ref<CmsComponentConfig[]>([]);
 const scrollTop = ref(0);
 
 onLoad(async query => {
@@ -103,11 +103,11 @@ onPullDownRefresh(async () => {
     }
 });
 
-function reportDiagnostic(diagnostic: SnakeCmsDiagnostic) {
+function reportDiagnostic(diagnostic: CmsDiagnostic) {
     console.warn('[CMS]', diagnostic);
 }
 
-function reportError(error: SnakeCmsError) {
+function reportError(error: CmsError) {
     console.error('[CMS]', error.stage, error.cause);
 }
 </script>
@@ -139,10 +139,10 @@ function reportError(error: SnakeCmsError) {
 服务应在 `main.ts` 中集中配置。下面只接入商品列表；接口字段不同的项目，也在这里转换成 Snake CMS 需要的结果结构：
 
 ```ts
-import SnakeUI, { type SnakeCmsCommerceService } from '@puresnake/snake-ui';
+import SnakeUI, { type CmsCommerceService } from '@puresnake/snake-ui';
 import { api } from '@/services/api';
 
-const commerce: SnakeCmsCommerceService = {
+const commerce: CmsCommerceService = {
     async getGoods({ params, pageInfo }) {
         const result = await api.goods.list({ ...params, pageId: pageInfo.pageId });
         return {

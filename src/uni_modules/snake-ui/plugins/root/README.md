@@ -31,13 +31,13 @@ App.root.vue(源码)        → 在 main.ts 中导入并注册为全局组件 gl
 
 ```vue
 <script setup lang="ts">
-import SnakeConfigProvider from './uni_modules/snake-ui/components/snake-config-provider/snake-config-provider.vue';
+import ConfigProvider from './uni_modules/snake-ui/components/snake-config-provider/snake-config-provider.vue';
 </script>
 
 <template>
-    <SnakeConfigProvider>
+    <ConfigProvider>
         <slot />
-    </SnakeConfigProvider>
+    </ConfigProvider>
 </template>
 ```
 
@@ -46,10 +46,10 @@ import SnakeConfigProvider from './uni_modules/snake-ui/components/snake-config-
 ### 2. 配置 vite.config.ts
 
 ```ts
-import { SnakeRoot } from './src/uni_modules/snake-ui/plugins';
+import { Root } from './src/uni_modules/snake-ui/plugins';
 
 export default defineConfig({
-    plugins: [SnakeRoot(), uni()]
+    plugins: [Root(), uni()]
 });
 ```
 
@@ -60,7 +60,7 @@ export default defineConfig({
 ## 配置项
 
 ```ts
-SnakeRoot({
+Root({
     rootFileName: 'App.root' // 根组件文件名(不含扩展名),默认 App.root
 });
 ```

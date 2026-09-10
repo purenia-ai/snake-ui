@@ -1,5 +1,5 @@
 import { computed } from 'vue';
-import { currentSnakeLocale, setSnakeLocale } from '../uni_modules/snake-ui';
+import { currentLocale, setLocale } from '../uni_modules/snake-ui';
 
 export type DemoLocaleName = 'zh-CN' | 'en-US';
 
@@ -443,16 +443,16 @@ const demoTitles: Record<string, string> = {
 };
 
 export function demoText(value: string): string {
-    return currentSnakeLocale.value.name === 'en-US' ? (englishMessages[value] ?? value) : value;
+    return currentLocale.value.name === 'en-US' ? (englishMessages[value] ?? value) : value;
 }
 
 export function demoTitle(kind: string, fallback: string): string {
-    return currentSnakeLocale.value.name === 'en-US' ? (demoTitles[kind] ?? fallback) : fallback;
+    return currentLocale.value.name === 'en-US' ? (demoTitles[kind] ?? fallback) : fallback;
 }
 
 export function useDemoLocale() {
-    const localeName = computed<DemoLocaleName>(() => (currentSnakeLocale.value.name === 'en-US' ? 'en-US' : 'zh-CN'));
+    const localeName = computed<DemoLocaleName>(() => (currentLocale.value.name === 'en-US' ? 'en-US' : 'zh-CN'));
     const nextLocaleLabel = computed(() => (localeName.value === 'zh-CN' ? 'EN' : '中文'));
-    const switchLocale = () => setSnakeLocale(localeName.value === 'zh-CN' ? 'en-US' : 'zh-CN');
+    const switchLocale = () => setLocale(localeName.value === 'zh-CN' ? 'en-US' : 'zh-CN');
     return { localeName, nextLocaleLabel, switchLocale, text: demoText };
 }

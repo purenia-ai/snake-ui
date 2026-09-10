@@ -1,10 +1,10 @@
 import type { UnitValue } from '../../libs/function/unit';
-import type { SnakeStyleValue } from '../../types/global';
+import type { StyleValue } from '../../types/global';
 
-/** SnakeRadioGroup 组件的公开属性。 */
-export interface SnakeRadioGroupProps {
+/** RadioGroup 组件的公开属性。 */
+export interface RadioGroupProps {
     /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
+    customStyle?: StyleValue;
     /** 根节点自定义类名。 */
     customClass?: string;
     /** 是否禁用所有 radio。 */
@@ -27,8 +27,8 @@ export interface SnakeRadioGroupProps {
     wrap?: boolean;
 }
 
-/** SnakeRadioGroup 组件的事件契约。 */
-export interface SnakeRadioGroupEmits {
+/** RadioGroup 组件的事件契约。 */
+export interface RadioGroupEmits {
     /** 更新当前选中值。 */
     'update:modelValue': [value: string | number];
     /** 任一个 radio 状态发生变化时触发，携带最新选中值。 */

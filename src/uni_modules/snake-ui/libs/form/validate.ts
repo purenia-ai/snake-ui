@@ -1,10 +1,10 @@
 import type {
-    SnakeFormError,
-    SnakeFormRule,
-    SnakeFormRules,
-    SnakeFormTrigger,
-    SnakeFormValidatorCallback,
-    SnakeFormValidatorResult
+    FormError,
+    FormRule,
+    FormRules,
+    FormTrigger,
+    FormValidatorCallback,
+    FormValidatorResult
 } from './types';
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -19,7 +19,7 @@ function lengthOf(value: unknown): number | undefined {
     if (typeof value === 'string' || Array.isArray(value)) return value.length;
     return undefined;
 }
-function defaultMessage(rule: SnakeFormRule): string {
+function defaultMessage(rule: FormRule): string {
     if (rule.required) return '此项为必填项';
     if (rule.len != null) return `长度必须为 ${rule.len}`;
     if (rule.min != null && rule.max != null) return `长度或数值应在 ${rule.min}-${rule.max} 之间`;
@@ -27,7 +27,7 @@ function defaultMessage(rule: SnakeFormRule): string {
     if (rule.max != null) return `长度或数值不能大于 ${rule.max}`;
     return '格式不正确';
 }
-function typeMatches(type: SnakeFormRule['type'], value: unknown): boolean {
+function typeMatches(type: FormRule['type'], value: unknown): boolean {
     if (!type || type === 'any') return true;
     if (type === 'array') return Array.isArray(value);
     if (type === 'date') {
@@ -44,27 +44,27 @@ function typeMatches(type: SnakeFormRule['type'], value: unknown): boolean {
     if (type === 'number') return typeof value === 'number' && !Number.isNaN(value);
     return typeof value === type;
 }
-function normalizeCustomResult(result: SnakeFormValidatorResult, fallback: string): string | undefined {
+function normalizeCustomResult(result: FormValidatorResult, fallback: string): string | undefined {
     if (result === false) return fallback;
     if (typeof result === 'string') return result;
     if (result instanceof Error) return result.message || fallback;
     return undefined;
 }
 
-async function runCustom(rule: SnakeFormRule, value: unknown): Promise<string | undefined> {
+async function runCustom(rule: FormRule, value: unknown): Promise<string | undefined> {
     const validator = rule.asyncValidator || rule.validator;
     if (!validator) return undefined;
     return new Promise(resolve => {
         let completed = false;
-        const done: SnakeFormValidatorCallback = error => {
+        const done: FormValidatorCallback = error => {
             if (completed) return;
             completed = true;
             resolve(typeof error === 'string' ? error : error?.message);
         };
         try {
             const result = validator(rule, value, done);
-            if (result && typeof (result as Promise<SnakeFormValidatorResult>).then === 'function') {
-                void (result as Promise<SnakeFormValidatorResult>)
+            if (result && typeof (result as Promise<FormValidatorResult>).then === 'function') {
+                void (result as Promise<FormValidatorResult>)
                     .then(value => {
                         if (!completed) {
                             completed = true;
@@ -74,7 +74,7 @@ async function runCustom(rule: SnakeFormRule, value: unknown): Promise<string | 
                     .catch(error => done(error instanceof Error ? error : String(error)));
             } else if (result !== undefined) {
                 completed = true;
-                resolve(normalizeCustomResult(result as SnakeFormValidatorResult, rule.message || '校验失败'));
+                resolve(normalizeCustomResult(result as FormValidatorResult, rule.message || '校验失败'));
             } else if (validator.length < 3) {
                 completed = true;
                 resolve(undefined);
@@ -85,7 +85,7 @@ async function runCustom(rule: SnakeFormRule, value: unknown): Promise<string | 
     });
 }
 
-export function ruleMatchesTrigger(rule: SnakeFormRule, trigger?: SnakeFormTrigger): boolean {
+export function ruleMatchesTrigger(rule: FormRule, trigger?: FormTrigger): boolean {
     if (!trigger || !rule.trigger) return true;
     return (Array.isArray(rule.trigger) ? rule.trigger : [rule.trigger]).includes(trigger);
 }
@@ -93,11 +93,11 @@ export function ruleMatchesTrigger(rule: SnakeFormRule, trigger?: SnakeFormTrigg
 export async function validateFormValue(
     prop: string,
     rawValue: unknown,
-    rules: SnakeFormRule | SnakeFormRule[],
-    trigger?: SnakeFormTrigger
-): Promise<SnakeFormError[]> {
+    rules: FormRule | FormRule[],
+    trigger?: FormTrigger
+): Promise<FormError[]> {
     const list = (Array.isArray(rules) ? rules : [rules]).filter(rule => ruleMatchesTrigger(rule, trigger));
-    const errors: SnakeFormError[] = [];
+    const errors: FormError[] = [];
     for (const rule of list) {
         const value = rule.transform ? rule.transform(rawValue) : rawValue;
         let message: string | undefined;
@@ -120,7 +120,7 @@ export async function validateFormValue(
             } else message = await runCustom(rule, value);
 
             if (!message && value && (rule.fields || rule.defaultField) && typeof value === 'object') {
-                const childRules: SnakeFormRules = { ...(rule.fields || {}) };
+                const childRules: FormRules = { ...(rule.fields || {}) };
                 if (rule.defaultField) {
                     for (const key of Object.keys(value as Record<string, unknown>)) {
                         if (!childRules[key]) childRules[key] = rule.defaultField;

@@ -26,11 +26,11 @@ app.use(SnakeUI, {
 Snake UI 不依赖其他 UI 组件库，不需要额外导入第三方主题样式。底座内置 Snake 绿色明暗主题、`zh-CN` / `en-US`、基于 `uni.request` 的 HTTP 客户端和常用 hooks / 工具。
 
 ```ts
-import { setSnakeDarkMode, setSnakeLocale, snakeHttp } from '@puresnake/snake-ui';
+import { http, setDarkMode, setLocale } from '@puresnake/snake-ui';
 
-setSnakeDarkMode('auto');
-setSnakeLocale('en-US');
-const data = await snakeHttp.get('/goods');
+setDarkMode('auto');
+setLocale('en-US');
+const data = await http.get('/goods');
 ```
 
 如需统一覆盖品牌色、文字色和圆角，可在应用入口导入可选主题变量：
@@ -67,8 +67,8 @@ page {
 组件推荐使用 easycom 标签；如需手动导入，按组件路径引入：
 
 ```ts
-import SnakeButton from '@puresnake/snake-ui/components/snake-button/snake-button.vue';
-import type { SnakeButtonProps, SnakePopupMode } from '@puresnake/snake-ui';
+import Button from '@puresnake/snake-ui/components/snake-button/snake-button.vue';
+import type { ButtonProps, PopupMode } from '@puresnake/snake-ui';
 import { addUnit, navTo, sleep, toast } from '@puresnake/snake-ui/libs';
 ```
 

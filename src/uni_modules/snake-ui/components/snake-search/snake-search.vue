@@ -1,18 +1,18 @@
 <script setup lang="ts">
 /**
- * @component SnakeSearch
+ * @component Search
  * @description 搜索框，集成了常用搜索框所需功能，支持圆形/方形、清除控件、右侧操作按钮与聚焦动画。
  * @see /components/search
  */
 
 import { computed, nextTick, ref, watch } from 'vue';
 import { useLocale } from '../../libs/hooks/useLocale';
-import SnakeIcon from '../snake-icon/snake-icon.vue';
-import { snakeSearchProps, type SnakeSearchEmits } from './types';
+import Icon from '../snake-icon/snake-icon.vue';
+import { searchProps, type SearchEmits } from './types';
 
 defineOptions({ name: 'SnakeSearch', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = defineProps(snakeSearchProps);
-const emit = defineEmits<SnakeSearchEmits>();
+const props = defineProps(searchProps);
+const emit = defineEmits<SearchEmits>();
 const { t } = useLocale('search');
 
 // 输入框当前值，v-model 双向同步

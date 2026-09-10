@@ -239,7 +239,7 @@
 
 <script lang="ts">
 export default {
-    name: 'SnakeUpload',
+    name: 'Upload',
     options: {
         addGlobalClass: true,
         // #ifndef MP-TOUTIAO
@@ -255,10 +255,8 @@ import { ref, watch, computed } from 'vue';
 import { useLocale } from '../../libs/hooks/useLocale';
 import { toStyle } from '../../libs/function/style';
 import { addUnit } from '../../libs/function/unit';
-import { snakeUploadProps } from './types';
-import type { SnakeUploadFileItem, SnakeUploadFileItem as UploadFileItem } from './types';
-import snakeIcon from '../snake-icon/snake-icon.vue';
-import snakeLineProgress from '../snake-line-progress/snake-line-progress.vue';
+import { uploadProps } from './types';
+import type { UploadFileItem } from './types';
 
 // 通过 flex 容器居中图标；补齐图标根节点的行盒约束，
 // 避免字体基线在不同运行端造成加号和关闭图标的视觉偏移。
@@ -276,7 +274,7 @@ const deleteIconStyle = {
 };
 
 /**
- * @component SnakeUpload
+ * @component Upload
  * upload 文件上传
  * @description 该组件用于上传文件场景，支持图片、视频、文档等多种类型，支持网格和列表两种展示模式
  * @see /components/upload
@@ -341,7 +339,7 @@ const deleteIconStyle = {
  * @example <snake-upload :action="action" accept="file" mode="list" :show-file-name="true"></snake-upload>
  */
 
-const props = defineProps(snakeUploadProps);
+const props = defineProps(uploadProps);
 
 const { t } = useLocale('upload');
 
@@ -956,7 +954,7 @@ function handleFilesSelected(files: any[], sourceType: 'image' | 'video' | 'medi
 }
 
 /** 兼容旧版组件：把自定义选择或裁剪后的文件交给业务 afterRead。 */
-function onBeforeRead(file: SnakeUploadFileItem | SnakeUploadFileItem[]) {
+function onBeforeRead(file: UploadFileItem | UploadFileItem[]) {
     const files = Array.isArray(file) ? file : [file];
     const detail = { name: props.name, index: lists.value.length };
     emit('beforeRead', { file, ...detail });

@@ -2,13 +2,13 @@ import type { ExtractPropTypes, PropType } from 'vue';
 import zIndex from '../../libs/config/zIndex';
 
 /** snake-toast 支持的提示类型。 */
-export type SnakeToastType = 'success' | 'error' | 'warning' | 'info' | 'primary' | 'default' | '';
+export type ToastType = 'success' | 'error' | 'warning' | 'info' | 'primary' | 'default' | '';
 
 /** snake-toast 支持的显示位置。 */
-export type SnakeToastPosition = 'center' | 'top' | 'bottom';
+export type ToastPosition = 'center' | 'top' | 'bottom';
 
-/** snakeToastProps 运行时属性及默认值。 */
-export const snakeToastProps = {
+/** toastProps 运行时属性及默认值。 */
+export const toastProps = {
     /** 根节点自定义样式。 */
     customStyle: { type: [String, Object, Array] as PropType<string | Record<string, any> | unknown[]>, default: () => ({}) },
     /** 根节点自定义类名。 */
@@ -16,13 +16,13 @@ export const snakeToastProps = {
     /** 层级 z-index。 */
     zIndex: { type: [Number, String] as PropType<number | string>, default: zIndex.toast },
     /** 提示类型，success/warning/error/info 等。 */
-    type: { type: String as PropType<SnakeToastType>, default: '' },
+    type: { type: String as PropType<ToastType>, default: '' },
     /** 显示时长，单位 ms。设为 0 表示不自动关闭，需手动调用 hide/close。 */
     duration: { type: Number, default: 2000 },
     /** 是否显示图标。 */
     icon: { type: Boolean, default: true },
     /** 显示位置，center/top/bottom。 */
-    position: { type: String as PropType<SnakeToastPosition>, default: 'center' },
+    position: { type: String as PropType<ToastPosition>, default: 'center' },
     /** 关闭时的回调函数。 */
     callback: { type: Function as unknown as PropType<(() => void) | null>, default: null },
     /** 是否返回上一页。 */
@@ -41,11 +41,11 @@ export const snakeToastProps = {
     loading: { type: Boolean, default: false }
 };
 
-/** SnakeToast 组件公开属性。 */
-export type SnakeToastProps = ExtractPropTypes<typeof snakeToastProps>;
+/** Toast 组件公开属性。 */
+export type ToastProps = ExtractPropTypes<typeof toastProps>;
 
-/** SnakeToast 组件通过 ref 暴露的方法。 */
-export type SnakeToastExpose = {
+/** Toast 组件通过 ref 暴露的方法。 */
+export type ToastExpose = {
     /** 显示 toast。 */
     show: (options: Record<string, any>) => void;
     /** 隐藏 toast。 */

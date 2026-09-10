@@ -1,5 +1,5 @@
-/** SnakeFloatingBubble 配置数据。 */
-export interface SnakeFloatingBubbleData {
+/** FloatingBubble 配置数据。 */
+export interface FloatingBubbleData {
     /** uid 配置。 */
     uid?: string | number;
     /** 资源地址。 */
@@ -16,10 +16,10 @@ export interface SnakeFloatingBubbleData {
     height?: number;
 }
 
-/** SnakeFloatingBubble 组件的公开属性。 */
-export interface SnakeFloatingBubbleProps {
+/** FloatingBubble 组件的公开属性。 */
+export interface FloatingBubbleProps {
     /** CMS 装修组件配置数据。 */
-    datas?: SnakeFloatingBubbleData;
+    datas?: FloatingBubbleData;
     /** 页面或容器当前滚动距离。 */
     scrollTop?: number;
     /** 插槽模式下底部定位偏移。 */

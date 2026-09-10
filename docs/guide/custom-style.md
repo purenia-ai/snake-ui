@@ -66,7 +66,7 @@ npm 安装时在 `App.vue` 引入完整样式：
 
 ## 让主题覆盖页面
 
-页面必须处于 `snake-config-provider` 的变量作用域内，主题和暗色模式才能完整传递。可以逐页包裹，也可以在 `App.root.vue` 中配合 `SnakeRoot` 插件统一注入。
+页面必须处于 `snake-config-provider` 的变量作用域内，主题和暗色模式才能完整传递。可以逐页包裹，也可以在 `App.root.vue` 中配合 `Root` 插件统一注入。
 
 完整根组件配置见 [ConfigProvider](/components/config-provider) 与[虚拟根组件](/guide/root)。
 

@@ -1,18 +1,18 @@
 <script setup lang="ts">
 /**
- * @component SnakeOverlay
+ * @component Overlay
  * @description 带完整淡入淡出动画的全屏遮罩，可锁定遮罩区域滚动并承载自定义内容。
  * @see /components/overlay
  */
 
 import { computed, getCurrentInstance } from 'vue';
 import zIndex from '../../libs/config/zIndex';
-import SnakeTransition from '../snake-transition/snake-transition.vue';
-import type { SnakeOverlayEmits, SnakeOverlayProps } from './types';
+import Transition from '../snake-transition/snake-transition.vue';
+import type { OverlayEmits, OverlayProps } from './types';
 
-defineOptions({ name: 'SnakeOverlay', options: { virtualHost: true, styleIsolation: 'shared' } });
+defineOptions({ name: 'Overlay', options: { virtualHost: true, styleIsolation: 'shared' } });
 
-const props = withDefaults(defineProps<SnakeOverlayProps>(), {
+const props = withDefaults(defineProps<OverlayProps>(), {
     modelValue: false,
     opacity: 0.5,
     zIndex: zIndex.mask,
@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<SnakeOverlayProps>(), {
     customClass: '',
     customStyle: ''
 });
-const emit = defineEmits<SnakeOverlayEmits>();
+const emit = defineEmits<OverlayEmits>();
 // 与 snake-popup 同理：未绑定 show 时 Boolean casting 会让 `??` 失效，需检测实际绑定来源。
 const showBound = 'show' in (getCurrentInstance()?.vnode?.props ?? {});
 const visible = computed(() => (showBound ? props.show : props.modelValue));

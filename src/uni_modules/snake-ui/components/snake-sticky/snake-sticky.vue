@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 /**
- * @component SnakeSticky
+ * @component Sticky
  * @description 通过 IntersectionObserver 相对视口观察占位层实现跨端吸顶，采用三层结构（外层容器 / 占位层 / 内容层），并在不支持 Observer 的环境降级为页面 scrollTop 定位。
  * @see /components/sticky
  */
@@ -22,11 +22,11 @@
 import { onPageScroll } from '@dcloudio/uni-app';
 import { computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, watch, type CSSProperties } from 'vue';
 import { getRect, guid } from '../../libs/function/platform';
-import type { SnakeStickyEmits, SnakeStickyProps } from './types';
+import type { StickyEmits, StickyProps } from './types';
 
-defineOptions({ name: 'SnakeSticky', options: { virtualHost: true, styleIsolation: 'shared' } });
+defineOptions({ name: 'Sticky', options: { virtualHost: true, styleIsolation: 'shared' } });
 
-const props = withDefaults(defineProps<SnakeStickyProps>(), {
+const props = withDefaults(defineProps<StickyProps>(), {
     offsetTop: 0,
     customNavHeight: 0,
     zIndex: 10,
@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<SnakeStickyProps>(), {
     customClass: '',
     customStyle: ''
 });
-const emit = defineEmits<SnakeStickyEmits>();
+const emit = defineEmits<StickyEmits>();
 const instance = getCurrentInstance();
 
 const fixed = ref(false);

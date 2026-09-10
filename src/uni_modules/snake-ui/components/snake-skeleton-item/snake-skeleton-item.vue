@@ -1,17 +1,17 @@
 <script setup lang="ts">
 /**
- * @component SnakeSkeletonItem
+ * @component SkeletonItem
  * @description 用于组合自定义骨架模板的基础占位单元。
  * @see /components/skeleton
  */
 
 import { computed, inject, type CSSProperties } from 'vue';
 import { addUnit } from '../../libs/function/unit';
-import { SNAKE_SKELETON_CONTEXT, type SnakeSkeletonItemProps } from './types';
+import { SNAKE_SKELETON_CONTEXT, type SkeletonItemProps } from './types';
 
-defineOptions({ name: 'SnakeSkeletonItem', options: { virtualHost: true, styleIsolation: 'shared' } });
+defineOptions({ name: 'SkeletonItem', options: { virtualHost: true, styleIsolation: 'shared' } });
 
-const props = withDefaults(defineProps<SnakeSkeletonItemProps>(), {
+const props = withDefaults(defineProps<SkeletonItemProps>(), {
     variant: 'text',
     width: undefined,
     height: undefined,
@@ -41,7 +41,7 @@ const itemStyle = computed(() => {
     ];
 });
 
-const variantDefaults: Record<NonNullable<SnakeSkeletonItemProps['variant']>, VariantDefaults> = {
+const variantDefaults: Record<NonNullable<SkeletonItemProps['variant']>, VariantDefaults> = {
     text: { width: '100%', height: '16px', radius: '4px' },
     rect: { width: '100%', height: '100px', radius: '8px' },
     circle: { width: '32px', height: '32px', radius: '50%' },

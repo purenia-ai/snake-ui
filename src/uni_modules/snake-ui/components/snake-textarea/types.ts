@@ -1,8 +1,8 @@
 import type { UnitValue } from '../../libs/function/unit';
-import type { SnakeStyleValue } from '../../types/global';
-import type { SnakeFormSize } from '../../libs/internal/form';
-/** SnakeTextarea 组件的公开属性。 */
-export interface SnakeTextareaProps {
+import type { StyleValue } from '../../types/global';
+import type { FormSize } from '../../libs/internal/form';
+/** Textarea 组件的公开属性。 */
+export interface TextareaProps {
     /** 双向绑定的当前值。 */
     modelValue?: string | number;
     /** 输入为空时的占位文本。 */
@@ -24,7 +24,7 @@ export interface SnakeTextareaProps {
     /** 是否为只读状态。 */
     readonly?: boolean;
     /** 组件尺寸。 */
-    size?: SnakeFormSize;
+    size?: FormSize;
     /** 边框展示模式。 */
     border?: 'none' | 'surround' | 'bottom';
     /** 内容颜色。 */
@@ -56,10 +56,10 @@ export interface SnakeTextareaProps {
     /** 根节点自定义类名。 */
     customClass?: string;
     /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
+    customStyle?: StyleValue;
 }
-/** SnakeTextarea 组件的事件契约。 */
-export interface SnakeTextareaEmits {
+/** Textarea 组件的事件契约。 */
+export interface TextareaEmits {
     /** update:modelValue 事件携带的参数。 */
     'update:modelValue': [value: string];
     /** input 事件携带的参数。 */

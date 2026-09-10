@@ -1,19 +1,19 @@
-import { defaultSnakeTheme, type SnakeTheme } from './uni_modules/snake-ui';
+import { defaultTheme, type Theme } from './uni_modules/snake-ui';
 
 const THEME_STORAGE_KEY = 'snake-ui-theme';
 
-export const legacySnakeThemePresetNames: Readonly<Record<string, string>> = {
+export const legacyThemePresetNames: Readonly<Record<string, string>> = {
     pupple: 'purple',
     blue: 'dark',
     red: 'rose'
 };
 
 /** Migrate theme ids used by earlier demo presets without exposing duplicate themes. */
-export function migrateSnakeThemePresetStorage(): string | undefined {
+export function migrateThemePresetStorage(): string | undefined {
     try {
         const savedTheme = uni.getStorageSync(THEME_STORAGE_KEY);
         if (typeof savedTheme !== 'string') return undefined;
-        const nextTheme = legacySnakeThemePresetNames[savedTheme];
+        const nextTheme = legacyThemePresetNames[savedTheme];
         if (!nextTheme) return undefined;
         uni.setStorageSync(THEME_STORAGE_KEY, nextTheme);
         return nextTheme;
@@ -27,8 +27,8 @@ export function migrateSnakeThemePresetStorage(): string | undefined {
  * Snake brand green, while the overlapping green preset is replaced by rose.
  * Dark values mirror uView Pro's generated palette and include Snake-only tokens.
  */
-export const snakeThemePresets: SnakeTheme[] = [
-    defaultSnakeTheme,
+export const snakeThemePresets: Theme[] = [
+    defaultTheme,
     {
         name: 'purple',
         label: '霞光紫',

@@ -1,12 +1,12 @@
 import type { ExtractPropTypes, PropType } from 'vue';
-import type { SnakeStyleValue } from '../../types/global';
+import type { StyleValue } from '../../types/global';
 
-/** SnakeSelectMode 类型定义。 */
-export type SnakeSelectMode = 'single-column' | 'mutil-column' | 'mutil-column-auto';
-/** SnakeSelectItem 选择列表数据项。 */
-export type SnakeSelectItem = Record<string, unknown>;
-/** SnakeSelectResult 确认/取消回调中的单项结果。 */
-export interface SnakeSelectResult {
+/** SelectMode 类型定义。 */
+export type SelectMode = 'single-column' | 'mutil-column' | 'mutil-column-auto';
+/** SelectItem 选择列表数据项。 */
+export type SelectItem = Record<string, unknown>;
+/** SelectResult 确认/取消回调中的单项结果。 */
+export interface SelectResult {
     /** 数据项的 value 字段。 */
     value: unknown;
     /** 数据项的 label 字段。 */
@@ -15,14 +15,14 @@ export interface SnakeSelectResult {
     extra?: unknown;
 }
 
-/** snakeSelectProps 运行时属性及默认值。 */
-export const snakeSelectProps = {
+/** selectProps 运行时属性及默认值。 */
+export const selectProps = {
     /** 根节点自定义样式。 */
-    customStyle: { type: [String, Object, Array] as PropType<SnakeStyleValue>, default: '' },
+    customStyle: { type: [String, Object, Array] as PropType<StyleValue>, default: '' },
     /** 根节点自定义类名。 */
     customClass: { type: String, default: '' },
     /** 列数据。 */
-    list: { type: Array as PropType<SnakeSelectItem[] | SnakeSelectItem[][]>, default: () => [] },
+    list: { type: Array as PropType<SelectItem[] | SelectItem[][]>, default: () => [] },
     /** 是否显示边框。 */
     border: { type: Boolean, default: true },
     /** 双向绑定控制选择器的弹出与收起。 */
@@ -42,7 +42,7 @@ export const snakeSelectProps = {
     /** 是否保留用户上次确认的选择。 */
     preserveSelection: { type: Boolean, default: true },
     /** 模式选择，single-column 单列，mutil-column 多列，mutil-column-auto 多列联动。 */
-    mode: { type: String as PropType<SnakeSelectMode>, default: 'single-column' },
+    mode: { type: String as PropType<SelectMode>, default: 'single-column' },
     /** 自定义 value 属性名。 */
     valueName: { type: String, default: 'value' },
     /** 自定义 label 属性名。 */
@@ -57,17 +57,17 @@ export const snakeSelectProps = {
     confirmText: { type: String, default: '' }
 } as const;
 
-/** SnakeSelect 组件的公开属性。 */
-export type SnakeSelectProps = ExtractPropTypes<typeof snakeSelectProps>;
+/** Select 组件的公开属性。 */
+export type SelectProps = ExtractPropTypes<typeof selectProps>;
 
-/** SnakeSelect 组件的事件契约。 */
-export interface SnakeSelectEmits {
+/** Select 组件的事件契约。 */
+export interface SelectEmits {
     /** 双向绑定值更新。 */
     'update:modelValue': [value: boolean];
     /** 点击确认按钮，返回当前选择的值。 */
-    confirm: [value: SnakeSelectResult[]];
+    confirm: [value: SelectResult[]];
     /** 点击取消按钮，返回当前选择的值。 */
-    cancel: [value: SnakeSelectResult[]];
+    cancel: [value: SelectResult[]];
     /** 点击遮罩等非确认/取消方式关闭时触发。 */
     close: [];
     /** 点击触发入口时触发（兼容声明）。 */

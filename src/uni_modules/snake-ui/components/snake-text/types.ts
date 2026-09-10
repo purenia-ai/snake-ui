@@ -1,19 +1,19 @@
 import type { ExtractPropTypes, PropType } from 'vue';
-import type { SnakeStyleValue } from '../../types/global';
+import type { StyleValue } from '../../types/global';
 
-/** SnakeTextMode 类型定义。 */
-export type SnakeTextMode = 'text' | 'price' | 'phone' | 'name' | 'date' | 'link';
-/** SnakeTextDecoration 类型定义。 */
-export type SnakeTextDecoration = 'none' | 'underline' | 'line-through';
-/** SnakeTextAlign 类型定义。 */
-export type SnakeTextAlign = 'left' | 'center' | 'right';
-/** SnakeTextWordWrap 类型定义。 */
-export type SnakeTextWordWrap = 'break-word' | 'normal' | 'anywhere';
+/** TextMode 类型定义。 */
+export type TextMode = 'text' | 'price' | 'phone' | 'name' | 'date' | 'link';
+/** TextDecoration 类型定义。 */
+export type TextDecoration = 'none' | 'underline' | 'line-through';
+/** TextAlign 类型定义。 */
+export type TextAlign = 'left' | 'center' | 'right';
+/** TextWordWrap 类型定义。 */
+export type TextWordWrap = 'break-word' | 'normal' | 'anywhere';
 
-/** snakeTextProps 运行时属性及默认值。 */
-export const snakeTextProps = {
+/** textProps 运行时属性及默认值。 */
+export const textProps = {
     /** 根节点自定义样式。 */
-    customStyle: { type: [String, Object, Array] as PropType<SnakeStyleValue>, default: '' },
+    customStyle: { type: [String, Object, Array] as PropType<StyleValue>, default: '' },
     /** 根节点自定义类名。 */
     customClass: { type: String, default: '' },
     /** 主题颜色。 */
@@ -27,7 +27,7 @@ export const snakeTextProps = {
     /** 后置图标。 */
     suffixIcon: { type: String, default: '' },
     /** 文本处理模式。 */
-    mode: { type: String as PropType<SnakeTextMode>, default: 'text' },
+    mode: { type: String as PropType<TextMode>, default: 'text' },
     /** 链接地址，mode 为 link 时使用。 */
     href: { type: String, default: '' },
     /** 格式化规则，字符串或函数。 */
@@ -47,19 +47,19 @@ export const snakeTextProps = {
     /** 字体大小。 */
     size: { type: [String, Number] as PropType<string | number>, default: 28 },
     /** 图标样式。 */
-    iconStyle: { type: [Object, Array, String] as PropType<SnakeStyleValue>, default: () => ({ fontSize: '15px' }) },
+    iconStyle: { type: [Object, Array, String] as PropType<StyleValue>, default: () => ({ fontSize: '15px' }) },
     /** 文字样式。 */
-    textStyle: { type: [Object, Array, String] as PropType<SnakeStyleValue>, default: () => ({}) },
+    textStyle: { type: [Object, Array, String] as PropType<StyleValue>, default: () => ({}) },
     /** 文字装饰。 */
-    decoration: { type: String as PropType<SnakeTextDecoration>, default: 'none' },
+    decoration: { type: String as PropType<TextDecoration>, default: 'none' },
     /** 外边距。 */
     margin: { type: [Object, String, Number] as PropType<Record<string, unknown> | string | number>, default: 0 },
     /** 行高。 */
     lineHeight: { type: [String, Number] as PropType<string | number>, default: '' },
     /** 对齐方式。 */
-    align: { type: String as PropType<SnakeTextAlign>, default: 'left' },
+    align: { type: String as PropType<TextAlign>, default: 'left' },
     /** 换行方式。 */
-    wordWrap: { type: String as PropType<SnakeTextWordWrap>, default: 'normal' },
+    wordWrap: { type: String as PropType<TextWordWrap>, default: 'normal' },
     /** 语言。 */
     lang: { type: String, default: '' },
     /** 会话来源。 */
@@ -78,11 +78,11 @@ export const snakeTextProps = {
     formType: { type: String, default: '' }
 } as const;
 
-/** SnakeText 组件的公开属性。 */
-export type SnakeTextProps = ExtractPropTypes<typeof snakeTextProps>;
+/** Text 组件的公开属性。 */
+export type TextProps = ExtractPropTypes<typeof textProps>;
 
-/** SnakeText 组件的事件契约。 */
-export interface SnakeTextEmits {
+/** Text 组件的事件契约。 */
+export interface TextEmits {
     /** click 事件携带的参数。 */
     click: [];
     /** getuserinfo 事件携带的参数。 */

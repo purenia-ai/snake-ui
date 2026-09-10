@@ -67,8 +67,8 @@ const rules = {
 | 参数            | 说明                     | 类型                        | 默认值                 |
 | --------------- | ------------------------ | --------------------------- | ---------------------- |
 | `model`         | 表单数据对象             | `object`                    | `{}`                   |
-| `rules`         | 校验规则                 | `SnakeFormRules`            | `{}`                   |
-| `errorType`     | 错误提示方式             | `SnakeFormErrorType[]`      | `['message', 'toast']` |
+| `rules`         | 校验规则                 | `FormRules`            | `{}`                   |
+| `errorType`     | 错误提示方式             | `FormErrorType[]`      | `['message', 'toast']` |
 | `borderBottom`  | 表单项默认显示底边       | `boolean`                   | `true`                 |
 | `labelPosition` | 标签位置                 | `left \| top`               | `left`                 |
 | `labelWidth`    | 标签宽度，数字单位为 rpx | `string \| number`          | `90`                   |

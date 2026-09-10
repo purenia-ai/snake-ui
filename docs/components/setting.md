@@ -101,8 +101,8 @@ export function createApp() {
 如果不使用 easycom，也可以按组件路径手动导入：
 
 ```ts
-import SnakeButton from '@puresnake/snake-ui/components/snake-button/snake-button.vue';
-import SnakePopup from '@puresnake/snake-ui/components/snake-popup/snake-popup.vue';
+import Button from '@puresnake/snake-ui/components/snake-button/snake-button.vue';
+import Popup from '@puresnake/snake-ui/components/snake-popup/snake-popup.vue';
 ```
 
 接下来用[快速上手](/components/quickstart)检查组件和全局工具是否都已生效。

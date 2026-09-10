@@ -7,7 +7,7 @@ import { registerRootApp, rebuildRootApp } from './root';
 import { transformPage } from './page';
 import { loadPagesJson, normalizePlatformPath, debounce } from './utils';
 
-interface SnakeRootOptions {
+interface RootOptions {
     /** 根组件文件名（不含扩展名），默认 App.root */
     rootFileName?: string;
 }
@@ -38,8 +38,8 @@ function normalizeId(id: string) {
  * 纯 Vite 构建时插件，在所有 UniApp 支持的平台（H5、微信小程序、支付宝小程序、
  * 头条小程序、Android App、iOS App、鸿蒙 App）均可正常工作
  */
-export function SnakeRoot(options?: SnakeRootOptions): Plugin {
-    const resolvedOptions: Required<SnakeRootOptions> = {
+export function Root(options?: RootOptions): Plugin {
+    const resolvedOptions: Required<RootOptions> = {
         rootFileName: 'App.root',
         ...options
     };
@@ -119,5 +119,5 @@ export function SnakeRoot(options?: SnakeRootOptions): Plugin {
     };
 }
 
-export default SnakeRoot;
-export type { SnakeRootOptions };
+export default Root;
+export type { RootOptions };

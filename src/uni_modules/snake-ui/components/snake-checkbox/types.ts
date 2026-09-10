@@ -1,11 +1,11 @@
 import type { ExtractPropTypes, PropType } from 'vue';
 import type { UnitValue } from '../../libs/function/unit';
-import type { SnakeStyleValue } from '../../types/global';
+import type { StyleValue } from '../../types/global';
 
-/** snakeCheckboxProps 运行时属性及默认值。 */
-export const snakeCheckboxProps = {
+/** checkboxProps 运行时属性及默认值。 */
+export const checkboxProps = {
     /** 根节点自定义样式。 */
-    customStyle: { type: [String, Object, Array] as PropType<SnakeStyleValue>, default: () => ({}) },
+    customStyle: { type: [String, Object, Array] as PropType<StyleValue>, default: () => ({}) },
     /** 根节点自定义类名。 */
     customClass: { type: String, default: '' },
     /** 展示标签文本。 */
@@ -32,13 +32,13 @@ export const snakeCheckboxProps = {
     size: { type: [String, Number] as PropType<string | number>, default: '' }
 } as const;
 
-/** SnakeCheckboxResolved 组件的公开属性。 */
-export type SnakeCheckboxResolvedProps = ExtractPropTypes<typeof snakeCheckboxProps>;
+/** CheckboxResolved 组件的公开属性。 */
+export type CheckboxResolvedProps = ExtractPropTypes<typeof checkboxProps>;
 
-/** SnakeCheckbox 组件的公开属性。 */
-export interface SnakeCheckboxProps {
+/** Checkbox 组件的公开属性。 */
+export interface CheckboxProps {
     /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
+    customStyle?: StyleValue;
     /** 根节点自定义类名。 */
     customClass?: string;
     /** 展示标签文本。 */
@@ -65,8 +65,8 @@ export interface SnakeCheckboxProps {
     size?: string | number;
 }
 
-/** SnakeCheckbox 组件的事件契约。 */
-export interface SnakeCheckboxEmits {
+/** Checkbox 组件的事件契约。 */
+export interface CheckboxEmits {
     /** 选中状态变化时触发。 */
     'update:modelValue': [value: boolean];
     /** 选中状态变化时触发，携带变化后的新状态。 */

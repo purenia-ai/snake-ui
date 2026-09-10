@@ -27,11 +27,11 @@ OSS 凭证和签名由业务端处理，组件只负责文件队列与状态：
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { SnakeUploadFileItem, SnakeUploadRequest } from '@/uni_modules/snake-ui';
+import type { UploadFileItem, UploadRequest } from '@/uni_modules/snake-ui';
 
-const files = ref<SnakeUploadFileItem[]>([]);
+const files = ref<UploadFileItem[]>([]);
 
-const uploadToOss: SnakeUploadRequest = async (file, { onProgress }) => {
+const uploadToOss: UploadRequest = async (file, { onProgress }) => {
     const policy = await getOssPolicy();
     const result = await uploadOssFile(file.path || file.url || '', policy, onProgress);
     return { url: result.cdnUrl, response: result };
@@ -58,10 +58,10 @@ const uploadToOss: SnakeUploadRequest = async (file, { onProgress }) => {
 
 | 参数                                  | 说明                                                        | 类型                                   | 默认值                        |
 | ------------------------------------- | ----------------------------------------------------------- | -------------------------------------- | ----------------------------- |
-| `modelValue`                          | 文件列表，支持 `v-model`                                    | `SnakeUploadFileItem[]`                | `[]`                          |
-| `fileList`                            | 初始文件列表（旧版兼容，`modelValue` 有值时优先）           | `SnakeUploadFileItem[]`                | `[]`                          |
+| `modelValue`                          | 文件列表，支持 `v-model`                                    | `UploadFileItem[]`                | `[]`                          |
+| `fileList`                            | 初始文件列表（旧版兼容，`modelValue` 有值时优先）           | `UploadFileItem[]`                | `[]`                          |
 | `action`                              | 服务器上传地址                                              | `string`                               | `''`                          |
-| `uploadRequest`                       | 自定义上传适配器（OSS 等），优先于 `action`                 | `SnakeUploadRequest`                   | -                             |
+| `uploadRequest`                       | 自定义上传适配器（OSS 等），优先于 `action`                 | `UploadRequest`                   | -                             |
 | `timeout`                             | 默认上传的超时时间，单位毫秒                                | `number`                               | `60000`                       |
 | `accept`                              | 接受的文件类型 `image / video / file / media / all`         | `string`                               | `'image'`                     |
 | `mode`                                | 展示模式 `grid / list`                                      | `string`                               | `'grid'`                      |
@@ -149,7 +149,7 @@ const uploadToOss: SnakeUploadRequest = async (file, { onProgress }) => {
 
 ## 类型定义
 
-从包根导入 `SnakeUploadProps`、`SnakeUploadFileItem`、`SnakeUploadRequest`、`SnakeUploadRequestResult`、`SnakeUploadExpose` 等类型。
+从包根导入 `UploadProps`、`UploadFileItem`、`UploadRequest`、`UploadRequestResult`、`UploadExpose` 等类型。
 
 ## 旧版兼容
 

@@ -1,5 +1,5 @@
-import { setSnakeThemeColor, snakeColor } from '../config/theme';
+import { setThemeColor, color } from '../config/theme';
 
 export function useColor() {
-    return { color: snakeColor, setColor: setSnakeThemeColor };
+    return { color: color, setColor: setThemeColor };
 }

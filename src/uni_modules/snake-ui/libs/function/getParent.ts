@@ -1,7 +1,7 @@
 // 获取父组件的参数，因为支付宝小程序不支持 provide/inject 的写法
 // this.$parent 在非 H5 中可以准确获取到父组件，但在 H5 中需要多层 this.$parent.$parent.xxx
-interface SnakeVueInstance {
-    $parent?: SnakeVueInstance;
+interface VueInstance {
+    $parent?: VueInstance;
     $options?: { name?: string };
     [key: string]: any;
 }
@@ -14,7 +14,7 @@ interface SnakeVueInstance {
  * @returns 父组件参数对象
  */
 export function getParent(
-    this: SnakeVueInstance,
+    this: VueInstance,
     name: string,
     keys: string[] | Record<string, any>
 ): Record<string, any> {

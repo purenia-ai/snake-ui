@@ -74,7 +74,7 @@ preview: /pages/componentsA/countDown/index
 ## 类型定义
 
 ```ts
-import type { SnakeCountDownProps, SnakeCountDownEmits, SnakeCountDownExpose } from 'snake-ui';
+import type { CountDownProps, CountDownEmits, CountDownExpose } from 'snake-ui';
 ```
 
 ## 主题变量

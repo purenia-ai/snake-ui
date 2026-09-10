@@ -21,9 +21,9 @@ app.use(SnakeUI, {
 ## 注册多套主题
 
 ```ts
-import SnakeUI, { type SnakeTheme } from '@puresnake/snake-ui';
+import SnakeUI, { type Theme } from '@puresnake/snake-ui';
 
-const themes: SnakeTheme[] = [
+const themes: Theme[] = [
     {
         name: 'brand',
         label: '品牌紫',
@@ -51,7 +51,7 @@ app.use(SnakeUI, {
 });
 ```
 
-`name` 是 `setSnakeTheme()` 使用的唯一标识。`color` 和 `darkColor` 都允许只覆盖需要定制的键。
+`name` 是 `setTheme()` 使用的唯一标识。`color` 和 `darkColor` 都允许只覆盖需要定制的键。
 
 ::: tip 对比度
 `primaryInk` 是主色实心背景上的文字色。设计按钮等关键交互时，应检查文字与背景的实际对比度；亮主色通常需要深色文字。
@@ -114,13 +114,13 @@ app.use(SnakeUI, {
 
 ```vue
 <script setup lang="ts">
-import SnakeConfigProvider from './uni_modules/snake-ui/components/snake-config-provider/snake-config-provider.vue';
+import ConfigProvider from './uni_modules/snake-ui/components/snake-config-provider/snake-config-provider.vue';
 </script>
 
 <template>
-    <SnakeConfigProvider>
+    <ConfigProvider>
         <slot />
-    </SnakeConfigProvider>
+    </ConfigProvider>
 </template>
 ```
 
@@ -141,9 +141,9 @@ import SnakeConfigProvider from './uni_modules/snake-ui/components/snake-config-
 ```
 
 ```ts
-import { snakeColor } from '@puresnake/snake-ui';
+import { color } from '@puresnake/snake-ui';
 
-console.log(snakeColor.primary);
+console.log(color.primary);
 ```
 
 主题切换后，CSS 变量和响应式色板都会更新。写死的十六进制颜色不会随主题变化。
@@ -152,14 +152,14 @@ console.log(snakeColor.primary);
 
 | API                         | 作用                           |
 | --------------------------- | ------------------------------ |
-| `setSnakeTheme(name)`       | 切换主题并持久化，返回是否成功 |
-| `setSnakeThemeColor(color)` | 更新当前主题的颜色片段         |
-| `currentSnakeTheme`         | 当前主题的响应式引用           |
-| `snakeThemes`               | 已注册主题列表                 |
-| `setSnakeDarkMode(mode)`    | 设置 `light`、`dark` 或 `auto` |
-| `toggleSnakeDarkMode()`     | 在明暗模式间快速切换           |
-| `isSnakeDarkMode()`         | 返回当前是否渲染暗色           |
-| `snakeColor`                | 当前响应式色板                 |
+| `setTheme(name)`       | 切换主题并持久化，返回是否成功 |
+| `setThemeColor(color)` | 更新当前主题的颜色片段         |
+| `currentTheme`         | 当前主题的响应式引用           |
+| `themes`               | 已注册主题列表                 |
+| `setDarkMode(mode)`    | 设置 `light`、`dark` 或 `auto` |
+| `toggleDarkMode()`     | 在明暗模式间快速切换           |
+| `isDarkMode()`         | 返回当前是否渲染暗色           |
+| `color`                | 当前响应式色板                 |
 
 ## 暗色跟随与持久化
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { snakeColor, snakeDarkMode, snakeSystemDark, snakeThemeStyle } from '../../uni_modules/snake-ui';
+import { color, darkMode, systemDark, themeStyle } from '../../uni_modules/snake-ui';
 import type { DemoTab } from '../../common/demo-types';
 import { useDemoLocale } from '../../common/demo-i18n';
 import DemoTabbar from '../demo-tabbar/demo-tabbar.vue';
@@ -35,11 +35,11 @@ withDefaults(
  * 导航纯色使用 common/demo.scss 中的私有变量,不受代换影响。
  */
 const isDark = computed(() =>
-    snakeDarkMode.value === 'auto' ? snakeSystemDark.value : snakeDarkMode.value === 'dark'
+    darkMode.value === 'auto' ? systemDark.value : darkMode.value === 'dark'
 );
 const shellThemeStyle = computed(() => ({
-    ...snakeThemeStyle.value,
-    '--snake-demo-accent-text': isDark.value ? snakeColor.primary : snakeColor.primaryDeep
+    ...themeStyle.value,
+    '--snake-demo-accent-text': isDark.value ? color.primary : color.primaryDeep
 }));
 const { nextLocaleLabel, switchLocale, text } = useDemoLocale();
 

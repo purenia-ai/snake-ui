@@ -1,43 +1,46 @@
-import type { SnakeRequestAdapter } from '../runtime';
+import type { RequestAdapter } from '../runtime';
+import type { App } from 'vue';
 import { deepMerge } from '../function';
-import { snakeTranslate } from '../../locale';
+import { translate } from '../../locale';
 import type {
-    SnakeHttpConfig,
-    SnakeHttpInterceptor,
-    SnakeHttpMeta,
-    SnakeHttpOptions,
-    SnakeHttpResponse,
-    SnakeHttpSetup,
-    SnakeHttpTransport
+    RequestConfig,
+    RequestInterceptor,
+    RequestMeta,
+    RequestMethod,
+    RequestOptions,
+    RequestResponse,
+    RequestSetup,
+    RequestTransport
 } from '../config/types';
 
-const defaultConfig: Required<Omit<SnakeHttpConfig, 'baseUrl'>> & Pick<SnakeHttpConfig, 'baseUrl'> = {
+const defaultConfig: Required<Omit<RequestConfig, 'baseUrl'>> & Pick<RequestConfig, 'baseUrl'> = {
     baseUrl: '',
     header: {},
     timeout: 60000,
     dataType: 'json',
     responseType: 'text',
-    meta: { loading: false, toast: false, originalData: false }
+    method: 'POST',
+    meta: { loading: false, toast: false, originalData: true }
 };
 
-export class SnakeHttpError extends Error {
+export class RequestError extends Error {
     readonly kind: 'canceled' | 'http' | 'transport' | 'interceptor';
-    readonly config?: SnakeHttpOptions;
+    readonly config?: RequestOptions;
     readonly response?: unknown;
     readonly statusCode?: number;
 
     constructor(
         message: string,
         options: {
-            kind?: SnakeHttpError['kind'];
-            config?: SnakeHttpOptions;
+            kind?: RequestError['kind'];
+            config?: RequestOptions;
             response?: unknown;
             statusCode?: number;
             cause?: unknown;
         } = {}
     ) {
         super(message, options.cause === undefined ? undefined : { cause: options.cause });
-        this.name = 'SnakeHttpError';
+        this.name = 'RequestError';
         this.kind = options.kind || 'transport';
         this.config = options.config;
         this.response = options.response;
@@ -50,13 +53,13 @@ function joinUrl(baseUrl: string, url: string): string {
     return `${baseUrl.replace(/\/$/, '')}/${url.replace(/^\//, '')}`;
 }
 
-function isHttpResponse(value: unknown): value is SnakeHttpResponse {
-    return Boolean(value && typeof value === 'object' && typeof (value as SnakeHttpResponse).statusCode === 'number');
+function isHttpResponse(value: unknown): value is RequestResponse {
+    return Boolean(value && typeof value === 'object' && typeof (value as RequestResponse).statusCode === 'number');
 }
 
 function showLoading(): void {
     if (typeof uni !== 'undefined' && typeof uni.showLoading === 'function') {
-        uni.showLoading({ title: snakeTranslate('common.loading'), mask: true });
+        uni.showLoading({ title: translate('common.loading'), mask: true });
     }
 }
 
@@ -70,11 +73,11 @@ function showError(message: string): void {
     }
 }
 
-function uniTransport(options: SnakeHttpOptions): Promise<SnakeHttpResponse> {
+function uniTransport(options: RequestOptions): Promise<RequestResponse> {
     return new Promise((resolve, reject) => {
         if (typeof uni === 'undefined' || typeof uni.request !== 'function') {
             reject(
-                new SnakeHttpError('[Snake UI] uni.request is unavailable.', { kind: 'transport', config: options })
+                new RequestError('[Snake UI] uni.request is unavailable.', { kind: 'transport', config: options })
             );
             return;
         }
@@ -82,48 +85,48 @@ function uniTransport(options: SnakeHttpOptions): Promise<SnakeHttpResponse> {
             ...options,
             method: options.method || 'GET',
             data: options.data ?? options.params,
-            success: response => resolve(response as SnakeHttpResponse),
+            success: response => resolve(response as RequestResponse),
             fail: error => reject(error)
         });
     });
 }
 
-export class SnakeRequest {
-    config: SnakeHttpConfig = deepMerge(defaultConfig, {});
-    interceptor: SnakeHttpInterceptor = {};
-    private transport?: SnakeHttpTransport;
-    private legacyAdapter?: SnakeRequestAdapter;
+export class Request {
+    config: RequestConfig = deepMerge(defaultConfig, {});
+    interceptor: RequestInterceptor = {};
+    private transport?: RequestTransport;
+    private legacyAdapter?: RequestAdapter;
 
-    setConfig(config: SnakeHttpConfig = {}): void {
+    setConfig(config: RequestConfig = {}): void {
         this.config = deepMerge(this.config, config);
     }
 
-    setInterceptor(interceptor: SnakeHttpInterceptor = {}): void {
+    setInterceptor(interceptor: RequestInterceptor = {}): void {
         this.interceptor = { ...this.interceptor, ...interceptor };
     }
 
-    setTransport(transport?: SnakeHttpTransport): void {
+    setTransport(transport?: RequestTransport): void {
         this.transport = transport;
     }
 
-    setLegacyAdapter(adapter?: SnakeRequestAdapter): void {
+    setLegacyAdapter(adapter?: RequestAdapter): void {
         this.legacyAdapter = adapter;
     }
 
-    private mergeOptions(options: SnakeHttpOptions): SnakeHttpOptions {
-        const meta = deepMerge((this.config.meta || {}) as SnakeHttpMeta, options.meta || {});
-        const header = deepMerge((this.config.header || {}) as Record<string, string>, options.header || {});
+    private mergeOptions(options: RequestOptions): RequestOptions {
+        const meta = deepMerge((this.config.meta || {}) as RequestMeta, options.meta || {});
+        const header = deepMerge((this.config.header || {}) as Record<string, unknown>, options.header || {});
         return {
             ...this.config,
             ...options,
             url: joinUrl(this.config.baseUrl || '', options.url),
-            method: options.method || 'GET',
+            method: options.method || 'POST',
             header,
             meta
         };
     }
 
-    private async send(options: SnakeHttpOptions): Promise<SnakeHttpResponse | unknown> {
+    private async send(options: RequestOptions): Promise<RequestResponse | unknown> {
         if (this.transport) return this.transport(options);
         if (this.legacyAdapter && options.method === 'GET') {
             return {
@@ -140,12 +143,12 @@ export class SnakeRequest {
         return uniTransport(options);
     }
 
-    async request<T = unknown>(options: SnakeHttpOptions): Promise<T> {
+    async request<T = unknown>(options: RequestOptions): Promise<T> {
         let config = this.mergeOptions(options);
         if (this.interceptor.request) {
             const intercepted = await this.interceptor.request(config);
             if (intercepted === false) {
-                throw new SnakeHttpError(snakeTranslate('network.canceled'), { kind: 'canceled', config });
+                throw new RequestError(translate('network.canceled'), { kind: 'canceled', config });
             }
             config = intercepted;
         }
@@ -153,8 +156,11 @@ export class SnakeRequest {
         if (meta.loading) showLoading();
         try {
             const raw = await this.send(config);
-            if (isHttpResponse(raw) && (raw.statusCode < 200 || raw.statusCode >= 300)) {
-                throw new SnakeHttpError(`HTTP ${raw.statusCode}`, {
+            if (isHttpResponse(raw)) raw.config = config;
+            // uView hands the complete platform response to the interceptor when
+            // originalData is enabled; status-code handling then belongs to that interceptor.
+            if (isHttpResponse(raw) && !meta.originalData && raw.statusCode !== 200) {
+                throw new RequestError(`HTTP ${raw.statusCode}`, {
                     kind: 'http',
                     config,
                     response: raw,
@@ -165,7 +171,7 @@ export class SnakeRequest {
             if (!this.interceptor.response) return response as T;
             const intercepted = await this.interceptor.response(response, config);
             if (intercepted === false) {
-                throw new SnakeHttpError('[Snake UI] response rejected by interceptor.', {
+                throw new RequestError('[Snake UI] response rejected by interceptor.', {
                     kind: 'interceptor',
                     config,
                     response
@@ -174,9 +180,9 @@ export class SnakeRequest {
             return intercepted as T;
         } catch (error) {
             const normalized =
-                error instanceof SnakeHttpError
+                error instanceof RequestError
                     ? error
-                    : new SnakeHttpError(snakeTranslate('network.error'), {
+                    : new RequestError(translate('network.error'), {
                           kind: 'transport',
                           config,
                           cause: error
@@ -188,19 +194,19 @@ export class SnakeRequest {
         }
     }
 
-    get<T = unknown>(url: string, params: Record<string, unknown> = {}, options: Partial<SnakeHttpOptions> = {}) {
-        return this.request<T>({ ...options, url, params, method: 'GET' });
+    get<T = unknown>(url: string, data: Record<string, unknown> = {}, options: Partial<RequestOptions> = {}) {
+        return this.request<T>({ ...options, url, data, params: data, method: 'GET' });
     }
 
-    post<T = unknown>(url: string, data: unknown = {}, options: Partial<SnakeHttpOptions> = {}) {
+    post<T = unknown>(url: string, data: unknown = {}, options: Partial<RequestOptions> = {}) {
         return this.request<T>({ ...options, url, data, method: 'POST' });
     }
 
-    put<T = unknown>(url: string, data: unknown = {}, options: Partial<SnakeHttpOptions> = {}) {
+    put<T = unknown>(url: string, data: unknown = {}, options: Partial<RequestOptions> = {}) {
         return this.request<T>({ ...options, url, data, method: 'PUT' });
     }
 
-    delete<T = unknown>(url: string, data: unknown = {}, options: Partial<SnakeHttpOptions> = {}) {
+    delete<T = unknown>(url: string, data: unknown = {}, options: Partial<RequestOptions> = {}) {
         return this.request<T>({ ...options, url, data, method: 'DELETE' });
     }
 
@@ -212,12 +218,68 @@ export class SnakeRequest {
     }
 }
 
-export const snakeHttp = new SnakeRequest();
+/** uView-compatible shared singleton. */
+export const http = new Request();
 
-export function configureSnakeHttp(setup?: SnakeHttpSetup, adapter?: SnakeRequestAdapter): SnakeRequest {
-    if (setup?.config) snakeHttp.setConfig(setup.config);
-    if (setup?.interceptor) snakeHttp.setInterceptor(setup.interceptor);
-    if (setup && 'transport' in setup) snakeHttp.setTransport(setup.transport);
-    if (adapter) snakeHttp.setLegacyAdapter(adapter);
-    return snakeHttp;
+export interface HttpPluginOptions {
+    requestConfig?: RequestConfig;
+    interceptor?: RequestInterceptor;
 }
+
+/**
+ * Installs the shared request singleton as `$http`, matching uView's plugin API.
+ */
+export const httpPlugin = {
+    install(app: App, options: HttpPluginOptions = {}): void {
+        if (options.interceptor) http.setInterceptor(options.interceptor);
+        if (options.requestConfig) http.setConfig(options.requestConfig);
+        (app.config.globalProperties as Record<string, unknown>).$http = http;
+    }
+};
+
+
+export function configureHttp(setup?: RequestSetup, adapter?: RequestAdapter): Request {
+    if (setup?.config) http.setConfig(setup.config);
+    if (setup?.interceptor) http.setInterceptor(setup.interceptor);
+    if (setup && 'transport' in setup) http.setTransport(setup.transport);
+    if (adapter) http.setLegacyAdapter(adapter);
+    return http;
+}
+
+
+export function isFunction(value: unknown): value is (...args: any[]) => unknown {
+    return typeof value === 'function';
+}
+
+export function isPromise(value: unknown): value is Promise<unknown> {
+    return Boolean(value && typeof (value as Promise<unknown>).then === 'function' && typeof (value as Promise<unknown>).catch === 'function');
+}
+
+export class AutoHttp {
+    static Builder = class<T = unknown> {
+        constructor(private readonly instance: Request | ((options: RequestOptions) => Promise<T>)) {}
+
+        dispatch(urlConfig: Record<string, RequestOptions>, extra: Record<string, unknown> = {}): Record<string, any> {
+            const api: Record<string, any> = {};
+            for (const name of Object.keys(urlConfig)) api[name] = this.use.bind(this, urlConfig[name]);
+            return { ...api, ...extra };
+        }
+
+        use(
+            urlConfig: RequestOptions,
+            config: Partial<Omit<RequestOptions, 'url'>> & { url?: string | (() => string) } = {}
+        ): Promise<T> {
+            const url: string = isFunction(config.url)
+                ? `${urlConfig.url}${config.url()}`
+                : config.url ?? urlConfig.url;
+            const { url: _url, ...overrides } = config;
+            const method = (config.method ?? urlConfig.method ?? 'GET') as RequestMethod;
+            const options = deepMerge(urlConfig, { ...overrides, url, method }) as RequestOptions;
+            return this.instance instanceof Request
+                ? this.instance.request<T>(options)
+                : this.instance(options);
+        }
+    };
+}
+
+export default httpPlugin;

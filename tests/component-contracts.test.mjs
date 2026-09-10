@@ -55,7 +55,7 @@ test('every public component exposes an independent type contract', async () => 
     assert.equal(directories.length, 70);
     for (const component of directories) {
         const types = await readFile(new URL(`components/${component}/types.ts`, root), 'utf8');
-        assert.match(types, /export (?:interface|type) Snake/, `${component}: missing public contract`);
+        assert.match(types, /export (?:interface|type) [A-Z]/, `${component}: missing public contract`);
         assert.match(
             packageEntry,
             new RegExp(`export \\* from './components/${component}/types'`),
@@ -155,7 +155,7 @@ test('every Vue component explains its role and documented components expose an 
     for (const path of files) {
         const source = await readFile(new URL(path, root), 'utf8');
         const component = path.split('/')[1];
-        assert.match(source, /\/\*\*[\s\S]*@component (?:Snake\w+|FilterPage|TreeSelect)/, `${path}: 缺少组件说明`);
+        assert.match(source, /\/\*\*[\s\S]*@component (?:[A-Z]\w+|FilterPage|TreeSelect)/, `${path}: 缺少组件说明`);
         assert.match(source, /@description \S+/, `${path}: 缺少用途说明`);
         if (undocumentedCmsComponents.has(component)) {
             assert.doesNotMatch(source, /@see \/components\/[\w-]+/, `${path}: 不应链接已删除文档`);
@@ -169,33 +169,33 @@ test('public foundation components use independent type contracts', async () => 
     for (const component of components) {
         const types = await readFile(new URL(`components/${component}/types.ts`, root), 'utf8');
         const source = await readFile(new URL(`components/${component}/${component}.vue`, root), 'utf8');
-        assert.match(types, /export (?:interface|type) Snake/);
+        assert.match(types, /export (?:interface|type) [A-Z]/);
         assert.match(source, /from '\.\/types'/);
     }
 });
 
 test('migrated controls use runtime props as the defaults source of truth', async () => {
     for (const [component, exportName] of [
-        ['snake-button', 'snakeButtonProps'],
-        ['snake-checkbox', 'snakeCheckboxProps'],
-        ['snake-radio', 'snakeRadioProps'],
-        ['snake-cell-group', 'snakeCellGroupProps'],
-        ['snake-cell-item', 'snakeCellItemProps'],
-        ['snake-line', 'snakeLineProps'],
-        ['snake-line-progress', 'snakeLineProgressProps'],
-        ['snake-search', 'snakeSearchProps'],
-        ['snake-select', 'snakeSelectProps'],
-        ['snake-read-more', 'snakeReadMoreProps'],
-        ['snake-no-network', 'snakeNoNetworkProps'],
-        ['snake-link', 'snakeLinkProps'],
-        ['snake-text', 'snakeTextProps'],
-        ['snake-calendar', 'snakeCalendarProps'],
-        ['snake-count-down', 'snakeCountDownProps']
+        ['snake-button', 'buttonProps'],
+        ['snake-checkbox', 'checkboxProps'],
+        ['snake-radio', 'radioProps'],
+        ['snake-cell-group', 'cellGroupProps'],
+        ['snake-cell-item', 'cellItemProps'],
+        ['snake-line', 'lineProps'],
+        ['snake-line-progress', 'lineProgressProps'],
+        ['snake-search', 'searchProps'],
+        ['snake-select', 'selectProps'],
+        ['snake-read-more', 'readMoreProps'],
+        ['snake-no-network', 'noNetworkProps'],
+        ['snake-link', 'linkProps'],
+        ['snake-text', 'textProps'],
+        ['snake-calendar', 'calendarProps'],
+        ['snake-count-down', 'countDownProps']
     ]) {
         const types = await readFile(new URL(`components/${component}/types.ts`, root), 'utf8');
         const source = await readFile(new URL(`components/${component}/${component}.vue`, root), 'utf8');
         assert.match(types, new RegExp(`export const ${exportName} =`));
-        assert.match(types, /ExtractPropTypes<typeof snake[A-Z]\w+Props>/);
+        assert.match(types, /ExtractPropTypes<typeof [a-z]\w+Props>/);
         assert.match(source, new RegExp(`defineProps\\(${exportName}\\)`));
         assert.doesNotMatch(source, /withDefaults\(defineProps/);
     }
@@ -246,7 +246,7 @@ test('package entry exposes precise foundation component props', async () => {
         'Text',
         'Calendar'
     ]) {
-        assert.match(declarations, new RegExp(`Snake${component}: SnakeComponent<Snake${component}Props`));
+        assert.match(declarations, new RegExp(`Snake${component}: Component<${component}Props`));
     }
 });
 

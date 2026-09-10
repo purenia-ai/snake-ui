@@ -48,16 +48,16 @@
 </template>
 <script lang="ts" setup>
 /**
- * @component SnakeFilterSorts
+ * @component FilterSorts
  * @description 组合顶部快捷排序、价格排序和多维筛选面板，并向父级输出统一查询参数。
  */
 
 import { getCurrentInstance, onMounted, ref } from 'vue';
 import filterPage from './components/filter-page.vue';
-import SnakeButtonSort from '../snake-button-sort/snake-button-sort.vue';
-import SnakeDropMenu from '../snake-drop-menu/snake-drop-menu.vue';
-import SnakeDropMenuItem from '../snake-drop-menu-item/snake-drop-menu-item.vue';
-import type { SnakeFilterSortsEmits, SnakeFilterSortsProps } from './types';
+import ButtonSort from '../snake-button-sort/snake-button-sort.vue';
+import DropMenu from '../snake-drop-menu/snake-drop-menu.vue';
+import DropMenuItem from '../snake-drop-menu-item/snake-drop-menu-item.vue';
+import type { FilterSortsEmits, FilterSortsProps } from './types';
 
 defineOptions({
     name: 'filter-sorts',
@@ -68,7 +68,7 @@ defineOptions({
     }
 });
 
-const props = withDefaults(defineProps<SnakeFilterSortsProps>(), {
+const props = withDefaults(defineProps<FilterSortsProps>(), {
     filters: () => ({}),
     defaultFilter: () => ({}),
     bgColor: 'transparent',
@@ -80,7 +80,7 @@ const props = withDefaults(defineProps<SnakeFilterSortsProps>(), {
     scrollTop: 0
 });
 
-const emit = defineEmits<SnakeFilterSortsEmits>();
+const emit = defineEmits<FilterSortsEmits>();
 
 const instance = getCurrentInstance();
 

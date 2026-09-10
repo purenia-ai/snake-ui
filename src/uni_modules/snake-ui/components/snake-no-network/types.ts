@@ -1,8 +1,8 @@
 import type { ExtractPropTypes, PropType } from 'vue';
 import zIndex from '../../libs/config/zIndex';
 
-/** snakeNoNetworkProps 运行时属性及默认值。 */
-export const snakeNoNetworkProps = {
+/** noNetworkProps 运行时属性及默认值。 */
+export const noNetworkProps = {
     /** 没有网络时的提示语。 */
     tips: { type: String, default: '' },
     /** 组件的层级值。 */
@@ -11,17 +11,17 @@ export const snakeNoNetworkProps = {
     image: { type: String, default: '' }
 } as const;
 
-/** SnakeNoNetwork 组件的公开属性。 */
-export type SnakeNoNetworkProps = ExtractPropTypes<typeof snakeNoNetworkProps>;
+/** NoNetwork 组件的公开属性。 */
+export type NoNetworkProps = ExtractPropTypes<typeof noNetworkProps>;
 
-/** SnakeNoNetwork 组件的事件契约。 */
-export interface SnakeNoNetworkEmits {
+/** NoNetwork 组件的事件契约。 */
+export interface NoNetworkEmits {
     /** 用户点击重试按钮时触发。 */
     retry: [];
 }
 
-/** SnakeNoNetwork 组件实例公开的方法。 */
-export interface SnakeNoNetworkExpose {
+/** NoNetwork 组件实例公开的方法。 */
+export interface NoNetworkExpose {
     /** 重新检查网络并发出 retry 事件。 */
     retry(): void;
 }

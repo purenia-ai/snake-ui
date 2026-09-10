@@ -1,17 +1,17 @@
 import type { ExtractPropTypes, PropType } from 'vue';
-import type { SnakeStyleValue } from '../../types/global';
+import type { StyleValue } from '../../types/global';
 
-/** SnakeCellItemIndex 类型定义。 */
-export type SnakeCellItemIndex = string | number;
-/** SnakeCellItemStyle 类型定义。 */
-export type SnakeCellItemStyle = Record<string, unknown>;
-/** SnakeCellItemArrowDirection 类型定义。 */
-export type SnakeCellItemArrowDirection = 'right' | 'up' | 'down';
+/** CellItemIndex 类型定义。 */
+export type CellItemIndex = string | number;
+/** CellItemStyle 类型定义。 */
+export type CellItemStyle = Record<string, unknown>;
+/** CellItemArrowDirection 类型定义。 */
+export type CellItemArrowDirection = 'right' | 'up' | 'down';
 
-/** snakeCellItemProps 运行时属性及默认值。 */
-export const snakeCellItemProps = {
+/** cellItemProps 运行时属性及默认值。 */
+export const cellItemProps = {
     /** 根节点自定义样式。 */
-    customStyle: { type: [String, Object, Array] as PropType<SnakeStyleValue>, default: '' },
+    customStyle: { type: [String, Object, Array] as PropType<StyleValue>, default: '' },
     /** 根节点自定义类名。 */
     customClass: { type: String, default: '' },
     /** 左侧图标名称或图片地址。 */
@@ -37,30 +37,30 @@ export const snakeCellItemProps = {
     /** 标题的宽度，数值按 rpx 处理。 */
     titleWidth: { type: [Number, String] as PropType<number | string>, default: '' },
     /** 右侧箭头方向。 */
-    arrowDirection: { type: String as PropType<SnakeCellItemArrowDirection>, default: 'right' },
+    arrowDirection: { type: String as PropType<CellItemArrowDirection>, default: 'right' },
     /** 标题样式，对象形式。 */
-    titleStyle: { type: [Object, Array] as PropType<SnakeStyleValue>, default: () => ({}) },
+    titleStyle: { type: [Object, Array] as PropType<StyleValue>, default: () => ({}) },
     /** 右侧内容样式，对象形式。 */
-    valueStyle: { type: [Object, Array] as PropType<SnakeStyleValue>, default: () => ({}) },
+    valueStyle: { type: [Object, Array] as PropType<StyleValue>, default: () => ({}) },
     /** 描述信息样式，对象形式。 */
-    labelStyle: { type: [Object, Array] as PropType<SnakeStyleValue>, default: () => ({}) },
+    labelStyle: { type: [Object, Array] as PropType<StyleValue>, default: () => ({}) },
     /** 背景颜色。 */
     bgColor: { type: String, default: 'transparent' },
     /** 用于 click 事件回调中标识当前是第几个条目。 */
-    index: { type: [String, Number] as PropType<SnakeCellItemIndex>, default: '' },
+    index: { type: [String, Number] as PropType<CellItemIndex>, default: '' },
     /** 是否使用 label 插槽。 */
     useLabelSlot: { type: Boolean, default: false },
     /** 左侧图标的大小，数值按 rpx 处理，只对传入 icon 字段时有效。 */
     iconSize: { type: [Number, String] as PropType<number | string>, default: 34 },
     /** 左侧图标的样式，对象形式。 */
-    iconStyle: { type: [Object, Array] as PropType<SnakeStyleValue>, default: () => ({}) }
+    iconStyle: { type: [Object, Array] as PropType<StyleValue>, default: () => ({}) }
 } as const;
 
-/** SnakeCellItem 组件的公开属性。 */
-export type SnakeCellItemProps = ExtractPropTypes<typeof snakeCellItemProps>;
+/** CellItem 组件的公开属性。 */
+export type CellItemProps = ExtractPropTypes<typeof cellItemProps>;
 
-/** SnakeCellItem 组件的事件契约。 */
-export interface SnakeCellItemEmits {
+/** CellItem 组件的事件契约。 */
+export interface CellItemEmits {
     /** click 事件携带的参数。 */
-    click: [index: SnakeCellItemIndex];
+    click: [index: CellItemIndex];
 }

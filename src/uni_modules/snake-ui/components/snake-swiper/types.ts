@@ -1,16 +1,16 @@
 import type { UnitValue } from '../../libs/function/unit';
-import type { SnakeImageMode, SnakeStyleValue } from '../../types/global';
-/** SnakeSwiper 数据项。 */
-export type SnakeSwiperItem = string | Record<string, unknown>;
-/** SnakeSwiperIndicatorMode 类型定义。 */
-export type SnakeSwiperIndicatorMode = 'round' | 'dot' | 'line' | 'number';
-/** SnakeSwiperIndicatorPosition 类型定义。 */
-export type SnakeSwiperIndicatorPosition =
+import type { ImageMode, StyleValue } from '../../types/global';
+/** Swiper 数据项。 */
+export type SwiperItem = string | Record<string, unknown>;
+/** SwiperIndicatorMode 类型定义。 */
+export type SwiperIndicatorMode = 'round' | 'dot' | 'line' | 'number';
+/** SwiperIndicatorPosition 类型定义。 */
+export type SwiperIndicatorPosition =
     'topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight';
-/** SnakeSwiper 组件的公开属性。 */
-export interface SnakeSwiperProps {
+/** Swiper 组件的公开属性。 */
+export interface SwiperProps {
     /** 用于渲染的数据列表。 */
-    list?: SnakeSwiperItem[];
+    list?: SwiperItem[];
     /** 当前激活项索引。 */
     current?: number | string;
     /** 组件高度。 */
@@ -26,9 +26,9 @@ export interface SnakeSwiperProps {
     /** indicator 配置。 */
     indicator?: boolean | Record<string, unknown>;
     /** 组件展示模式。 */
-    mode?: SnakeSwiperIndicatorMode;
+    mode?: SwiperIndicatorMode;
     /** indicator pos 配置。 */
-    indicatorPos?: SnakeSwiperIndicatorPosition;
+    indicatorPos?: SwiperIndicatorPosition;
     /** indicator color 配置。 */
     indicatorColor?: string;
     /** indicator active color 配置。 */
@@ -48,33 +48,33 @@ export interface SnakeSwiperProps {
     /** effect3d previous margin 配置。 */
     effect3dPreviousMargin?: UnitValue;
     /** 图片裁剪与缩放模式。 */
-    imgMode?: SnakeImageMode;
+    imgMode?: ImageMode;
     /** show title 配置。 */
     showTitle?: boolean;
     /** 标题文本。 */
     title?: boolean;
     /** title style 配置。 */
-    titleStyle?: SnakeStyleValue;
+    titleStyle?: StyleValue;
     /** 背景颜色。 */
     bgColor?: string;
     /** 根节点自定义类名。 */
     customClass?: string;
     /** 根节点自定义样式。 */
-    customStyle?: SnakeStyleValue;
+    customStyle?: StyleValue;
 }
-/** SnakeSwiperChange 事件详情。 */
-export interface SnakeSwiperChangeDetail {
+/** SwiperChange 事件详情。 */
+export interface SwiperChangeDetail {
     /** 当前激活项索引。 */
     current: number;
     /** source 配置。 */
     source?: string;
 }
-/** SnakeSwiper 组件的事件契约。 */
-export interface SnakeSwiperEmits {
+/** Swiper 组件的事件契约。 */
+export interface SwiperEmits {
     /** change 事件携带的参数。 */
-    change: [detail: SnakeSwiperChangeDetail];
+    change: [detail: SwiperChangeDetail];
     /** click 事件携带的参数。 */
-    click: [index: number, item: SnakeSwiperItem];
+    click: [index: number, item: SwiperItem];
     /** animationfinish 事件携带的参数。 */
-    animationfinish: [detail: SnakeSwiperChangeDetail];
+    animationfinish: [detail: SwiperChangeDetail];
 }

@@ -1,28 +1,28 @@
 import { deepClone } from '../function';
-import { isSnakeCmsBuiltinComponent, snakeCmsBlocks } from './blocks';
-export { snakeCmsBuiltinComponents } from './blocks';
+import { isCmsBuiltinComponent, cmsBlocks } from './blocks';
+export { cmsBuiltinComponents } from './blocks';
 import type {
-    SnakeCmsBuiltinComponent,
-    SnakeCmsComponentConfig,
-    SnakeCmsDiagnostic,
-    SnakeCmsNormalizedComponent,
-    SnakeCmsOptions,
-    SnakeCmsPageInfo
+    CmsBuiltinComponent,
+    CmsComponentConfig,
+    CmsDiagnostic,
+    CmsNormalizedComponent,
+    CmsOptions,
+    CmsPageInfo
 } from './types';
 
-export interface SnakeCmsNormalizeResult {
-    components: SnakeCmsNormalizedComponent[];
-    diagnostics: SnakeCmsDiagnostic[];
+export interface CmsNormalizeResult {
+    components: CmsNormalizedComponent[];
+    diagnostics: CmsDiagnostic[];
 }
 
-export function normalizeSnakeCmsComponents(
+export function normalizeCmsComponents(
     input: unknown,
-    pageInfo: SnakeCmsPageInfo = {},
-    options: SnakeCmsOptions = {}
-): SnakeCmsNormalizeResult {
-    const diagnostics: SnakeCmsDiagnostic[] = [];
-    const components: SnakeCmsNormalizedComponent[] = [];
-    const aliases: Record<string, SnakeCmsBuiltinComponent> = { videoss: 'videos', ...(options.aliases || {}) };
+    pageInfo: CmsPageInfo = {},
+    options: CmsOptions = {}
+): CmsNormalizeResult {
+    const diagnostics: CmsDiagnostic[] = [];
+    const components: CmsNormalizedComponent[] = [];
+    const aliases: Record<string, CmsBuiltinComponent> = { videoss: 'videos', ...(options.aliases || {}) };
     let hasCommerceSection = false;
 
     if (!Array.isArray(input)) {
@@ -31,7 +31,7 @@ export function normalizeSnakeCmsComponents(
     }
 
     input.forEach((raw, index) => {
-        if (!raw || typeof raw !== 'object' || typeof (raw as SnakeCmsComponentConfig).component !== 'string') {
+        if (!raw || typeof raw !== 'object' || typeof (raw as CmsComponentConfig).component !== 'string') {
             diagnostics.push({
                 code: 'invalid-component',
                 level: 'error',
@@ -41,7 +41,7 @@ export function normalizeSnakeCmsComponents(
             return;
         }
 
-        let item = deepClone(raw as SnakeCmsComponentConfig);
+        let item = deepClone(raw as CmsComponentConfig);
         const originalComponent = item.component;
         const normalizer = options.normalizers?.[originalComponent];
         if (normalizer) {
@@ -70,7 +70,7 @@ export function normalizeSnakeCmsComponents(
         if (version === 1 && (item.visible === false || setStyle.showComponent === false)) return;
         if (version === 2 && item.active === false) return;
 
-        const builtin = isSnakeCmsBuiltinComponent(component);
+        const builtin = isCmsBuiltinComponent(component);
         if (version === 2 && !hasValidV2Props) {
             diagnostics.push({
                 code: 'invalid-component',
@@ -80,7 +80,7 @@ export function normalizeSnakeCmsComponents(
                 message: `CMS v2 component "${component}" must contain an object props field.`
             });
         }
-        if (builtin && snakeCmsBlocks[component].version !== version) {
+        if (builtin && cmsBlocks[component].version !== version) {
             diagnostics.push({
                 code: 'invalid-component',
                 level: 'error',

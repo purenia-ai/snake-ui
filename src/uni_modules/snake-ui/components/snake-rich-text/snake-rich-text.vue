@@ -6,14 +6,14 @@
 
 <script setup lang="ts">
 /**
- * @component SnakeRichText
+ * @component RichText
  * @description 使用 `mp-html` 渲染 CMS 提供的 HTML 内容。
  */
 
-import type { SnakeRichTextProps } from './types';
+import type { RichTextProps } from './types';
 
-defineOptions({ name: 'SnakeRichText', options: { virtualHost: true, styleIsolation: 'shared' } });
-withDefaults(defineProps<SnakeRichTextProps>(), { datas: () => ({}) });
+defineOptions({ name: 'RichText', options: { virtualHost: true, styleIsolation: 'shared' } });
+withDefaults(defineProps<RichTextProps>(), { datas: () => ({}) });
 </script>
 
 <style lang="scss" scoped>

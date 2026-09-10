@@ -1,12 +1,12 @@
 import type { CSSProperties } from 'vue';
-import type { SnakeCmsLinkService, SnakeCmsPageInfo } from '../../../../libs/cms';
+import type { CmsLinkService, CmsPageInfo } from '../../../../libs/cms';
 
 export type V2Record = Record<string, any>;
 
 export interface V2BlockProps {
     data: V2Record;
-    linkService?: SnakeCmsLinkService;
-    pageInfo?: SnakeCmsPageInfo;
+    linkService?: CmsLinkService;
+    pageInfo?: CmsPageInfo;
 }
 
 export function rpx(value: unknown, fallback = 0): string {
@@ -28,8 +28,8 @@ export function blockStyle(style: V2Record = {}): CSSProperties {
 
 export async function openV2Link(
     link: V2Record | undefined,
-    service?: SnakeCmsLinkService,
-    pageInfo?: SnakeCmsPageInfo
+    service?: CmsLinkService,
+    pageInfo?: CmsPageInfo
 ): Promise<void> {
     const url = typeof link?.http === 'string' ? link.http.trim() : '';
     if (!url || !service) return;

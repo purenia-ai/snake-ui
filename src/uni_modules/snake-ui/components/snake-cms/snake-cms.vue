@@ -144,30 +144,30 @@
 
 <script setup lang="ts">
 /**
- * @component SnakeCms
+ * @component Cms
  * @description `snake-cms` 是 Snake UI 的页面装修门面。内容组件只负责渲染；商品、活动、筛选、优惠券和跳转统一由宿主应用通过 CMS 服务注入。组件支持 H5、微信小程序和 App，不使用小程序不支持的动态组件。
  * @see /components/snake-cms
  */
 
 import { computed, onBeforeUnmount, watch } from 'vue';
-import SnakeActivityList from '../snake-activity-list/snake-activity-list.vue';
-import SnakeAuxiliarySegmentation from '../snake-auxiliary-segmentation/snake-auxiliary-segmentation.vue';
-import SnakeCommoditySearch from '../snake-commodity-search/snake-commodity-search.vue';
-import SnakeCoupon from '../snake-coupon/snake-coupon.vue';
-import SnakeCustomModule from '../snake-custom-module/snake-custom-module.vue';
-import SnakeFilterSorts from '../snake-filter-sorts/snake-filter-sorts.vue';
-import SnakeFollow from '../snake-follow/snake-follow.vue';
-import SnakeGoodsList from '../snake-goods-list/snake-goods-list.vue';
-import SnakeGraphicNavigation from '../snake-graphic-navigation/snake-graphic-navigation.vue';
-import SnakeImages from '../snake-images/snake-images.vue';
-import SnakeJumpApplet from '../snake-jump-applet/snake-jump-applet.vue';
-import SnakeMagicCube from '../snake-magic-cube/snake-magic-cube.vue';
-import SnakeNotice from '../snake-notice/snake-notice.vue';
-import SnakePagePopup from '../snake-page-popup/snake-page-popup.vue';
-import SnakePictureAds from '../snake-picture-ads/snake-picture-ads.vue';
-import SnakeRichText from '../snake-rich-text/snake-rich-text.vue';
-import SnakeFloatingBubble from '../snake-floating-bubble/snake-floating-bubble.vue';
-import SnakeVideos from '../snake-videos/snake-videos.vue';
+import ActivityList from '../snake-activity-list/snake-activity-list.vue';
+import AuxiliarySegmentation from '../snake-auxiliary-segmentation/snake-auxiliary-segmentation.vue';
+import CommoditySearch from '../snake-commodity-search/snake-commodity-search.vue';
+import Coupon from '../snake-coupon/snake-coupon.vue';
+import CustomModule from '../snake-custom-module/snake-custom-module.vue';
+import FilterSorts from '../snake-filter-sorts/snake-filter-sorts.vue';
+import Follow from '../snake-follow/snake-follow.vue';
+import GoodsList from '../snake-goods-list/snake-goods-list.vue';
+import GraphicNavigation from '../snake-graphic-navigation/snake-graphic-navigation.vue';
+import Images from '../snake-images/snake-images.vue';
+import JumpApplet from '../snake-jump-applet/snake-jump-applet.vue';
+import MagicCube from '../snake-magic-cube/snake-magic-cube.vue';
+import Notice from '../snake-notice/snake-notice.vue';
+import PagePopup from '../snake-page-popup/snake-page-popup.vue';
+import PictureAds from '../snake-picture-ads/snake-picture-ads.vue';
+import RichText from '../snake-rich-text/snake-rich-text.vue';
+import FloatingBubble from '../snake-floating-bubble/snake-floating-bubble.vue';
+import Videos from '../snake-videos/snake-videos.vue';
 import CmsV2Carousel from './blocks/v2/cms-v2-carousel.vue';
 import CmsV2Coupon from './blocks/v2/cms-v2-coupon.vue';
 import CmsV2Custom from './blocks/v2/cms-v2-custom.vue';
@@ -183,32 +183,32 @@ import CmsV2Richtext from './blocks/v2/cms-v2-richtext.vue';
 import CmsV2Search from './blocks/v2/cms-v2-search.vue';
 import CmsV2Video from './blocks/v2/cms-v2-video.vue';
 import {
-    normalizeSnakeCmsComponents,
-    reportSnakeCmsDiagnostic,
-    resolveSnakeCmsOptions,
-    useSnakeCmsCommerce
+    normalizeCmsComponents,
+    reportCmsDiagnostic,
+    resolveCmsOptions,
+    useCmsCommerce
 } from '../../libs/cms';
 import type {
-    SnakeCmsDiagnostic,
-    SnakeCmsError,
-    SnakeCmsOptions,
-    SnakeCmsPageInfo,
-    SnakeCmsStateChange
+    CmsDiagnostic,
+    CmsError,
+    CmsOptions,
+    CmsPageInfo,
+    CmsStateChange
 } from './types';
 
 defineOptions({
-    name: 'SnakeCms',
+    name: 'Cms',
     options: { virtualHost: true, addGlobalClass: true, styleIsolation: 'shared' }
 });
 
 const props = withDefaults(
     defineProps<{
-        pageInfo?: SnakeCmsPageInfo;
+        pageInfo?: CmsPageInfo;
         pageComponents?: unknown[];
         scrollTop?: number;
         stickyOffsetTop?: number;
         stickyCustomNavHeight?: number;
-        cmsOptions?: SnakeCmsOptions;
+        cmsOptions?: CmsOptions;
     }>(),
     {
         pageInfo: () => ({}),
@@ -221,17 +221,17 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-    ready: [state: SnakeCmsStateChange];
-    'state-change': [state: SnakeCmsStateChange];
-    diagnostic: [diagnostic: SnakeCmsDiagnostic];
-    error: [error: SnakeCmsError];
+    ready: [state: CmsStateChange];
+    'state-change': [state: CmsStateChange];
+    diagnostic: [diagnostic: CmsDiagnostic];
+    error: [error: CmsError];
     'goods-click': [payload: { item: Record<string, any>; index: number }];
     'offer-click': [payload: { item: Record<string, any>; index: number }];
 }>();
 
-const options = computed(() => resolveSnakeCmsOptions(props.cmsOptions));
+const options = computed(() => resolveCmsOptions(props.cmsOptions));
 // 先规范化别名、扩展组件和重复商品区，模板只消费稳定的静态组件映射。
-const normalized = computed(() => normalizeSnakeCmsComponents(props.pageComponents, props.pageInfo, options.value));
+const normalized = computed(() => normalizeCmsComponents(props.pageComponents, props.pageInfo, options.value));
 const components = computed(() => normalized.value.components);
 const commerceComponent = computed(() =>
     components.value.find(item => item.component === 'goodslist' || item.component === 'v2.goodslist')
@@ -249,7 +249,7 @@ function resolveStickyDisabled(value: unknown): boolean {
 }
 
 let readyEmitted = false;
-const commerce = useSnakeCmsCommerce({
+const commerce = useCmsCommerce({
     pageInfo: () => props.pageInfo,
     component: () => commerceComponent.value,
     options: () => options.value,
@@ -289,7 +289,7 @@ watch(
     async result => {
         readyEmitted = false;
         for (const diagnostic of result.diagnostics) {
-            reportSnakeCmsDiagnostic(options.value, diagnostic);
+            reportCmsDiagnostic(options.value, diagnostic);
             emit('diagnostic', diagnostic);
         }
         await init();
