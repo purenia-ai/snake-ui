@@ -78,7 +78,7 @@ function updateValue(key: string, value: DemoValue) {
                 <view class="demo-line-col-box">
                     <snake-line
                         direction="col"
-                        length="80"
+                        length="160"
                         :color="String(state.lineColor)"
                         :border-style="String(state.lineBorderStyle)"
                         :hair-line="Boolean(state.lineHair)"

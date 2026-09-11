@@ -5,9 +5,9 @@ const BARE_NUMBER_PATTERN = /^-?\d+(?:\.\d+)?$/;
 /**
  * 给数值补单位：裸数字（含多值简写中的每一段）追加 unit，其余原样返回；
  * null / undefined / 空串统一归一为 "0" + unit。
- * 与 uView 版差异：默认单位是 px 而非 rpx，空值不透传而是归零。
+ * 与 uView 版差异：空值不透传而是归零（uView 对空值返回空串）。
  */
-export function addUnit(value: UnitValue = 0, unit = 'px'): string {
+export function addUnit(value: UnitValue = 0, unit = 'rpx'): string {
     if (value === null || value === undefined || value === '') return `0${unit}`;
     if (typeof value === 'number') return `${value}${unit}`;
     const normalized = String(value).trim();

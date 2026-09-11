@@ -77,8 +77,8 @@ function formatFileSize(bytes?: number) {
                         accept="image"
                         :upload-request="mockUpload"
                         :max-count="6"
-                        width="100"
-                        height="100"
+                        width="200"
+                        height="200"
                     />
                 </view>
             </view>
@@ -108,8 +108,8 @@ function formatFileSize(bytes?: number) {
                         :upload-request="mockUpload"
                         :max-count="2"
                         :max-duration="60"
-                        width="100"
-                        height="100"
+                        width="200"
+                        height="200"
                         upload-text="添加视频"
                     />
                 </view>
@@ -125,8 +125,8 @@ function formatFileSize(bytes?: number) {
                         :upload-request="mockUpload"
                         :auto-upload="false"
                         :max-count="3"
-                        width="100"
-                        height="100"
+                        width="200"
+                        height="200"
                     />
                     <view class="upload-actions">
                         <snake-button type="primary" :disabled="manualFiles.length === 0" @tap="startManualUpload"
@@ -148,8 +148,8 @@ function formatFileSize(bytes?: number) {
                         :upload-request="mockUpload"
                         :custom-btn="true"
                         :max-count="3"
-                        width="100"
-                        height="100"
+                        width="200"
+                        height="200"
                     >
                         <template #addBtn>
                             <view class="custom-upload-button" hover-class="custom-upload-button--hover">

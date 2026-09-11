@@ -5,16 +5,16 @@ import test from 'node:test';
 import { addUnit, pxToRpx } from '../src/uni_modules/snake-ui/libs/function/unit.ts';
 
 test('addUnit preserves explicit units and applies a default to numeric values', () => {
-    assert.equal(addUnit(12), '12px');
-    assert.equal(addUnit('12', 'rpx'), '12rpx');
+    assert.equal(addUnit(12), '12rpx');
+    assert.equal(addUnit('12', 'px'), '12px');
     assert.equal(addUnit('50%'), '50%');
 });
 
 test('addUnit appends the unit to every space-separated segment', () => {
-    assert.equal(addUnit('10 20'), '10px 20px');
-    assert.equal(addUnit('10 20', 'rpx'), '10rpx 20rpx');
-    assert.equal(addUnit('10rpx 20'), '10rpx 20px');
-    assert.equal(addUnit('10 auto'), '10px auto');
+    assert.equal(addUnit('10 20'), '10rpx 20rpx');
+    assert.equal(addUnit('10 20', 'px'), '10px 20px');
+    assert.equal(addUnit('10rpx 20'), '10rpx 20rpx');
+    assert.equal(addUnit('10 auto'), '10rpx auto');
 });
 
 test('pxToRpx converts physical pixels using the current viewport width', () => {
