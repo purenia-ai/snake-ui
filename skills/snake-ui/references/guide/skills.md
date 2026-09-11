@@ -61,10 +61,6 @@ skills/snake-ui/
 
 每份 reference 都来自当前 VitePress 文档，并配有触发关键词，帮助 AI 以一致方式定位资料和核对公开 API。
 
-### 可维护
-
-组件文档变更后可自动更新 reference，避免手写提示词与公开文档长期漂移。
-
 ### 可扩展
 
 团队可以在保持 `SKILL.md` 路由规则的前提下，继续补充组件、CMS 或项目专属 reference。
