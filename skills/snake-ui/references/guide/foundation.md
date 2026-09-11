@@ -130,16 +130,7 @@ await uni.$snake.sleep(300);
 可复用模块更推荐按需导入：
 
 ```ts
-import {
-    debounce,
-    deepMerge,
-    mergeStyles,
-    navTo,
-    queryParams,
-    useEmitter,
-    useRouter,
-    useToast
-} from '@puresnake/snake-ui';
+import { debounce, deepMerge, mergeStyles, navTo, queryParams, useRouter, useToast } from '@puresnake/snake-ui';
 ```
 
 常用的父子关系 hook 也可直接按需导入：

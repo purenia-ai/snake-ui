@@ -54,7 +54,6 @@ test('library follows the function, hooks, css and component entry conventions',
 
     const hookEntry = await read('libs/hooks/index.ts');
     for (const hook of [
-        'useEmitter',
         'useRect',
         'useParent',
         'useChildren',

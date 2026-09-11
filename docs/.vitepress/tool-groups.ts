@@ -71,9 +71,7 @@ export const toolGroups: ToolGroup[] = [
                 text: '节流与防抖',
                 link: '/tools/use-rate-limit',
                 apis: ['useDebounce', 'useThrottle']
-            },
-            { text: '事件总线', link: '/tools/use-emitter', apis: ['useEmitter'] },
-            { text: '组件关系', link: '/tools/use-comp-relation', apis: ['useParent', 'useChildren'] }
+            }
         ]
     }
 ];

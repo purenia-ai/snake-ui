@@ -144,8 +144,6 @@
 - [时间格式化](tools/time.md)
 - [去除空格](tools/trim.md)
 - [颜色管理](tools/use-color.md)
-- [useParent / useChildren / hasParent](tools/use-comp-relation.md)
-- [useEmitter](tools/use-emitter.md)
 - [多语言](tools/use-locale.md)
 - [useModal](tools/use-modal.md)
 - [useDebounce 与 useThrottle](tools/use-rate-limit.md)

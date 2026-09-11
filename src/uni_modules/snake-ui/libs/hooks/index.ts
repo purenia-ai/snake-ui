@@ -1,4 +1,3 @@
-export * from './useEmitter';
 export * from './useRect';
 export * from './useTheme';
 export * from './useColor';

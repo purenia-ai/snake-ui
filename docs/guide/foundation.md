@@ -47,13 +47,7 @@ app.use(SnakeUI, {
 默认提供 Snake 主题，暗色策略支持 `light`、`dark` 和 `auto`：
 
 ```ts
-import {
-    setDarkMode,
-    setTheme,
-    setThemeColor,
-    toggleDarkMode,
-    useTheme
-} from '@puresnake/snake-ui';
+import { setDarkMode, setTheme, setThemeColor, toggleDarkMode, useTheme } from '@puresnake/snake-ui';
 
 setDarkMode('auto');
 setThemeColor({ primary: '#00b77a' });
@@ -130,16 +124,7 @@ await uni.$snake.sleep(300);
 可复用模块更推荐按需导入：
 
 ```ts
-import {
-    debounce,
-    deepMerge,
-    mergeStyles,
-    navTo,
-    queryParams,
-    useEmitter,
-    useRouter,
-    useToast
-} from '@puresnake/snake-ui';
+import { debounce, deepMerge, mergeStyles, navTo, queryParams, useRouter, useToast } from '@puresnake/snake-ui';
 ```
 
 常用的父子关系 hook 也可直接按需导入：

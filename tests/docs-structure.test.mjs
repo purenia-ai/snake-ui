@@ -204,7 +204,7 @@ test('every current CMS runtime block has a dedicated contract page and legacy r
 test('every tool navigation entry resolves to a dedicated document', async () => {
     const registry = await text('docs/.vitepress/tool-groups.ts');
     const links = [...registry.matchAll(new RegExp("link: '(/tools/[^']+)'", 'g'))].map(match => match[1]);
-    assert.equal(links.length, 30);
+    assert.equal(links.length, 28);
     assert.equal(new Set(links).size, links.length, 'tool links must be unique');
 
     for (const link of links) {
