@@ -1,6 +1,5 @@
 import type { App } from 'vue';
 import type { RuntimeOptions } from './runtime';
-import { snake as runtimeSnake } from './runtime';
 import { config, setConfig, SNAKE_UI_VERSION } from './config/state';
 import zIndex from './config/zIndex';
 import {
@@ -52,7 +51,8 @@ export const foundation = {
 };
 
 export type FoundationAPI = typeof foundation;
-export const snake = Object.assign(runtimeSnake, foundation) as typeof runtimeSnake & FoundationAPI;
+/** Snake UI 的唯一全局 API 聚合。运行时适配器不在这里安装。 */
+export const snake = foundation;
 
 export function installUIFoundation(app: App, options: RuntimeOptions = {}): void {
     setConfig({ debugMode: options.debugMode ?? false });

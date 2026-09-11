@@ -153,7 +153,7 @@ const uploadToOss: UploadRequest = async (file, { onProgress }) => {
 
 ## 旧版兼容
 
-迁移 `r2nd-joker` 时仍可使用 `isCustomUpload`、`@customUpload` 和 `onBeforeRead(file)`。新代码推荐使用 `customChoose`/`@on-choose`/`addFiles` 处理自定义选择，使用 `uploadRequest` 处理 OSS 上传。
+旧项目仍可使用 `isCustomUpload`、`@customUpload` 和 `onBeforeRead(file)`。新代码推荐使用 `customChoose`/`@on-choose`/`addFiles` 处理自定义选择，使用 `uploadRequest` 处理 OSS 上传。
 
 ## 主题变量
 

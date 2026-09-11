@@ -3,18 +3,12 @@ export {
     configureRuntime,
     getRuntimeConfig,
     getRuntimeOptions,
-    installRuntime,
     requireCache,
     requireRequest,
     resetRuntime,
-    runtimeOptionsKey,
+    runtimeOptionsKey
 } from './runtime';
-export type {
-    CacheAdapter,
-    RequestAdapter,
-    RuntimeConfig,
-    RuntimeOptions,
-} from './runtime';
+export type { CacheAdapter, RequestAdapter, RuntimeConfig, RuntimeOptions } from './runtime';
 export * from './foundation';
 export * from './config';
 export * from './function';

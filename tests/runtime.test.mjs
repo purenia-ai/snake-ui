@@ -6,32 +6,27 @@ import test from 'node:test'
 
 const sourceRoot = resolve(import.meta.dirname, '../src/uni_modules/snake-ui/libs')
 const testRoot = await mkdtemp(join(tmpdir(), 'snake-ui-runtime-'))
-const functionRoot = join(testRoot, 'function')
-await cp(join(sourceRoot, 'function'), functionRoot, { recursive: true })
-for (const file of await readdir(functionRoot)) {
+const runtimeRoot = join(testRoot, 'runtime')
+await cp(join(sourceRoot, 'runtime'), runtimeRoot, { recursive: true })
+for (const file of await readdir(runtimeRoot)) {
   if (!file.endsWith('.ts')) continue
-  const path = join(functionRoot, file)
+  const path = join(runtimeRoot, file)
   const source = (await readFile(path, 'utf8')).replace(
-    /(from |export \* from )'(\.\/[^']+)'/g,
+    /(from |export \* from |export \{[^}]+\} from )'(\.\/[^']+)'/g,
     "$1'$2.ts'",
   )
   await writeFile(path, source)
 }
-const runtimeSource = (await readFile(join(sourceRoot, 'runtime.ts'), 'utf8'))
-  .replace("from './function/unit'", "from './function/unit.ts'")
-  .replace("from './function/platform'", "from './function/platform.ts'")
-  .replace("from './function'", "from './function/index.ts'")
-await writeFile(join(testRoot, 'runtime.ts'), runtimeSource)
 
+const runtimeApi = await import(`${new URL(`file:///${join(runtimeRoot, 'index.ts').replaceAll('\\', '/')}`)}?test=${Date.now()}`)
 const {
   configureRuntime,
   getRuntimeConfig,
   requireCache,
   requireRequest,
   resetRuntime,
-  snake,
   RuntimeError,
-} = await import(`${new URL(`file:///${join(testRoot, 'runtime.ts').replaceAll('\\', '/')}`)}?test=${Date.now()}`)
+} = runtimeApi
 
 process.on('exit', () => { void rm(testRoot, { recursive: true, force: true }) })
 
@@ -52,9 +47,7 @@ test('runtime exposes configured adapters', async () => {
   assert.equal(requireCache('test'), cache)
   assert.equal(getRuntimeConfig('test').baseUrl, '/api')
   assert.deepEqual(await requireRequest('test').get('/health'), { ok: true })
-  assert.equal(typeof snake.route, 'function')
-  assert.equal(typeof snake.queryParams, 'function')
-  assert.equal(typeof snake.timeFrom, 'function')
+  assert.equal('snake' in runtimeApi, false)
 })
 
 test('runtime reports a missing capability with component context', () => {

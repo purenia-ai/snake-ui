@@ -27,16 +27,21 @@ function getTriggers(category, name, title) {
     return [...new Set([name, componentName, ...titleWords])];
 }
 
+function quoteYaml(value) {
+    return `'${value.replaceAll("'", "''")}'`;
+}
+
 function createFrontmatter(category, name, title) {
     const description = `Snake UI ${title}参考。处理 ${name}、${category} 或相关 uni-app 使用问题时按需读取。`;
-    const triggers = getTriggers(category, name, title).map(value => JSON.stringify(value)).join(', ');
+    const triggers = getTriggers(category, name, title).map(quoteYaml).join(', ');
 
     return [
         '---',
-        `name: ${JSON.stringify(name)}`,
-        `description: ${JSON.stringify(description)}`,
+        `name: ${quoteYaml(name)}`,
+        `description: ${quoteYaml(description)}`,
         `triggers: [${triggers}]`,
         '---',
+        '',
         ''
     ].join('\n');
 }
@@ -130,5 +135,6 @@ for (const category of categories) {
     index.push('');
 }
 
+index.pop();
 await writeFile(resolve(referenceDirectory, 'INDEX.md'), `${index.join('\n')}\n`, 'utf8');
 await generateLlmsFull();

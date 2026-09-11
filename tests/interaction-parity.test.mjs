@@ -172,17 +172,14 @@ test('CMS sticky keeps legacy enable semantics and explicit navigation offset', 
     assert.match(sticky, /unitNumber\(props\.customNavHeight\)/);
 });
 
-test('lazy goods images keep custom loading and error artwork through request states', async () => {
-    const [lazyImage, goods, legacy] = await Promise.all([
+test('lazy goods images accept host-provided loading and error artwork through request states', async () => {
+    const [lazyImage, goods] = await Promise.all([
         read('components/snake-lazy-image/snake-lazy-image.vue'),
-        read('components/snake-goods-list/snake-goods-list.vue'),
-        read('libs/cms/legacy-joker.ts')
+        read('components/snake-goods-list/snake-goods-list.vue')
     ]);
     assert.match(lazyImage, /v-if="\$slots\.loading \|\| loadingImg"/);
     assert.match(lazyImage, /:src="loadingImg"/);
     assert.match(lazyImage, /:src="errorImg"/);
     assert.match(goods, /:loading-img="assets\.goodsLoading \|\| ''"/);
     assert.match(goods, /:error-img="assets\.goodsError \|\| ''"/);
-    assert.match(legacy, /goodsLoading:\s*'https:\/\/cdn\.puresnake\.com\/joker\/static\/snake-loading\.png'/);
-    assert.match(legacy, /goodsError:\s*'https:\/\/cdn\.puresnake\.com\/joker\/static\/loadfail\.png'/);
 });

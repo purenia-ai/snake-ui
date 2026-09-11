@@ -87,7 +87,8 @@ export default defineConfig({
                         text: '开始',
                         items: [
                             { text: '介绍', link: '/guide/intro' },
-                            { text: '运行环境', link: '/guide/compatibility' }
+                            { text: '运行环境', link: '/guide/compatibility' },
+                            { text: '常见问题', link: '/guide/troubleshooting' }
                         ]
                     },
                     {
@@ -104,8 +105,7 @@ export default defineConfig({
                             { text: 'Skills', link: '/guide/skills' },
                             { text: 'LLM 上下文', link: '/guide/llms' }
                         ]
-                    },
-                    { text: '迁移与排错', items: [{ text: '常见问题', link: '/guide/troubleshooting' }] }
+                    }
                 ]
             },
             {
@@ -181,6 +181,7 @@ export default defineConfig({
                         { text: '介绍', link: '/guide/intro' },
                         { text: '运行环境与能力边界', link: '/guide/compatibility' },
                         { text: '代码提示', link: '/guide/code-hint' },
+                        { text: '常见问题', link: '/guide/troubleshooting' },
                         { text: '设计理念', link: '/guide/design-principles' }
                     ]
                 },
@@ -195,10 +196,6 @@ export default defineConfig({
                         { text: '主题生成器', link: '/guide/theme-generate' },
                         { text: '自定义样式', link: '/guide/custom-style' }
                     ]
-                },
-                {
-                    text: '迁移与排错',
-                    items: [{ text: '常见问题', link: '/guide/troubleshooting' }]
                 },
                 {
                     text: 'AI',

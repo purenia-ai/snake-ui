@@ -127,7 +127,8 @@ test('package exports and published files cover documented entry points', async 
         assert.ok(manifest.exports[key], `missing export: ${key}`);
     }
     assert.equal(manifest.exports['./libs/*'], undefined);
-    for (const file of ['components', 'libs', 'locale', 'plugins', 'types', 'iconfont.css', 'iconfont.woff2']) {
+    for (const file of ['components', 'libs', 'locale', 'plugins', 'types', 'iconfont.css']) {
         assert.ok(manifest.files.includes(file), `missing published file: ${file}`);
     }
+    assert.equal(manifest.files.includes('iconfont.woff2'), false);
 });

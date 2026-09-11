@@ -1,10 +1,15 @@
 import type { App } from 'vue';
-import { installRuntime, installUIFoundation, type RuntimeOptions } from './libs';
+import { configureRuntime, installUIFoundation, runtimeOptionsKey, snake, type RuntimeOptions } from './libs';
 
 const SnakeUI = {
     install(app: App, options: RuntimeOptions = {}): void {
         installUIFoundation(app, options);
-        installRuntime(app, options);
+        const configured = configureRuntime(options);
+        app.provide(runtimeOptionsKey, configured);
+        (app.config.globalProperties as Record<string, unknown>).$snake = snake;
+        if (typeof uni !== 'undefined') {
+            (uni as unknown as Record<string, unknown>).$snake = snake;
+        }
     }
 };
 

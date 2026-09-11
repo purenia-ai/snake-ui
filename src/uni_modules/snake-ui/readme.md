@@ -40,7 +40,7 @@ const data = await http.get('/goods');
 
 :root,
 page {
-    --snake-color-primary: #06D290;
+    --snake-color-primary: #06d290;
 }
 ```
 
@@ -76,4 +76,4 @@ import { addUnit, navTo, sleep, toast } from '@puresnake/snake-ui/libs';
 
 `snake-icon`、`snake-popup`、`snake-overlay`、`snake-button`、`snake-image`、`snake-lazy-image`、`snake-tabs`、`snake-sticky`、`snake-notice-bar`、`snake-loadmore`、`snake-empty`、`snake-swiper`、`snake-button-sort`、`snake-drop-menu`、`snake-drop-menu-item`、`snake-index-list`、`snake-index-list-panel`、`snake-index-anchor`、`snake-form`、`snake-form-item`、`snake-input`、`snake-textarea`、`snake-checkbox`、`snake-checkbox-group`、`snake-radio`、`snake-radio-group`、`snake-switch`、`snake-slider`。
 
-CMS 商品、优惠券和跳转能力通过 `app.use(SnakeUI, { cms: { services: ... } })` 注入。纯展示 CMS 不要求请求适配器；旧项目只配置 `request` 时会临时启用已弃用的 Joker 兼容适配器。
+CMS 商品、优惠券和跳转能力通过 `app.use(SnakeUI, { cms: { services: ... } })` 显式注入。纯展示 CMS 不要求请求适配器。

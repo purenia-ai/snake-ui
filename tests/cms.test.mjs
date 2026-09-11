@@ -28,7 +28,7 @@ after(async () => {
 const normalize = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/cms/normalize.ts');
 const blocks = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/cms/blocks.ts');
 const commerceModule = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/cms/use-commerce.ts');
-const runtime = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/runtime.ts');
+const runtime = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/runtime/index.ts');
 
 test('CMS normalizes aliases, preserves extensions, and keeps only one commerce section', () => {
     const input = [
@@ -224,7 +224,7 @@ test('every CMS v2 catalog entry has a static snake-cms branch and internal rend
     }
 });
 
-test('Joker endpoints, routes, review flags, and CDN assets stay inside the legacy adapter', async () => {
+test('CMS package does not contain application-specific endpoints, routes, review flags, or assets', async () => {
     const roots = [
         resolve(import.meta.dirname, '../src/uni_modules/snake-ui/components'),
         resolve(import.meta.dirname, '../src/uni_modules/snake-ui/libs/cms')
@@ -236,7 +236,7 @@ test('Joker endpoints, routes, review flags, and CDN assets stay inside the lega
         for (const entry of await readdir(directory, { withFileTypes: true })) {
             const path = join(directory, entry.name);
             if (entry.isDirectory()) await scan(path);
-            else if (/\.(?:ts|vue)$/.test(entry.name) && entry.name !== 'legacy-joker.ts') {
+            else if (/\.(?:ts|vue)$/.test(entry.name)) {
                 const source = await readFile(path, 'utf8');
                 if (forbidden.test(source)) violations.push(path);
             }

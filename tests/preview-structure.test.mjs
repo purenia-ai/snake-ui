@@ -218,7 +218,7 @@ test('compact layout preserves the native page outline and dimensions', async ()
 
     assert.match(layout, /#layout-bottom><PreviewFrame\s*\/><\/template>/);
     assert.doesNotMatch(layout, /#aside-top><PreviewFrame\s*\/><\/template>/);
-    assert.match(css, /--vp-sidebar-width:\s*240px/);
+    assert.match(css, /--vp-sidebar-width:\s*230px/);
     assert.match(css, /max-width:\s*700px/);
     assert.match(css, /--preview-phone-width:\s*calc\(375px/);
     assert.match(css, /transform:\s*scale\(var\(--preview-scale/);

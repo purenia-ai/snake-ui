@@ -6,8 +6,7 @@ const DEFAULT_CMS_OPTIONS: CmsOptions = {
     normalizers: {},
     services: {},
     assets: {},
-    cachePrefix: 'snake-ui:cms',
-    legacy: 'auto'
+    cachePrefix: 'snake-ui:cms'
 };
 
 let globalCmsOptions: CmsOptions = deepMerge(DEFAULT_CMS_OPTIONS, {});

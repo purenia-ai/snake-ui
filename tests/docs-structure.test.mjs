@@ -41,7 +41,8 @@ test('component getting-started pages remain connected', async () => {
 test('guide navigation exposes dedicated task groups', async () => {
     const config = await text('docs/.vitepress/config.mts');
     assert.match(config, /text: '配置与自定义'/);
-    assert.match(config, /text: '迁移与排错'/);
+    assert.ok(config.includes("{ text: '常见问题', link: '/guide/troubleshooting' }"));
+    assert.doesNotMatch(config, /text: '迁移与排错'/);
     assert.doesNotMatch(config, /text: '商城与 CMS'/);
     assert.doesNotMatch(config, /text: '核心概念'/);
 });

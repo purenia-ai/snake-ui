@@ -23,7 +23,7 @@ test('snake-upload gives uploadRequest priority over action and validates its UR
     assert.match(source, /onProgress: \(percent: number\)/);
 });
 
-test('snake-upload exposes the joker compatibility bridge', async () => {
+test('snake-upload exposes the legacy custom-upload bridge', async () => {
     const source = await readFile(componentUrl, 'utf8');
     assert.match(source, /if \(props\.isCustomUpload\)/);
     assert.match(source, /emit\('customUpload'/);

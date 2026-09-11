@@ -93,7 +93,7 @@ test('all component docs contain the common detailed sections', async () => {
             assert.match(markdown, /\|\s*参数\s*\|\s*说明\s*\|\s*类型\s*\|\s*默认值\s*\|/, `${name}: props table`);
             assert.match(markdown, /^### Slots$/m, `${name}: slots`);
             assert.match(markdown, /^## 主题变量$/m, `${name}: theme variables`);
-            assert.match(markdown, /源码：`src\/uni_modules\/snake-ui\/components\//, `${name}: source path`);
+            assert.doesNotMatch(markdown, /源码：/, `${name}: no source path`);
             continue;
         }
         assert.match(markdown, /^#\s+.+/m, `${name}: title`);
@@ -105,7 +105,7 @@ test('all component docs contain the common detailed sections', async () => {
             /\|\s*(?:名称|参数)\s*\|\s*说明\s*\|\s*类型\s*\|\s*默认值\s*\|(?:\s*可选值\s*\|)?|没有 Props/,
             `${name}: complete props table or explicit no-props statement`
         );
-        assert.match(markdown, /源码：`src\/uni_modules\/snake-ui\/components\//, `${name}: source path`);
+        assert.doesNotMatch(markdown, /源码：/, `${name}: no source path`);
     }
 });
 
@@ -135,7 +135,7 @@ test('high-use component docs follow the standard documentation shape', async ()
         assert.match(markdown, /^#{3,4} (?:Form )?Props$/m, `${name}: props`);
         assert.match(markdown, /^## 主题变量$/m, `${name}: theme variables`);
         assert.doesNotMatch(markdown, /^## (?:何时使用|无障碍)$/m, `${name}: omitted sections`);
-        assert.match(markdown, /源码：`src\/uni_modules\/snake-ui\/components\//, `${name}: source path`);
+        assert.doesNotMatch(markdown, /源码：/, `${name}: no source path`);
     }
 
     for (const name of [

@@ -39,7 +39,7 @@ export interface CmsNormalizedComponent<Style extends Record<string, any> = Reco
 }
 
 export type CmsDiagnosticCode =
-    'invalid-component' | 'unknown-component' | 'normalizer-error' | 'duplicate-commerce-section' | 'legacy-adapter';
+    'invalid-component' | 'unknown-component' | 'normalizer-error' | 'duplicate-commerce-section';
 
 export interface CmsDiagnostic {
     code: CmsDiagnosticCode;
@@ -87,9 +87,7 @@ export interface CmsCommerceService<
         context: CmsServiceContext & { params: Record<string, unknown> }
     ): Promise<CmsActivityResult<Activity>>;
     getFilters?(context: CmsServiceContext & { params: Record<string, unknown> }): Promise<Filters>;
-    getGoods(
-        context: CmsServiceContext & { params: Record<string, unknown> }
-    ): Promise<CmsGoodsResult<Goods>>;
+    getGoods(context: CmsServiceContext & { params: Record<string, unknown> }): Promise<CmsGoodsResult<Goods>>;
     navigateGoods?(context: CmsServiceContext & { item: Goods; index: number }): void | Promise<void>;
 }
 
@@ -150,7 +148,6 @@ export interface CmsOptions {
     services?: CmsServices;
     assets?: CmsAssets;
     cachePrefix?: string;
-    legacy?: boolean | 'auto';
     onDiagnostic?: (diagnostic: CmsDiagnostic) => void;
 }
 
