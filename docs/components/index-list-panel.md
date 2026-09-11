@@ -69,5 +69,3 @@ preview: /pages/componentsA/indexListPanel/index
 | `--snake-color-primary`       | 当前索引默认颜色       |
 | `--snake-color-text-muted`    | 未激活索引默认颜色     |
 | `--snake-color-primary-light` | 当前索引提示层背景颜色 |
-
-源码：`src/uni_modules/snake-ui/components/snake-index-list-panel/snake-index-list-panel.vue`

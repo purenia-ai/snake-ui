@@ -73,5 +73,3 @@ preview: /pages/componentsA/swiper/index
 ## 主题变量
 
 组件未直接使用 CSS 主题变量。可通过 `indicatorColor`、`indicatorActiveColor`、`bgColor` 和 `customStyle` 调整视觉样式。
-
-源码：`src/uni_modules/snake-ui/components/snake-swiper/snake-swiper.vue`

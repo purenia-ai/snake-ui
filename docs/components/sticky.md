@@ -57,5 +57,3 @@ preview: /pages/componentsA/sticky/index
 ## 主题变量
 
 组件未直接使用 CSS 主题变量。可通过 `bgColor` 设置背景，并通过 `customStyle` 覆盖其他视觉样式。
-
-源码：`src/uni_modules/snake-ui/components/snake-sticky/snake-sticky.vue`

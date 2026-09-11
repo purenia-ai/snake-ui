@@ -50,5 +50,3 @@ preview: /pages/componentsA/line/index
 | 变量名                 | 说明         |
 | ---------------------- | ------------ |
 | `--snake-color-border` | 分隔线默认色 |
-
-源码：`src/uni_modules/snake-ui/components/snake-line/snake-line.vue`

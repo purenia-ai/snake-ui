@@ -105,5 +105,3 @@ Button 复用 Snake UI 全局颜色令牌，可在主题作用域内覆盖：
 | `--snake-color-surface`      | 默认按钮背景颜色 |
 
 各主题色还配有 `-dark`、`-disabled` 和 `-light` 状态令牌，完整定义见 `src/uni_modules/snake-ui/theme.scss`。
-
-源码：`src/uni_modules/snake-ui/components/snake-button/snake-button.vue`

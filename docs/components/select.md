@@ -78,5 +78,3 @@ const cascade = [{ label: '华东', value: 'east', children: [{ label: '上海',
 | `--snake-color-surface-rgb`    | 滚轮遮罩渐变背景 |
 
 `confirmColor` 和 `cancelColor` 可以覆盖单个实例的操作颜色。
-
-源码：`src/uni_modules/snake-ui/components/snake-select/snake-select.vue`

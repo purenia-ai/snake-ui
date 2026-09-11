@@ -88,5 +88,3 @@ preview: /pages/componentsA/text/index
 | `--snake-color-warning`        | warning 颜色         |
 | `--snake-color-error`          | error 颜色           |
 | `--snake-color-info`           | info 颜色            |
-
-源码：`src/uni_modules/snake-ui/components/snake-text/snake-text.vue`

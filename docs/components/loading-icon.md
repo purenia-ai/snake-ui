@@ -48,5 +48,3 @@ preview: /pages/componentsA/loadingIcon/index
 | `--snake-color-text-muted` | 默认文字颜色   |
 
 `color`、`inactiveColor` 和 `textColor` 可以覆盖单个实例的颜色。
-
-源码：`src/uni_modules/snake-ui/components/snake-loading-icon/snake-loading-icon.vue`

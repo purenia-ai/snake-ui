@@ -65,5 +65,3 @@ preview: /pages/componentsA/lineProgress/index
 | `--snake-color-info`       | info 预设颜色             |
 | `--snake-color-white`      | 进度文字颜色              |
 | `--snake-color-text-light` | 条纹装饰颜色              |
-
-源码：`src/uni_modules/snake-ui/components/snake-line-progress/snake-line-progress.vue`

@@ -59,7 +59,7 @@ const tabs = [{ name: '推荐' }, { name: '新品' }, { name: '热门' }];
 
 | 参数                            | 说明                             | 类型               | 默认值                    |
 | ------------------------------- | -------------------------------- | ------------------ | ------------------------- |
-| `list`                          | 标签对象数组                     | `TabItem[]`   | `[]`                      |
+| `list`                          | 标签对象数组                     | `TabItem[]`        | `[]`                      |
 | `current`                       | 当前激活索引                     | `number \| string` | `0`                       |
 | `isScroll`                      | 是否允许横向拖动                 | `boolean`          | `true`                    |
 | `height` / `fontSize`           | 高度和字号，数值单位 rpx         | `number \| string` | `80` / `30`               |
@@ -96,5 +96,3 @@ const tabs = [{ name: '推荐' }, { name: '新品' }, { name: '热门' }];
 | `--snake-color-primary` | 激活文字和滑块颜色 |
 | `--snake-color-text`    | 未激活文字颜色     |
 | `--snake-color-error`   | 徽标默认背景色     |
-
-源码：`src/uni_modules/snake-ui/components/snake-tabs/snake-tabs.vue`

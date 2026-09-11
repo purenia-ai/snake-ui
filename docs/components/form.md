@@ -67,8 +67,8 @@ const rules = {
 | 参数            | 说明                     | 类型                        | 默认值                 |
 | --------------- | ------------------------ | --------------------------- | ---------------------- |
 | `model`         | 表单数据对象             | `object`                    | `{}`                   |
-| `rules`         | 校验规则                 | `FormRules`            | `{}`                   |
-| `errorType`     | 错误提示方式             | `FormErrorType[]`      | `['message', 'toast']` |
+| `rules`         | 校验规则                 | `FormRules`                 | `{}`                   |
+| `errorType`     | 错误提示方式             | `FormErrorType[]`           | `['message', 'toast']` |
 | `borderBottom`  | 表单项默认显示底边       | `boolean`                   | `true`                 |
 | `labelPosition` | 标签位置                 | `left \| top`               | `left`                 |
 | `labelWidth`    | 标签宽度，数字单位为 rpx | `string \| number`          | `90`                   |
@@ -128,5 +128,3 @@ Form 容器没有独立视觉令牌，FormItem 直接使用以下全局变量：
 | `--snake-color-text-light` | 辅助文字颜色       |
 | `--snake-color-divider`    | 表单项分隔线       |
 | `--snake-color-error`      | 必填标记和错误状态 |
-
-源码：`src/uni_modules/snake-ui/components/snake-form/snake-form.vue`、`src/uni_modules/snake-ui/components/snake-form-item/snake-form-item.vue`

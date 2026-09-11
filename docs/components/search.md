@@ -80,5 +80,3 @@ preview: /pages/componentsA/search/index
 | `--snake-color-text-muted`     | 占位文字和操作按钮颜色 |
 | `--snake-color-text-light`     | 清除图标颜色           |
 | `--snake-color-text`           | 右侧操作按钮激活颜色   |
-
-源码：`src/uni_modules/snake-ui/components/snake-search/snake-search.vue`

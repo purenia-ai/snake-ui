@@ -53,5 +53,3 @@ preview: /pages/componentsA/overlay/index
 ## 主题变量
 
 Overlay 没有直接使用 CSS 主题变量。遮罩透明度、层级和自定义外观分别通过 `opacity`、`zIndex` 与 `customStyle` 配置。
-
-源码：`src/uni_modules/snake-ui/components/snake-overlay/snake-overlay.vue`

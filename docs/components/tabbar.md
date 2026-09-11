@@ -105,5 +105,3 @@ const items = [
 | `--snake-color-surface-muted` | 按压背景色               |
 | `--snake-color-divider`       | 顶部边框和中间按钮描边色 |
 | `--snake-color-error`         | 角标背景色               |
-
-源码：`src/uni_modules/snake-ui/components/snake-tabbar/snake-tabbar.vue`

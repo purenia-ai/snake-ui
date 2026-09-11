@@ -87,5 +87,3 @@ onPageScroll(event => {
 ## 从旧版迁移
 
 旧版 `snake-index-list` 内置 `scroll-view`。升级后，页面场景需要传入页面 `scrollTop`；原弹窗和定高容器场景改用 `snake-index-list-panel`。
-
-源码：`src/uni_modules/snake-ui/components/snake-index-list/snake-index-list.vue`

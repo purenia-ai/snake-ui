@@ -68,5 +68,3 @@ H5 中轨道可通过 Tab 聚焦，方向键按照 `step` 调整数值；触摸�
 | `--snake-color-primary`    | 激活轨道默认色 |
 | `--snake-color-divider`    | 未激活轨道颜色 |
 | `--snake-color-text-muted` | 边界值文字颜色 |
-
-源码：`src/uni_modules/snake-ui/components/snake-slider/snake-slider.vue`

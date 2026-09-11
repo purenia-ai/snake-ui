@@ -58,5 +58,3 @@ preview: /pages/componentsA/loadmore/index
 | ------------------------------ | ---------------- |
 | `--snake-color-text-light`     | 加载图标默认颜色 |
 | `--snake-color-text-secondary` | 状态文字默认颜色 |
-
-源码：`src/uni_modules/snake-ui/components/snake-loadmore/snake-loadmore.vue`

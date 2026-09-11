@@ -67,5 +67,3 @@ preview: /pages/componentsA/navbar/index
 | `--snake-color-text`    | 返回图标与标题默认色 |
 | `--snake-color-surface` | 导航栏默认背景色     |
 | `--snake-color-divider` | 底部分隔线颜色       |
-
-源码：`src/uni_modules/snake-ui/components/snake-navbar/snake-navbar.vue`

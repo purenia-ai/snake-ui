@@ -68,5 +68,3 @@ preview: /pages/componentsA/image/index
 | ----------------------------- | ------------------ |
 | `--snake-color-surface-muted` | 图片容器默认背景色 |
 | `--snake-color-text-muted`    | 状态图标默认颜色   |
-
-源码：`src/uni_modules/snake-ui/components/snake-image/snake-image.vue`

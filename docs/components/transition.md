@@ -55,5 +55,3 @@ preview: /pages/componentsA/transition/index
 ## 主题变量
 
 组件未直接使用 CSS 主题变量。可通过 `customClass` 和 `customStyle` 设置内容容器样式。
-
-源码：`src/uni_modules/snake-ui/components/snake-transition/snake-transition.vue`

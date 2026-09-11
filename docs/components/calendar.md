@@ -104,5 +104,3 @@ preview: /pages/componentsA/calendar/index
 | `--snake-color-surface`        | 日历背景                   |
 
 对应的颜色 Props 可以覆盖单个实例的默认主题值。
-
-源码：`src/uni_modules/snake-ui/components/snake-calendar/snake-calendar.vue`

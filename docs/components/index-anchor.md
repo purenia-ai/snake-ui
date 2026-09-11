@@ -53,5 +53,3 @@ preview: /pages/componentsA/indexAnchor/index
 | -------------------------- | ------------ |
 | `--snake-color-text`       | 锚点文字颜色 |
 | `--snake-color-background` | 锚点背景颜色 |
-
-源码：`src/uni_modules/snake-ui/components/snake-index-anchor/snake-index-anchor.vue`

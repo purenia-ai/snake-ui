@@ -137,5 +137,3 @@ import type { ConfigProviderEmits, ConfigProviderProps } from '@puresnake/snake-
 组件注入当前 Snake UI 主题生成的全部 `--snake-*` 变量；变量清单与生成方式见[多主题与暗黑模式](/guide/multi-theme)。
 
 最低版本：`0.1.0`
-
-源码：`src/uni_modules/snake-ui/components/snake-config-provider/snake-config-provider.vue`

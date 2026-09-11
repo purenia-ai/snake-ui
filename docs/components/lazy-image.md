@@ -60,5 +60,3 @@ preview: /pages/componentsA/lazyImage/index
 ## 主题变量
 
 组件未直接使用 CSS 主题变量，加载结果由内部 Image 组件渲染并继承其主题样式。
-
-源码：`src/uni_modules/snake-ui/components/snake-lazy-image/snake-lazy-image.vue`

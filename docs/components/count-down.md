@@ -83,5 +83,3 @@ import type { CountDownProps, CountDownEmits, CountDownExpose } from 'snake-ui';
 | ----------------------- | ---------------------- |
 | `--snake-color-text`    | 数字、分隔符和边框颜色 |
 | `--snake-color-surface` | 数字块背景色           |
-
-源码：`src/uni_modules/snake-ui/components/snake-count-down/snake-count-down.vue`

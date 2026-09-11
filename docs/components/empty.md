@@ -64,5 +64,3 @@ preview: /pages/componentsA/empty/index
 | `--snake-color-text-muted` | 默认提示文字颜色 |
 
 `iconColor`、`color` 和 `textColor` 可以覆盖单个实例的颜色。
-
-源码：`src/uni_modules/snake-ui/components/snake-empty/snake-empty.vue`

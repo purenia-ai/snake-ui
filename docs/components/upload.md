@@ -58,10 +58,10 @@ const uploadToOss: UploadRequest = async (file, { onProgress }) => {
 
 | 参数                                  | 说明                                                        | 类型                                   | 默认值                        |
 | ------------------------------------- | ----------------------------------------------------------- | -------------------------------------- | ----------------------------- |
-| `modelValue`                          | 文件列表，支持 `v-model`                                    | `UploadFileItem[]`                | `[]`                          |
-| `fileList`                            | 初始文件列表（旧版兼容，`modelValue` 有值时优先）           | `UploadFileItem[]`                | `[]`                          |
+| `modelValue`                          | 文件列表，支持 `v-model`                                    | `UploadFileItem[]`                     | `[]`                          |
+| `fileList`                            | 初始文件列表（旧版兼容，`modelValue` 有值时优先）           | `UploadFileItem[]`                     | `[]`                          |
 | `action`                              | 服务器上传地址                                              | `string`                               | `''`                          |
-| `uploadRequest`                       | 自定义上传适配器（OSS 等），优先于 `action`                 | `UploadRequest`                   | -                             |
+| `uploadRequest`                       | 自定义上传适配器（OSS 等），优先于 `action`                 | `UploadRequest`                        | -                             |
 | `timeout`                             | 默认上传的超时时间，单位毫秒                                | `number`                               | `60000`                       |
 | `accept`                              | 接受的文件类型 `image / video / file / media / all`         | `string`                               | `'image'`                     |
 | `mode`                                | 展示模式 `grid / list`                                      | `string`                               | `'grid'`                      |
@@ -171,5 +171,3 @@ Upload 没有组件专属令牌，直接复用以下全局变量：
 | `--snake-color-border`         | 文件项和选择入口边框   |
 | `--snake-color-surface`        | 文件项背景             |
 | `--snake-color-disabled-bg`    | 禁用背景               |
-
-源码：`src/uni_modules/snake-ui/components/snake-upload/snake-upload.vue`

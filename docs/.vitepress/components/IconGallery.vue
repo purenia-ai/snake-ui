@@ -62,7 +62,7 @@ async function copyIcon(name: string) {
 
 .icon-gallery__grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     border: 1px solid var(--vp-c-divider);
     border-radius: 10px;
     background: var(--vp-c-divider);
@@ -73,12 +73,12 @@ async function copyIcon(name: string) {
     position: relative;
     display: flex;
     min-width: 0;
-    min-height: 116px;
+    min-height: 92px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    padding: 16px 8px;
+    gap: 8px;
+    padding: 12px 6px;
     border: 0;
     border-radius: 0;
     color: var(--vp-c-text-2);
@@ -102,17 +102,18 @@ async function copyIcon(name: string) {
 }
 
 .icon-gallery__item i {
-    font-size: 28px;
+    font-size: 24px;
     line-height: 1;
 }
 
 .icon-gallery__item span {
     width: 100%;
     font-family: var(--vp-font-family-mono);
-    font-size: 11px;
+    font-size: 10px;
     line-height: 1.35;
     text-align: center;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
+    white-space: normal;
 }
 
 .icon-gallery__item small {
@@ -147,7 +148,7 @@ async function copyIcon(name: string) {
     }
 
     .icon-gallery__item {
-        min-height: 104px;
+        min-height: 92px;
     }
 }
 </style>

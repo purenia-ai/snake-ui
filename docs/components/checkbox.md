@@ -97,5 +97,3 @@ preview: /pages/componentsA/checkbox/index
 ## 类型定义
 
 从包根导入 `CheckboxGroupProps`、`CheckboxProps` 与 `CheckboxEmits`。
-
-源码：`src/uni_modules/snake-ui/components/snake-checkbox-group/snake-checkbox-group.vue`、`src/uni_modules/snake-ui/components/snake-checkbox/snake-checkbox.vue`

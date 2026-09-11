@@ -52,5 +52,3 @@ preview: /pages/componentsA/link/index
 | 变量名                  | 说明           |
 | ----------------------- | -------------- |
 | `--snake-color-primary` | 超链接默认颜色 |
-
-源码：`src/uni_modules/snake-ui/components/snake-link/snake-link.vue`

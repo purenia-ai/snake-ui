@@ -73,5 +73,3 @@ preview: /pages/componentsA/noticeBar/index
 | `--snake-color-notice-background` | 主题背景回退值     |
 
 `color` 和 `bgColor` 会覆盖单个实例的主题颜色。
-
-源码：`src/uni_modules/snake-ui/components/snake-notice-bar/snake-notice-bar.vue`

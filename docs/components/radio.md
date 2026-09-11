@@ -88,5 +88,3 @@ preview: /pages/componentsA/radio/index
 ## 类型定义
 
 从包根导入 `RadioGroupProps`、`RadioProps` 与 `RadioEmits`。
-
-源码：`src/uni_modules/snake-ui/components/snake-radio-group/snake-radio-group.vue`、`src/uni_modules/snake-ui/components/snake-radio/snake-radio.vue`

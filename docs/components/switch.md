@@ -50,5 +50,3 @@ H5 中组件可通过 Tab 聚焦，并使用 Enter 或空格切换。`disabled` 
 | `--snake-color-border`  | 默认关闭颜色       |
 
 `activeColor` 和 `inactiveColor` 可以覆盖单个实例的对应颜色。
-
-源码：`src/uni_modules/snake-ui/components/snake-switch/snake-switch.vue`

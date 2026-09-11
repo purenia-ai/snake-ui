@@ -110,5 +110,3 @@ const beforeToggle = ({ resolve }) => resolve(userHasPermission);
 | `--snake-color-surface`        | 菜单栏和下拉面板背景色 |
 | `--snake-color-divider`        | 菜单栏及选项分隔线颜色 |
 | `--snake-color-shadow`         | 下拉面板阴影颜色       |
-
-源码：`src/uni_modules/snake-ui/components/snake-drop-menu/snake-drop-menu.vue`、`src/uni_modules/snake-ui/components/snake-drop-menu-item/snake-drop-menu-item.vue`

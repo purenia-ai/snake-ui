@@ -85,5 +85,3 @@ preview: /pages/componentsA/skeleton/index
 | ---------------------------- | -------------- |
 | `--snake-skeleton-color`     | 骨架基础背景色 |
 | `--snake-skeleton-highlight` | 流光高亮颜色   |
-
-源码：`src/uni_modules/snake-ui/components/snake-skeleton/snake-skeleton.vue`、`src/uni_modules/snake-ui/components/snake-skeleton-item/snake-skeleton-item.vue`

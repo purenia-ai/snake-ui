@@ -117,5 +117,3 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 | `--snake-color-border`         | 条目和分组边框颜色                             |
 | `--snake-color-error`          | 必填标记颜色                                   |
 | `--snake-color-surface-muted`  | 点击反馈背景色                                 |
-
-源码：`src/uni_modules/snake-ui/components/snake-cell-item/snake-cell-item.vue`、`src/uni_modules/snake-ui/components/snake-cell-group/snake-cell-group.vue`

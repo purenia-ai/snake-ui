@@ -68,5 +68,3 @@ preview: /pages/componentsA/icon/index
 | `--snake-color-warning`        | warning 主题色         |
 | `--snake-color-error`          | error 主题色           |
 | `--snake-color-info`           | info 主题色            |
-
-源码：`src/uni_modules/snake-ui/components/snake-icon/snake-icon.vue`

@@ -40,5 +40,3 @@ preview: /pages/componentsA/buttonSort/index
 | `--snake-color-text`       | 按钮文字默认颜色   |
 | `--snake-color-text-muted` | 未激活排序箭头颜色 |
 | `--snake-color-primary`    | 激活排序箭头颜色   |
-
-源码：`src/uni_modules/snake-ui/components/snake-button-sort/snake-button-sort.vue`

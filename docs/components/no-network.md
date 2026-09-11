@@ -88,5 +88,3 @@ function handleRetry() {
 | `--snake-color-surface`    | 全屏提示背景色           |
 | `--snake-color-text-muted` | 提示文字、按钮边框和背景 |
 | `--snake-color-white`      | 重试按钮文字颜色         |
-
-源码：`src/uni_modules/snake-ui/components/snake-no-network/snake-no-network.vue`

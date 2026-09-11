@@ -75,5 +75,3 @@ preview: /pages/componentsA/popup/index
 | `--snake-color-text-muted` | 默认关闭图标颜色      |
 | `--snake-radius-large`     | `round="true"` 的圆角 |
 | `--snake-z-index-popup`    | 样式层的默认弹层层级  |
-
-源码：`src/uni_modules/snake-ui/components/snake-popup/snake-popup.vue`

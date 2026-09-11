@@ -57,5 +57,3 @@ preview: /pages/componentsA/textarea/index
 | `--snake-color-error`       | 校验失败边框颜色 |
 | `--snake-color-disabled-bg` | 禁用状态背景色   |
 | `--snake-radius-md`         | 容器圆角         |
-
-源码：`src/uni_modules/snake-ui/components/snake-textarea/snake-textarea.vue`

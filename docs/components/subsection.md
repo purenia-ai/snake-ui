@@ -62,5 +62,3 @@ H5 中当前分段可通过 Tab 聚焦，左右方向键会循环切换，并自
 | `--snake-color-surface-muted`  | 按钮模式轨道背景色       |
 | `--snake-color-surface`        | 描边模式背景色           |
 | `--snake-color-white`          | 按钮模式激活文字默认颜色 |
-
-源码：`src/uni_modules/snake-ui/components/snake-subsection/snake-subsection.vue`

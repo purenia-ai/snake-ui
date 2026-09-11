@@ -73,5 +73,3 @@ preview: /pages/componentsA/readMore/index
 | `--snake-color-primary`        | 展开和收起按钮颜色   |
 | `--snake-color-surface`        | 收起状态渐隐终点颜色 |
 | `--snake-color-text-secondary` | 正文默认颜色         |
-
-源码：`src/uni_modules/snake-ui/components/snake-read-more/snake-read-more.vue`

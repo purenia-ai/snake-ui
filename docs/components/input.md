@@ -75,5 +75,3 @@ Input 复用全局主题令牌：
 ## 类型定义
 
 从包根导入 `InputProps` 与 `InputEmits`。`formatter` 应保持同步且无副作用，异步校验交给 Form 规则处理。
-
-源码：`src/uni_modules/snake-ui/components/snake-input/snake-input.vue`
