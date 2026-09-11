@@ -32,7 +32,6 @@ test('library follows the function, hooks, css and component entry conventions',
     const functionFiles = await readdir(new URL('libs/function/', root));
     for (const file of [
         'unit.ts',
-        'platform.ts',
         'timeFrom.ts',
         'color.ts',
         'deepClone.ts',

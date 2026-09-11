@@ -1,10 +1,6 @@
 <template>
     <view class="snake-sticky">
-        <view
-            class="snake-sticky__wrap"
-            :class="[elClass, customClass]"
-            :style="placeholderStyle"
-        >
+        <view class="snake-sticky__wrap" :class="[elClass, customClass]" :style="placeholderStyle">
             <view class="snake-sticky__content" :style="contentStyle">
                 <slot />
             </view>
@@ -20,8 +16,18 @@
  */
 
 import { onPageScroll } from '@dcloudio/uni-app';
-import { computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, watch, type CSSProperties } from 'vue';
-import { getRect, guid } from '../../libs/function/platform';
+import {
+    computed,
+    getCurrentInstance,
+    nextTick,
+    onBeforeUnmount,
+    onMounted,
+    ref,
+    watch,
+    type CSSProperties
+} from 'vue';
+import { getRect } from '../../libs/function/getRect';
+import { guid } from '../../libs/function/guid';
 import type { StickyEmits, StickyProps } from './types';
 
 defineOptions({ name: 'Sticky', options: { virtualHost: true, styleIsolation: 'shared' } });

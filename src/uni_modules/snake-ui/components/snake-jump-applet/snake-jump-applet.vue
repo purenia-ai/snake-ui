@@ -21,19 +21,17 @@
 
 import { computed, onMounted } from 'vue';
 import { resolveCmsOptions } from '../../libs/cms';
-import { toast } from '../../libs/function/platform';
-import {
-    CmsError,
-    type CmsLinkAction,
-} from '../snake-cms/types';
+import { toast } from '../../libs/function/toast';
+import { CmsError, type CmsLinkAction } from '../snake-cms/types';
 import type { JumpAppletEmits, JumpAppletProps } from './types';
 
 defineOptions({ name: 'JumpApplet', options: { virtualHost: true, styleIsolation: 'shared' } });
 
-const props = withDefaults(
-    defineProps<JumpAppletProps>(),
-    { datas: () => ({}), linkService: undefined, pageInfo: () => ({}) }
-);
+const props = withDefaults(defineProps<JumpAppletProps>(), {
+    datas: () => ({}),
+    linkService: undefined,
+    pageInfo: () => ({})
+});
 const emit = defineEmits<JumpAppletEmits>();
 const service = computed(() => props.linkService || resolveCmsOptions().services?.link);
 

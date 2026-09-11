@@ -1,18 +1,19 @@
 <template>
-  <view>
-    <snake-notice-bar
-      :volume-icon="datas.isLeftIcon ? true : false"
-      :list="noticeList"
-      :bg-color="datas.backColor"
-      :mode="datas.direction === 'row' ? 'horizontal' : 'vertical'"
-      :color="datas.textColor"
-      :custom-style="{
-        height: (datas.height || 72) + 'rpx',
-        lineHeight: (datas.height || 72) + 'rpx',
-        padding: `0 ${datas.pageMargin}rpx`,
-      }"
-      @click="handleNotice" />
-  </view>
+    <view>
+        <snake-notice-bar
+            :volume-icon="datas.isLeftIcon ? true : false"
+            :list="noticeList"
+            :bg-color="datas.backColor"
+            :mode="datas.direction === 'row' ? 'horizontal' : 'vertical'"
+            :color="datas.textColor"
+            :custom-style="{
+                height: (datas.height || 72) + 'rpx',
+                lineHeight: (datas.height || 72) + 'rpx',
+                padding: `0 ${datas.pageMargin}rpx`
+            }"
+            @click="handleNotice"
+        />
+    </view>
 </template>
 
 <script setup lang="ts">
@@ -22,21 +23,21 @@
  */
 
 import { computed } from 'vue';
-import { navTo } from '../../libs/function/platform';
+import { navTo } from '../../libs/function/route';
 import type { NoticeProps } from './types';
 
 defineOptions({ name: 'Notice', options: { virtualHost: true, styleIsolation: 'shared' } });
 const props = withDefaults(defineProps<NoticeProps>(), { datas: () => ({}) });
 const noticeList = computed(() => {
-  if (props.datas.direction === 'row') {
-    return Array.isArray(props.datas.noticeText) ? props.datas.noticeText : [props.datas.noticeText || ''];
-  }
-  return Array.isArray(props.datas.textList) ? props.datas.textList.map(item => item.text || '') : [];
+    if (props.datas.direction === 'row') {
+        return Array.isArray(props.datas.noticeText) ? props.datas.noticeText : [props.datas.noticeText || ''];
+    }
+    return Array.isArray(props.datas.textList) ? props.datas.textList.map(item => item.text || '') : [];
 });
 
 function handleNotice(index: number) {
-  const url = props.datas.direction === 'row' ? props.datas.url : props.datas.textList?.[index]?.url;
-  if (url) navTo(url);
+    const url = props.datas.direction === 'row' ? props.datas.url : props.datas.textList?.[index]?.url;
+    if (url) navTo(url);
 }
 </script>
 

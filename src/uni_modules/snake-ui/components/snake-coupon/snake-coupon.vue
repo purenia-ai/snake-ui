@@ -53,18 +53,19 @@
 
 import { computed, onMounted, ref, watch } from 'vue';
 import { resolveCmsOptions } from '../../libs/cms';
-import { sleep, toast } from '../../libs/function/platform';
-import {
-    CmsError,
-} from '../snake-cms/types';
+import { sleep } from '../../libs/function/sleep';
+import { toast } from '../../libs/function/toast';
+import { CmsError } from '../snake-cms/types';
 import type { CouponEmits, CouponProps } from './types';
 
 defineOptions({ name: 'Coupon', options: { virtualHost: true, styleIsolation: 'shared' } });
 
-const props = withDefaults(
-    defineProps<CouponProps>(),
-    { datas: () => ({}), couponService: undefined, linkService: undefined, pageInfo: () => ({}) }
-);
+const props = withDefaults(defineProps<CouponProps>(), {
+    datas: () => ({}),
+    couponService: undefined,
+    linkService: undefined,
+    pageInfo: () => ({})
+});
 const emit = defineEmits<CouponEmits>();
 const resolved = computed(() => resolveCmsOptions());
 const couponService = computed(() => props.couponService || resolved.value.services?.coupon);
