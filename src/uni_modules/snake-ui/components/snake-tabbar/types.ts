@@ -18,6 +18,8 @@ export interface TabbarItem {
     pagePath?: string;
     /** 是否作为中间凸起按钮显示。 */
     midButton?: boolean;
+    /** 单项宽度；设置任意一项后，其余未设置项自动填充剩余空间。 */
+    width?: string | number;
     /** 单项图标尺寸。 */
     iconSize?: string | number;
     /** 单项文字尺寸。 */
@@ -62,6 +64,10 @@ export interface TabbarProps {
     bgColor?: string;
     /** 是否展示顶部边框。 */
     borderTop?: boolean;
+    /** 是否在挂载后隐藏原生 tabBar；默认开启。非原生 tabBar 页面会安全忽略。 */
+    hideTabBar?: boolean;
+    /** 切换前的拦截器；返回 `true` 或 resolve 的 Promise 才会继续切换。 */
+    beforeSwitch?: (index: number) => boolean | Promise<unknown>;
     /** 是否启用中间凸起按钮。 */
     midButton?: boolean;
     /** 常规图标尺寸。 */

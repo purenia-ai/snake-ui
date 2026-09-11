@@ -67,11 +67,17 @@ onBeforeUnmount(() => window.removeEventListener('message', handlePreviewThemeRe
 
 const { nextLocaleLabel, switchLocale, text } = useDemoLocale();
 const tabItems = computed(() => [
-    { key: 'components', text: text('组件'), iconPath: 'list', selectedIconPath: 'list-dot' },
+    { key: 'components', text: text('组件'), iconPath: 'grid', selectedIconPath: 'grid-fill' },
     { key: 'tools', text: text('工具'), iconPath: 'setting', selectedIconPath: 'setting-fill' },
-    { key: 'scenes', text: text('场景'), iconPath: 'map', selectedIconPath: 'map-fill', midButton: true },
-    { key: 'templates', text: text('模板'), iconPath: 'file-text', selectedIconPath: 'file-text-fill' },
-    { key: 'about', text: text('关于'), iconPath: 'info', selectedIconPath: 'info-circle-fill' }
+    {
+        key: 'scenes',
+        text: text('场景'),
+        iconPath: 'moments',
+        selectedIconPath: 'moments-circel-fill',
+        midButton: true
+    },
+    { key: 'templates', text: text('模板'), iconPath: 'tags', selectedIconPath: 'tags-fill' },
+    { key: 'about', text: text('关于'), iconPath: 'info-circle', selectedIconPath: 'info-circle-fill' }
 ]);
 const tabRoutes: Record<DemoTab, string> = {
     components: '/pages/example/components',

@@ -4,7 +4,7 @@
  * @description 底部导航栏，提供跨端安全区、激活态、徽标和禁用状态。
  * @see /components/tabbar
  */
-import { computed, getCurrentInstance } from 'vue';
+import { computed, getCurrentInstance, onMounted } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import SnakeIcon from '../snake-icon/snake-icon.vue';
 import type { TabbarEmits, TabbarItem, TabbarProps } from './types';
@@ -28,6 +28,7 @@ const props = withDefaults(defineProps<TabbarProps>(), {
     inactiveColor: 'var(--snake-color-text-muted, #909399)',
     bgColor: 'var(--snake-color-surface)',
     borderTop: true,
+    hideTabBar: true,
     midButton: false,
     iconSize: 40,
     midButtonSize: 100,
@@ -38,8 +39,14 @@ const props = withDefaults(defineProps<TabbarProps>(), {
 });
 
 const emit = defineEmits<TabbarEmits>();
+// `items` 是 Snake 的别名；保留 `list` 以兼容 uView 的配置结构。
 const tabItems = computed(() => (props.items.length ? props.items : props.list));
+// 只有调用方显式传入 v-model 时才按索引高亮，避免默认值覆盖 `current`。
 const usesModelValue = computed(() => 'modelValue' in (getCurrentInstance()?.vnode.props ?? {}));
+// 任一项指定宽度后，未指定项必须改为填充剩余空间，不能再按百分比分配。
+const hasCustomWidth = computed(() =>
+    tabItems.value.some(item => item.width !== undefined && item.width !== null && item.width !== '')
+);
 const currentPage = computed(() => {
     const pages = getCurrentPages();
     return pages.length ? `/${pages[pages.length - 1].route}` : '';
@@ -53,8 +60,26 @@ const rootStyle = computed(() => [
     },
     props.customStyle
 ]);
+const spacerStyle = computed(() => {
+    if (!props.fixed) return { height: '0' };
+
+    // 凸起按钮会越过栏顶；占位同步增加 60rpx，防止页面末尾内容被遮住。
+    const midButtonHeight = props.midButton ? '60rpx' : '1px';
+    const safeAreaHeight = props.safeAreaInsetBottom ? ' + env(safe-area-inset-bottom)' : '';
+    return { height: `calc(${addUnit(props.height, 'rpx')} + ${midButtonHeight}${safeAreaHeight})` };
+});
+
+onMounted(() => {
+    if (!props.hideTabBar) return;
+
+    // uni-app only permits this API on pages declared in the native tabBar.
+    // A component library cannot inspect the consumer's pages.json at runtime,
+    // so explicitly consume that expected failure on ordinary pages.
+    uni.hideTabBar({ fail: () => {} });
+});
 
 function isActive(item: TabbarItem, index: number) {
+    // pagePath 模式以真实路由为准；纯组件模式才由 v-model/current 控制。
     if (item.pagePath) return item.pagePath === currentPage.value;
     if (usesModelValue.value) return index === props.modelValue;
     return item.key === props.current;
@@ -83,19 +108,54 @@ function itemKey(item: TabbarItem, index: number) {
     return item.key ?? index;
 }
 
-function clickItem(item: TabbarItem, index: number) {
+function itemStyle(item: TabbarItem): Record<string, string> {
+    const style: Record<string, string> = {};
+    if (item.width !== undefined && item.width !== null && item.width !== '') {
+        const width = addUnit(item.width, 'rpx');
+        style.flex = `0 0 ${width}`;
+        style.width = width;
+    } else if (hasCustomWidth.value) {
+        style.flex = '1 1 auto';
+        style.width = 'auto';
+    } else if (tabItems.value.length) {
+        const width = `${100 / tabItems.value.length}%`;
+        style.flex = `0 0 ${width}`;
+        style.width = width;
+    }
+
+    if (props.midButton && item.midButton) {
+        // 图标绝对定位后不再参与文档流，额外顶部内边距为标签留出空间。
+        const size =
+            Number.parseFloat(String(itemIconSize(item))) || Number.parseFloat(String(props.midButtonSize)) || 100;
+        style.paddingTop = addUnit(size / 2 + 8, 'rpx');
+        style.boxSizing = 'border-box';
+    }
+    return style;
+}
+
+async function clickItem(item: TabbarItem, index: number) {
     if (item.disabled) return;
+
+    if (props.beforeSwitch) {
+        try {
+            // 与 uView 一致：同步场景必须明确返回 true；Promise resolve 即表示放行。
+            const result = props.beforeSwitch(index);
+            if (typeof result === 'object' && result !== null && 'then' in result) await result;
+            else if (result !== true) return;
+        } catch {
+            return;
+        }
+    }
+
     emit('change', itemKey(item, index), item);
-    if (!item.pagePath) emit('update:modelValue', index);
+    // 原生 tabBar 页面只能通过 switchTab 切换；没有 pagePath 时才更新本地 v-model。
+    if (item.pagePath) uni.switchTab({ url: item.pagePath });
+    else emit('update:modelValue', index);
 }
 </script>
 
 <template>
-    <view
-        v-if="show"
-        :class="['snake-tabbar-spacer', { 'snake-tabbar-spacer--safe': safeAreaInsetBottom && fixed }]"
-        :style="{ height: fixed ? addUnit(height, 'rpx') : '0' }"
-    />
+    <view v-if="show" class="snake-tabbar-spacer" :style="spacerStyle" />
     <view
         v-if="show"
         :class="[
@@ -109,6 +169,7 @@ function clickItem(item: TabbarItem, index: number) {
         ]"
         :style="rootStyle"
         role="navigation"
+        @touchmove.stop.prevent="() => {}"
     >
         <view class="snake-tabbar__inner" :style="{ height: addUnit(height, 'rpx') }">
             <view
@@ -123,9 +184,10 @@ function clickItem(item: TabbarItem, index: number) {
                     }
                 ]"
                 hover-class="snake-tabbar__item--hover"
+                :style="itemStyle(item)"
                 :aria-label="item.text || ''"
                 :aria-current="isActive(item, index) ? 'page' : undefined"
-                @click="clickItem(item, index)"
+                @tap.stop="clickItem(item, index)"
             >
                 <view class="snake-tabbar__icon-wrap" :style="{ gap: addUnit(item.gap ?? gap, 'rpx') }"
                     ><SnakeIcon
@@ -152,9 +214,6 @@ function clickItem(item: TabbarItem, index: number) {
 <style lang="scss" scoped>
 .snake-tabbar-spacer {
     width: 100%;
-}
-.snake-tabbar-spacer--safe {
-    height: calc(104rpx + env(safe-area-inset-bottom)) !important;
 }
 .snake-tabbar {
     box-shadow: 0 -6rpx 24rpx rgba(6, 39, 28, 0.07);

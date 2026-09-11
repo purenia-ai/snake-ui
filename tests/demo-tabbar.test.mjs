@@ -47,6 +47,12 @@ test('primary pages share the custom themed tabbar', async () => {
     ]);
 
     assert.match(tabbar, /defineProps<TabbarProps>/);
+    assert.match(tabbar, /hideTabBar:\s*true/);
+    assert.match(tabbar, /onMounted\(\(\) => \{[\s\S]*uni\.hideTabBar\(\{ fail: \(\) => \{\} \}\)/);
+    assert.match(tabbar, /beforeSwitch\(index\)/);
+    assert.match(tabbar, /uni\.switchTab\(\{ url: item\.pagePath \}\)/);
+    assert.match(tabbar, /style\.flex = `0 0 \$\{width\}`/);
+    assert.match(tabbar, /props\.midButton \? '60rpx' : '1px'/);
     assert.match(shell, /uni\.switchTab/);
     assert.match(tabbar, /safe-area-inset-bottom/);
     assert.match(tabbar, /var\(--snake-color-primary/);
@@ -55,7 +61,10 @@ test('primary pages share the custom themed tabbar', async () => {
     assert.match(shell, /snake-tabbar/);
     assert.match(shell, /:mid-button="true"/);
     assert.match(shell, /midButton: true/);
-    assert.match(shell, /selectedIconPath: 'setting-fill'/);
+    for (const icon of ['grid-fill', 'setting-fill', 'moments-circel-fill', 'tags-fill', 'info-circle-fill']) {
+        assert.match(shell, new RegExp(`selectedIconPath: '${icon}'`));
+    }
+    assert.match(shell, /iconPath: 'info-circle'/);
     assert.match(components, /current-tab=['"]components['"]/);
     assert.match(tools, /current-tab=['"]tools['"]/);
     assert.match(scenes, /current-tab=['"]scenes['"]/);
