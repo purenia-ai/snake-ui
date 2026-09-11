@@ -1,8 +1,14 @@
 import type { CSSProperties } from 'vue';
 
+/**
+ * 样式值归一化与串化。与 styleUtils 的分工：这里不过滤无效值，
+ * 需要 'null' / 'undefined' 字符串清洗的合并场景用 styleUtils.mergeStyles。
+ */
+
 /** 可归一为样式声明集合的输入：声明字符串、样式对象（含 CSSProperties）或其数组。 */
 export type StyleSource = string | CSSProperties | Record<string, unknown> | StyleSource[] | null | undefined;
 
+/** 驼峰 / 空格 / 下划线分隔转短横线小写（CSS 属性名风格）。 */
 export function kebabCase(value: string): string {
     return value
         .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
@@ -10,6 +16,10 @@ export function kebabCase(value: string): string {
         .toLowerCase();
 }
 
+/**
+ * 样式输入归一化：target='object'（默认）统一返回样式对象，声明串按 ; 与首个 : 拆解；
+ * target='string' 统一返回样式串（非字符串输入经 toStyle 转换）。
+ */
 export function addStyle(style: StyleSource, target: 'object' | 'string' = 'object'): Record<string, string> | string {
     if (target === 'string') return typeof style === 'string' ? style : toStyle(style);
     if (Array.isArray(style)) return toStyle(style);
@@ -27,6 +37,10 @@ export function addStyle(style: StyleSource, target: 'object' | 'string' = 'obje
     }, {});
 }
 
+/**
+ * 合并多份样式输入为一条 `k:v;k:v` 串：键统一短横线小写，
+ * 后出现的同键覆盖先出现的（Map 去重），null / 空串值跳过。
+ */
 export function toStyle(...styles: Array<StyleSource>): string {
     // 兼容旧用法：单个数组整体传入时（如 [object, string]）解构展开
     if (styles.length === 1 && Array.isArray(styles[0])) {

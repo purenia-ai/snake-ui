@@ -1,5 +1,9 @@
 import { random } from './random';
 
+/**
+ * Fisher–Yates 洗牌：返回打乱后的新数组，不改动原数组。
+ * 相比 uView 的 sort(random) 乱序——分布更均匀，且无原地副作用。
+ */
 export function randomArray<T>(values: readonly T[]): T[] {
     const result = [...values];
     for (let index = result.length - 1; index > 0; index -= 1) {

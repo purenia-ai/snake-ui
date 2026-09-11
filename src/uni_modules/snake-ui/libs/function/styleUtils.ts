@@ -2,6 +2,12 @@ import type { CSSProperties } from 'vue';
 import { trim } from './trim';
 import { test } from './test';
 
+/**
+ * 样式合并的「清洗」版：合并前过滤 'null' / 'undefined' 字符串等无效值，
+ * 适合拼接来源不可控的样式（如接口下发的 customStyle）；基础归一化见 style.ts。
+ */
+
+/** 过滤空值与 'null' / 'undefined' 字符串，这类脏值常见于接口透传。 */
 function isValidValue(value: unknown): boolean {
     if (test.isEmpty(value)) return false;
     if (typeof value === 'string') {

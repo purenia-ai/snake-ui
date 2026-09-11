@@ -1,3 +1,4 @@
+/** 归一化 hex：接受 3 / 6 位（可带 #），3 位展开为 6 位，其余返回 undefined。 */
 function normalizeHex(value: string): string | undefined {
     const color = value.trim().replace('#', '');
     if (/^[0-9a-f]{3}$/i.test(color))
@@ -8,6 +9,7 @@ function normalizeHex(value: string): string | undefined {
     return /^[0-9a-f]{6}$/i.test(color) ? color : undefined;
 }
 
+/** hex → { r, g, b }；无法解析时返回 undefined。 */
 export function hexToRgb(value: string): { r: number; g: number; b: number } | undefined {
     const color = normalizeHex(value);
     if (!color) return undefined;
@@ -18,6 +20,7 @@ export function hexToRgb(value: string): { r: number; g: number; b: number } | u
     };
 }
 
+/** rgb → #rrggbb；各通道先收敛到 [0, 255] 再取整，输出恒为 6 位。 */
 export function rgbToHex(r: number, g: number, b: number): string {
     const channel = (value: number) =>
         Math.min(255, Math.max(0, Math.round(value)))
@@ -26,11 +29,16 @@ export function rgbToHex(r: number, g: number, b: number): string {
     return `#${channel(r)}${channel(g)}${channel(b)}`;
 }
 
+/** hex → rgba(...)：alpha 收敛到 [0, 1]，无法解析的输入原样返回。 */
 export function colorToRgba(value: string, alpha = 1): string {
     const rgb = hexToRgb(value);
     return rgb ? `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${Math.min(1, Math.max(0, alpha))})` : value;
 }
 
+/**
+ * 两色之间的线性渐变阶梯，首尾正好是起止色。
+ * @param steps 阶梯数：<=0 返回空数组，1 只返回起点色
+ */
 export function colorGradient(start: string, end: string, steps: number): string[] {
     const from = hexToRgb(start);
     const to = hexToRgb(end);

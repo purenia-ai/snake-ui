@@ -1,5 +1,9 @@
 export type EventHandler<Payload = unknown> = (payload: Payload) => void;
 
+/**
+ * 轻量事件总线：同一 handler 用 Set 去重，on 返回解绑函数，
+ * off 不传 handler 时清空整个事件，clear() 清空全部事件。
+ */
 export function createEmitter() {
     const events = new Map<string, Set<EventHandler>>();
     return {
@@ -22,4 +26,5 @@ export function createEmitter() {
     };
 }
 
+/** 库内共享的事件总线单例。 */
 export const emitter = createEmitter();

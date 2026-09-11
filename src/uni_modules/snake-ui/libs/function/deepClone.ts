@@ -1,3 +1,10 @@
+/**
+ * 深拷贝：WeakMap 记录「原对象 → 克隆」以支持循环引用，
+ * Reflect.ownKeys 连 Symbol 键与不可枚举键一起复制，
+ * Date / Map / Set 重建新实例，其余引用类型按对象 / 数组重构。
+ * @param value 任意值，原始类型直接返回
+ * @param seen 循环引用缓存，递归内部使用
+ */
 export function deepClone<T>(value: T, seen = new WeakMap<object, unknown>()): T {
     if (value == null || typeof value !== 'object') return value;
     if (seen.has(value as object)) return seen.get(value as object) as T;

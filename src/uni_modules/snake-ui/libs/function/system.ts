@@ -1,11 +1,14 @@
+/** 获取系统信息：每次实时读取，不做缓存（窗口尺寸、主题等可能变化）。 */
 export function getSystemInfo(): UniApp.GetSystemInfoResult {
-  return uni.getSystemInfoSync();
+    return uni.getSystemInfoSync();
 }
 
+/** uView 兼容别名：sys = getSystemInfo。 */
 export function sys(): UniApp.GetSystemInfoResult {
-  return getSystemInfo();
+    return getSystemInfo();
 }
 
+/** 当前操作系统平台（统一小写，如 'ios' / 'android' / 'devtools'）。 */
 export function os(): string {
-  return String(sys().platform || '').toLowerCase();
+    return String(sys().platform || '').toLowerCase();
 }

@@ -1,3 +1,7 @@
+/**
+ * function 基础层桶入口：全量展开供 foundation 聚合为 $snake；
+ * 宿主按需引入单个模块时走 `libs/function/xxx` 子路径。
+ */
 export * from './unit';
 export * from './platform';
 export * from './sleep';

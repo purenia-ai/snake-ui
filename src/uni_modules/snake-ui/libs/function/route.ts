@@ -1,10 +1,17 @@
 import { getQueryParams } from './queryParams';
 
+/**
+ * 路由跳转双入口：
+ * - route()：uni 跳转 API 的 Promise 化封装，带别名映射与入参校验；
+ * - navTo()：面向 CMS / 运营链接，识别外链、跨小程序、微信客服三类特殊协议。
+ */
+
 export type RouteType =
     'navigateTo' | 'to' | 'redirect' | 'redirectTo' | 'switchTab' | 'tab' | 'reLaunch' | 'navigateBack' | 'back';
 export type RouteParamValue = string | number | boolean | null | undefined;
 export type RouteParams = Record<string, RouteParamValue | readonly RouteParamValue[]>;
 
+/** route() 的跳转配置；type 兼容 uni 方法名与 uView 短别名（to / redirect / tab / back）。 */
 export interface RouteOptions {
     type?: RouteType;
     url?: string;
@@ -16,6 +23,7 @@ export interface RouteOptions {
 
 type NavigationMethod = 'navigateTo' | 'redirectTo' | 'switchTab' | 'reLaunch' | 'navigateBack';
 
+// 调用方别名 → uni 实际跳转方法
 const routeTypeMap: Record<RouteType, NavigationMethod> = {
     navigateTo: 'navigateTo',
     to: 'navigateTo',
@@ -28,6 +36,10 @@ const routeTypeMap: Record<RouteType, NavigationMethod> = {
     back: 'navigateBack'
 };
 
+/**
+ * 往 url 追加查询参数：数组值展开为同名多段，null / undefined 跳过，
+ * 已有 query 用 & 衔接，hash 段原样保留在末尾。
+ */
 function appendQueryParams(url: string, params?: RouteParams): string {
     if (!params) return url;
     const entries: string[] = [];
@@ -50,6 +62,11 @@ function routeError(message: string): Error {
     return new Error(`[Snake UI] ${message}`);
 }
 
+/**
+ * Promise 化路由跳转：成功 resolve；type 不认识、平台缺 API 或跳转失败均 reject。
+ * navigateBack 只认 delta（取整、至少 1）；switchTab 不追加参数（uni 该 API 不支持 query）；
+ * animationType / animationDuration 仅 navigateTo / redirectTo 透传（App 端生效）。
+ */
 export function route(url: string, params?: RouteParams): Promise<void>;
 export function route(options: RouteOptions): Promise<void>;
 export function route(input: string | RouteOptions, params?: RouteParams): Promise<void> {
@@ -95,6 +112,10 @@ function parseJsonObject(raw: string | undefined): Record<string, unknown> {
     }
 }
 
+/**
+ * CMS / 运营链接跳转：识别三类特殊协议（http 外链、/miniprogram、/serviceChat，
+ * 详见各分支注释）后落到 uni.navigateTo，失败自动降级 switchTab（兼容 tabbar 页）。
+ */
 export function navTo(url?: string): void {
     if (!url) return;
     if (/^https?:\/\//i.test(url)) {
