@@ -9,7 +9,7 @@ module.exports = {
     htmlWhitespaceSensitivity: 'css',
     insertPragma: false,
     jsxSingleQuote: true,
-    printWidth: 120,
+    printWidth: 150,
     proseWrap: 'preserve',
     quoteProps: 'as-needed',
     requirePragma: false,

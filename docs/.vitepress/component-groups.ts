@@ -58,6 +58,7 @@ export const componentGroups: ComponentGroup[] = [
         items: [
             { name: 'NoticeBar', title: '通知栏', link: '/components/notice-bar' },
             { name: 'Overlay', title: '遮罩层', link: '/components/overlay' },
+            { name: 'Tooltip', title: '文字提示', link: '/components/tooltip' },
             { name: 'Popup', title: '弹出层', link: '/components/popup' },
             { name: 'NoNetwork', title: '无网络提示', link: '/components/no-network' }
         ]

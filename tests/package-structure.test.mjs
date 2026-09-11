@@ -73,7 +73,7 @@ test('library follows the function, hooks, css and component entry conventions',
     for (const entry of componentEntries.filter(entry => entry.isDirectory())) {
         await access(new URL(`components/${entry.name}/${entry.name}.vue`, root));
     }
-    await access(new URL('components/snake-filter-sorts/components/filter-page.vue', root));
+    await access(new URL('components/snake-filter-sorts/filter-page.vue', root));
 });
 
 test('components use narrow internal imports and old directory references are gone', async () => {

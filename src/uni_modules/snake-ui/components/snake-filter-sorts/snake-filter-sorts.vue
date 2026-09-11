@@ -1,10 +1,5 @@
 <template>
-    <view
-        v-if="filters.topFilter"
-        id="filtersId"
-        class="filter-sorts"
-        :style="[{ backgroundColor: bgColor }, customStyle]"
-    >
+    <view v-if="filters.topFilter" id="filtersId" class="filter-sorts" :style="[{ backgroundColor: bgColor }, customStyle]">
         <view class="filter-sorts__toolbar" role="toolbar" aria-label="商品排序与筛选">
             <template v-for="(item, index) in filters.topFilter" :key="index">
                 <view
@@ -29,18 +24,8 @@
                 ></snake-button-sort>
             </template>
             <snake-drop-menu ref="dropMenuRef" custom-style="flex: 1; min-width: 0; background: transparent;">
-                <snake-drop-menu-item
-                    title="筛选"
-                    custom-style="height: 70vh"
-                    :before-toggle="handleBeforeToggle"
-                    @close="dropMenuClose"
-                >
-                    <filterPage
-                        :show="showDrawer"
-                        :filters="filters"
-                        :defaultParams="filterParams"
-                        @confirm="filterConfirm"
-                    ></filterPage>
+                <snake-drop-menu-item title="筛选" custom-style="height: 70vh" :before-toggle="handleBeforeToggle" @close="dropMenuClose">
+                    <filterPage :show="showDrawer" :filters="filters" :defaultParams="filterParams" @confirm="filterConfirm"></filterPage>
                 </snake-drop-menu-item>
             </snake-drop-menu>
         </view>
@@ -53,10 +38,7 @@
  */
 
 import { getCurrentInstance, onMounted, ref } from 'vue';
-import filterPage from './components/filter-page.vue';
-import ButtonSort from '../snake-button-sort/snake-button-sort.vue';
-import DropMenu from '../snake-drop-menu/snake-drop-menu.vue';
-import DropMenuItem from '../snake-drop-menu-item/snake-drop-menu-item.vue';
+import filterPage from './filter-page.vue';
 import type { FilterSortsEmits, FilterSortsProps } from './types';
 
 defineOptions({

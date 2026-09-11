@@ -53,7 +53,7 @@ test('every public component exposes an independent type contract', async () => 
     const packageEntry = await readFile(new URL('index.ts', root), 'utf8');
     const declarationEntry = await readFile(new URL('types/components.d.ts', root), 'utf8');
 
-    assert.equal(directories.length, 72);
+    assert.equal(directories.length, 73);
     for (const component of directories) {
         const types = await readFile(new URL(`components/${component}/types.ts`, root), 'utf8');
         assert.match(types, /export (?:interface|type) [A-Z]/, `${component}: missing public contract`);
@@ -149,7 +149,7 @@ test('every Vue component explains its role and documented components expose an 
         .sort();
     const files = directories.map(component => `components/${component}/${component}.vue`);
     files.push(
-        'components/snake-filter-sorts/components/filter-page.vue',
+        'components/snake-filter-sorts/filter-page.vue',
         'components/snake-list-switching/components/tree-select/index.vue'
     );
 
@@ -288,7 +288,7 @@ test('published styles avoid wxss-unsupported universal selectors', async () => 
         .sort();
     const files = directories.map(component => `components/${component}/${component}.vue`);
     files.push(
-        'components/snake-filter-sorts/components/filter-page.vue',
+        'components/snake-filter-sorts/filter-page.vue',
         'components/snake-list-switching/components/tree-select/index.vue'
     );
 
@@ -305,14 +305,12 @@ test('published styles avoid wxss-unsupported universal selectors', async () => 
     }
 });
 
-test('icon loads the complete bundled glyph set globally', async () => {
+test('icon loads the complete bundled glyph set from the component', async () => {
     const source = await readFile(new URL('components/snake-icon/snake-icon.vue', root), 'utf8');
     const namesSource = await readFile(new URL('components/snake-icon/icon-names.ts', root), 'utf8');
     const types = await readFile(new URL('components/snake-icon/types.ts', root), 'utf8');
     const stylesheet = await readFile(new URL('iconfont.css', root), 'utf8');
-    const app = await readFile(new URL('../src/App.vue', import.meta.url), 'utf8');
-    assert.ok(app.includes("@import './uni_modules/snake-ui/iconfont.css'"));
-    assert.ok(!source.includes("@import '../../iconfont.css'"));
+    assert.ok(source.includes("@import '../../iconfont.css'"));
     assert.ok(source.includes("props.name.includes('/')"));
     assert.ok(source.includes("emit('click', props.index || event)"));
     assert.ok(source.includes("emit('touchstart', props.index || event)"));

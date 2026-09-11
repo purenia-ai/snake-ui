@@ -32,6 +32,7 @@ export * from './components/snake-loadmore/types';
 export * from './components/snake-notice-bar/types';
 export * from './components/snake-navbar/types';
 export * from './components/snake-overlay/types';
+export * from './components/snake-tooltip/types';
 export * from './components/snake-popup/types';
 export * from './components/snake-sticky/types';
 export * from './components/snake-swiper/types';

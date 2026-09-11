@@ -147,7 +147,7 @@ test('auction actions and active activity retain the legacy blue accent', async 
 test('commerce filter panel gives percentage-height content a definite containing height', async () => {
     const [filters, filterPage] = await Promise.all([
         read('components/snake-filter-sorts/snake-filter-sorts.vue'),
-        read('components/snake-filter-sorts/components/filter-page.vue')
+        read('components/snake-filter-sorts/filter-page.vue')
     ]);
     assert.match(filters, /<snake-drop-menu-item[\s\S]*custom-style="height: 70vh"/);
     assert.match(filterPage, /<snake-index-list-panel/);

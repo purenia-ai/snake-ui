@@ -3,12 +3,7 @@
         <view class="scroll-panel" id="scroll-panel">
             <view class="list-box">
                 <view class="left">
-                    <scroll-view
-                        scroll-y
-                        :style="{ height: scrollHeight + 'px' }"
-                        :scroll-into-view="leftIntoView"
-                        :scroll-with-animation="false"
-                    >
+                    <scroll-view scroll-y :style="{ height: scrollHeight + 'px' }" :scroll-into-view="leftIntoView" :scroll-with-animation="false">
                         <view
                             class="item"
                             v-for="(item, index) in filterList"
@@ -31,28 +26,20 @@
                         :scroll-with-animation="false"
                         @scroll="mainScroll"
                     >
-                        <view
-                            class="item main-item"
-                            v-for="(item, index) in filterList"
-                            :key="index"
-                            :id="'item-' + index"
-                        >
+                        <view class="item main-item" v-for="(item, index) in filterList" :key="index" :id="'item-' + index">
                             <view class="title" v-if="item.value !== 'brandFilter'">
                                 <text>{{ item.name }}</text>
-                                <view class="filter-page__tooltip-wrap" v-if="item.desc">
-                                    <snake-icon
-                                        name="info-circle"
-                                        size="26rpx"
-                                        custom-class="filter-page__tooltip-icon"
-                                        stop
-                                        @click="showTooltip = !showTooltip"
-                                    ></snake-icon>
-                                    <view class="tooltip" v-if="showTooltip">
-                                        <view class="filter-page__tooltip-body" style="background-color: #eafff5">
-                                            <mp-html :content="item.desc"></mp-html>
-                                        </view>
-                                    </view>
-                                </view>
+                                <snake-tooltip
+                                    v-if="item.desc"
+                                    placement="bottom-start"
+                                    :offset="10"
+                                    custom-class="filter-page__tooltip-wrap"
+                                    custom-style="--snake-tooltip-background: #eafff5"
+                                    content-style="width: calc(100vw - 238rpx); padding: 14rpx"
+                                >
+                                    <snake-icon name="info-circle" size="26rpx" custom-class="filter-page__tooltip-icon"></snake-icon>
+                                    <template #content><mp-html :content="item.desc"></mp-html></template>
+                                </snake-tooltip>
                             </view>
                             <view class="price-input-box" v-if="item.value === 'priceFilter'">
                                 <input
@@ -92,9 +79,7 @@
                     <view v-if="filterList.length - 1 === leftIndex" class="filter-page__brand-panel">
                         <view class="title" v-if="filterList[leftIndex]">
                             <text>{{ filterList[leftIndex].name }}</text>
-                            <text class="filter-page__count"
-                                >（已选{{ filterParams[filterList[leftIndex].value].length }}个）</text
-                            >
+                            <text class="filter-page__count">（已选{{ filterParams[filterList[leftIndex].value].length }}个）</text>
                         </view>
 
                         <snake-index-list-panel
@@ -139,29 +124,11 @@
             </view>
         </view>
 
-        <snake-overlay
-            :opacity="0"
-            v-model="showTooltip"
-            @click="showTooltip = false"
-            :z-index="11"
-            v-if="showTooltip"
-        ></snake-overlay>
-
         <!-- 底部按钮 -->
         <view class="filter-footer">
             <view class="filter-page__save-row" @click="isDefaultSave = !isDefaultSave">
-                <snake-icon
-                    v-if="isDefaultSave"
-                    name="checkbox-mark"
-                    size="28rpx"
-                    color="var(--snake-color-primary, #06d290)"
-                ></snake-icon>
-                <snake-icon
-                    v-else
-                    name="circle"
-                    size="28rpx"
-                    color="var(--snake-color-text-muted, #acacb7)"
-                ></snake-icon>
+                <snake-icon v-if="isDefaultSave" name="checkbox-mark" size="28rpx" color="var(--snake-color-primary, #06d290)"></snake-icon>
+                <snake-icon v-else name="circle" size="28rpx" color="var(--snake-color-text-muted, #acacb7)"></snake-icon>
                 <text class="filter-page__save-text">保存为默认筛选</text>
             </view>
 
@@ -174,11 +141,7 @@
                     @click="resetFilter"
                     >重置</snake-button
                 >
-                <snake-button
-                    type="primary"
-                    customStyle="width: 228rpx; height: 76rpx; margin-left: 20rpx;"
-                    @click="confirmFilter"
-                >
+                <snake-button type="primary" customStyle="width: 228rpx; height: 76rpx; margin-left: 20rpx;" @click="confirmFilter">
                     确定
                 </snake-button>
             </view>
@@ -192,9 +155,9 @@
  * @description 筛选排序组件内部使用的条件选择面板，负责选项联动、默认值恢复和结果确认。
  */
 
-import { createCacheClient } from '../../../libs/runtime';
-import IndexAnchor from '../../snake-index-anchor/snake-index-anchor.vue';
-import IndexListPanel from '../../snake-index-list-panel/snake-index-list-panel.vue';
+import { createCacheClient } from '../../libs/runtime';
+import IndexAnchor from '../snake-index-anchor/snake-index-anchor.vue';
+import IndexListPanel from '../snake-index-list-panel/snake-index-list-panel.vue';
 const cacheManager = createCacheClient('snake-filter-sorts');
 export default {
     emits: ['confirm'],
@@ -229,7 +192,6 @@ export default {
             leftIndex: 0,
             scrollInto: '',
             isDefaultSave: false,
-            showTooltip: false,
             tagStyle: {
                 text: ''
             },
@@ -484,19 +446,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .index-anchor {
-    padding-left: 10rpx !important;
-}
-::v-deep .index-list__sidebar .index-list__item {
-    width: 28rpx !important;
-    height: 28rpx !important;
-    font-size: 22rpx !important;
-}
-
-::v-deep .index-list__content {
-    height: 60vh !important;
-}
-
 /* 品牌勾选区（原依赖宿主 UnoCSS 原子类，迁移为组件语义类） */
 .filter-page__brand-cell {
     display: flex;
@@ -536,16 +485,17 @@ export default {
 }
 
 /* 工具提示 */
-.filter-page__tooltip-wrap {
-    position: relative;
-}
-
 .filter-page__tooltip-icon {
     margin-left: 10rpx;
 }
 
-.filter-page__tooltip-body {
-    padding: 14rpx;
+/* 保持旧筛选提示框的水平位置，避免固定宽度从图标处向右溢出屏幕。 */
+::v-deep .filter-page__tooltip-wrap .snake-tooltip__panel--bottom-start {
+    transform: translateX(-100rpx);
+}
+
+::v-deep .filter-page__tooltip-wrap .snake-tooltip__panel--bottom-start .snake-tooltip__arrow {
+    left: 112rpx;
 }
 
 .filter-page__ellipsis {
@@ -556,29 +506,6 @@ export default {
 
 .filter-page__count {
     font-weight: 300;
-}
-
-.tooltip {
-    position: absolute;
-    top: 50rpx;
-    left: -100rpx;
-    z-index: 12;
-    width: calc(100vw - 188rpx - 50rpx);
-    min-width: 100%;
-    overflow-y: unset !important;
-    color: var(--snake-color-primary, #06d290);
-}
-
-.tooltip::before {
-    position: absolute;
-    top: -10rpx;
-    left: 112rpx;
-    width: 0;
-    height: 0;
-    content: '';
-    border-right: 8px solid transparent;
-    border-bottom: 8px solid #eafff5;
-    border-left: 8px solid transparent;
 }
 
 .filter-container {
@@ -627,13 +554,8 @@ export default {
                 color: var(--snake-color-primary, #06d290);
             }
         }
-
-        .fill-last {
-            width: 100%;
-            height: 0;
-            background: none;
-        }
     }
+
     .main {
         box-sizing: border-box;
         flex-grow: 1;
