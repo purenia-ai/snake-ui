@@ -22,6 +22,7 @@ export const componentGroups: ComponentGroup[] = [
             { name: 'LoadingIcon', title: '加载图标', link: '/components/loading-icon' },
             { name: 'Skeleton', title: '骨架屏', link: '/components/skeleton' },
             { name: 'Transition', title: '过渡动画', link: '/components/transition' },
+            { name: 'RootPortal', title: '根节点传送', link: '/components/root-portal' },
             { name: 'Text', title: '文本', link: '/components/text' },
             { name: 'Link', title: '超链接', link: '/components/link' }
         ]

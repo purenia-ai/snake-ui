@@ -23,6 +23,7 @@ export * from './components/snake-loading-icon/types';
 export * from './components/snake-skeleton/types';
 export * from './components/snake-skeleton-item/types';
 export * from './components/snake-transition/types';
+export * from './components/snake-root-portal/types';
 export * from './components/snake-empty/types';
 export * from './components/snake-icon/types';
 export * from './components/snake-image/types';

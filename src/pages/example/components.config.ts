@@ -56,6 +56,12 @@ const componentGroups: ComponentGroup[] = [
                 'Transition',
                 '提供一致的跨端进出场动画。'
             ),
+            item(
+                '/pages/componentsA/rootPortal/index',
+                'RootPortal 根节点传送',
+                'RootPortal',
+                '把内容传送到页面根节点，解决复杂布局下 fixed 弹层失效的问题。'
+            ),
             item('/pages/componentsA/text/index', 'Text 文本', 'Text', '价格、脱敏、日期与链接等常用文本场景。'),
             item('/pages/componentsA/link/index', 'Link 超链接', 'Link', '跨端打开链接或复制到粘贴板。')
         ]

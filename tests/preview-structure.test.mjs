@@ -9,6 +9,7 @@ const foundationComponents = [
     'loading-icon',
     'skeleton',
     'transition',
+    'root-portal',
     'empty',
     'icon',
     'image',
@@ -88,8 +89,8 @@ test('documented components keep valid example routes while compatibility previe
         if (match) previews.push(match[1]);
     }
 
-    assert.equal(routes.length, 61);
-    assert.equal(previews.length, 42);
+    assert.equal(routes.length, 62);
+    assert.equal(previews.length, 43);
     assert.equal(new Set(previews).size, previews.length);
     for (const preview of previews) {
         assert.ok(
@@ -124,9 +125,9 @@ test('component overview page covers every example route and directory layout', 
     );
     const routes = exampleRoutes(pages);
 
-    assert.equal(configuredPaths.length, 61);
+    assert.equal(configuredPaths.length, 62);
     assert.deepEqual([...configuredPaths].sort(), [...routes].sort());
-    assert.equal(groupA.length, 41);
+    assert.equal(groupA.length, 42);
     assert.equal(groupB.length, 20);
     for (const directory of [
         ...groupA.map(name => ['componentsA', name]),
@@ -163,7 +164,7 @@ test('all example pages own their interactive demo configuration', async () => {
     const panel = await readFile(resolve(root, 'src/components/demo-control-panel/demo-control-panel.vue'), 'utf8');
     const pages = await examplePageSources();
 
-    assert.equal(pages.length, 61);
+    assert.equal(pages.length, 62);
     for (const page of pages) {
         assert.match(page, /<DemoPage/);
         assert.match(page, /<DemoControlPanel|mockUpload/);

@@ -51,6 +51,7 @@
                 { "path": "loadingIcon/index", "style": { "navigationBarTitleText": "加载图标" } },
                 { "path": "skeleton/index", "style": { "navigationBarTitleText": "骨架屏" } },
                 { "path": "transition/index", "style": { "navigationBarTitleText": "过渡动画" } },
+                { "path": "rootPortal/index", "style": { "navigationBarTitleText": "根节点传送" } },
                 { "path": "text/index", "style": { "navigationBarTitleText": "文本" } },
                 { "path": "link/index", "style": { "navigationBarTitleText": "超链接" } },
                 { "path": "empty/index", "style": { "navigationBarTitleText": "空状态" } },

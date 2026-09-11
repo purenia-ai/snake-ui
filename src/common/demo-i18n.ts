@@ -89,6 +89,8 @@ const englishMessages: Record<string, string> = {
     放大: 'Zoom in',
     左侧滑入: 'Slide from left',
     动画时长: 'Duration',
+    使用根节点传送: 'Use root portal',
+    容器缩放: 'Container scale',
     空状态类型: 'Empty state',
     暂无数据: 'No data',
     暂无内容: 'No content',
@@ -378,7 +380,9 @@ Object.assign(englishMessages, {
     '展示活动或拍卖场次，并支持选择当前场次。': 'Displays activity or auction sessions and selects the active one.',
     '提供商品排序和多条件筛选入口。': 'Provides product sorting and multi-condition filters.',
     '在列表和宫格商品布局之间切换。': 'Switches between product list and grid layouts.',
-    '展示优惠券状态并提供领取入口。': 'Displays coupon status and a claim action.'
+    '展示优惠券状态并提供领取入口。': 'Displays coupon status and a claim action.',
+    '把内容传送到页面根节点，解决复杂布局下 fixed 弹层失效的问题。':
+        'Renders content at the page root to fix broken fixed layers in complex layouts.'
 });
 
 Object.assign(englishMessages, {
@@ -409,6 +413,7 @@ const demoTitles: Record<string, string> = {
     button: 'Button',
     'loading-icon': 'Loading Icon',
     transition: 'Transition',
+    'root-portal': 'Root Portal',
     empty: 'Empty',
     icon: 'Icon',
     image: 'Image',
