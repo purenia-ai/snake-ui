@@ -7,7 +7,7 @@
 
 import { computed, getCurrentInstance, inject, onMounted, ref, watch } from 'vue';
 import { addUnit } from '../../libs/function/unit';
-import { formItemKey } from '../../libs/internal/form-item';
+import { formItemKey } from '../snake-form-item/types';
 import type { SliderEmits, SliderExpose, SliderProps } from './types';
 defineOptions({ name: 'Slider', options: { virtualHost: true, styleIsolation: 'shared' } });
 const props = withDefaults(defineProps<SliderProps>(), {
@@ -147,11 +147,7 @@ onMounted(() => void update());
 defineExpose<SliderExpose>({ update });
 </script>
 <template>
-    <view
-        class="snake-slider"
-        :class="[customClass, { 'is-disabled': disabled }]"
-        :style="rootStyle"
-    >
+    <view class="snake-slider" :class="[customClass, { 'is-disabled': disabled }]" :style="rootStyle">
         <text v-if="showEdgeValue" class="snake-slider__edge">{{ minValue }}</text>
         <view class="snake-slider__main"
             ><view

@@ -18,7 +18,7 @@ import {
 } from 'vue';
 import zIndex from '../../libs/config/zIndex';
 import { addUnit } from '../../libs/function/unit';
-import { indexFromTouch, offsetTopPx, resolveIndex, indexListKey } from '../../libs/internal/index-list';
+import { indexFromTouch, offsetTopPx, resolveIndex, indexListKey } from '../snake-index-list/types';
 import type { IndexValue } from '../snake-index-list/types';
 import type { IndexListPanelEmits, IndexListPanelProps } from './types';
 
@@ -46,8 +46,7 @@ const railHeight = ref(0);
 const anchorOffsets = ref<number[]>([]);
 const touching = ref(false);
 let measureTimer: ReturnType<typeof setTimeout> | undefined;
-const anchorId = (value: IndexValue) =>
-    `snake-index-panel-anchor-${String(value).replace(/[^a-zA-Z0-9_-]/g, '-')}`;
+const anchorId = (value: IndexValue) => `snake-index-panel-anchor-${String(value).replace(/[^a-zA-Z0-9_-]/g, '-')}`;
 
 function setActive(index: number, selected = false) {
     if (!props.indexList.length || index < 0 || index >= props.indexList.length) return;

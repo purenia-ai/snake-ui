@@ -7,7 +7,7 @@
 
 import { computed, inject } from 'vue';
 import { addUnit } from '../../libs/function/unit';
-import { formItemKey } from '../../libs/internal/form-item';
+import { formItemKey } from '../snake-form-item/types';
 import LoadingIcon from '../snake-loading-icon/snake-loading-icon.vue';
 import type { SwitchEmits, SwitchProps } from './types';
 defineOptions({ name: 'SnakeSwitch', options: { virtualHost: true, styleIsolation: 'shared' } });

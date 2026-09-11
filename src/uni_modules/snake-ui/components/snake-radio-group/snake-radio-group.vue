@@ -8,7 +8,7 @@
 import { inject } from 'vue';
 import { useChildren } from '../../libs/hooks';
 import { RADIO_GROUP_KEY } from './types';
-import { formItemKey } from '../../libs/internal/form-item';
+import { formItemKey } from '../snake-form-item/types';
 import type { RadioGroupEmits, RadioGroupProps } from './types';
 
 defineOptions({

@@ -8,7 +8,7 @@
 import { computed, inject, onBeforeUnmount, watch, type CSSProperties } from 'vue';
 import zIndex from '../../libs/config/zIndex';
 import { addUnit } from '../../libs/function/unit';
-import { dropMenuKey } from '../../libs/internal/drop-menu';
+import { dropMenuKey } from '../snake-drop-menu/types';
 import Icon from '../snake-icon/snake-icon.vue';
 import Transition from '../snake-transition/snake-transition.vue';
 import type { DropMenuItemEmits, DropMenuItemProps } from './types';
@@ -33,7 +33,7 @@ const color = computed(() =>
     isOpen.value || menu?.highlighted.value === itemIndex ? menu?.activeColor.value : menu?.inactiveColor.value
 );
 const panelStyle = computed(() => [
-    ({
+    {
         // 面板定位/底色直接内联，避免依赖跨组件 scoped class（custom-class 应用在
         // snake-transition 根节点上，而 scoped 样式带的是本组件 data-v，选择器匹配不上）。
         position: 'fixed',
@@ -46,7 +46,7 @@ const panelStyle = computed(() => [
         overflow: 'hidden',
         background: 'var(--snake-color-surface, #fff)',
         boxShadow: '0 18rpx 48rpx var(--snake-color-shadow, rgba(15, 30, 24, 0.12))'
-    } as CSSProperties),
+    } as CSSProperties,
     props.customStyle
 ]);
 function requestOpen() {

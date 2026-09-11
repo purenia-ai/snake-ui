@@ -1,6 +1,6 @@
 import type { UnitValue } from '../../libs/function/unit';
 import type { StyleValue } from '../../types/global';
-import type { FormSize } from '../../libs/internal/form';
+import type { FormSize } from '../snake-form/types';
 /** Textarea 组件的公开属性。 */
 export interface TextareaProps {
     /** 双向绑定的当前值。 */

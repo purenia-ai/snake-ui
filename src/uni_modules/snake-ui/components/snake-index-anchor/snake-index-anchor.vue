@@ -6,7 +6,7 @@
  */
 
 import { computed, inject } from 'vue';
-import { indexListKey } from '../../libs/internal/index-list';
+import { indexListKey } from '../snake-index-list/types';
 import type { IndexAnchorProps } from './types';
 defineOptions({ name: 'IndexAnchor', options: { virtualHost: true, styleIsolation: 'shared' } });
 const props = withDefaults(defineProps<IndexAnchorProps>(), {

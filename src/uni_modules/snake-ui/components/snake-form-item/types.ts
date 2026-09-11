@@ -1,6 +1,8 @@
+import type { InjectionKey, Ref } from 'vue';
 import type { UnitValue } from '../../libs/function/unit';
 import type { StyleValue } from '../../types/global';
-import type { FormLabelAlign, FormLabelPosition, FormSize } from '../../libs/internal/form';
+import type { FormTrigger } from '../../libs/form';
+import type { FormLabelAlign, FormLabelPosition, FormSize } from '../snake-form/types';
 
 /** FormItem 组件的公开属性，与 uView Pro FormItem 保持一致。 */
 export interface FormItemProps {
@@ -51,3 +53,18 @@ export interface FormItemExpose {
     /** 触发 change 规则校验。 */
     onFormChange(): void;
 }
+
+/** FormItem 向叶子控件（input / textarea / switch / slider / radio-group / checkbox-group）注入的配对上下文。 */
+export interface FormItemContext {
+    /** 当前校验错误文案。 */
+    error: Ref<string>;
+    /** 是否展示错误。 */
+    errorVisible: Ref<boolean>;
+    /** 控件尺寸。 */
+    size: Ref<FormSize>;
+    /** 触发指定方式的校验。 */
+    notify(trigger: FormTrigger): Promise<void>;
+}
+
+/** FormItem ↔ 叶子控件配对注入键。 */
+export const formItemKey: InjectionKey<FormItemContext> = Symbol('snake-form-item');

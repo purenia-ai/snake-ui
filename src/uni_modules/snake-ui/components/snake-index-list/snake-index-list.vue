@@ -7,7 +7,7 @@
 
 import { computed, getCurrentInstance, nextTick, onMounted, provide, ref, toRef, watch, type CSSProperties } from 'vue';
 import zIndex from '../../libs/config/zIndex';
-import { indexFromTouch, offsetTopPx, resolveIndex, indexListKey } from '../../libs/internal/index-list';
+import { indexFromTouch, offsetTopPx, resolveIndex, indexListKey } from './types';
 import type { IndexListEmits, IndexListProps, IndexValue } from './types';
 
 defineOptions({ name: 'IndexList', options: { virtualHost: true, styleIsolation: 'shared' } });

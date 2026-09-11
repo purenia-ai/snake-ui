@@ -22,10 +22,11 @@ const { parent: checkboxGroup, index } = useParent(CHECKBOX_GROUP_KEY);
 
 ## 注入键放哪
 
-| 契约形态                                      | 位置                    | 原因                                                                                                          |
-| --------------------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------- |
-| 厚契约（不依赖组件 props 类型，逐字段 `Ref`） | `libs/internal/`        | form 全家、drop-menu、index-list                                                                              |
-| 薄配对（context 引用父组件 `XxxProps` 类型）  | **父组件的 `types.ts`** | libs 层禁止反向 import components（架构测试守卫），见 `snake-checkbox-group/types.ts` 的 `CHECKBOX_GROUP_KEY` |
+一律放**父组件的 `types.ts`**，契约跟着提供方走：`snake-form/types.ts` 的 `formKey`、
+`snake-form-item/types.ts` 的 `formItemKey`、`snake-drop-menu/types.ts` 的 `dropMenuKey`、
+`snake-index-list/types.ts` 的 `indexListKey`、`snake-checkbox-group/types.ts` 的 `CHECKBOX_GROUP_KEY`。
+约束：libs 层禁止反向依赖 components（架构测试守卫）；component-contracts 测试要求导出接口的
+每个成员带 JSDoc；index-list 这类带共享纯函数（`resolveIndex` 等）的契约也一并放其 `types.ts`。
 
 ## 移植 uview-pro 成对组件的写法对照
 

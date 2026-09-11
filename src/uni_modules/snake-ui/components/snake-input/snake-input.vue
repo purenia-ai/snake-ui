@@ -7,7 +7,7 @@
 
 import { computed, inject, ref, watch } from 'vue';
 import { addUnit } from '../../libs/function/unit';
-import { formItemKey } from '../../libs/internal/form-item';
+import { formItemKey } from '../snake-form-item/types';
 import Icon from '../snake-icon/snake-icon.vue';
 import type { InputEmits, InputProps } from './types';
 
@@ -131,12 +131,7 @@ function confirm(event: any) {
 </script>
 
 <template>
-    <view
-        class="snake-input"
-        :class="[customClass, rootClass]"
-        :style="rootStyle"
-        @click="emit('click', $event)"
-    >
+    <view class="snake-input" :class="[customClass, rootClass]" :style="rootStyle" @click="emit('click', $event)">
         <slot name="prefix"><snake-icon v-if="prefixIcon" :name="prefixIcon" class="snake-input__icon" /></slot>
         <input
             class="snake-input__native"
@@ -212,7 +207,7 @@ function confirm(event: any) {
     border-color: var(--snake-color-primary, #06d290);
 }
 .snake-input.is-error {
-    border-color: var(--snake-color-error, #FA3534);
+    border-color: var(--snake-color-error, #fa3534);
 }
 .snake-input.is-disabled {
     opacity: 0.72;

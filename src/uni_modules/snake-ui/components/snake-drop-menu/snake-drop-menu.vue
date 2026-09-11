@@ -8,7 +8,7 @@
 import { getCurrentInstance, onMounted, provide, ref, toRef, watch } from 'vue';
 import zIndex from '../../libs/config/zIndex';
 import { addUnit } from '../../libs/function/unit';
-import { dropMenuKey } from '../../libs/internal/drop-menu';
+import { dropMenuKey } from './types';
 import type { DropMenuEmits, DropMenuExpose, DropMenuProps } from './types';
 
 defineOptions({ name: 'DropMenu', options: { virtualHost: true, styleIsolation: 'shared' } });

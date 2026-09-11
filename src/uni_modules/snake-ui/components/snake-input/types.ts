@@ -1,6 +1,6 @@
 import type { UnitValue } from '../../libs/function/unit';
 import type { StyleValue } from '../../types/global';
-import type { FormSize } from '../../libs/internal/form';
+import type { FormSize } from '../snake-form/types';
 /** InputType 类型定义。 */
 export type InputType = 'text' | 'number' | 'idcard' | 'digit' | 'password' | 'nickname';
 /** InputShape 类型定义。 */

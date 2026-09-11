@@ -7,7 +7,7 @@
 
 import { computed, inject, ref, watch } from 'vue';
 import { addUnit } from '../../libs/function/unit';
-import { formItemKey } from '../../libs/internal/form-item';
+import { formItemKey } from '../snake-form-item/types';
 import type { TextareaEmits, TextareaProps } from './types';
 
 defineOptions({ name: 'SnakeTextarea', options: { virtualHost: true, styleIsolation: 'shared' } });
@@ -149,7 +149,7 @@ function onBlur(event: any) {
     border-color: var(--snake-color-primary, #06d290);
 }
 .snake-textarea.is-error {
-    border-color: var(--snake-color-error, #FA3534);
+    border-color: var(--snake-color-error, #fa3534);
 }
 .snake-textarea.is-disabled {
     background: var(--snake-color-disabled-bg, #f5f7fa);

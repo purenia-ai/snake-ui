@@ -7,7 +7,7 @@
 
 import { computed, provide, ref, toRef } from 'vue';
 import { toast } from '../../libs/function/toast';
-import { formKey } from '../../libs/internal/form';
+import { formKey } from './types';
 import type { FormCallback, FormError, FormProps, FormRules } from './types';
 
 defineOptions({ name: 'SnakeForm', options: { virtualHost: true, styleIsolation: 'shared' } });

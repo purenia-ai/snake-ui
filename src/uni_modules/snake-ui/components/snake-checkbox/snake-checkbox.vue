@@ -9,7 +9,7 @@ import { computed, inject, ref, watch } from 'vue';
 import { useParent } from '../../libs/hooks';
 import { addUnit } from '../../libs/function/unit';
 import { CHECKBOX_GROUP_KEY } from '../snake-checkbox-group/types';
-import { formKey } from '../../libs/internal/form';
+import { formKey } from '../snake-form/types';
 import Icon from '../snake-icon/snake-icon.vue';
 import { checkboxProps } from './types';
 import type { CheckboxEmits } from './types';
@@ -271,7 +271,7 @@ defineExpose({
     border: 1px solid var(--snake-color-border, #dcdfe6);
     transition-duration: 0.2s;
     /* #ifdef MP-TOUTIAO */
-    // 头条小程序兼容性问题，需要设置行高为 0，否则图标偏下
+    /* 头条小程序兼容性问题，需要设置行高为 0，否则图标偏下 */
     line-height: 0;
     /* #endif */
 }

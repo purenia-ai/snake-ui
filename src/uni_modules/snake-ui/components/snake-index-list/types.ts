@@ -1,3 +1,4 @@
+import type { CSSProperties, InjectionKey, Ref } from 'vue';
 import type { UnitValue } from '../../libs/function/unit';
 import type { StyleValue } from '../../types/global';
 /** IndexValue 类型定义。 */
@@ -45,4 +46,54 @@ export interface IndexListExpose {
     scrollTo(index: number | IndexValue): void;
     /** update 方法。 */
     update(): Promise<void>;
+}
+
+/** IndexList 向 Anchor / Panel 注入的配对上下文。 */
+export interface IndexListContext {
+    /** 当前激活项下标。 */
+    activeIndex: Ref<number>;
+    /** 锚点是否吸顶。 */
+    sticky: Ref<boolean>;
+    /** 吸顶或定位的顶部偏移量。 */
+    offsetTop: Ref<string | number | null | undefined>;
+    /** 组件层级。 */
+    zIndex: Ref<number>;
+    /** 生成锚点节点 id。 */
+    anchorId(index: IndexValue): string;
+    /** 生成锚点样式。 */
+    anchorStyle(index: IndexValue): CSSProperties;
+    /** 生成分组容器样式。 */
+    wrapperStyle(index: IndexValue): CSSProperties;
+    /** 判断指定项是否激活。 */
+    isActive(index: IndexValue): boolean;
+}
+
+/** IndexList ↔ Anchor / Panel 配对注入键。 */
+export const indexListKey: InjectionKey<IndexListContext> = Symbol('snake-index-list');
+
+/** 索引或取值解析为下标：合法整数下标原样返回，否则按值查找。 */
+export function resolveIndex(indexOrValue: number | IndexValue, indexList: IndexValue[]): number {
+    if (
+        typeof indexOrValue === 'number' &&
+        Number.isInteger(indexOrValue) &&
+        indexOrValue >= 0 &&
+        indexOrValue < indexList.length
+    ) {
+        return indexOrValue;
+    }
+    return indexList.indexOf(indexOrValue);
+}
+
+/** 由触摸纵坐标换算最近的数据项下标，越界自动收敛。 */
+export function indexFromTouch(clientY: number, railTop: number, railHeight: number, length: number): number {
+    if (!Number.isFinite(clientY) || railHeight <= 0 || length <= 0) return -1;
+    return Math.max(0, Math.min(length - 1, Math.floor(((clientY - railTop) / railHeight) * length)));
+}
+
+/** offsetTop 值转 px 数值：rpx / 裸数字按 rpx 换算。 */
+export function offsetTopPx(value: string | number | null | undefined): number {
+    const number = Number.parseFloat(String(value ?? 0));
+    if (!Number.isFinite(number)) return 0;
+    if (typeof value === 'string' && value.trim().endsWith('px')) return number;
+    return typeof uni !== 'undefined' && typeof uni.upx2px === 'function' ? uni.upx2px(number) : number;
 }

@@ -7,7 +7,7 @@
 
 import { computed, inject, nextTick, onMounted, watch } from 'vue';
 import { useChildren, useDebounce } from '../../libs/hooks';
-import { formItemKey } from '../../libs/internal/form-item';
+import { formItemKey } from '../snake-form-item/types';
 import {
     CHECKBOX_GROUP_KEY,
     type CheckboxGroupContext,

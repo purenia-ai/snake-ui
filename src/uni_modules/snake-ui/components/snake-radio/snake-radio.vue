@@ -9,7 +9,7 @@ import { computed, inject } from 'vue';
 import { useParent } from '../../libs/hooks';
 import { RADIO_GROUP_KEY } from '../snake-radio-group/types';
 import { addUnit } from '../../libs/function/unit';
-import { formKey } from '../../libs/internal/form';
+import { formKey } from '../snake-form/types';
 import Icon from '../snake-icon/snake-icon.vue';
 import { radioProps } from './types';
 import type { RadioEmits } from './types';

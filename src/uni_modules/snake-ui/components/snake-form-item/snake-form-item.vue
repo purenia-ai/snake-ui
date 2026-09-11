@@ -9,8 +9,8 @@ import { computed, inject, nextTick, onBeforeUnmount, onMounted, provide, ref, u
 import { addUnit } from '../../libs/function/unit';
 import { getPathValue, type FormRule, type FormTrigger } from '../../libs/form';
 import Schema from '../../libs/form/async-validator.min';
-import { formKey } from '../../libs/internal/form';
-import { formItemKey } from '../../libs/internal/form-item';
+import { formKey } from '../snake-form/types';
+import { formItemKey } from './types';
 import Icon from '../snake-icon/snake-icon.vue';
 import type { FormItemProps } from './types';
 
