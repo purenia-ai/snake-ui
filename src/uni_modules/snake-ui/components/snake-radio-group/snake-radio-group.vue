@@ -6,7 +6,8 @@
  */
 
 import { inject } from 'vue';
-import { useParent } from '../../libs/hooks';
+import { useChildren } from '../../libs/hooks';
+import { RADIO_GROUP_KEY } from './types';
 import { formItemKey } from '../../libs/internal/form-item';
 import type { RadioGroupEmits, RadioGroupProps } from './types';
 
@@ -38,8 +39,8 @@ const props = withDefaults(defineProps<RadioGroupProps>(), {
 const emit = defineEmits<RadioGroupEmits>();
 const formItem = inject(formItemKey, null);
 
-// 注册父组件上下文，供子组件 useChildren 链接
-useParent('RadioGroup');
+// 收集子 radio 并注册父组件上下文（linkChildren 的调用在 setValue 定义之后）
+const { linkChildren } = useChildren(RADIO_GROUP_KEY);
 
 /**
  * 父组件数据，供子组件使用
@@ -70,10 +71,15 @@ function setValue(val: string | number) {
     void formItem?.notify('change');
 }
 
+// 向子 radio 提供上下文：props（含 modelValue）实时联动 + 选中值入口
+linkChildren({ props, setValue });
+
 defineExpose({ props, getData, setValue });
 </script>
 <template>
-    <view class="snake-radio-group snake-radio-group--clearfix" :style="customStyle" :class="customClass"><slot /></view>
+    <view class="snake-radio-group snake-radio-group--clearfix" :style="customStyle" :class="customClass"
+        ><slot
+    /></view>
 </template>
 <style scoped>
 .snake-radio-group {

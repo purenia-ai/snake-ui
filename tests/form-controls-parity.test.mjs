@@ -105,7 +105,6 @@ test('form exposes validation and field lifecycle APIs', async () => {
     for (const method of ['validate', 'validateField', 'resetFields', 'setRules', 'addField', 'removeField'])
         assert.match(types + source, new RegExp(method));
     assert.match(source, /provide\(formKey/);
-    assert.match(source, /useParent\('Form'\)/);
     assert.match(types, /validate\(callback\?: FormCallback\): Promise<boolean>/);
     assert.doesNotMatch(types + source, /clearValidate/);
     assert.match(source, /errorType: \(\) => \['message', 'toast'\]/);
@@ -117,7 +116,9 @@ test('form item matches uView Pro layout, size, slots, and field protocol', asyn
         read('components/snake-form-item/types.ts'),
         read('components/snake-form-item/snake-form-item.vue')
     ]);
-    assert.match(source, /useChildren\('FormItem', 'Form'\)/);
+    // form ↔ form-item 单通道：类型化 formKey 注入，不再走组件名爬链
+    assert.match(source, /inject\(formKey, null\)/);
+    assert.doesNotMatch(source, /useCompRelation|useChildren\(|useParent\(/);
     assert.match(source, /small: \{ fontSize: 24, iconSize: 28, messageSize: 20 \}/);
     assert.match(source, /default: \{ fontSize: 28, iconSize: 32, messageSize: 24 \}/);
     assert.match(source, /large: \{ fontSize: 32, iconSize: 36, messageSize: 28 \}/);
@@ -135,14 +136,14 @@ test('selection controls use typed group protocols', async () => {
         read('components/snake-checkbox-group/snake-checkbox-group.vue'),
         read('components/snake-radio-group/snake-radio-group.vue')
     ]);
-    // checkbox 对齐 uView Pro：父子通过 useCompRelation 关系链通信
-    assert.match(checkbox, /useChildren\('Checkbox', 'CheckboxGroup'\)/);
-    assert.match(checkboxGroup, /useParent\('CheckboxGroup'\)/);
+    // checkbox / radio 走类型化注入契约：useChildren 提供上下文、useParent 注入
+    assert.match(checkbox, /useParent\(CHECKBOX_GROUP_KEY\)/);
+    assert.match(checkboxGroup, /useChildren<[\w, ]+>\(CHECKBOX_GROUP_KEY\)/);
+    assert.match(checkboxGroup, /linkChildren\(\{ props, emitEvent, validateSelection \}\)/);
     assert.match(checkboxGroup, /syncChildrenSelection/);
-    // radio 对齐 uView Pro：父子通过 useCompRelation 关系链通信
-    assert.match(radio, /useChildren\('Radio', 'RadioGroup'\)/);
-    assert.match(radioGroup, /useParent\('RadioGroup'\)/);
-    assert.match(radioGroup, /defineExpose\(\{ props, getData, setValue \}\)/);
+    assert.match(radio, /useParent\(RADIO_GROUP_KEY\)/);
+    assert.match(radioGroup, /useChildren\(RADIO_GROUP_KEY\)/);
+    assert.match(radioGroup, /linkChildren\(\{ props, setValue \}\)/);
 });
 
 test('input controls notify forms and slider supports touch measurement', async () => {

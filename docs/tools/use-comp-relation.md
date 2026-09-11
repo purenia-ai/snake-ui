@@ -1,60 +1,46 @@
-# useParent / useChildren / hasParent
+# useParent / useChildren
 
-按组件 `name` 链建立父子关系，供跨层级组件协作：
-
-```ts
-import { hasParent, useChildren, useParent } from '@puresnake/snake-ui';
-
-// 父组件：收集名为 Checkbox 的子组件
-useChildren('Checkbox');
-
-// 子组件：向上查找 CheckboxGroup
-const group = useParent('CheckboxGroup');
-const inGroup = hasParent('CheckboxGroup');
-```
-
-找不到父组件时 `useParent` 返回 `null`。另提供 `getParentContextByName(name)` 与 `cleanupComponentRelations()`；库内原生表单族仍用类型化的 `internal/` InjectionKey 方案，二者并存。
-
-## 移植成对组件时选哪套
-
-从 uview-pro 搬运成对组件（group/item 型）时，按配对复杂度选轨道：
-
-| 轨道                      | 适用                                                           | 仓内示例                                       |
-| ------------------------- | -------------------------------------------------------------- | ---------------------------------------------- |
-| `useCompRelation`（本页） | 薄配对：子项读父的几个 prop、同步选中/禁用，追求与上游最小差异 | checkbox ↔ checkbox-group、radio ↔ radio-group |
-| `internal/` InjectionKey  | 厚契约：带校验、方法调用、多状态下发                           | form 全家、drop-menu 一对、index-list 一家     |
-
-判定：只是「子项取值 + 汇报」直接沿用 useCompRelation 零翻译；父要调子的方法、或下发的响应式字段超过三五个，就写 `internal/xxx.ts` 类型化契约。同一对组件只用一套，不要混搭。
-
-### uview-pro → snake-ui 写法对照
-
-| uview-pro 写法                                 | 薄配对（直接沿用）                        | 厚契约（internal/）                                           |
-| ---------------------------------------------- | ----------------------------------------- | ------------------------------------------------------------- |
-| `useParent('u-collapse')` 收集子项             | `useParent('Collapse')`                   | `provide(collapseKey, ctx)`，ctx 含 `register` / `unregister` |
-| `useChildren('u-collapse-item', 'u-collapse')` | `useChildren('CollapseItem', 'Collapse')` | `inject(collapseKey, null)`，null 兜底独立使用                |
-| `broadcast('xxx', data)`                       | 原样                                      | 直接 `ctx.xxx(data)`，有类型                                  |
-| `parentExposed.value?.props.size` 读父配置     | 原样                                      | 契约里放响应式 `Ref`，inject 拿到即响应式                     |
-| 子项 `getChildIndex()`                         | 原样                                      | `register()` 返回下标，或 ctx 暴露 `indexOf`                  |
-
-匹配串是组件 `defineOptions({ name })` 的值，仓内约定不带 `snake-` 前缀（如 `'Checkbox'`）。
-
-### internal/ 契约模板
-
-厚契约轨道参照 `libs/internal/form.ts`：
+成对组件（group/item 型）的父子关系引擎，provide/inject 底座（wot/Vant 血统），
+替代早期按组件 `name` 爬 `$parent` 链的 useCompRelation 方案：
 
 ```ts
-// libs/internal/collapse.ts
-import type { InjectionKey, Ref } from 'vue';
+import { useChildren, useParent } from '@puresnake/snake-ui';
 
-export interface CollapseContext {
-    activeNames: Ref<string[]>;
-    accordion: Ref<boolean>;
-    register(item: symbol): void;
-    unregister(item: symbol): void;
-    toggle(name: string): void;
-}
+// 父组件：两行接入，props 实时联动 + 方法下发
+const { children, linkChildren } = useChildren(CHECKBOX_GROUP_KEY);
+linkChildren({ props, changeSelectState });
 
-export const collapseKey: InjectionKey<CollapseContext> = Symbol('snake-collapse');
+// 子组件：一行接入，自动注册 / 注销，拿到响应式下标
+const { parent: checkboxGroup, index } = useParent(CHECKBOX_GROUP_KEY);
+// 之后 checkboxGroup.value?.props.size 直接响应式读取
 ```
 
-父组件 `provide(collapseKey, ctx)`，子组件 `inject(collapseKey, null)`。契约只放配对协作所需字段；会被叶子组件复用的类型（如 `FormSize`）也定义在这里，避免组件间横向 import。
+- `children` 是子组件公开代理的响应式数组，`defineExpose` 暴露的 ref 已解包
+  （`child.isChecked` 直接是 boolean），且始终按模板渲染顺序排列（v-for / slot 下注册序 ≠ 渲染序的问题已处理）
+- `useParent` 返回 `null` 兜底，子组件可独立使用；仅在 MP-TOUTIAO 下注入延迟到 onMounted
+- 需要原始 ref（如写入子项状态）时用 `child.$.exposed.xxx.value`
+
+## 注入键放哪
+
+| 契约形态                                      | 位置                    | 原因                                                                                                          |
+| --------------------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------- |
+| 厚契约（不依赖组件 props 类型，逐字段 `Ref`） | `libs/internal/`        | form 全家、drop-menu、index-list                                                                              |
+| 薄配对（context 引用父组件 `XxxProps` 类型）  | **父组件的 `types.ts`** | libs 层禁止反向 import components（架构测试守卫），见 `snake-checkbox-group/types.ts` 的 `CHECKBOX_GROUP_KEY` |
+
+## 移植 uview-pro 成对组件的写法对照
+
+| uview-pro 写法                                      | snake-ui 对应                                                                                    |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `useParent('u-collapse')` 收集子项                  | `const { children, linkChildren } = useChildren(COLLAPSE_KEY)` + `linkChildren({ props, 方法 })` |
+| `useChildren('u-collapse-item', 'u-collapse')` 找爹 | `const { parent } = useParent(COLLAPSE_KEY)`，`parent.value?.props.xxx` 响应式读取               |
+| `broadcast('xxx', data)`                            | `children.forEach(child => child.xxx?.(data))`，有类型                                           |
+| `emitToParent('xxx', data)`                         | `parent.value?.xxx(data)`，有类型                                                                |
+| `parentExposed.value?.props.size` 读父配置          | 契约里放 `props`（响应式对象），直接读                                                           |
+| 子项 `getChildIndex()`                              | `useParent` 返回的响应式 `index`                                                                 |
+
+接入步骤：① 父组件 `types.ts` 定义 `XxxContext` + `InjectionKey`（引用本组件 Props 类型）；
+② 父组件 `useChildren(KEY)` + 在方法定义之后 `linkChildren({ props, 方法 })`；
+③ 子组件 `useParent(KEY)` 读取 / 调用。同一对组件只用这一套通道，不再叠加组件名爬链或 broadcast。
+
+> 旧 `useParent('Name')` / `useChildren('Child', 'Parent')` / `hasParent` / `getParentContextByName`
+> 已随 useCompRelation 移除（名串匹配、500ms 重试、无类型），迁移时按上表改写。

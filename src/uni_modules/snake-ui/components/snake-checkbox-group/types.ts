@@ -1,3 +1,4 @@
+import type { InjectionKey } from 'vue';
 import type { UnitValue } from '../../libs/function/unit';
 import type { StyleValue } from '../../types/global';
 
@@ -38,3 +39,16 @@ export interface CheckboxGroupEmits {
     /** 任一个 checkbox 状态发生变化时触发，回调为选中的 name 数组。 */
     change: [value: (string | number)[]];
 }
+
+/** CheckboxGroup 向子 checkbox 提供的配对上下文（useChildren / useParent 通道）。 */
+export interface CheckboxGroupContext {
+    /** 父组件的响应式 props 对象，子项直接读取即可保持联动。 */
+    props: CheckboxGroupProps;
+    /** 子项点击后通知 group 收集选中值并派发 change（防抖合并同轮多次点击）。 */
+    emitEvent(): void;
+    /** 校验再选中一个是否会超过 max，超限则 toast 并返回 false。 */
+    validateSelection(): boolean;
+}
+
+/** CheckboxGroup ↔ Checkbox 配对注入键。 */
+export const CHECKBOX_GROUP_KEY: InjectionKey<CheckboxGroupContext> = Symbol('snake-checkbox-group');

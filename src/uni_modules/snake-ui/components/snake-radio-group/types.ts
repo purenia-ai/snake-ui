@@ -1,3 +1,4 @@
+import type { InjectionKey } from 'vue';
 import type { UnitValue } from '../../libs/function/unit';
 import type { StyleValue } from '../../types/global';
 
@@ -34,3 +35,14 @@ export interface RadioGroupEmits {
     /** 任一个 radio 状态发生变化时触发，携带最新选中值。 */
     change: [value: string | number];
 }
+
+/** RadioGroup 向子 radio 提供的配对上下文（useChildren / useParent 通道）。 */
+export interface RadioGroupContext {
+    /** 父组件的响应式 props 对象，子项读取 modelValue 派生选中态。 */
+    props: RadioGroupProps;
+    /** 子项点击后由 group 统一更新 v-model 并派发 change。 */
+    setValue(val: string | number): void;
+}
+
+/** RadioGroup ↔ Radio 配对注入键。 */
+export const RADIO_GROUP_KEY: InjectionKey<RadioGroupContext> = Symbol('snake-radio-group');

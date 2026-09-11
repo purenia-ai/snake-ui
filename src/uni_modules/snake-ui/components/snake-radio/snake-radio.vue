@@ -6,7 +6,8 @@
  */
 
 import { computed, inject } from 'vue';
-import { useChildren } from '../../libs/hooks';
+import { useParent } from '../../libs/hooks';
+import { RADIO_GROUP_KEY } from '../snake-radio-group/types';
 import { addUnit } from '../../libs/function/unit';
 import { formKey } from '../../libs/internal/form';
 import Icon from '../snake-icon/snake-icon.vue';
@@ -28,7 +29,7 @@ const props = defineProps(radioProps);
 const emit = defineEmits<RadioEmits>();
 
 // 使用组件关系 hooks 获取父组件
-const { parentExposed } = useChildren('Radio', 'RadioGroup');
+const { parent: radioGroup } = useParent(RADIO_GROUP_KEY);
 const form = inject(formKey, null);
 
 // radio 的 value 值，id
@@ -37,22 +38,20 @@ const radioValue = computed(() => {
     return props.name;
 });
 
-// 父组件的默认值（兼容没有父组件的场景）
+// 父组件数据，供子组件使用（兼容没有父组件的场景，各字段回退为 null）
 const parentData = computed(() => {
-    return (
-        parentExposed?.value?.getData?.() || {
-            iconSize: null,
-            labelDisabled: null,
-            disabled: null,
-            shape: null,
-            activeColor: null,
-            size: null,
-            width: null,
-            height: null,
-            value: null,
-            wrap: null
-        }
-    );
+    const group = radioGroup.value;
+    return {
+        iconSize: group?.props.iconSize ?? null,
+        labelDisabled: group?.props.labelDisabled ?? null,
+        disabled: group?.props.disabled ?? null,
+        shape: group?.props.shape ?? null,
+        activeColor: group?.props.activeColor ?? null,
+        size: group?.props.size ?? null,
+        width: group?.props.width ?? null,
+        value: group?.props.modelValue ?? null,
+        wrap: group?.props.wrap ?? null
+    };
 });
 
 // 根据 size 定义不同的配置
@@ -65,7 +64,7 @@ const sizeConfig = {
 // 获取实际使用的 size 值（优先级：props.size > snake-radio-group.size > snake-form.size）
 const actualSize = computed(() => {
     if (props.size !== '') return String(props.size);
-    if (parentExposed.value?.props?.size) return String(parentExposed.value.props.size);
+    if (radioGroup.value?.props.size) return String(radioGroup.value.props.size);
     if (form?.size.value) return String(form.size.value);
     return 'default';
 });
@@ -101,7 +100,7 @@ const elSize = computed(() => currentSizeConfig.value.size);
 // 组件的勾选图标的尺寸，默认 20
 const elIconSize = computed(() => {
     if (props.iconSize) return props.iconSize;
-    if (parentExposed.value?.props?.iconSize) return parentExposed.value?.props?.iconSize;
+    if (radioGroup.value?.props.iconSize) return radioGroup.value.props.iconSize;
     if (isInSizeConfig.value) return currentSizeConfig.value.iconSize;
     return 20;
 });
@@ -114,7 +113,11 @@ const labelFontSize = computed(() => {
 
 // 组件选中激活时的颜色
 const elActiveColor = computed(() =>
-    props.activeColor ? props.activeColor : parentData.value.activeColor ? parentData.value.activeColor : 'var(--snake-color-primary, #06D290)'
+    props.activeColor
+        ? props.activeColor
+        : parentData.value.activeColor
+          ? parentData.value.activeColor
+          : 'var(--snake-color-primary, #06D290)'
 );
 
 // 组件的形状
@@ -201,7 +204,7 @@ function emitEvent() {
  */
 function setRadioCheckedStatus() {
     emitEvent();
-    parentExposed?.value?.setValue?.(radioValue.value);
+    radioGroup.value?.setValue(radioValue.value);
 }
 </script>
 <template>

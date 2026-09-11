@@ -6,9 +6,22 @@
  */
 
 import { computed, inject, nextTick, onMounted, watch } from 'vue';
-import { useDebounce, useParent } from '../../libs/hooks';
+import { useChildren, useDebounce } from '../../libs/hooks';
 import { formItemKey } from '../../libs/internal/form-item';
-import type { CheckboxGroupEmits, CheckboxGroupProps } from './types';
+import {
+    CHECKBOX_GROUP_KEY,
+    type CheckboxGroupContext,
+    type CheckboxGroupEmits,
+    type CheckboxGroupProps
+} from './types';
+
+/** Checkbox 子项在公开代理上的形态（defineExpose 暴露的 ref 已被解包）。 */
+interface CheckboxChild {
+    isChecked: boolean;
+    name: string | number;
+    value: string | number;
+    setChecked(data: { checked: boolean }): void;
+}
 
 defineOptions({
     name: 'CheckboxGroup',
@@ -39,8 +52,8 @@ const props = withDefaults(defineProps<CheckboxGroupProps>(), {
 const emit = defineEmits<CheckboxGroupEmits>();
 const formItem = inject(formItemKey, null);
 
-// 使用父组件 Hook
-const { children, broadcast } = useParent('CheckboxGroup');
+// 使用组件关系 hooks 收集子 checkbox（自动注册 / 按 vnode 序排列）
+const { children, linkChildren } = useChildren<CheckboxChild, CheckboxGroupContext>(CHECKBOX_GROUP_KEY);
 
 /**
  * 根据 modelValue 设置子组件状态
@@ -49,13 +62,9 @@ function syncChildrenSelection() {
     if (!children || children.length === 0 || !props.modelValue) return;
     const modelValueSet = new Set(props.modelValue);
     children.forEach(child => {
-        const exposed = child.getExposed?.();
-        const childValue = exposed?.value;
-        const shouldBeChecked = modelValueSet.has(childValue);
-        const isCurrentlyChecked = exposed?.isChecked.value;
-
-        if (shouldBeChecked !== isCurrentlyChecked) {
-            exposed?.setChecked({ checked: shouldBeChecked });
+        const shouldBeChecked = modelValueSet.has(child.value);
+        if (shouldBeChecked !== child.isChecked) {
+            child.setChecked({ checked: shouldBeChecked });
         }
     });
 }
@@ -77,9 +86,8 @@ function collectAndEmit() {
     // 收集所有选中的 name
     const values: (string | number)[] = [];
     children.forEach(child => {
-        const exposed = child.getExposed?.();
-        if (exposed?.isChecked.value) {
-            values.push(exposed?.value);
+        if (child.isChecked) {
+            values.push(child.value);
         }
     });
     emit('change', values);
@@ -99,7 +107,7 @@ function setAllChecked(checked: boolean) {
         console.warn('snake-checkbox-group 已禁用，无法操作');
         return;
     }
-    broadcast('setChecked', { checked });
+    children.forEach(child => child.setChecked({ checked }));
 }
 
 /**
@@ -107,8 +115,8 @@ function setAllChecked(checked: boolean) {
  */
 function getSelectedValues() {
     return children
-        .filter(child => child.getExposed?.()?.isChecked.value)
-        .map(child => child.getExposed?.()?.name)
+        .filter(child => child.isChecked)
+        .map(child => child.name)
         .filter(Boolean);
 }
 
@@ -116,13 +124,16 @@ function getSelectedValues() {
  * 验证选择是否超过最大数量
  */
 function validateSelection() {
-    const selectedCount = children.filter(child => child.getExposed?.()?.isChecked.value).length;
+    const selectedCount = children.filter(child => child.isChecked).length;
     if (props.max && selectedCount >= props.max) {
         uni.showToast({ title: `超过最大选择数量: ${props.max}`, icon: 'none' });
         return false;
     }
     return true;
 }
+
+// 向子 checkbox 提供上下文（props 实时联动 + 收集 / 校验入口）
+linkChildren({ props, emitEvent, validateSelection });
 
 onMounted(() => {
     nextTick(() => {
@@ -143,12 +154,12 @@ defineExpose({
     syncChildrenSelection,
 
     // 计算属性
-    selectedCount: computed(() => children.filter(child => child.getExposed?.()?.isChecked.value).length),
+    selectedCount: computed(() => children.filter(child => child.isChecked).length),
     isFull: computed(() => {
-        const selectedCount = children.filter(child => child.getExposed?.()?.isChecked.value).length;
+        const selectedCount = children.filter(child => child.isChecked).length;
         return Boolean(props.max) && selectedCount >= props.max;
     }),
-    isEmpty: computed(() => children.filter(child => child.getExposed?.()?.isChecked.value).length === 0),
+    isEmpty: computed(() => children.filter(child => child.isChecked).length === 0),
     // 工具方法
     getChildrenCount: () => children.length
 });

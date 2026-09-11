@@ -8,4 +8,5 @@ export * from './useDebounce';
 export * from './useThrottle';
 export * from './useToast';
 export * from './useModal';
-export { useParent, useChildren, hasParent, getParentContextByName, cleanupComponentRelations } from './useCompRelation';
+export * from './useParent';
+export * from './useChildren';

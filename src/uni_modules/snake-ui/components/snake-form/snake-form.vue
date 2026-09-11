@@ -6,7 +6,6 @@
  */
 
 import { computed, provide, ref, toRef } from 'vue';
-import { useParent } from '../../libs/hooks/useCompRelation';
 import { toast } from '../../libs/function/toast';
 import { formKey } from '../../libs/internal/form';
 import type { FormCallback, FormError, FormProps, FormRules } from './types';
@@ -25,8 +24,6 @@ const props = withDefaults(defineProps<FormProps>(), {
     customClass: '',
     customStyle: ''
 });
-
-useParent('Form');
 
 interface FormField {
     prop: string;

@@ -7,7 +7,6 @@
 
 import { computed, inject, nextTick, onBeforeUnmount, onMounted, provide, ref, useSlots } from 'vue';
 import { addUnit } from '../../libs/function/unit';
-import { useChildren, useParent } from '../../libs/hooks/useCompRelation';
 import { getPathValue, type FormRule, type FormTrigger } from '../../libs/form';
 import Schema from '../../libs/form/async-validator.min';
 import { formKey } from '../../libs/internal/form';
@@ -40,8 +39,6 @@ const props = withDefaults(defineProps<FormItemProps>(), {
 
 const slots = useSlots();
 const form = inject(formKey, null);
-const { broadcast } = useParent('FormItem');
-const { parentExposed } = useChildren('FormItem', 'Form');
 
 const initialValue = ref<unknown>('');
 const validateState = ref<'success' | 'error' | 'validating' | ''>('');
@@ -55,7 +52,7 @@ const sizeConfig = {
 
 const actualSize = computed(() => {
     if (props.size !== '') return String(props.size);
-    return String(parentExposed.value?.props?.size || form?.size.value || 'default');
+    return String(form?.size.value || 'default');
 });
 const presetSize = computed(() =>
     actualSize.value in sizeConfig ? (actualSize.value as keyof typeof sizeConfig) : 'default'
@@ -65,29 +62,21 @@ const actualFontSize = computed(() =>
     addUnit(actualSize.value in sizeConfig ? currentSizeConfig.value.fontSize : actualSize.value, 'rpx')
 );
 const currentIconSize = computed(() => currentSizeConfig.value.iconSize);
-const errorType = computed(() => parentExposed.value?.props?.errorType || form?.errorType.value || ['message']);
+const errorType = computed(() => form?.errorType.value || ['message']);
 const showError = (type: string) => !errorType.value.includes('none') && errorType.value.includes(type);
 const errorVisible = computed(() => validateState.value === 'error' && !errorType.value.includes('none'));
 
 const elLabelWidth = computed(() => {
     if (props.labelWidth !== '' && props.labelWidth !== 0) return props.labelWidth;
-    return parentExposed.value?.props?.labelWidth || form?.labelWidth.value || 90;
+    return form?.labelWidth.value || 90;
 });
 const elLabelStyle = computed(() =>
-    Object.keys(props.labelStyle).length
-        ? props.labelStyle
-        : parentExposed.value?.props?.labelStyle || form?.labelStyle.value || {}
+    Object.keys(props.labelStyle).length ? props.labelStyle : form?.labelStyle.value || {}
 );
-const elLabelPosition = computed(
-    () => props.labelPosition || parentExposed.value?.props?.labelPosition || form?.labelPosition.value || 'left'
-);
-const elLabelAlign = computed(
-    () => props.labelAlign || parentExposed.value?.props?.labelAlign || form?.labelAlign.value || 'left'
-);
+const elLabelPosition = computed(() => props.labelPosition || form?.labelPosition.value || 'left');
+const elLabelAlign = computed(() => props.labelAlign || form?.labelAlign.value || 'left');
 const elBorderBottom = computed(() =>
-    props.borderBottom !== ''
-        ? props.borderBottom
-        : (parentExposed.value?.props?.borderBottom ?? form?.borderBottom.value ?? false)
+    props.borderBottom !== '' ? props.borderBottom : (form?.borderBottom.value ?? false)
 );
 const labelWidth = computed(() =>
     elLabelPosition.value === 'left'
@@ -98,7 +87,7 @@ const labelWidth = computed(() =>
 );
 
 function getRules(): FormRule[] {
-    const allRules = parentExposed.value?.rules?.value || form?.rules.value || {};
+    const allRules = form?.rules.value || {};
     const dynamicPath = props.prop.replace(/(\.|^)(\d+)\./, '.defaultField.fields.');
     const fieldRules = allRules[props.prop] || getPathValue(allRules, dynamicPath);
     return ([] as FormRule[]).concat((fieldRules || []) as FormRule | FormRule[]);
@@ -117,12 +106,11 @@ function validation(trigger = '', callback: (message: string) => void = () => {}
         return;
     }
     validateState.value = 'validating';
-    const value = getPathValue(parentExposed.value?.model?.value || form?.model.value, props.prop);
+    const value = getPathValue(form?.model.value, props.prop);
     const validator = new Schema({ [props.prop]: rules });
     void validator.validate({ [props.prop]: value }, { firstFields: true }, errors => {
         validateState.value = errors ? 'error' : 'success';
         validateMessage.value = errors?.[0]?.message || '';
-        broadcast('onFormItemError', validateState.value === 'error' && showError('border'));
         callback(validateMessage.value);
     });
 }
@@ -134,7 +122,7 @@ function onFormChange() {
     validation('change');
 }
 function resetField() {
-    const model = parentExposed.value?.model?.value || form?.model.value;
+    const model = form?.model.value;
     if (model && props.prop) {
         const parts = props.prop.split('.');
         let owner: any = model;
@@ -150,17 +138,14 @@ function resetField() {
 const exposedField = { validation, resetField, prop: props.prop };
 onMounted(() => {
     nextTick(() => {
-        const parent = parentExposed.value;
         if (!props.prop) return;
-        if (parent?.addField) parent.addField(exposedField);
-        else form?.register(exposedField as any);
-        initialValue.value = getPathValue(parent?.model?.value || form?.model.value, props.prop);
+        form?.register(exposedField as any);
+        initialValue.value = getPathValue(form?.model.value, props.prop);
     });
 });
 onBeforeUnmount(() => {
     if (!props.prop) return;
-    if (parentExposed.value?.removeField) parentExposed.value.removeField(exposedField);
-    else form?.unregister(exposedField as any);
+    form?.unregister(exposedField as any);
 });
 
 function notify(trigger: FormTrigger): Promise<void> {

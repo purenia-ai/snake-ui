@@ -6,8 +6,9 @@
  */
 
 import { computed, inject, ref, watch } from 'vue';
-import { useChildren } from '../../libs/hooks';
+import { useParent } from '../../libs/hooks';
 import { addUnit } from '../../libs/function/unit';
+import { CHECKBOX_GROUP_KEY } from '../snake-checkbox-group/types';
 import { formKey } from '../../libs/internal/form';
 import Icon from '../snake-icon/snake-icon.vue';
 import { checkboxProps } from './types';
@@ -29,7 +30,7 @@ const emit = defineEmits<CheckboxEmits>();
 // checkbox 是否选中，true/false
 const checkedValue = ref(props.modelValue);
 // 使用组件关系 hooks 获取父组件
-const { parentExposed } = useChildren('Checkbox', 'CheckboxGroup');
+const { parent: checkboxGroup } = useParent(CHECKBOX_GROUP_KEY);
 const form = inject(formKey, null);
 
 // checkbox 的 value 值，id
@@ -63,7 +64,7 @@ const sizeConfig = {
 // 获取实际使用的 size 值（优先级：props.size > snake-checkbox-group.size > snake-form.size）
 const actualSize = computed(() => {
     if (props.size !== '') return String(props.size);
-    if (parentExposed.value?.props?.size) return String(parentExposed.value.props.size);
+    if (checkboxGroup.value?.props.size) return String(checkboxGroup.value.props.size);
     if (form?.size.value) return String(form.size.value);
     return 'default';
 });
@@ -81,12 +82,12 @@ const currentSizeConfig = computed(() => sizeConfig[presetSize.value]);
 
 // 是否禁用，如果父组件 snake-checkbox-group 禁用的话，将会忽略子组件的配置
 const isDisabled = computed(() => {
-    return props.disabled !== '' ? props.disabled : (parentExposed.value?.props?.disabled ?? false);
+    return props.disabled !== '' ? props.disabled : (checkboxGroup.value?.props.disabled ?? false);
 });
 
 // 是否禁用 label 点击
 const isLabelDisabled = computed(() => {
-    return props.labelDisabled !== '' ? props.labelDisabled : (parentExposed.value?.props?.labelDisabled ?? false);
+    return props.labelDisabled !== '' ? props.labelDisabled : (checkboxGroup.value?.props.labelDisabled ?? false);
 });
 
 // 组件尺寸，对应 size 的值，默认值为 34rpx
@@ -95,7 +96,7 @@ const checkboxSize = computed(() => currentSizeConfig.value.size);
 // 组件的勾选图标的尺寸，默认 20rpx
 const checkboxIconSize = computed(() => {
     if (props.iconSize) return props.iconSize;
-    if (parentExposed.value?.props?.iconSize) return parentExposed.value?.props?.iconSize;
+    if (checkboxGroup.value?.props.iconSize) return checkboxGroup.value.props.iconSize;
     if (isInSizeConfig.value) return currentSizeConfig.value.iconSize;
     return 20;
 });
@@ -110,12 +111,12 @@ const labelFontSize = computed(() => {
 const elActiveColor = computed(() => {
     return props.activeColor
         ? props.activeColor
-        : parentExposed.value?.props?.activeColor ?? 'var(--snake-color-primary, #06D290)';
+        : (checkboxGroup.value?.props.activeColor ?? 'var(--snake-color-primary, #06D290)');
 });
 
 // 组件的形状
 const elShape = computed(() => {
-    return props.shape ? props.shape : (parentExposed.value?.props?.shape ?? 'square');
+    return props.shape ? props.shape : (checkboxGroup.value?.props.shape ?? 'square');
 });
 
 // 图标样式
@@ -146,18 +147,18 @@ const iconClass = computed(() => {
 
 const checkboxStyle = computed(() => {
     const style: Record<string, string> = {};
-    if (parentExposed.value?.props?.width) {
-        style.width = parentExposed.value.props.width;
+    if (checkboxGroup.value?.props.width) {
+        style.width = checkboxGroup.value.props.width;
         // #ifdef MP
         // 各家小程序因为它们特殊的编译结构，使用 float 布局
         style.float = 'left';
         // #endif
         // #ifndef MP
         // H5 和 APP 使用 flex 布局
-        style.flex = `0 0 ${parentExposed.value.props.width}`;
+        style.flex = `0 0 ${checkboxGroup.value.props.width}`;
         // #endif
     }
-    if (parentExposed.value?.props?.wrap) {
+    if (checkboxGroup.value?.props.wrap) {
         style.width = '100%';
         // #ifndef MP
         // H5 和 APP 使用 flex 布局，将宽度设置 100%，即可自动换行
@@ -192,9 +193,7 @@ function emitEvent() {
     emit('change', !checkedValue.value);
     // 通知父组件状态变化
     setTimeout(() => {
-        if (parentExposed.value?.emitEvent) {
-            parentExposed.value.emitEvent();
-        }
+        checkboxGroup.value?.emitEvent();
     }, 80);
 }
 
@@ -207,7 +206,7 @@ function setValue() {
         emitEvent();
         checkedValue.value = false;
     } else {
-        if (parentExposed?.value?.validateSelection && !parentExposed?.value?.validateSelection()) {
+        if (checkboxGroup.value && !checkboxGroup.value.validateSelection()) {
             return;
         }
         emitEvent();
