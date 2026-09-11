@@ -3,7 +3,10 @@ import type { ExtractPropTypes, PropType } from 'vue';
 /** modalProps 运行时属性及默认值。 */
 export const modalProps = {
     /** 根节点自定义样式。 */
-    customStyle: { type: [String, Object, Array] as PropType<string | Record<string, any> | unknown[]>, default: () => ({}) },
+    customStyle: {
+        type: [String, Object, Array] as PropType<string | Record<string, any> | unknown[]>,
+        default: () => ({})
+    },
     /** 根节点自定义类名。 */
     customClass: { type: String, default: '' },
     /** 是否显示模态框（v-model）。 */
@@ -58,11 +61,11 @@ export const modalProps = {
 export type ModalProps = ExtractPropTypes<typeof modalProps>;
 
 /** Modal 组件的事件契约。 */
-export interface ModalEmits {
+export type ModalEmits = {
     /** update:modelValue 事件携带的参数。 */
     'update:modelValue': [value: boolean];
     /** confirm 事件。 */
     confirm: [];
     /** cancel 事件。 */
     cancel: [];
-}
+};

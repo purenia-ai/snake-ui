@@ -41,9 +41,9 @@ export interface GoodsListProps<Item extends GoodsListItem = GoodsListItem> {
 }
 
 /** GoodsList 组件的事件契约。 */
-export interface GoodsListEmits<Item extends GoodsListItem = GoodsListItem> {
+export type GoodsListEmits<Item extends GoodsListItem = GoodsListItem> = {
     /** item-click 事件携带的参数。 */
     'item-click': [item: Item, index: number];
     /** handlerOffer 事件携带的参数。 */
     handlerOffer: [item: Item, index: number];
-}
+};

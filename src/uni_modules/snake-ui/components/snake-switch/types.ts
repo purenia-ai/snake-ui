@@ -31,11 +31,11 @@ export interface SwitchProps {
     customStyle?: StyleValue;
 }
 /** Switch 组件的事件契约。 */
-export interface SwitchEmits {
+export type SwitchEmits = {
     /** update:modelValue 事件携带的参数。 */
     'update:modelValue': [value: SwitchValue];
     /** change 事件携带的参数。 */
     change: [value: SwitchValue];
     /** click 事件携带的参数。 */
     click: [event: unknown];
-}
+};

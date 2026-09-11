@@ -5,7 +5,7 @@
  * @see /components/checkbox
  */
 
-import { computed, inject, ref, watch } from 'vue';
+import { computed, inject } from 'vue';
 import { useParent } from '../../libs/hooks';
 import { addUnit } from '../../libs/function/unit';
 import { CHECKBOX_GROUP_KEY } from '../snake-checkbox-group/types';
@@ -27,8 +27,6 @@ defineOptions({
 
 const props = defineProps(checkboxProps);
 const emit = defineEmits<CheckboxEmits>();
-// checkbox 是否选中，true/false
-const checkedValue = ref(props.modelValue);
 // 使用组件关系 hooks 获取父组件
 const { parent: checkboxGroup } = useParent(CHECKBOX_GROUP_KEY);
 const form = inject(formKey, null);
@@ -39,20 +37,16 @@ const checkboxValue = computed(() => {
     return props.name;
 });
 
-watch(
-    () => props.modelValue,
-    (newVal: boolean) => {
-        checkedValue.value = newVal;
-    }
-);
+// group 绑定了 modelValue 时由 group 托管选中态（单一数据源），否则回落子项自身 v-model
+const groupManaged = computed(() => checkboxGroup.value !== null && checkboxGroup.value.props.modelValue !== undefined);
 
-watch(
-    () => checkedValue.value,
-    (newVal: boolean) => {
-        emit('update:modelValue', newVal);
-    },
-    { immediate: true }
-);
+// 是否选中：托管模式从 group 的 modelValue 派生，独立模式读自身 v-model
+const isChecked = computed(() => {
+    if (groupManaged.value) {
+        return (checkboxGroup.value?.props.modelValue ?? []).includes(checkboxValue.value);
+    }
+    return !!props.modelValue;
+});
 
 // 根据 size 定义不同的配置
 const sizeConfig = {
@@ -122,7 +116,7 @@ const elShape = computed(() => {
 // 图标样式
 const iconStyle = computed(() => {
     const style: Record<string, string> = {};
-    if (elActiveColor.value && checkedValue.value && !isDisabled.value) {
+    if (elActiveColor.value && isChecked.value && !isDisabled.value) {
         style.borderColor = elActiveColor.value;
         style.backgroundColor = elActiveColor.value;
     }
@@ -133,15 +127,15 @@ const iconStyle = computed(() => {
 
 // checkbox 内部的勾选图标，如果选中状态，为白色，否则为透明色即可
 const iconColor = computed(() => {
-    return checkedValue.value ? '#fff' : 'transparent';
+    return isChecked.value ? '#fff' : 'transparent';
 });
 
 const iconClass = computed(() => {
     const classes: string[] = [];
     classes.push(`snake-checkbox__icon-wrap--${elShape.value}`);
-    if (checkedValue.value == true) classes.push('snake-checkbox__icon-wrap--checked');
+    if (isChecked.value) classes.push('snake-checkbox__icon-wrap--checked');
     if (isDisabled.value) classes.push('snake-checkbox__icon-wrap--disabled');
-    if (checkedValue.value && isDisabled.value) classes.push('snake-checkbox__icon-wrap--disabled--checked');
+    if (isChecked.value && isDisabled.value) classes.push('snake-checkbox__icon-wrap--disabled--checked');
     return classes.join(' ');
 });
 
@@ -187,53 +181,23 @@ function toggle() {
 }
 
 /**
- * 触发 change 事件
- */
-function emitEvent() {
-    emit('change', !checkedValue.value);
-    // 通知父组件状态变化
-    setTimeout(() => {
-        checkboxGroup.value?.emitEvent();
-    }, 80);
-}
-
-/**
- * 设置通过 v-model 绑定的组件的值
+ * 点击切换选中态：托管模式交给 group 统一判定（max 校验与事件派发），独立模式更新自身 v-model
  */
 function setValue() {
-    // 判断是否超过了可选的最大数量
-    if (checkedValue.value == true) {
-        emitEvent();
-        checkedValue.value = false;
-    } else {
-        if (checkboxGroup.value && !checkboxGroup.value.validateSelection()) {
-            return;
-        }
-        emitEvent();
-        checkedValue.value = true;
+    if (groupManaged.value) {
+        checkboxGroup.value?.toggleSelect(checkboxValue.value);
+        return;
     }
-}
-
-// 设置组件的 modelValue 值
-function setChecked(data: { checked: boolean }) {
-    if (!isDisabled.value) {
-        const needEmit = checkedValue.value !== data.checked;
-        checkedValue.value = data.checked;
-        if (needEmit) {
-            emitEvent();
-        }
-    }
+    const next = !isChecked.value;
+    emit('update:modelValue', next);
+    emit('change', next);
 }
 
 defineExpose({
-    isChecked: computed(() => checkedValue.value),
-    label: props.label,
-    name: props.name,
-    value: checkboxValue.value,
-    setValue,
-    emitEvent,
-    props,
-    setChecked
+    isChecked,
+    isDisabled,
+    value: checkboxValue,
+    props
 });
 </script>
 <template>

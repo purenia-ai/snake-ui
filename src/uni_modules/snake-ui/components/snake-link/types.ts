@@ -24,7 +24,7 @@ export const linkProps = {
 export type LinkProps = ExtractPropTypes<typeof linkProps>;
 
 /** Link 组件的事件契约。 */
-export interface LinkEmits {
+export type LinkEmits = {
     /** defaultClick 为 false 时点击触发，携带链接地址。 */
     click: [href: string];
-}
+};

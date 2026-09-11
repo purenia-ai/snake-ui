@@ -66,9 +66,9 @@ export interface CheckboxProps {
 }
 
 /** Checkbox 组件的事件契约。 */
-export interface CheckboxEmits {
+export type CheckboxEmits = {
     /** 选中状态变化时触发。 */
     'update:modelValue': [value: boolean];
     /** 选中状态变化时触发，携带变化后的新状态。 */
     change: [value: boolean];
-}
+};

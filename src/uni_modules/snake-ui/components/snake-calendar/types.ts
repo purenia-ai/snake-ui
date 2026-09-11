@@ -177,7 +177,7 @@ export const calendarProps = {
 export type CalendarProps = ExtractPropTypes<typeof calendarProps>;
 
 /** Calendar 组件的事件契约。 */
-export interface CalendarEmits {
+export type CalendarEmits = {
     /** 双向绑定值更新。 */
     'update:modelValue': [value: boolean];
     /** 弹窗通过按钮收起时触发（兼容 input 语义）。 */
@@ -186,4 +186,4 @@ export interface CalendarEmits {
     close: [];
     /** 选择结果变化时触发。 */
     change: [value: CalendarChangeDate | CalendarChangeRange];
-}
+};

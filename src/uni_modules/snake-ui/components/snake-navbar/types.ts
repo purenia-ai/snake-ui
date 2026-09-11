@@ -48,7 +48,7 @@ export interface NavbarProps {
 }
 
 /** Navbar 组件的事件契约。 */
-export interface NavbarEmits {
+export type NavbarEmits = {
     /** back 事件携带的参数。 */
     back: [event: unknown];
-}
+};

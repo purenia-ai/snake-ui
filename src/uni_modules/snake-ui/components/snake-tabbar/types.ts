@@ -85,9 +85,9 @@ export interface TabbarProps {
 }
 
 /** Tabbar 组件事件。 */
-export interface TabbarEmits {
+export type TabbarEmits = {
     /** 点击导航项时返回 key 和完整项。 */
     change: [key: string | number, item: TabbarItem];
     /** 更新 v-model 激活项索引。 */
     'update:modelValue': [value: string | number];
-}
+};

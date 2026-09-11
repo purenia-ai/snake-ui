@@ -62,7 +62,7 @@ export const searchProps = {
 export type SearchProps = ExtractPropTypes<typeof searchProps>;
 
 /** Search 组件的事件契约。 */
-export interface SearchEmits {
+export type SearchEmits = {
     /** 双向绑定值更新。 */
     'update:modelValue': [value: string];
     /** 输入事件，携带输入框内容。 */
@@ -81,4 +81,4 @@ export interface SearchEmits {
     blur: [value: string];
     /** 禁用状态下点击搜索框时触发。 */
     click: [];
-}
+};

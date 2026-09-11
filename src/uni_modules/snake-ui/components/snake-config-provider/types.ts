@@ -14,9 +14,9 @@ export interface ConfigProviderProps {
 }
 
 /** ConfigProvider 组件的事件契约。 */
-export interface ConfigProviderEmits {
+export type ConfigProviderEmits = {
     /** theme-change 事件携带的参数。 */
     'theme-change': [themeName: string];
     /** mode-change 事件携带的参数。 */
     'mode-change': [mode: 'light' | 'dark'];
-}
+};

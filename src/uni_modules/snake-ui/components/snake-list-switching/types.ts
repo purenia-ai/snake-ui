@@ -5,7 +5,7 @@ export interface ListSwitchingProps<Data extends Record<string, any> = Record<st
 }
 
 /** ListSwitching 组件的事件契约。 */
-export interface ListSwitchingEmits<Item extends Record<string, any> = Record<string, any>> {
+export type ListSwitchingEmits<Item extends Record<string, any> = Record<string, any>> = {
     /** item-click 事件携带的参数。 */
     'item-click': [item: Item];
-}
+};

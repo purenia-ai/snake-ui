@@ -37,9 +37,9 @@ export const IconProps = {
 export type IconProps = ExtractPropTypes<typeof IconProps>;
 
 /** Icon 组件的公开事件。 */
-export interface IconEmits {
+export type IconEmits = {
     /** 点击图标时返回 index，未设置时返回原始事件。 */
     (event: 'click', index: string | number | unknown): void;
     /** 触摸图标时返回 index，未设置时返回原始事件。 */
     (event: 'touchstart', index: string | number | unknown): void;
-}
+};

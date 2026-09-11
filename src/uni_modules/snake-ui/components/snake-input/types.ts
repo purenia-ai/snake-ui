@@ -77,7 +77,7 @@ export interface InputProps {
     customStyle?: StyleValue;
 }
 /** Input 组件的事件契约。 */
-export interface InputEmits {
+export type InputEmits = {
     /** update:modelValue 事件携带的参数。 */
     'update:modelValue': [value: string];
     /** input 事件携带的参数。 */
@@ -96,4 +96,4 @@ export interface InputEmits {
     click: [event: unknown];
     /** keyboardheightchange 事件携带的参数。 */
     keyboardheightchange: [event: unknown];
-}
+};

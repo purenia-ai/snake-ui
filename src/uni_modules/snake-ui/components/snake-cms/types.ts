@@ -1,10 +1,4 @@
-import type {
-    CmsComponentConfig,
-    CmsDiagnostic,
-    CmsOptions,
-    CmsPageInfo,
-    CmsStateChange
-} from '../../libs/cms/types';
+import type { CmsComponentConfig, CmsDiagnostic, CmsOptions, CmsPageInfo, CmsStateChange } from '../../libs/cms/types';
 import type { CmsError } from '../../libs/cms/types';
 
 export * from '../../libs/cms/types';
@@ -24,7 +18,7 @@ export interface CmsProps {
 }
 
 /** Cms 组件的事件契约。 */
-export interface CmsEmits {
+export type CmsEmits = {
     /** ready 事件携带的参数。 */
     ready: [state: CmsStateChange];
     /** state-change 事件携带的参数。 */
@@ -37,7 +31,7 @@ export interface CmsEmits {
     'goods-click': [payload: { item: Record<string, any>; index: number }];
     /** offer-click 事件携带的参数。 */
     'offer-click': [payload: { item: Record<string, any>; index: number }];
-}
+};
 
 /** Cms 组件实例公开的方法和状态。 */
 export interface CmsExposed {

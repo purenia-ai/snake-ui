@@ -13,9 +13,9 @@ export interface CouponProps<Data extends Record<string, any> = Record<string, a
 }
 
 /** Coupon 组件的事件契约。 */
-export interface CouponEmits {
+export type CouponEmits = {
     /** error 事件携带的参数。 */
     error: [error: CmsError];
     /** received 事件携带的参数。 */
     received: [];
-}
+};

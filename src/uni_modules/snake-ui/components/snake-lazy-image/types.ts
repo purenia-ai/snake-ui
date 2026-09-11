@@ -30,11 +30,11 @@ export interface LazyImageProps {
 }
 
 /** LazyImage 组件的事件契约。 */
-export interface LazyImageEmits {
+export type LazyImageEmits = {
     /** click 事件携带的参数。 */
     click: [event: unknown, index: number | string];
     /** load 事件携带的参数。 */
     load: [event: unknown, index: number | string];
     /** error 事件携带的参数。 */
     error: [event: unknown, index: number | string];
-}
+};

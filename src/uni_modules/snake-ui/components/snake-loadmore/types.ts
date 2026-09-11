@@ -46,9 +46,9 @@ export interface LoadmoreProps {
     customStyle?: StyleValue;
 }
 /** Loadmore 组件的事件契约。 */
-export interface LoadmoreEmits {
+export type LoadmoreEmits = {
     /** loadmore 事件携带的参数。 */
     loadmore: [];
     /** click 事件携带的参数。 */
     click: [status: LoadmoreStatus];
-}
+};

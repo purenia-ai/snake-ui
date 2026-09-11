@@ -61,7 +61,7 @@ export const selectProps = {
 export type SelectProps = ExtractPropTypes<typeof selectProps>;
 
 /** Select 组件的事件契约。 */
-export interface SelectEmits {
+export type SelectEmits = {
     /** 双向绑定值更新。 */
     'update:modelValue': [value: boolean];
     /** 点击确认按钮，返回当前选择的值。 */
@@ -72,4 +72,4 @@ export interface SelectEmits {
     close: [];
     /** 点击触发入口时触发（兼容声明）。 */
     click: [];
-}
+};

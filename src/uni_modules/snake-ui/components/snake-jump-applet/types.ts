@@ -11,7 +11,7 @@ export interface JumpAppletProps<Data extends Record<string, any> = Record<strin
 }
 
 /** JumpApplet 组件的事件契约。 */
-export interface JumpAppletEmits {
+export type JumpAppletEmits = {
     /** error 事件携带的参数。 */
     error: [error: CmsError];
-}
+};

@@ -48,11 +48,11 @@ export interface ImageProps {
 }
 
 /** Image 组件的事件契约。 */
-export interface ImageEmits {
+export type ImageEmits = {
     /** load 事件携带的参数。 */
     load: [event: unknown];
     /** error 事件携带的参数。 */
     error: [event: unknown];
     /** click 事件携带的参数。 */
     click: [event: unknown];
-}
+};

@@ -62,7 +62,7 @@ export interface RadioProps {
 }
 
 /** Radio 组件的事件契约。 */
-export interface RadioEmits {
+export type RadioEmits = {
     /** 未选中变为选中时触发，携带当前 radio 的 name。 */
     change: [value: string | number];
-}
+};

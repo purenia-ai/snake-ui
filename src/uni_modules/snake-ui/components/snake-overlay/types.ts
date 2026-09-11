@@ -21,7 +21,7 @@ export interface OverlayProps {
 }
 
 /** Overlay 组件的事件契约。 */
-export interface OverlayEmits {
+export type OverlayEmits = {
     /** update:modelValue 事件携带的参数。 */
     'update:modelValue': [value: boolean];
     /** update:show 事件携带的参数。 */
@@ -32,4 +32,4 @@ export interface OverlayEmits {
     opened: [];
     /** closed 事件携带的参数。 */
     closed: [];
-}
+};

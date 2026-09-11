@@ -70,11 +70,11 @@ export interface SwiperChangeDetail {
     source?: string;
 }
 /** Swiper 组件的事件契约。 */
-export interface SwiperEmits {
+export type SwiperEmits = {
     /** change 事件携带的参数。 */
     change: [detail: SwiperChangeDetail];
     /** click 事件携带的参数。 */
     click: [index: number, item: SwiperItem];
     /** animationfinish 事件携带的参数。 */
     animationfinish: [detail: SwiperChangeDetail];
-}
+};

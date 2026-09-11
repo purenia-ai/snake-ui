@@ -34,12 +34,12 @@ export interface IndexListChangeDetail {
     value: IndexValue;
 }
 /** IndexList 组件的事件契约。 */
-export interface IndexListEmits {
+export type IndexListEmits = {
     /** select 事件携带的参数。 */
     select: [value: IndexValue];
     /** change 事件携带的参数。 */
     change: [detail: IndexListChangeDetail];
-}
+};
 /** IndexList 组件实例公开的方法和状态。 */
 export interface IndexListExpose {
     /** scrollTo 方法。 */

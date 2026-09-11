@@ -21,12 +21,13 @@ export const readMoreProps = {
     fontSize: { type: [Number, String] as PropType<number | string>, default: 28 },
     /** 收起时覆盖在内容底部的阴影样式，对象形式。 */
     shadowStyle: {
-      type: [Object, Array] as PropType<StyleValue>,
-      default: () => ({
-        backgroundImage: 'linear-gradient(-180deg, rgba(255, 255, 255, 0) 0%, var(--snake-color-surface, #fff) 80%)',
-        paddingTop: '300rpx',
-        marginTop: '-300rpx'
-      })
+        type: [Object, Array] as PropType<StyleValue>,
+        default: () => ({
+            backgroundImage:
+                'linear-gradient(-180deg, rgba(255, 255, 255, 0) 0%, var(--snake-color-surface, #fff) 80%)',
+            paddingTop: '300rpx',
+            marginTop: '-300rpx'
+        })
     },
     /** 段落首行缩进的字符个数。 */
     textIndent: { type: String, default: '2em' },
@@ -38,12 +39,12 @@ export const readMoreProps = {
 export type ReadMoreProps = ExtractPropTypes<typeof readMoreProps>;
 
 /** ReadMore 组件的事件契约。 */
-export interface ReadMoreEmits {
+export type ReadMoreEmits = {
     /** 展开时触发。 */
     open: [index: string | number];
     /** 收起时触发。 */
     close: [index: string | number];
-}
+};
 
 /** ReadMore 组件实例公开的方法。 */
 export interface ReadMoreExpose {

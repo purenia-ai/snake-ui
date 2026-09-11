@@ -63,10 +63,10 @@ export interface TabsProps {
 }
 
 /** Tabs 组件事件。 */
-export interface TabsEmits {
+export type TabsEmits = {
     /** 点击非当前标签时返回新索引。 */
     change: [index: number];
-}
+};
 
 /** Tabs 暴露的方法。 */
 export interface TabsExpose {

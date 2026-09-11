@@ -5,8 +5,8 @@
  * @see /components/checkbox
  */
 
-import { computed, inject, nextTick, onMounted, watch } from 'vue';
-import { useChildren, useDebounce } from '../../libs/hooks';
+import { computed, inject } from 'vue';
+import { useChildren } from '../../libs/hooks';
 import { formItemKey } from '../snake-form-item/types';
 import {
     CHECKBOX_GROUP_KEY,
@@ -18,9 +18,8 @@ import {
 /** Checkbox 子项在公开代理上的形态（defineExpose 暴露的 ref 已被解包）。 */
 interface CheckboxChild {
     isChecked: boolean;
-    name: string | number;
+    isDisabled: boolean;
     value: string | number;
-    setChecked(data: { checked: boolean }): void;
 }
 
 defineOptions({
@@ -52,94 +51,68 @@ const props = withDefaults(defineProps<CheckboxGroupProps>(), {
 const emit = defineEmits<CheckboxGroupEmits>();
 const formItem = inject(formItemKey, null);
 
-// 使用组件关系 hooks 收集子 checkbox（自动注册 / 按 vnode 序排列）
+// 使用组件关系 hooks 收集子 checkbox（自动注册 / 按 vnode 序排列），
+// 选中态以 modelValue 为单一数据源，子项仅派生展示
 const { children, linkChildren } = useChildren<CheckboxChild, CheckboxGroupContext>(CHECKBOX_GROUP_KEY);
 
-/**
- * 根据 modelValue 设置子组件状态
- */
-function syncChildrenSelection() {
-    if (!children || children.length === 0 || !props.modelValue) return;
-    const modelValueSet = new Set(props.modelValue);
-    children.forEach(child => {
-        const shouldBeChecked = modelValueSet.has(child.value);
-        if (shouldBeChecked !== child.isChecked) {
-            child.setChecked({ checked: shouldBeChecked });
-        }
-    });
-}
+const selectedValues = computed<(string | number)[]>(() => props.modelValue ?? []);
 
 /**
- * 监听 modelValue 变化，同步子组件状态
+ * 子项点击入口：在 modelValue 上增删自身值，统一做 max 校验与事件派发
  */
-watch(
-    () => props.modelValue,
-    () => {
-        syncChildrenSelection();
+function toggleSelect(value: string | number) {
+    if (props.disabled) return;
+    let next: (string | number)[];
+    if (selectedValues.value.includes(value)) {
+        next = selectedValues.value.filter(item => item !== value);
+    } else {
+        if (props.max && selectedValues.value.length >= props.max) {
+            uni.showToast({ title: `超过最大选择数量: ${props.max}`, icon: 'none' });
+            return;
+        }
+        next = [...selectedValues.value, value];
     }
-);
-
-/**
- * 派发 change 事件和表单校验
- */
-function collectAndEmit() {
-    // 收集所有选中的 name
-    const values: (string | number)[] = [];
-    children.forEach(child => {
-        if (child.isChecked) {
-            values.push(child.value);
-        }
-    });
-    emit('change', values);
-    emit('update:modelValue', values);
+    emit('update:modelValue', next);
+    emit('change', next);
     // 通知 snake-form-item 进行校验
     void formItem?.notify('change');
 }
 
-// debounce 合并同一轮多个子组件的状态通知
-const emitEvent = useDebounce(collectAndEmit, 1);
-
 /**
- * 全选/全不选方法
+ * 全选/全不选方法（禁用子项保持原状态）
  */
 function setAllChecked(checked: boolean) {
     if (props.disabled) {
         console.warn('snake-checkbox-group 已禁用，无法操作');
         return;
     }
-    children.forEach(child => child.setChecked({ checked }));
+    const enabledValues = children.filter(child => !child.isDisabled).map(child => child.value);
+    const next = checked ? enabledValues : selectedValues.value.filter(value => !enabledValues.includes(value));
+    emit('update:modelValue', next);
+    emit('change', next);
+    void formItem?.notify('change');
 }
 
 /**
  * 获取选中的值
  */
 function getSelectedValues() {
-    return children
-        .filter(child => child.isChecked)
-        .map(child => child.name)
-        .filter(Boolean);
+    return [...selectedValues.value];
 }
 
 /**
  * 验证选择是否超过最大数量
  */
 function validateSelection() {
-    const selectedCount = children.filter(child => child.isChecked).length;
-    if (props.max && selectedCount >= props.max) {
+    if (props.max && selectedValues.value.length >= props.max) {
         uni.showToast({ title: `超过最大选择数量: ${props.max}`, icon: 'none' });
         return false;
     }
     return true;
 }
 
-// 向子 checkbox 提供上下文（props 实时联动 + 收集 / 校验入口）
-linkChildren({ props, emitEvent, validateSelection });
-
-onMounted(() => {
-    nextTick(() => {
-        syncChildrenSelection();
-    });
-});
+// 向子 checkbox 提供上下文（props 实时联动 + 选中值增删入口）
+linkChildren({ props, toggleSelect });
 
 // 使用 defineExpose 暴露给外部
 defineExpose({
@@ -147,19 +120,14 @@ defineExpose({
     props,
 
     // 方法
-    emitEvent,
     setAllChecked,
     getSelectedValues,
     validateSelection,
-    syncChildrenSelection,
 
     // 计算属性
-    selectedCount: computed(() => children.filter(child => child.isChecked).length),
-    isFull: computed(() => {
-        const selectedCount = children.filter(child => child.isChecked).length;
-        return Boolean(props.max) && selectedCount >= props.max;
-    }),
-    isEmpty: computed(() => children.filter(child => child.isChecked).length === 0),
+    selectedCount: computed(() => selectedValues.value.length),
+    isFull: computed(() => Boolean(props.max) && selectedValues.value.length >= props.max),
+    isEmpty: computed(() => selectedValues.value.length === 0),
     // 工具方法
     getChildrenCount: () => children.length
 });

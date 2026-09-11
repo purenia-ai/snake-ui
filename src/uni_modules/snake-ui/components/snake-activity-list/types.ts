@@ -23,7 +23,7 @@ export interface ActivityListProps {
 }
 
 /** ActivityList 组件的事件契约。 */
-export interface ActivityListEmits {
+export type ActivityListEmits = {
     /** change 事件携带的参数。 */
     change: [item: ActivityListItem, index: number];
-}
+};

@@ -56,7 +56,7 @@ export interface NoticeBarProps {
     customStyle?: StyleValue;
 }
 /** NoticeBar 组件的事件契约。 */
-export interface NoticeBarEmits {
+export type NoticeBarEmits = {
     /** click 事件携带的参数。 */
     click: [index: number];
     /** change 事件携带的参数。 */
@@ -65,4 +65,4 @@ export interface NoticeBarEmits {
     close: [];
     /** getMore 事件携带的参数。 */
     getMore: [];
-}
+};

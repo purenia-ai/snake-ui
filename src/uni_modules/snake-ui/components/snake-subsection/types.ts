@@ -46,9 +46,9 @@ export interface SubsectionProps {
 }
 
 /** Subsection 组件的事件契约。 */
-export interface SubsectionEmits {
+export type SubsectionEmits = {
     /** change 事件携带的参数。 */
     change: [index: number];
     /** update:current 事件携带的参数。 */
     'update:current': [index: number];
-}
+};

@@ -33,21 +33,19 @@ export interface CheckboxGroupProps {
 }
 
 /** CheckboxGroup 组件的事件契约。 */
-export interface CheckboxGroupEmits {
+export type CheckboxGroupEmits = {
     /** 更新当前选中值数组。 */
     'update:modelValue': [value: (string | number)[]];
     /** 任一个 checkbox 状态发生变化时触发，回调为选中的 name 数组。 */
     change: [value: (string | number)[]];
-}
+};
 
 /** CheckboxGroup 向子 checkbox 提供的配对上下文（useChildren / useParent 通道）。 */
 export interface CheckboxGroupContext {
     /** 父组件的响应式 props 对象，子项直接读取即可保持联动。 */
     props: CheckboxGroupProps;
-    /** 子项点击后通知 group 收集选中值并派发 change（防抖合并同轮多次点击）。 */
-    emitEvent(): void;
-    /** 校验再选中一个是否会超过 max，超限则 toast 并返回 false。 */
-    validateSelection(): boolean;
+    /** 子项点击入口：在 modelValue 上增删自身值，max 校验与事件派发由 group 统一处理。 */
+    toggleSelect(value: string | number): void;
 }
 
 /** CheckboxGroup ↔ Checkbox 配对注入键。 */

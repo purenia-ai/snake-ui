@@ -32,14 +32,14 @@ export interface StickyChangeDetail {
 }
 
 /** Sticky 组件的事件契约。 */
-export interface StickyEmits {
+export type StickyEmits = {
     /** fixed 事件携带的参数。 */
     fixed: [detail: StickyChangeDetail];
     /** unfixed 事件携带的参数。 */
     unfixed: [detail: StickyChangeDetail];
     /** change 事件携带的参数。 */
     change: [detail: StickyChangeDetail];
-}
+};
 
 /** Sticky 组件实例公开的方法和状态。 */
 export interface StickyExpose {

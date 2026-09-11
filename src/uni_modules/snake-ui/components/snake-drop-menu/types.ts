@@ -31,12 +31,12 @@ export interface DropMenuProps {
     customStyle?: StyleValue;
 }
 /** DropMenu 组件的事件契约。 */
-export interface DropMenuEmits {
+export type DropMenuEmits = {
     /** open 事件携带的参数。 */
     open: [index: number];
     /** close 事件携带的参数。 */
     close: [index: number];
-}
+};
 /** DropMenu 组件实例公开的方法和状态。 */
 export interface DropMenuExpose {
     /** updateDropMenuRect 方法。 */

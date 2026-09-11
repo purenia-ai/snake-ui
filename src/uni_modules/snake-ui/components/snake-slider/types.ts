@@ -40,7 +40,7 @@ export interface SliderProps {
     customStyle?: StyleValue;
 }
 /** Slider 组件的事件契约。 */
-export interface SliderEmits {
+export type SliderEmits = {
     /** update:modelValue 事件携带的参数。 */
     'update:modelValue': [value: number];
     /** change 事件携带的参数。 */
@@ -51,7 +51,7 @@ export interface SliderEmits {
     moving: [value: number];
     /** end 事件携带的参数。 */
     end: [value: number];
-}
+};
 /** Slider 组件实例公开的方法和状态。 */
 export interface SliderExpose {
     /** update 方法。 */

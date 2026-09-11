@@ -139,8 +139,10 @@ test('selection controls use typed group protocols', async () => {
     // checkbox / radio 走类型化注入契约：useChildren 提供上下文、useParent 注入
     assert.match(checkbox, /useParent\(CHECKBOX_GROUP_KEY\)/);
     assert.match(checkboxGroup, /useChildren<[\w, ]+>\(CHECKBOX_GROUP_KEY\)/);
-    assert.match(checkboxGroup, /linkChildren\(\{ props, emitEvent, validateSelection \}\)/);
-    assert.match(checkboxGroup, /syncChildrenSelection/);
+    assert.match(checkboxGroup, /linkChildren\(\{ props, toggleSelect \}\)/);
+    // 选中态单一数据源：子项从 modelValue 派生，不再有收集 / 回推 / 防抖调和代码
+    assert.doesNotMatch(checkboxGroup, /syncChildrenSelection|useDebounce/);
+    assert.doesNotMatch(checkbox, /setTimeout|setChecked/);
     assert.match(radio, /useParent\(RADIO_GROUP_KEY\)/);
     assert.match(radioGroup, /useChildren\(RADIO_GROUP_KEY\)/);
     assert.match(radioGroup, /linkChildren\(\{ props, setValue \}\)/);

@@ -59,7 +59,7 @@ export interface TextareaProps {
     customStyle?: StyleValue;
 }
 /** Textarea 组件的事件契约。 */
-export interface TextareaEmits {
+export type TextareaEmits = {
     /** update:modelValue 事件携带的参数。 */
     'update:modelValue': [value: string];
     /** input 事件携带的参数。 */
@@ -76,4 +76,4 @@ export interface TextareaEmits {
     linechange: [event: unknown];
     /** keyboardheightchange 事件携带的参数。 */
     keyboardheightchange: [event: unknown];
-}
+};

@@ -60,7 +60,7 @@ export interface PopupChangeDetail {
 }
 
 /** Popup 组件的事件契约。 */
-export interface PopupEmits {
+export type PopupEmits = {
     /** update:modelValue 事件携带的参数。 */
     'update:modelValue': [value: boolean];
     /** update:show 事件携带的参数。 */
@@ -77,7 +77,7 @@ export interface PopupEmits {
     change: [detail: PopupChangeDetail];
     /** click-overlay 事件携带的参数。 */
     'click-overlay': [event: unknown];
-}
+};
 
 /** Popup 组件实例公开的方法和状态。 */
 export interface PopupExpose {

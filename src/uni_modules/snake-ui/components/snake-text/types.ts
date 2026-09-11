@@ -82,7 +82,7 @@ export const textProps = {
 export type TextProps = ExtractPropTypes<typeof textProps>;
 
 /** Text 组件的事件契约。 */
-export interface TextEmits {
+export type TextEmits = {
     /** click 事件携带的参数。 */
     click: [];
     /** getuserinfo 事件携带的参数。 */
@@ -97,4 +97,4 @@ export interface TextEmits {
     launchapp: [event: unknown];
     /** opensetting 事件携带的参数。 */
     opensetting: [event: unknown];
-}
+};

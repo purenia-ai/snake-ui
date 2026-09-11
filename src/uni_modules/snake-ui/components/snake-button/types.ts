@@ -13,7 +13,10 @@ export type ButtonScope = '' | 'phoneNumber' | 'userInfo';
 
 /** snake-button 运行时属性。 */
 export const buttonProps = {
-    /** 根节点自定义样式。 */ customStyle: { type: [String, Object] as PropType<string | Record<string, unknown>>, default: () => ({}) },
+    /** 根节点自定义样式。 */ customStyle: {
+        type: [String, Object] as PropType<string | Record<string, unknown>>,
+        default: () => ({})
+    },
     /** 根节点自定义类名。 */ customClass: { type: String, default: '' },
     /** 按钮文本。 */ text: { type: String, default: '' },
     /** 是否使用半像素细边框。 */ hairLine: { type: Boolean, default: true },
@@ -40,8 +43,14 @@ export const buttonProps = {
     /** 自定义按下类名。 */ hoverClass: { type: String, default: '' },
     /** 透传到 dataset 的 name。 */ dataName: { type: String, default: '' },
     /** 点击节流间隔，单位毫秒。 */ throttleTime: { type: [String, Number] as PropType<string | number>, default: 0 },
-    /** 按住后出现点击态的时间，单位毫秒。 */ hoverStartTime: { type: [String, Number] as PropType<string | number>, default: 20 },
-    /** 松开后点击态保留时间，单位毫秒。 */ hoverStayTime: { type: [String, Number] as PropType<string | number>, default: 150 }
+    /** 按住后出现点击态的时间，单位毫秒。 */ hoverStartTime: {
+        type: [String, Number] as PropType<string | number>,
+        default: 20
+    },
+    /** 松开后点击态保留时间，单位毫秒。 */ hoverStayTime: {
+        type: [String, Number] as PropType<string | number>,
+        default: 150
+    }
 } as const;
 
 /** snake-button 解析后的属性。 */
@@ -81,7 +90,7 @@ export interface ButtonProps {
 }
 
 /** snake-button 事件。 */
-export interface ButtonEmits {
+export type ButtonEmits = {
     /** 点击事件。 */ click: [event: unknown];
     /** 用户信息回调。 */ getuserinfo: [event: unknown];
     /** 客服消息回调。 */ contact: [event: unknown];
@@ -91,4 +100,4 @@ export interface ButtonEmits {
     /** 打开设置回调。 */ opensetting: [event: unknown];
     /** 头像选择回调。 */ chooseavatar: [event: unknown];
     /** 隐私授权回调。 */ agreeprivacyauthorization: [event: unknown];
-}
+};

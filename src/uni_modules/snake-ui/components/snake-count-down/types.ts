@@ -85,12 +85,12 @@ export interface CountDownProps {
 }
 
 /** CountDown 组件的事件契约。 */
-export interface CountDownEmits {
+export type CountDownEmits = {
     /** 倒计时结束时触发。 */
     end: [];
     /** 每秒触发一次，参数为剩余秒数。 */
     change: [seconds: number];
-}
+};
 
 /** CountDown 组件暴露的方法。 */
 export interface CountDownExpose {

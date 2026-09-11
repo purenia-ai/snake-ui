@@ -53,7 +53,7 @@ export interface FilterSortsProps<Filters extends FilterSortsData = FilterSortsD
 }
 
 /** FilterSorts 组件的事件契约。 */
-export interface FilterSortsEmits {
+export type FilterSortsEmits = {
     /** change 事件携带的参数。 */
     change: [params: Record<string, string | number | boolean>];
-}
+};

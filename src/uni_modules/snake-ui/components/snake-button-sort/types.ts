@@ -16,7 +16,7 @@ export interface ButtonSortChangeDetail {
 }
 
 /** ButtonSort 组件的事件契约。 */
-export interface ButtonSortEmits {
+export type ButtonSortEmits = {
     /** change 事件携带的参数。 */
     change: [payload: ButtonSortChangeDetail];
-}
+};

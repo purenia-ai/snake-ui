@@ -60,7 +60,7 @@ export const cellItemProps = {
 export type CellItemProps = ExtractPropTypes<typeof cellItemProps>;
 
 /** CellItem 组件的事件契约。 */
-export interface CellItemEmits {
+export type CellItemEmits = {
     /** click 事件携带的参数。 */
     click: [index: CellItemIndex];
-}
+};

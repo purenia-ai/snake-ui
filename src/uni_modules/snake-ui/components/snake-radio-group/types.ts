@@ -29,12 +29,12 @@ export interface RadioGroupProps {
 }
 
 /** RadioGroup 组件的事件契约。 */
-export interface RadioGroupEmits {
+export type RadioGroupEmits = {
     /** 更新当前选中值。 */
     'update:modelValue': [value: string | number];
     /** 任一个 radio 状态发生变化时触发，携带最新选中值。 */
     change: [value: string | number];
-}
+};
 
 /** RadioGroup 向子 radio 提供的配对上下文（useChildren / useParent 通道）。 */
 export interface RadioGroupContext {

@@ -15,10 +15,10 @@ export const noNetworkProps = {
 export type NoNetworkProps = ExtractPropTypes<typeof noNetworkProps>;
 
 /** NoNetwork 组件的事件契约。 */
-export interface NoNetworkEmits {
+export type NoNetworkEmits = {
     /** 用户点击重试按钮时触发。 */
     retry: [];
-}
+};
 
 /** NoNetwork 组件实例公开的方法。 */
 export interface NoNetworkExpose {

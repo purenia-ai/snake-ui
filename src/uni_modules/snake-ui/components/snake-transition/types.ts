@@ -43,7 +43,7 @@ export interface TransitionProps {
 }
 
 /** Transition 组件的事件契约。 */
-export interface TransitionEmits {
+export type TransitionEmits = {
     /** before-enter 事件携带的参数。 */
     'before-enter': [];
     /** enter 事件携带的参数。 */
@@ -62,4 +62,4 @@ export interface TransitionEmits {
     'leave-cancelled': [];
     /** click 事件携带的参数。 */
     click: [event: unknown];
-}
+};

@@ -36,7 +36,7 @@ export interface DropMenuItemProps {
     customStyle?: StyleValue;
 }
 /** DropMenuItem 组件的事件契约。 */
-export interface DropMenuItemEmits {
+export type DropMenuItemEmits = {
     /** update:modelValue 事件携带的参数。 */
     'update:modelValue': [value: unknown];
     /** change 事件携带的参数。 */
@@ -45,4 +45,4 @@ export interface DropMenuItemEmits {
     open: [];
     /** close 事件携带的参数。 */
     close: [];
-}
+};
