@@ -79,10 +79,99 @@ export default defineConfig({
             alt: 'Snake UI'
         },
         nav: [
-            { text: '指南', link: '/guide/intro', activeMatch: '^/guide/' },
-            { text: '组件', link: '/components/intro', activeMatch: '/components/' },
-            { text: 'CMS', link: '/cms/getting-started', activeMatch: '/cms/' },
-            { text: '工具', link: '/tools/intro', activeMatch: '/tools/' }
+            {
+                text: '指南',
+                activeMatch: '^/guide/',
+                items: [
+                    {
+                        text: '开始',
+                        items: [
+                            { text: '介绍', link: '/guide/intro' },
+                            { text: '运行环境', link: '/guide/compatibility' }
+                        ]
+                    },
+                    {
+                        text: '配置与自定义',
+                        items: [
+                            { text: '全局配置', link: '/guide/foundation' },
+                            { text: '主题与暗黑模式', link: '/guide/multi-theme' }
+                        ]
+                    },
+                    {
+                        text: 'AI',
+                        items: [
+                            { text: '概述', link: '/guide/ai' },
+                            { text: 'Skills', link: '/guide/skills' },
+                            { text: 'LLM 上下文', link: '/guide/llms' }
+                        ]
+                    },
+                    { text: '迁移与排错', items: [{ text: '常见问题', link: '/guide/troubleshooting' }] }
+                ]
+            },
+            {
+                text: '组件',
+                activeMatch: '^/components/',
+                items: [
+                    {
+                        text: '起步',
+                        items: [
+                            { text: '组件总览', link: '/components/intro' },
+                            { text: '安装', link: '/components/install' },
+                            { text: '快速上手', link: '/components/quickstart' }
+                        ]
+                    },
+                    {
+                        text: '常用组件',
+                        items: [
+                            { text: '基础组件', link: '/components/button' },
+                            { text: '表单组件', link: '/components/form' },
+                            { text: '导航组件', link: '/components/tabbar' }
+                        ]
+                    }
+                ]
+            },
+            {
+                text: 'CMS',
+                activeMatch: '^/cms/',
+                items: [
+                    {
+                        text: '开始',
+                        items: [
+                            { text: '快速接入', link: '/cms/getting-started' },
+                            { text: '组件总览', link: '/cms/overview' }
+                        ]
+                    },
+                    {
+                        text: '数据与服务',
+                        items: [
+                            { text: '页面数据协议', link: '/cms/data-contract' },
+                            { text: '业务服务接入', link: '/cms/services' },
+                            { text: '装修编辑器', link: '/cms/sanke-editor' }
+                        ]
+                    }
+                ]
+            },
+            {
+                text: '工具',
+                activeMatch: '^/tools/',
+                items: [
+                    {
+                        text: '起步',
+                        items: [
+                            { text: '工具总览', link: '/tools/intro' },
+                            { text: '快速使用', link: '/tools/fast-use' }
+                        ]
+                    },
+                    {
+                        text: '常用能力',
+                        items: [
+                            { text: 'HTTP 请求', link: '/tools/http' },
+                            { text: '工具函数', link: '/tools/deep-merge' },
+                            { text: '组合式函数', link: '/tools/use-theme' }
+                        ]
+                    }
+                ]
+            }
         ],
         sidebar: {
             '/guide/': [
@@ -110,6 +199,14 @@ export default defineConfig({
                 {
                     text: '迁移与排错',
                     items: [{ text: '常见问题', link: '/guide/troubleshooting' }]
+                },
+                {
+                    text: 'AI',
+                    items: [
+                        { text: '概述', link: '/guide/ai' },
+                        { text: 'Skills', link: '/guide/skills' },
+                        { text: 'LLM 上下文', link: '/guide/llms' }
+                    ]
                 }
             ],
             '/cms/': cmsSidebar,

@@ -60,6 +60,7 @@
         "test:structure": "node --test tests/package-structure.test.mjs",
         "test:cms": "node --test tests/cms.test.mjs",
         "test:demo-tabbar": "node --test tests/demo-tabbar.test.mjs",
+        "skill:sync": "node scripts/generate-snake-skill-references.mjs",
         "test:release": "pnpm lint && pnpm type-check && pnpm test:all && pnpm docs:build",
         "docs:dev": "pnpm --dir docs docs:dev",
         "docs:build": "pnpm --dir docs docs:build",

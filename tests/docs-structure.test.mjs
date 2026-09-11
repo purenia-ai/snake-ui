@@ -81,13 +81,32 @@ test('guide exposes virtual root, icon extension, and editor hint pages', async 
 
 test('top navigation owns independent guide, component, CMS, and tool domains', async () => {
     const config = await text('docs/.vitepress/config.mts');
-    assert.ok(config.includes("{ text: '指南', link: '/guide/intro'"));
-    assert.ok(config.includes("{ text: '组件', link: '/components/intro'"));
-    assert.ok(config.includes("{ text: 'CMS', link: '/cms/getting-started', activeMatch: '/cms/' }"));
-    assert.ok(config.includes("{ text: '工具', link: '/tools/intro', activeMatch: '/tools/' }"));
+    for (const [name, link] of [
+        ['指南', '/guide/intro'],
+        ['组件', '/components/intro'],
+        ['CMS', '/cms/getting-started'],
+        ['工具', '/tools/intro']
+    ]) {
+        assert.match(
+            config,
+            new RegExp(`text: '${name}',[\\s\\S]*?items: \\[${'[\\s\\S]*?'}link: '${link}'`)
+        );
+    }
+    assert.equal((config.match(/items: \[/g) || []).length >= 8, true, 'top navigation provides dropdown items');
     assert.ok(config.includes("'/cms/': cmsSidebar"));
     assert.ok(config.includes("'/tools/': toolGroups"));
     assert.ok(!config.includes("text: '工具', link: '/guide/tools'"));
+});
+
+test('AI guide section provides overview, Skills, and LLM context', async () => {
+    const config = await text('docs/.vitepress/config.mts');
+    assert.match(config, /text: 'AI'/);
+
+    for (const page of ['ai', 'skills', 'llms']) {
+        const path = `docs/guide/${page}.md`;
+        await access(resolve(root, path));
+        assert.match(await text(path), /^# /m, `${page}: title`);
+    }
 });
 
 test('CMS domain exposes the current guides and component catalog', async () => {

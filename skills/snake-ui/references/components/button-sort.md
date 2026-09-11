@@ -1,0 +1,44 @@
+---
+name: 'button-sort'
+description: 'Snake UI ButtonSort 排序按钮参考。处理 button-sort、components 或相关 uni-app 使用问题时按需读取。'
+triggers: ['button-sort', 'snake-button-sort', 'ButtonSort', '排序按钮']
+---
+
+# ButtonSort 排序按钮
+
+用于在默认、升序和降序状态之间循环切换。
+
+## 平台兼容性
+
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
+
+## 基础用法
+
+```vue
+<snake-button-sort title="价格" @change="sort = $event.value" />
+```
+
+## API
+
+### Props
+
+| 参数         | 说明                             | 类型     | 默认值 | 可选值 |
+| ------------ | -------------------------------- | -------- | ------ | ------ |
+| `title`      | 按钮文字                         | `string` | `''`   | -      |
+| `titleColor` | 按钮文字颜色，不传则用主题文字色 | `string` | `''`   | -      |
+
+### Events
+
+| 事件名   | 触发时机       | 回调参数                           |
+| -------- | -------------- | ---------------------------------- |
+| `change` | 排序状态切换后 | `{ value: '' \| 'asc' \| 'desc' }` |
+
+## 主题变量
+
+| 变量名                     | 说明               |
+| -------------------------- | ------------------ |
+| `--snake-color-text`       | 按钮文字默认颜色   |
+| `--snake-color-text-muted` | 未激活排序箭头颜色 |
+| `--snake-color-primary`    | 激活排序箭头颜色   |

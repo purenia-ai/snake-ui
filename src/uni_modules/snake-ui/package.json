@@ -1,132 +1,131 @@
 {
-  "id": "snake-ui",
-  "name": "@puresnake/snake-ui",
-  "displayName": "Snake UI",
-  "version": "0.1.0",
-  "description": "面向 uni-app 商城与 CMS 场景的 Vue 组件库",
-  "license": "MIT",
-  "author": "PURESNAKE",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/zwbcode/snake-ui.git",
-    "directory": "src/uni_modules/snake-ui"
-  },
-  "bugs": {
-    "url": "https://github.com/zwbcode/snake-ui/issues"
-  },
-  "homepage": "https://github.com/zwbcode/snake-ui#readme",
-  "publishConfig": {
-    "access": "public"
-  },
-  "type": "module",
-  "main": "index.ts",
-  "module": "index.ts",
-  "browser": "index.ts",
-  "types": "index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./index.d.ts",
-      "import": "./index.ts",
-      "default": "./index.ts"
+    "id": "snake-ui",
+    "name": "@puresnake/snake-ui",
+    "displayName": "Snake UI",
+    "version": "0.1.0",
+    "description": "面向 uni-app 商城与 CMS 场景的 Vue 组件库",
+    "license": "MIT",
+    "author": "PURESNAKE",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/zwbcode/snake-ui.git",
+        "directory": "src/uni_modules/snake-ui"
     },
-    "./components/*": "./components/*",
-    "./libs": {
-      "types": "./libs/index.ts",
-      "import": "./libs/index.ts",
-      "default": "./libs/index.ts"
+    "bugs": {
+        "url": "https://github.com/zwbcode/snake-ui/issues"
     },
-    "./request": {
-      "types": "./libs/request/index.ts",
-      "import": "./libs/request/index.ts",
-      "default": "./libs/request/index.ts"
+    "homepage": "https://github.com/zwbcode/snake-ui#readme",
+    "publishConfig": {
+        "access": "public"
     },
-    "./types": "./types/index.d.ts",
-    "./types/*": "./types/*.d.ts",
-    "./plugins": {
-      "types": "./plugins/index.ts",
-      "import": "./plugins/index.ts",
-      "default": "./plugins/index.ts"
+    "type": "module",
+    "main": "index.ts",
+    "module": "index.ts",
+    "browser": "index.ts",
+    "types": "index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./index.d.ts",
+            "import": "./index.ts",
+            "default": "./index.ts"
+        },
+        "./components/*": "./components/*",
+        "./libs": {
+            "types": "./libs/index.ts",
+            "import": "./libs/index.ts",
+            "default": "./libs/index.ts"
+        },
+        "./request": {
+            "types": "./libs/request/index.ts",
+            "import": "./libs/request/index.ts",
+            "default": "./libs/request/index.ts"
+        },
+        "./types": "./types/index.d.ts",
+        "./types/*": "./types/*.d.ts",
+        "./plugins": {
+            "types": "./plugins/index.ts",
+            "import": "./plugins/index.ts",
+            "default": "./plugins/index.ts"
+        },
+        "./locale": "./locale/index.ts",
+        "./index.scss": "./index.scss",
+        "./theme.scss": "./theme.scss",
+        "./package.json": "./package.json"
     },
-    "./locale": "./locale/index.ts",
-    "./index.scss": "./index.scss",
-    "./theme.scss": "./theme.scss",
-    "./package.json": "./package.json"
-  },
-  "files": [
-    "components",
-    "libs",
-    "locale",
-    "plugins",
-    "types",
-    "index.ts",
-    "index.d.ts",
-    "index.scss",
-    "theme.scss",
-    "iconfont.css",
-    "iconfont.woff2",
-    "LICENSE",
-    "readme.md",
-    "changelog.md"
-  ],
-  "keywords": [
-    "snake-ui",
-    "uni-app",
-    "vue3",
-    "cms"
-  ],
-  "engines": {
-    "uni-app": "*"
-  },
-  "dcloudext": {
-    "type": "component-vue"
-  },
-  "peerDependencies": {
-    "@dcloudio/uni-app": ">=3.0.0",
-    "vue": ">=3.4.0"
-  },
-  "uni_modules": {
-    "dependencies": [],
-    "encrypt": [],
-    "platforms": {
-      "cloud": {
-        "tcb": "-",
-        "aliyun": "-",
-        "alipay": "-"
-      },
-      "client": {
-        "uni-app": {
-          "vue": {
-            "vue2": "x",
-            "vue3": "√"
-          },
-          "web": {
-            "safari": "-",
-            "chrome": "-"
-          },
-          "app": {
-            "vue": "-",
-            "nvue": "x",
-            "android": "-",
-            "ios": "-",
-            "harmony": "-"
-          },
-          "mp": {
-            "weixin": "-",
-            "alipay": "-",
-            "toutiao": "-",
-            "baidu": "-",
-            "kuaishou": "-",
-            "jd": "-",
-            "harmony": "-",
-            "qq": "-",
-            "lark": "-"
-          },
-          "quickapp": {
-            "huawei": "-",
-            "union": "-"
-          }
+    "files": [
+        "components",
+        "libs",
+        "locale",
+        "plugins",
+        "types",
+        "index.ts",
+        "index.d.ts",
+        "index.scss",
+        "theme.scss",
+        "iconfont.css",
+        "LICENSE",
+        "readme.md",
+        "changelog.md"
+    ],
+    "keywords": [
+        "snake-ui",
+        "uni-app",
+        "vue3",
+        "cms"
+    ],
+    "engines": {
+        "uni-app": "*"
+    },
+    "dcloudext": {
+        "type": "component-vue"
+    },
+    "peerDependencies": {
+        "@dcloudio/uni-app": ">=3.0.0",
+        "vue": ">=3.4.0"
+    },
+    "uni_modules": {
+        "dependencies": [],
+        "encrypt": [],
+        "platforms": {
+            "cloud": {
+                "tcb": "-",
+                "aliyun": "-",
+                "alipay": "-"
+            },
+            "client": {
+                "uni-app": {
+                    "vue": {
+                        "vue2": "x",
+                        "vue3": "√"
+                    },
+                    "web": {
+                        "safari": "-",
+                        "chrome": "-"
+                    },
+                    "app": {
+                        "vue": "-",
+                        "nvue": "x",
+                        "android": "-",
+                        "ios": "-",
+                        "harmony": "-"
+                    },
+                    "mp": {
+                        "weixin": "-",
+                        "alipay": "-",
+                        "toutiao": "-",
+                        "baidu": "-",
+                        "kuaishou": "-",
+                        "jd": "-",
+                        "harmony": "-",
+                        "qq": "-",
+                        "lark": "-"
+                    },
+                    "quickapp": {
+                        "huawei": "-",
+                        "union": "-"
+                    }
+                }
+            }
         }
-      }
     }
-  }
 }

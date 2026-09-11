@@ -1,0 +1,104 @@
+# Snake UI
+
+Snake UI is a Vue 3 component library for uni-app commerce and CMS applications. It targets H5, mini programs, and App. Library source is in `src/uni_modules/snake-ui/`; VitePress documentation is in `docs/`.
+
+## Using this repository
+
+- Public package: `@puresnake/snake-ui`
+- Recommended component registration: uni-app easycom, using `snake-*` tags
+- Manual component import: `@puresnake/snake-ui/components/snake-<name>/snake-<name>.vue`
+- Runtime, utilities, and adapters: `@puresnake/snake-ui/libs`
+- Theme entry: `@puresnake/snake-ui/theme.scss`
+- Source, TypeScript types, and matching docs are the authoritative API. Do not infer Snake UI APIs from uView Pro without verification.
+
+## Essential guides
+
+- Installation and registration: `docs/components/install.md`
+- Quick start: `docs/components/quickstart.md`
+- Common conventions: `docs/components/common.md`
+- Theme and settings: `docs/components/setting.md`
+- CMS overview: `docs/cms/overview.md`
+- AI overview: `docs/guide/ai.md`
+- AI Skills: `docs/guide/skills.md`
+- LLM context: `docs/guide/llms.md`
+- uView comparison audit: `docs/components/uview-compatibility-audit.md`
+
+## Component documentation
+
+### Foundation and feedback
+
+- Button: `docs/components/button.md`
+- Button Sort: `docs/components/button-sort.md`
+- Cell: `docs/components/cell.md`
+- Color: `docs/components/color.md`
+- Config Provider: `docs/components/config-provider.md`
+- Empty: `docs/components/empty.md`
+- Icon: `docs/components/icon.md`
+- Image: `docs/components/image.md`
+- Lazy Image: `docs/components/lazy-image.md`
+- Line: `docs/components/line.md`
+- Line Progress: `docs/components/line-progress.md`
+- Link: `docs/components/link.md`
+- Loading Icon: `docs/components/loading-icon.md`
+- Loadmore: `docs/components/loadmore.md`
+- No Network: `docs/components/no-network.md`
+- Notice Bar: `docs/components/notice-bar.md`
+- Overlay: `docs/components/overlay.md`
+- Popup: `docs/components/popup.md`
+- Skeleton: `docs/components/skeleton.md`
+- Sticky: `docs/components/sticky.md`
+- Swiper: `docs/components/swiper.md`
+- Text: `docs/components/text.md`
+- Transition: `docs/components/transition.md`
+
+### Form and input
+
+- Calendar: `docs/components/calendar.md`
+- Checkbox: `docs/components/checkbox.md`
+- Form: `docs/components/form.md`
+- Input: `docs/components/input.md`
+- Radio: `docs/components/radio.md`
+- Search: `docs/components/search.md`
+- Select: `docs/components/select.md`
+- Slider: `docs/components/slider.md`
+- Switch: `docs/components/switch.md`
+- Textarea: `docs/components/textarea.md`
+- Upload: `docs/components/upload.md`
+
+### Navigation and display
+
+- Count Down: `docs/components/count-down.md`
+- Drop Menu: `docs/components/drop-menu.md`
+- Index Anchor: `docs/components/index-anchor.md`
+- Index List: `docs/components/index-list.md`
+- Index List Panel: `docs/components/index-list-panel.md`
+- Navbar: `docs/components/navbar.md`
+- Read More: `docs/components/read-more.md`
+- Subsection: `docs/components/subsection.md`
+- Tabbar: `docs/components/tabbar.md`
+- Tabs: `docs/components/tabs.md`
+
+### CMS and project references
+
+- CMS entry: `docs/components/snake-cms.md`
+- CMS reference: `docs/cms/`
+- Component demos: `src/pages/componentsA/` and `src/pages/componentsB/`
+- CMS demos: `src/pages/componentsB/`
+
+## Critical behavior notes
+
+- `snake-tabbar` hides the native tabBar by default when mounted on a native tabBar page. Set `hide-tab-bar="false"` only when the native bar should remain visible.
+- `snake-icon` uses `sicon-*` class names backed by the Base64 font in `src/uni_modules/snake-ui/iconfont.css`; no standalone font file is required.
+- CMS services, requests, cache, and host configuration are injected through the Snake UI plugin. Do not hard-code business endpoints in library components.
+- For platform-specific behavior, inspect source conditionals and test on the target platform; a successful H5 run does not prove mini-program or App behavior.
+
+## Validation commands
+
+```bash
+pnpm type-check
+pnpm test:component-contracts
+pnpm test:runtime
+pnpm test:cms
+pnpm test:component-docs
+pnpm docs:build
+```
