@@ -39,14 +39,12 @@ function updateValue(key: string, value: DemoValue) {
 }
 </script>
 <template>
-    <DemoPage
-        :title="title"
-        :eyebrow="text('CMS 营销')"
-        :desc="text('在页面边缘提供始终可见的营销或客服入口。')"
-        viewport
+    <DemoPage :title="title" :desc="text('在页面边缘提供始终可见的营销或客服入口。')" viewport
         ><DemoSection bare variant="preview" :title="text('演示效果')"
-            ><snake-floating-bubble class="demo-floating-bubble-showcase" :datas="data" :scroll-top="scrollTop"
-            /></DemoSection
+            ><snake-floating-bubble
+                class="demo-floating-bubble-showcase"
+                :datas="data"
+                :scroll-top="scrollTop" /></DemoSection
         ><DemoSection variant="controls" :title="text('参数配置')"
             ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" /></DemoSection
     ></DemoPage>

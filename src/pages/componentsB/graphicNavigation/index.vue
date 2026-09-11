@@ -43,7 +43,7 @@ function updateValue(key: string, value: DemoValue) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :eyebrow="text('导航与布局')" :desc="text('以图标和文字组合多个快捷导航入口。')"
+    <DemoPage :title="title" :desc="text('以图标和文字组合多个快捷导航入口。')"
         ><DemoSection variant="preview" :title="text('演示效果')"
             ><snake-graphic-navigation class="demo-graphic-navigation-showcase" :datas="data" /></DemoSection
         ><DemoSection variant="controls" :title="text('参数配置')"

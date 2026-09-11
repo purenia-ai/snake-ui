@@ -29,7 +29,7 @@ function updateValue(key: string, nextValue: DemoValue) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :eyebrow="text('表单组件')" :desc="text('通过点击或触摸拖动选择范围内的数值。')"
+    <DemoPage :title="title" :desc="text('通过点击或触摸拖动选择范围内的数值。')"
         ><DemoSection variant="preview" :title="text('演示效果')"
             ><view class="demo-control-stack demo-slider-showcase"
                 ><text class="demo-variant-title">{{ isEnglish ? 'Touch and keyboard' : '触摸与键盘操作' }}</text

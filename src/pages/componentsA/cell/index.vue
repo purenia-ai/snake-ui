@@ -64,11 +64,7 @@ function cellClicked(index: string | number) {
 </script>
 
 <template>
-    <DemoPage
-        :title="title"
-        :eyebrow="text('导航与布局')"
-        :desc="text('组合单元格条目与分组容器，用于设置和个人中心等列表场景。')"
-    >
+    <DemoPage :title="title" :desc="text('组合单元格条目与分组容器，用于设置和个人中心等列表场景。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack demo-cell-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>

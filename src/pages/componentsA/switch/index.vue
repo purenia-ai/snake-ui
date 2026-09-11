@@ -26,7 +26,7 @@ function updateValue(key: string, nextValue: DemoValue) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :eyebrow="text('表单组件')" :desc="text('支持加载、禁用和自定义值的开关。')"
+    <DemoPage :title="title" :desc="text('支持加载、禁用和自定义值的开关。')"
         ><DemoSection variant="preview" :title="text('演示效果')"
             ><view class="demo-control-stack demo-switch-showcase"
                 ><text class="demo-variant-title">{{ isEnglish ? 'Switch states' : '开关状态' }}</text

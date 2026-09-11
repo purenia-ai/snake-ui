@@ -54,11 +54,7 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 
 <template>
-    <DemoPage
-        :title="title"
-        :eyebrow="text('导航与布局')"
-        :desc="text('在少量互斥选项之间快速切换，支持按钮和描边分段模式。')"
-    >
+    <DemoPage :title="title" :desc="text('在少量互斥选项之间快速切换，支持按钮和描边分段模式。')">
         <DemoSection variant="preview" :title="text('演示效果')"
             ><view class="demo-subsection-showcase"
                 ><snake-subsection

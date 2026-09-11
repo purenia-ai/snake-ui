@@ -61,11 +61,7 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 
 <template>
-    <DemoPage
-        :title="title"
-        :eyebrow="text('展示组件')"
-        :desc="text('用于图片或内容轮播，支持自动播放、标题和指示器。')"
-    >
+    <DemoPage :title="title" :desc="text('用于图片或内容轮播，支持自动播放、标题和指示器。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-swiper-showcase"
                 ><snake-swiper

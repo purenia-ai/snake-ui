@@ -61,11 +61,7 @@ const selectedIcon = ref('search');
 </script>
 
 <template>
-    <DemoPage
-        :title="title"
-        :eyebrow="text('基础组件')"
-        :desc="text('浏览 Snake UI 自有字体图标，并实时调整尺寸、颜色和标签。')"
-    >
+    <DemoPage :title="title" :desc="text('浏览 Snake UI 自有字体图标，并实时调整尺寸、颜色和标签。')">
         <DemoSection variant="preview" :title="text('演示效果')"
             ><view class="demo-icon-showcase demo-icon-showcase--grouped">
                 <view class="demo-icon-preview">
@@ -182,6 +178,7 @@ const selectedIcon = ref('search');
     font-size: 20rpx;
     line-height: 1.3;
     text-align: center;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
+    white-space: normal;
 }
 </style>

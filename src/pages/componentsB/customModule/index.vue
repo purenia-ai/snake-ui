@@ -24,7 +24,7 @@ function updateValue(key: string, value: DemoValue) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :eyebrow="text('CMS 内容')" :desc="text('通过命名插槽接入业务自定义内容。')"
+    <DemoPage :title="title" :desc="text('通过命名插槽接入业务自定义内容。')"
         ><DemoSection variant="preview" :title="text('演示效果')"
             ><snake-custom-module class="demo-custom-module-showcase" :datas="data"
                 ><view class="custom-card">{{ state.moduleText }}</view></snake-custom-module

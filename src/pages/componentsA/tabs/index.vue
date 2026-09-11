@@ -54,7 +54,7 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 
 <template>
-    <DemoPage :title="title" :eyebrow="text('导航与布局')" :desc="text('标签页用于在同层级内容之间快速切换。')">
+    <DemoPage :title="title" :desc="text('标签页用于在同层级内容之间快速切换。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-tabs-showcase"
                 ><snake-tabs

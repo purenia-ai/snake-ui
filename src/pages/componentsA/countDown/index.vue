@@ -13,10 +13,16 @@ const finished = ref(false);
 const countdownKey = ref(0);
 const controls: DemoControl[] = [
     { key: 'cTimestamp', label: '剩余秒数', type: 'input', defaultValue: '86461', placeholder: 'seconds' },
-    { key: 'cSeparator', label: '分隔符', type: 'select', defaultValue: 'colon', options: [
-        { label: '冒号', value: 'colon' },
-        { label: '中文单位', value: 'zh' }
-    ] },
+    {
+        key: 'cSeparator',
+        label: '分隔符',
+        type: 'select',
+        defaultValue: 'colon',
+        options: [
+            { label: '冒号', value: 'colon' },
+            { label: '中文单位', value: 'zh' }
+        ]
+    },
     { key: 'cShowDays', label: '显示天', type: 'switch', defaultValue: true },
     { key: 'cShowHours', label: '显示小时', type: 'switch', defaultValue: true },
     { key: 'cShowMinutes', label: '显示分钟', type: 'switch', defaultValue: true },
@@ -56,11 +62,7 @@ function onChange(seconds: number) {
 </script>
 
 <template>
-    <DemoPage
-        :title="title"
-        :eyebrow="text('基础组件')"
-        :desc="text('用于活动截止等场景的倒计时，通过数字变化给用户明确的时间感受。')"
-    >
+    <DemoPage :title="title" :desc="text('用于活动截止等场景的倒计时，通过数字变化给用户明确的时间感受。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack demo-countdown-showcase">
                 <snake-count-down
@@ -79,7 +81,8 @@ function onChange(seconds: number) {
                     bg-color="rgba(6, 210, 144, 0.08)"
                     height="56"
                     @end="onEnd"
-                    @change="onChange" />
+                    @change="onChange"
+                />
                 <view class="demo-countdown-showcase__meta">
                     <text>{{ finished ? text('已结束') : `${text('当前剩余')}: ${restSeconds}s` }}</text>
                     <snake-button size="mini" custom-style="width: auto" @click="restart">
@@ -97,14 +100,14 @@ function onChange(seconds: number) {
 
 <style scoped lang="scss">
 .demo-countdown-showcase {
-  gap: 24rpx;
-
-  &__meta {
-    display: flex;
-    align-items: center;
     gap: 24rpx;
-    font-size: 24rpx;
-    color: var(--snake-color-text-muted, #8a8b99);
-  }
+
+    &__meta {
+        display: flex;
+        align-items: center;
+        gap: 24rpx;
+        font-size: 24rpx;
+        color: var(--snake-color-text-muted, #8a8b99);
+    }
 }
 </style>

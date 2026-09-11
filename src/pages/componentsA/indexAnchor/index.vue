@@ -25,11 +25,7 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 
 <template>
-    <DemoPage
-        :title="title"
-        :eyebrow="text('导航与布局')"
-        :desc="text('索引锚点定义分组位置，需要放在 IndexList 内使用。')"
-    >
+    <DemoPage :title="title" :desc="text('索引锚点定义分组位置，需要放在 IndexList 内使用。')">
         <DemoSection variant="preview" :title="text('演示效果')"
             ><view class="demo-index demo-index-anchor-showcase"
                 ><snake-index-list-panel :index-list="letters" active-color="#06D290"

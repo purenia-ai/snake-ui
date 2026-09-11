@@ -27,12 +27,7 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 
 <template>
-    <DemoPage
-        :title="title"
-        :eyebrow="text('导航与布局')"
-        :desc="text('页面滚动时将重要内容固定在指定顶部位置。')"
-        viewport
-    >
+    <DemoPage :title="title" :desc="text('页面滚动时将重要内容固定在指定顶部位置。')" viewport>
         <DemoSection bare variant="preview" :title="text('演示效果')">
             <view class="demo-scroll demo-sticky-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Page scroll sticky' : '页面滚动吸顶' }}</text>

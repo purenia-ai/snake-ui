@@ -39,7 +39,7 @@ function updateValue(key: string, value: DemoValue) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :eyebrow="text('商品业务')" :desc="text('提供商品排序和多条件筛选入口。')" viewport
+    <DemoPage :title="title" :desc="text('提供商品排序和多条件筛选入口。')" viewport
         ><DemoSection bare variant="preview" :title="text('演示效果')"
             ><snake-filter-sorts
                 class="demo-filter-sorts-showcase"

@@ -39,7 +39,7 @@ function updateValue(key: string, value: DemoValue) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :eyebrow="text('CMS 营销')" :desc="text('用于焦点广告轮播，支持间距、圆角和播放间隔。')"
+    <DemoPage :title="title" :desc="text('用于焦点广告轮播，支持间距、圆角和播放间隔。')"
         ><DemoSection variant="preview" :title="text('演示效果')"
             ><snake-picture-ads class="demo-picture-ads-showcase" :datas="data" /></DemoSection
         ><DemoSection variant="controls" :title="text('参数配置')"

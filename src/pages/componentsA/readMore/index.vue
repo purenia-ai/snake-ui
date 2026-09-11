@@ -16,7 +16,16 @@ const longContent =
     '也可以通过组件的 init 方法在内容动态变化后重新测量高度。'.repeat(3);
 const controls: DemoControl[] = [
     { key: 'rmToggle', label: '显示收起', type: 'switch', defaultValue: false },
-    { key: 'rmShowHeight', label: '占位高度', type: 'slider', defaultValue: 400, min: 200, max: 800, step: 50, unit: 'rpx' },
+    {
+        key: 'rmShowHeight',
+        label: '占位高度',
+        type: 'slider',
+        defaultValue: 400,
+        min: 200,
+        max: 800,
+        step: 50,
+        unit: 'rpx'
+    },
     {
         key: 'rmColor',
         label: '提示文字颜色',
@@ -52,11 +61,7 @@ function reMeasure() {
 </script>
 
 <template>
-    <DemoPage
-        :title="title"
-        :eyebrow="text('展示组件')"
-        :desc="text('长内容先收起一部分，点击展开全文。')"
-    >
+    <DemoPage :title="title" :desc="text('长内容先收起一部分，点击展开全文。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack demo-read-more-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
@@ -67,7 +72,8 @@ function reMeasure() {
                     :color="String(state.rmColor)"
                     :text-indent="'0'"
                     @open="() => {}"
-                    @close="() => {}">
+                    @close="() => {}"
+                >
                     <text>{{ longContent }}</text>
                 </snake-read-more>
                 <snake-button type="primary" plain :custom-style="{ width: '240rpx' }" @click="reMeasure">

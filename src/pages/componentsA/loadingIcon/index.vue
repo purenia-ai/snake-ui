@@ -43,7 +43,7 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 
 <template>
-    <DemoPage :title="title" :eyebrow="text('基础组件')" :desc="text('统一展示按钮、图片和列表中的加载状态。')">
+    <DemoPage :title="title" :desc="text('统一展示按钮、图片和列表中的加载状态。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack demo-loading-icon-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>

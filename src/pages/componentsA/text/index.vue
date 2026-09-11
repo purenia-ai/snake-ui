@@ -130,11 +130,7 @@ function onTextClick() {
 </script>
 
 <template>
-    <DemoPage
-        :title="title"
-        :eyebrow="text('基础组件')"
-        :desc="text('价格、脱敏、日期与链接等常用文本场景。')"
-    >
+    <DemoPage :title="title" :desc="text('价格、脱敏、日期与链接等常用文本场景。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack demo-text-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
@@ -151,7 +147,8 @@ function onTextClick() {
                     :prefix-icon="String(state.tPrefix)"
                     :suffix-icon="String(state.tSuffix)"
                     href="https://github.com/zwbcode/snake-ui"
-                    @click="onTextClick" />
+                    @click="onTextClick"
+                />
                 <text class="demo-variant-sub">{{ lastClick || (isEnglish ? 'No event yet' : '暂无事件') }}</text>
                 <text class="demo-variant-title">{{ isEnglish ? 'Preset modes' : '模式示例' }}</text>
                 <snake-text :text="'13800138000'" mode="phone" format="encrypt" />

@@ -17,7 +17,10 @@ const singleList = [
     { label: '选项四', value: 'd' }
 ];
 const mutilList = [
-    [{ label: '上午', value: 'am' }, { label: '下午', value: 'pm' }],
+    [
+        { label: '上午', value: 'am' },
+        { label: '下午', value: 'pm' }
+    ],
     [
         { label: '8:00', value: '8' },
         { label: '9:00', value: '9' },
@@ -25,9 +28,30 @@ const mutilList = [
     ]
 ];
 const cascadeList = [
-    { label: '华东', value: 'east', children: [{ label: '上海', value: 'sh' }, { label: '杭州', value: 'hz' }] },
-    { label: '华南', value: 'south', children: [{ label: '广州', value: 'gz' }, { label: '深圳', value: 'sz' }] },
-    { label: '华北', value: 'north', children: [{ label: '北京', value: 'bj' }, { label: '天津', value: 'tj' }] }
+    {
+        label: '华东',
+        value: 'east',
+        children: [
+            { label: '上海', value: 'sh' },
+            { label: '杭州', value: 'hz' }
+        ]
+    },
+    {
+        label: '华南',
+        value: 'south',
+        children: [
+            { label: '广州', value: 'gz' },
+            { label: '深圳', value: 'sz' }
+        ]
+    },
+    {
+        label: '华北',
+        value: 'north',
+        children: [
+            { label: '北京', value: 'bj' },
+            { label: '天津', value: 'tj' }
+        ]
+    }
 ];
 const controls: DemoControl[] = [
     {
@@ -79,11 +103,7 @@ function onClose() {
 </script>
 
 <template>
-    <DemoPage
-        :title="title"
-        :eyebrow="text('表单组件')"
-        :desc="text('单列、多列与多列联动的底部选择器。')"
-    >
+    <DemoPage :title="title" :desc="text('单列、多列与多列联动的底部选择器。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack demo-select-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
@@ -100,7 +120,8 @@ function onClose() {
                     title="请选择"
                     @confirm="onConfirm"
                     @cancel="onCancel"
-                    @close="onClose" />
+                    @close="onClose"
+                />
             </view>
         </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')"

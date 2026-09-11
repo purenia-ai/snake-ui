@@ -24,7 +24,7 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 
 <template>
-    <DemoPage :title="title" :eyebrow="text('导航与布局')" :desc="text('下拉菜单容器保证同一时间只展开一个菜单项。')">
+    <DemoPage :title="title" :desc="text('下拉菜单容器保证同一时间只展开一个菜单项。')">
         <DemoSection variant="preview" :title="text('演示效果')"
             ><view class="demo-menu demo-drop-menu-showcase"
                 ><snake-drop-menu

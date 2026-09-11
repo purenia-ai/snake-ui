@@ -53,7 +53,7 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 
 <template>
-    <DemoPage :title="title" :eyebrow="text('展示组件')" :desc="text('承载重要通知，支持横向展示和纵向轮播。')">
+    <DemoPage :title="title" :desc="text('承载重要通知，支持横向展示和纵向轮播。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack demo-notice-bar-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>

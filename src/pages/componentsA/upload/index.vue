@@ -66,7 +66,6 @@ function formatFileSize(bytes?: number) {
     <DemoPage
         class="upload-demo-page"
         title="Upload 文件上传"
-        eyebrow="数据录入"
         desc="支持图片、视频和普通文件，可接入业务接口或 OSS 等自定义上传服务。"
     >
         <view class="upload-demo">

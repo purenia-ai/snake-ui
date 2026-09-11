@@ -52,7 +52,7 @@ function updateValue(key: string, nextValue: DemoValue) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :eyebrow="text('表单组件')" :desc="text('管理一组互斥的单选值。')"
+    <DemoPage :title="title" :desc="text('管理一组互斥的单选值。')"
         ><DemoSection variant="preview" :title="text('演示效果')"
             ><view class="demo-control-stack demo-radio-showcase"
                 ><text class="demo-variant-title">{{ isEnglish ? 'Exclusive selection' : '互斥选择' }}</text

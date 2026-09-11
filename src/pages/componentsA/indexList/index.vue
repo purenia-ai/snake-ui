@@ -45,7 +45,7 @@ onPageScroll(event => {
 </script>
 
 <template>
-    <DemoPage :title="title" :eyebrow="text('导航与布局')" :desc="text('通过右侧索引快速定位列表中的分组内容。')">
+    <DemoPage :title="title" :desc="text('通过右侧索引快速定位列表中的分组内容。')">
         <DemoSection variant="preview" :title="text('演示效果')"
             ><view class="demo-index demo-index-list-showcase"
                 ><snake-index-list

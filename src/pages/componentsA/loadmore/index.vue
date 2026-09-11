@@ -53,11 +53,7 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 
 <template>
-    <DemoPage
-        :title="title"
-        :eyebrow="text('反馈与浮层')"
-        :desc="text('用于列表底部，反馈可加载、加载中和没有更多三种状态。')"
-    >
+    <DemoPage :title="title" :desc="text('用于列表底部，反馈可加载、加载中和没有更多三种状态。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack demo-loadmore-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>

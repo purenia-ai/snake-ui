@@ -20,7 +20,7 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 
 <template>
-    <DemoPage :title="title" :eyebrow="text('导航与布局')" :desc="text('用于弹窗或定高区域，自身管理内部滚动。')">
+    <DemoPage :title="title" :desc="text('用于弹窗或定高区域，自身管理内部滚动。')">
         <DemoSection variant="preview" :title="text('定高容器')">
             <view class="demo-index-panel">
                 <snake-index-list-panel :index-list="letters" :sticky="Boolean(state.sticky)">

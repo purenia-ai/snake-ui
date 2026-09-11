@@ -45,7 +45,7 @@ function handleRetry() {
 </script>
 
 <template>
-    <DemoPage :title="title" :eyebrow="text('反馈与浮层')" :desc="text('自动监听网络状态，断网时全屏提示并支持重试。')">
+    <DemoPage :title="title" :desc="text('自动监听网络状态，断网时全屏提示并支持重试。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack demo-no-network-showcase">
                 <text class="demo-variant-title">{{ text('如何查看真实效果') }}</text>

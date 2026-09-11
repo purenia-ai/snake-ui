@@ -36,7 +36,7 @@ function updateValue(key: string, value: DemoValue) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :eyebrow="text('CMS 营销')" :desc="text('用于引导用户关注公众号或品牌账号。')"
+    <DemoPage :title="title" :desc="text('用于引导用户关注公众号或品牌账号。')"
         ><DemoSection variant="preview" :title="text('演示效果')"
             ><view
                 :class="[

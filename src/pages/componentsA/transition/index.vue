@@ -53,7 +53,7 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 
 <template>
-    <DemoPage :title="title" :eyebrow="text('基础组件')" :desc="text('为浮层和内容切换提供一致的跨端进出场动画。')">
+    <DemoPage :title="title" :desc="text('为浮层和内容切换提供一致的跨端进出场动画。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack demo-transition-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Interactive transition' : '交互动画' }}</text>

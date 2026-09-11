@@ -100,11 +100,7 @@ function copyCode() {
 </script>
 
 <template>
-    <DemoPage
-        :title="title"
-        :eyebrow="text('基础组件')"
-        :desc="text('按钮用于触发即时操作，支持主题、朴素、禁用和加载状态。')"
-    >
+    <DemoPage :title="title" :desc="text('按钮用于触发即时操作，支持主题、朴素、禁用和加载状态。')">
         <DemoSection variant="preview" :title="text('演示效果')"
             ><view class="demo-button-showcase">
                 <view class="demo-button-section">

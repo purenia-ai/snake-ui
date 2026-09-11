@@ -10,7 +10,13 @@ const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
 const lastClick = ref('');
 const controls: DemoControl[] = [
-    { key: 'lHref', label: '链接地址', type: 'input', defaultValue: 'https://github.com/zwbcode/snake-ui', placeholder: '请输入链接地址' },
+    {
+        key: 'lHref',
+        label: '链接地址',
+        type: 'input',
+        defaultValue: 'https://github.com/zwbcode/snake-ui',
+        placeholder: '请输入链接地址'
+    },
     { key: 'lUnderLine', label: '下划线', type: 'switch', defaultValue: false },
     {
         key: 'lDefaultClick',
@@ -58,11 +64,7 @@ function onLinkClick(href: string) {
 </script>
 
 <template>
-    <DemoPage
-        :title="title"
-        :eyebrow="text('基础组件')"
-        :desc="text('跨端打开链接或复制到粘贴板。')"
-    >
+    <DemoPage :title="title" :desc="text('跨端打开链接或复制到粘贴板。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack demo-link-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
@@ -72,7 +74,8 @@ function onLinkClick(href: string) {
                         :under-line="Boolean(state.lUnderLine)"
                         :default-click="Boolean(state.lDefaultClick)"
                         :color="String(state.lColor)"
-                        @click="onLinkClick">
+                        @click="onLinkClick"
+                    >
                         {{ isEnglish ? 'Visit Snake UI' : '访问 Snake UI 仓库' }}
                     </snake-link>
                 </view>

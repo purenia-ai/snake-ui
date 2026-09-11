@@ -24,7 +24,13 @@ const controls: DemoControl[] = [
     { key: 'sShowAction', label: '显示操作按钮', type: 'switch', defaultValue: true },
     { key: 'sClear', label: '启用清除', type: 'switch', defaultValue: true },
     { key: 'sAnimation', label: '聚焦动画', type: 'switch', defaultValue: false },
-    { key: 'sPlaceholder', label: '占位文字', type: 'input', defaultValue: '请输入关键字', placeholder: '请输入占位文字' }
+    {
+        key: 'sPlaceholder',
+        label: '占位文字',
+        type: 'input',
+        defaultValue: '请输入关键字',
+        placeholder: '请输入占位文字'
+    }
 ];
 const state = reactive<Record<string, DemoValue>>(
     Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))
@@ -53,11 +59,7 @@ function onClear() {
 </script>
 
 <template>
-    <DemoPage
-        :title="title"
-        :eyebrow="text('表单组件')"
-        :desc="text('集成占位、清除与操作按钮的常用搜索输入。')"
-    >
+    <DemoPage :title="title" :desc="text('集成占位、清除与操作按钮的常用搜索输入。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack demo-search-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
@@ -70,7 +72,8 @@ function onClear() {
                     :placeholder="String(state.sPlaceholder)"
                     margin="16rpx 0"
                     @search="onSearch"
-                    @clear="onClear" />
+                    @clear="onClear"
+                />
                 <text class="demo-variant-sub">{{ text('搜索内容') }}：{{ keyword || '—' }}</text>
                 <text class="demo-variant-sub">{{ lastEvent || (isEnglish ? 'No event yet' : '暂无事件') }}</text>
                 <text class="demo-variant-title">{{ isEnglish ? 'Variants' : '变体示例' }}</text>

@@ -44,7 +44,7 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 
 <template>
-    <DemoPage :title="title" :eyebrow="text('基础组件')" :desc="text('在首次加载时预显示接近真实内容的页面结构。')">
+    <DemoPage :title="title" :desc="text('在首次加载时预显示接近真实内容的页面结构。')">
         <DemoSection variant="preview" :title="text('快速模式')">
             <view class="demo-skeleton-showcase">
                 <snake-skeleton :loading="Boolean(state.loading)" :animated="Boolean(state.animated)" avatar :rows="3">

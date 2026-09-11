@@ -43,7 +43,7 @@ function updateValue(key: string, value: DemoValue) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :eyebrow="text('商品业务')" :desc="text('在列表和宫格商品布局之间切换。')"
+    <DemoPage :title="title" :desc="text('在列表和宫格商品布局之间切换。')"
         ><DemoSection variant="preview" :title="text('演示效果')"
             ><snake-list-switching class="demo-list-switching-showcase" :datas="data" /></DemoSection
         ><DemoSection variant="controls" :title="text('参数配置')"

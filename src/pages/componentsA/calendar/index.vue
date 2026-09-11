@@ -51,11 +51,7 @@ function onCalendarChange(value: { result?: string; startDate?: string; endDate?
 </script>
 
 <template>
-    <DemoPage
-        :title="title"
-        :eyebrow="text('表单组件')"
-        :desc="text('单个或范围日期选择，支持农历与节日。')"
-    >
+    <DemoPage :title="title" :desc="text('单个或范围日期选择，支持农历与节日。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack demo-calendar-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
@@ -72,7 +68,8 @@ function onCalendarChange(value: { result?: string; startDate?: string; endDate?
                     :mask-close-able="Boolean(state.cMaskClose)"
                     :default-select-today="Boolean(state.cDefaultToday)"
                     @change="onCalendarChange"
-                    @close="calendarShow = false" />
+                    @close="calendarShow = false"
+                />
                 <text class="demo-variant-title">{{ text('页面内联日历') }}</text>
                 <snake-calendar
                     is-page
@@ -80,7 +77,8 @@ function onCalendarChange(value: { result?: string; startDate?: string; endDate?
                     :mode="'range'"
                     :default-select-today="false"
                     :closeable="false"
-                    @change="onCalendarChange" />
+                    @change="onCalendarChange"
+                />
             </view>
         </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')"

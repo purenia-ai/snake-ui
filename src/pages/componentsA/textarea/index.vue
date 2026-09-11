@@ -26,7 +26,7 @@ function updateValue(key: string, nextValue: DemoValue) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :eyebrow="text('表单组件')" :desc="text('支持字数统计和自适应高度的多行文本输入。')"
+    <DemoPage :title="title" :desc="text('支持字数统计和自适应高度的多行文本输入。')"
         ><DemoSection variant="preview" :title="text('演示效果')"
             ><view class="demo-control-stack demo-textarea-showcase"
                 ><text class="demo-variant-title">{{ isEnglish ? 'Multiline input' : '多行输入' }}</text

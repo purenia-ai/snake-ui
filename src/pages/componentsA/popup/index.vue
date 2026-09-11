@@ -42,12 +42,7 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 
 <template>
-    <DemoPage
-        :title="title"
-        :eyebrow="text('反馈与浮层')"
-        :desc="text('弹出层支持从页面不同方向出现并承载业务内容。')"
-        viewport
-    >
+    <DemoPage :title="title" :desc="text('弹出层支持从页面不同方向出现并承载业务内容。')" viewport>
         <DemoSection bare variant="preview" :title="text('演示效果')">
             <view class="demo-trigger demo-popup-showcase">
                 <text class="demo-variant-title">{{

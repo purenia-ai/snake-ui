@@ -38,7 +38,7 @@ function updateValue(key: string, value: DemoValue) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :eyebrow="text('商品业务')" :desc="text('展示商品网格或列表，并承载价格和状态信息。')"
+    <DemoPage :title="title" :desc="text('展示商品网格或列表，并承载价格和状态信息。')"
         ><DemoSection variant="preview" :title="text('演示效果')"
             ><snake-goods-list
                 class="demo-goods-list-showcase"

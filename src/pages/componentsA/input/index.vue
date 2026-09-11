@@ -29,7 +29,7 @@ function updateValue(key: string, nextValue: DemoValue) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :eyebrow="text('表单组件')" :desc="text('支持清空、密码、格式化和多种边框的单行输入。')"
+    <DemoPage :title="title" :desc="text('支持清空、密码、格式化和多种边框的单行输入。')"
         ><DemoSection variant="preview" :title="text('演示效果')"
             ><view class="demo-control-stack demo-input-showcase"
                 ><text class="demo-variant-title">{{ isEnglish ? 'Text and password' : '文本与密码' }}</text

@@ -38,7 +38,7 @@ function updateValue(key: string, value: DemoValue) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :eyebrow="text('CMS 营销')" :desc="text('根据业务场景展示居中或底部营销弹窗。')" viewport
+    <DemoPage :title="title" :desc="text('根据业务场景展示居中或底部营销弹窗。')" viewport
         ><DemoSection bare variant="preview" :title="text('演示效果')"
             ><snake-page-popup class="demo-page-popup-showcase" :datas="data" /></DemoSection
         ><DemoSection variant="controls" :title="text('参数配置')"

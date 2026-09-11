@@ -64,11 +64,7 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 
 <template>
-    <DemoPage
-        :title="title"
-        :eyebrow="text('导航与布局')"
-        :desc="text('以横向或竖向线条分隔内容块，支持半像素细线。')"
-    >
+    <DemoPage :title="title" :desc="text('以横向或竖向线条分隔内容块，支持半像素细线。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack demo-line-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>

@@ -66,7 +66,7 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 
 <template>
-    <DemoPage :title="title" :eyebrow="text('反馈与浮层')" :desc="text('在没有数据时提供清晰的占位和下一步提示。')">
+    <DemoPage :title="title" :desc="text('在没有数据时提供清晰的占位和下一步提示。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack demo-empty-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>

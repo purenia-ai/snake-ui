@@ -25,7 +25,7 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 
 <template>
-    <DemoPage :title="title" :eyebrow="text('导航与布局')" :desc="text('点击后在默认、升序和降序状态之间循环切换。')">
+    <DemoPage :title="title" :desc="text('点击后在默认、升序和降序状态之间循环切换。')">
         <DemoSection variant="preview" :title="text('演示效果')"
             ><view class="demo-button-sort-showcase"
                 ><snake-button-sort :title="String(state.sortTitle)" @change="sortValue = $event.value" /><view

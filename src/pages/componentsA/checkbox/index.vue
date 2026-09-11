@@ -42,7 +42,7 @@ function updateValue(key: string, nextValue: DemoValue) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :eyebrow="text('表单组件')" :desc="text('可独立使用的复选框，也可放入 CheckboxGroup。')"
+    <DemoPage :title="title" :desc="text('可独立使用的复选框，也可放入 CheckboxGroup。')"
         ><DemoSection variant="preview" :title="text('演示效果')"
             ><view class="demo-control-stack demo-checkbox-showcase"
                 ><text class="demo-variant-title">{{ isEnglish ? 'Standalone checkbox' : '独立复选框' }}</text

@@ -31,11 +31,7 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 
 <template>
-    <DemoPage
-        :title="title"
-        :eyebrow="text('导航与布局')"
-        :desc="text('用于页面顶部导航，支持返回操作、安全区、标题和左右插槽。')"
-    >
+    <DemoPage :title="title" :desc="text('用于页面顶部导航，支持返回操作、安全区、标题和左右插槽。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-navbar-preview demo-navbar-showcase">
                 <snake-navbar

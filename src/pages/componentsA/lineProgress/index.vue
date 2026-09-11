@@ -50,11 +50,7 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 
 <template>
-    <DemoPage
-        :title="title"
-        :eyebrow="text('展示组件')"
-        :desc="text('以线形进度展示任务完成情况，支持条纹与百分比。')"
-    >
+    <DemoPage :title="title" :desc="text('以线形进度展示任务完成情况，支持条纹与百分比。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack demo-line-progress-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>

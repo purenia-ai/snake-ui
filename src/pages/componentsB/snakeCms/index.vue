@@ -43,12 +43,7 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 
 <template>
-    <DemoPage
-        :title="title"
-        :eyebrow="text('CMS 内容')"
-        :desc="text('根据页面装修配置按顺序渲染完整的 CMS 页面。')"
-        viewport
-    >
+    <DemoPage :title="title" :desc="text('根据页面装修配置按顺序渲染完整的 CMS 页面。')" viewport>
         <DemoSection bare variant="preview" :title="text('演示效果')">
             <snake-cms
                 class="demo-snake-cms-showcase"

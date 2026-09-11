@@ -40,7 +40,7 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 
 <template>
-    <DemoPage :title="title" :eyebrow="text('展示组件')" :desc="text('图片容器支持不同填充模式、圆角和加载失败状态。')">
+    <DemoPage :title="title" :desc="text('图片容器支持不同填充模式、圆角和加载失败状态。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack">
                 <text class="demo-variant-title">{{ text('正常图片') }}</text>

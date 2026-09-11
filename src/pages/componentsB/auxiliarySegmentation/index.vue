@@ -25,7 +25,7 @@ function updateValue(key: string, value: DemoValue) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :eyebrow="text('导航与布局')" :desc="text('在装修区块之间提供留白或分隔线。')"
+    <DemoPage :title="title" :desc="text('在装修区块之间提供留白或分隔线。')"
         ><DemoSection variant="preview" :title="text('演示效果')"
             ><snake-auxiliary-segmentation class="demo-auxiliary-segmentation-showcase" :datas="data" /></DemoSection
         ><DemoSection variant="controls" :title="text('参数配置')"

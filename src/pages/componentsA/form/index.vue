@@ -92,11 +92,7 @@ function resetForm() {
 </script>
 
 <template>
-    <DemoPage
-        :title="title"
-        :eyebrow="text('表单组件')"
-        :desc="text('组合字段控件，完成规则校验、错误展示、提交和重置。')"
-    >
+    <DemoPage :title="title" :desc="text('组合字段控件，完成规则校验、错误展示、提交和重置。')">
         <DemoSection variant="preview" :title="text('演示效果')"
             ><view class="demo-form demo-form-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Validation form' : '表单校验' }}</text>

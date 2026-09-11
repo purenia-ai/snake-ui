@@ -42,7 +42,7 @@ function selectActivity(item: { id: string }) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :eyebrow="text('商品业务')" :desc="text('展示活动或拍卖场次，并支持选择当前场次。')"
+    <DemoPage :title="title" :desc="text('展示活动或拍卖场次，并支持选择当前场次。')"
         ><DemoSection variant="preview" :title="text('演示效果')"
             ><snake-activity-list
                 class="demo-activity-list-showcase"
