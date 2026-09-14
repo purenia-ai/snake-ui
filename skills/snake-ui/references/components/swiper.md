@@ -23,16 +23,7 @@ triggers: ['swiper', 'snake-swiper', 'Swiper', '轮播图']
 ## 指示器与 3D 卡片
 
 ```vue
-<snake-swiper
-    :list="banners"
-    name="image"
-    mode="number"
-    indicator-pos="bottomRight"
-    effect3d
-    show-title
-    @change="onChange"
-    @click="openBanner"
-/>
+<snake-swiper :list="banners" name="image" mode="number" indicator-pos="bottomRight" effect3d show-title @change="onChange" @click="openBanner" />
 ```
 
 对象图片依次读取 `name` 指定字段、`src`、`url`；标题读取 `title` 或 `text`。
@@ -44,14 +35,14 @@ triggers: ['swiper', 'snake-swiper', 'Swiper', '轮播图']
 | 参数                                              | 说明                                                           | 类型                        | 默认值                           |
 | ------------------------------------------------- | -------------------------------------------------------------- | --------------------------- | -------------------------------- |
 | `list`                                            | 图片地址或对象列表                                             | `Array<string \| object>`   | `[]`                             |
-| `current` / `height`                              | 当前索引、轮播高度                                             | `number \| string`          | `0` / `300`                      |
+| `current` / `height`                              | 当前索引、轮播高度                                             | `number \| string`          | `0` / `250`                      |
 | `autoplay` / `interval` / `duration` / `circular` | 自动播放、间隔、动画时长、循环                                 | `boolean \| number`         | `true` / `3000` / `300` / `true` |
-| `indicator`                                       | 是否显示自定义指示器；也兼容配置对象                           | `boolean \| object`         | `false`                          |
-| `mode`                                            | round/dot/line/number                                          | `string`                    | `round`                          |
+| `indicator`                                       | 是否显示自定义指示器；也兼容配置对象                           | `boolean \| object`         | `{}`                             |
+| `mode`                                            | round/dot/rect/line/number                                     | `string`                    | `round`                          |
 | `indicatorPos`                                    | topLeft/topCenter/topRight/bottomLeft/bottomCenter/bottomRight | `string`                    | `bottomCenter`                   |
 | `indicatorColor` / `indicatorActiveColor`         | 普通和激活指示器颜色                                           | `string`                    | 半透明白 / 白色                  |
-| `name`                                            | 对象图片字段                                                   | `string`                    | `url`                            |
-| `radius` / `borderRadius`                         | 圆角，borderRadius 优先                                        | `string \| number`          | `0`                              |
+| `name`                                            | 对象图片字段                                                   | `string`                    | `image`                          |
+| `radius` / `borderRadius`                         | 圆角，borderRadius 优先                                        | `string \| number`          | `8`                              |
 | `previousMargin` / `nextMargin`                   | 前后边距                                                       | `string`                    | `0px`                            |
 | `effect3d` / `effect3dPreviousMargin`             | 3D 卡片及露出边距                                              | `boolean \| UnitValue`      | `false` / `50`                   |
 | `imgMode`                                         | 图片裁剪模式                                                   | `string`                    | `aspectFill`                     |
@@ -62,9 +53,9 @@ triggers: ['swiper', 'snake-swiper', 'Swiper', '轮播图']
 
 | 事件名            | 触发时机   | 参数                   |
 | ----------------- | ---------- | ---------------------- |
-| `change`          | 当前项变化 | `{ current, source? }` |
+| `change`          | 当前项变化 | `current: number`      |
 | `animationfinish` | 动画结束   | `{ current, source? }` |
-| `click`           | 点击轮播项 | `(index, item)`        |
+| `click`           | 点击轮播项 | `index: number`        |
 
 ### Slots
 

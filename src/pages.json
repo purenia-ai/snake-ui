@@ -57,7 +57,6 @@
                 { "path": "empty/index", "style": { "navigationBarTitleText": "空状态" } },
                 { "path": "icon/index", "style": { "navigationBarTitleText": "图标" } },
                 { "path": "image/index", "style": { "navigationBarTitleText": "图片" } },
-                { "path": "lazyImage/index", "style": { "navigationBarTitleText": "懒加载图片" } },
                 { "path": "loadmore/index", "style": { "navigationBarTitleText": "加载更多" } },
                 { "path": "noticeBar/index", "style": { "navigationBarTitleText": "通知栏" } },
                 { "path": "overlay/index", "style": { "navigationBarTitleText": "遮罩层" } },

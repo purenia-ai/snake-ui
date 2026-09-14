@@ -35,7 +35,6 @@ Snake UI is a Vue 3 component library for uni-app commerce and CMS applications.
 - Empty: `docs/components/empty.md`
 - Icon: `docs/components/icon.md`
 - Image: `docs/components/image.md`
-- Lazy Image: `docs/components/lazy-image.md`
 - Line: `docs/components/line.md`
 - Line Progress: `docs/components/line-progress.md`
 - Link: `docs/components/link.md`

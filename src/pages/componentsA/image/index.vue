@@ -44,15 +44,15 @@ function updateValue(key: string, value: DemoValue) {
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack">
                 <text class="demo-variant-title">{{ text('正常图片') }}</text>
-                <snake-image
-                    src="/static/logo.png"
-                    width="100%"
-                    height="320rpx"
-                    :radius="Number(state.radius)"
-                    :mode="String(state.imageMode)"
-                />
+                <snake-image src="/static/logo.png" width="100%" height="320rpx" :radius="Number(state.radius)" :mode="String(state.imageMode)" />
                 <text class="demo-variant-title">{{ text('加载失败') }}</text>
                 <snake-image src="/static/not-found.png" width="100%" height="180rpx" :radius="Number(state.radius)" />
+                <text class="demo-variant-title">{{ localeName === 'en-US' ? 'Viewport lazy loading' : '视口懒加载' }}</text>
+                <snake-image src="/static/logo.png" lazy width="100%" height="180rpx" :radius="Number(state.radius)">
+                    <template #loading>
+                        <view class="demo-image-placeholder">{{ localeName === 'en-US' ? 'Loading…' : '正在加载…' }}</view>
+                    </template>
+                </snake-image>
             </view>
         </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
@@ -72,5 +72,14 @@ function updateValue(key: string, value: DemoValue) {
     font-size: 28rpx;
     font-weight: 600;
     line-height: 1.4;
+}
+.demo-image-placeholder {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    color: var(--snake-color-text-muted);
+    font-size: 24rpx;
 }
 </style>

@@ -386,13 +386,12 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 - 详尽的文档支持，现代化的演示效果
 - easycom 按需引入，精简打包体积
 
-基础组件（11）
+基础组件（10）
 
 - ConfigProvider 全局配置
 - Button 按钮
 - Icon 图标
 - Image 图片
-- LazyImage 懒加载图片
 - LoadingIcon 加载图标
 - Skeleton 骨架屏
 - Transition 过渡动画
@@ -1348,37 +1347,38 @@ Form 容器没有独立视觉令牌，FormItem 直接使用以下全局变量：
 ## 基础用法
 
 ```vue
-<snake-image
-    src="/static/logo.png"
-    alt="Snake UI 标志"
-    width="100%"
-    height="320rpx"
-    mode="aspectFill"
-    :radius="16"
-    preview
-/>
+<snake-image src="/static/logo.png" alt="Snake UI 标志" width="100%" height="320rpx" mode="aspectFill" :radius="16" preview />
 <snake-image src="/static/avatar.png" alt="用户头像" width="120rpx" height="120rpx" shape="circle" />
 ```
 
-`loading` 与 `error` 插槽可替换默认反馈。
+`loading` 与 `error` 插槽可替换默认反馈，且优先于对应图片参数。
+
+## 视口懒加载
+
+`lazy` 使用 `uni.createIntersectionObserver`，仅在进入视口预加载距离后请求真实图片；`lazyLoad` 仍仅透传给原生 `image` 的 `lazy-load`，两者可以同时使用。`loadingImg` 与 `errorImg` 在组件内部按状态直接渲染，未配置时才回退为默认图标；需要复杂状态内容时使用同名插槽，插槽优先。
+
+```vue
+<snake-image src="/static/product.png" lazy :lazy-threshold="160" loading-img="/static/image-loading.png" error-img="/static/image-error.png" />
+```
 
 ## API
 
 ### Props
 
-| 参数                                      | 说明               | 类型                              | 默认值             |
-| ----------------------------------------- | ------------------ | --------------------------------- | ------------------ |
-| `src` / `mode`                            | 图片地址和裁剪方式 | `string`                          | `'' / scaleToFill` |
-| `alt`                                     | 图片的可访问文本   | `string`                          | `''`               |
-| `width` / `height`                        | 容器尺寸           | `string \| number`                | `100% / auto`      |
-| `shape` / `radius`                        | 形状和圆角         | `square\|circle / string\|number` | `square / 0`       |
-| `lazyLoad` / `webp`                       | 原生懒加载与 WebP  | `boolean`                         | `false`            |
-| `showMenuByLongpress`                     | 长按显示识别菜单   | `boolean`                         | `false`            |
-| `fade` / `duration`                       | 淡入及其时长       | `boolean / number`                | `true / 300`       |
-| `showLoading` / `loadingIcon`             | 加载反馈           | `boolean / string`                | `true / ''`        |
-| `showError` / `errorIcon`                 | 失败反馈           | `boolean / string`                | `true / image`     |
-| `preview` / `previewUrls`                 | 点击预览及图片集合 | `boolean / string[]`              | `false`            |
-| `bgColor` / `customClass` / `customStyle` | 背景和自定义样式   | 多类型                            | 主题默认值         |
+| 参数                                         | 说明                   | 类型                              | 默认值              |
+| -------------------------------------------- | ---------------------- | --------------------------------- | ------------------- |
+| `src` / `mode`                               | 图片地址和裁剪方式     | `string`                          | `'' / scaleToFill`  |
+| `alt`                                        | 图片的可访问文本       | `string`                          | `''`                |
+| `width` / `height`                           | 容器尺寸               | `string \| number`                | `100% / auto`       |
+| `shape` / `radius`                           | 形状和圆角             | `square\|circle / string\|number` | `square / 0`        |
+| `lazy` / `lazyThreshold`                     | 视口懒加载及预加载距离 | `boolean / number`                | `false / 100`       |
+| `lazyLoad` / `webp`                          | 原生懒加载与 WebP      | `boolean`                         | `false`             |
+| `showMenuByLongpress`                        | 长按显示识别菜单       | `boolean`                         | `false`             |
+| `fade` / `duration`                          | 淡入及其时长           | `boolean / number`                | `true / 300`        |
+| `showLoading` / `loadingIcon` / `loadingImg` | 加载反馈与图片占位     | `boolean / string / string`       | `true / '' / ''`    |
+| `showError` / `errorIcon` / `errorImg`       | 失败反馈与图片回退     | `boolean / string / string`       | `true / image / ''` |
+| `preview` / `previewUrls`                    | 点击预览及图片集合     | `boolean / string[]`              | `false`             |
+| `bgColor` / `customClass` / `customStyle`    | 背景和自定义样式       | 多类型                            | 主题默认值          |
 
 ### Events
 
@@ -1762,67 +1762,6 @@ Snake UI 提供覆盖基础交互、表单和商城装修场景的组件。输�
 
 <ComponentOverview />
 
-<!-- Source: docs/components/lazy-image.md -->
-
-# LazyImage 懒加载图片
-
-图片进入视口阈值后才设置真实地址，适合商品长列表。组件优先使用 `uni.createIntersectionObserver`，不支持时安全降级为立即加载。
-
-## 平台兼容性
-
-| H5  | App | 微信小程序 | 支付宝小程序 |
-| :-: | :-: | :--------: | :----------: |
-|  √  |  √  |     √      |      √       |
-
-## 基础用法
-
-```vue
-<snake-lazy-image :src="item.image" :index="index" :threshold="160" mode="aspectFill" height="300rpx" @load="loaded" />
-```
-
-## 占位与失败回退
-
-```vue
-<snake-lazy-image :src="item.image" loading-img="/static/image-loading.png" error-img="/static/image-error.png" />
-```
-
-`loadingImg` 只作为进入视口前的占位资源，不会提前触发真实图片的 `load` 或 `error` 事件；`errorImg` 是图片地址。需要自定义复杂状态时可使用同名插槽。
-
-## API
-
-### Props
-
-| 参数                           | 说明               | 类型                        | 默认值                   |
-| ------------------------------ | ------------------ | --------------------------- | ------------------------ |
-| `src`                          | 真实图片地址       | `string`                    | `''`                     |
-| `loadingImg` / `errorImg`      | 加载和失败占位资源 | `string`                    | `''`                     |
-| `threshold`                    | 视口预加载距离     | `number`                    | `100`                    |
-| `index`                        | 事件携带的列表索引 | `string \| number`          | `0`                      |
-| `mode` / `width` / `height`    | 图片模式与尺寸     | 多类型                      | `widthFix / 100% / auto` |
-| `radius` / `fade` / `duration` | 圆角与淡入参数     | 多类型                      | `0 / true / 300`         |
-| `customStyle`                  | 自定义样式         | `string \| object \| array` | `''`                     |
-
-`src`、`mode`、`width`、`height`、`radius`、`fade`、`duration` 与 Image 含义一致；`loadingImg` 和 `errorImg` 设置占位资源，`threshold`（默认 `100`）控制视口预加载距离，`index` 用于区分列表项，`customStyle` 自定义容器样式。
-
-### Events
-
-| 事件名  | 触发时机         | 参数             |
-| ------- | ---------------- | ---------------- |
-| `click` | 点击图片         | `(event, index)` |
-| `load`  | 真实图片加载成功 | `(event, index)` |
-| `error` | 真实图片加载失败 | `(event, index)` |
-
-### Slots
-
-| 插槽名    | 说明               |
-| --------- | ------------------ |
-| `loading` | 自定义加载占位内容 |
-| `error`   | 自定义失败回退内容 |
-
-## 主题变量
-
-组件未直接使用 CSS 主题变量，加载结果由内部 Image 组件渲染并继承其主题样式。
-
 <!-- Source: docs/components/line-progress.md -->
 
 # LineProgress 线形进度条
@@ -2085,6 +2024,7 @@ Snake UI 提供覆盖基础交互、表单和商城装修场景的组件。输�
 | `isDot`                          | 无更多状态是否显示点状分隔 | `boolean`                   | `false`       |
 | `color` / `fontSize` / `bgColor` | 文字颜色、字号和背景       | `string \| number`          | 主题默认值    |
 | `marginTop` / `marginBottom`     | 上下外边距                 | `string \| number`          | `0`           |
+| `height`                         | 组件高度，数值按 rpx 处理  | `string \| number`          | `auto`        |
 | `customClass` / `customStyle`    | 自定义类名和样式           | `string \| object \| array` | `''`          |
 
 ### Events
@@ -3374,16 +3314,7 @@ H5 中当前分段可通过 Tab 聚焦，左右方向键会循环切换，并自
 ## 指示器与 3D 卡片
 
 ```vue
-<snake-swiper
-    :list="banners"
-    name="image"
-    mode="number"
-    indicator-pos="bottomRight"
-    effect3d
-    show-title
-    @change="onChange"
-    @click="openBanner"
-/>
+<snake-swiper :list="banners" name="image" mode="number" indicator-pos="bottomRight" effect3d show-title @change="onChange" @click="openBanner" />
 ```
 
 对象图片依次读取 `name` 指定字段、`src`、`url`；标题读取 `title` 或 `text`。
@@ -3395,14 +3326,14 @@ H5 中当前分段可通过 Tab 聚焦，左右方向键会循环切换，并自
 | 参数                                              | 说明                                                           | 类型                        | 默认值                           |
 | ------------------------------------------------- | -------------------------------------------------------------- | --------------------------- | -------------------------------- |
 | `list`                                            | 图片地址或对象列表                                             | `Array<string \| object>`   | `[]`                             |
-| `current` / `height`                              | 当前索引、轮播高度                                             | `number \| string`          | `0` / `300`                      |
+| `current` / `height`                              | 当前索引、轮播高度                                             | `number \| string`          | `0` / `250`                      |
 | `autoplay` / `interval` / `duration` / `circular` | 自动播放、间隔、动画时长、循环                                 | `boolean \| number`         | `true` / `3000` / `300` / `true` |
-| `indicator`                                       | 是否显示自定义指示器；也兼容配置对象                           | `boolean \| object`         | `false`                          |
-| `mode`                                            | round/dot/line/number                                          | `string`                    | `round`                          |
+| `indicator`                                       | 是否显示自定义指示器；也兼容配置对象                           | `boolean \| object`         | `{}`                             |
+| `mode`                                            | round/dot/rect/line/number                                     | `string`                    | `round`                          |
 | `indicatorPos`                                    | topLeft/topCenter/topRight/bottomLeft/bottomCenter/bottomRight | `string`                    | `bottomCenter`                   |
 | `indicatorColor` / `indicatorActiveColor`         | 普通和激活指示器颜色                                           | `string`                    | 半透明白 / 白色                  |
-| `name`                                            | 对象图片字段                                                   | `string`                    | `url`                            |
-| `radius` / `borderRadius`                         | 圆角，borderRadius 优先                                        | `string \| number`          | `0`                              |
+| `name`                                            | 对象图片字段                                                   | `string`                    | `image`                          |
+| `radius` / `borderRadius`                         | 圆角，borderRadius 优先                                        | `string \| number`          | `8`                              |
 | `previousMargin` / `nextMargin`                   | 前后边距                                                       | `string`                    | `0px`                            |
 | `effect3d` / `effect3dPreviousMargin`             | 3D 卡片及露出边距                                              | `boolean \| UnitValue`      | `false` / `50`                   |
 | `imgMode`                                         | 图片裁剪模式                                                   | `string`                    | `aspectFill`                     |
@@ -3413,9 +3344,9 @@ H5 中当前分段可通过 Tab 聚焦，左右方向键会循环切换，并自
 
 | 事件名            | 触发时机   | 参数                   |
 | ----------------- | ---------- | ---------------------- |
-| `change`          | 当前项变化 | `{ current, source? }` |
+| `change`          | 当前项变化 | `current: number`      |
 | `animationfinish` | 动画结束   | `{ current, source? }` |
-| `click`           | 点击轮播项 | `(index, item)`        |
+| `click`           | 点击轮播项 | `index: number`        |
 
 ### Slots
 
@@ -6099,9 +6030,38 @@ npm 与 `uni_modules` 的具体路径见[安装](/components/install)与[配置]
 
 <!-- Source: docs/guide/getting-started.md -->
 
-# 快速开始已迁移
+# 快速开始
 
-安装与接入步骤已收归组件文档，请前往 [安装](/components/install)、[配置](/components/setting) 与 [快速上手](/components/quickstart)。
+Snake UI 有两条接入路径：只使用通用 UI 组件，或将 CMS 页面装修能力接入已有商城。两条路径共用同一套安装、主题与基础运行时；先选择你的目标，再进入对应的详细步骤。
+
+## 开始前确认
+
+准备一个可正常运行的 uni-app Vue 3 项目，并确认项目可以处理 SCSS 与 `rpx`。完整的版本要求、平台差异和宿主能力见[运行环境与能力边界](/guide/compatibility)。
+
+## 选择接入路径
+
+::: info 基础组件接入
+适合需要按钮、表单、导航、弹层和主题等通用能力的项目。
+
+1. [安装 Snake UI](/components/install)。
+2. 完成[工程配置](/components/setting)。
+3. 按[第一个组件](/components/quickstart)渲染按钮、验证主题和全局工具。
+4. 在[组件总览](/components/intro)中按分类或关键词选择后续组件。
+   :::
+
+::: tip CMS 页面接入
+适合后端保存装修配置、前端按 JSON 渲染商城页面的项目。先完成基础组件接入，再继续：
+
+1. 阅读[CMS 快速接入](/cms/getting-started)，渲染第一个页面配置。
+2. 按[CMS 容器 API](/cms/overview)接入容器、事件与业务服务。
+3. 根据[页面数据协议](/cms/data-contract)和[业务服务接入](/cms/services)对齐接口数据。
+   :::
+
+## 常用下一步
+
+- 需要主题、语言、HTTP 或全局工具：[全局配置总览](/guide/foundation)。
+- 需要确认跨端限制：[运行环境与能力边界](/guide/compatibility)。
+- 接入或运行异常：[常见问题](/guide/troubleshooting)。
 
 <!-- Source: docs/guide/internationalization.md -->
 

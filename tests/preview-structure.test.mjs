@@ -13,7 +13,6 @@ const foundationComponents = [
     'empty',
     'icon',
     'image',
-    'lazy-image',
     'loadmore',
     'notice-bar',
     'overlay',
@@ -47,8 +46,8 @@ const foundationComponents = [
 ];
 
 function exampleRoutes(pages) {
-    return [...pages.matchAll(/"root":\s*"(pages\/components[AB])"[\s\S]*?"pages":\s*\[([\s\S]*?)\]\s*\}/g)].flatMap(
-        ([, root, body]) => [...body.matchAll(/"path":\s*"([^"?]+)"/g)].map(match => `${root}/${match[1]}`)
+    return [...pages.matchAll(/"root":\s*"(pages\/components[AB])"[\s\S]*?"pages":\s*\[([\s\S]*?)\]\s*\}/g)].flatMap(([, root, body]) =>
+        [...body.matchAll(/"path":\s*"([^"?]+)"/g)].map(match => `${root}/${match[1]}`)
     );
 }
 
@@ -89,14 +88,11 @@ test('documented components keep valid example routes while compatibility previe
         if (match) previews.push(match[1]);
     }
 
-    assert.equal(routes.length, 62);
-    assert.equal(previews.length, 43);
+    assert.equal(routes.length, 61);
+    assert.equal(previews.length, 42);
     assert.equal(new Set(previews).size, previews.length);
     for (const preview of previews) {
-        assert.ok(
-            routes.includes(preview) || preview === 'pages/other/color/index',
-            `${preview}: missing example route`
-        );
+        assert.ok(routes.includes(preview) || preview === 'pages/other/color/index', `${preview}: missing example route`);
     }
 });
 
@@ -120,19 +116,14 @@ test('component overview page covers every example route and directory layout', 
     const groupA = await readdir(resolve(root, 'src/pages/componentsA'));
     const groupB = await readdir(resolve(root, 'src/pages/componentsB'));
 
-    const configuredPaths = [...config.matchAll(/item\(\s*'(\/pages\/(?:components[AB])\/[^']+)'/g)].map(match =>
-        match[1].replace(/^\//, '')
-    );
+    const configuredPaths = [...config.matchAll(/item\(\s*'(\/pages\/(?:components[AB])\/[^']+)'/g)].map(match => match[1].replace(/^\//, ''));
     const routes = exampleRoutes(pages);
 
-    assert.equal(configuredPaths.length, 62);
+    assert.equal(configuredPaths.length, 61);
     assert.deepEqual([...configuredPaths].sort(), [...routes].sort());
-    assert.equal(groupA.length, 42);
+    assert.equal(groupA.length, 41);
     assert.equal(groupB.length, 20);
-    for (const directory of [
-        ...groupA.map(name => ['componentsA', name]),
-        ...groupB.map(name => ['componentsB', name])
-    ]) {
+    for (const directory of [...groupA.map(name => ['componentsA', name]), ...groupB.map(name => ['componentsB', name])]) {
         await access(resolve(root, 'src/pages', directory[0], directory[1], 'index.vue'));
     }
     for (const group of [
@@ -164,7 +155,7 @@ test('all example pages own their interactive demo configuration', async () => {
     const panel = await readFile(resolve(root, 'src/components/demo-control-panel/demo-control-panel.vue'), 'utf8');
     const pages = await examplePageSources();
 
-    assert.equal(pages.length, 62);
+    assert.equal(pages.length, 61);
     for (const page of pages) {
         assert.match(page, /<DemoPage/);
         assert.match(page, /<DemoControlPanel|mockUpload/);
@@ -186,10 +177,7 @@ test('component demos use one restrained shared presentation system', async () =
     assert.doesNotMatch(theme, /snake-demo-nav-gradient|snake-demo-page-tint|snake-demo-card-shadow/);
     assert.match(page, /demo-page-header__title/);
     assert.match(page, /backgroundColor:\s*'var\(--snake-color-primary\)'/);
-    assert.match(
-        page,
-        /backgroundImage:\s*'linear-gradient\(90deg, var\(--snake-color-primary-dark\), var\(--snake-color-primary-disabled\)\)'/
-    );
+    assert.match(page, /backgroundImage:\s*'linear-gradient\(90deg, var\(--snake-color-primary-dark\), var\(--snake-color-primary-disabled\)\)'/);
     assert.doesNotMatch(page, /background-image:\s*\$snake-page-tint/);
     assert.match(section, /DemoSectionVariant = 'default' \| 'preview' \| 'controls'/);
     assert.match(section, /demo-section--preview[^}]*border-bottom:\s*1rpx dashed/s);
@@ -265,14 +253,8 @@ test('preview pages hide the outline at medium desktop widths while retaining th
     );
     assert.match(css, /\.snake-preview-layout \.VPDoc\.has-aside \.content-container\s*{[^}]*max-width:\s*700px/s);
     assert.match(css, /--preview-reserved-space:/);
-    assert.match(
-        css,
-        /\.snake-preview-layout \.VPContent\.has-sidebar\s*{[^}]*padding-right:\s*var\(--preview-reserved-space\)/s
-    );
-    assert.doesNotMatch(
-        css,
-        /\.snake-preview-layout \.VPDoc\s*{[^}]*padding-right:\s*var\(--preview-reserved-space\)/s
-    );
+    assert.match(css, /\.snake-preview-layout \.VPContent\.has-sidebar\s*{[^}]*padding-right:\s*var\(--preview-reserved-space\)/s);
+    assert.doesNotMatch(css, /\.snake-preview-layout \.VPDoc\s*{[^}]*padding-right:\s*var\(--preview-reserved-space\)/s);
 });
 
 test('narrow previews use a link and do not create a hidden iframe', async () => {
@@ -415,21 +397,9 @@ test('button preview presents one configurable button', async () => {
 
 test('foundation feedback previews expose grouped variants', async () => {
     const extracted = await Promise.all(
-        [
-            'button',
-            'icon',
-            'image',
-            'lazyImage',
-            'loadingIcon',
-            'skeleton',
-            'transition',
-            'empty',
-            'loadmore',
-            'noticeBar',
-            'overlay',
-            'popup',
-            'sticky'
-        ].map(directory => readFile(resolve(root, 'src/pages/componentsA', directory, 'index.vue'), 'utf8'))
+        ['button', 'icon', 'image', 'loadingIcon', 'skeleton', 'transition', 'empty', 'loadmore', 'noticeBar', 'overlay', 'popup', 'sticky'].map(
+            directory => readFile(resolve(root, 'src/pages/componentsA', directory, 'index.vue'), 'utf8')
+        )
     );
     const foundationSource = extracted.join('\n');
 
@@ -439,7 +409,6 @@ test('foundation feedback previews expose grouped variants', async () => {
         'transition',
         'icon',
         'image',
-        'lazy-image',
         'empty',
         'loadmore',
         'notice-bar',
@@ -447,11 +416,7 @@ test('foundation feedback previews expose grouped variants', async () => {
         'popup',
         'sticky'
     ]) {
-        assert.match(
-            foundationSource,
-            new RegExp(`demo-${component}-showcase|<snake-${component}`),
-            `${component}: missing grouped showcase`
-        );
+        assert.match(foundationSource, new RegExp(`demo-${component}-showcase|<snake-${component}`), `${component}: missing grouped showcase`);
     }
     assert.match(foundationSource, /demo-variant-title/);
 });
@@ -471,26 +436,13 @@ test('form control previews expose grouped variants', async () => {
 
 test('navigation and layout previews expose grouped variants', async () => {
     const extracted = await Promise.all(
-        ['navbar', 'swiper', 'tabs', 'subsection', 'buttonSort', 'dropMenu', 'indexList', 'indexAnchor'].map(
-            directory => readFile(resolve(root, 'src/pages/componentsA', directory, 'index.vue'), 'utf8')
+        ['navbar', 'swiper', 'tabs', 'subsection', 'buttonSort', 'dropMenu', 'indexList', 'indexAnchor'].map(directory =>
+            readFile(resolve(root, 'src/pages/componentsA', directory, 'index.vue'), 'utf8')
         )
     );
     const navigationSource = extracted.join('\n');
-    for (const component of [
-        'navbar',
-        'tabs',
-        'swiper',
-        'subsection',
-        'button-sort',
-        'drop-menu',
-        'index-list',
-        'index-anchor'
-    ]) {
-        assert.match(
-            navigationSource,
-            new RegExp(`demo-${component}-showcase`),
-            `${component}: missing grouped showcase`
-        );
+    for (const component of ['navbar', 'tabs', 'swiper', 'subsection', 'button-sort', 'drop-menu', 'index-list', 'index-anchor']) {
+        assert.match(navigationSource, new RegExp(`demo-${component}-showcase`), `${component}: missing grouped showcase`);
     }
 });
 

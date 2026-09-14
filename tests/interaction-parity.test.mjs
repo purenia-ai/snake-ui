@@ -121,10 +121,10 @@ test('commerce actions expose keyboard semantics and clean transient timers', as
         assert.match(source, /@keydown\.enter/);
         assert.match(source, /@keydown\.space/);
     }
-    assert.match(goods, /<snake-lazy-image\s+:src="imageFilter\(item\)"/);
+    assert.match(goods, /<snake-image\s+:src="imageFilter\(item\)"/);
     assert.match(goods, /mode="aspectFill"/);
     assert.match(goods, /height="100%"/);
-    assert.doesNotMatch(goods, /<snake-lazy-image\s+:image=/);
+    assert.match(goods, /\slazy\s/);
 });
 
 test('commerce price sort uses legacy triangles while filter uses bundled directional icons', async () => {
@@ -177,13 +177,13 @@ test('CMS sticky keeps legacy enable semantics and explicit navigation offset', 
 });
 
 test('lazy goods images accept host-provided loading and error artwork through request states', async () => {
-    const [lazyImage, goods] = await Promise.all([
-        read('components/snake-lazy-image/snake-lazy-image.vue'),
+    const [image, goods] = await Promise.all([
+        read('components/snake-image/snake-image.vue'),
         read('components/snake-goods-list/snake-goods-list.vue')
     ]);
-    assert.match(lazyImage, /v-if="\$slots\.loading \|\| loadingImg"/);
-    assert.match(lazyImage, /:src="loadingImg"/);
-    assert.match(lazyImage, /:src="errorImg"/);
+    assert.match(image, /:src="loadingImg"/);
+    assert.match(image, /:src="errorImg"/);
     assert.match(goods, /:loading-img="assets\.goodsLoading \|\| ''"/);
     assert.match(goods, /:error-img="assets\.goodsError \|\| ''"/);
+    assert.match(goods, /<snake-image[\s\S]*\slazy/);
 });

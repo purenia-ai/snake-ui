@@ -19,6 +19,10 @@ export interface ImageProps {
     radius?: UnitValue;
     /** lazy load 配置。 */
     lazyLoad?: boolean;
+    /** 是否在进入视口后才开始请求真实图片。 */
+    lazy?: boolean;
+    /** 视口懒加载的预加载距离。 */
+    lazyThreshold?: number;
     /** show menu by longpress 配置。 */
     showMenuByLongpress?: boolean;
     /** webp 配置。 */
@@ -33,10 +37,14 @@ export interface ImageProps {
     showLoading?: boolean;
     /** loading icon 配置。 */
     loadingIcon?: string;
+    /** 加载中显示的图片地址。 */
+    loadingImg?: string;
     /** show error 配置。 */
     showError?: boolean;
     /** error icon 配置。 */
     errorIcon?: string;
+    /** 加载失败显示的图片地址。 */
+    errorImg?: string;
     /** preview 配置。 */
     preview?: boolean;
     /** preview urls 配置。 */

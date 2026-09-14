@@ -52,7 +52,6 @@ const standardizedDocs = [
     'config-provider',
     'icon',
     'image',
-    'lazy-image',
     'text',
     'link',
     'textarea',
@@ -121,16 +120,8 @@ test('high-use component docs follow the standard documentation shape', async ()
     for (const name of standardizedDocs) {
         const markdown = await document(name);
         assert.match(markdown, /^## 平台兼容性$/m, `${name}: compatibility`);
-        assert.match(
-            markdown,
-            /\|\s*H5\s*\|\s*App\s*\|\s*微信小程序\s*\|\s*支付宝小程序\s*\|/,
-            `${name}: platform table`
-        );
-        assert.match(
-            markdown,
-            /\|\s*(?:√|—)\s*\|\s*(?:√|—)\s*\|\s*(?:√|—)\s*\|\s*(?:√|—)\s*\|/,
-            `${name}: platform support matrix`
-        );
+        assert.match(markdown, /\|\s*H5\s*\|\s*App\s*\|\s*微信小程序\s*\|\s*支付宝小程序\s*\|/, `${name}: platform table`);
+        assert.match(markdown, /\|\s*(?:√|—)\s*\|\s*(?:√|—)\s*\|\s*(?:√|—)\s*\|\s*(?:√|—)\s*\|/, `${name}: platform support matrix`);
         assert.doesNotMatch(markdown, /QQ 小程序/, `${name}: omitted QQ Mini Program`);
         assert.match(markdown, /^## (?:基础|基本)用法$/m, `${name}: basic usage`);
         assert.match(markdown, /^## API$/m, `${name}: API`);
@@ -172,7 +163,6 @@ test('high-use component docs follow the standard documentation shape', async ()
         'config-provider',
         'icon',
         'image',
-        'lazy-image',
         'text',
         'link',
         'textarea',
@@ -208,7 +198,6 @@ test('high-use component docs follow the standard documentation shape', async ()
         'root-portal',
         'config-provider',
         'image',
-        'lazy-image',
         'text',
         'link'
     ]) {
@@ -228,20 +217,14 @@ test('high-use component docs follow the standard documentation shape', async ()
 });
 
 test('component registry is the complete documented component source of truth', async () => {
-    assert.equal(componentItems.length, 45);
+    assert.equal(componentItems.length, 44);
     assert.equal(new Set(componentItems.map(item => item.link)).size, componentItems.length);
 
     const packageEntry = await readFile(resolve(root, 'src/uni_modules/snake-ui/index.ts'), 'utf8');
     for (const item of componentItems) {
         const componentDirectories = toComponentDirectories(item);
-        for (const componentDirectory of Array.isArray(componentDirectories)
-            ? componentDirectories
-            : [componentDirectories]) {
-            assert.match(
-                packageEntry,
-                new RegExp(`export \\* from './components/${componentDirectory}/types'`),
-                item.name
-            );
+        for (const componentDirectory of Array.isArray(componentDirectories) ? componentDirectories : [componentDirectories]) {
+            assert.match(packageEntry, new RegExp(`export \\* from './components/${componentDirectory}/types'`), item.name);
         }
     }
 

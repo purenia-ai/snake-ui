@@ -120,7 +120,7 @@ import { addUnit, navTo, sleep, toast } from '@puresnake/snake-ui/libs';
 
 ### 基础组件
 
-`snake-button`、`snake-empty`、`snake-icon`、`snake-image`、`snake-lazy-image`、`snake-loadmore`、`snake-notice-bar`、`snake-overlay`、`snake-popup`、`snake-sticky`、`snake-swiper`、`snake-tabs`。
+`snake-button`、`snake-empty`、`snake-icon`、`snake-image`、`snake-loadmore`、`snake-notice-bar`、`snake-overlay`、`snake-popup`、`snake-sticky`、`snake-swiper`、`snake-tabs`。
 
 ### 表单组件
 

@@ -18,7 +18,6 @@ export const componentGroups: ComponentGroup[] = [
             { name: 'Button', title: '按钮', link: '/components/button' },
             { name: 'Icon', title: '图标', link: '/components/icon' },
             { name: 'Image', title: '图片', link: '/components/image' },
-            { name: 'LazyImage', title: '懒加载图片', link: '/components/lazy-image' },
             { name: 'LoadingIcon', title: '加载图标', link: '/components/loading-icon' },
             { name: 'Skeleton', title: '骨架屏', link: '/components/skeleton' },
             { name: 'Transition', title: '过渡动画', link: '/components/transition' },

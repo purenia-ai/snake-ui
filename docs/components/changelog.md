@@ -8,13 +8,12 @@
 - 详尽的文档支持，现代化的演示效果
 - easycom 按需引入，精简打包体积
 
-基础组件（11）
+基础组件（10）
 
 - ConfigProvider 全局配置
 - Button 按钮
 - Icon 图标
 - Image 图片
-- LazyImage 懒加载图片
 - LoadingIcon 加载图标
 - Skeleton 骨架屏
 - Transition 过渡动画

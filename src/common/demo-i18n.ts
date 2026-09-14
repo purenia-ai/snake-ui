@@ -101,10 +101,8 @@ const englishMessages: Record<string, string> = {
     内置图片: 'Built-in image',
     示例图片: 'Example image',
     如何查看真实效果: 'How to view the real state',
-    '关闭手机的 Wi-Fi 和移动数据后，可查看全屏断网提示。':
-        'Turn off Wi-Fi and mobile data to view the full-screen offline prompt.',
-    '组件在线时自动隐藏；断网后点击重试会触发事件反馈。':
-        'The component hides while online; retrying offline emits an event confirmation.',
+    '关闭手机的 Wi-Fi 和移动数据后，可查看全屏断网提示。': 'Turn off Wi-Fi and mobile data to view the full-screen offline prompt.',
+    '组件在线时自动隐藏；断网后点击重试会触发事件反馈。': 'The component hides while online; retrying offline emits an event confirmation.',
     已触发重试事件: 'Retry event emitted',
     输入空状态文案: 'Enter an empty-state message',
     显示图标: 'Show icon',
@@ -309,53 +307,40 @@ const englishMessages: Record<string, string> = {
 };
 
 Object.assign(englishMessages, {
-    '按钮用于触发即时操作，支持主题、朴素、禁用和加载状态。':
-        'Buttons trigger actions and support variants, plain, disabled and loading states.',
+    '按钮用于触发即时操作，支持主题、朴素、禁用和加载状态。': 'Buttons trigger actions and support variants, plain, disabled and loading states.',
     '统一展示按钮、图片和列表中的加载状态。': 'Provides consistent loading feedback for buttons, images and lists.',
     '为浮层和内容切换提供一致的跨端进出场动画。': 'Provides consistent cross-platform enter and leave transitions.',
     '在没有数据时提供清晰的占位和下一步提示。': 'Shows a clear placeholder and next step when no data is available.',
-    '展示 Snake UI 内置图标，可调整尺寸和主题颜色。':
-        'Displays built-in Snake UI icons with adjustable size and color.',
-    '图片容器支持不同填充模式、圆角和加载失败状态。':
-        'An image container with fit modes, rounded corners and error states.',
+    '展示 Snake UI 内置图标，可调整尺寸和主题颜色。': 'Displays built-in Snake UI icons with adjustable size and color.',
+    '图片容器支持不同填充模式、圆角和加载失败状态。': 'An image container with fit modes, rounded corners and error states.',
     '图片进入视口后加载，并展示加载中或失败反馈。': 'Loads images on entry and reports loading or failure states.',
     '用于列表底部，反馈可加载、加载中和没有更多三种状态。': 'Reports load-more, loading and end-of-list states.',
     '承载重要通知，支持横向展示和纵向轮播。': 'Displays important notices horizontally or in a vertical carousel.',
     '全屏遮罩用于隔离当前页面与浮层操作。': 'A full-screen overlay isolates the page from modal interactions.',
-    '弹出层支持从页面不同方向出现并承载业务内容。':
-        'Popups can enter from different directions and host custom content.',
+    '弹出层支持从页面不同方向出现并承载业务内容。': 'Popups can enter from different directions and host custom content.',
     '页面滚动时将重要内容固定在指定顶部位置。': 'Keeps important content fixed at a chosen top offset while scrolling.',
-    '用于页面顶部导航，支持返回操作、安全区、标题和左右插槽。':
-        'A top navigation bar with back actions, safe areas, titles and side slots.',
-    '用于图片或内容轮播，支持自动播放、标题和指示器。':
-        'A carousel with autoplay, titles and multiple indicator styles.',
+    '用于页面顶部导航，支持返回操作、安全区、标题和左右插槽。': 'A top navigation bar with back actions, safe areas, titles and side slots.',
+    '用于图片或内容轮播，支持自动播放、标题和指示器。': 'A carousel with autoplay, titles and multiple indicator styles.',
     '标签页用于在同层级内容之间快速切换。': 'Tabs switch quickly between peer content sections.',
-    '在少量互斥选项之间快速切换，支持按钮和描边分段模式。':
-        'Switches between a few exclusive options in button or outlined mode.',
+    '在少量互斥选项之间快速切换，支持按钮和描边分段模式。': 'Switches between a few exclusive options in button or outlined mode.',
     '点击后在默认、升序和降序状态之间循环切换。': 'Cycles through default, ascending and descending states.',
     '下拉菜单容器保证同一时间只展开一个菜单项。': 'The menu container keeps only one dropdown open at a time.',
-    '下拉菜单项提供触发按钮、内容面板和关闭事件。':
-        'A dropdown item provides a trigger, content panel and close event.',
+    '下拉菜单项提供触发按钮、内容面板和关闭事件。': 'A dropdown item provides a trigger, content panel and close event.',
     '通过右侧索引快速定位列表中的分组内容。': 'Uses the side index to jump between grouped list content.',
     '索引锚点定义分组位置，需要放在 IndexList 内使用。': 'Defines group anchors inside an IndexList.',
-    '组合单元格条目与分组容器，用于设置和个人中心等列表场景。':
-        'Combines cell items and groups for settings, personal centers and similar lists.',
+    '组合单元格条目与分组容器，用于设置和个人中心等列表场景。': 'Combines cell items and groups for settings, personal centers and similar lists.',
     '以横向或竖向线条分隔内容块，支持半像素细线。': 'Separates content with horizontal or vertical hairlines.',
     '以线形进度展示任务完成情况，支持条纹与百分比。': 'Shows task progress as a bar with stripes and a percentage.',
     '带图标、标题、描述和箭头的单行列表条目。': 'A list row with icon, title, description and arrow.',
-    '集成占位、清除与操作按钮的常用搜索输入。':
-        'A common search input with placeholder, clear control and action button.',
+    '集成占位、清除与操作按钮的常用搜索输入。': 'A common search input with placeholder, clear control and action button.',
     '单列、多列与多列联动的底部选择器。': 'A bottom picker for single, multiple and cascading columns.',
     '长内容先收起一部分，点击展开全文。': 'Collapses long content and expands it on demand.',
-    '自动监听网络状态，断网时全屏提示并支持重试。':
-        'Watches network status and shows a full-screen prompt with retry when offline.',
+    '自动监听网络状态，断网时全屏提示并支持重试。': 'Watches network status and shows a full-screen prompt with retry when offline.',
     '价格、脱敏、日期与链接等常用文本场景。': 'Handles common text scenarios such as price, masking, dates and links.',
     '跨端打开链接或复制到粘贴板。': 'Opens links across platforms or copies them to the clipboard.',
     '单个或范围日期选择，支持农历与节日。': 'Selects a single date or a range, with lunar and festival support.',
-    '组合字段控件，完成规则校验、错误展示、提交和重置。':
-        'Combines fields with validation, error display, submit and reset.',
-    '支持清空、密码、格式化和多种边框的单行输入。':
-        'A single-line input with clear, password, formatting and border options.',
+    '组合字段控件，完成规则校验、错误展示、提交和重置。': 'Combines fields with validation, error display, submit and reset.',
+    '支持清空、密码、格式化和多种边框的单行输入。': 'A single-line input with clear, password, formatting and border options.',
     '支持字数统计和自适应高度的多行文本输入。': 'A multiline input with character count and automatic height.',
     '可独立使用的复选框，也可放入 CheckboxGroup。': 'A standalone checkbox that can also be used in CheckboxGroup.',
     '管理一组互斥的单选值。': 'Manages a mutually exclusive group of radio values.',
@@ -381,8 +366,7 @@ Object.assign(englishMessages, {
     '提供商品排序和多条件筛选入口。': 'Provides product sorting and multi-condition filters.',
     '在列表和宫格商品布局之间切换。': 'Switches between product list and grid layouts.',
     '展示优惠券状态并提供领取入口。': 'Displays coupon status and a claim action.',
-    '把内容传送到页面根节点，解决复杂布局下 fixed 弹层失效的问题。':
-        'Renders content at the page root to fix broken fixed layers in complex layouts.'
+    '把内容传送到页面根节点，解决复杂布局下 fixed 弹层失效的问题。': 'Renders content at the page root to fix broken fixed layers in complex layouts.'
 });
 
 Object.assign(englishMessages, {
@@ -417,7 +401,6 @@ const demoTitles: Record<string, string> = {
     empty: 'Empty',
     icon: 'Icon',
     image: 'Image',
-    'lazy-image': 'Lazy Image',
     loadmore: 'Load More',
     'notice-bar': 'Notice Bar',
     overlay: 'Overlay',

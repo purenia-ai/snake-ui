@@ -12,7 +12,10 @@ test('first parity batch exposes reusable transition and loading foundations', a
         read('components/snake-transition/snake-transition.vue'),
         read('components/snake-loading-icon/snake-loading-icon.vue')
     ]);
-    for (const [name, dir] of [['Transition', 'snake-transition'], ['LoadingIcon', 'snake-loading-icon']]) {
+    for (const [name, dir] of [
+        ['Transition', 'snake-transition'],
+        ['LoadingIcon', 'snake-loading-icon']
+    ]) {
         assert.match(entry, new RegExp(`export \\* from './components/${dir}/types'`));
         assert.match(declarations, new RegExp(`export const Snake${name}:`));
     }
@@ -23,10 +26,7 @@ test('first parity batch exposes reusable transition and loading foundations', a
 });
 
 test('button has full state and native capability contract', async () => {
-    const [types, source] = await Promise.all([
-        read('components/snake-button/types.ts'),
-        read('components/snake-button/snake-button.vue')
-    ]);
+    const [types, source] = await Promise.all([read('components/snake-button/types.ts'), read('components/snake-button/snake-button.vue')]);
     for (const prop of ['size', 'shape', 'hoverBgColor', 'rippleBgColor', 'ripple', 'throttleTime', 'openType']) {
         assert.match(types, new RegExp(`${prop}\\?`));
     }
@@ -73,26 +73,25 @@ test('image, overlay, popup and sticky expose behavioral APIs', async () => {
         read('components/snake-popup/types.ts'),
         read('components/snake-sticky/types.ts')
     ]);
-    for (const prop of ['fade', 'preview', 'showLoading', 'showMenuByLongpress'])
+    for (const prop of ['fade', 'preview', 'showLoading', 'showMenuByLongpress', 'lazy', 'lazyThreshold', 'loadingImg', 'errorImg'])
         assert.match(image, new RegExp(`${prop}\\?`));
     for (const prop of ['lockScroll', 'show']) assert.match(overlay, new RegExp(`${prop}\\?`));
     for (const event of ['opened', 'closed', "'click-overlay'"]) assert.match(popup, new RegExp(event));
     for (const event of ['fixed', 'unfixed', 'change']) assert.match(sticky, new RegExp(event));
 });
 
-test('lazy image separates placeholder events from the real image lifecycle', async () => {
-    const lazyImage = await read('components/snake-lazy-image/snake-lazy-image.vue');
+test('image owns viewport lazy loading and configured state artwork', async () => {
+    const image = await read('components/snake-image/snake-image.vue');
 
-    assert.match(lazyImage, /if \(!visible\.value\) return/);
-    assert.match(lazyImage, /snake-lazy-image__status-image/);
-    assert.match(lazyImage, /observer\?\.disconnect\(\)/);
+    assert.match(image, /type ImageStatus = 'idle' \| 'loading' \| 'success' \| 'error'/);
+    assert.match(image, /relativeToViewport\(\{ top: props\.lazyThreshold, bottom: props\.lazyThreshold \}\)/);
+    assert.match(image, /v-if="loadingImg" class="snake-image__status-image"/);
+    assert.match(image, /v-if="errorImg" class="snake-image__status-image"/);
+    assert.match(image, /onBeforeUnmount\(disconnectObserver\)/);
 });
 
 test('popup exposes overlay scroll locking as a public option', async () => {
-    const [source, types] = await Promise.all([
-        read('components/snake-popup/snake-popup.vue'),
-        read('components/snake-popup/types.ts')
-    ]);
+    const [source, types] = await Promise.all([read('components/snake-popup/snake-popup.vue'), read('components/snake-popup/types.ts')]);
 
     assert.match(types, /lockScroll\?: boolean/);
     assert.match(source, /:lock-scroll="lockScroll"/);
@@ -105,7 +104,6 @@ test('parity batch does not restore uView runtime names', async () => {
         'components/snake-button/snake-button.vue',
         'components/snake-icon/snake-icon.vue',
         'components/snake-image/snake-image.vue',
-        'components/snake-lazy-image/snake-lazy-image.vue',
         'components/snake-overlay/snake-overlay.vue',
         'components/snake-popup/snake-popup.vue',
         'components/snake-sticky/snake-sticky.vue'

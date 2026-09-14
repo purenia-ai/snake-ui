@@ -45,6 +45,7 @@ triggers: ['loadmore', 'snake-loadmore', 'Loadmore', '加载更多']
 | `isDot`                          | 无更多状态是否显示点状分隔 | `boolean`                   | `false`       |
 | `color` / `fontSize` / `bgColor` | 文字颜色、字号和背景       | `string \| number`          | 主题默认值    |
 | `marginTop` / `marginBottom`     | 上下外边距                 | `string \| number`          | `0`           |
+| `height`                         | 组件高度，数值按 rpx 处理  | `string \| number`          | `auto`        |
 | `customClass` / `customStyle`    | 自定义类名和样式           | `string \| object \| array` | `''`          |
 
 ### Events

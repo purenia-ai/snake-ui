@@ -1,8 +1,5 @@
 <template>
-    <view
-        class="goods-list"
-        :style="{ padding: `15rpx ${pageMargin + imageMargin}rpx 0`, backgroundColor: bgColor }"
-    >
+    <view class="goods-list" :style="{ padding: `15rpx ${pageMargin + imageMargin}rpx 0`, backgroundColor: bgColor }">
         <block v-for="(item, index) in goodsList" :key="item.id">
             <view
                 class="item"
@@ -16,36 +13,28 @@
             >
                 <!-- 图片 -->
                 <view class="card-img">
-                    <snake-lazy-image
+                    <snake-image
                         :src="imageFilter(item)"
                         :loading-img="assets.goodsLoading || ''"
                         :error-img="assets.goodsError || ''"
                         mode="aspectFill"
                         width="100%"
                         height="100%"
-                    ></snake-lazy-image>
+                        lazy
+                        lazy-load
+                    ></snake-image>
 
                     <!-- 直购已出售蒙层 -->
                     <template v-if="listType === 'sale' || listType === 'new'">
-                        <view
-                            class="mantle"
-                            v-if="(item.channelStatus === 'off' || item.amount <= 0) && listType === 'sale'"
-                        >
+                        <view class="mantle" v-if="(item.channelStatus === 'off' || item.amount <= 0) && listType === 'sale'">
                             <image v-if="assets.goodsSoldOut" class="mantle__image" :src="assets.goodsSoldOut" />
                         </view>
-                        <view v-if="item.newestTime && item.status === 'selling'" class="dailyNew-time"
-                            >{{ item.newestTime }}上新</view
-                        >
+                        <view v-if="item.newestTime && item.status === 'selling'" class="dailyNew-time">{{ item.newestTime }}上新</view>
                     </template>
 
                     <!-- 验货标签 -->
                     <view style="position: absolute; top: 20rpx; left: 20rpx" v-if="item.saleType === 'send'">
-                        <image
-                            v-if="assets.goodsInspection"
-                            style="width: 80rpx; height: 24rpx"
-                            :src="assets.goodsInspection"
-                            mode="widthFix"
-                        />
+                        <image v-if="assets.goodsInspection" style="width: 80rpx; height: 24rpx" :src="assets.goodsInspection" mode="widthFix" />
                     </view>
 
                     <!-- 拍卖已出售蒙层 -->
@@ -78,11 +67,7 @@
                             </view>
                         </view>
                         <!-- 出价价格 -->
-                        <view
-                            v-if="item.activityInfo && item.activityInfo.myRank"
-                            class="auction__tips"
-                            :style="tipsStyle(item)"
-                        >
+                        <view v-if="item.activityInfo && item.activityInfo.myRank" class="auction__tips" :style="tipsStyle(item)">
                             <text class="price">{{ item.activityInfo.myRank }}</text>
                         </view>
                     </template>
@@ -104,9 +89,7 @@
                                     · {{ item.gradeName || item.grade }}
                                 </view>
                             </view>
-                            <view v-if="item.type == 'deep' && item.amount" class="stock">
-                                库存 {{ item.amount > 99 ? '99+' : item.amount }}
-                            </view>
+                            <view v-if="item.type == 'deep' && item.amount" class="stock"> 库存 {{ item.amount > 99 ? '99+' : item.amount }} </view>
                         </view>
                         <!-- 标签 -->
                         <view class="goods-tag" v-if="listType === 'sale'">
@@ -137,9 +120,7 @@
                                 支持打包
                             </view>
                             <view
-                                v-if="
-                                    item.activityInfo && item.activityInfo.activityType === 'auction' && isEndTime(item)
-                                "
+                                v-if="item.activityInfo && item.activityInfo.activityType === 'auction' && isEndTime(item)"
                                 class="item-tags"
                                 style="color: #7a3bff; background: #f3eaff; border: 2rpx solid #f3eaff"
                             >
@@ -174,9 +155,7 @@
                                 @click.stop="$emit('handlerOffer', item, index)"
                             >
                                 {{
-                                    item.activityInfo &&
-                                    item.activityInfo.status === 'init' &&
-                                    item.activityInfo.startTime > Date.now()
+                                    item.activityInfo && item.activityInfo.status === 'init' && item.activityInfo.startTime > Date.now()
                                         ? '未开始'
                                         : item.activityInfo && item.activityInfo.myPrice
                                           ? '修改报价'
