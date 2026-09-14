@@ -54,9 +54,12 @@ test('dedicated guide pages remain connected', async () => {
         await access(resolve(root, 'docs/guide', page + '.md'));
     }
     assert.match(await text('docs/guide/foundation.md'), /^# 全局配置总览$/m);
-    const legacyStart = await text('docs/guide/getting-started.md');
-    assert.match(legacyStart, /^# 快速开始已迁移$/m);
-    assert.ok(legacyStart.includes('[安装](/components/install)'));
+    const start = await text('docs/guide/getting-started.md');
+    assert.match(start, /^# 快速开始$/m);
+    assert.ok(start.includes('基础组件接入'));
+    assert.ok(start.includes('CMS 页面接入'));
+    assert.ok(start.includes('[安装 Snake UI](/components/install)'));
+    assert.ok(start.includes('[CMS 快速接入](/cms/getting-started)'));
 });
 
 test('guide exposes virtual root, icon extension, and editor hint pages', async () => {
@@ -80,23 +83,27 @@ test('guide exposes virtual root, icon extension, and editor hint pages', async 
     }
 });
 
-test('top navigation owns independent guide, component, CMS, and tool domains', async () => {
+test('top navigation keeps quick start first within the guide domain', async () => {
     const config = await text('docs/.vitepress/config.mts');
     for (const [name, link] of [
-        ['指南', '/guide/intro'],
+        ['指南', '/guide/getting-started'],
         ['组件', '/components/intro'],
         ['CMS', '/cms/getting-started'],
         ['工具', '/tools/intro']
     ]) {
-        assert.match(
-            config,
-            new RegExp(`text: '${name}',[\\s\\S]*?items: \\[${'[\\s\\S]*?'}link: '${link}'`)
-        );
+        assert.match(config, new RegExp(`text: '${name}',[\\s\\S]*?items: \\[${'[\\s\\S]*?'}link: '${link}'`));
     }
     assert.equal((config.match(/items: \[/g) || []).length >= 8, true, 'top navigation provides dropdown items');
     assert.ok(config.includes("'/cms/': cmsSidebar"));
     assert.ok(config.includes("'/tools/': toolGroups"));
+    assert.match(config, /socialLinks:\s*\[\{ icon: 'github', link: 'https:\/\/github\.com\/zwbcode\/snake-ui' \}\]/);
     assert.ok(!config.includes("text: '工具', link: '/guide/tools'"));
+});
+
+test('component sidebar keeps onboarding and catalog groups expanded by default', async () => {
+    const config = await text('docs/.vitepress/config.mts');
+    assert.match(config, /const componentSidebar = \[\s*\{\s*text: '起步'/);
+    assert.match(config, /componentGroups\.map\(group => \(\{\s*text: group\.title,\s*collapsed: false/);
 });
 
 test('AI guide section provides overview, Skills, and LLM context', async () => {
@@ -164,12 +171,7 @@ test('CMS documentation presents one current protocol without version navigation
     assert.match(start, /component: 'v2\./);
     assert.match(start, /props: \{/);
 
-    for (const path of [
-        'docs/cms/legacy/overview.md',
-        'docs/cms/legacy/components.md',
-        'docs/cms/component-data.md',
-        'docs/cms/components.md'
-    ]) {
+    for (const path of ['docs/cms/legacy/overview.md', 'docs/cms/legacy/components.md', 'docs/cms/component-data.md', 'docs/cms/components.md']) {
         await assert.rejects(access(resolve(root, path)), { code: 'ENOENT' });
     }
 });
@@ -227,9 +229,7 @@ test('tool registry covers every documented public utility and composable', asyn
     const functionFiles = await readdir(resolve(root, 'src/uni_modules/snake-ui/libs/function'));
     const sources = (
         await Promise.all([
-            ...functionFiles
-                .filter(file => file.endsWith('.ts'))
-                .map(file => text(`src/uni_modules/snake-ui/libs/function/${file}`)),
+            ...functionFiles.filter(file => file.endsWith('.ts')).map(file => text(`src/uni_modules/snake-ui/libs/function/${file}`)),
             text('src/uni_modules/snake-ui/libs/hooks/index.ts'),
             text('src/uni_modules/snake-ui/libs/request/index.ts')
         ])

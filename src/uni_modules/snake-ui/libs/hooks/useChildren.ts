@@ -2,13 +2,19 @@ import {
     provide,
     reactive,
     getCurrentInstance,
-    isVNode,
     type VNode,
     type InjectionKey,
     type VNodeNormalizedChildren,
     type ComponentPublicInstance,
     type ComponentInternalInstance
 } from 'vue';
+
+/**
+ * uni-app 的小程序 Vue 运行时没有导出 `isVNode`，但 VNode 本身保持 Vue 的
+ * `__v_isVNode` 标记。使用该标记避免生成对缺失运行时导出的静态导入。
+ */
+const isVNode = (value: unknown): value is VNode =>
+    Boolean(value && typeof value === 'object' && (value as { __v_isVNode?: unknown }).__v_isVNode === true);
 
 export function flattenVNodes(children: VNode | VNodeNormalizedChildren): VNode[] {
     const result: VNode[] = [];

@@ -97,6 +97,13 @@ test('components use narrow internal imports and old directory references are go
     assert.deepEqual(legacyReferences, []);
 });
 
+test('useChildren does not import Vue runtime helpers unavailable in mini-program builds', async () => {
+    const source = await read('libs/hooks/useChildren.ts');
+    assert.doesNotMatch(source, /\bisVNode\s*,/);
+    assert.match(source, /const isVNode = \(value: unknown\): value is VNode/);
+    assert.match(source, /__v_isVNode/);
+});
+
 test('type declarations have one authoritative component entry', async () => {
     const [entry, types, components, uniApp] = await Promise.all([
         read('index.d.ts'),

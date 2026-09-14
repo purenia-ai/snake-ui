@@ -24,8 +24,8 @@ const supportedPlatforms = [
 const stats = [
     {
         value: componentCount,
-        suffix: '+',
-        label: '精选组件',
+        suffix: '',
+        label: '可浏览组件',
         hint: '覆盖商城高频场景',
         icon: 'M4 5.5 12 2l8 3.5-8 3.5-8-3.5Zm0 0V14l8 4 8-4V5.5M12 9v9'
     },
@@ -59,7 +59,7 @@ const features = [
         link: '/cms/getting-started'
     },
     {
-        eyebrow: '50+ components',
+        eyebrow: 'Component catalog',
         title: '通用组件体系',
         details: '从基础交互到表单、反馈和导航，覆盖商城页面的高频组合场景。',
         link: '/components/intro'
@@ -128,24 +128,15 @@ onBeforeUnmount(() => {
                     <p class="snake-kicker"><span /> UNI-APP · COMMERCE · CMS</p>
                     <h1 id="snake-home-title">把商城页面，<br /><span>组装成系统</span></h1>
                     <p class="snake-hero__lead">
-                        Snake UI 是面向 uni-app 商城与 CMS
-                        场景的组件库。用真实源码契约连接配置、组件与业务，让页面更快落地，也更容易维护。
+                        Snake UI 是面向 uni-app 商城与 CMS 场景的组件库。用真实源码契约连接配置、组件与业务，让页面更快落地，也更容易维护。
                     </p>
                     <div class="snake-hero__badges" aria-label="技术栈">
                         <span>Vue 3</span><span>TypeScript</span><span>uni-app</span><span>CMS Ready</span>
                     </div>
                     <div class="snake-hero__actions">
-                        <a class="snake-button snake-button--brand" :href="internalLink('/components/quickstart')"
-                            >开发指南 <span>→</span></a
-                        >
-                        <a class="snake-button snake-button--soft" :href="internalLink('/components/intro')"
-                            >浏览组件</a
-                        >
-                        <a
-                            class="snake-button snake-button--ghost"
-                            href="https://m.puresnake.com/snake-ui/h5/"
-                            target="_blank"
-                            rel="noreferrer"
+                        <a class="snake-button snake-button--brand" :href="internalLink('/guide/getting-started')">快速开始 <span>→</span></a>
+                        <a class="snake-button snake-button--soft" :href="internalLink('/components/intro')">浏览组件</a>
+                        <a class="snake-button snake-button--ghost" href="https://m.puresnake.com/snake-ui/h5/" target="_blank" rel="noreferrer"
                             >在线演示 ↗</a
                         >
                     </div>
@@ -159,25 +150,15 @@ onBeforeUnmount(() => {
                     <div class="snake-orbit__halo snake-orbit__halo--outer" />
                     <div class="snake-orbit__halo snake-orbit__halo--inner" />
                     <div class="snake-orbit__core">
-                        <img
-                            class="snake-orbit__logo snake-orbit__logo--light"
-                            :src="internalLink('/snake-mark-light.svg')"
-                            alt=""
-                        />
-                        <img
-                            class="snake-orbit__logo snake-orbit__logo--dark"
-                            :src="internalLink('/snake-mark-dark.svg')"
-                            alt=""
-                        />
+                        <img class="snake-orbit__logo snake-orbit__logo--light" :src="internalLink('/snake-mark-light.svg')" alt="" />
+                        <img class="snake-orbit__logo snake-orbit__logo--dark" :src="internalLink('/snake-mark-dark.svg')" alt="" />
                     </div>
                     <div class="snake-float-card snake-float-card--cms"><b>CMS</b><span>配置驱动</span></div>
                     <div class="snake-float-card snake-float-card--theme"><b>Theme</b><span>多主题</span></div>
                     <div class="snake-float-card snake-float-card--platform"><b>Multi-end</b><span>一次开发</span></div>
                 </div>
             </div>
-            <a class="snake-scroll-cue" href="#snake-capabilities" aria-label="查看核心能力"
-                ><i /><span>向下探索</span></a
-            >
+            <a class="snake-scroll-cue" href="#snake-capabilities" aria-label="查看核心能力"><i /><span>向下探索</span></a>
         </section>
 
         <section class="snake-stats" aria-label="项目概览">
@@ -208,12 +189,7 @@ onBeforeUnmount(() => {
                     <span>从页面装修到组件运行时，每一层都有明确契约。</span>
                 </header>
                 <div class="snake-feature-grid">
-                    <a
-                        v-for="(feature, index) in features"
-                        :key="feature.title"
-                        class="snake-feature-card"
-                        :href="internalLink(feature.link)"
-                    >
+                    <a v-for="(feature, index) in features" :key="feature.title" class="snake-feature-card" :href="internalLink(feature.link)">
                         <span class="snake-feature-card__index">{{ String(index + 1).padStart(2, '0') }}</span>
                         <p>{{ feature.eyebrow }}</p>
                         <h3>{{ feature.title }}</h3>
@@ -235,11 +211,7 @@ onBeforeUnmount(() => {
                     <a :href="internalLink('/components/intro')">查看全部组件 →</a>
                 </header>
                 <div class="snake-popular__grid">
-                    <a
-                        v-for="item in popular"
-                        :key="item.name"
-                        :href="internalLink(item.link)"
-                        class="snake-popular-card"
+                    <a v-for="item in popular" :key="item.name" :href="internalLink(item.link)" class="snake-popular-card"
                         ><span class="snake-popular-card__mark">S</span>
                         <div>
                             <b>{{ item.name }}</b
@@ -257,19 +229,11 @@ onBeforeUnmount(() => {
                 <div class="snake-demo__copy">
                     <p>LIVE EXPERIENCE</p>
                     <h2>文档与真实示例，保持同一步调</h2>
-                    <span
-                        >每个组件页面都能连接独立的 uni-app H5 演示。阅读 API、查看效果、回到源码，路径始终清晰。</span
-                    >
+                    <span>每个组件页面都能连接独立的 uni-app H5 演示。阅读 API、查看效果、回到源码，路径始终清晰。</span>
                     <div class="snake-hero__actions">
-                        <a
-                            class="snake-button snake-button--brand"
-                            href="https://m.puresnake.com/snake-ui/h5/"
-                            target="_blank"
-                            rel="noreferrer"
+                        <a class="snake-button snake-button--brand" href="https://m.puresnake.com/snake-ui/h5/" target="_blank" rel="noreferrer"
                             >打开在线演示 ↗</a
-                        ><a class="snake-button snake-button--dark" :href="internalLink('/components/intro')"
-                            >组件总览</a
-                        >
+                        ><a class="snake-button snake-button--dark" :href="internalLink('/components/intro')">组件总览</a>
                     </div>
                 </div>
                 <div class="snake-demo__window" aria-hidden="true">
@@ -296,24 +260,24 @@ onBeforeUnmount(() => {
                     <a :href="internalLink('/components/quickstart')"
                         ><span>01</span>
                         <div>
-                            <b>开发指南</b>
-                            <p>完成安装、配置与第一处接入</p>
+                            <b>基础组件接入</b>
+                            <p>完成安装、配置与第一个组件</p>
+                        </div>
+                        <i>→</i></a
+                    >
+                    <a :href="internalLink('/cms/getting-started')"
+                        ><span>02</span>
+                        <div>
+                            <b>CMS 页面接入</b>
+                            <p>用页面配置渲染商城模块</p>
                         </div>
                         <i>→</i></a
                     >
                     <a :href="internalLink('/components/intro')"
-                        ><span>02</span>
+                        ><span>03</span>
                         <div>
                             <b>组件总览</b>
                             <p>按业务域浏览全部组件</p>
-                        </div>
-                        <i>→</i></a
-                    >
-                    <a :href="internalLink('/tools/intro')"
-                        ><span>03</span>
-                        <div>
-                            <b>工具与 Hooks</b>
-                            <p>复用请求、主题与平台能力</p>
                         </div>
                         <i>→</i></a
                     >

@@ -38,8 +38,10 @@ export interface LoadmoreProps {
     fontSize?: UnitValue;
     /** 组件顶部外边距。 */
     marginTop?: UnitValue;
-    /** margin bottom 配置。 */
+    /** 组件底部外边距。 */
     marginBottom?: UnitValue;
+    /** 组件高度；数值按 rpx 处理，默认自适应内容。 */
+    height?: UnitValue;
     /** 根节点自定义类名。 */
     customClass?: string;
     /** 根节点自定义样式。 */

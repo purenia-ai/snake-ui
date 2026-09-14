@@ -18,6 +18,7 @@ const componentSidebar = [
     },
     ...componentGroups.map(group => ({
         text: group.title,
+        collapsed: false,
         items: [
             ...(group.title === '基础组件' ? [{ text: 'Color 色彩', link: '/components/color' }] : []),
             ...group.items.map(item => ({
@@ -86,6 +87,7 @@ export default defineConfig({
                     {
                         text: '开始',
                         items: [
+                            { text: '快速开始', link: '/guide/getting-started' },
                             { text: '介绍', link: '/guide/intro' },
                             { text: '运行环境', link: '/guide/compatibility' },
                             { text: '常见问题', link: '/guide/troubleshooting' }
@@ -173,11 +175,13 @@ export default defineConfig({
                 ]
             }
         ],
+        socialLinks: [{ icon: 'github', link: 'https://github.com/zwbcode/snake-ui' }],
         sidebar: {
             '/guide/': [
                 {
                     text: '开始',
                     items: [
+                        { text: '快速开始', link: '/guide/getting-started' },
                         { text: '介绍', link: '/guide/intro' },
                         { text: '运行环境与能力边界', link: '/guide/compatibility' },
                         { text: '代码提示', link: '/guide/code-hint' },

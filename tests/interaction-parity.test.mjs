@@ -5,15 +5,18 @@ const root = new URL('../src/uni_modules/snake-ui/', import.meta.url);
 const read = path => readFile(new URL(path, root), 'utf8');
 
 test('feedback components expose complete states and interactions', async () => {
-    const [empty, loadmore, notice] = await Promise.all([
+    const [empty, loadmore, loadmoreSource, notice] = await Promise.all([
         read('components/snake-empty/types.ts'),
         read('components/snake-loadmore/types.ts'),
+        read('components/snake-loadmore/snake-loadmore.vue'),
         read('components/snake-notice-bar/types.ts')
     ]);
     for (const name of ['mode', 'iconSize', 'fontSize', 'marginTop']) assert.match(empty, new RegExp(`${name}\\?`));
-    for (const name of ['iconType', 'isDot', 'loadmore']) assert.match(loadmore, new RegExp(name));
-    for (const name of ['autoplay', 'moreIcon', 'closeIcon', 'playState', 'isCircular'])
-        assert.match(notice, new RegExp(`${name}\\?`));
+    for (const name of ['iconType', 'isDot', 'height', 'loadmore']) assert.match(loadmore, new RegExp(name));
+    assert.equal((loadmoreSource.match(/<SnakeLine/g) || []).length, 2);
+    assert.match(loadmoreSource, /<LoadingIcon[\s\S]*size="34"/);
+    assert.match(loadmoreSource, /height: props\.height === 'auto' \? 'auto' : addUnit\(props\.height, 'rpx'\)/);
+    for (const name of ['autoplay', 'moreIcon', 'closeIcon', 'playState', 'isCircular']) assert.match(notice, new RegExp(`${name}\\?`));
 });
 
 test('tabs and swiper expose navigation and indicator contracts', async () => {
@@ -22,8 +25,7 @@ test('tabs and swiper expose navigation and indicator contracts', async () => {
         read('components/snake-tabs/snake-tabs.vue'),
         read('components/snake-swiper/types.ts')
     ]);
-    for (const name of ['barWidth', 'barHeight', 'gutter', 'isDot', 'showBar', 'itemWidth'])
-        assert.match(tabs, new RegExp(`${name}\\?`));
+    for (const name of ['barWidth', 'barHeight', 'gutter', 'isDot', 'showBar', 'itemWidth']) assert.match(tabs, new RegExp(`${name}\\?`));
     assert.match(tabs, /hidden\?/);
     assert.doesNotMatch(tabs, /disabled\?/);
     assert.match(tabsSource, /height:\s*80,[\s\S]*fontSize:\s*30/);
@@ -38,8 +40,7 @@ test('tabs and swiper expose navigation and indicator contracts', async () => {
     assert.equal((tabsSource.match(/class="snake-tabs__bar"/g) || []).length, 1);
     const listSwitching = await read('components/snake-list-switching/snake-list-switching.vue');
     assert.match(listSwitching, /changeTabs\(index\)\s*{\s*this\.active1 = index/);
-    for (const name of ['indicatorPos', 'effect3d', 'animationfinish', 'titleStyle'])
-        assert.match(swiper, new RegExp(name));
+    for (const name of ['indicatorPos', 'effect3d', 'animationfinish', 'titleStyle']) assert.match(swiper, new RegExp(name));
 });
 
 test('tabs follow uView interaction scope while subsection keeps keyboard navigation', async () => {
@@ -49,8 +50,7 @@ test('tabs follow uView interaction scope while subsection keeps keyboard naviga
     ]);
     for (const marker of ['role="tablist"', 'role="tab"', 'aria-selected', '@keydown.left', '@keydown.right'])
         assert.doesNotMatch(tabs, new RegExp(marker.replace('.', '\\.')));
-    for (const marker of [/role="tablist"/, /role="tab"/, /aria-selected/, /@keydown\.left/, /@keydown\.right/])
-        assert.match(subsection, marker);
+    for (const marker of [/role="tablist"/, /role="tab"/, /aria-selected/, /@keydown\.left/, /@keydown\.right/]) assert.match(subsection, marker);
 });
 
 test('tabs keep labels on one line like uView', async () => {
@@ -93,9 +93,7 @@ test('second parity batch remains independent from uView runtime', async () => {
         'index-list-panel',
         'index-anchor'
     ];
-    const source = (await Promise.all(names.map(name => read(`components/snake-${name}/snake-${name}.vue`)))).join(
-        '\n'
-    );
+    const source = (await Promise.all(names.map(name => read(`components/snake-${name}/snake-${name}.vue`)))).join('\n');
     assert.doesNotMatch(source, /uni\.\$u|uview-pro|<u-/);
 });
 
@@ -161,10 +159,7 @@ test('commerce filter panel gives percentage-height content a definite containin
 });
 
 test('CMS sticky keeps legacy enable semantics and explicit navigation offset', async () => {
-    const [cms, sticky] = await Promise.all([
-        read('components/snake-cms/snake-cms.vue'),
-        read('components/snake-sticky/snake-sticky.vue')
-    ]);
+    const [cms, sticky] = await Promise.all([read('components/snake-cms/snake-cms.vue'), read('components/snake-sticky/snake-sticky.vue')]);
     assert.match(cms, /:disabled="resolveStickyDisabled\(item\.setStyle\.stickyDisabled\)"/);
     assert.match(cms, /function resolveStickyDisabled/);
     assert.match(cms, /:custom-nav-height="stickyCustomNavHeight"/);

@@ -37,8 +37,9 @@ test('homepage links use the canonical documentation and repository addresses', 
     assert.match(homepage, /withBase\(path\)/);
     assert.match(homepage, /https:\/\/m\.puresnake\.com\/snake-ui\/h5\//);
     assert.match(homepage, /https:\/\/github\.com\/zwbcode\/snake-ui/);
-    assert.match(homepage, /internalLink\('\/components\/quickstart'\)/);
-    assert.doesNotMatch(homepage, /internalLink\('\/guide\/getting-started'\)/);
+    assert.match(homepage, /internalLink\('\/guide\/getting-started'\)/);
+    assert.match(homepage, /基础组件接入/);
+    assert.match(homepage, /CMS 页面接入/);
     assert.doesNotMatch(homepage, /r2nd\.github\.io/);
 });
 
