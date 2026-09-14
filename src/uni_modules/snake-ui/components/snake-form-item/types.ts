@@ -4,7 +4,7 @@ import type { StyleValue } from '../../types/global';
 import type { FormTrigger } from '../../libs/form';
 import type { FormLabelAlign, FormLabelPosition, FormSize } from '../snake-form/types';
 
-/** FormItem 组件的公开属性，与 uView Pro FormItem 保持一致。 */
+/** FormItem 组件的公开属性。 */
 export interface FormItemProps {
     /** 标签文本。 */
     label?: string;

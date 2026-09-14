@@ -76,9 +76,7 @@ function showError(message: string): void {
 function uniTransport(options: RequestOptions): Promise<RequestResponse> {
     return new Promise((resolve, reject) => {
         if (typeof uni === 'undefined' || typeof uni.request !== 'function') {
-            reject(
-                new RequestError('[Snake UI] uni.request is unavailable.', { kind: 'transport', config: options })
-            );
+            reject(new RequestError('[Snake UI] uni.request is unavailable.', { kind: 'transport', config: options }));
             return;
         }
         uni.request({
@@ -127,6 +125,7 @@ export class Request {
     }
 
     private async send(options: RequestOptions): Promise<RequestResponse | unknown> {
+        // 自定义 transport 优先；legacy adapter 仅兼容 GET/POST，其余方法仍交由 uni.request。
         if (this.transport) return this.transport(options);
         if (this.legacyAdapter && options.method === 'GET') {
             return {
@@ -157,8 +156,7 @@ export class Request {
         try {
             const raw = await this.send(config);
             if (isHttpResponse(raw)) raw.config = config;
-            // uView hands the complete platform response to the interceptor when
-            // originalData is enabled; status-code handling then belongs to that interceptor.
+            // originalData=true 时 interceptor 接收完整平台响应，状态码校验也由它负责；否则本层校验并仅传 data。
             if (isHttpResponse(raw) && !meta.originalData && raw.statusCode !== 200) {
                 throw new RequestError(`HTTP ${raw.statusCode}`, {
                     kind: 'http',
@@ -218,7 +216,7 @@ export class Request {
     }
 }
 
-/** uView-compatible shared singleton. */
+/** 共享请求单例。 */
 export const http = new Request();
 
 export interface HttpPluginOptions {
@@ -227,7 +225,7 @@ export interface HttpPluginOptions {
 }
 
 /**
- * Installs the shared request singleton as `$http`, matching uView's plugin API.
+ * Installs the shared request singleton as `$http`.
  */
 export const httpPlugin = {
     install(app: App, options: HttpPluginOptions = {}): void {
@@ -237,7 +235,6 @@ export const httpPlugin = {
     }
 };
 
-
 export function configureHttp(setup?: RequestSetup, adapter?: RequestAdapter): Request {
     if (setup?.config) http.setConfig(setup.config);
     if (setup?.interceptor) http.setInterceptor(setup.interceptor);
@@ -245,7 +242,6 @@ export function configureHttp(setup?: RequestSetup, adapter?: RequestAdapter): R
     if (adapter) http.setLegacyAdapter(adapter);
     return http;
 }
-
 
 export function isFunction(value: unknown): value is (...args: any[]) => unknown {
     return typeof value === 'function';
@@ -265,19 +261,12 @@ export class AutoHttp {
             return { ...api, ...extra };
         }
 
-        use(
-            urlConfig: RequestOptions,
-            config: Partial<Omit<RequestOptions, 'url'>> & { url?: string | (() => string) } = {}
-        ): Promise<T> {
-            const url: string = isFunction(config.url)
-                ? `${urlConfig.url}${config.url()}`
-                : config.url ?? urlConfig.url;
+        use(urlConfig: RequestOptions, config: Partial<Omit<RequestOptions, 'url'>> & { url?: string | (() => string) } = {}): Promise<T> {
+            const url: string = isFunction(config.url) ? `${urlConfig.url}${config.url()}` : (config.url ?? urlConfig.url);
             const { url: _url, ...overrides } = config;
             const method = (config.method ?? urlConfig.method ?? 'GET') as RequestMethod;
             const options = deepMerge(urlConfig, { ...overrides, url, method }) as RequestOptions;
-            return this.instance instanceof Request
-                ? this.instance.request<T>(options)
-                : this.instance(options);
+            return this.instance instanceof Request ? this.instance.request<T>(options) : this.instance(options);
         }
     };
 }

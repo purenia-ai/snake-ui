@@ -6,12 +6,11 @@ import { getQueryParams } from './queryParams';
  * - navTo()：面向 CMS / 运营链接，识别外链、跨小程序、微信客服三类特殊协议。
  */
 
-export type RouteType =
-    'navigateTo' | 'to' | 'redirect' | 'redirectTo' | 'switchTab' | 'tab' | 'reLaunch' | 'navigateBack' | 'back';
+export type RouteType = 'navigateTo' | 'to' | 'redirect' | 'redirectTo' | 'switchTab' | 'tab' | 'reLaunch' | 'navigateBack' | 'back';
 export type RouteParamValue = string | number | boolean | null | undefined;
 export type RouteParams = Record<string, RouteParamValue | readonly RouteParamValue[]>;
 
-/** route() 的跳转配置；type 兼容 uni 方法名与 uView 短别名（to / redirect / tab / back）。 */
+/** route() 的跳转配置；type 支持 uni 方法名与短别名（to / redirect / tab / back）。 */
 export interface RouteOptions {
     type?: RouteType;
     url?: string;
@@ -76,8 +75,7 @@ export function route(input: string | RouteOptions, params?: RouteParams): Promi
     if (!method) return Promise.reject(routeError(`Unsupported route type: ${String(requestedType)}.`));
 
     const platformMethod = (uni as unknown as Record<string, unknown>)[method];
-    if (typeof platformMethod !== 'function')
-        return Promise.reject(routeError(`${method} is unavailable on this platform.`));
+    if (typeof platformMethod !== 'function') return Promise.reject(routeError(`${method} is unavailable on this platform.`));
 
     let navigationOptions: Record<string, unknown>;
     if (method === 'navigateBack') {
@@ -88,8 +86,7 @@ export function route(input: string | RouteOptions, params?: RouteParams): Promi
         navigationOptions = { url: method === 'switchTab' ? url : appendQueryParams(url, options.params) };
         if (method === 'navigateTo' || method === 'redirectTo') {
             if (options.animationType !== undefined) navigationOptions.animationType = options.animationType;
-            if (options.animationDuration !== undefined)
-                navigationOptions.animationDuration = options.animationDuration;
+            if (options.animationDuration !== undefined) navigationOptions.animationDuration = options.animationDuration;
         }
     }
 

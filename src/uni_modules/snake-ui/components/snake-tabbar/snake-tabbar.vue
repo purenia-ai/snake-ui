@@ -39,14 +39,12 @@ const props = withDefaults(defineProps<TabbarProps>(), {
 });
 
 const emit = defineEmits<TabbarEmits>();
-// `items` 是 Snake 的别名；保留 `list` 以兼容 uView 的配置结构。
+// `items` 是推荐字段；`list` 保留为旧配置字段。
 const tabItems = computed(() => (props.items.length ? props.items : props.list));
 // 只有调用方显式传入 v-model 时才按索引高亮，避免默认值覆盖 `current`。
 const usesModelValue = computed(() => 'modelValue' in (getCurrentInstance()?.vnode.props ?? {}));
 // 任一项指定宽度后，未指定项必须改为填充剩余空间，不能再按百分比分配。
-const hasCustomWidth = computed(() =>
-    tabItems.value.some(item => item.width !== undefined && item.width !== null && item.width !== '')
-);
+const hasCustomWidth = computed(() => tabItems.value.some(item => item.width !== undefined && item.width !== null && item.width !== ''));
 const currentPage = computed(() => {
     const pages = getCurrentPages();
     return pages.length ? `/${pages[pages.length - 1].route}` : '';
@@ -125,8 +123,7 @@ function itemStyle(item: TabbarItem): Record<string, string> {
 
     if (props.midButton && item.midButton) {
         // 图标绝对定位后不再参与文档流，额外顶部内边距为标签留出空间。
-        const size =
-            Number.parseFloat(String(itemIconSize(item))) || Number.parseFloat(String(props.midButtonSize)) || 100;
+        const size = Number.parseFloat(String(itemIconSize(item))) || Number.parseFloat(String(props.midButtonSize)) || 100;
         style.paddingTop = addUnit(size / 2 + 8, 'rpx');
         style.boxSizing = 'border-box';
     }
@@ -138,7 +135,7 @@ async function clickItem(item: TabbarItem, index: number) {
 
     if (props.beforeSwitch) {
         try {
-            // 与 uView 一致：同步场景必须明确返回 true；Promise resolve 即表示放行。
+            // 同步场景必须明确返回 true；Promise resolve 即表示放行。
             const result = props.beforeSwitch(index);
             if (typeof result === 'object' && result !== null && 'then' in result) await result;
             else if (result !== true) return;
@@ -197,15 +194,11 @@ async function clickItem(item: TabbarItem, index: number) {
                         :bold="isActive(item, index)"
                         :color="isActive(item, index) ? activeColor : inactiveColor"
                         :custom-prefix="iconPrefix(item)"
-                    /><text
-                        v-if="item.badge !== undefined || item.count !== undefined || item.isDot"
-                        class="snake-tabbar__badge"
-                        >{{ item.isDot ? '' : (item.badge ?? item.count) }}</text
-                    ></view
+                    /><text v-if="item.badge !== undefined || item.count !== undefined || item.isDot" class="snake-tabbar__badge">{{
+                        item.isDot ? '' : (item.badge ?? item.count)
+                    }}</text></view
                 >
-                <text class="snake-tabbar__label" :style="{ fontSize: addUnit(itemTextSize(item), 'rpx') }">{{
-                    item.text
-                }}</text>
+                <text class="snake-tabbar__label" :style="{ fontSize: addUnit(itemTextSize(item), 'rpx') }">{{ item.text }}</text>
             </view>
         </view>
     </view>

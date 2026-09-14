@@ -11,7 +11,7 @@ export type FormLabelAlign = 'left' | 'center' | 'right';
 /** 错误提示方式。 */
 export type FormErrorType = 'message' | 'border' | 'border-bottom' | 'none' | 'toast';
 
-/** Form 组件的公开属性，与 uView Pro Form 保持一致。 */
+/** Form 组件的公开属性。 */
 export interface FormProps {
     /** 表单数据对象。 */
     model?: Record<string, any>;

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * @component Form
- * @description 管理表单数据、校验规则与字段实例，行为与 uView Pro Form 对齐。
+ * @description 管理表单数据、校验规则与字段实例。
  * @see /components/form
  */
 
@@ -69,12 +69,7 @@ function runValidation(targetFields: FormField[], callback?: FormCallback, showT
                 }
                 if (++count !== targetFields.length) return;
                 resolve(valid);
-                if (
-                    showToast &&
-                    !props.errorType.includes('none') &&
-                    props.errorType.includes('toast') &&
-                    errors.length > 0
-                ) {
+                if (showToast && !props.errorType.includes('none') && props.errorType.includes('toast') && errors.length > 0) {
                     toast(errors[0].message);
                 }
                 callback?.(valid, errors);
@@ -95,7 +90,7 @@ function validateField(prop: string | string[], callback?: FormCallback): Promis
     );
 }
 
-// Snake 输入控件仍通过注入读取表单尺寸和错误配置；字段生命周期由 uView 式公开方法驱动。
+// Snake 输入控件通过注入读取表单尺寸和错误配置；字段生命周期由公开方法驱动。
 provide(formKey, {
     model: toRef(props, 'model'),
     rules,

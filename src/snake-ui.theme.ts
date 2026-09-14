@@ -23,9 +23,8 @@ export function migrateThemePresetStorage(): string | undefined {
 }
 
 /**
- * Demo theme presets aligned with uView Pro. Its default blue is replaced by the
- * Snake brand green, while the overlapping green preset is replaced by rose.
- * Dark values mirror uView Pro's generated palette and include Snake-only tokens.
+ * Demo theme presets use Snake brand green as the default, with a rose alternative.
+ * Dark values include matching palette variants and Snake-only tokens.
  */
 export const snakeThemePresets: Theme[] = [
     defaultTheme,

@@ -3,7 +3,7 @@ export function getSystemInfo(): UniApp.GetSystemInfoResult {
     return uni.getSystemInfoSync();
 }
 
-/** uView 兼容别名：sys = getSystemInfo。 */
+/** sys 是 getSystemInfo 的短别名。 */
 export function sys(): UniApp.GetSystemInfoResult {
     return getSystemInfo();
 }

@@ -74,7 +74,7 @@
     box-sizing: border-box;
     -webkit-transform-origin: 0 0;
     transform-origin: 0 0;
-    // 多加0.1%，能解决有时候边框缺失的问题
+    // 略小于 200% 是 Retina 伪元素缩放的防缺边补偿；勿简化为 200%，否则部分设备边框会出现断裂。
     width: 199.8%;
     height: 199.7%;
     transform: scale(0.5, 0.5);

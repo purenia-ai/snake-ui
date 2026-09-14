@@ -56,6 +56,7 @@ export function mergeStyles(...args: (object | string)[]): CSSProperties {
     const result = {} as Record<string, any>;
     for (let i = 0; i < args.length; i++) {
         const arg = args[i];
+        // 保持历史语义：遇到无效来源立即停止，后续样式不会再参与合并，而不是简单跳过该项。
         if (!isValidValue(arg)) return result as CSSProperties;
         if (typeof arg === 'string') {
             Object.assign(result, cssStrToObj(arg));

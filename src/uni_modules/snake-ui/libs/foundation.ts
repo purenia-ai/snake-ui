@@ -31,8 +31,7 @@ import { configureCms } from './cms';
 
 /**
  * 全局 API 聚合：工具函数与 hooks 全量展开，再显式补上配置、
- * 主题、国际化、HTTP 等具名成员。date / isInDarkMode / t 等别名
- * 保留 uView 风格命名，方便从 $u 迁移的宿主代码。
+ * 主题、国际化、HTTP 等具名成员，并保留 date / isInDarkMode / t 等短别名。
  */
 export const foundation = {
     ...functions,
@@ -43,7 +42,7 @@ export const foundation = {
     version: SNAKE_UI_VERSION,
     /** 语义色类型清单，toast / modal 等组件按它约束 type 取值。 */
     type: ['primary', 'success', 'error', 'warning', 'info'],
-    /** uView 兼容别名：date 即 formatTime，沿用 uView 的成员名方便存量代码迁移。 */
+    /** date 是 formatTime 的短别名。 */
     date: functions.formatTime,
     emitter: emitter,
     http,
@@ -61,7 +60,7 @@ export const foundation = {
     isInDarkMode: isDarkMode,
     initLocales: initLocale,
     setLocale: setLocale,
-    /** uView 兼容短名：t = translate。 */
+    /** t 是 translate 的短别名。 */
     t: translate
 };
 
@@ -74,7 +73,7 @@ export const snake = foundation;
  * 安装 UI 基座：由根入口（index.ts 的 install）调用，在 $snake
  * 挂载到全局属性之前完成配置、主题、语言、HTTP 与 CMS 的初始化。
  *
- * - `$http`：uView 风格的请求全局属性，与 snake.http 同一单例。
+ * - `$http`：请求全局属性，与 snake.http 同一单例。
  * - `$themeStyle`：用 getter 定义而非直接赋值，模板每次读取都取
  *   cssVars 当前值，主题切换后不需要重新挂属性、也不会固化快照。
  * - provide 的 theme / locale 面向宿主业务组件 inject 使用；

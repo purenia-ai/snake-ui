@@ -1,6 +1,6 @@
 /**
  * 时间格式化，占位符区分大小写：yyyy 年、mm 月、dd 日、hh 时、MM 分、ss 秒
- * （分钟是大写 MM，沿用 uView 习惯）。非法日期返回空串。
+ * （分钟使用大写 MM）。非法日期返回空串。
  * @param value 时间戳 / 日期字符串 / Date；10 位数字按秒级时间戳升位为毫秒
  * @param pattern 格式模板，默认 'yyyy-mm-dd hh:MM:ss'
  */
@@ -23,5 +23,5 @@ export function formatTime(value: string | number | Date, pattern = 'yyyy-mm-dd 
     return pattern.replace(/yyyy|mm|dd|hh|MM|ss/g, token => parts[token]);
 }
 
-// uView 兼容别名：timeFormat = formatTime
+// timeFormat 是 formatTime 的别名。
 export { formatTime as timeFormat };

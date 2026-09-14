@@ -1,25 +1,14 @@
 import { deepClone } from '../function';
 import { isCmsBuiltinComponent, cmsBlocks } from './blocks';
 export { cmsBuiltinComponents } from './blocks';
-import type {
-    CmsBuiltinComponent,
-    CmsComponentConfig,
-    CmsDiagnostic,
-    CmsNormalizedComponent,
-    CmsOptions,
-    CmsPageInfo
-} from './types';
+import type { CmsBuiltinComponent, CmsComponentConfig, CmsDiagnostic, CmsNormalizedComponent, CmsOptions, CmsPageInfo } from './types';
 
 export interface CmsNormalizeResult {
     components: CmsNormalizedComponent[];
     diagnostics: CmsDiagnostic[];
 }
 
-export function normalizeCmsComponents(
-    input: unknown,
-    pageInfo: CmsPageInfo = {},
-    options: CmsOptions = {}
-): CmsNormalizeResult {
+export function normalizeCmsComponents(input: unknown, pageInfo: CmsPageInfo = {}, options: CmsOptions = {}): CmsNormalizeResult {
     const diagnostics: CmsDiagnostic[] = [];
     const components: CmsNormalizedComponent[] = [];
     const aliases: Record<string, CmsBuiltinComponent> = { videoss: 'videos', ...(options.aliases || {}) };
@@ -62,6 +51,7 @@ export function normalizeCmsComponents(
             }
         }
 
+        // alias 只改变实际渲染组件；originalComponent 保留原始下发键，供 normalizer 与诊断追溯来源。
         const component = aliases[item.component] || item.component;
         const version = item.component.startsWith('v2.') ? 2 : 1;
         const setStyle = item.setStyle && typeof item.setStyle === 'object' ? item.setStyle : {};

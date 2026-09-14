@@ -1,11 +1,5 @@
 import { computed, ref } from 'vue';
-import type {
-    CmsNormalizedComponent,
-    CmsOptions,
-    CmsPageInfo,
-    CmsStateChange,
-    CmsStatus
-} from './types';
+import type { CmsNormalizedComponent, CmsOptions, CmsPageInfo, CmsStateChange, CmsStatus } from './types';
 import { CmsError } from './types';
 import { getRuntimeOptions } from '../runtime';
 
@@ -21,9 +15,7 @@ export interface CmsCommerceControllerOptions {
 
 function valuesToQuery(input: unknown): Dictionary {
     if (!input || typeof input !== 'object') return {};
-    return Object.fromEntries(
-        Object.entries(input as Dictionary).map(([key, value]) => [key, Array.isArray(value) ? value.join(',') : value])
-    );
+    return Object.fromEntries(Object.entries(input as Dictionary).map(([key, value]) => [key, Array.isArray(value) ? value.join(',') : value]));
 }
 
 export function useCmsCommerce(input: CmsCommerceControllerOptions) {
@@ -38,6 +30,7 @@ export function useCmsCommerce(input: CmsCommerceControllerOptions) {
     const goodsParams = ref<Dictionary>({});
     const filterParams = ref<Dictionary>({});
     const tabsParams = ref<Dictionary>({});
+    // 每次初始化、刷新或失效都会推进代际；异步请求返回时只允许当前代际写入状态，避免旧响应覆盖新筛选结果。
     let generation = 0;
     let busy = false;
 
@@ -106,6 +99,7 @@ export function useCmsCommerce(input: CmsCommerceControllerOptions) {
     function restoreFilters(component: CmsNormalizedComponent): void {
         const cache = getRuntimeOptions().cache;
         if (!cache) return;
+        // 优先读取按页面和组件隔离的新键；旧的全局 filterParams 键仅用于兼容存量缓存，写入始终使用新键。
         const cached = cache.get(cacheKey(component)) ?? cache.get('filterParams');
         filterParams.value = valuesToQuery(cached);
     }
@@ -183,9 +177,8 @@ export function useCmsCommerce(input: CmsCommerceControllerOptions) {
         }
         if (currentGeneration !== generation) return;
         const items = result.items || [];
-        const all = items.length
-            ? [{ ...items[0], id: '001', squareImage: input.options().assets?.activityAll }, ...items]
-            : [];
+        // “全部”是基于首个活动构造的前端虚拟项，id=001 不对应真实活动，请求时会转换为空 activityId。
+        const all = items.length ? [{ ...items[0], id: '001', squareImage: input.options().assets?.activityAll }, ...items] : [];
         activityList.value = all;
         auctionSetParams.value = all[0] || {};
         const requested = input.pageInfo().activityId;
@@ -225,6 +218,7 @@ export function useCmsCommerce(input: CmsCommerceControllerOptions) {
         }
         if (currentGeneration !== generation) return;
         const style = styleOf(component);
+        // 首次无商品时，forSale/downBuy 可改写活动参数再次请求，作为运营配置的降级展示策略。
         if (!append && (result.total || 0) <= 0 && ['forSale', 'downBuy'].includes(style.listMode)) {
             const mode = style.listMode;
             await loadFilters(component, currentGeneration, mode);
@@ -251,10 +245,7 @@ export function useCmsCommerce(input: CmsCommerceControllerOptions) {
     }
 
     function fail(stage: CmsError['stage'], cause: unknown): void {
-        const error =
-            cause instanceof CmsError
-                ? cause
-                : new CmsError(stage, cause instanceof Error ? cause.message : String(cause), cause);
+        const error = cause instanceof CmsError ? cause : new CmsError(stage, cause instanceof Error ? cause.message : String(cause), cause);
         setStatus('error');
         input.onError?.(error);
     }

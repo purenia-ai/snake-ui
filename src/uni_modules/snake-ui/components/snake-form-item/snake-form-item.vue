@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * @component FormItem
- * @description 表单字段容器，布局、尺寸和校验行为与 uView Pro FormItem 对齐。
+ * @description 表单字段容器，负责布局、尺寸和校验状态。
  * @see /components/form
  */
 
@@ -54,13 +54,9 @@ const actualSize = computed(() => {
     if (props.size !== '') return String(props.size);
     return String(form?.size.value || 'default');
 });
-const presetSize = computed(() =>
-    actualSize.value in sizeConfig ? (actualSize.value as keyof typeof sizeConfig) : 'default'
-);
+const presetSize = computed(() => (actualSize.value in sizeConfig ? (actualSize.value as keyof typeof sizeConfig) : 'default'));
 const currentSizeConfig = computed(() => sizeConfig[presetSize.value]);
-const actualFontSize = computed(() =>
-    addUnit(actualSize.value in sizeConfig ? currentSizeConfig.value.fontSize : actualSize.value, 'rpx')
-);
+const actualFontSize = computed(() => addUnit(actualSize.value in sizeConfig ? currentSizeConfig.value.fontSize : actualSize.value, 'rpx'));
 const currentIconSize = computed(() => currentSizeConfig.value.iconSize);
 const errorType = computed(() => form?.errorType.value || ['message']);
 const showError = (type: string) => !errorType.value.includes('none') && errorType.value.includes(type);
@@ -70,14 +66,10 @@ const elLabelWidth = computed(() => {
     if (props.labelWidth !== '' && props.labelWidth !== 0) return props.labelWidth;
     return form?.labelWidth.value || 90;
 });
-const elLabelStyle = computed(() =>
-    Object.keys(props.labelStyle).length ? props.labelStyle : form?.labelStyle.value || {}
-);
+const elLabelStyle = computed(() => (Object.keys(props.labelStyle).length ? props.labelStyle : form?.labelStyle.value || {}));
 const elLabelPosition = computed(() => props.labelPosition || form?.labelPosition.value || 'left');
 const elLabelAlign = computed(() => props.labelAlign || form?.labelAlign.value || 'left');
-const elBorderBottom = computed(() =>
-    props.borderBottom !== '' ? props.borderBottom : (form?.borderBottom.value ?? false)
-);
+const elBorderBottom = computed(() => (props.borderBottom !== '' ? props.borderBottom : (form?.borderBottom.value ?? false)));
 const labelWidth = computed(() =>
     elLabelPosition.value === 'left'
         ? (props.label === 'true' || props.label === '') && !slots.label
@@ -182,19 +174,11 @@ defineExpose({ validation, resetField, onFormBlur, onFormChange });
                     marginBottom: elLabelPosition === 'left' ? 0 : '10rpx'
                 }"
             >
-                <view
-                    v-if="required || leftIcon || label || $slots.label || $slots.leftIcon"
-                    class="snake-form-item__left-content"
-                >
+                <view v-if="required || leftIcon || label || $slots.label || $slots.leftIcon" class="snake-form-item__left-content">
                     <text v-if="required" class="snake-form-item__required">*</text>
                     <view v-if="leftIcon || $slots.leftIcon" class="snake-form-item__left-icon">
                         <slot name="leftIcon">
-                            <snake-icon
-                                :name="leftIcon"
-                                :size="currentIconSize"
-                                :custom-prefix="leftIconPrefix"
-                                :custom-style="leftIconStyle"
-                            />
+                            <snake-icon :name="leftIcon" :size="currentIconSize" :custom-prefix="leftIconPrefix" :custom-style="leftIconStyle" />
                         </slot>
                     </view>
                     <view
@@ -203,12 +187,7 @@ defineExpose({ validation, resetField, onFormBlur, onFormChange });
                             elLabelStyle,
                             { fontSize: actualFontSize },
                             {
-                                justifyContent:
-                                    elLabelAlign === 'left'
-                                        ? 'flex-start'
-                                        : elLabelAlign === 'center'
-                                          ? 'center'
-                                          : 'flex-end'
+                                justifyContent: elLabelAlign === 'left' ? 'flex-start' : elLabelAlign === 'center' ? 'center' : 'flex-end'
                             }
                         ]"
                     >

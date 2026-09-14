@@ -37,9 +37,8 @@ export function flattenVNodes(children: VNode | VNodeNormalizedChildren): VNode[
 const findVNodeIndex = (vnodes: VNode[], vnode: VNode) => {
     const index = vnodes.indexOf(vnode);
     if (index === -1) {
-        return vnodes.findIndex(
-            item => vnode.key !== undefined && vnode.key !== null && item.type === vnode.type && item.key === vnode.key
-        );
+        // 异步渲染等场景下 vnode 引用可能已变化；带 key 时退回 type + key 匹配以保持模板顺序。
+        return vnodes.findIndex(item => vnode.key !== undefined && vnode.key !== null && item.type === vnode.type && item.key === vnode.key);
     }
     return index;
 };
@@ -94,6 +93,7 @@ export function useChildren<Child = ComponentPublicInstance, ProvideValue = neve
 
         const unlink = (child: ComponentInternalInstance) => {
             const index = internalChildren.indexOf(child);
+            // unlink 仅应由已 link 的子组件调用；未注册实例的 index 为 -1，调用方不得传入。
             publicChildren.splice(index, 1);
             internalChildren.splice(index, 1);
         };

@@ -195,6 +195,7 @@ function prepareListeners(): void {
     listenersReady = true;
     systemDark.value = detectSystemDark();
     try {
+        // H5 与 uni 平台分别监听系统主题；仅 auto 模式跟随变化，手动模式不被系统事件覆盖。
         if (typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
             const media = window.matchMedia('(prefers-color-scheme: dark)');
             media.addEventListener?.('change', event => {
@@ -257,6 +258,7 @@ function createCssVars(theme: Theme, mode: 'light' | 'dark'): Record<string, str
 function flushDocument(vars: Record<string, string>, mode: 'light' | 'dark'): void {
     if (typeof document === 'undefined' || !document.documentElement) return;
     const root = document.documentElement;
+    // 先移除上一主题独有的变量，防止自定义 css/darkCss 在切换后残留。
     lastCssKeys.forEach(key => root.style.removeProperty(key));
     Object.entries(vars).forEach(([key, value]) => root.style.setProperty(key, value));
     lastCssKeys = Object.keys(vars);
@@ -267,8 +269,7 @@ function flushDocument(vars: Record<string, string>, mode: 'light' | 'dark'): vo
 
 export function applyTheme(): void {
     const mode = activeMode();
-    const palette = (mode === 'dark' ? currentTheme.value.darkColor : currentTheme.value.color) as
-        ThemeColor | undefined;
+    const palette = (mode === 'dark' ? currentTheme.value.darkColor : currentTheme.value.color) as ThemeColor | undefined;
     Object.assign(color, mode === 'dark' ? darkPalette : lightPalette, palette || {});
     const vars = createCssVars(currentTheme.value, mode);
     cssVars.value = vars;
@@ -300,8 +301,7 @@ export function initTheme(option?: ThemeOption): void {
     if (!initialized || force || themeEntries.length) themes.value = mergeThemes(themeEntries);
     const savedTheme = force ? undefined : readStorage<string>(THEME_STORAGE_KEY);
     const savedMode = force ? undefined : readStorage<DarkMode>(DARK_MODE_STORAGE_KEY);
-    currentTheme.value =
-        themes.value.find(theme => theme.name === (savedTheme || defaultThemeName)) || themes.value[0];
+    currentTheme.value = themes.value.find(theme => theme.name === (savedTheme || defaultThemeName)) || themes.value[0];
     darkMode.value = savedMode || defaultDarkMode;
     initialized = true;
     applyTheme();
