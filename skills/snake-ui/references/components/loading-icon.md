@@ -22,6 +22,8 @@ triggers: ['loading-icon', 'snake-loading-icon', 'LoadingIcon', '加载图标']
 <snake-loading-icon vertical text="正在提交" />
 ```
 
+页面级加载建议与请求状态绑定；组件仅负责视觉反馈，不会阻止重复操作，提交类场景仍应同时禁用触发按钮。
+
 ## API
 
 ### Props
@@ -32,10 +34,10 @@ triggers: ['loading-icon', 'snake-loading-icon', 'LoadingIcon', '加载图标']
 | `mode`           | 加载形态               | `circle \| spinner`         | `circle`         |
 | `color`          | 活动颜色               | `string`                    | Snake 主色       |
 | `inactiveColor`  | 非活动颜色             | `string`                    | Snake 边框色     |
-| `size`           | 图标尺寸，数字按 px    | `string \| number`          | `20`             |
+| `size`           | 图标尺寸，数字按 rpx   | `string \| number`          | `20`             |
 | `text`           | 提示文字               | `string`                    | `''`             |
 | `textColor`      | 文字颜色               | `string`                    | Snake 次要文字色 |
-| `textSize`       | 文字尺寸               | `string \| number`          | `14`             |
+| `textSize`       | 文字尺寸，数字按 rpx   | `string \| number`          | `14`             |
 | `vertical`       | 图标与文字是否垂直排列 | `boolean`                   | `false`          |
 | `timingFunction` | 动画曲线               | `string`                    | `linear`         |
 | `duration`       | 旋转周期，单位 ms      | `number`                    | `1000`           |

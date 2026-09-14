@@ -26,6 +26,10 @@ preview: /pages/componentsA/navbar/index
 </snake-navbar>
 ```
 
+## 固定导航栏的内容偏移
+
+`fixed` 默认开启，页面正文需为导航栏预留顶部空间；`immersive` 仅适用于内容可延伸到状态栏背景的页面。需要拦截返回时使用 `custom-back`，否则组件调用默认返回逻辑。
+
 ## API
 
 ### Props

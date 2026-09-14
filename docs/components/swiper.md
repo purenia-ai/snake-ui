@@ -26,6 +26,25 @@ preview: /pages/componentsA/swiper/index
 
 对象图片依次读取 `name` 指定字段、`src`、`url`；标题读取 `title` 或 `text`。
 
+```ts
+const banners = [
+    { id: 'new', image: '/static/banner-new.png', title: '新品上市' },
+    { id: 'sale', image: '/static/banner-sale.png', title: '限时活动' }
+];
+```
+
+## 受控切换与自定义指示器
+
+将 `current` 绑定到状态可由业务主动切换轮播项；`change` 返回的新索引应同步回状态。`indicator` 插槽携带 `current` 与 `total`。
+
+```vue
+<snake-swiper :list="banners" :current="current" indicator @change="current = $event">
+  <template #indicator="{ current, total }">
+    <view class="banner-count">{{ current + 1 }} / {{ total }}</view>
+  </template>
+</snake-swiper>
+```
+
 ## API
 
 ### Props
@@ -57,9 +76,9 @@ preview: /pages/componentsA/swiper/index
 
 ### Slots
 
-| 插槽名      | 说明           |
-| ----------- | -------------- |
-| `indicator` | 替换内置指示器 |
+| 插槽名      | 说明                                        |
+| ----------- | ------------------------------------------- |
+| `indicator` | 替换内置指示器，参数为 `{ current, total }` |
 
 ## 主题变量
 

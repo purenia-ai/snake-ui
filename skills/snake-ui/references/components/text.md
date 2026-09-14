@@ -36,6 +36,8 @@ triggers: ['text', 'snake-text', 'Text', '文本']
 <snake-text text="13800138000" mode="phone" call />
 ```
 
+脱敏和日期格式化仅用于展示，不会修改原始值；需要提交或计算时仍应使用业务数据源。
+
 ## API
 
 ### Props

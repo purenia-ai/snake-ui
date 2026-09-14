@@ -17,10 +17,8 @@ export interface ImageProps {
     shape?: 'square' | 'circle';
     /** 圆角尺寸。 */
     radius?: UnitValue;
-    /** lazy load 配置。 */
+    /** 是否开启视口懒加载；进入预加载范围后才设置真实图片地址。 */
     lazyLoad?: boolean;
-    /** 是否在进入视口后才开始请求真实图片。 */
-    lazy?: boolean;
     /** 视口懒加载的预加载距离。 */
     lazyThreshold?: number;
     /** show menu by longpress 配置。 */

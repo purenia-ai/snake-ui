@@ -52,6 +52,36 @@ const uploadToOss: UploadRequest = async (file, { onProgress }) => {
 <snake-button @click="uploadRef?.upload()">开始上传</snake-button>
 ```
 
+## 选择校验与失败重试
+
+`max-count` 和 `max-size` 在文件进入队列前校验；分别监听 `on-exceed`、`on-oversize` 处理业务提示。上传失败的文件保留在队列中，可通过组件实例 `retry(index)` 重试。
+
+```vue
+<snake-upload
+    ref="uploadRef"
+    v-model="files"
+    action="https://example.com/upload"
+    :max-count="3"
+    :max-size="5 * 1024 * 1024"
+    @on-oversize="onOversize"
+    @on-error="onUploadError"
+/>
+```
+
+```ts
+function onOversize(file) {
+    uni.showToast({ title: `${file.name} 超过 5 MB`, icon: 'none' });
+}
+
+function onUploadError(_error, index) {
+    // 可在用户点击“重试”后调用 uploadRef.value?.retry(index)
+}
+```
+
+## 自定义选择入口
+
+设置 `custom-choose` 后，组件不再调用系统文件选择器，而是通过 `on-choose` 将当前限制条件交给业务；业务取得文件后调用 `addFiles(files)` 加入队列。
+
 ## API
 
 ### Props
@@ -115,11 +145,11 @@ const uploadToOss: UploadRequest = async (file, { onProgress }) => {
 | `on-oversize`        | 文件超过 `maxSize`                 | `file, files, index`                    |
 | `on-exceed`          | 数量超过 `maxCount`                | `file, files, index`                    |
 | `on-uploaded`        | 全部文件上传完毕                   | `files, index`                          |
-| `on-success`         | 单个文件上传成功                   | `data, index, files, index`             |
-| `on-error`           | 单个文件上传失败                   | `err, index, files, index`              |
-| `on-change`          | 单个文件上传状态改变（无论成败）   | `res, index, files, index`              |
-| `on-progress`        | 上传进度变化                       | `res, index, files, index`              |
-| `on-remove`          | 移除文件时                         | `index, files, index`                   |
+| `on-success`         | 单个文件上传成功                   | `data, fileIndex, files, index`         |
+| `on-error`           | 单个文件上传失败                   | `error, fileIndex, files, index`        |
+| `on-change`          | 单个文件上传状态改变（无论成败）   | `response, fileIndex, files, index`     |
+| `on-progress`        | 上传进度变化                       | `progress, fileIndex, files, index`     |
+| `on-remove`          | 移除文件时                         | `fileIndex, files, index`               |
 | `on-preview`         | 预览文件时                         | `url, files, index`                     |
 | `on-list-change`     | 文件列表发生变化                   | `files, index`                          |
 

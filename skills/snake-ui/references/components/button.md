@@ -50,6 +50,26 @@ triggers: ['button', 'snake-button', 'Button', '按钮']
 
 开启 `ripple` 后不再叠加原生 `hover-class`。`disabled` 或 `loading` 时不会触发业务点击。
 
+## 异步提交
+
+`throttle-time` 只限制连续点击；需要覆盖整个请求周期时，将 `loading` 绑定到提交状态。
+
+```vue
+<snake-button type="primary" :loading="submitting" :disabled="submitting" @click="submit">保存</snake-button>
+```
+
+```ts
+async function submit() {
+    if (submitting.value) return;
+    submitting.value = true;
+    try {
+        await saveData();
+    } finally {
+        submitting.value = false;
+    }
+}
+```
+
 ## 原生开放能力
 
 ```vue

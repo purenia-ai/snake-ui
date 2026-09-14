@@ -73,7 +73,7 @@ test('image, overlay, popup and sticky expose behavioral APIs', async () => {
         read('components/snake-popup/types.ts'),
         read('components/snake-sticky/types.ts')
     ]);
-    for (const prop of ['fade', 'preview', 'showLoading', 'showMenuByLongpress', 'lazy', 'lazyThreshold', 'loadingImg', 'errorImg'])
+    for (const prop of ['fade', 'preview', 'showLoading', 'showMenuByLongpress', 'lazyLoad', 'lazyThreshold', 'loadingImg', 'errorImg'])
         assert.match(image, new RegExp(`${prop}\\?`));
     for (const prop of ['lockScroll', 'show']) assert.match(overlay, new RegExp(`${prop}\\?`));
     for (const event of ['opened', 'closed', "'click-overlay'"]) assert.match(popup, new RegExp(event));

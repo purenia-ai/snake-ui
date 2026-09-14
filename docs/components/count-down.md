@@ -40,6 +40,14 @@ preview: /pages/componentsA/countDown/index
 - `height` 同时设置数字块的宽高；`show-border` 打开数字边框。
 - `autoplay="false"` 时不自动开始，通过 ref 调用 `start()`；`end()` 可提前结束。
 
+## 服务端截止时间
+
+业务通常拿到的是截止时间戳，应先在页面计算剩余秒数再传入，避免将毫秒直接传给 `timestamp`。页面重新进入时重新计算，可避免后台停留造成显示不准。
+
+```ts
+const remaining = Math.max(0, Math.floor((endAt - Date.now()) / 1000));
+```
+
 ## API
 
 ### Props

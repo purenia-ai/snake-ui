@@ -124,7 +124,8 @@ test('commerce actions expose keyboard semantics and clean transient timers', as
     assert.match(goods, /<snake-image\s+:src="imageFilter\(item\)"/);
     assert.match(goods, /mode="aspectFill"/);
     assert.match(goods, /height="100%"/);
-    assert.match(goods, /\slazy\s/);
+    assert.match(goods, /\slazy-load\s/);
+    assert.doesNotMatch(goods, /\slazy\s/);
 });
 
 test('commerce price sort uses legacy triangles while filter uses bundled directional icons', async () => {

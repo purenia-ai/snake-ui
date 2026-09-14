@@ -22,6 +22,18 @@ preview: /pages/componentsA/transition/index
 
 动画名支持 `fade`、`fade-up/down/left/right`、`slide-up/down/left/right`、`zoom-in` 和 `zoom-out`。
 
+## 分别设置进出场
+
+`duration` 可传对象，为进入和离开设置不同节奏；通过生命周期事件衔接数据准备或资源清理。
+
+```vue
+<snake-transition :show="visible" name="slide-up" :duration="{ enter: 220, leave: 160 }" @after-enter="loadPanelData" @after-leave="resetPanel">
+  <view class="sheet">内容</view>
+</snake-transition>
+```
+
+快速切换 `show` 时，当前动画会被取消，并触发对应的 `enter-cancelled` 或 `leave-cancelled`；不要在取消事件中假定动画已完成。
+
 ## API
 
 ### Props

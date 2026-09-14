@@ -48,7 +48,7 @@ function updateValue(key: string, value: DemoValue) {
                 <text class="demo-variant-title">{{ text('加载失败') }}</text>
                 <snake-image src="/static/not-found.png" width="100%" height="180rpx" :radius="Number(state.radius)" />
                 <text class="demo-variant-title">{{ localeName === 'en-US' ? 'Viewport lazy loading' : '视口懒加载' }}</text>
-                <snake-image src="/static/logo.png" lazy width="100%" height="180rpx" :radius="Number(state.radius)">
+                <snake-image src="/static/logo.png" lazy-load width="100%" height="180rpx" :radius="Number(state.radius)">
                     <template #loading>
                         <view class="demo-image-placeholder">{{ localeName === 'en-US' ? 'Loading…' : '正在加载…' }}</view>
                     </template>

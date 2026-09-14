@@ -25,6 +25,8 @@ triggers: ['icon', 'snake-icon', 'Icon', '图标']
 
 `name` 中包含 `/` 时按图片图标渲染。字体图标会生成 `sicon-${name}` 类名，例如 `name="search"` 对应 `sicon-search`。自定义字体图标可通过 `custom-prefix` 指定字体类前缀。
 
+图片图标请同时设置明确的 `width` 与 `height`；部分填充效果使用 `percent`（0–100）与 `inactive-color`，适合评分、进度等场景。
+
 ## 图标集
 
 <IconGallery />

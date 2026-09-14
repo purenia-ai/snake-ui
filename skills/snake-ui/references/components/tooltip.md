@@ -39,6 +39,8 @@ Tooltip 用于展示与触发元素相关的简短说明或非操作性内容。
 
 支持 `top`、`bottom`、`left`、`right` 及各自的 `-start`、`-end` 变体。默认是 `bottom`。打开一个 Tooltip 时，同页其余已打开的 Tooltip 会自动关闭；点击透明区域默认关闭当前 Tooltip。
 
+内容应保持简短且不可承载关键操作；复杂交互请使用 Popup。受控模式下由 `v-model` 统一维护显隐，避免同时调用实例方法和修改绑定值。
+
 ## API
 
 ### Props

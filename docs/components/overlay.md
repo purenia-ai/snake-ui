@@ -20,6 +20,21 @@ preview: /pages/componentsA/overlay/index
 </snake-overlay>
 ```
 
+## 承载交互内容
+
+遮罩默认点击即关闭；插槽中的交互区域必须阻止事件冒泡。需要等待动画完成后再初始化内容时，监听 `opened`；关闭后清理临时状态可监听 `closed`。
+
+```vue
+<snake-overlay v-model="visible" @opened="focusSearch" @closed="resetSearch">
+  <view class="overlay-panel" @click.stop>
+    <snake-input v-model="keyword" placeholder="搜索" />
+    <snake-button @click="visible = false">完成</snake-button>
+  </view>
+</snake-overlay>
+```
+
+弹层本身已处理遮罩区域的滚动；插槽内的长内容应使用独立的 `scroll-view`，不要依赖背景页面滚动。
+
 ## API
 
 ### Props

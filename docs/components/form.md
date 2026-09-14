@@ -31,6 +31,33 @@ if (valid) {
 
 规则支持 `required`、`type`、`min`、`max`、`len`、`pattern`、`enum`、`transform`、`validator`、`asyncValidator`、`fields` 和 `defaultField`。字段 `prop` 支持 `profile.name`、`accounts.0.name` 等嵌套路径。
 
+## 校验与提交
+
+将 `rules` 与 `model` 的字段路径保持一致。`validate()` 返回 `true` 才执行提交；提交期间应由业务自行锁定提交按钮，避免重复请求。
+
+```vue
+<snake-form ref="formRef" :model="model" :rules="rules">
+  <snake-form-item label="手机号" prop="mobile" required>
+    <snake-input v-model="model.mobile" placeholder="请输入手机号" />
+  </snake-form-item>
+  <snake-button @click="submit">提交</snake-button>
+</snake-form>
+```
+
+```ts
+const rules = {
+    mobile: [
+        { required: true, message: '请输入手机号', trigger: ['blur', 'change'] },
+        { pattern: /^1\d{10}$/, message: '手机号格式不正确', trigger: 'blur' }
+    ]
+};
+
+async function submit() {
+    if (!(await formRef.value?.validate())) return;
+    await saveProfile(model);
+}
+```
+
 ## 动态深层校验
 
 ```ts

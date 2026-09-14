@@ -38,6 +38,16 @@ preview: /pages/componentsA/skeleton/index
 
 `SkeletonItem` 支持 `text`、`rect`、`circle`、`image` 四种占位形态，也可以脱离 `Skeleton` 独立使用。
 
+## 与请求状态配合
+
+仅在首次加载使用骨架屏；已有内容刷新时保留旧内容并用局部 loading 反馈，避免整页反复闪烁。
+
+```vue
+<snake-skeleton :loading="initialLoading" :rows="4">
+  <product-list :list="products" />
+</snake-skeleton>
+```
+
 ## API
 
 ### Skeleton
@@ -70,14 +80,14 @@ preview: /pages/componentsA/skeleton/index
 
 #### Props
 
-| 参数          | 说明                       | 类型                              | 默认值 |
-| ------------- | -------------------------- | --------------------------------- | ------ |
-| `variant`     | 占位形态                   | `text \| rect \| circle \| image` | `text` |
-| `width`       | 宽度，数字按 px            | `string \| number`                | 按形态 |
-| `height`      | 高度，数字按 px            | `string \| number`                | 按形态 |
-| `radius`      | 圆角，数字按 px            | `string \| number`                | 按形态 |
-| `animated`    | 动画开关，默认继承骨架容器 | `boolean`                         | `true` |
-| `customStyle` | 根节点样式                 | `string \| object \| array`       | `''`   |
+| 参数          | 说明                                  | 类型                              | 默认值 |
+| ------------- | ------------------------------------- | --------------------------------- | ------ |
+| `variant`     | 占位形态                              | `text \| rect \| circle \| image` | `text` |
+| `width`       | 宽度，裸数字按 rpx；默认值显式使用 px | `string \| number`                | 按形态 |
+| `height`      | 高度，裸数字按 rpx；默认值显式使用 px | `string \| number`                | 按形态 |
+| `radius`      | 圆角，裸数字按 rpx；默认值显式使用 px | `string \| number`                | 按形态 |
+| `animated`    | 动画开关，默认继承骨架容器            | `boolean`                         | `true` |
+| `customStyle` | 根节点样式                            | `string \| object \| array`       | `''`   |
 
 ## 主题变量
 

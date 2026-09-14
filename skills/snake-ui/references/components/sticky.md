@@ -22,6 +22,10 @@ triggers: ['sticky', 'snake-sticky', 'Sticky', '吸顶']
 </snake-sticky>
 ```
 
+## 导航栏偏移与动态内容
+
+固定导航栏下使用 `offset-top` 避开导航区。异步筛选项、图片或折叠内容改变高度后，等待视图更新并调用实例 `update()` 重新测量。
+
 ## API
 
 ### Props

@@ -29,6 +29,16 @@ preview: /pages/componentsA/empty/index
 
 `src` 和 `icon` 均可覆盖模式图标；`src` 更适合图片地址，`icon` 可传 Icon 名称。
 
+## 加载、错误与空数据
+
+空状态应只在请求完成且结果为空时显示；加载中使用 Skeleton 或 Loading，请求失败则优先提供重试操作，避免把失败误导为“暂无数据”。
+
+```vue
+<snake-empty v-if="loaded && !items.length" mode="search" text="没有找到结果">
+  <template #bottom><snake-button size="small" @click="reload">重新加载</snake-button></template>
+</snake-empty>
+```
+
 ## API
 
 ### Props

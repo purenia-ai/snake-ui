@@ -53,6 +53,17 @@ const tabs = [{ name: '推荐' }, { name: '新品' }, { name: '热门' }];
 
 `name` 和 `count` 可指定对象中的字段名；`isDot` 可将数字徽标改成圆点。`hidden` 隐藏标签但不改变其原数组索引。
 
+## 动态数据
+
+异步更新 `list` 后，等待视图更新再调用实例的 `init()`，重新测量标签宽度与滑块位置；如果当前索引已超出新列表范围，应由业务先重置 `current`。
+
+```ts
+tabs.value = await getTabs();
+current.value = Math.min(current.value, Math.max(tabs.value.length - 1, 0));
+await nextTick();
+tabsRef.value?.init();
+```
+
 ## API
 
 ### Props

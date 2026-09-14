@@ -22,6 +22,8 @@ triggers: ['link', 'snake-link', 'Link', '超链接']
 
 `defaultClick` 为 false 时点击只触发 `click` 事件并携带链接地址，由业务自行处理跳转。
 
+小程序不会直接打开外部网页，而是复制链接并提示用户；需要站内跳转时关闭 `default-click`，在 `click` 中使用项目路由。
+
 ## API
 
 ### Props

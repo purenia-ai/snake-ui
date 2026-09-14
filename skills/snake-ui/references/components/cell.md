@@ -50,6 +50,17 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 </snake-cell-group>
 ```
 
+## 作为页面入口
+
+将跳转逻辑放在 `click` 中，使用 `index` 区分条目；纯展示项关闭箭头并避免绑定点击。
+
+```vue
+<snake-cell-group title="账户">
+  <snake-cell-item title="收货地址" index="address" @click="openPage" />
+  <snake-cell-item title="会员等级" value="黄金会员" :arrow="false" />
+</snake-cell-group>
+```
+
 ## API
 
 ### Props

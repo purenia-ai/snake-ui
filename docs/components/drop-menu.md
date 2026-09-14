@@ -37,6 +37,18 @@ const beforeToggle = ({ resolve }) => resolve(userHasPermission);
 </snake-drop-menu-item>
 ```
 
+## 吸顶与动态内容
+
+菜单进入吸顶状态、窗口尺寸变化或异步面板内容改变后，调用实例方法 `updateDropMenuRect()` 重新测量面板顶部位置。通过容器实例调用 `open(index)` 可由外部操作打开指定菜单。
+
+```vue
+<snake-drop-menu ref="menuRef">
+  <snake-drop-menu-item v-model="sort" title="排序" :options="sorts" />
+</snake-drop-menu>
+
+<snake-button @click="menuRef?.open(0)">选择排序</snake-button>
+```
+
 ## API
 
 ### DropMenu

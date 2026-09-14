@@ -27,6 +27,18 @@ preview: /pages/componentsA/checkbox/index
 
 布局通过 `width` 与 `wrap` 控制：`width` 指定每个 checkbox 的占宽（需带单位，如 `width="240rpx"`），`wrap` 让每个 checkbox 单独占一行。
 
+## 表单值与数量限制
+
+组模式的 `v-model` 始终是 `name` 数组。达到 `max` 后，其余未选项不可再选；业务应根据数组值提交，而不是读取展示文本。
+
+```vue
+<snake-checkbox-group v-model="permissions" :max="2" @change="saveDraft">
+  <snake-checkbox name="read">读取</snake-checkbox>
+  <snake-checkbox name="write">编辑</snake-checkbox>
+  <snake-checkbox name="manage">管理</snake-checkbox>
+</snake-checkbox-group>
+```
+
 ## API
 
 ### CheckboxGroup

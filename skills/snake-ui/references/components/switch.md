@@ -23,6 +23,14 @@ triggers: ['switch', 'snake-switch', 'Switch', '开关']
 
 H5 中组件可通过 Tab 聚焦，并使用 Enter 或空格切换。`disabled` 或 `loading` 时会退出键盘焦点顺序，也不会更新绑定值。
 
+## 异步切换
+
+切换远程设置时，用 `loading` 锁定当前开关；请求失败后将绑定值恢复为原值，避免界面与服务端状态不一致。
+
+```vue
+<snake-switch v-model="enabled" :loading="updating" @change="updateSetting" />
+```
+
 ## API
 
 ### Props

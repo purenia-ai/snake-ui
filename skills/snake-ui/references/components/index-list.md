@@ -41,6 +41,18 @@ onPageScroll(event => {
 </template>
 ```
 
+## 偏移与异步数据
+
+页面有固定导航栏时传入 `offset-top`，让索引跳转和吸顶锚点避开导航栏。异步加载、折叠展开或图片加载改变了分组高度后，等待视图更新并调用 `update()` 重新测量。
+
+```ts
+groups.value = await getContacts();
+await nextTick();
+indexListRef.value?.update();
+```
+
+点击索引会触发 `select`，页面滚动导致当前分组改变会触发 `change`；业务只需处理选中态或辅助提示，滚动定位由组件完成。
+
 ## API
 
 ### Props

@@ -35,6 +35,35 @@ const cascade = [{ label: '华东', value: 'east', children: [{ label: '上海',
 - `close` 在点击遮罩等非确认/取消方式关闭时触发。
 - `preserveSelection` 为 true（默认）时，下次打开保留上次确认的选择。
 
+## 多列联动
+
+联动模式使用树形数据；每一列变化后会根据 `child-name` 生成下一列。确认结果始终按列返回。
+
+```vue
+<snake-select v-model="show" :list="regions" mode="mutil-column-auto" @confirm="onConfirm" />
+```
+
+```ts
+const regions = [
+    {
+        label: '华东',
+        value: 'east',
+        children: [
+            { label: '上海', value: 'sh' },
+            { label: '杭州', value: 'hz' }
+        ]
+    }
+];
+
+function onConfirm(values) {
+    // values: [{ value: 'east', label: '华东' }, { value: 'sh', label: '上海' }]
+}
+```
+
+## 受控打开与默认值
+
+`v-model` 只控制弹层显示，选择结果由 `confirm`/`cancel` 接收。首次打开可用 `default-value` 指定各列下标；需要每次按默认值重置时设置 `:preserve-selection="false"`。
+
 ## API
 
 ### Props

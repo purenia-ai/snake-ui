@@ -40,6 +40,16 @@ triggers: ['skeleton', 'snake-skeleton', 'Skeleton', '骨架屏']
 
 `SkeletonItem` 支持 `text`、`rect`、`circle`、`image` 四种占位形态，也可以脱离 `Skeleton` 独立使用。
 
+## 与请求状态配合
+
+仅在首次加载使用骨架屏；已有内容刷新时保留旧内容并用局部 loading 反馈，避免整页反复闪烁。
+
+```vue
+<snake-skeleton :loading="initialLoading" :rows="4">
+  <product-list :list="products" />
+</snake-skeleton>
+```
+
 ## API
 
 ### Skeleton

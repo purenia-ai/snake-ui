@@ -26,6 +26,17 @@ triggers: ['radio', 'snake-radio', 'Radio', '单选框']
 
 布局通过 `width` 与 `wrap` 控制：`width` 指定每个 radio 的占宽（如 `width="240rpx"`），`wrap` 让每个 radio 单独占一行。
 
+## 初始值与禁用项
+
+将组的 `v-model` 初始化为某个 `name` 即可预选。禁用单项不会影响其他选项；点击已选中的项不会清空选择，也不会再次触发 `change`。
+
+```vue
+<snake-radio-group v-model="delivery">
+  <snake-radio name="express">快递配送</snake-radio>
+  <snake-radio name="pickup" disabled>到店自提</snake-radio>
+</snake-radio-group>
+```
+
 ## API
 
 ### RadioGroup

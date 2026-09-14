@@ -31,6 +31,14 @@ triggers: ['search', 'snake-search', 'Search', '搜索框']
 
 `disabled` 为 true 时输入框不可编辑，点击组件会触发 `click`，通常用于跳转真正的搜索页。
 
+## 搜索提交与建议词
+
+`search` 由键盘确认触发，`custom` 由右侧操作按钮触发；两者都携带当前关键字。输入联想应由业务在 `input` 中防抖请求，并在 `clear` 时清空建议列表。
+
+```vue
+<snake-search v-model="keyword" @input="querySuggestions" @search="search" @custom="search" @clear="suggestions = []" />
+```
+
 ## API
 
 ### Props

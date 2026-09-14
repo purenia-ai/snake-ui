@@ -22,7 +22,6 @@ const props = withDefaults(defineProps<ImageProps>(), {
     shape: 'square',
     radius: 0,
     lazyLoad: false,
-    lazy: false,
     lazyThreshold: 100,
     showMenuByLongpress: false,
     webp: false,
@@ -42,8 +41,8 @@ const props = withDefaults(defineProps<ImageProps>(), {
 const emit = defineEmits<ImageEmits>();
 type ImageStatus = 'idle' | 'loading' | 'success' | 'error';
 
-const status = ref<ImageStatus>(props.src ? (props.lazy ? 'idle' : 'loading') : 'error');
-const shouldLoad = ref(!props.lazy && Boolean(props.src));
+const status = ref<ImageStatus>(props.src ? (props.lazyLoad ? 'idle' : 'loading') : 'error');
+const shouldLoad = ref(!props.lazyLoad && Boolean(props.src));
 const instance = getCurrentInstance();
 let observer: ReturnType<typeof uni.createIntersectionObserver> | undefined;
 let mounted = false;
@@ -81,7 +80,7 @@ function startLoading() {
 }
 
 function observeViewport() {
-    if (!props.lazy || !props.src || !mounted || typeof uni === 'undefined' || !uni.createIntersectionObserver) {
+    if (!props.lazyLoad || !props.src || !mounted || typeof uni === 'undefined' || !uni.createIntersectionObserver) {
         startLoading();
         return;
     }
@@ -102,7 +101,7 @@ function resetLoadState() {
         status.value = 'error';
         return;
     }
-    if (!props.lazy) {
+    if (!props.lazyLoad) {
         startLoading();
         return;
     }
@@ -126,7 +125,7 @@ function click(event: unknown) {
     }
 }
 
-watch([() => props.src, () => props.lazy], resetLoadState);
+watch([() => props.src, () => props.lazyLoad], resetLoadState);
 onMounted(() => {
     mounted = true;
     resetLoadState();

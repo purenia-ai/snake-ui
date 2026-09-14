@@ -21,6 +21,21 @@ preview: /pages/componentsA/input/index
 
 中文、日文等输入法处于候选组合阶段时不会提前同步半成品内容；组合结束后再更新 `v-model` 并触发表单校验。
 
+## 格式化与确认键
+
+`formatter` 应为同步且无副作用的函数；需要在每次输入时格式化使用 `format-trigger="input"`，仅在失焦时整理内容使用 `blur`。异步校验交给 Form 规则处理。
+
+```vue
+<snake-input
+    v-model="phone"
+    type="number"
+    confirm-type="done"
+    :formatter="value => value.replace(/\D/g, '').slice(0, 11)"
+    format-trigger="input"
+    @confirm="submit"
+/>
+```
+
 ## API
 
 ### Props

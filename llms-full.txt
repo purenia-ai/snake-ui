@@ -93,6 +93,26 @@
 
 开启 `ripple` 后不再叠加原生 `hover-class`。`disabled` 或 `loading` 时不会触发业务点击。
 
+## 异步提交
+
+`throttle-time` 只限制连续点击；需要覆盖整个请求周期时，将 `loading` 绑定到提交状态。
+
+```vue
+<snake-button type="primary" :loading="submitting" :disabled="submitting" @click="submit">保存</snake-button>
+```
+
+```ts
+async function submit() {
+    if (submitting.value) return;
+    submitting.value = true;
+    try {
+        await saveData();
+    } finally {
+        submitting.value = false;
+    }
+}
+```
+
 ## 原生开放能力
 
 ```vue
@@ -180,6 +200,20 @@ Button 复用 Snake UI 全局颜色令牌，可在主题作用域内覆盖：
 - `minDate`/`maxDate` 之外日期禁用；`defaultSelectToday` 初始化时默认选中今天（优先级低于 defaultDate/startDate/endDate）。
 - `close` 在点击遮罩或关闭按钮收起时触发。
 - `isPage` 为 true 时以页面内联方式展示，不使用弹窗，选择完成自动触发 change。
+
+## 自定义日期内容
+
+设置 `use-date-slot` 后，可用 `date` 插槽渲染日期下方的补充信息。插槽参数 `date` 为当前日期信息，适合展示价格、库存或签到状态。
+
+```vue
+<snake-calendar v-model="show" use-date-slot :checked-dates="['2026-09-14']">
+  <template #date="{ date }">
+    <text v-if="date.isToday" class="calendar-tip">今天</text>
+  </template>
+</snake-calendar>
+```
+
+`is-page` 适合嵌入预订、签到等页面；此模式不显示弹层标题和遮罩，外层不需要再维护打开/关闭状态。
 
 ## API
 
@@ -301,6 +335,17 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 ```vue
 <snake-cell-group title="设置喜好" :border="false">
   <snake-cell-item title="消息通知" />
+</snake-cell-group>
+```
+
+## 作为页面入口
+
+将跳转逻辑放在 `click` 中，使用 `index` 区分条目；纯展示项关闭箭头并避免绑定点击。
+
+```vue
+<snake-cell-group title="账户">
+  <snake-cell-item title="收货地址" index="address" @click="openPage" />
+  <snake-cell-item title="会员等级" value="黄金会员" :arrow="false" />
 </snake-cell-group>
 ```
 
@@ -474,6 +519,18 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 ```
 
 布局通过 `width` 与 `wrap` 控制：`width` 指定每个 checkbox 的占宽（需带单位，如 `width="240rpx"`），`wrap` 让每个 checkbox 单独占一行。
+
+## 表单值与数量限制
+
+组模式的 `v-model` 始终是 `name` 数组。达到 `max` 后，其余未选项不可再选；业务应根据数组值提交，而不是读取展示文本。
+
+```vue
+<snake-checkbox-group v-model="permissions" :max="2" @change="saveDraft">
+  <snake-checkbox name="read">读取</snake-checkbox>
+  <snake-checkbox name="write">编辑</snake-checkbox>
+  <snake-checkbox name="manage">管理</snake-checkbox>
+</snake-checkbox-group>
+```
 
 ## API
 
@@ -914,6 +971,14 @@ import type { ConfigProviderEmits, ConfigProviderProps } from '@puresnake/snake-
 - `height` 同时设置数字块的宽高；`show-border` 打开数字边框。
 - `autoplay="false"` 时不自动开始，通过 ref 调用 `start()`；`end()` 可提前结束。
 
+## 服务端截止时间
+
+业务通常拿到的是截止时间戳，应先在页面计算剩余秒数再传入，避免将毫秒直接传给 `timestamp`。页面重新进入时重新计算，可避免后台停留造成显示不准。
+
+```ts
+const remaining = Math.max(0, Math.floor((endAt - Date.now()) / 1000));
+```
+
 ## API
 
 ### Props
@@ -993,6 +1058,18 @@ const beforeToggle = ({ resolve }) => resolve(userHasPermission);
 <snake-drop-menu-item title="高级筛选" :before-toggle="beforeToggle">
   <view class="filter-panel">自定义筛选内容</view>
 </snake-drop-menu-item>
+```
+
+## 吸顶与动态内容
+
+菜单进入吸顶状态、窗口尺寸变化或异步面板内容改变后，调用实例方法 `updateDropMenuRect()` 重新测量面板顶部位置。通过容器实例调用 `open(index)` 可由外部操作打开指定菜单。
+
+```vue
+<snake-drop-menu ref="menuRef">
+  <snake-drop-menu-item v-model="sort" title="排序" :options="sorts" />
+</snake-drop-menu>
+
+<snake-button @click="menuRef?.open(0)">选择排序</snake-button>
 ```
 
 ## API
@@ -1098,6 +1175,16 @@ const beforeToggle = ({ resolve }) => resolve(userHasPermission);
 
 `src` 和 `icon` 均可覆盖模式图标；`src` 更适合图片地址，`icon` 可传 Icon 名称。
 
+## 加载、错误与空数据
+
+空状态应只在请求完成且结果为空时显示；加载中使用 Skeleton 或 Loading，请求失败则优先提供重试操作，避免把失败误导为“暂无数据”。
+
+```vue
+<snake-empty v-if="loaded && !items.length" mode="search" text="没有找到结果">
+  <template #bottom><snake-button size="small" @click="reload">重新加载</snake-button></template>
+</snake-empty>
+```
+
 ## API
 
 ### Props
@@ -1164,6 +1251,33 @@ if (valid) {
 ```
 
 规则支持 `required`、`type`、`min`、`max`、`len`、`pattern`、`enum`、`transform`、`validator`、`asyncValidator`、`fields` 和 `defaultField`。字段 `prop` 支持 `profile.name`、`accounts.0.name` 等嵌套路径。
+
+## 校验与提交
+
+将 `rules` 与 `model` 的字段路径保持一致。`validate()` 返回 `true` 才执行提交；提交期间应由业务自行锁定提交按钮，避免重复请求。
+
+```vue
+<snake-form ref="formRef" :model="model" :rules="rules">
+  <snake-form-item label="手机号" prop="mobile" required>
+    <snake-input v-model="model.mobile" placeholder="请输入手机号" />
+  </snake-form-item>
+  <snake-button @click="submit">提交</snake-button>
+</snake-form>
+```
+
+```ts
+const rules = {
+    mobile: [
+        { required: true, message: '请输入手机号', trigger: ['blur', 'change'] },
+        { pattern: /^1\d{10}$/, message: '手机号格式不正确', trigger: 'blur' }
+    ]
+};
+
+async function submit() {
+    if (!(await formRef.value?.validate())) return;
+    await saveProfile(model);
+}
+```
 
 ## 动态深层校验
 
@@ -1286,6 +1400,8 @@ Form 容器没有独立视觉令牌，FormItem 直接使用以下全局变量：
 
 `name` 中包含 `/` 时按图片图标渲染。字体图标会生成 `sicon-${name}` 类名，例如 `name="search"` 对应 `sicon-search`。自定义字体图标可通过 `custom-prefix` 指定字体类前缀。
 
+图片图标请同时设置明确的 `width` 与 `height`；部分填充效果使用 `percent`（0–100）与 `inactive-color`，适合评分、进度等场景。
+
 ## 图标集
 
 <IconGallery />
@@ -1351,14 +1467,80 @@ Form 容器没有独立视觉令牌，FormItem 直接使用以下全局变量：
 <snake-image src="/static/avatar.png" alt="用户头像" width="120rpx" height="120rpx" shape="circle" />
 ```
 
-`loading` 与 `error` 插槽可替换默认反馈，且优先于对应图片参数。
+## 加载状态
+
+### 加载中
+
+默认显示加载图标。简单的品牌占位图可使用 `loading-img`；需要组合动画、文字或骨架屏时使用 `loading` 插槽。
+
+```vue
+<snake-image src="/static/product.png" width="100%" height="220rpx" loading-img="/static/image-loading.png" />
+
+<snake-image src="/static/product.png" width="100%" height="220rpx">
+  <template #loading>
+    <snake-loading-icon size="24" />
+  </template>
+</snake-image>
+```
+
+传入 `show-loading="false"` 可隐藏加载反馈。
+
+### 加载失败
+
+默认显示错误图标与提示。简单错误图使用 `error-img`；需要自定义内容时使用 `error` 插槽。
+
+```vue
+<snake-image src="/static/not-found.png" width="100%" height="220rpx" error-img="/static/image-error.png" />
+
+<snake-image src="/static/not-found.png" width="100%" height="220rpx">
+  <template #error>
+    <view class="image-error">图片暂时无法显示</view>
+  </template>
+</snake-image>
+```
+
+传入 `show-error="false"` 可隐藏失败反馈。两个状态的渲染优先级均为：同名插槽 > `loading-img` / `error-img` > 默认图标。
 
 ## 视口懒加载
 
-`lazy` 使用 `uni.createIntersectionObserver`，仅在进入视口预加载距离后请求真实图片；`lazyLoad` 仍仅透传给原生 `image` 的 `lazy-load`，两者可以同时使用。`loadingImg` 与 `errorImg` 在组件内部按状态直接渲染，未配置时才回退为默认图标；需要复杂状态内容时使用同名插槽，插槽优先。
+`lazy-load` 使用 `uni.createIntersectionObserver`，仅在进入视口预加载距离后请求真实图片；真实图片创建后，组件也会传递原生 `image` 的 `lazy-load`，无需配置第二个开关。`loadingImg` 与 `errorImg` 在组件内部按状态直接渲染，未配置时才回退为默认图标；需要复杂状态内容时使用同名插槽，插槽优先。
 
 ```vue
-<snake-image src="/static/product.png" lazy :lazy-threshold="160" loading-img="/static/image-loading.png" error-img="/static/image-error.png" />
+<snake-image src="/static/product.png" lazy-load :lazy-threshold="160" loading-img="/static/image-loading.png" error-img="/static/image-error.png" />
+```
+
+`lazy-threshold` 默认为 `100`；数值越大，图片会在距视口更远的位置开始请求。
+
+## 展示样式
+
+### 填充模式
+
+通过 `mode` 控制图片在容器内的裁剪和对齐方式，常用商品图使用 `aspectFill`，完整展示图片使用 `aspectFit`。
+
+```vue
+<snake-image src="/static/product.png" width="200rpx" height="200rpx" mode="aspectFill" />
+<snake-image src="/static/product.png" width="200rpx" height="200rpx" mode="aspectFit" />
+```
+
+### 圆形与圆角
+
+```vue
+<snake-image src="/static/avatar.png" width="120rpx" height="120rpx" shape="circle" />
+<snake-image src="/static/product.png" width="240rpx" height="180rpx" :radius="16" />
+```
+
+## 图片预览
+
+传入 `preview` 后，点击图片会调用 `uni.previewImage`。使用 `preview-urls` 可提供预览图集合；集合应包含当前 `src`。
+
+```vue
+<snake-image
+  src="/static/product-1.png"
+  width="240rpx"
+  height="240rpx"
+  preview
+  :preview-urls="['/static/product-1.png', '/static/product-2.png']"
+/>
 ```
 
 ## API
@@ -1371,8 +1553,8 @@ Form 容器没有独立视觉令牌，FormItem 直接使用以下全局变量：
 | `alt`                                        | 图片的可访问文本       | `string`                          | `''`                |
 | `width` / `height`                           | 容器尺寸               | `string \| number`                | `100% / auto`       |
 | `shape` / `radius`                           | 形状和圆角             | `square\|circle / string\|number` | `square / 0`        |
-| `lazy` / `lazyThreshold`                     | 视口懒加载及预加载距离 | `boolean / number`                | `false / 100`       |
-| `lazyLoad` / `webp`                          | 原生懒加载与 WebP      | `boolean`                         | `false`             |
+| `lazyLoad` / `lazyThreshold`                 | 视口懒加载及预加载距离 | `boolean / number`                | `false / 100`       |
+| `webp`                                        | 使用 WebP              | `boolean`                         | `false`             |
 | `showMenuByLongpress`                        | 长按显示识别菜单       | `boolean`                         | `false`             |
 | `fade` / `duration`                          | 淡入及其时长           | `boolean / number`                | `true / 300`        |
 | `showLoading` / `loadingIcon` / `loadingImg` | 加载反馈与图片占位     | `boolean / string / string`       | `true / '' / ''`    |
@@ -1565,6 +1747,18 @@ onPageScroll(event => {
 </template>
 ```
 
+## 偏移与异步数据
+
+页面有固定导航栏时传入 `offset-top`，让索引跳转和吸顶锚点避开导航栏。异步加载、折叠展开或图片加载改变了分组高度后，等待视图更新并调用 `update()` 重新测量。
+
+```ts
+groups.value = await getContacts();
+await nextTick();
+indexListRef.value?.update();
+```
+
+点击索引会触发 `select`，页面滚动导致当前分组改变会触发 `change`；业务只需处理选中态或辅助提示，滚动定位由组件完成。
+
 ## API
 
 ### Props
@@ -1634,6 +1828,21 @@ onPageScroll(event => {
 ```
 
 中文、日文等输入法处于候选组合阶段时不会提前同步半成品内容；组合结束后再更新 `v-model` 并触发表单校验。
+
+## 格式化与确认键
+
+`formatter` 应为同步且无副作用的函数；需要在每次输入时格式化使用 `format-trigger="input"`，仅在失焦时整理内容使用 `blur`。异步校验交给 Form 规则处理。
+
+```vue
+<snake-input
+  v-model="phone"
+  type="number"
+  confirm-type="done"
+  :formatter="value => value.replace(/\D/g, '').slice(0, 11)"
+  format-trigger="input"
+  @confirm="submit"
+/>
+```
 
 ## API
 
@@ -1793,6 +2002,8 @@ Snake UI 提供覆盖基础交互、表单和商城装修场景的组件。输�
 
 进度条内部默认展示百分比，通过 `show-percent="false"` 关闭；传入默认插槽可完全替换内部内容。
 
+`percent` 会按 0–100 使用；上传场景将接口回调的进度直接传入即可，完成后再由业务切换成功状态或关闭进度条。
+
 ## API
 
 ### Props
@@ -1899,6 +2110,8 @@ Snake UI 提供覆盖基础交互、表单和商城装修场景的组件。输�
 
 `defaultClick` 为 false 时点击只触发 `click` 事件并携带链接地址，由业务自行处理跳转。
 
+小程序不会直接打开外部网页，而是复制链接并提示用户；需要站内跳转时关闭 `default-click`，在 `click` 中使用项目路由。
+
 ## API
 
 ### Props
@@ -1952,6 +2165,8 @@ Snake UI 提供覆盖基础交互、表单和商城装修场景的组件。输�
 <snake-loading-icon vertical text="正在提交" />
 ```
 
+页面级加载建议与请求状态绑定；组件仅负责视觉反馈，不会阻止重复操作，提交类场景仍应同时禁用触发按钮。
+
 ## API
 
 ### Props
@@ -1962,10 +2177,10 @@ Snake UI 提供覆盖基础交互、表单和商城装修场景的组件。输�
 | `mode`           | 加载形态               | `circle \| spinner`         | `circle`         |
 | `color`          | 活动颜色               | `string`                    | Snake 主色       |
 | `inactiveColor`  | 非活动颜色             | `string`                    | Snake 边框色     |
-| `size`           | 图标尺寸，数字按 px    | `string \| number`          | `20`             |
+| `size`           | 图标尺寸，数字按 rpx   | `string \| number`          | `20`             |
 | `text`           | 提示文字               | `string`                    | `''`             |
 | `textColor`      | 文字颜色               | `string`                    | Snake 次要文字色 |
-| `textSize`       | 文字尺寸               | `string \| number`          | `14`             |
+| `textSize`       | 文字尺寸，数字按 rpx   | `string \| number`          | `14`             |
 | `vertical`       | 图标与文字是否垂直排列 | `boolean`                   | `false`          |
 | `timingFunction` | 动画曲线               | `string`                    | `linear`         |
 | `duration`       | 旋转周期，单位 ms      | `number`                    | `1000`           |
@@ -2067,6 +2282,10 @@ Snake UI 提供覆盖基础交互、表单和商城装修场景的组件。输�
 </snake-navbar>
 ```
 
+## 固定导航栏的内容偏移
+
+`fixed` 默认开启，页面正文需为导航栏预留顶部空间；`immersive` 仅适用于内容可延伸到状态栏背景的页面。需要拦截返回时使用 `custom-back`，否则组件调用默认返回逻辑。
+
 ## API
 
 ### Props
@@ -2147,6 +2366,8 @@ function handleRetry() {
 ```
 
 组件在线时自动隐藏。断网时会全屏展示图片、提示语和重试按钮；点击重试后，组件会重新检测网络并触发 `retry` 事件。建议在事件回调中刷新当前页面的数据。
+
+组件只负责网络状态与提示，不会自动重放失败请求；`retry` 中应由业务重新拉取当前页面所需数据。
 
 ### 自定义提示语与图片
 
@@ -2272,6 +2493,14 @@ function handleRetry() {
 
 横向模式会根据 `speed` 生成跑马灯；设置 `play-state="paused"` 可暂停，纵向模式使用原生 swiper。
 
+## 关闭与更多
+
+关闭图标只通知业务，是否继续渲染通知栏由外部 `show` 控制。更多图标适合跳转公告列表。
+
+```vue
+<snake-notice-bar :show="showNotice" text="系统公告" close-icon more-icon @close="showNotice = false" @get-more="goNoticeList" />
+```
+
 ## API
 
 ### Props
@@ -2331,6 +2560,21 @@ function handleRetry() {
   <view @click.stop>自定义内容</view>
 </snake-overlay>
 ```
+
+## 承载交互内容
+
+遮罩默认点击即关闭；插槽中的交互区域必须阻止事件冒泡。需要等待动画完成后再初始化内容时，监听 `opened`；关闭后清理临时状态可监听 `closed`。
+
+```vue
+<snake-overlay v-model="visible" @opened="focusSearch" @closed="resetSearch">
+  <view class="overlay-panel" @click.stop>
+    <snake-input v-model="keyword" placeholder="搜索" />
+    <snake-button @click="visible = false">完成</snake-button>
+  </view>
+</snake-overlay>
+```
+
+弹层本身已处理遮罩区域的滚动；插槽内的长内容应使用独立的 `scroll-view`，不要依赖背景页面滚动。
 
 ## API
 
@@ -2552,6 +2796,17 @@ import Button from './uni_modules/snake-ui/components/snake-button/snake-button.
 
 布局通过 `width` 与 `wrap` 控制：`width` 指定每个 radio 的占宽（如 `width="240rpx"`），`wrap` 让每个 radio 单独占一行。
 
+## 初始值与禁用项
+
+将组的 `v-model` 初始化为某个 `name` 即可预选。禁用单项不会影响其他选项；点击已选中的项不会清空选择，也不会再次触发 `change`。
+
+```vue
+<snake-radio-group v-model="delivery">
+  <snake-radio name="express">快递配送</snake-radio>
+  <snake-radio name="pickup" disabled>到店自提</snake-radio>
+</snake-radio-group>
+```
+
 ## API
 
 ### RadioGroup
@@ -2646,6 +2901,8 @@ import Button from './uni_modules/snake-ui/components/snake-button/snake-button.
 ```
 
 `toggle` 为 true 时，展开后显示收起按钮；内容动态变化后可通过 `ref.init()` 重新测量高度。
+
+异步富文本、图片加载完成或语言切换后都可能改变高度，应在内容更新后的 `nextTick` 调用 `init()`；不要用固定字符数代替高度测量。
 
 ## API
 
@@ -2771,6 +3028,14 @@ import Button from './uni_modules/snake-ui/components/snake-button/snake-button.
 
 `disabled` 为 true 时输入框不可编辑，点击组件会触发 `click`，通常用于跳转真正的搜索页。
 
+## 搜索提交与建议词
+
+`search` 由键盘确认触发，`custom` 由右侧操作按钮触发；两者都携带当前关键字。输入联想应由业务在 `input` 中防抖请求，并在 `clear` 时清空建议列表。
+
+```vue
+<snake-search v-model="keyword" @input="querySuggestions" @search="search" @custom="search" @clear="suggestions = []" />
+```
+
 ## API
 
 ### Props
@@ -2857,6 +3122,26 @@ const cascade = [{ label: '华东', value: 'east', children: [{ label: '上海',
 - `confirm` / `cancel` 回调携带 `[{ value, label, extra? }]` 数组。
 - `close` 在点击遮罩等非确认/取消方式关闭时触发。
 - `preserveSelection` 为 true（默认）时，下次打开保留上次确认的选择。
+
+## 多列联动
+
+联动模式使用树形数据；每一列变化后会根据 `child-name` 生成下一列。确认结果始终按列返回。
+
+```vue
+<snake-select v-model="show" :list="regions" mode="mutil-column-auto" @confirm="onConfirm" />
+```
+
+```ts
+const regions = [{ label: '华东', value: 'east', children: [{ label: '上海', value: 'sh' }, { label: '杭州', value: 'hz' }] }];
+
+function onConfirm(values) {
+    // values: [{ value: 'east', label: '华东' }, { value: 'sh', label: '上海' }]
+}
+```
+
+## 受控打开与默认值
+
+`v-model` 只控制弹层显示，选择结果由 `confirm`/`cancel` 接收。首次打开可用 `default-value` 指定各列下标；需要每次按默认值重置时设置 `:preserve-selection="false"`。
 
 ## API
 
@@ -3051,6 +3336,16 @@ import Popup from '@puresnake/snake-ui/components/snake-popup/snake-popup.vue';
 
 `SkeletonItem` 支持 `text`、`rect`、`circle`、`image` 四种占位形态，也可以脱离 `Skeleton` 独立使用。
 
+## 与请求状态配合
+
+仅在首次加载使用骨架屏；已有内容刷新时保留旧内容并用局部 loading 反馈，避免整页反复闪烁。
+
+```vue
+<snake-skeleton :loading="initialLoading" :rows="4">
+  <product-list :list="products" />
+</snake-skeleton>
+```
+
 ## API
 
 ### Skeleton
@@ -3192,6 +3487,10 @@ H5 中轨道可通过 Tab 聚焦，方向键按照 `step` 调整数值；触摸�
 </snake-sticky>
 ```
 
+## 导航栏偏移与动态内容
+
+固定导航栏下使用 `offset-top` 避开导航区。异步筛选项、图片或折叠内容改变高度后，等待视图更新并调用实例 `update()` 重新测量。
+
 ## API
 
 ### Props
@@ -3319,6 +3618,25 @@ H5 中当前分段可通过 Tab 聚焦，左右方向键会循环切换，并自
 
 对象图片依次读取 `name` 指定字段、`src`、`url`；标题读取 `title` 或 `text`。
 
+```ts
+const banners = [
+    { id: 'new', image: '/static/banner-new.png', title: '新品上市' },
+    { id: 'sale', image: '/static/banner-sale.png', title: '限时活动' }
+];
+```
+
+## 受控切换与自定义指示器
+
+将 `current` 绑定到状态可由业务主动切换轮播项；`change` 返回的新索引应同步回状态。`indicator` 插槽携带 `current` 与 `total`。
+
+```vue
+<snake-swiper :list="banners" :current="current" indicator @change="current = $event">
+  <template #indicator="{ current, total }">
+    <view class="banner-count">{{ current + 1 }} / {{ total }}</view>
+  </template>
+</snake-swiper>
+```
+
 ## API
 
 ### Props
@@ -3352,7 +3670,7 @@ H5 中当前分段可通过 Tab 聚焦，左右方向键会循环切换，并自
 
 | 插槽名      | 说明           |
 | ----------- | -------------- |
-| `indicator` | 替换内置指示器 |
+| `indicator` | 替换内置指示器，参数为 `{ current, total }` |
 
 ## 主题变量
 
@@ -3378,6 +3696,14 @@ H5 中当前分段可通过 Tab 聚焦，左右方向键会循环切换，并自
 ```
 
 H5 中组件可通过 Tab 聚焦，并使用 Enter 或空格切换。`disabled` 或 `loading` 时会退出键盘焦点顺序，也不会更新绑定值。
+
+## 异步切换
+
+切换远程设置时，用 `loading` 锁定当前开关；请求失败后将绑定值恢复为原值，避免界面与服务端状态不一致。
+
+```vue
+<snake-switch v-model="enabled" :loading="updating" @change="updateSetting" />
+```
 
 ## API
 
@@ -3572,6 +3898,17 @@ const tabs = [{ name: '推荐' }, { name: '新品' }, { name: '热门' }];
 
 `name` 和 `count` 可指定对象中的字段名；`isDot` 可将数字徽标改成圆点。`hidden` 隐藏标签但不改变其原数组索引。
 
+## 动态数据
+
+异步更新 `list` 后，等待视图更新再调用实例的 `init()`，重新测量标签宽度与滑块位置；如果当前索引已超出新列表范围，应由业务先重置 `current`。
+
+```ts
+tabs.value = await getTabs();
+current.value = Math.min(current.value, Math.max(tabs.value.length - 1, 0));
+await nextTick();
+tabsRef.value?.init();
+```
+
 ## API
 
 ### Props
@@ -3649,6 +3986,8 @@ const tabs = [{ name: '推荐' }, { name: '新品' }, { name: '热门' }];
 <!-- 点击拨号 -->
 <snake-text text="13800138000" mode="phone" call />
 ```
+
+脱敏和日期格式化仅用于展示，不会修改原始值；需要提交或计算时仍应使用业务数据源。
 
 ## API
 
@@ -3800,6 +4139,8 @@ Tooltip 用于展示与触发元素相关的简短说明或非操作性内容。
 
 支持 `top`、`bottom`、`left`、`right` 及各自的 `-start`、`-end` 变体。默认是 `bottom`。打开一个 Tooltip 时，同页其余已打开的 Tooltip 会自动关闭；点击透明区域默认关闭当前 Tooltip。
 
+内容应保持简短且不可承载关键操作；复杂交互请使用 Popup。受控模式下由 `v-model` 统一维护显隐，避免同时调用实例方法和修改绑定值。
+
 ## API
 
 ### Props
@@ -3878,6 +4219,24 @@ Tooltip 用于展示与触发元素相关的简短说明或非操作性内容。
 ```
 
 动画名支持 `fade`、`fade-up/down/left/right`、`slide-up/down/left/right`、`zoom-in` 和 `zoom-out`。
+
+## 分别设置进出场
+
+`duration` 可传对象，为进入和离开设置不同节奏；通过生命周期事件衔接数据准备或资源清理。
+
+```vue
+<snake-transition
+  :show="visible"
+  name="slide-up"
+  :duration="{ enter: 220, leave: 160 }"
+  @after-enter="loadPanelData"
+  @after-leave="resetPanel"
+>
+  <view class="sheet">内容</view>
+</snake-transition>
+```
+
+快速切换 `show` 时，当前动画会被取消，并触发对应的 `enter-cancelled` 或 `leave-cancelled`；不要在取消事件中假定动画已完成。
 
 ## API
 
@@ -3965,6 +4324,36 @@ const uploadToOss: UploadRequest = async (file, { onProgress }) => {
 <snake-button @click="uploadRef?.upload()">开始上传</snake-button>
 ```
 
+## 选择校验与失败重试
+
+`max-count` 和 `max-size` 在文件进入队列前校验；分别监听 `on-exceed`、`on-oversize` 处理业务提示。上传失败的文件保留在队列中，可通过组件实例 `retry(index)` 重试。
+
+```vue
+<snake-upload
+  ref="uploadRef"
+  v-model="files"
+  action="https://example.com/upload"
+  :max-count="3"
+  :max-size="5 * 1024 * 1024"
+  @on-oversize="onOversize"
+  @on-error="onUploadError"
+/>
+```
+
+```ts
+function onOversize(file) {
+    uni.showToast({ title: `${file.name} 超过 5 MB`, icon: 'none' });
+}
+
+function onUploadError(_error, index) {
+    // 可在用户点击“重试”后调用 uploadRef.value?.retry(index)
+}
+```
+
+## 自定义选择入口
+
+设置 `custom-choose` 后，组件不再调用系统文件选择器，而是通过 `on-choose` 将当前限制条件交给业务；业务取得文件后调用 `addFiles(files)` 加入队列。
+
 ## API
 
 ### Props
@@ -4028,11 +4417,11 @@ const uploadToOss: UploadRequest = async (file, { onProgress }) => {
 | `on-oversize`        | 文件超过 `maxSize`                 | `file, files, index`                    |
 | `on-exceed`          | 数量超过 `maxCount`                | `file, files, index`                    |
 | `on-uploaded`        | 全部文件上传完毕                   | `files, index`                          |
-| `on-success`         | 单个文件上传成功                   | `data, index, files, index`             |
-| `on-error`           | 单个文件上传失败                   | `err, index, files, index`              |
-| `on-change`          | 单个文件上传状态改变（无论成败）   | `res, index, files, index`              |
-| `on-progress`        | 上传进度变化                       | `res, index, files, index`              |
-| `on-remove`          | 移除文件时                         | `index, files, index`                   |
+| `on-success`         | 单个文件上传成功                   | `data, fileIndex, files, index`         |
+| `on-error`           | 单个文件上传失败                   | `error, fileIndex, files, index`        |
+| `on-change`          | 单个文件上传状态改变（无论成败）   | `response, fileIndex, files, index`     |
+| `on-progress`        | 上传进度变化                       | `progress, fileIndex, files, index`     |
+| `on-remove`          | 移除文件时                         | `fileIndex, files, index`               |
 | `on-preview`         | 预览文件时                         | `url, files, index`                     |
 | `on-list-change`     | 文件列表发生变化                   | `files, index`                          |
 

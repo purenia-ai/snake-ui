@@ -20,19 +20,23 @@ preview: /pages/componentsA/sticky/index
 </snake-sticky>
 ```
 
+## 导航栏偏移与动态内容
+
+固定导航栏下使用 `offset-top` 避开导航区。异步筛选项、图片或折叠内容改变高度后，等待视图更新并调用实例 `update()` 重新测量。
+
 ## API
 
 ### Props
 
-| 参数                          | 说明                           | 类型               | 默认值             |
-| ----------------------------- | ------------------------------ | ------------------ | ------------------ |
-| `offsetTop`                   | 吸顶偏移，数字按 px            | `string \| number` | `0`                |
-| `customNavHeight`             | 自定义导航栏高度               | `string \| number` | `0`                |
-| `scrollTop`                   | 外部滚动位置；也会监听页面滚动 | `number`           | `0`                |
-| `zIndex` / `bgColor`          | 层级和背景                     | `number / string`  | `10 / transparent` |
-| `disabled`                    | 禁用吸顶                       | `boolean`          | `false`            |
-| `index`                       | 事件携带的业务索引             | `string \| number` | `0`                |
-| `customClass` / `customStyle` | 自定义类名和样式               | 多类型             | `''`               |
+| 参数                          | 说明                                     | 类型               | 默认值             |
+| ----------------------------- | ---------------------------------------- | ------------------ | ------------------ |
+| `offsetTop`                   | 吸顶偏移，裸数字按 rpx，显式 px 原样使用 | `string \| number` | `0`                |
+| `customNavHeight`             | 自定义导航栏高度                         | `string \| number` | `0`                |
+| `scrollTop`                   | 外部滚动位置；也会监听页面滚动           | `number`           | `0`                |
+| `zIndex` / `bgColor`          | 层级和背景                               | `number / string`  | `10 / transparent` |
+| `disabled`                    | 禁用吸顶                                 | `boolean`          | `false`            |
+| `index`                       | 事件携带的业务索引                       | `string \| number` | `0`                |
+| `customClass` / `customStyle` | 自定义类名和样式                         | 多类型             | `''`               |
 
 ### Events
 

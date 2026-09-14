@@ -32,6 +32,20 @@ triggers: ['calendar', 'snake-calendar', 'Calendar', '日历']
 - `close` 在点击遮罩或关闭按钮收起时触发。
 - `isPage` 为 true 时以页面内联方式展示，不使用弹窗，选择完成自动触发 change。
 
+## 自定义日期内容
+
+设置 `use-date-slot` 后，可用 `date` 插槽渲染日期下方的补充信息。插槽参数 `date` 为当前日期信息，适合展示价格、库存或签到状态。
+
+```vue
+<snake-calendar v-model="show" use-date-slot :checked-dates="['2026-09-14']">
+  <template #date="{ date }">
+    <text v-if="date.isToday" class="calendar-tip">今天</text>
+  </template>
+</snake-calendar>
+```
+
+`is-page` 适合嵌入预订、签到等页面；此模式不显示弹层标题和遮罩，外层不需要再维护打开/关闭状态。
+
 ## API
 
 ### Props

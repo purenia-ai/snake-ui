@@ -20,7 +20,6 @@
                         mode="aspectFill"
                         width="100%"
                         height="100%"
-                        lazy
                         lazy-load
                     ></snake-image>
 

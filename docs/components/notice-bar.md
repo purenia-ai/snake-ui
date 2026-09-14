@@ -34,6 +34,14 @@ preview: /pages/componentsA/noticeBar/index
 
 横向模式会根据 `speed` 生成跑马灯；设置 `play-state="paused"` 可暂停，纵向模式使用原生 swiper。
 
+## 关闭与更多
+
+关闭图标只通知业务，是否继续渲染通知栏由外部 `show` 控制。更多图标适合跳转公告列表。
+
+```vue
+<snake-notice-bar :show="showNotice" text="系统公告" close-icon more-icon @close="showNotice = false" @get-more="goNoticeList" />
+```
+
 ## API
 
 ### Props

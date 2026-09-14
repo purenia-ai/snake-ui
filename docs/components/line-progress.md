@@ -31,6 +31,8 @@ preview: /pages/componentsA/lineProgress/index
 
 进度条内部默认展示百分比，通过 `show-percent="false"` 关闭；传入默认插槽可完全替换内部内容。
 
+`percent` 会按 0–100 使用；上传场景将接口回调的进度直接传入即可，完成后再由业务切换成功状态或关闭进度条。
+
 ## API
 
 ### Props

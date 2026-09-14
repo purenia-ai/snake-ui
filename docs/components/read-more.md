@@ -30,6 +30,8 @@ preview: /pages/componentsA/readMore/index
 
 `toggle` 为 true 时，展开后显示收起按钮；内容动态变化后可通过 `ref.init()` 重新测量高度。
 
+异步富文本、图片加载完成或语言切换后都可能改变高度，应在内容更新后的 `nextTick` 调用 `init()`；不要用固定字符数代替高度测量。
+
 ## API
 
 ### Props
