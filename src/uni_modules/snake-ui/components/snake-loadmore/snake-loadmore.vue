@@ -8,7 +8,7 @@
 import { computed } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import { translate } from '../../locale';
-import LoadingIcon from '../snake-loading-icon/snake-loading-icon.vue';
+import Loading from '../snake-loading/snake-loading.vue';
 import SnakeLine from '../snake-line/snake-line.vue';
 import type { LoadmoreEmits, LoadmoreProps } from './types';
 
@@ -59,7 +59,11 @@ function click() {
     <view class="snake-loadmore" :class="customClass" :style="rootStyle" @click="click">
         <SnakeLine class="snake-loadmore__line" length="50%" />
         <view class="snake-loadmore__content">
-            <LoadingIcon v-if="status === 'loading' && icon" :mode="iconType === 'flower' ? 'spinner' : iconType" :color="iconColor" size="34" />
+            <Loading
+                v-if="status === 'loading' && icon"
+                :type="iconType === 'flower' ? 'spinner' : iconType === 'circle' ? 'circular' : 'spinner'"
+                :color="iconColor"
+                size="34" />
             <text class="snake-loadmore__text">{{ label }}</text>
         </view>
         <SnakeLine class="snake-loadmore__line" length="50%" />

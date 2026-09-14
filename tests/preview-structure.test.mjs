@@ -6,7 +6,7 @@ import { resolve } from 'node:path';
 const root = resolve(import.meta.dirname, '..');
 const foundationComponents = [
     'button',
-    'loading-icon',
+    'loading',
     'skeleton',
     'transition',
     'root-portal',
@@ -397,25 +397,13 @@ test('button preview presents one configurable button', async () => {
 
 test('foundation feedback previews expose grouped variants', async () => {
     const extracted = await Promise.all(
-        ['button', 'icon', 'image', 'loadingIcon', 'skeleton', 'transition', 'empty', 'loadmore', 'noticeBar', 'overlay', 'popup', 'sticky'].map(
+        ['button', 'icon', 'image', 'loading', 'skeleton', 'transition', 'empty', 'loadmore', 'noticeBar', 'overlay', 'popup', 'sticky'].map(
             directory => readFile(resolve(root, 'src/pages/componentsA', directory, 'index.vue'), 'utf8')
         )
     );
     const foundationSource = extracted.join('\n');
 
-    for (const component of [
-        'loading-icon',
-        'skeleton',
-        'transition',
-        'icon',
-        'image',
-        'empty',
-        'loadmore',
-        'notice-bar',
-        'overlay',
-        'popup',
-        'sticky'
-    ]) {
+    for (const component of ['loading', 'skeleton', 'transition', 'icon', 'image', 'empty', 'loadmore', 'notice-bar', 'overlay', 'popup', 'sticky']) {
         assert.match(foundationSource, new RegExp(`demo-${component}-showcase|<snake-${component}`), `${component}: missing grouped showcase`);
     }
     assert.match(foundationSource, /demo-variant-title/);

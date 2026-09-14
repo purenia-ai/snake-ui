@@ -16,7 +16,7 @@
             <slot name="loading">
                 <image v-if="loadingImg" class="snake-image__status-image" :src="loadingImg" mode="aspectFit" />
                 <snake-icon v-else-if="loadingIcon" :name="loadingIcon" />
-                <snake-loading-icon v-else size="20" />
+                <snake-loading v-else size="20" />
             </slot>
         </view>
         <view v-else-if="status === 'error' && showError" class="snake-image__status snake-image__status--error">

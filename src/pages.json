@@ -48,7 +48,7 @@
             "root": "pages/componentsA",
             "pages": [
                 { "path": "button/index", "style": { "navigationBarTitleText": "按钮" } },
-                { "path": "loadingIcon/index", "style": { "navigationBarTitleText": "加载图标" } },
+                { "path": "loading/index", "style": { "navigationBarTitleText": "加载" } },
                 { "path": "skeleton/index", "style": { "navigationBarTitleText": "骨架屏" } },
                 { "path": "transition/index", "style": { "navigationBarTitleText": "过渡动画" } },
                 { "path": "rootPortal/index", "style": { "navigationBarTitleText": "根节点传送" } },

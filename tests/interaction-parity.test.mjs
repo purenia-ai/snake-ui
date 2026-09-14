@@ -14,7 +14,7 @@ test('feedback components expose complete states and interactions', async () => 
     for (const name of ['mode', 'iconSize', 'fontSize', 'marginTop']) assert.match(empty, new RegExp(`${name}\\?`));
     for (const name of ['iconType', 'isDot', 'height', 'loadmore']) assert.match(loadmore, new RegExp(name));
     assert.equal((loadmoreSource.match(/<SnakeLine/g) || []).length, 2);
-    assert.match(loadmoreSource, /<LoadingIcon[\s\S]*size="34"/);
+    assert.match(loadmoreSource, /<Loading[\s\S]*size="34"/);
     assert.match(loadmoreSource, /height: props\.height === 'auto' \? 'auto' : addUnit\(props\.height, 'rpx'\)/);
     for (const name of ['autoplay', 'moreIcon', 'closeIcon', 'playState', 'isCircular']) assert.match(notice, new RegExp(`${name}\\?`));
 });

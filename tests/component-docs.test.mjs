@@ -26,7 +26,7 @@ const standardizedDocs = [
     'overlay',
     'notice-bar',
     'empty',
-    'loading-icon',
+    'loading',
     'skeleton',
     'navbar',
     'tabbar',

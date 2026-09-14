@@ -437,7 +437,7 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 - Button 按钮
 - Icon 图标
 - Image 图片
-- LoadingIcon 加载图标
+- Loading 加载
 - Skeleton 骨架屏
 - Transition 过渡动画
 - RootPortal 根节点传送
@@ -1478,7 +1478,7 @@ Form 容器没有独立视觉令牌，FormItem 直接使用以下全局变量：
 
 <snake-image src="/static/product.png" width="100%" height="220rpx">
   <template #loading>
-    <snake-loading-icon size="24" />
+    <snake-loading size="24" />
   </template>
 </snake-image>
 ```
@@ -1534,13 +1534,7 @@ Form 容器没有独立视觉令牌，FormItem 直接使用以下全局变量：
 传入 `preview` 后，点击图片会调用 `uni.previewImage`。使用 `preview-urls` 可提供预览图集合；集合应包含当前 `src`。
 
 ```vue
-<snake-image
-  src="/static/product-1.png"
-  width="240rpx"
-  height="240rpx"
-  preview
-  :preview-urls="['/static/product-1.png', '/static/product-2.png']"
-/>
+<snake-image src="/static/product-1.png" width="240rpx" height="240rpx" preview :preview-urls="['/static/product-1.png', '/static/product-2.png']" />
 ```
 
 ## API
@@ -1554,7 +1548,7 @@ Form 容器没有独立视觉令牌，FormItem 直接使用以下全局变量：
 | `width` / `height`                           | 容器尺寸               | `string \| number`                | `100% / auto`       |
 | `shape` / `radius`                           | 形状和圆角             | `square\|circle / string\|number` | `square / 0`        |
 | `lazyLoad` / `lazyThreshold`                 | 视口懒加载及预加载距离 | `boolean / number`                | `false / 100`       |
-| `webp`                                        | 使用 WebP              | `boolean`                         | `false`             |
+| `webp`                                       | 使用 WebP              | `boolean`                         | `false`             |
 | `showMenuByLongpress`                        | 长按显示识别菜单       | `boolean`                         | `false`             |
 | `fade` / `duration`                          | 淡入及其时长           | `boolean / number`                | `true / 300`        |
 | `showLoading` / `loadingIcon` / `loadingImg` | 加载反馈与图片占位     | `boolean / string / string`       | `true / '' / ''`    |
@@ -1835,12 +1829,12 @@ indexListRef.value?.update();
 
 ```vue
 <snake-input
-  v-model="phone"
-  type="number"
-  confirm-type="done"
-  :formatter="value => value.replace(/\D/g, '').slice(0, 11)"
-  format-trigger="input"
-  @confirm="submit"
+    v-model="phone"
+    type="number"
+    confirm-type="done"
+    :formatter="value => value.replace(/\D/g, '').slice(0, 11)"
+    format-trigger="input"
+    @confirm="submit"
 />
 ```
 
@@ -2145,11 +2139,11 @@ Snake UI 提供覆盖基础交互、表单和商城装修场景的组件。输�
 | ----------------------- | -------------- |
 | `--snake-color-primary` | 超链接默认颜色 |
 
-<!-- Source: docs/components/loading-icon.md -->
+<!-- Source: docs/components/loading.md -->
 
-# LoadingIcon 加载图标
+# Loading 加载
 
-统一的加载状态组件，供 Button、Image 以及业务页面复用，支持圆环和花朵两种形态。
+用于按钮、图片和页面中的加载反馈，支持圆环、旋转条、跳动点和波浪四种形态。
 
 ## 平台兼容性
 
@@ -2160,41 +2154,40 @@ Snake UI 提供覆盖基础交互、表单和商城装修场景的组件。输�
 ## 基础用法
 
 ```vue
-<snake-loading-icon />
-<snake-loading-icon mode="spinner" color="#06D290" :size="28" text="加载中" />
-<snake-loading-icon vertical text="正在提交" />
+<snake-loading />
+<snake-loading type="spinner" direction="horizontal" color="#06D290" :size="28" text="加载中" />
+<snake-loading type="dots">正在提交</snake-loading>
 ```
-
-页面级加载建议与请求状态绑定；组件仅负责视觉反馈，不会阻止重复操作，提交类场景仍应同时禁用触发按钮。
 
 ## API
 
 ### Props
 
-| 参数             | 说明                   | 类型                        | 默认值           |
-| ---------------- | ---------------------- | --------------------------- | ---------------- |
-| `show`           | 是否显示               | `boolean`                   | `true`           |
-| `mode`           | 加载形态               | `circle \| spinner`         | `circle`         |
-| `color`          | 活动颜色               | `string`                    | Snake 主色       |
-| `inactiveColor`  | 非活动颜色             | `string`                    | Snake 边框色     |
-| `size`           | 图标尺寸，数字按 rpx   | `string \| number`          | `20`             |
-| `text`           | 提示文字               | `string`                    | `''`             |
-| `textColor`      | 文字颜色               | `string`                    | Snake 次要文字色 |
-| `textSize`       | 文字尺寸，数字按 rpx   | `string \| number`          | `14`             |
-| `vertical`       | 图标与文字是否垂直排列 | `boolean`                   | `false`          |
-| `timingFunction` | 动画曲线               | `string`                    | `linear`         |
-| `duration`       | 旋转周期，单位 ms      | `number`                    | `1000`           |
-| `customStyle`    | 根节点样式             | `string \| object \| array` | `''`             |
+| 参数                          | 说明                      | 类型                                  | 默认值            |
+| ----------------------------- | ------------------------- | ------------------------------------- | ----------------- |
+| `show`                        | 是否显示                  | `boolean`                             | `true`            |
+| `type`                        | 加载形态                  | `circular \| spinner \| dots \| wave` | `circular`        |
+| `color`                       | 图标颜色                  | `string`                              | Snake 主色        |
+| `size`                        | 图标尺寸，数字按 rpx 处理 | `string \| number`                    | `34`              |
+| `text`                        | 默认文字                  | `string`                              | `''`              |
+| `textColor` / `textSize`      | 文字颜色与尺寸            | `string` / `string \| number`         | 次要文字色 / `14` |
+| `direction`                   | 图标与文字排列方向        | `horizontal \| vertical`              | `vertical`        |
+| `inheritColor`                | 是否继承父级颜色          | `boolean`                             | `false`           |
+| `duration`                    | 动画周期，单位 ms         | `number`                              | `800`             |
+| `customClass` / `customStyle` | 根节点类名与样式          | `string` / `StyleValue`               | `''`              |
+
+### Slots
+
+| 名称      | 说明                            |
+| --------- | ------------------------------- |
+| `default` | 自定义加载文字，优先于 `text`。 |
 
 ## 主题变量
 
-| 变量                       | 用途           |
-| -------------------------- | -------------- |
-| `--snake-color-primary`    | 默认活动颜色   |
-| `--snake-color-border`     | 默认非活动颜色 |
-| `--snake-color-text-muted` | 默认文字颜色   |
-
-`color`、`inactiveColor` 和 `textColor` 可以覆盖单个实例的颜色。
+| 变量                       | 用途         |
+| -------------------------- | ------------ |
+| `--snake-color-primary`    | 默认图标颜色 |
+| `--snake-color-text-muted` | 默认文字颜色 |
 
 <!-- Source: docs/components/loadmore.md -->
 
@@ -3132,7 +3125,16 @@ const cascade = [{ label: '华东', value: 'east', children: [{ label: '上海',
 ```
 
 ```ts
-const regions = [{ label: '华东', value: 'east', children: [{ label: '上海', value: 'sh' }, { label: '杭州', value: 'hz' }] }];
+const regions = [
+    {
+        label: '华东',
+        value: 'east',
+        children: [
+            { label: '上海', value: 'sh' },
+            { label: '杭州', value: 'hz' }
+        ]
+    }
+];
 
 function onConfirm(values) {
     // values: [{ value: 'east', label: '华东' }, { value: 'sh', label: '上海' }]
@@ -3378,14 +3380,14 @@ import Popup from '@puresnake/snake-ui/components/snake-popup/snake-popup.vue';
 
 #### Props
 
-| 参数          | 说明                       | 类型                              | 默认值 |
-| ------------- | -------------------------- | --------------------------------- | ------ |
-| `variant`     | 占位形态                   | `text \| rect \| circle \| image` | `text` |
-| `width`       | 宽度，数字按 px            | `string \| number`                | 按形态 |
-| `height`      | 高度，数字按 px            | `string \| number`                | 按形态 |
-| `radius`      | 圆角，数字按 px            | `string \| number`                | 按形态 |
-| `animated`    | 动画开关，默认继承骨架容器 | `boolean`                         | `true` |
-| `customStyle` | 根节点样式                 | `string \| object \| array`       | `''`   |
+| 参数          | 说明                                  | 类型                              | 默认值 |
+| ------------- | ------------------------------------- | --------------------------------- | ------ |
+| `variant`     | 占位形态                              | `text \| rect \| circle \| image` | `text` |
+| `width`       | 宽度，裸数字按 rpx；默认值显式使用 px | `string \| number`                | 按形态 |
+| `height`      | 高度，裸数字按 rpx；默认值显式使用 px | `string \| number`                | 按形态 |
+| `radius`      | 圆角，裸数字按 rpx；默认值显式使用 px | `string \| number`                | 按形态 |
+| `animated`    | 动画开关，默认继承骨架容器            | `boolean`                         | `true` |
+| `customStyle` | 根节点样式                            | `string \| object \| array`       | `''`   |
 
 ## 主题变量
 
@@ -3495,15 +3497,15 @@ H5 中轨道可通过 Tab 聚焦，方向键按照 `step` 调整数值；触摸�
 
 ### Props
 
-| 参数                          | 说明                           | 类型               | 默认值             |
-| ----------------------------- | ------------------------------ | ------------------ | ------------------ |
-| `offsetTop`                   | 吸顶偏移，数字按 px            | `string \| number` | `0`                |
-| `customNavHeight`             | 自定义导航栏高度               | `string \| number` | `0`                |
-| `scrollTop`                   | 外部滚动位置；也会监听页面滚动 | `number`           | `0`                |
-| `zIndex` / `bgColor`          | 层级和背景                     | `number / string`  | `10 / transparent` |
-| `disabled`                    | 禁用吸顶                       | `boolean`          | `false`            |
-| `index`                       | 事件携带的业务索引             | `string \| number` | `0`                |
-| `customClass` / `customStyle` | 自定义类名和样式               | 多类型             | `''`               |
+| 参数                          | 说明                                     | 类型               | 默认值             |
+| ----------------------------- | ---------------------------------------- | ------------------ | ------------------ |
+| `offsetTop`                   | 吸顶偏移，裸数字按 rpx，显式 px 原样使用 | `string \| number` | `0`                |
+| `customNavHeight`             | 自定义导航栏高度                         | `string \| number` | `0`                |
+| `scrollTop`                   | 外部滚动位置；也会监听页面滚动           | `number`           | `0`                |
+| `zIndex` / `bgColor`          | 层级和背景                               | `number / string`  | `10 / transparent` |
+| `disabled`                    | 禁用吸顶                                 | `boolean`          | `false`            |
+| `index`                       | 事件携带的业务索引                       | `string \| number` | `0`                |
+| `customClass` / `customStyle` | 自定义类名和样式                         | 多类型             | `''`               |
 
 ### Events
 
@@ -3668,8 +3670,8 @@ const banners = [
 
 ### Slots
 
-| 插槽名      | 说明           |
-| ----------- | -------------- |
+| 插槽名      | 说明                                        |
+| ----------- | ------------------------------------------- |
 | `indicator` | 替换内置指示器，参数为 `{ current, total }` |
 
 ## 主题变量
@@ -4225,13 +4227,7 @@ Tooltip 用于展示与触发元素相关的简短说明或非操作性内容。
 `duration` 可传对象，为进入和离开设置不同节奏；通过生命周期事件衔接数据准备或资源清理。
 
 ```vue
-<snake-transition
-  :show="visible"
-  name="slide-up"
-  :duration="{ enter: 220, leave: 160 }"
-  @after-enter="loadPanelData"
-  @after-leave="resetPanel"
->
+<snake-transition :show="visible" name="slide-up" :duration="{ enter: 220, leave: 160 }" @after-enter="loadPanelData" @after-leave="resetPanel">
   <view class="sheet">内容</view>
 </snake-transition>
 ```
@@ -4330,13 +4326,13 @@ const uploadToOss: UploadRequest = async (file, { onProgress }) => {
 
 ```vue
 <snake-upload
-  ref="uploadRef"
-  v-model="files"
-  action="https://example.com/upload"
-  :max-count="3"
-  :max-size="5 * 1024 * 1024"
-  @on-oversize="onOversize"
-  @on-error="onUploadError"
+    ref="uploadRef"
+    v-model="files"
+    action="https://example.com/upload"
+    :max-count="3"
+    :max-size="5 * 1024 * 1024"
+    @on-oversize="onOversize"
+    @on-error="onUploadError"
 />
 ```
 

@@ -6,7 +6,7 @@ import ts from 'typescript';
 const root = new URL('../src/uni_modules/snake-ui/', import.meta.url);
 const components = [
     'snake-button',
-    'snake-loading-icon',
+    'snake-loading',
     'snake-skeleton',
     'snake-skeleton-item',
     'snake-transition',
@@ -193,7 +193,7 @@ test('package entry exposes precise foundation component props', async () => {
     const declarations = await readFile(new URL('types/components.d.ts', root), 'utf8');
     for (const component of [
         'Button',
-        'LoadingIcon',
+        'Loading',
         'Transition',
         'RootPortal',
         'Empty',

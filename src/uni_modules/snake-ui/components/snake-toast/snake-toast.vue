@@ -1,30 +1,18 @@
 <template>
     <view
         class="snake-toast"
-        :class="[
-            isShow ? 'snake-show' : '',
-            'snake-type-' + (tmpConfig.type || 'default'),
-            'snake-position-' + tmpConfig.position,
-            customClass
-        ]"
-        :style="toStyle({ zIndex: uZIndex }, customStyle as string | Record<string, any>)"
-    >
+        :class="[isShow ? 'snake-show' : '', 'snake-type-' + (tmpConfig.type || 'default'), 'snake-position-' + tmpConfig.position, customClass]"
+        :style="toStyle({ zIndex: uZIndex }, customStyle as string | Record<string, any>)">
         <view class="snake-toast__icon-wrap">
             <!-- loading 类型走独立的加载动画组件 -->
-            <snake-loading-icon
-                v-if="tmpConfig.loading"
-                mode="circle"
-                color="currentColor"
-                custom-style="margin-right: 16rpx;"
-            ></snake-loading-icon>
+            <snake-loading v-if="tmpConfig.loading" type="circular" color="currentColor" custom-style="margin-right: 16rpx;"></snake-loading>
             <!-- 其它类型仍然使用图标 -->
             <snake-icon
                 v-else-if="tmpConfig.icon && iconName"
                 :name="iconName"
                 :size="20"
                 color="currentColor"
-                custom-style="margin-right: 10rpx;"
-            ></snake-icon>
+                custom-style="margin-right: 10rpx;"></snake-icon>
         </view>
         <text class="snake-toast__text">{{ tmpConfig.title }}</text>
     </view>
@@ -45,7 +33,7 @@ import { deepMerge } from '../../libs/function/deepMerge';
 import { type2icon } from '../../libs/function/type2icon';
 import { route } from '../../libs/function/route';
 import { emitter } from '../../libs/function/emitter';
-import LoadingIcon from '../snake-loading-icon/snake-loading-icon.vue';
+import SnakeLoading from '../snake-loading/snake-loading.vue';
 import Icon from '../snake-icon/snake-icon.vue';
 import { toastProps } from './types';
 import type { ToastExpose } from './types';
@@ -175,20 +163,12 @@ const isPage = computed(() => !!props.page);
 
 // 显示事件
 const showEvent = computed(() =>
-    isGlobal.value
-        ? SNAKE_TOAST_GLOBAL_EVENT_SHOW
-        : isPage.value
-          ? getEventWithCurrentPage(SNAKE_TOAST_EVENT_SHOW, props.page)
-          : ''
+    isGlobal.value ? SNAKE_TOAST_GLOBAL_EVENT_SHOW : isPage.value ? getEventWithCurrentPage(SNAKE_TOAST_EVENT_SHOW, props.page) : ''
 );
 
 // 隐藏事件
 const hideEvent = computed(() =>
-    isGlobal.value
-        ? SNAKE_TOAST_GLOBAL_EVENT_HIDE
-        : isPage.value
-          ? getEventWithCurrentPage(SNAKE_TOAST_EVENT_HIDE, props.page)
-          : ''
+    isGlobal.value ? SNAKE_TOAST_GLOBAL_EVENT_HIDE : isPage.value ? getEventWithCurrentPage(SNAKE_TOAST_EVENT_HIDE, props.page) : ''
 );
 
 // 开始监听事件
@@ -306,21 +286,21 @@ defineExpose<ToastExpose>({
 }
 
 .snake-type-error {
-    color: var(--snake-color-error, #FA3534);
-    background-color: var(--snake-color-error-light, #FEF0F0);
-    border: 1px solid var(--snake-color-error-light, #FEF0F0);
+    color: var(--snake-color-error, #fa3534);
+    background-color: var(--snake-color-error-light, #fef0f0);
+    border: 1px solid var(--snake-color-error-light, #fef0f0);
 }
 
 .snake-type-warning {
-    color: var(--snake-color-warning, #FF9900);
-    background-color: var(--snake-color-warning-light, #FDF6EC);
-    border: 1px solid var(--snake-color-warning-light, #FDF6EC);
+    color: var(--snake-color-warning, #ff9900);
+    background-color: var(--snake-color-warning-light, #fdf6ec);
+    border: 1px solid var(--snake-color-warning-light, #fdf6ec);
 }
 
 .snake-type-info {
     color: var(--snake-color-info, #909399);
-    background-color: var(--snake-color-info-light, #F4F4F5);
-    border: 1px solid var(--snake-color-info-light, #F4F4F5);
+    background-color: var(--snake-color-info-light, #f4f4f5);
+    border: 1px solid var(--snake-color-info-light, #f4f4f5);
 }
 
 .snake-type-default {

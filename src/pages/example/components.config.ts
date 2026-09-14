@@ -32,7 +32,7 @@ const componentGroups: ComponentGroup[] = [
             item('/pages/componentsA/button/index', 'Button 按钮', 'Button', '触发即时操作，支持主题、朴素、禁用和加载状态。'),
             item('/pages/componentsA/icon/index', 'Icon 图标', 'Icon', '常用图标集合，支持自定义尺寸与颜色。'),
             item('/pages/componentsA/image/index', 'Image 图片', 'Image', '图片展示，支持视口懒加载、占位、圆角与自适应模式。'),
-            item('/pages/componentsA/loadingIcon/index', 'LoadingIcon 加载图标', 'LoadingIcon', '统一展示组件和页面中的加载状态。'),
+            item('/pages/componentsA/loading/index', 'Loading 加载', 'Loading', '统一展示组件和页面中的加载状态。'),
             item('/pages/componentsA/skeleton/index', 'Skeleton 骨架屏', 'Skeleton', '在首次加载时预显示页面结构。'),
             item('/pages/componentsA/transition/index', 'Transition 过渡动画', 'Transition', '提供一致的跨端进出场动画。'),
             item(

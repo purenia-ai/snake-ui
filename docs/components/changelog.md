@@ -14,7 +14,7 @@
 - Button 按钮
 - Icon 图标
 - Image 图片
-- LoadingIcon 加载图标
+- Loading 加载
 - Skeleton 骨架屏
 - Transition 过渡动画
 - RootPortal 根节点传送

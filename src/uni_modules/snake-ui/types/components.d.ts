@@ -2,7 +2,7 @@ import type { DefineComponent } from 'vue';
 import type { ActivityListEmits, ActivityListProps } from '../components/snake-activity-list/types';
 import type { AuxiliarySegmentationProps } from '../components/snake-auxiliary-segmentation/types';
 import type { ButtonEmits, ButtonProps } from '../components/snake-button/types';
-import type { LoadingIconProps } from '../components/snake-loading-icon/types';
+import type { LoadingProps } from '../components/snake-loading/types';
 import type { SkeletonProps } from '../components/snake-skeleton/types';
 import type { SkeletonItemProps } from '../components/snake-skeleton-item/types';
 import type { TransitionEmits, TransitionProps } from '../components/snake-transition/types';
@@ -73,7 +73,7 @@ import type { FloatingBubbleProps } from '../components/snake-floating-bubble/ty
 import type { VideosProps } from '../components/snake-videos/types';
 
 export * from '../components/snake-button/types';
-export * from '../components/snake-loading-icon/types';
+export * from '../components/snake-loading/types';
 export * from '../components/snake-skeleton/types';
 export * from '../components/snake-skeleton-item/types';
 export * from '../components/snake-transition/types';
@@ -180,7 +180,7 @@ export const SnakeRichText: Component<RichTextProps>;
 export const SnakeFloatingBubble: Component<FloatingBubbleProps>;
 export const SnakeVideos: Component<VideosProps>;
 export const SnakeButton: Component<ButtonProps, ButtonEmits>;
-export const SnakeLoadingIcon: Component<LoadingIconProps>;
+export const SnakeLoading: Component<LoadingProps>;
 export const SnakeSkeleton: Component<SkeletonProps>;
 export const SnakeSkeletonItem: Component<SkeletonItemProps>;
 export const SnakeTransition: Component<TransitionProps, TransitionEmits>;

@@ -395,7 +395,7 @@ Object.assign(englishMessages, {
 
 const demoTitles: Record<string, string> = {
     button: 'Button',
-    'loading-icon': 'Loading Icon',
+    loading: 'Loading',
     transition: 'Transition',
     'root-portal': 'Root Portal',
     empty: 'Empty',

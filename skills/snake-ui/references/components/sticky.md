@@ -30,15 +30,15 @@ triggers: ['sticky', 'snake-sticky', 'Sticky', '吸顶']
 
 ### Props
 
-| 参数                          | 说明                           | 类型               | 默认值             |
-| ----------------------------- | ------------------------------ | ------------------ | ------------------ |
-| `offsetTop`                   | 吸顶偏移，数字按 px            | `string \| number` | `0`                |
-| `customNavHeight`             | 自定义导航栏高度               | `string \| number` | `0`                |
-| `scrollTop`                   | 外部滚动位置；也会监听页面滚动 | `number`           | `0`                |
-| `zIndex` / `bgColor`          | 层级和背景                     | `number / string`  | `10 / transparent` |
-| `disabled`                    | 禁用吸顶                       | `boolean`          | `false`            |
-| `index`                       | 事件携带的业务索引             | `string \| number` | `0`                |
-| `customClass` / `customStyle` | 自定义类名和样式               | 多类型             | `''`               |
+| 参数                          | 说明                                     | 类型               | 默认值             |
+| ----------------------------- | ---------------------------------------- | ------------------ | ------------------ |
+| `offsetTop`                   | 吸顶偏移，裸数字按 rpx，显式 px 原样使用 | `string \| number` | `0`                |
+| `customNavHeight`             | 自定义导航栏高度                         | `string \| number` | `0`                |
+| `scrollTop`                   | 外部滚动位置；也会监听页面滚动           | `number`           | `0`                |
+| `zIndex` / `bgColor`          | 层级和背景                               | `number / string`  | `10 / transparent` |
+| `disabled`                    | 禁用吸顶                                 | `boolean`          | `false`            |
+| `index`                       | 事件携带的业务索引                       | `string \| number` | `0`                |
+| `customClass` / `customStyle` | 自定义类名和样式                         | 多类型             | `''`               |
 
 ### Events
 

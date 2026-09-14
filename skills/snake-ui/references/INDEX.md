@@ -28,7 +28,7 @@
 - [LineProgress 线形进度条](components/line-progress.md)
 - [Line 分隔线](components/line.md)
 - [Link 超链接](components/link.md)
-- [LoadingIcon 加载图标](components/loading-icon.md)
+- [Loading 加载](components/loading.md)
 - [Loadmore 加载更多](components/loadmore.md)
 - [Navbar 导航栏](components/navbar.md)
 - [NoNetwork 无网络提示](components/no-network.md)

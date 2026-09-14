@@ -82,14 +82,14 @@ triggers: ['skeleton', 'snake-skeleton', 'Skeleton', '骨架屏']
 
 #### Props
 
-| 参数          | 说明                       | 类型                              | 默认值 |
-| ------------- | -------------------------- | --------------------------------- | ------ |
-| `variant`     | 占位形态                   | `text \| rect \| circle \| image` | `text` |
-| `width`       | 宽度，数字按 px            | `string \| number`                | 按形态 |
-| `height`      | 高度，数字按 px            | `string \| number`                | 按形态 |
-| `radius`      | 圆角，数字按 px            | `string \| number`                | 按形态 |
-| `animated`    | 动画开关，默认继承骨架容器 | `boolean`                         | `true` |
-| `customStyle` | 根节点样式                 | `string \| object \| array`       | `''`   |
+| 参数          | 说明                                  | 类型                              | 默认值 |
+| ------------- | ------------------------------------- | --------------------------------- | ------ |
+| `variant`     | 占位形态                              | `text \| rect \| circle \| image` | `text` |
+| `width`       | 宽度，裸数字按 rpx；默认值显式使用 px | `string \| number`                | 按形态 |
+| `height`      | 高度，裸数字按 rpx；默认值显式使用 px | `string \| number`                | 按形态 |
+| `radius`      | 圆角，裸数字按 rpx；默认值显式使用 px | `string \| number`                | 按形态 |
+| `animated`    | 动画开关，默认继承骨架容器            | `boolean`                         | `true` |
+| `customStyle` | 根节点样式                            | `string \| object \| array`       | `''`   |
 
 ## 主题变量
 

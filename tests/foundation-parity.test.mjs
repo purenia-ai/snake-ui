@@ -10,19 +10,19 @@ test('first parity batch exposes reusable transition and loading foundations', a
         read('index.ts'),
         read('types/components.d.ts'),
         read('components/snake-transition/snake-transition.vue'),
-        read('components/snake-loading-icon/snake-loading-icon.vue')
+        read('components/snake-loading/snake-loading.vue')
     ]);
     for (const [name, dir] of [
         ['Transition', 'snake-transition'],
-        ['LoadingIcon', 'snake-loading-icon']
+        ['Loading', 'snake-loading']
     ]) {
         assert.match(entry, new RegExp(`export \\* from './components/${dir}/types'`));
         assert.match(declarations, new RegExp(`export const Snake${name}:`));
     }
     assert.match(transition, /after-enter/);
     assert.match(transition, /after-leave/);
-    assert.match(loading, /mode === 'circle'/);
-    assert.match(loading, /v-for="index in 12"/);
+    assert.match(loading, /type === 'circular'/);
+    assert.match(loading, /v-for="index in spinnerDots"/);
 });
 
 test('button has full state and native capability contract', async () => {
@@ -100,7 +100,7 @@ test('popup exposes overlay scroll locking as a public option', async () => {
 test('parity batch does not restore uView runtime names', async () => {
     const paths = [
         'components/snake-transition/snake-transition.vue',
-        'components/snake-loading-icon/snake-loading-icon.vue',
+        'components/snake-loading/snake-loading.vue',
         'components/snake-button/snake-button.vue',
         'components/snake-icon/snake-icon.vue',
         'components/snake-image/snake-image.vue',

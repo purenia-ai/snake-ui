@@ -32,7 +32,7 @@ triggers: ['image', 'snake-image', 'Image', '图片']
 
 <snake-image src="/static/product.png" width="100%" height="220rpx">
   <template #loading>
-    <snake-loading-icon size="24" />
+    <snake-loading size="24" />
   </template>
 </snake-image>
 ```

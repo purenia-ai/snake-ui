@@ -8,7 +8,7 @@
 import { computed, inject } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import { formItemKey } from '../snake-form-item/types';
-import LoadingIcon from '../snake-loading-icon/snake-loading-icon.vue';
+import SnakeLoading from '../snake-loading/snake-loading.vue';
 import type { SwitchEmits, SwitchProps } from './types';
 defineOptions({ name: 'SnakeSwitch', options: { virtualHost: true, styleIsolation: 'shared' } });
 const props = withDefaults(defineProps<SwitchProps>(), {
@@ -48,8 +48,7 @@ function toggle(event: unknown) {
     emit('click', event);
     if (props.disabled || props.loading) return;
     const next = checked.value ? props.inactiveValue : props.activeValue;
-    if (props.vibrateShort && typeof uni !== 'undefined' && uni.vibrateShort)
-        uni.vibrateShort({ fail: () => undefined });
+    if (props.vibrateShort && typeof uni !== 'undefined' && uni.vibrateShort) uni.vibrateShort({ fail: () => undefined });
     emit('update:modelValue', next);
     emit('change', next);
     void formItem?.notify('change');
@@ -68,10 +67,7 @@ function toggle(event: unknown) {
         @keydown.enter.prevent="toggle($event)"
         @keydown.space.prevent="toggle($event)"
         ><view class="snake-switch__thumb" :style="thumbStyle"
-            ><snake-loading-icon
-                v-if="loading"
-                :size="numericSize * 0.55"
-                :color="checked ? activeColor : '#909399'" /></view
+            ><snake-loading v-if="loading" :size="numericSize * 0.55" :color="checked ? activeColor : '#909399'" /></view
     ></view>
 </template>
 <style scoped>
