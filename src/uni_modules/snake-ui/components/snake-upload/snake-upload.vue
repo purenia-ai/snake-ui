@@ -1,17 +1,12 @@
 <template>
-    <view
-        v-if="!disabled"
-        class="snake-upload"
-        :class="[customClass, { 'snake-upload--list': props.mode === 'list' }]"
-        :style="toStyle(customStyle)"
-    >
+    <view v-if="!disabled" class="snake-upload" :class="[customClass, { 'snake-upload--list': props.mode === 'list' }]" :style="toStyle(customStyle)">
         <!-- 列表模式 -->
         <template v-if="props.mode === 'list'">
             <view v-if="showUploadList" class="snake-upload-list">
                 <view
                     v-for="(item, index) in lists"
                     class="snake-upload-list__item"
-                    :key="index"
+                    :key="fileKey(item)"
                     :class="{ 'snake-upload-list__item--error': item.error }"
                 >
                     <!-- 左侧：图片缩略图或文件图标 -->
@@ -51,20 +46,10 @@
                         </text>
                         <!-- 进度条 -->
                         <view
-                            v-if="
-                                showProgress &&
-                                item.progress !== undefined &&
-                                item.progress > 0 &&
-                                item.progress < 100 &&
-                                !item.error
-                            "
+                            v-if="showProgress && item.progress !== undefined && item.progress > 0 && item.progress < 100 && !item.error"
                             class="snake-upload-list__progress"
                         >
-                            <snake-line-progress
-                                height="4"
-                                :show-percent="false"
-                                :percent="item.progress"
-                            ></snake-line-progress>
+                            <snake-line-progress height="4" :show-percent="false" :percent="item.progress"></snake-line-progress>
                         </view>
                         <view
                             v-if="item.error"
@@ -98,18 +83,8 @@
             <!-- 列表模式：添加按钮 -->
             <view v-if="Number(maxCount) > lists.length" class="snake-upload-list__add" @tap="selectFile">
                 <slot name="addBtn"></slot>
-                <view
-                    v-if="!customBtn"
-                    class="snake-upload-list__add-btn"
-                    hover-class="snake-upload-list__add-btn--hover"
-                    :hover-stay-time="150"
-                >
-                    <snake-icon
-                        name="plus"
-                        size="32"
-                        color="var(--snake-color-primary, #06D290)"
-                        :custom-style="addIconStyle"
-                    ></snake-icon>
+                <view v-if="!customBtn" class="snake-upload-list__add-btn" hover-class="snake-upload-list__add-btn--hover" :hover-stay-time="150">
+                    <snake-icon name="plus" size="32" color="var(--snake-color-primary, #06D290)" :custom-style="addIconStyle"></snake-icon>
                     <text class="snake-upload-list__add-text">{{ uploadBtnText }}</text>
                 </view>
             </view>
@@ -122,7 +97,7 @@
                     v-for="(item, index) in lists"
                     class="snake-upload-grid__item snake-upload-grid__preview"
                     :class="{ 'snake-upload-grid__item--circle': props.imageShape === 'circle' }"
-                    :key="index"
+                    :key="fileKey(item)"
                     :style="{
                         width: addUnit(width),
                         height: addUnit(height)
@@ -140,21 +115,13 @@
                     </view>
                     <view class="snake-upload-grid__progress">
                         <snake-line-progress
-                            v-if="
-                                showProgress &&
-                                item.progress !== undefined &&
-                                item.progress > 0 &&
-                                item.progress !== 100 &&
-                                !item.error
-                            "
+                            v-if="showProgress && item.progress !== undefined && item.progress > 0 && item.progress !== 100 && !item.error"
                             :show-percent="false"
                             height="16"
                             :percent="item.progress"
                         ></snake-line-progress>
                     </view>
-                    <view @tap.stop="retry(index)" v-if="item.error" class="snake-upload-grid__error">{{
-                        t('retry')
-                    }}</view>
+                    <view @tap.stop="retry(index)" v-if="item.error" class="snake-upload-grid__error">{{ t('retry') }}</view>
 
                     <!-- 图片类型预览 -->
                     <template v-if="isImageFile(item)">
@@ -177,13 +144,13 @@
                                 <text
                                     v-if="showFileName && item.name"
                                     class="snake-upload-grid__file-name"
-                                    :style="{ color: item.error ? 'var(--snake-color-error, #fa3534)' : 'var(--snake-color-text-secondary, #606266)' }"
+                                    :style="{
+                                        color: item.error ? 'var(--snake-color-error, #fa3534)' : 'var(--snake-color-text-secondary, #606266)'
+                                    }"
                                 >
                                     {{ getFileName(item) }}
                                 </text>
-                                <text v-if="showFileSize && item.size" class="snake-upload-grid__file-size">{{
-                                    formatFileSize(item.size)
-                                }}</text>
+                                <text v-if="showFileSize && item.size" class="snake-upload-grid__file-size">{{ formatFileSize(item.size) }}</text>
                             </view>
                         </view>
                     </template>
@@ -198,7 +165,9 @@
                                 <text
                                     v-if="showFileName && item.name"
                                     class="snake-upload-grid__file-name"
-                                    :style="{ color: item.error ? 'var(--snake-color-error, #fa3534)' : 'var(--snake-color-text-secondary, #606266)' }"
+                                    :style="{
+                                        color: item.error ? 'var(--snake-color-error, #fa3534)' : 'var(--snake-color-text-secondary, #606266)'
+                                    }"
                                 >
                                     {{ getFileName(item) }}
                                 </text>
@@ -220,16 +189,11 @@
                     :hover-stay-time="150"
                     :class="{ 'snake-upload-grid__item--circle': props.imageShape === 'circle' }"
                     :style="{
-                            width: addUnit(width),
-                            height: addUnit(height)
+                        width: addUnit(width),
+                        height: addUnit(height)
                     }"
                 >
-                    <snake-icon
-                        name="plus"
-                        class="snake-upload-grid__add-icon"
-                        size="40"
-                        :custom-style="addIconStyle"
-                    ></snake-icon>
+                    <snake-icon name="plus" class="snake-upload-grid__add-icon" size="40" :custom-style="addIconStyle"></snake-icon>
                     <view class="snake-upload-grid__add-text">{{ uploadBtnText }}</view>
                 </view>
             </view>
@@ -256,7 +220,7 @@ import { useLocale } from '../../libs/hooks/useLocale';
 import { toStyle } from '../../libs/function/style';
 import { addUnit } from '../../libs/function/unit';
 import { uploadProps } from './types';
-import type { UploadFileItem } from './types';
+import type { UploadEmits, UploadFileItem } from './types';
 
 // 通过 flex 容器居中图标；补齐图标根节点的行盒约束，
 // 避免字体基线在不同运行端造成加号和关闭图标的视觉偏移。
@@ -343,27 +307,21 @@ const props = defineProps(uploadProps);
 
 const { t } = useLocale('upload');
 
-const emit = defineEmits([
-    'on-list-change',
-    'on-oversize',
-    'on-exceed',
-    'on-choose',
-    'on-choose-complete',
-    'on-choose-fail',
-    'on-uploaded',
-    'on-success',
-    'on-error',
-    'on-change',
-    'on-progress',
-    'on-remove',
-    'on-preview',
-    'update:modelValue',
-    'customUpload', 'chooseStart', 'chooseComplete', 'error',
-    'afterRead', 'beforeRead', 'oversize', 'delete', 'clickPreview'
-]);
+const emit = defineEmits<UploadEmits>();
 
 const lists = ref<UploadFileItem[]>([]);
 const uploading = ref(false);
+const fileKeys = new WeakMap<UploadFileItem, string>();
+let fileKeySeed = 0;
+
+function fileKey(file: UploadFileItem): string {
+    let key = fileKeys.get(file);
+    if (!key) {
+        key = `snake-upload-${fileKeySeed++}`;
+        fileKeys.set(file, key);
+    }
+    return key;
+}
 
 // 默认文件图标映射
 const defaultFileIconMap: Record<string, { name: string; bgColor: string }> = {
@@ -671,9 +629,13 @@ function selectFile() {
 
     if (props.isCustomUpload) {
         emit('customUpload', {
-            accept: props.accept, multiple: props.multiple, capture: props.sourceType,
-            compressed: props.compressed, maxDuration: props.maxDuration,
-            sizeType: props.sizeType, camera: props.camera,
+            accept: props.accept,
+            multiple: props.multiple,
+            capture: props.sourceType,
+            compressed: props.compressed,
+            maxDuration: props.maxDuration,
+            sizeType: props.sizeType,
+            camera: props.camera,
             maxCount: Number(props.maxCount) - lists.value.length,
             chooseFile: chooseLegacyFiles
         });
@@ -722,11 +684,14 @@ function chooseLegacyFiles(options: Record<string, any> = {}): Promise<any[]> {
             count: options.multiple === false ? 1 : Math.min(maxCount, 9),
             sourceType: options.capture || options.sourceType || props.sourceType,
             sizeType: options.sizeType || props.sizeType,
-            success: (res: any) => resolve((res.tempFiles || []).map((file: any, index: number) => ({
-                ...file,
-                url: file.path || res.tempFilePaths?.[index],
-                path: file.path || res.tempFilePaths?.[index]
-            }))),
+            success: (res: any) =>
+                resolve(
+                    (res.tempFiles || []).map((file: any, index: number) => ({
+                        ...file,
+                        url: file.path || res.tempFilePaths?.[index],
+                        path: file.path || res.tempFilePaths?.[index]
+                    }))
+                ),
             fail: reject
         });
     });
@@ -1203,11 +1168,7 @@ async function executeBeforeRemove(index: number) {
     // 执行before-remove钩子
     if (props.beforeRemove && typeof props.beforeRemove === 'function') {
         let beforeResponse = props.beforeRemove(index, lists.value);
-        if (
-            typeof beforeResponse === 'object' &&
-            beforeResponse !== null &&
-            typeof (beforeResponse as Promise<any>).then === 'function'
-        ) {
+        if (typeof beforeResponse === 'object' && beforeResponse !== null && typeof (beforeResponse as Promise<any>).then === 'function') {
             await (beforeResponse as Promise<any>)
                 .then(() => {
                     handlerDeleteItem(index);
@@ -1371,24 +1332,7 @@ function checkFileExt(file: { name?: string; path?: string }): boolean {
         allowedExts = props.extension.length > 0 ? (props.extension as string[]) : [];
     } else if (props.accept === 'media') {
         // media 类型，合并图片和视频格式
-        allowedExts = [
-            'png',
-            'jpg',
-            'jpeg',
-            'gif',
-            'webp',
-            'bmp',
-            'svg',
-            'mp4',
-            'avi',
-            'mov',
-            'wmv',
-            'flv',
-            'mkv',
-            'rmvb',
-            '3gp',
-            'm3u8'
-        ];
+        allowedExts = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'svg', 'mp4', 'avi', 'mov', 'wmv', 'flv', 'mkv', 'rmvb', '3gp', 'm3u8'];
     } else {
         // all 类型，允许所有文件
         return true;
@@ -1753,12 +1697,12 @@ defineExpose({
 
 .snake-upload-list__add-btn--hover {
     background: var(--snake-color-disabled-bg, #f1f1f1);
-    border-color: var(--snake-color-primary, #06D290);
+    border-color: var(--snake-color-primary, #06d290);
 }
 
 .snake-upload-list__add-text {
     margin-left: 16rpx;
     font-size: 28rpx;
-    color: var(--snake-color-primary, #06D290);
+    color: var(--snake-color-primary, #06d290);
 }
 </style>

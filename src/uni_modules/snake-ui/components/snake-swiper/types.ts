@@ -3,10 +3,9 @@ import type { ImageMode, StyleValue } from '../../types/global';
 /** Swiper 数据项。 */
 export type SwiperItem = string | Record<string, unknown>;
 /** SwiperIndicatorMode 类型定义。 */
-export type SwiperIndicatorMode = 'round' | 'dot' | 'line' | 'number';
+export type SwiperIndicatorMode = 'round' | 'dot' | 'rect' | 'line' | 'number' | 'none';
 /** SwiperIndicatorPosition 类型定义。 */
-export type SwiperIndicatorPosition =
-    'topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight';
+export type SwiperIndicatorPosition = 'topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight';
 /** Swiper 组件的公开属性。 */
 export interface SwiperProps {
     /** 用于渲染的数据列表。 */
@@ -72,9 +71,9 @@ export interface SwiperChangeDetail {
 /** Swiper 组件的事件契约。 */
 export type SwiperEmits = {
     /** change 事件携带的参数。 */
-    change: [detail: SwiperChangeDetail];
+    change: [current: number];
     /** click 事件携带的参数。 */
-    click: [index: number, item: SwiperItem];
+    click: [index: number];
     /** animationfinish 事件携带的参数。 */
     animationfinish: [detail: SwiperChangeDetail];
 };

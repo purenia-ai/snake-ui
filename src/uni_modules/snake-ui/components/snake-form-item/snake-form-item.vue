@@ -43,6 +43,8 @@ const form = inject(formKey, null);
 const initialValue = ref<unknown>('');
 const validateState = ref<'success' | 'error' | 'validating' | ''>('');
 const validateMessage = ref('');
+let validationVersion = 0;
+let resetTimer: ReturnType<typeof setTimeout> | undefined;
 
 const sizeConfig = {
     small: { fontSize: 24, iconSize: 28, messageSize: 20 },
@@ -97,10 +99,15 @@ function validation(trigger = '', callback: (message: string) => void = () => {}
         callback('');
         return;
     }
+    const version = ++validationVersion;
     validateState.value = 'validating';
     const value = getPathValue(form?.model.value, props.prop);
     const validator = new Schema({ [props.prop]: rules });
     void validator.validate({ [props.prop]: value }, { firstFields: true }, errors => {
+        if (version !== validationVersion) {
+            callback(validateMessage.value);
+            return;
+        }
         validateState.value = errors ? 'error' : 'success';
         validateMessage.value = errors?.[0]?.message || '';
         callback(validateMessage.value);
@@ -114,6 +121,7 @@ function onFormChange() {
     validation('change');
 }
 function resetField() {
+    validationVersion += 1;
     const model = form?.model.value;
     if (model && props.prop) {
         const parts = props.prop.split('.');
@@ -121,7 +129,8 @@ function resetField() {
         for (let index = 0; index < parts.length - 1; index += 1) owner = owner?.[parts[index]];
         if (owner) owner[parts[parts.length - 1]] = initialValue.value;
     }
-    setTimeout(() => {
+    if (resetTimer) clearTimeout(resetTimer);
+    resetTimer = setTimeout(() => {
         validateState.value = 'success';
         validateMessage.value = '';
     }, 50);
@@ -136,6 +145,8 @@ onMounted(() => {
     });
 });
 onBeforeUnmount(() => {
+    validationVersion += 1;
+    if (resetTimer) clearTimeout(resetTimer);
     if (!props.prop) return;
     form?.unregister(exposedField as any);
 });

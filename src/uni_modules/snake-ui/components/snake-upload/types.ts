@@ -67,10 +67,104 @@ export interface UploadRequestResult extends Record<string, unknown> {
 }
 
 /** 自定义上传函数，可用于 OSS、腾讯云、七牛或业务上传接口。 */
-export type UploadRequest = (
-    file: UploadFileItem,
-    context: UploadRequestContext
-) => Promise<UploadRequestResult | string>;
+export type UploadRequest = (file: UploadFileItem, context: UploadRequestContext) => Promise<UploadRequestResult | string>;
+
+/** Upload 回调中用于区分组件实例的索引。 */
+export type UploadIndex = string | number;
+
+/** Upload 选择、超限和预览等事件的统一载荷。 */
+export interface UploadFileEvent {
+    /** 关联的文件。 */
+    file: UploadFileItem | UploadFileItem[];
+    /** 上传字段名称。 */
+    name: string;
+    /** 文件在列表中的起始位置。 */
+    index: number;
+}
+
+/** Upload 自定义选取事件的载荷。 */
+export interface UploadChooseEvent {
+    /** 当前允许的文件类型。 */
+    accept: UploadAcceptType;
+    /** 本次还能选择的文件数。 */
+    maxCount: number | string;
+    /** 当前文件列表快照。 */
+    fileList: UploadFileItem[];
+    /** 调用方传入的组件索引。 */
+    index: UploadIndex;
+}
+
+/** Upload 旧版 customUpload 事件的载荷。 */
+export interface UploadLegacyCustomEvent {
+    /** 当前允许的文件类型。 */
+    accept: UploadAcceptType;
+    /** 是否允许多选。 */
+    multiple: boolean;
+    /** 可用的文件来源。 */
+    capture: Array<'album' | 'camera'>;
+    /** 是否压缩视频。 */
+    compressed: boolean;
+    /** 视频最长时长。 */
+    maxDuration: number;
+    /** 图像尺寸策略。 */
+    sizeType: Array<'original' | 'compressed'>;
+    /** 视频摄像头方向。 */
+    camera: 'front' | 'back';
+    /** 本次还能选择的文件数。 */
+    maxCount: number;
+    /** 调用默认文件选择器。 */
+    chooseFile: (options?: Record<string, unknown>) => Promise<unknown[]>;
+}
+
+/** Upload 组件的事件契约。 */
+export type UploadEmits = {
+    /** 双向绑定文件列表。 */
+    'update:modelValue': [files: UploadFileItem[]];
+    /** 文件列表变化。 */
+    'on-list-change': [files: UploadFileItem[], index: UploadIndex];
+    /** 文件超出单文件大小限制。 */
+    'on-oversize': [file: UploadFileItem, files: UploadFileItem[], index: UploadIndex];
+    /** 文件超出数量限制。 */
+    'on-exceed': [file: UploadFileItem, files: UploadFileItem[], index: UploadIndex];
+    /** 请求调用方自行选择文件。 */
+    'on-choose': [detail: UploadChooseEvent];
+    /** 文件选择完成。 */
+    'on-choose-complete': [files: UploadFileItem[], index: UploadIndex];
+    /** 文件选择失败。 */
+    'on-choose-fail': [error: unknown];
+    /** 全部文件上传完成。 */
+    'on-uploaded': [files: UploadFileItem[], index: UploadIndex];
+    /** 单文件上传成功。 */
+    'on-success': [response: unknown, index: number, files: UploadFileItem[], componentIndex: UploadIndex];
+    /** 单文件上传失败。 */
+    'on-error': [error: unknown, index: number, files: UploadFileItem[], componentIndex: UploadIndex];
+    /** 单文件上传状态变化。 */
+    'on-change': [result: unknown, index: number, files: UploadFileItem[], componentIndex: UploadIndex];
+    /** 上传进度变化。 */
+    'on-progress': [progress: unknown, index: number, files: UploadFileItem[], componentIndex: UploadIndex];
+    /** 文件移除完成。 */
+    'on-remove': [index: number, files: UploadFileItem[], componentIndex: UploadIndex];
+    /** 文件预览。 */
+    'on-preview': [url: string | undefined, files: UploadFileItem[], componentIndex: UploadIndex];
+    /** 兼容旧版自定义上传。 */
+    customUpload: [detail: UploadLegacyCustomEvent];
+    /** 开始选择文件。 */
+    chooseStart: [];
+    /** 选择文件结束。 */
+    chooseComplete: [];
+    /** 兼容旧版错误事件。 */
+    error: [error: unknown];
+    /** 文件进入读取流程前。 */
+    beforeRead: [detail: UploadFileEvent];
+    /** 文件进入读取流程后。 */
+    afterRead: [detail: UploadFileEvent];
+    /** 兼容旧版超限事件。 */
+    oversize: [detail: UploadFileEvent];
+    /** 兼容旧版删除事件。 */
+    delete: [detail: UploadFileItem & { name: string; index: number }];
+    /** 兼容旧版预览事件。 */
+    clickPreview: [detail: UploadFileItem & { name: string; index: number }];
+};
 
 /** Snake Upload 的运行时 props 定义。 */
 export const uploadProps = {

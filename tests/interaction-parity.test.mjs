@@ -43,6 +43,15 @@ test('tabs and swiper expose navigation and indicator contracts', async () => {
     for (const name of ['indicatorPos', 'effect3d', 'animationfinish', 'titleStyle']) assert.match(swiper, new RegExp(name));
 });
 
+test('swiper follows uView list reset, indicator and 3D interaction rules', async () => {
+    const swiper = await read('components/snake-swiper/snake-swiper.vue');
+    assert.match(swiper, /\(length, previousLength\) => \{[\s\S]*if \(length !== previousLength\) active\.value = 0/);
+    assert.match(swiper, /:current="currentIndex"/);
+    assert.match(swiper, /:key="index"/);
+    assert.match(swiper, /scaleY\(0\.9\)/);
+    assert.match(swiper, /@click\.stop\.prevent="emit\('click', index\)"/);
+});
+
 test('tabs follow uView interaction scope while subsection keeps keyboard navigation', async () => {
     const [tabs, subsection] = await Promise.all([
         read('components/snake-tabs/snake-tabs.vue'),

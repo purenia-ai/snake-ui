@@ -6,18 +6,7 @@ import { validateFormValue } from '../src/uni_modules/snake-ui/libs/form/validat
 
 const root = new URL('../src/uni_modules/snake-ui/', import.meta.url);
 const read = path => readFile(new URL(path, root), 'utf8');
-const components = [
-    'form',
-    'form-item',
-    'input',
-    'textarea',
-    'checkbox',
-    'checkbox-group',
-    'radio',
-    'radio-group',
-    'switch',
-    'slider'
-];
+const components = ['form', 'form-item', 'input', 'textarea', 'checkbox', 'checkbox-group', 'radio', 'radio-group', 'switch', 'slider'];
 
 test('form path helpers support nested objects and arrays', () => {
     const model = { profile: { name: 'Snake' }, items: [{ title: 'First' }] };
@@ -30,23 +19,11 @@ test('form path helpers support nested objects and arrays', () => {
 });
 
 test('form validator covers built-in, trigger, sync, and async rules', async () => {
-    assert.equal(
-        (await validateFormValue('name', '', { required: true, message: '请输入姓名' }))[0].message,
-        '请输入姓名'
-    );
+    assert.equal((await validateFormValue('name', '', { required: true, message: '请输入姓名' }))[0].message, '请输入姓名');
     assert.equal((await validateFormValue('name', 'ab', { min: 3, trigger: 'blur' }, 'change')).length, 0);
-    assert.equal(
-        (await validateFormValue('name', 'ab', { min: 3, message: '至少三个字符' }, 'blur'))[0].message,
-        '至少三个字符'
-    );
-    assert.equal(
-        (await validateFormValue('code', 'snake', { validator: (_rule, value) => value === 'snake' })).length,
-        0
-    );
-    assert.equal(
-        (await validateFormValue('code', 'bad', { asyncValidator: async () => new Error('异步校验失败') }))[0].message,
-        '异步校验失败'
-    );
+    assert.equal((await validateFormValue('name', 'ab', { min: 3, message: '至少三个字符' }, 'blur'))[0].message, '至少三个字符');
+    assert.equal((await validateFormValue('code', 'snake', { validator: (_rule, value) => value === 'snake' })).length, 0);
+    assert.equal((await validateFormValue('code', 'bad', { asyncValidator: async () => new Error('异步校验失败') }))[0].message, '异步校验失败');
     assert.equal(
         (
             await validateFormValue('accounts', [{ name: '' }], {
@@ -71,24 +48,9 @@ test('form control components expose independent contracts', async () => {
 });
 
 test('form controls are exported from type and declaration entries', async () => {
-    const [runtime, declaration, types] = await Promise.all([
-        read('index.ts'),
-        read('types/components.d.ts'),
-        read('types/components.d.ts')
-    ]);
+    const [runtime, declaration, types] = await Promise.all([read('index.ts'), read('types/components.d.ts'), read('types/components.d.ts')]);
     // 桶入口只导出 types（不再 re-export .vue，对齐 uView Pro），组件声明在 types/components.d.ts
-    for (const name of [
-        'Form',
-        'FormItem',
-        'Input',
-        'Textarea',
-        'Checkbox',
-        'CheckboxGroup',
-        'Radio',
-        'RadioGroup',
-        'Switch',
-        'Slider'
-    ]) {
+    for (const name of ['Form', 'FormItem', 'Input', 'Textarea', 'Checkbox', 'CheckboxGroup', 'Radio', 'RadioGroup', 'Switch', 'Slider']) {
         assert.match(declaration, new RegExp(`Snake${name}:`));
     }
     for (const path of components) {
@@ -98,10 +60,7 @@ test('form controls are exported from type and declaration entries', async () =>
 });
 
 test('form exposes validation and field lifecycle APIs', async () => {
-    const [types, source] = await Promise.all([
-        read('components/snake-form/types.ts'),
-        read('components/snake-form/snake-form.vue')
-    ]);
+    const [types, source] = await Promise.all([read('components/snake-form/types.ts'), read('components/snake-form/snake-form.vue')]);
     for (const method of ['validate', 'validateField', 'resetFields', 'setRules', 'addField', 'removeField'])
         assert.match(types + source, new RegExp(method));
     assert.match(source, /provide\(formKey/);
@@ -111,22 +70,26 @@ test('form exposes validation and field lifecycle APIs', async () => {
     assert.match(source, /labelWidth: 90/);
 });
 
+test('form item ignores stale async validation and clears reset timers on unmount', async () => {
+    const source = await read('components/snake-form-item/snake-form-item.vue');
+    assert.match(source, /let validationVersion = 0/);
+    assert.match(source, /if \(version !== validationVersion\)/);
+    assert.match(source, /validationVersion \+= 1;/);
+    assert.match(source, /let resetTimer: ReturnType<typeof setTimeout> \| undefined/);
+    assert.match(source, /if \(resetTimer\) clearTimeout\(resetTimer\)/);
+});
+
 test('form item matches uView Pro layout, size, slots, and field protocol', async () => {
-    const [types, source] = await Promise.all([
-        read('components/snake-form-item/types.ts'),
-        read('components/snake-form-item/snake-form-item.vue')
-    ]);
+    const [types, source] = await Promise.all([read('components/snake-form-item/types.ts'), read('components/snake-form-item/snake-form-item.vue')]);
     // form ↔ form-item 单通道：类型化 formKey 注入，不再走组件名爬链
     assert.match(source, /inject\(formKey, null\)/);
     assert.doesNotMatch(source, /useCompRelation|useChildren\(|useParent\(/);
     assert.match(source, /small: \{ fontSize: 24, iconSize: 28, messageSize: 20 \}/);
     assert.match(source, /default: \{ fontSize: 28, iconSize: 32, messageSize: 24 \}/);
     assert.match(source, /large: \{ fontSize: 32, iconSize: 36, messageSize: 28 \}/);
-    for (const name of ['leftIconPrefix', 'rightIconPrefix', 'leftIconStyle', 'rightIconStyle'])
-        assert.match(types, new RegExp(name));
+    for (const name of ['leftIconPrefix', 'rightIconPrefix', 'leftIconStyle', 'rightIconStyle']) assert.match(types, new RegExp(name));
     for (const slot of ['leftIcon', 'rightIcon', 'right']) assert.match(source, new RegExp(`name="${slot}"`));
-    for (const method of ['validation', 'resetField', 'onFormBlur', 'onFormChange'])
-        assert.match(types + source, new RegExp(method));
+    for (const method of ['validation', 'resetField', 'onFormBlur', 'onFormChange']) assert.match(types + source, new RegExp(method));
 });
 
 test('selection controls use typed group protocols', async () => {
@@ -205,9 +168,7 @@ test('form controls keep readable rpx size defaults', async () => {
 });
 
 test('form ports async-validator while controls remain independent from uView', async () => {
-    const sourceByComponent = await Promise.all(
-        components.map(name => read(`components/snake-${name}/snake-${name}.vue`))
-    );
+    const sourceByComponent = await Promise.all(components.map(name => read(`components/snake-${name}/snake-${name}.vue`)));
     const formItem = sourceByComponent[components.indexOf('form-item')];
     assert.match(formItem, /async-validator/);
     assert.match(await read('libs/form/async-validator.min.js'), /function Schema/);
