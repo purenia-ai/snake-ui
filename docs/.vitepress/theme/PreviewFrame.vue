@@ -1,20 +1,24 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { useData } from 'vitepress';
-
-const props = defineProps<{ mobile?: boolean }>();
+import { useData, useRoute, withBase } from 'vitepress';
 
 const { frontmatter, title } = useData();
+const route = useRoute();
 const loaded = ref(false);
 const timedOut = ref(false);
 const retryCount = ref(0);
 const previewFrame = ref<HTMLIFrameElement>();
-const systemStatusStyle = ref({
+const isDesktopPreview = ref(false);
+const defaultSystemStatusStyle = {
     backgroundColor: '#06D290',
     backgroundImage: 'linear-gradient(90deg, #2EBD7C, #A6EBD3)',
     color: '#ffffff'
-});
+};
+const systemStatusStyle = ref({ ...defaultSystemStatusStyle });
 let timer: ReturnType<typeof setTimeout> | undefined;
+let previewMediaQuery: MediaQueryList | undefined;
+
+const DESKTOP_PREVIEW_QUERY = '(min-width: 1280px) and (min-height: 560px)';
 
 // 手机壳基准宽度为 375px,视口空间不足时保持真机比例缩放,视口空间不足时按断点+高度等比缩放。
 // CSS 无法做长度除法,缩放系数在此计算后写入 --preview-scale 供 custom.css 消费。
@@ -22,7 +26,7 @@ const PHONE_WIDTH = 375;
 const PHONE_HEIGHT = (375 * 143.6) / 70.9;
 
 function updateScale() {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined' || !isDesktopPreview.value) return;
     const budgetWidth = window.innerWidth >= 1680 ? 375 : window.innerWidth >= 1450 ? 320 : 300;
     const budgetHeight = window.innerHeight - 130;
     const scale = Math.max(0.5, Math.min(budgetWidth / PHONE_WIDTH, budgetHeight / PHONE_HEIGHT, 1));
@@ -32,7 +36,7 @@ function updateScale() {
 const previewRoute = computed(() => frontmatter.value.preview as string | undefined);
 const previewUrl = computed(() => {
     if (!previewRoute.value) return '';
-    if (!import.meta.env.DEV) return `/snake-ui/h5/#/${previewRoute.value.replace(/^\/+/, '')}`;
+    if (!import.meta.env.DEV) return withBase(`/h5/#/${previewRoute.value.replace(/^\/+/, '')}`);
 
     // Keep the iframe on the same reachable host as VitePress. This is important
     // when the docs are opened through a LAN IP: localhost would point to the
@@ -47,12 +51,27 @@ const previewUrl = computed(() => {
     const base = `${protocol}//${host}:5173/snake-ui/h5/`;
     return `${base}#/${previewRoute.value.replace(/^\/+/, '')}`;
 });
-const previewKey = computed(() => `${previewUrl.value}:${retryCount.value}`);
+const showDesktopPreview = computed(() => Boolean(previewUrl.value) && isDesktopPreview.value);
+const previewKey = computed(() => `${route.path}:${previewUrl.value}:${retryCount.value}`);
+
+function clearTimeoutState() {
+    if (!timer) return;
+    clearTimeout(timer);
+    timer = undefined;
+}
+
+function resetPreviewState() {
+    clearTimeoutState();
+    loaded.value = false;
+    timedOut.value = false;
+    retryCount.value = 0;
+    systemStatusStyle.value = { ...defaultSystemStatusStyle };
+}
 
 function armTimeout() {
     loaded.value = false;
     timedOut.value = false;
-    if (timer) clearTimeout(timer);
+    clearTimeoutState();
     timer = setTimeout(() => {
         timedOut.value = true;
     }, 8000);
@@ -61,7 +80,7 @@ function armTimeout() {
 function markLoaded() {
     loaded.value = true;
     timedOut.value = false;
-    if (timer) clearTimeout(timer);
+    clearTimeoutState();
     previewFrame.value?.contentWindow?.postMessage({ type: 'snake-ui:request-preview-navbar-theme' }, '*');
 }
 
@@ -73,8 +92,7 @@ function receivePreviewNavbarTheme(
         color?: string;
     }>
 ) {
-    if (event.source !== previewFrame.value?.contentWindow || event.data?.type !== 'snake-ui:preview-navbar-theme')
-        return;
+    if (event.source !== previewFrame.value?.contentWindow || event.data?.type !== 'snake-ui:preview-navbar-theme') return;
     const { backgroundColor, backgroundImage, color } = event.data;
     if (!backgroundColor || !backgroundImage || !color) return;
     systemStatusStyle.value = { backgroundColor, backgroundImage, color };
@@ -85,27 +103,42 @@ function retryPreview() {
     armTimeout();
 }
 
-watch(previewUrl, armTimeout, { immediate: true });
+function syncPreviewMode() {
+    isDesktopPreview.value = Boolean(previewMediaQuery?.matches);
+    if (isDesktopPreview.value) updateScale();
+    else document.documentElement.style.removeProperty('--preview-scale');
+}
+
+watch(previewUrl, () => {
+    resetPreviewState();
+    if (showDesktopPreview.value) armTimeout();
+});
+watch(showDesktopPreview, visible => {
+    resetPreviewState();
+    if (visible) armTimeout();
+});
+
 onMounted(() => {
-    if (props.mobile) return;
-    updateScale();
+    previewMediaQuery = window.matchMedia(DESKTOP_PREVIEW_QUERY);
+    syncPreviewMode();
+    previewMediaQuery.addEventListener('change', syncPreviewMode);
     window.addEventListener('resize', updateScale);
     window.addEventListener('message', receivePreviewNavbarTheme);
 });
 onBeforeUnmount(() => {
-    if (timer) clearTimeout(timer);
-    if (!props.mobile && typeof window !== 'undefined') {
-        window.removeEventListener('resize', updateScale);
-        window.removeEventListener('message', receivePreviewNavbarTheme);
-    }
+    clearTimeoutState();
+    document.documentElement.style.removeProperty('--preview-scale');
+    previewMediaQuery?.removeEventListener('change', syncPreviewMode);
+    window.removeEventListener('resize', updateScale);
+    window.removeEventListener('message', receivePreviewNavbarTheme);
 });
 </script>
 
 <template>
-    <a v-if="mobile && previewUrl" class="preview-mobile-link" :href="previewUrl" target="_blank" rel="noreferrer">
+    <a v-if="previewUrl && !showDesktopPreview" class="preview-mobile-link" :href="previewUrl" target="_blank" rel="noreferrer">
         在新窗口打开实时预览
     </a>
-    <section v-else-if="previewUrl" class="preview-panel" aria-label="组件实时预览">
+    <section v-else-if="showDesktopPreview" class="preview-panel" aria-label="组件实时预览">
         <div class="preview-phone">
             <div class="preview-phone__system-status" :style="systemStatusStyle" aria-hidden="true">
                 <span class="preview-phone__time">9:41</span>
@@ -132,15 +165,8 @@ onBeforeUnmount(() => {
                 scrolling="auto"
                 @load="markLoaded"
             />
-            <div v-if="!loaded && !timedOut" class="preview-phone__status" role="status" aria-live="polite">
-                正在连接 H5 预览…
-            </div>
-            <div
-                v-else-if="timedOut"
-                class="preview-phone__status preview-phone__status--error"
-                role="status"
-                aria-live="polite"
-            >
+            <div v-if="!loaded && !timedOut" class="preview-phone__status" role="status" aria-live="polite">正在连接 H5 预览…</div>
+            <div v-else-if="timedOut" class="preview-phone__status preview-phone__status--error" role="status" aria-live="polite">
                 <strong>预览服务未启动</strong>
                 <span>请运行 <code>pnpm docs:dev:preview</code></span>
                 <div class="preview-phone__status-actions">

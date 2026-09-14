@@ -212,26 +212,28 @@ test('desktop phone preview keeps an uncropped internal viewport', async () => {
     assert.doesNotMatch(css, /\.preview-phone\s*{[^}]*height:\s*650px/s);
 });
 
-test('compact layout preserves the native page outline and dimensions', async () => {
+test('responsive preview uses one mount point and preserves the desktop phone dimensions', async () => {
     const layout = await readFile(resolve(root, 'docs/.vitepress/theme/Layout.vue'), 'utf8');
     const frame = await readFile(resolve(root, 'docs/.vitepress/theme/PreviewFrame.vue'), 'utf8');
     const css = await readFile(resolve(root, 'docs/.vitepress/theme/custom.css'), 'utf8');
 
-    assert.match(layout, /#layout-bottom><PreviewFrame\s*\/><\/template>/);
+    assert.match(layout, /#doc-before><PreviewFrame\s*\/><\/template>/);
+    assert.doesNotMatch(layout, /#layout-bottom><PreviewFrame\s*\/><\/template>/);
     assert.doesNotMatch(layout, /#aside-top><PreviewFrame\s*\/><\/template>/);
     assert.match(css, /--vp-sidebar-width:\s*230px/);
     assert.match(css, /max-width:\s*700px/);
     assert.match(css, /--preview-phone-width:\s*calc\(375px/);
     assert.match(css, /transform:\s*scale\(var\(--preview-scale/);
     assert.match(frame, /const PHONE_WIDTH = 375/);
-    assert.match(frame, /window\.innerWidth >= 1680 \? 375 : window\.innerWidth >= 1450 \? 320 : 300/);
+    assert.match(frame, /DESKTOP_PREVIEW_QUERY = '\(min-width: 1280px\) and \(min-height: 560px\)'/);
+    assert.match(frame, /window\.matchMedia\(DESKTOP_PREVIEW_QUERY\)/);
 });
 
 test('desktop phone preview is fixed to the outer page edge like uView2', async () => {
     const layout = await readFile(resolve(root, 'docs/.vitepress/theme/Layout.vue'), 'utf8');
     const css = await readFile(resolve(root, 'docs/.vitepress/theme/custom.css'), 'utf8');
 
-    assert.match(layout, /#layout-bottom><PreviewFrame\s*\/><\/template>/);
+    assert.match(layout, /#doc-before><PreviewFrame\s*\/><\/template>/);
     assert.doesNotMatch(layout, /#aside-(?:top|outline-after)><PreviewFrame\s*\/><\/template>/);
     assert.match(css, /\.preview-panel\s*{[^}]*position:\s*fixed/s);
     assert.match(css, /right:\s*20px/);
@@ -240,14 +242,17 @@ test('desktop phone preview is fixed to the outer page edge like uView2', async 
     assert.doesNotMatch(css, /\.VPDoc\.has-aside \.aside-container\s*,\s*\n\s*\.VPDoc\.has-aside \.aside-curtain/);
 });
 
-test('preview pages keep independent content, outline, and phone columns', async () => {
+test('preview pages hide the outline at medium desktop widths while retaining the phone', async () => {
     const layout = await readFile(resolve(root, 'docs/.vitepress/theme/Layout.vue'), 'utf8');
     const css = await readFile(resolve(root, 'docs/.vitepress/theme/custom.css'), 'utf8');
 
     assert.match(layout, /useData\(\)/);
     assert.match(layout, /snake-preview-layout/);
     assert.match(layout, /frontmatter\.value\.preview/);
-    assert.doesNotMatch(css, /\.snake-preview-layout \.VPDoc\.has-aside \.aside\s*{[^}]*display:\s*none/s);
+    assert.match(
+        css,
+        /@media \(min-width: 1280px\) and \(max-width: 1439px\)\s*{\s*\.snake-preview-layout \.VPDoc\.has-aside \.aside\s*{[^}]*display:\s*none/s
+    );
     assert.match(css, /\.snake-preview-layout \.VPDoc\.has-aside \.aside\s*{[^}]*max-width:\s*190px/s);
     assert.match(
         css,
@@ -268,6 +273,23 @@ test('preview pages keep independent content, outline, and phone columns', async
         css,
         /\.snake-preview-layout \.VPDoc\s*{[^}]*padding-right:\s*var\(--preview-reserved-space\)/s
     );
+});
+
+test('narrow previews use a link and do not create a hidden iframe', async () => {
+    const frame = await readFile(resolve(root, 'docs/.vitepress/theme/PreviewFrame.vue'), 'utf8');
+
+    assert.match(frame, /v-if="previewUrl && !showDesktopPreview"/);
+    assert.match(frame, /v-else-if="showDesktopPreview"/);
+    assert.match(frame, /watch\(showDesktopPreview, visible =>/);
+    assert.match(frame, /previewMediaQuery\?\.removeEventListener/);
+    assert.match(frame, /document\.documentElement\.style\.removeProperty\('--preview-scale'\)/);
+});
+
+test('narrow documentation content cannot be widened by preview-adjacent code samples', async () => {
+    const css = await readFile(resolve(root, 'docs/.vitepress/theme/custom.css'), 'utf8');
+
+    assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.VPDoc \.content,[\s\S]*?min-width:\s*0/s);
+    assert.match(css, /\.vp-doc p,[\s\S]*?overflow-wrap:\s*anywhere/s);
 });
 
 test('development preview follows the docs host for LAN access', async () => {
@@ -298,7 +320,7 @@ test('production preview is emitted below the documentation base path', async ()
     const frame = await readFile(resolve(root, 'docs/.vitepress/theme/PreviewFrame.vue'), 'utf8');
     const buildScript = await readFile(resolve(root, 'scripts/build-docs-preview.cjs'), 'utf8');
 
-    assert.match(frame, /\/snake-ui\/h5\/#\//);
+    assert.match(frame, /withBase\(`\/h5\/#\//);
     assert.match(buildScript, /docs\/\.vitepress\/dist\/h5/);
     assert.doesNotMatch(buildScript, /docs\/\.vitepress\/dist\/preview/);
 });

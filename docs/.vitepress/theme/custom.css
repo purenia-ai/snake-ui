@@ -524,7 +524,12 @@ body {
 }
 
 .preview-mobile-link {
-    display: none;
+    box-sizing: border-box;
+    display: inline-flex;
+    min-height: 44px;
+    max-width: 100%;
+    align-items: center;
+    justify-content: center;
     margin: 0 0 24px;
     padding: 11px 14px;
     border: 1px solid var(--vp-c-brand-1);
@@ -534,6 +539,7 @@ body {
     text-align: center;
     font-size: 13px;
     font-weight: 600;
+    text-decoration: none;
 }
 
 @media (min-width: 1280px) {
@@ -584,6 +590,12 @@ body {
     }
 }
 
+@media (min-width: 1280px) and (max-width: 1439px) {
+    .snake-preview-layout .VPDoc.has-aside .aside {
+        display: none;
+    }
+}
+
 @media (min-width: 1680px) {
     .snake-preview-layout {
         --preview-reserved-space: calc(375px * var(--preview-scale, 1) + 40px + max(0px, calc((100vw - 1680px) / 2)));
@@ -595,21 +607,27 @@ body {
 }
 
 @media (max-width: 1279px) {
-    .preview-panel {
-        display: none;
-    }
-
     .dark .preview-phone__system-status {
         color: #b9f8df;
         background: linear-gradient(120deg, #013527, #01513b);
     }
 
-    .preview-mobile-link {
-        display: block;
-    }
 }
 
 @media (max-width: 767px) {
+    .VPDoc .content,
+    .VPDoc .content-container,
+    .VPDoc .main,
+    .vp-doc {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .vp-doc p,
+    .vp-doc li {
+        overflow-wrap: anywhere;
+    }
+
     .vp-doc table {
         display: block;
         overflow-x: auto;
