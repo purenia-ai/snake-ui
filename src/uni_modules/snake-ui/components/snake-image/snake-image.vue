@@ -1,3 +1,36 @@
+<template>
+    <view class="snake-image" :class="customClass" :style="rootStyle" :aria-label="alt || undefined" @click="click">
+        <image
+            v-if="displaySrc"
+            class="snake-image__image"
+            :src="displaySrc"
+            :alt="alt"
+            :mode="mode"
+            :lazy-load="lazyLoad"
+            :show-menu-by-longpress="showMenuByLongpress"
+            :webp="webp"
+            :style="imageStyle"
+            @load="onLoad"
+            @error="onError" />
+        <view v-if="isLoading && showLoading" class="snake-image__status">
+            <slot name="loading">
+                <image v-if="loadingImg" class="snake-image__status-image" :src="loadingImg" mode="aspectFit" />
+                <snake-icon v-else-if="loadingIcon" :name="loadingIcon" />
+                <snake-loading-icon v-else size="20" />
+            </slot>
+        </view>
+        <view v-else-if="status === 'error' && showError" class="snake-image__status snake-image__status--error">
+            <slot name="error">
+                <image v-if="errorImg" class="snake-image__status-image" :src="errorImg" mode="aspectFit" />
+                <template v-else>
+                    <snake-icon :name="errorIcon" size="22" />
+                    <text class="snake-image__error-text">图片加载失败</text>
+                </template>
+            </slot>
+        </view>
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component Image
@@ -7,8 +40,6 @@
 
 import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { addUnit } from '../../libs/function/unit';
-import Icon from '../snake-icon/snake-icon.vue';
-import LoadingIcon from '../snake-loading-icon/snake-loading-icon.vue';
 import type { ImageEmits, ImageProps } from './types';
 
 defineOptions({ name: 'SnakeImage', options: { virtualHost: true, styleIsolation: 'shared' } });
@@ -27,7 +58,6 @@ const props = withDefaults(defineProps<ImageProps>(), {
     webp: false,
     fade: true,
     duration: 300,
-    bgColor: 'var(--snake-color-surface-muted, #f7f8fa)',
     showLoading: true,
     loadingIcon: '',
     loadingImg: '',
@@ -133,39 +163,7 @@ onMounted(() => {
 onBeforeUnmount(disconnectObserver);
 </script>
 
-<template>
-    <view class="snake-image" :class="customClass" :style="rootStyle" :aria-label="alt || undefined" @click="click">
-        <image
-            v-if="displaySrc"
-            class="snake-image__image"
-            :src="displaySrc"
-            :alt="alt"
-            :mode="mode as any"
-            :lazy-load="lazyLoad"
-            :show-menu-by-longpress="showMenuByLongpress"
-            :webp="webp"
-            :style="imageStyle"
-            @load="onLoad"
-            @error="onError"
-        />
-        <view v-if="isLoading && showLoading" class="snake-image__status">
-            <slot name="loading"
-                ><image v-if="loadingImg" class="snake-image__status-image" :src="loadingImg" mode="aspectFit" /><snake-icon
-                    v-else-if="loadingIcon"
-                    :name="loadingIcon" /><snake-loading-icon v-else size="20"
-            /></slot>
-        </view>
-        <view v-else-if="status === 'error' && showError" class="snake-image__status snake-image__status--error">
-            <slot name="error"
-                ><image v-if="errorImg" class="snake-image__status-image" :src="errorImg" mode="aspectFit" /><template v-else
-                    ><snake-icon :name="errorIcon" size="22" /><text class="snake-image__error-text">图片加载失败</text></template
-                ></slot
-            >
-        </view>
-    </view>
-</template>
-
-<style scoped>
+<style lang="scss" scoped>
 .snake-image {
     position: relative;
     display: block;

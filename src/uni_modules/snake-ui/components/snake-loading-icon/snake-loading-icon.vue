@@ -1,3 +1,17 @@
+<template>
+    <view v-if="show" class="snake-loading-icon" :style="rootStyle">
+        <view v-if="mode === 'circle'" class="snake-loading-icon__circle" :style="iconStyle" />
+        <view v-else class="snake-loading-icon__spinner" :style="iconStyle">
+            <view
+                v-for="index in 12"
+                :key="index"
+                class="snake-loading-icon__dot"
+                :style="{ transform: `rotate(${index * 30}deg)`, opacity: index / 12 }" />
+        </view>
+        <text v-if="text" class="snake-loading-icon__text" :style="textStyle">{{ text }}</text>
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component LoadingIcon
@@ -26,10 +40,7 @@ const props = withDefaults(defineProps<LoadingIconProps>(), {
     customStyle: ''
 });
 
-const rootStyle = computed(() => [
-    { flexDirection: props.vertical ? 'column' : 'row' } as CSSProperties,
-    props.customStyle
-]);
+const rootStyle = computed(() => [{ flexDirection: props.vertical ? 'column' : 'row' } as CSSProperties, props.customStyle]);
 const iconStyle = computed(() => ({
     width: addUnit(props.size),
     height: addUnit(props.size),
@@ -46,21 +57,6 @@ const textStyle = computed(() => ({
     marginTop: props.vertical ? '12rpx' : 0
 }));
 </script>
-
-<template>
-    <view v-if="show" class="snake-loading-icon" :style="rootStyle">
-        <view v-if="mode === 'circle'" class="snake-loading-icon__circle" :style="iconStyle" />
-        <view v-else class="snake-loading-icon__spinner" :style="iconStyle">
-            <view
-                v-for="index in 12"
-                :key="index"
-                class="snake-loading-icon__dot"
-                :style="{ transform: `rotate(${index * 30}deg)`, opacity: index / 12 }"
-            />
-        </view>
-        <text v-if="text" class="snake-loading-icon__text" :style="textStyle">{{ text }}</text>
-    </view>
-</template>
 
 <style scoped>
 .snake-loading-icon {
