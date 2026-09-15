@@ -19,6 +19,23 @@ test('feedback components expose complete states and interactions', async () => 
     for (const name of ['autoplay', 'moreIcon', 'closeIcon', 'playState', 'isCircular']) assert.match(notice, new RegExp(`${name}\\?`));
 });
 
+test('notice bar keeps uView playback semantics with Snake visibility controls', async () => {
+    const [types, source] = await Promise.all([
+        read('components/snake-notice-bar/types.ts'),
+        read('components/snake-notice-bar/snake-notice-bar.vue')
+    ]);
+    for (const marker of ['modelValue', "'update:modelValue'", "'update:show'", 'end', 'reset']) {
+        assert.match(types, new RegExp(marker.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    }
+    assert.match(source, /uni\.createSelectorQuery\(\)\.in\(instance\?\.proxy as any\)/);
+    assert.match(source, /onPageHide/);
+    assert.match(source, /onPageShow/);
+    assert.match(source, /@animationend="marqueeEnd"/);
+    assert.match(source, /name="volume"/);
+    assert.match(source, /snake-notice-bar__marquee-primary">\{\{ marqueeText \}\}<\/view>/);
+    assert.match(source, /defineExpose\(\{ reset \}\)/);
+});
+
 test('tabs and swiper expose navigation and indicator contracts', async () => {
     const [tabs, tabsSource, swiper] = await Promise.all([
         read('components/snake-tabs/types.ts'),

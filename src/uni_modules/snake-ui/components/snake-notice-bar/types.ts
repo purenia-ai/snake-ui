@@ -16,7 +16,9 @@ export interface NoticeBarProps {
     mode?: NoticeBarMode;
     /** 内容排列或滚动方向。 */
     direction?: NoticeBarDirection;
-    /** 是否显示组件。 */
+    /** 标准 v-model 可见性。未传入 show 时作为外部控制值。 */
+    modelValue?: boolean;
+    /** 是否显示组件。支持 v-model:show。 */
     show?: boolean;
     /** 是否自动播放。 */
     autoplay?: boolean;
@@ -57,6 +59,10 @@ export interface NoticeBarProps {
 }
 /** NoticeBar 组件的事件契约。 */
 export type NoticeBarEmits = {
+    /** 标准 v-model 更新。 */
+    'update:modelValue': [value: boolean];
+    /** show 双向绑定更新。 */
+    'update:show': [value: boolean];
     /** click 事件携带的参数。 */
     click: [index: number];
     /** change 事件携带的参数。 */
@@ -65,4 +71,12 @@ export type NoticeBarEmits = {
     close: [];
     /** getMore 事件携带的参数。 */
     getMore: [];
+    /** 一次非循环播放完成，或纵向轮播完成一整轮时触发。 */
+    end: [];
 };
+
+/** NoticeBar 组件实例公开的方法。 */
+export interface NoticeBarExpose {
+    /** 从第一条消息重新开始播放并重新测量尺寸。 */
+    reset(): void;
+}
