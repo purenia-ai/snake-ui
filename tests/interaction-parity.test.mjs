@@ -170,9 +170,11 @@ test('auction actions and active activity retain the legacy blue accent', async 
 });
 
 test('commerce filter panel gives percentage-height content a definite containing height', async () => {
-    const [filters, filterPage] = await Promise.all([
+    const [filters, filterPage, filterTypes, cms] = await Promise.all([
         read('components/snake-filter-sorts/snake-filter-sorts.vue'),
-        read('components/snake-filter-sorts/filter-page.vue')
+        read('components/snake-filter-sorts/filter-page.vue'),
+        read('components/snake-filter-sorts/types.ts'),
+        read('components/snake-cms/snake-cms.vue')
     ]);
     assert.match(filters, /<snake-drop-menu-item[\s\S]*custom-style="height: 70vh"/);
     assert.match(filterPage, /<snake-index-list-panel/);
@@ -182,6 +184,9 @@ test('commerce filter panel gives percentage-height content a definite containin
     assert.match(filterPage, /\.filter-page__brand-panel \{[\s\S]*height: 100%;[\s\S]*min-height: 0;/);
     assert.match(filterPage, /uIndexListRef\?\.update\?\.\(\)/);
     assert.doesNotMatch(filterPage, /:scrollTop="scrollTop"/);
+    assert.doesNotMatch(filters, /scrollTop:\s*0/);
+    assert.doesNotMatch(filterTypes, /scrollTop\?: number/);
+    assert.doesNotMatch(cms, /<snake-filter-sorts[^>]*:scroll-top=/);
     assert.match(filterPage, /:index="indexList\[index\]"/);
 });
 

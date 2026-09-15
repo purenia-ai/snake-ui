@@ -12,8 +12,6 @@ export const checkboxProps = {
     label: { type: String, default: '' },
     /** 数据项名称或唯一标识。 */
     name: { type: [String, Number] as PropType<string | number>, default: '' },
-    /** 兼容旧 API 的值，非空时优先于 name。 */
-    value: { type: [String, Number] as PropType<string | number>, default: '' },
     /** 组件形状，square 为方形，circle 为圆形。 */
     shape: { type: String as PropType<'square' | 'circle'>, default: '' },
     /** 是否选中，支持 v-model。 */
@@ -45,8 +43,6 @@ export interface CheckboxProps {
     label?: string;
     /** 数据项名称或唯一标识。 */
     name?: string | number;
-    /** 兼容旧 API 的值，非空时优先于 name。 */
-    value?: string | number;
     /** 组件形状，square 为方形，circle 为圆形。 */
     shape?: 'square' | 'circle';
     /** 是否选中，支持 v-model。 */

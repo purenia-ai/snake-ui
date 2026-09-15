@@ -71,7 +71,6 @@
                         :show-tabs="item.setStyle.tabShow && !!item.setStyle.tabslist?.length"
                         :sort="item.setStyle.filterParams?.sort"
                         :custom-style="{ padding: '0 20rpx' }"
-                        :scroll-top="scrollTop"
                         @change="confirmFilter"
                     />
                 </snake-sticky>

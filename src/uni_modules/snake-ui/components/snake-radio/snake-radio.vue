@@ -32,11 +32,8 @@ const emit = defineEmits<RadioEmits>();
 const { parent: radioGroup } = useParent(RADIO_GROUP_KEY);
 const form = inject(formKey, null);
 
-// radio 的 value 值，id
-const radioValue = computed(() => {
-    if (props.value !== '') return props.value;
-    return props.name;
-});
+// radio 的数据项标识符
+const radioValue = computed(() => props.name);
 
 // 父组件数据，供子组件使用（兼容没有父组件的场景，各字段回退为 null）
 const parentData = computed(() => {

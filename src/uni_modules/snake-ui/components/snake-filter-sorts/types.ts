@@ -48,8 +48,6 @@ export interface FilterSortsProps<Filters extends FilterSortsData = FilterSortsD
     goodsListLength?: number;
     /** 根节点自定义样式。 */
     customStyle?: StyleValue;
-    /** @deprecated 弹层索引列表已使用独立容器滚动，此属性仅为兼容旧调用保留。 */
-    scrollTop?: number;
 }
 
 /** FilterSorts 组件的事件契约。 */

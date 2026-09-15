@@ -10,8 +10,6 @@ export const radioProps = {
     customClass: { type: String, default: '' },
     /** 展示标签文本。 */
     label: { type: String, default: '' },
-    /** 兼容旧 API 的值，非空时优先于 name。 */
-    value: { type: [String, Number] as PropType<string | number>, default: '' },
     /** 数据项名称或唯一标识。 */
     name: { type: [String, Number] as PropType<string | number>, default: '' },
     /** 组件形状，square 为方形，circle 为圆形。 */
@@ -41,8 +39,6 @@ export interface RadioProps {
     customClass?: string;
     /** 展示标签文本。 */
     label?: string;
-    /** 兼容旧 API 的值，非空时优先于 name。 */
-    value?: string | number;
     /** 数据项名称或唯一标识。 */
     name?: string | number;
     /** 组件形状，square 为方形，circle 为圆形。 */

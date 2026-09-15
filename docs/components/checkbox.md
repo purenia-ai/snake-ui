@@ -72,17 +72,17 @@ preview: /pages/componentsA/checkbox/index
 
 #### Props
 
-| 参数                          | 说明                                             | 类型               | 默认值       |
-| ----------------------------- | ------------------------------------------------ | ------------------ | ------------ |
-| `modelValue`                  | 是否选中，支持 v-model                           | `boolean`          | `false`      |
-| `value` / `name`              | 兼容旧 API 的值 / 数据项标识，`value` 非空时优先 | `string \| number` | `''`         |
-| `label`                       | 展示标签文本                                     | `string`           | `''`         |
-| `shape`                       | square/circle 形状                               | `string`           | 继承 Group   |
-| `disabled` / `labelDisabled`  | 禁用 / 禁止点击标签选中                          | `boolean`          | `false`      |
-| `activeColor`                 | 选中颜色，设置后覆盖父级 activeColor             | `string`           | 主题色       |
-| `iconSize` / `labelSize`      | 勾号与标签字号，单位 rpx                         | `UnitValue`        | 按 size 预设 |
-| `size`                        | 整体尺寸 small/default/large                     | `string`           | 继承 Group   |
-| `customClass` / `customStyle` | 自定义类名和样式                                 | `string \| style`  | `''`         |
+| 参数                          | 说明                                 | 类型               | 默认值       |
+| ----------------------------- | ------------------------------------ | ------------------ | ------------ |
+| `modelValue`                  | 是否选中，支持 v-model               | `boolean`          | `false`      |
+| `name`                        | 数据项标识符                         | `string \| number` | `''`         |
+| `label`                       | 展示标签文本                         | `string`           | `''`         |
+| `shape`                       | square/circle 形状                   | `string`           | 继承 Group   |
+| `disabled` / `labelDisabled`  | 禁用 / 禁止点击标签选中              | `boolean`          | `false`      |
+| `activeColor`                 | 选中颜色，设置后覆盖父级 activeColor | `string`           | 主题色       |
+| `iconSize` / `labelSize`      | 勾号与标签字号，单位 rpx             | `UnitValue`        | 按 size 预设 |
+| `size`                        | 整体尺寸 small/default/large         | `string`           | 继承 Group   |
+| `customClass` / `customStyle` | 自定义类名和样式                     | `string \| style`  | `''`         |
 
 #### Events
 

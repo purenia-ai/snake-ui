@@ -126,11 +126,13 @@ test('form item matches uView Pro layout, size, slots, and field protocol', asyn
 });
 
 test('selection controls use typed group protocols', async () => {
-    const [checkbox, radio, checkboxGroup, radioGroup] = await Promise.all([
+    const [checkbox, radio, checkboxGroup, radioGroup, checkboxTypes, radioTypes] = await Promise.all([
         read('components/snake-checkbox/snake-checkbox.vue'),
         read('components/snake-radio/snake-radio.vue'),
         read('components/snake-checkbox-group/snake-checkbox-group.vue'),
-        read('components/snake-radio-group/snake-radio-group.vue')
+        read('components/snake-radio-group/snake-radio-group.vue'),
+        read('components/snake-checkbox/types.ts'),
+        read('components/snake-radio/types.ts')
     ]);
     // checkbox / radio 走类型化注入契约：useChildren 提供上下文、useParent 注入
     assert.match(checkbox, /useParent\(CHECKBOX_GROUP_KEY\)/);
@@ -142,6 +144,10 @@ test('selection controls use typed group protocols', async () => {
     assert.match(radio, /useParent\(RADIO_GROUP_KEY\)/);
     assert.match(radioGroup, /useChildren\(RADIO_GROUP_KEY\)/);
     assert.match(radioGroup, /linkChildren\(\{ props, setValue \}\)/);
+    assert.doesNotMatch(checkbox + radio, /props\.value/);
+    for (const source of [checkboxTypes, radioTypes]) assert.doesNotMatch(source, /^\s*value\??:\s*(?:string \| number;|\{)/m);
+    assert.match(checkbox, /const checkboxValue = computed\(\(\) => props\.name\)/);
+    assert.match(radio, /const radioValue = computed\(\(\) => props\.name\)/);
 });
 
 test('input controls notify forms and slider supports touch measurement', async () => {

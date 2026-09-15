@@ -31,11 +31,8 @@ const emit = defineEmits<CheckboxEmits>();
 const { parent: checkboxGroup } = useParent(CHECKBOX_GROUP_KEY);
 const form = inject(formKey, null);
 
-// checkbox 的 value 值，id
-const checkboxValue = computed(() => {
-    if (props.value !== '') return props.value;
-    return props.name;
-});
+// checkbox 的数据项标识符
+const checkboxValue = computed(() => props.name);
 
 // group 绑定了 modelValue 时由 group 托管选中态（单一数据源），否则回落子项自身 v-model
 const groupManaged = computed(() => checkboxGroup.value !== null && checkboxGroup.value.props.modelValue !== undefined);

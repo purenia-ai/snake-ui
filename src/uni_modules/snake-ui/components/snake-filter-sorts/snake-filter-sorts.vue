@@ -72,9 +72,7 @@ const props = withDefaults(defineProps<FilterSortsProps>(), {
     sort: '',
     showTabs: true,
     goodsListLength: 0,
-    customStyle: () => ({}),
-    // @deprecated 弹层索引列表已使用独立的容器滚动，不再依赖页面 scrollTop。
-    scrollTop: 0
+    customStyle: () => ({})
 });
 
 const emit = defineEmits<FilterSortsEmits>();
