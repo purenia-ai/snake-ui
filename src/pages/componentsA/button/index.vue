@@ -101,8 +101,8 @@ function copyCode() {
 
 <template>
     <DemoPage :title="title" :desc="text('按钮用于触发即时操作，支持主题、朴素、禁用和加载状态。')">
-        <DemoSection variant="preview" :title="text('演示效果')"
-            ><view class="demo-button-showcase">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-button-showcase">
                 <view class="demo-button-section">
                     <text class="demo-button-section__title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
                     <snake-button
@@ -117,8 +117,8 @@ function copyCode() {
                         Snake Button
                     </snake-button>
                 </view>
-            </view></DemoSection
-        >
+            </view>
+        </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
             <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
         </DemoSection>

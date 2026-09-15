@@ -1,6 +1,18 @@
 <template>
-    <snake-popup v-model="show" :mode="data.popupMode === 'center' ? 'center' : 'bottom'" :bg-color="data.popupMode === 'center' ? 'transparent' : '#fff'">
-        <view class="cms-v2-popup"><image class="cms-v2-popup__image" :src="data.image || ''" mode="widthFix" @click="openV2Link(data.link, linkService, pageInfo)" /><view class="cms-v2-popup__close" @click="show = false">×</view></view>
+    <snake-popup
+        v-model="show"
+        :mode="data.popupMode === 'center' ? 'center' : 'bottom'"
+        :bg-color="data.popupMode === 'center' ? 'transparent' : '#fff'"
+    >
+        <view class="cms-v2-popup">
+            <image
+                class="cms-v2-popup__image"
+                :src="data.image || ''"
+                mode="widthFix"
+                @click="openV2Link(data.link, linkService, pageInfo)"
+            />
+            <view class="cms-v2-popup__close" @click="show = false">×</view>
+        </view>
     </snake-popup>
 </template>
 <script setup lang="ts">
@@ -11,4 +23,22 @@ import { openV2Link, type V2BlockProps } from './shared';
 defineProps<V2BlockProps>();
 const show = ref(true);
 </script>
-<style scoped>.cms-v2-popup { position: relative; width: 560rpx; max-width: 100%; } .cms-v2-popup__image { display: block; width: 100%; } .cms-v2-popup__close { position: absolute; top: -70rpx; right: 0; color: #fff; font-size: 60rpx; line-height: 60rpx; }</style>
+<style scoped>
+.cms-v2-popup {
+    position: relative;
+    width: 560rpx;
+    max-width: 100%;
+}
+.cms-v2-popup__image {
+    display: block;
+    width: 100%;
+}
+.cms-v2-popup__close {
+    position: absolute;
+    top: -70rpx;
+    right: 0;
+    color: #fff;
+    font-size: 60rpx;
+    line-height: 60rpx;
+}
+</style>

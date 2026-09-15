@@ -24,14 +24,16 @@ function updateValue(key: string, value: DemoValue) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :desc="text('通过命名插槽接入业务自定义内容。')"
-        ><DemoSection variant="preview" :title="text('演示效果')"
-            ><snake-custom-module class="demo-custom-module-showcase" :datas="data"
-                ><view class="custom-card">{{ state.moduleText }}</view></snake-custom-module
-            ></DemoSection
-        ><DemoSection variant="controls" :title="text('参数配置')"
-            ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" /></DemoSection
-    ></DemoPage>
+    <DemoPage :title="title" :desc="text('通过命名插槽接入业务自定义内容。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <snake-custom-module class="demo-custom-module-showcase" :datas="data">
+                <view class="custom-card">{{ state.moduleText }}</view>
+            </snake-custom-module>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
 </template>
 <style scoped>
 .custom-card {

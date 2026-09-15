@@ -1,5 +1,10 @@
 <template>
-    <view v-if="!disabled" class="snake-upload" :class="[customClass, { 'snake-upload--list': props.mode === 'list' }]" :style="toStyle(customStyle)">
+    <view
+        v-if="!disabled"
+        class="snake-upload"
+        :class="[customClass, { 'snake-upload--list': props.mode === 'list' }]"
+        :style="toStyle(customStyle)"
+    >
         <!-- 列表模式 -->
         <template v-if="props.mode === 'list'">
             <view v-if="showUploadList" class="snake-upload-list">
@@ -27,7 +32,11 @@
                                 :class="{ 'snake-upload-list__icon--circle': props.imageShape === 'circle' }"
                                 :style="{ background: getFileIcon(item).bgColor }"
                             >
-                                <snake-icon :name="getFileIcon(item).name" size="32" color="var(--snake-color-white, #fff)"></snake-icon>
+                                <snake-icon
+                                    :name="getFileIcon(item).name"
+                                    size="32"
+                                    color="var(--snake-color-white, #fff)"
+                                ></snake-icon>
                             </view>
                         </template>
                     </view>
@@ -46,10 +55,20 @@
                         </text>
                         <!-- 进度条 -->
                         <view
-                            v-if="showProgress && item.progress !== undefined && item.progress > 0 && item.progress < 100 && !item.error"
+                            v-if="
+                                showProgress &&
+                                item.progress !== undefined &&
+                                item.progress > 0 &&
+                                item.progress < 100 &&
+                                !item.error
+                            "
                             class="snake-upload-list__progress"
                         >
-                            <snake-line-progress height="4" :show-percent="false" :percent="item.progress"></snake-line-progress>
+                            <snake-line-progress
+                                height="4"
+                                :show-percent="false"
+                                :percent="item.progress"
+                            ></snake-line-progress>
                         </view>
                         <view
                             v-if="item.error"
@@ -72,7 +91,12 @@
                             backgroundColor: delBgColor
                         }"
                     >
-                        <snake-icon :name="delIcon" size="20" :color="delColor" :custom-style="deleteIconStyle"></snake-icon>
+                        <snake-icon
+                            :name="delIcon"
+                            size="20"
+                            :color="delColor"
+                            :custom-style="deleteIconStyle"
+                        ></snake-icon>
                     </view>
                 </view>
             </view>
@@ -83,8 +107,18 @@
             <!-- 列表模式：添加按钮 -->
             <view v-if="Number(maxCount) > lists.length" class="snake-upload-list__add" @tap="selectFile">
                 <slot name="addBtn"></slot>
-                <view v-if="!customBtn" class="snake-upload-list__add-btn" hover-class="snake-upload-list__add-btn--hover" :hover-stay-time="150">
-                    <snake-icon name="plus" size="32" color="var(--snake-color-primary, #06D290)" :custom-style="addIconStyle"></snake-icon>
+                <view
+                    v-if="!customBtn"
+                    class="snake-upload-list__add-btn"
+                    hover-class="snake-upload-list__add-btn--hover"
+                    :hover-stay-time="150"
+                >
+                    <snake-icon
+                        name="plus"
+                        size="32"
+                        color="var(--snake-color-primary, #06D290)"
+                        :custom-style="addIconStyle"
+                    ></snake-icon>
                     <text class="snake-upload-list__add-text">{{ uploadBtnText }}</text>
                 </view>
             </view>
@@ -111,17 +145,30 @@
                             backgroundColor: delBgColor
                         }"
                     >
-                        <snake-icon :name="delIcon" size="20" :color="delColor" :custom-style="deleteIconStyle"></snake-icon>
+                        <snake-icon
+                            :name="delIcon"
+                            size="20"
+                            :color="delColor"
+                            :custom-style="deleteIconStyle"
+                        ></snake-icon>
                     </view>
                     <view class="snake-upload-grid__progress">
                         <snake-line-progress
-                            v-if="showProgress && item.progress !== undefined && item.progress > 0 && item.progress !== 100 && !item.error"
+                            v-if="
+                                showProgress &&
+                                item.progress !== undefined &&
+                                item.progress > 0 &&
+                                item.progress !== 100 &&
+                                !item.error
+                            "
                             :show-percent="false"
                             height="16"
                             :percent="item.progress"
                         ></snake-line-progress>
                     </view>
-                    <view @tap.stop="retry(index)" v-if="item.error" class="snake-upload-grid__error">{{ t('retry') }}</view>
+                    <view @tap.stop="retry(index)" v-if="item.error" class="snake-upload-grid__error">
+                        {{ t('retry') }}
+                    </view>
 
                     <!-- 图片类型预览 -->
                     <template v-if="isImageFile(item)">
@@ -137,20 +184,31 @@
                     <!-- 视频类型预览 -->
                     <template v-else-if="isVideoFile(item)">
                         <view class="snake-upload-grid__file" @tap.stop="doPreviewFile(item, index)">
-                            <view class="snake-upload-grid__file-icon" :style="{ background: getFileIcon(item).bgColor }">
-                                <snake-icon :name="getFileIcon(item).name" size="48" color="var(--snake-color-white, #fff)"></snake-icon>
+                            <view
+                                class="snake-upload-grid__file-icon"
+                                :style="{ background: getFileIcon(item).bgColor }"
+                            >
+                                <snake-icon
+                                    :name="getFileIcon(item).name"
+                                    size="48"
+                                    color="var(--snake-color-white, #fff)"
+                                ></snake-icon>
                             </view>
                             <view class="snake-upload-grid__file-info" v-if="showFileName || showFileSize">
                                 <text
                                     v-if="showFileName && item.name"
                                     class="snake-upload-grid__file-name"
                                     :style="{
-                                        color: item.error ? 'var(--snake-color-error, #fa3534)' : 'var(--snake-color-text-secondary, #606266)'
+                                        color: item.error
+                                            ? 'var(--snake-color-error, #fa3534)'
+                                            : 'var(--snake-color-text-secondary, #606266)'
                                     }"
                                 >
                                     {{ getFileName(item) }}
                                 </text>
-                                <text v-if="showFileSize && item.size" class="snake-upload-grid__file-size">{{ formatFileSize(item.size) }}</text>
+                                <text v-if="showFileSize && item.size" class="snake-upload-grid__file-size">
+                                    {{ formatFileSize(item.size) }}
+                                </text>
                             </view>
                         </view>
                     </template>
@@ -158,15 +216,24 @@
                     <!-- 其他文件类型预览 -->
                     <template v-else>
                         <view class="snake-upload-grid__file" @tap.stop="doPreviewFile(item, index)">
-                            <view class="snake-upload-grid__file-icon" :style="{ background: getFileIcon(item).bgColor }">
-                                <snake-icon :name="getFileIcon(item).name" size="48" color="var(--snake-color-white, #fff)"></snake-icon>
+                            <view
+                                class="snake-upload-grid__file-icon"
+                                :style="{ background: getFileIcon(item).bgColor }"
+                            >
+                                <snake-icon
+                                    :name="getFileIcon(item).name"
+                                    size="48"
+                                    color="var(--snake-color-white, #fff)"
+                                ></snake-icon>
                             </view>
                             <view class="snake-upload-grid__file-info" v-if="showFileName || showFileSize">
                                 <text
                                     v-if="showFileName && item.name"
                                     class="snake-upload-grid__file-name"
                                     :style="{
-                                        color: item.error ? 'var(--snake-color-error, #fa3534)' : 'var(--snake-color-text-secondary, #606266)'
+                                        color: item.error
+                                            ? 'var(--snake-color-error, #fa3534)'
+                                            : 'var(--snake-color-text-secondary, #606266)'
                                     }"
                                 >
                                     {{ getFileName(item) }}
@@ -193,7 +260,12 @@
                         height: addUnit(height)
                     }"
                 >
-                    <snake-icon name="plus" class="snake-upload-grid__add-icon" size="40" :custom-style="addIconStyle"></snake-icon>
+                    <snake-icon
+                        name="plus"
+                        class="snake-upload-grid__add-icon"
+                        size="40"
+                        :custom-style="addIconStyle"
+                    ></snake-icon>
                     <view class="snake-upload-grid__add-text">{{ uploadBtnText }}</view>
                 </view>
             </view>
@@ -1168,7 +1240,11 @@ async function executeBeforeRemove(index: number) {
     // 执行before-remove钩子
     if (props.beforeRemove && typeof props.beforeRemove === 'function') {
         let beforeResponse = props.beforeRemove(index, lists.value);
-        if (typeof beforeResponse === 'object' && beforeResponse !== null && typeof (beforeResponse as Promise<any>).then === 'function') {
+        if (
+            typeof beforeResponse === 'object' &&
+            beforeResponse !== null &&
+            typeof (beforeResponse as Promise<any>).then === 'function'
+        ) {
             await (beforeResponse as Promise<any>)
                 .then(() => {
                     handlerDeleteItem(index);
@@ -1332,7 +1408,24 @@ function checkFileExt(file: { name?: string; path?: string }): boolean {
         allowedExts = props.extension.length > 0 ? (props.extension as string[]) : [];
     } else if (props.accept === 'media') {
         // media 类型，合并图片和视频格式
-        allowedExts = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'svg', 'mp4', 'avi', 'mov', 'wmv', 'flv', 'mkv', 'rmvb', '3gp', 'm3u8'];
+        allowedExts = [
+            'png',
+            'jpg',
+            'jpeg',
+            'gif',
+            'webp',
+            'bmp',
+            'svg',
+            'mp4',
+            'avi',
+            'mov',
+            'wmv',
+            'flv',
+            'mkv',
+            'rmvb',
+            '3gp',
+            'm3u8'
+        ];
     } else {
         // all 类型，允许所有文件
         return true;

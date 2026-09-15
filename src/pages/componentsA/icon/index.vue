@@ -62,8 +62,8 @@ const selectedIcon = ref('search');
 
 <template>
     <DemoPage :title="title" :desc="text('浏览 Snake UI 自有字体图标，并实时调整尺寸、颜色和标签。')">
-        <DemoSection variant="preview" :title="text('演示效果')"
-            ><view class="demo-icon-showcase demo-icon-showcase--grouped">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-icon-showcase demo-icon-showcase--grouped">
                 <view class="demo-icon-preview">
                     <snake-icon
                         :name="selectedIcon"
@@ -98,8 +98,8 @@ const selectedIcon = ref('search');
                         <text class="demo-icon-item__name">{{ name }}</text>
                     </view>
                 </view>
-            </view></DemoSection
-        >
+            </view>
+        </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
             <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
         </DemoSection>

@@ -78,20 +78,15 @@ function updateValue(key: string, value: DemoValue) {
                     :text-color="String(state.textColor)"
                 />
                 <text class="demo-variant-title">{{ isEnglish ? 'Semantic states' : '语义状态' }}</text>
-                <view class="demo-empty-grid"
-                    ><snake-empty
-                        mode="search"
-                        :text="isEnglish ? 'No results' : '没有搜索结果'"
-                        icon-size="72" /><snake-empty
-                        mode="wifi"
-                        :text="isEnglish ? 'Network error' : '网络连接异常'"
-                        icon-size="72"
-                /></view>
+                <view class="demo-empty-grid">
+                    <snake-empty mode="search" :text="isEnglish ? 'No results' : '没有搜索结果'" icon-size="72" />
+                    <snake-empty mode="wifi" :text="isEnglish ? 'Network error' : '网络连接异常'" icon-size="72" />
+                </view>
             </view>
         </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')"
-            ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue"
-        /></DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
     </DemoPage>
 </template>
 

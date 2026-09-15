@@ -215,7 +215,9 @@ defineExpose({ init, clickTab, scrollByIndex });
                             class="snake-tabs__badge"
                             :class="{ 'snake-tabs__badge--dot': isDot }"
                             :style="{ top: `${offset[0]}rpx`, right: `${offset[1]}rpx` }"
-                        >{{ badgeText(item) }}</view>
+                        >
+                            {{ badgeText(item) }}
+                        </view>
                         {{ itemValue(item, name, 'name') }}
                     </view>
                     <view v-if="showBar" class="snake-tabs__bar" :style="tabBarStyle" />
@@ -229,9 +231,18 @@ defineExpose({ init, clickTab, scrollByIndex });
 .snake-tabs,
 .snake-tabs__scroll-view,
 .snake-tabs__scroll-box,
-.snake-tabs__item { box-sizing: border-box; }
-.snake-tabs__scroll-box { position: relative; white-space: nowrap; }
-.snake-tabs__scroll-view { position: relative; width: 100%; white-space: nowrap; }
+.snake-tabs__item {
+    box-sizing: border-box;
+}
+.snake-tabs__scroll-box {
+    position: relative;
+    white-space: nowrap;
+}
+.snake-tabs__scroll-view {
+    position: relative;
+    width: 100%;
+    white-space: nowrap;
+}
 .snake-tabs__item {
     position: relative;
     display: inline-block;
@@ -241,9 +252,17 @@ defineExpose({ init, clickTab, scrollByIndex });
     white-space: nowrap;
     transition-property: background-color, color;
 }
-.snake-tabs__item--hidden { display: none; }
-.snake-tabs__bar { position: absolute; bottom: 0; }
-.snake-tabs__scroll-flex { display: flex; justify-content: space-between; }
+.snake-tabs__item--hidden {
+    display: none;
+}
+.snake-tabs__bar {
+    position: absolute;
+    bottom: 0;
+}
+.snake-tabs__scroll-flex {
+    display: flex;
+    justify-content: space-between;
+}
 .snake-tabs__badge {
     position: absolute;
     z-index: 9;
@@ -261,7 +280,12 @@ defineExpose({ init, clickTab, scrollByIndex });
     transform: scale(0.8);
     transform-origin: center;
 }
-.snake-tabs__badge--dot { width: 16rpx; min-width: 16rpx; height: 16rpx; padding: 0; }
+.snake-tabs__badge--dot {
+    width: 16rpx;
+    min-width: 16rpx;
+    height: 16rpx;
+    padding: 0;
+}
 ::-webkit-scrollbar {
     display: none;
     width: 0 !important;

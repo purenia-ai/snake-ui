@@ -1,7 +1,19 @@
 <template>
-    <view :style="toStyle(customStyle)" class="snake-icon" :class="['snake-icon--' + labelPos, customClass]" @click="onClick">
+    <view
+        :style="toStyle(customStyle)"
+        class="snake-icon"
+        :class="['snake-icon--' + labelPos, customClass]"
+        @click="onClick"
+    >
         <image v-if="isImg" class="snake-icon__img" :src="props.name" :mode="imgMode" :style="imgStyle" />
-        <text v-else class="snake-icon__icon" :class="iconClass" :style="toStyle(iconStyle)" :hover-class="hoverClass" @touchstart="onTouchstart">
+        <text
+            v-else
+            class="snake-icon__icon"
+            :class="iconClass"
+            :style="toStyle(iconStyle)"
+            :hover-class="hoverClass"
+            @touchstart="onTouchstart"
+        >
             <text
                 v-if="showDecimalIcon"
                 class="snake-icon__decimal"
@@ -107,7 +119,11 @@ const decimalIconClass = computed(() => {
     let classes: string[] | string = [];
     classes.push(`${props.customPrefix}-${props.name}`);
     classes.push(props.customPrefix === 'sicon' ? 'snake-iconfont' : props.customPrefix);
-    classes.push(props.color && themeTypes.includes(props.color) ? `snake-icon__icon--${props.color}` : 'snake-icon__icon--primary');
+    classes.push(
+        props.color && themeTypes.includes(props.color)
+            ? `snake-icon__icon--${props.color}`
+            : 'snake-icon__icon--primary'
+    );
 
     // #ifdef MP-ALIPAY || MP-TOUTIAO || MP-BAIDU
     classes = (classes as string[]).join(' ');

@@ -42,14 +42,17 @@ function selectActivity(item: { id: string }) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :desc="text('展示活动或拍卖场次，并支持选择当前场次。')"
-        ><DemoSection variant="preview" :title="text('演示效果')"
-            ><snake-activity-list
+    <DemoPage :title="title" :desc="text('展示活动或拍卖场次，并支持选择当前场次。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <snake-activity-list
                 class="demo-activity-list-showcase"
                 :list="list"
                 :current="current"
-                @change="selectActivity" /></DemoSection
-        ><DemoSection variant="controls" :title="text('参数配置')"
-            ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" /></DemoSection
-    ></DemoPage>
+                @change="selectActivity"
+            />
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
 </template>

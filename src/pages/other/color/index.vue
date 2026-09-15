@@ -41,8 +41,8 @@ const colorLabels: Record<string, string> = {
             <text class="preview-card__title">{{ group.label }}</text>
             <view class="swatch-grid">
                 <view v-for="key in group.keys" :key="key" class="swatch" :style="{ backgroundColor: color[key] }">
-                    <text>{{ colorLabels[key] }}</text
-                    ><text>{{ color[key] }}</text>
+                    <text>{{ colorLabels[key] }}</text>
+                    <text>{{ color[key] }}</text>
                 </view>
             </view>
         </view>

@@ -55,9 +55,13 @@ const actualSize = computed(() => {
     if (props.size !== '') return String(props.size);
     return String(form?.size.value || 'default');
 });
-const presetSize = computed(() => (actualSize.value in sizeConfig ? (actualSize.value as keyof typeof sizeConfig) : 'default'));
+const presetSize = computed(() =>
+    actualSize.value in sizeConfig ? (actualSize.value as keyof typeof sizeConfig) : 'default'
+);
 const currentSizeConfig = computed(() => sizeConfig[presetSize.value]);
-const actualFontSize = computed(() => addUnit(actualSize.value in sizeConfig ? currentSizeConfig.value.fontSize : actualSize.value, 'rpx'));
+const actualFontSize = computed(() =>
+    addUnit(actualSize.value in sizeConfig ? currentSizeConfig.value.fontSize : actualSize.value, 'rpx')
+);
 const currentIconSize = computed(() => currentSizeConfig.value.iconSize);
 const errorType = computed(() => form?.errorType.value || ['message']);
 const showError = (type: string) => !errorType.value.includes('none') && errorType.value.includes(type);
@@ -68,10 +72,14 @@ const elLabelWidth = computed(() => {
     if (props.labelWidth !== '' && props.labelWidth !== 0) return props.labelWidth;
     return form?.labelWidth.value || 90;
 });
-const elLabelStyle = computed(() => (Object.keys(props.labelStyle).length ? props.labelStyle : form?.labelStyle.value || {}));
+const elLabelStyle = computed(() =>
+    Object.keys(props.labelStyle).length ? props.labelStyle : form?.labelStyle.value || {}
+);
 const elLabelPosition = computed(() => props.labelPosition || form?.labelPosition.value || 'left');
 const elLabelAlign = computed(() => props.labelAlign || form?.labelAlign.value || 'left');
-const elBorderBottom = computed(() => (props.borderBottom !== '' ? props.borderBottom : (form?.borderBottom.value ?? false)));
+const elBorderBottom = computed(() =>
+    props.borderBottom !== '' ? props.borderBottom : (form?.borderBottom.value ?? false)
+);
 const labelWidth = computed(() =>
     elLabelPosition.value === 'left'
         ? (props.label === 'true' || props.label === '') && !slots.label
@@ -82,7 +90,9 @@ const labelWidth = computed(() =>
 
 function getRules(): FormRule[] {
     const allRules = form?.rules.value || {};
-    const dynamicPath = props.prop.replace(/\[(\d+)\]/g, '.$1').replace(/(?:^|\.)(\d+)(?=\.|$)/g, '.defaultField.fields');
+    const dynamicPath = props.prop
+        .replace(/\[(\d+)\]/g, '.$1')
+        .replace(/(?:^|\.)(\d+)(?=\.|$)/g, '.defaultField.fields');
     const fieldRules = allRules[props.prop] || getPathValue(allRules, dynamicPath);
     return ([] as FormRule[]).concat((fieldRules || []) as FormRule | FormRule[]);
 }
@@ -172,7 +182,8 @@ defineExpose({ validation, resetField, onFormBlur, onFormChange });
             },
             customClass
         ]"
-        :style="customStyle">
+        :style="customStyle"
+    >
         <view class="snake-form-item__body" :style="{ flexDirection: elLabelPosition === 'left' ? 'row' : 'column' }">
             <view
                 class="snake-form-item__left"
@@ -180,12 +191,21 @@ defineExpose({ validation, resetField, onFormBlur, onFormChange });
                     width: labelWidth,
                     flex: `0 0 ${labelWidth}`,
                     marginBottom: elLabelPosition === 'left' ? 0 : '10rpx'
-                }">
-                <view v-if="required || leftIcon || label || $slots.label || $slots.leftIcon" class="snake-form-item__left-content">
+                }"
+            >
+                <view
+                    v-if="required || leftIcon || label || $slots.label || $slots.leftIcon"
+                    class="snake-form-item__left-content"
+                >
                     <text v-if="required" class="snake-form-item__required">*</text>
                     <view v-if="leftIcon || $slots.leftIcon" class="snake-form-item__left-icon">
                         <slot name="leftIcon">
-                            <snake-icon :name="leftIcon" :size="currentIconSize" :custom-prefix="leftIconPrefix" :custom-style="leftIconStyle" />
+                            <snake-icon
+                                :name="leftIcon"
+                                :size="currentIconSize"
+                                :custom-prefix="leftIconPrefix"
+                                :custom-style="leftIconStyle"
+                            />
                         </slot>
                     </view>
                     <view
@@ -194,9 +214,15 @@ defineExpose({ validation, resetField, onFormBlur, onFormChange });
                             elLabelStyle,
                             { fontSize: actualFontSize },
                             {
-                                justifyContent: elLabelAlign === 'left' ? 'flex-start' : elLabelAlign === 'center' ? 'center' : 'flex-end'
+                                justifyContent:
+                                    elLabelAlign === 'left'
+                                        ? 'flex-start'
+                                        : elLabelAlign === 'center'
+                                          ? 'center'
+                                          : 'flex-end'
                             }
-                        ]">
+                        ]"
+                    >
                         <slot name="label">{{ label }}</slot>
                     </view>
                 </view>
@@ -211,7 +237,8 @@ defineExpose({ validation, resetField, onFormBlur, onFormChange });
                                 :name="rightIcon"
                                 :size="currentIconSize"
                                 :custom-prefix="rightIconPrefix"
-                                :custom-style="rightIconStyle" />
+                                :custom-style="rightIconStyle"
+                            />
                         </slot>
                         <slot name="right" />
                     </view>
@@ -225,7 +252,8 @@ defineExpose({ validation, resetField, onFormBlur, onFormChange });
                 paddingLeft: elLabelPosition === 'left' && label ? addUnit(elLabelWidth, 'rpx') : '0',
                 fontSize: addUnit(currentSizeConfig.messageSize, 'rpx'),
                 lineHeight: addUnit(currentSizeConfig.messageSize, 'rpx')
-            }">
+            }"
+        >
             {{ validateMessage }}
         </view>
     </view>

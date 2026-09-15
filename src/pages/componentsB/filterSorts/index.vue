@@ -39,16 +39,19 @@ function updateValue(key: string, value: DemoValue) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :desc="text('提供商品排序和多条件筛选入口。')" viewport
-        ><DemoSection bare variant="preview" :title="text('演示效果')"
-            ><snake-filter-sorts
+    <DemoPage :title="title" :desc="text('提供商品排序和多条件筛选入口。')" viewport>
+        <DemoSection bare variant="preview" :title="text('演示效果')">
+            <snake-filter-sorts
                 class="demo-filter-sorts-showcase"
                 :filters="filters"
                 sort="auto"
                 :bg-color="String(state.filterBg)"
                 :show-tabs="Boolean(state.filterTabs)"
-                :scroll-top="scrollTop" /></DemoSection
-        ><DemoSection variant="controls" :title="text('参数配置')"
-            ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" /></DemoSection
-    ></DemoPage>
+                :scroll-top="scrollTop"
+            />
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
 </template>

@@ -91,9 +91,9 @@ function updateValue(key: string, value: DemoValue) {
                 <snake-line margin="16rpx 0" border-style="dotted" />
             </view>
         </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')"
-            ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue"
-        /></DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
     </DemoPage>
 </template>
 

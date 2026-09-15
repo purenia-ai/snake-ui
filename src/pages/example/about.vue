@@ -50,18 +50,18 @@ function openExternal(url: string) {
         </view>
 
         <view class="about-stats">
-            <view
-                ><text class="about-stats__value">71</text
-                ><text class="about-stats__label">{{ text('示例页面') }}</text></view
-            >
-            <view
-                ><text class="about-stats__value">Vue 3</text
-                ><text class="about-stats__label">{{ text('技术栈') }}</text></view
-            >
-            <view
-                ><text class="about-stats__value">MIT</text
-                ><text class="about-stats__label">{{ text('开源协议') }}</text></view
-            >
+            <view>
+                <text class="about-stats__value">71</text>
+                <text class="about-stats__label">{{ text('示例页面') }}</text>
+            </view>
+            <view>
+                <text class="about-stats__value">Vue 3</text>
+                <text class="about-stats__label">{{ text('技术栈') }}</text>
+            </view>
+            <view>
+                <text class="about-stats__value">MIT</text>
+                <text class="about-stats__label">{{ text('开源协议') }}</text>
+            </view>
         </view>
 
         <view class="section">
@@ -76,9 +76,9 @@ function openExternal(url: string) {
             <text class="section__title">{{ text('在线文档') }}</text>
             <text class="docs-url">{{ docsUrl }}</text>
             <snake-button type="primary" plain @click="copyDocsUrl">{{ text('复制文档地址') }}</snake-button>
-            <snake-button class="link-button" plain @click="openExternal(repositoryUrl)">{{
-                text('访问代码仓库')
-            }}</snake-button>
+            <snake-button class="link-button" plain @click="openExternal(repositoryUrl)">
+                {{ text('访问代码仓库') }}
+            </snake-button>
         </view>
     </DemoPage>
 </template>

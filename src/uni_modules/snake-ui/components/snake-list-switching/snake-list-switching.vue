@@ -1,9 +1,5 @@
 <template>
-    <view
-        class="listswitching"
-        :ref="listSwitchName"
-        :style="{ backgroundImage: 'url(' + datas.bgImg + ')' }"
-    >
+    <view class="listswitching" :ref="listSwitchName" :style="{ backgroundImage: 'url(' + datas.bgImg + ')' }">
         <!-- 类型一 -->
         <!-- 没有数据展示默认 -->
         <view
@@ -127,9 +123,9 @@
 							<snake-icon name="" size="23" v-show="datas.purchasebuttonType === 1" />
 							<snake-icon name="" size="23" v-show="datas.purchasebuttonType === 2" />
 							<snake-icon name="" size="23" v-show="datas.purchasebuttonType === 3" /> -->
-                            <text class="commodity-action" v-if="[4, 5, 6, 7].includes(datas.purchasebuttonType)">{{
-                                datas.purchase
-                            }}</text>
+                            <text class="commodity-action" v-if="[4, 5, 6, 7].includes(datas.purchasebuttonType)">
+                                {{ datas.purchase }}
+                            </text>
                         </view>
                     </view>
                 </view>
@@ -189,8 +185,9 @@
                         :style="[styleString]"
                         class="marks"
                         v-if="datas.commoditycorner && datas.commoditycornertype === 0"
-                        >新品</view
                     >
+                        新品
+                    </view>
                     <view
                         :style="[styleString]"
                         class="marks"
@@ -204,14 +201,16 @@
                         :style="[styleString]"
                         class="marks"
                         v-if="datas.commoditycorner && datas.commoditycornertype === 2"
-                        >NEW</view
                     >
+                        NEW
+                    </view>
                     <view
                         :style="[styleString]"
                         class="marks"
                         v-if="datas.commoditycorner && datas.commoditycornertype === 3"
-                        >HOT</view
                     >
+                        HOT
+                    </view>
                 </view>
 
                 <!-- 文字内容 -->
@@ -250,9 +249,9 @@
 							<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 1" />
 							<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 2" />
 							<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 3" /> -->
-                            <text class="commodity-action" v-if="[4, 5, 6, 7].includes(datas.purchasebuttonType)">{{
-                                datas.purchase
-                            }}</text>
+                            <text class="commodity-action" v-if="[4, 5, 6, 7].includes(datas.purchasebuttonType)">
+                                {{ datas.purchase }}
+                            </text>
                         </view>
                     </view>
                 </view>
@@ -380,9 +379,9 @@
 								<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 1" />
 								<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 2" />
 								<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 3" /> -->
-                                <text class="commodity-action" v-if="[4, 5, 6, 7].includes(datas.purchasebuttonType)">{{
-                                    datas.purchase
-                                }}</text>
+                                <text class="commodity-action" v-if="[4, 5, 6, 7].includes(datas.purchasebuttonType)">
+                                    {{ datas.purchase }}
+                                </text>
                             </view>
                         </view>
                     </view>
@@ -502,9 +501,9 @@
 								<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 1" />
 								<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 2" />
 								<snake-icon name="" size="23" v-if="datas.purchasebuttonType === 3" /> -->
-                                <text class="commodity-action" v-if="[4, 5, 6, 7].includes(datas.purchasebuttonType)">{{
-                                    datas.purchase
-                                }}</text>
+                                <text class="commodity-action" v-if="[4, 5, 6, 7].includes(datas.purchasebuttonType)">
+                                    {{ datas.purchase }}
+                                </text>
                             </view>
                         </view>
                     </view>
@@ -622,8 +621,9 @@
                                             <text
                                                 class="commodity-action"
                                                 v-if="[4, 5, 6, 7].includes(datas.purchasebuttonType)"
-                                                >{{ datas.purchase }}</text
                                             >
+                                                {{ datas.purchase }}
+                                            </text>
                                         </view>
                                     </view>
                                 </view>
@@ -732,8 +732,9 @@
                                             <text
                                                 class="commodity-action"
                                                 v-if="[4, 5, 6, 7].includes(datas.purchasebuttonType)"
-                                                >{{ datas.purchase }}</text
                                             >
+                                                {{ datas.purchase }}
+                                            </text>
                                         </view>
                                     </view>
                                 </view>

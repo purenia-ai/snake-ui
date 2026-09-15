@@ -29,30 +29,32 @@ function updateValue(key: string, nextValue: DemoValue) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :desc="text('支持清空、密码、格式化和多种边框的单行输入。')"
-        ><DemoSection variant="preview" :title="text('演示效果')"
-            ><view class="demo-control-stack demo-input-showcase"
-                ><text class="demo-variant-title">{{ isEnglish ? 'Text and password' : '文本与密码' }}</text
-                ><snake-input
+    <DemoPage :title="title" :desc="text('支持清空、密码、格式化和多种边框的单行输入。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-control-stack demo-input-showcase">
+                <text class="demo-variant-title">{{ isEnglish ? 'Text and password' : '文本与密码' }}</text>
+                <snake-input
                     v-model="value"
                     border="surround"
                     prefix-icon="search"
                     :clearable="Boolean(state.inputClearable)"
                     :disabled="Boolean(state.inputDisabled)"
                     :placeholder="String(state.inputPlaceholder)"
-                /><snake-input
+                />
+                <snake-input
                     v-model="value"
                     type="password"
                     border="surround"
                     show-password
                     :placeholder="isEnglish ? 'Password' : '密码输入'"
-                /><text
-                    >{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ value || (isEnglish ? 'Empty' : '空') }}</text
-                ></view
-            ></DemoSection
-        ><DemoSection variant="controls" :title="text('参数配置')"
-            ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" /></DemoSection
-    ></DemoPage>
+                />
+                <text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ value || (isEnglish ? 'Empty' : '空') }}</text>
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
 </template>
 <style scoped>
 .demo-control-stack {

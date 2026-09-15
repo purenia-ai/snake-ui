@@ -72,9 +72,9 @@ const textStyle = computed(() => ({ color: props.color || props.textColor, fontS
             <image v-if="isImage" class="snake-empty__image" :src="iconName" mode="aspectFit" :style="imageStyle" />
             <snake-icon v-else :name="iconName" :color="iconColor" :size="iconSize ?? 'inherit'" />
         </slot>
-        <slot
-            ><text class="snake-empty__text" :style="textStyle">{{ displayText }}</text></slot
-        >
+        <slot>
+            <text class="snake-empty__text" :style="textStyle">{{ displayText }}</text>
+        </slot>
         <view v-if="$slots.bottom" class="snake-empty__bottom"><slot name="bottom" /></view>
     </view>
 </template>

@@ -31,25 +31,26 @@ function updateValue(key: string, value: DemoValue) {
         <DemoSection bare variant="preview" :title="text('演示效果')">
             <view class="demo-scroll demo-sticky-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Page scroll sticky' : '页面滚动吸顶' }}</text>
-                <view class="demo-scroll-hero">{{
-                    isEnglish ? 'Scroll down to see the sticky behavior' : '向下滚动查看吸顶效果'
-                }}</view>
+                <view class="demo-scroll-hero">
+                    {{ isEnglish ? 'Scroll down to see the sticky behavior' : '向下滚动查看吸顶效果' }}
+                </view>
                 <snake-sticky
                     bg-color="#06D290"
                     :disabled="Boolean(state.stickyDisabled)"
                     :offset-top="Number(state.stickyOffset)"
-                    ><view class="demo-sticky">{{
-                        isEnglish ? 'I stay at the top of the preview' : '我会固定在手机预览顶部'
-                    }}</view></snake-sticky
                 >
-                <view v-for="item in 12" :key="item" class="demo-row"
-                    >{{ isEnglish ? 'Scroll item' : '滚动内容' }} {{ item }}</view
-                >
+                    <view class="demo-sticky">
+                        {{ isEnglish ? 'I stay at the top of the preview' : '我会固定在手机预览顶部' }}
+                    </view>
+                </snake-sticky>
+                <view v-for="item in 12" :key="item" class="demo-row">
+                    {{ isEnglish ? 'Scroll item' : '滚动内容' }} {{ item }}
+                </view>
             </view>
         </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')"
-            ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue"
-        /></DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
     </DemoPage>
 </template>
 

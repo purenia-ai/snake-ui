@@ -42,7 +42,11 @@
                                 <text v-if="currentTime < item.startTime">拍卖预告</text>
                                 <template v-else>
                                     <view class="activity-list__time-icon">
-                                        <snake-icon name="clock" size="20rpx" color="var(--snake-color-white, #ffffff)"></snake-icon>
+                                        <snake-icon
+                                            name="clock"
+                                            size="20rpx"
+                                            color="var(--snake-color-white, #ffffff)"
+                                        ></snake-icon>
                                     </view>
                                     <text class="activity-list__countdown">
                                         {{ uni.$snake.formatTime(item.endTime, 'mm-dd hh:MM') }}
@@ -53,9 +57,9 @@
                         <!-- 标题 -->
                         <view class="activity-list__title" v-if="index !== 0">
                             <text class="activity-list__title-main">{{ item.name }}</text>
-                            <text class="activity-list__title-sub" v-if="currentTime > item.startTime">{{
-                                item.subtitle
-                            }}</text>
+                            <text class="activity-list__title-sub" v-if="currentTime > item.startTime">
+                                {{ item.subtitle }}
+                            </text>
                             <text class="activity-list__title-time activity-list__title-time--din" v-else>
                                 {{ uni.$snake.formatTime(item.startTime, 'mm-dd') }}
                                 <text class="activity-list__title-time--open">开场</text>

@@ -170,8 +170,9 @@ defineExpose({ scrollTo, update });
             :scroll-into-view="scrollIntoView"
             scroll-with-animation
             @scroll="onScroll"
-            ><slot
-        /></scroll-view>
+        >
+            <slot />
+        </scroll-view>
         <view
             v-if="indexList.length"
             class="snake-index-list-panel__rail"
@@ -189,12 +190,13 @@ defineExpose({ scrollTo, update });
                 :class="{ 'is-active': activeIndex === index }"
                 :style="{ color: activeIndex === index ? activeColor : inactiveColor }"
                 @click="scrollTo(index)"
-                >{{ item }}</view
             >
+                {{ item }}
+            </view>
         </view>
-        <view v-if="indexList.length" class="snake-index-list-panel__bubble" :class="{ 'is-visible': touching }">{{
-            activeIndex >= 0 ? indexList[activeIndex] : ''
-        }}</view>
+        <view v-if="indexList.length" class="snake-index-list-panel__bubble" :class="{ 'is-visible': touching }">
+            {{ activeIndex >= 0 ? indexList[activeIndex] : '' }}
+        </view>
     </view>
 </template>
 

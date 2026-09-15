@@ -81,9 +81,9 @@ function onClear() {
                 <snake-search shape="square" height="68" placeholder="方形搜索框" margin="16rpx 0" />
             </view>
         </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')"
-            ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue"
-        /></DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
     </DemoPage>
 </template>
 

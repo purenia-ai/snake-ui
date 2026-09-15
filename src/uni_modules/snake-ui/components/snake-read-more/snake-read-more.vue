@@ -33,105 +33,108 @@ const closeTextValue = computed(() => props.closeText || t('closeText'));
 
 // 监听 toggle 和 showHeight 变化，重新初始化
 watch(
-  () => `${props.toggle}-${props.showHeight}`,
-  () => {
-    init();
-  }
+    () => `${props.toggle}-${props.showHeight}`,
+    () => {
+        init();
+    }
 );
 
 onMounted(() => {
-  elId.value = guid();
-  nextTick(() => {
-    init();
-  });
+    elId.value = guid();
+    nextTick(() => {
+        init();
+    });
 });
 
 /** 初始化内容高度判断，决定是否显示展开/收起按钮。 */
 function init() {
-  getRect(`.${elId.value}`, instance).then(rect => {
-    // 真实内容高度大于占位高度时，显示收起与展开的控制按钮
-    if (rect.height > uni.upx2px(Number(props.showHeight))) {
-      isLongContent.value = true;
-      showMore.value = false;
-    }
-  });
+    getRect(`.${elId.value}`, instance).then(rect => {
+        // 真实内容高度大于占位高度时，显示收起与展开的控制按钮
+        if (rect.height > uni.upx2px(Number(props.showHeight))) {
+            isLongContent.value = true;
+            showMore.value = false;
+        }
+    });
 }
 
 defineExpose<ReadMoreExpose>({ init });
 
 /** 展开或收起内容，发出 open/close 事件。 */
 function toggleReadMore() {
-  showMore.value = !showMore.value;
-  // toggle 为 false 时，隐藏收起部分的内容
-  if (props.toggle === false) isLongContent.value = false;
-  if (showMore.value) emit('open', props.index);
-  else emit('close', props.index);
+    showMore.value = !showMore.value;
+    // toggle 为 false 时，隐藏收起部分的内容
+    if (props.toggle === false) isLongContent.value = false;
+    if (showMore.value) emit('open', props.index);
+    else emit('close', props.index);
 }
 </script>
 
 <template>
-  <view>
-    <view
-      class="snake-read-more__content"
-      :class="[elId, customClass]"
-      :style="[
-        {
-          height: isLongContent && !showMore ? `${showHeight}rpx` : 'auto',
-          textIndent: textIndent
-        },
-        customStyle
-      ]">
-      <slot />
+    <view>
+        <view
+            class="snake-read-more__content"
+            :class="[elId, customClass]"
+            :style="[
+                {
+                    height: isLongContent && !showMore ? `${showHeight}rpx` : 'auto',
+                    textIndent: textIndent
+                },
+                customStyle
+            ]"
+        >
+            <slot />
+        </view>
+        <view
+            v-if="isLongContent"
+            class="snake-read-more__toggle"
+            :class="{ 'snake-read-more__toggle--open': showMore }"
+            :style="[innerShadowStyle]"
+            @click="toggleReadMore"
+        >
+            <text
+                class="snake-read-more__toggle__btn"
+                :style="{
+                    fontSize: `${fontSize}rpx`,
+                    color: color
+                }"
+            >
+                {{ showMore ? openTextValue : closeTextValue }}
+            </text>
+            <view class="snake-read-more__toggle__btn__icon">
+                <snake-icon :color="color" :size="fontSize" :name="showMore ? 'arrow-up' : 'arrow-down'" />
+            </view>
+        </view>
     </view>
-    <view
-      v-if="isLongContent"
-      class="snake-read-more__toggle"
-      :class="{ 'snake-read-more__toggle--open': showMore }"
-      :style="[innerShadowStyle]"
-      @click="toggleReadMore">
-      <text
-        class="snake-read-more__toggle__btn"
-        :style="{
-          fontSize: `${fontSize}rpx`,
-          color: color
-        }">
-        {{ showMore ? openTextValue : closeTextValue }}
-      </text>
-      <view class="snake-read-more__toggle__btn__icon">
-        <snake-icon :color="color" :size="fontSize" :name="showMore ? 'arrow-up' : 'arrow-down'" />
-      </view>
-    </view>
-  </view>
 </template>
 
 <style scoped>
 .snake-read-more__content {
-  overflow: hidden;
-  font-size: 30rpx;
-  color: var(--snake-color-text-secondary, #606266);
-  line-height: 1.8;
-  text-align: left;
+    overflow: hidden;
+    font-size: 30rpx;
+    color: var(--snake-color-text-secondary, #606266);
+    line-height: 1.8;
+    text-align: left;
 }
 .snake-read-more__toggle {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding-bottom: 26rpx;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding-bottom: 26rpx;
 }
 .snake-read-more__toggle--open {
-  padding-top: 0;
-  margin-top: 20rpx;
-  background: none;
+    padding-top: 0;
+    margin-top: 20rpx;
+    background: none;
 }
 .snake-read-more__toggle__btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }
 .snake-read-more__toggle__btn__icon {
-  margin-left: 14rpx;
+    margin-left: 14rpx;
 }
 </style>

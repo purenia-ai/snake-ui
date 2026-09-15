@@ -106,8 +106,9 @@ defineExpose<DropMenuExpose>({ updateDropMenuRect, colseAll, close, open, highli
         class="snake-drop-menu"
         :class="[customClass, { 'snake-drop-menu--border': borderBottom }]"
         :style="[{ height: addUnit(height, 'px'), zIndex: props.zIndex }, customStyle]"
-        ><slot
-    /></view>
+    >
+        <slot />
+    </view>
 </template>
 <style scoped>
 .snake-drop-menu {

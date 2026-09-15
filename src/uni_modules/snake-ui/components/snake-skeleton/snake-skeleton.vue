@@ -73,12 +73,7 @@ function resolveRowValue(
                     custom-style="flex: none; margin-right: 15px"
                 />
                 <view class="snake-skeleton__content">
-                    <SkeletonItem
-                        v-if="title"
-                        variant="text"
-                        :width="titleWidth"
-                        :height="titleHeight"
-                    />
+                    <SkeletonItem v-if="title" variant="text" :width="titleWidth" :height="titleHeight" />
                     <SkeletonItem
                         v-for="(item, index) in rowItems"
                         :key="index"

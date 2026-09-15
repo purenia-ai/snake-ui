@@ -61,17 +61,15 @@ const clearSearch = () => {
     >
         <view class="overview">
             <view class="components-hero">
-                <view class="components-hero__content"
-                    ><text class="components-hero__eyebrow">SNAKE / COMPONENTS</text
-                    ><text class="components-hero__title">为跨端业务而生的组件</text
-                    ><text class="components-hero__desc"
-                        >从基础交互到 CMS 营销模块，打开一个页面就能看到真实用法。</text
-                    ></view
-                >
-                <view class="components-hero__metric"
-                    ><text>{{ resultCount }}</text
-                    ><text>{{ text('个组件') }}</text></view
-                >
+                <view class="components-hero__content">
+                    <text class="components-hero__eyebrow">SNAKE / COMPONENTS</text>
+                    <text class="components-hero__title">为跨端业务而生的组件</text>
+                    <text class="components-hero__desc">从基础交互到 CMS 营销模块，打开一个页面就能看到真实用法。</text>
+                </view>
+                <view class="components-hero__metric">
+                    <text>{{ resultCount }}</text>
+                    <text>{{ text('个组件') }}</text>
+                </view>
             </view>
             <view class="theme-switcher">
                 <view
@@ -95,9 +93,10 @@ const clearSearch = () => {
                     :key="filter.key"
                     :class="['group-filter', { 'group-filter--active': activeGroup === filter.key }]"
                     @click="activeGroup = filter.key"
-                    ><text>{{ text(filter.label) }}</text
-                    ><text class="group-filter__count">{{ filter.count }}</text></view
                 >
+                    <text>{{ text(filter.label) }}</text>
+                    <text class="group-filter__count">{{ filter.count }}</text>
+                </view>
             </scroll-view>
             <view class="search-box">
                 <text class="search-box__icon">⌕</text>
@@ -111,13 +110,14 @@ const clearSearch = () => {
                 <text v-if="searchText" class="search-box__clear" @click="clearSearch">×</text>
             </view>
             <view v-if="searchText" class="search-result">
-                <text>{{ text('找到') }} {{ resultCount }} {{ text('个组件') }}</text
-                ><text @click="clearSearch">{{ text('清空') }}</text>
+                <text>{{ text('找到') }} {{ resultCount }} {{ text('个组件') }}</text>
+                <text @click="clearSearch">{{ text('清空') }}</text>
             </view>
 
             <view v-if="searchText && resultCount === 0" class="overview__empty">
-                <view class="empty-icon">⌕</view><view class="empty-title">{{ text('没有找到相关组件') }}</view
-                ><view class="empty-desc">{{ text('换个关键词试试') }}</view>
+                <view class="empty-icon">⌕</view>
+                <view class="empty-title">{{ text('没有找到相关组件') }}</view>
+                <view class="empty-desc">{{ text('换个关键词试试') }}</view>
             </view>
 
             <view v-for="group in filteredGroups" :key="group.groupName" class="group-section">
@@ -135,13 +135,17 @@ const clearSearch = () => {
                         @click="openComponent(item.path)"
                     >
                         <view class="card__body">
-                            <view class="card__title-row"
-                                ><text class="card__title">{{ item.titleEn }}</text
-                                ><text v-if="item.cms" class="card__cms">CMS</text></view
-                            >
-                            <text class="card__desc">{{
-                                isEnglish ? demoText(item.desc) : chineseTitle(item.title, item.titleEn) || item.desc
-                            }}</text>
+                            <view class="card__title-row">
+                                <text class="card__title">{{ item.titleEn }}</text>
+                                <text v-if="item.cms" class="card__cms">CMS</text>
+                            </view>
+                            <text class="card__desc">
+                                {{
+                                    isEnglish
+                                        ? demoText(item.desc)
+                                        : chineseTitle(item.title, item.titleEn) || item.desc
+                                }}
+                            </text>
                         </view>
                         <text class="card__arrow">›</text>
                     </view>

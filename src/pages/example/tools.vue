@@ -37,21 +37,20 @@ const groups = computed(() => {
             <text class="tools-hero__title">让常用能力触手可及</text>
             <text class="tools-hero__desc">网络、运行时和基础 Hooks 的跨端示例。</text>
         </view>
-        <view class="tool-search"
-            ><snake-icon name="search" :size="19" /><input
-                v-model="searchText"
-                :placeholder="text('搜索工具')"
-                confirm-type="search"
-        /></view>
-        <view v-if="!groups.length" class="tool-empty"
-            ><snake-icon name="search" :size="30" /><text>{{ text('没有找到相关工具') }}</text></view
-        >
+        <view class="tool-search">
+            <snake-icon name="search" :size="19" />
+            <input v-model="searchText" :placeholder="text('搜索工具')" confirm-type="search" />
+        </view>
+        <view v-if="!groups.length" class="tool-empty">
+            <snake-icon name="search" :size="30" />
+            <text>{{ text('没有找到相关工具') }}</text>
+        </view>
         <view v-for="group in groups" :key="group.title" class="tool-group">
-            <view class="tool-group__header"
-                ><text class="tool-group__title">{{ text(group.title) }}</text
-                ><text class="tool-group__en">{{ group.titleEn }}</text
-                ><text class="tool-group__count">{{ group.items.length }}</text></view
-            >
+            <view class="tool-group__header">
+                <text class="tool-group__title">{{ text(group.title) }}</text>
+                <text class="tool-group__en">{{ group.titleEn }}</text>
+                <text class="tool-group__count">{{ group.items.length }}</text>
+            </view>
             <view class="tool-list">
                 <view
                     v-for="tool in group.items"
@@ -61,10 +60,10 @@ const groups = computed(() => {
                     @click="openTool(tool.url)"
                 >
                     <view class="tool-card__icon"><snake-icon :name="tool.icon" :size="24" /></view>
-                    <view class="tool-card__body"
-                        ><text class="tool-card__title">{{ text(tool.title) }}</text
-                        ><text class="tool-card__desc">{{ text(tool.desc) }}</text></view
-                    >
+                    <view class="tool-card__body">
+                        <text class="tool-card__title">{{ text(tool.title) }}</text>
+                        <text class="tool-card__desc">{{ text(tool.desc) }}</text>
+                    </view>
                     <snake-icon name="arrow-right" :size="18" />
                 </view>
             </view>

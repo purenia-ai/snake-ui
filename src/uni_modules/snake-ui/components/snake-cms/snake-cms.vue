@@ -109,19 +109,79 @@
             <snake-custom-module v-else-if="item.component === 'custommodule'" :datas="item.setStyle">
                 <slot :name="item.setStyle.slotName" :item="item" />
             </snake-custom-module>
-            <cms-v2-carousel v-else-if="item.component === 'v2.carousel'" :data="item.props" :link-service="options.services?.link" :page-info="pageInfo" />
-            <cms-v2-coupon v-else-if="item.component === 'v2.coupon'" :data="item.props" :coupon-service="options.services?.coupon" :link-service="options.services?.link" :page-info="pageInfo" @error="emit('error', $event)" />
-            <cms-v2-custom v-else-if="item.component === 'v2.custom'" :data="item.props"><slot :name="item.props.slotName || 'custom'" :item="item" /></cms-v2-custom>
+            <cms-v2-carousel
+                v-else-if="item.component === 'v2.carousel'"
+                :data="item.props"
+                :link-service="options.services?.link"
+                :page-info="pageInfo"
+            />
+            <cms-v2-coupon
+                v-else-if="item.component === 'v2.coupon'"
+                :data="item.props"
+                :coupon-service="options.services?.coupon"
+                :link-service="options.services?.link"
+                :page-info="pageInfo"
+                @error="emit('error', $event)"
+            />
+            <cms-v2-custom v-else-if="item.component === 'v2.custom'" :data="item.props">
+                <slot :name="item.props.slotName || 'custom'" :item="item" />
+            </cms-v2-custom>
             <cms-v2-divider v-else-if="item.component === 'v2.divider'" :data="item.props" />
-            <cms-v2-floatbutton v-else-if="item.component === 'v2.floatbutton'" :data="item.props" :link-service="options.services?.link" :page-info="pageInfo" />
-            <cms-v2-goods-list v-else-if="item.component === 'v2.goodslist'" :data="item.props" :goods-list="goodsList" :tabs-current="tabsCurrent" :loading-status="goodsLoadingStatus" :status="status" :assets="options.assets" @tab-change="changeTab" @item-click="handleGoodsClick" @offer-click="handleOfferClick" />
-            <cms-v2-hotzone v-else-if="item.component === 'v2.hotzone'" :data="item.props" :link-service="options.services?.link" :page-info="pageInfo" />
-            <cms-v2-images v-else-if="item.component === 'v2.images'" :data="item.props" :link-service="options.services?.link" :page-info="pageInfo" />
-            <cms-v2-magiccube v-else-if="item.component === 'v2.magiccube'" :data="item.props" :link-service="options.services?.link" :page-info="pageInfo" />
-            <cms-v2-notice v-else-if="item.component === 'v2.notice'" :data="item.props" :link-service="options.services?.link" :page-info="pageInfo" />
-            <cms-v2-popup v-else-if="item.component === 'v2.popup'" :data="item.props" :link-service="options.services?.link" :page-info="pageInfo" />
+            <cms-v2-floatbutton
+                v-else-if="item.component === 'v2.floatbutton'"
+                :data="item.props"
+                :link-service="options.services?.link"
+                :page-info="pageInfo"
+            />
+            <cms-v2-goods-list
+                v-else-if="item.component === 'v2.goodslist'"
+                :data="item.props"
+                :goods-list="goodsList"
+                :tabs-current="tabsCurrent"
+                :loading-status="goodsLoadingStatus"
+                :status="status"
+                :assets="options.assets"
+                @tab-change="changeTab"
+                @item-click="handleGoodsClick"
+                @offer-click="handleOfferClick"
+            />
+            <cms-v2-hotzone
+                v-else-if="item.component === 'v2.hotzone'"
+                :data="item.props"
+                :link-service="options.services?.link"
+                :page-info="pageInfo"
+            />
+            <cms-v2-images
+                v-else-if="item.component === 'v2.images'"
+                :data="item.props"
+                :link-service="options.services?.link"
+                :page-info="pageInfo"
+            />
+            <cms-v2-magiccube
+                v-else-if="item.component === 'v2.magiccube'"
+                :data="item.props"
+                :link-service="options.services?.link"
+                :page-info="pageInfo"
+            />
+            <cms-v2-notice
+                v-else-if="item.component === 'v2.notice'"
+                :data="item.props"
+                :link-service="options.services?.link"
+                :page-info="pageInfo"
+            />
+            <cms-v2-popup
+                v-else-if="item.component === 'v2.popup'"
+                :data="item.props"
+                :link-service="options.services?.link"
+                :page-info="pageInfo"
+            />
             <cms-v2-richtext v-else-if="item.component === 'v2.richtext'" :data="item.props" />
-            <cms-v2-search v-else-if="item.component === 'v2.search'" :data="item.props" :link-service="options.services?.link" :page-info="pageInfo" />
+            <cms-v2-search
+                v-else-if="item.component === 'v2.search'"
+                :data="item.props"
+                :link-service="options.services?.link"
+                :page-info="pageInfo"
+            />
             <cms-v2-video v-else-if="item.component === 'v2.video'" :data="item.props" />
             <slot v-else name="extension" :item="item" :page-info="pageInfo" />
         </template>
@@ -182,19 +242,8 @@ import CmsV2Popup from './blocks/v2/cms-v2-popup.vue';
 import CmsV2Richtext from './blocks/v2/cms-v2-richtext.vue';
 import CmsV2Search from './blocks/v2/cms-v2-search.vue';
 import CmsV2Video from './blocks/v2/cms-v2-video.vue';
-import {
-    normalizeCmsComponents,
-    reportCmsDiagnostic,
-    resolveCmsOptions,
-    useCmsCommerce
-} from '../../libs/cms';
-import type {
-    CmsDiagnostic,
-    CmsError,
-    CmsOptions,
-    CmsPageInfo,
-    CmsStateChange
-} from './types';
+import { normalizeCmsComponents, reportCmsDiagnostic, resolveCmsOptions, useCmsCommerce } from '../../libs/cms';
+import type { CmsDiagnostic, CmsError, CmsOptions, CmsPageInfo, CmsStateChange } from './types';
 
 defineOptions({
     name: 'Cms',

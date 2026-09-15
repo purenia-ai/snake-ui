@@ -21,9 +21,9 @@ function selectOption(control: DemoControl, index: number) {
         <view v-for="control in controls" :key="control.key" class="demo-control">
             <view class="demo-control__head">
                 <text class="demo-control__label">{{ control.label }}</text>
-                <text v-if="control.type === 'slider'" class="demo-control__value"
-                    >{{ values[control.key] }}{{ control.unit }}</text
-                >
+                <text v-if="control.type === 'slider'" class="demo-control__value">
+                    {{ values[control.key] }}{{ control.unit }}
+                </text>
                 <snake-switch
                     v-else-if="control.type === 'switch'"
                     :model-value="Boolean(values[control.key])"

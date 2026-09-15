@@ -172,16 +172,18 @@ defineExpose({ scrollTo, update });
                 :class="{ 'is-active': activeIndex === index }"
                 :style="{ color: activeIndex === index ? activeColor : inactiveColor }"
                 @click="scrollTo(index)"
-                >{{ item }}</view
             >
+                {{ item }}
+            </view>
         </view>
         <view
             v-if="indexList.length"
             class="snake-index-list__bubble"
             :class="{ 'is-visible': touching }"
             :style="{ zIndex: props.zIndex + 1 }"
-            >{{ activeIndex >= 0 ? indexList[activeIndex] : '' }}</view
         >
+            {{ activeIndex >= 0 ? indexList[activeIndex] : '' }}
+        </view>
     </view>
 </template>
 

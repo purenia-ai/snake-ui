@@ -42,33 +42,35 @@ function updateValue(key: string, nextValue: DemoValue) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :desc="text('可独立使用的复选框，也可放入 CheckboxGroup。')"
-        ><DemoSection variant="preview" :title="text('演示效果')"
-            ><view class="demo-control-stack demo-checkbox-showcase"
-                ><text class="demo-variant-title">{{ isEnglish ? 'Standalone checkbox' : '独立复选框' }}</text
-                ><snake-checkbox v-model="value" :disabled="Boolean(state.choiceDisabled)">{{
-                    isEnglish ? 'Accept the user agreement' : '同意用户协议'
-                }}</snake-checkbox
-                ><text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ value }}</text
-                ><text class="demo-variant-title">{{ isEnglish ? 'Limited selection' : '限制选择数量' }}</text
-                ><snake-checkbox-group
+    <DemoPage :title="title" :desc="text('可独立使用的复选框，也可放入 CheckboxGroup。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-control-stack demo-checkbox-showcase">
+                <text class="demo-variant-title">{{ isEnglish ? 'Standalone checkbox' : '独立复选框' }}</text>
+                <snake-checkbox v-model="value" :disabled="Boolean(state.choiceDisabled)">
+                    {{ isEnglish ? 'Accept the user agreement' : '同意用户协议' }}
+                </snake-checkbox>
+                <text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ value }}</text>
+                <text class="demo-variant-title">{{ isEnglish ? 'Limited selection' : '限制选择数量' }}</text>
+                <snake-checkbox-group
                     v-model="fruits"
                     :size="String(state.choiceSize)"
                     :wrap="Boolean(state.choiceWrap)"
                     :max="2"
-                    ><snake-checkbox name="apple">{{ isEnglish ? 'Apple' : '苹果' }}</snake-checkbox
-                    ><snake-checkbox name="pear">{{ isEnglish ? 'Pear' : '雪梨' }}</snake-checkbox
-                    ><snake-checkbox name="lemon">{{
-                        isEnglish ? 'Lemon' : '柠檬'
-                    }}</snake-checkbox></snake-checkbox-group
-                ><text
-                    >{{ isEnglish ? 'Selected: ' : '已选：'
-                    }}{{ fruits.join(isEnglish ? ', ' : '、') || (isEnglish ? 'None' : '无') }}</text
-                ></view
-            ></DemoSection
-        ><DemoSection variant="controls" :title="text('参数配置')"
-            ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" /></DemoSection
-    ></DemoPage>
+                >
+                    <snake-checkbox name="apple">{{ isEnglish ? 'Apple' : '苹果' }}</snake-checkbox>
+                    <snake-checkbox name="pear">{{ isEnglish ? 'Pear' : '雪梨' }}</snake-checkbox>
+                    <snake-checkbox name="lemon">{{ isEnglish ? 'Lemon' : '柠檬' }}</snake-checkbox>
+                </snake-checkbox-group>
+                <text>
+                    {{ isEnglish ? 'Selected: ' : '已选：'
+                    }}{{ fruits.join(isEnglish ? ', ' : '、') || (isEnglish ? 'None' : '无') }}
+                </text>
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
 </template>
 <style scoped>
 .demo-control-stack {

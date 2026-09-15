@@ -39,10 +39,12 @@ function updateValue(key: string, value: DemoValue) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :desc="text('在商城装修页面中提供商品搜索入口。')"
-        ><DemoSection variant="preview" :title="text('演示效果')"
-            ><snake-commodity-search class="demo-commodity-search-showcase" :datas="data" /></DemoSection
-        ><DemoSection variant="controls" :title="text('参数配置')"
-            ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" /></DemoSection
-    ></DemoPage>
+    <DemoPage :title="title" :desc="text('在商城装修页面中提供商品搜索入口。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <snake-commodity-search class="demo-commodity-search-showcase" :datas="data" />
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
 </template>

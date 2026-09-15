@@ -1,18 +1,30 @@
 <template>
     <view
         class="snake-toast"
-        :class="[isShow ? 'snake-show' : '', 'snake-type-' + (tmpConfig.type || 'default'), 'snake-position-' + tmpConfig.position, customClass]"
-        :style="toStyle({ zIndex: uZIndex }, customStyle as string | Record<string, any>)">
+        :class="[
+            isShow ? 'snake-show' : '',
+            'snake-type-' + (tmpConfig.type || 'default'),
+            'snake-position-' + tmpConfig.position,
+            customClass
+        ]"
+        :style="toStyle({ zIndex: uZIndex }, customStyle as string | Record<string, any>)"
+    >
         <view class="snake-toast__icon-wrap">
             <!-- loading 类型走独立的加载动画组件 -->
-            <snake-loading v-if="tmpConfig.loading" type="circular" color="currentColor" custom-style="margin-right: 16rpx;"></snake-loading>
+            <snake-loading
+                v-if="tmpConfig.loading"
+                type="circular"
+                color="currentColor"
+                custom-style="margin-right: 16rpx;"
+            ></snake-loading>
             <!-- 其它类型仍然使用图标 -->
             <snake-icon
                 v-else-if="tmpConfig.icon && iconName"
                 :name="iconName"
                 :size="20"
                 color="currentColor"
-                custom-style="margin-right: 10rpx;"></snake-icon>
+                custom-style="margin-right: 10rpx;"
+            ></snake-icon>
         </view>
         <text class="snake-toast__text">{{ tmpConfig.title }}</text>
     </view>
@@ -163,12 +175,20 @@ const isPage = computed(() => !!props.page);
 
 // 显示事件
 const showEvent = computed(() =>
-    isGlobal.value ? SNAKE_TOAST_GLOBAL_EVENT_SHOW : isPage.value ? getEventWithCurrentPage(SNAKE_TOAST_EVENT_SHOW, props.page) : ''
+    isGlobal.value
+        ? SNAKE_TOAST_GLOBAL_EVENT_SHOW
+        : isPage.value
+          ? getEventWithCurrentPage(SNAKE_TOAST_EVENT_SHOW, props.page)
+          : ''
 );
 
 // 隐藏事件
 const hideEvent = computed(() =>
-    isGlobal.value ? SNAKE_TOAST_GLOBAL_EVENT_HIDE : isPage.value ? getEventWithCurrentPage(SNAKE_TOAST_EVENT_HIDE, props.page) : ''
+    isGlobal.value
+        ? SNAKE_TOAST_GLOBAL_EVENT_HIDE
+        : isPage.value
+          ? getEventWithCurrentPage(SNAKE_TOAST_EVENT_HIDE, props.page)
+          : ''
 );
 
 // 开始监听事件

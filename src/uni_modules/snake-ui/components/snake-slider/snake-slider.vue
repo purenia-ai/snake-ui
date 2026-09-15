@@ -149,8 +149,8 @@ defineExpose<SliderExpose>({ update });
 <template>
     <view class="snake-slider" :class="[customClass, { 'is-disabled': disabled }]" :style="rootStyle">
         <text v-if="showEdgeValue" class="snake-slider__edge">{{ minValue }}</text>
-        <view class="snake-slider__main"
-            ><view
+        <view class="snake-slider__main">
+            <view
                 class="snake-slider__track"
                 :style="{ height: addUnit(height, 'rpx'), backgroundColor: inactiveColor }"
                 role="slider"
@@ -168,19 +168,21 @@ defineExpose<SliderExpose>({ update });
                 @touchmove.stop.prevent="move"
                 @touchend.stop.prevent="end"
                 @touchcancel.stop.prevent="end"
-                ><view class="snake-slider__active" :style="activeStyle" /><view
-                    class="snake-slider__block"
-                    :style="blockStyleValue"
-                    ><slot v-if="useSlot || $slots.default" :value="current" /></view
-                ><text
+            >
+                <view class="snake-slider__active" :style="activeStyle" />
+                <view class="snake-slider__block" :style="blockStyleValue">
+                    <slot v-if="useSlot || $slots.default" :value="current" />
+                </view>
+                <text
                     v-if="showValue"
                     class="snake-slider__value"
                     :class="`is-${valuePosition}`"
                     :style="{ left: `${percent}%` }"
-                    >{{ current }}</text
-                ></view
-            ></view
-        >
+                >
+                    {{ current }}
+                </text>
+            </view>
+        </view>
         <text v-if="showEdgeValue" class="snake-slider__edge">{{ maxValue }}</text>
     </view>
 </template>

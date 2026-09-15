@@ -14,18 +14,18 @@ const { text } = useDemoLocale();
     <DemoPage :title="text('主题与语言')" :desc="text('响应式 Hooks 实时切换')">
         <view class="card">
             <view class="swatch" :style="{ backgroundColor: color.primary }" />
-            <view class="body"
-                ><text class="title">{{ text(currentTheme.label || currentTheme.name) }}</text
-                ><text class="meta">darkMode: {{ darkMode }}</text></view
-            >
+            <view class="body">
+                <text class="title">{{ text(currentTheme.label || currentTheme.name) }}</text>
+                <text class="meta">darkMode: {{ darkMode }}</text>
+            </view>
             <snake-button size="mini" @click="toggleDarkMode">{{ text('切换明暗') }}</snake-button>
         </view>
         <view class="card">
             <view class="locale">{{ currentLocale.name.slice(0, 2).toUpperCase() }}</view>
-            <view class="body"
-                ><text class="title">{{ t('common.confirm') }}</text
-                ><text class="meta">{{ currentLocale.label }}</text></view
-            >
+            <view class="body">
+                <text class="title">{{ t('common.confirm') }}</text>
+                <text class="meta">{{ currentLocale.label }}</text>
+            </view>
             <snake-button size="mini" plain @click="setLocale(nextLocale)">{{ text('切换语言') }}</snake-button>
         </view>
     </DemoPage>

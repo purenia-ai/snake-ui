@@ -98,7 +98,13 @@ defineExpose<TooltipExpose>({ open, close, toggle });
 
         <snake-overlay v-if="visible" :show="visible" :opacity="0" :z-index="layerZIndex" @click="clickOverlay" />
 
-        <view v-if="visible" class="snake-tooltip__panel" :class="`snake-tooltip__panel--${placement}`" :style="panelStyle" @click.stop>
+        <view
+            v-if="visible"
+            class="snake-tooltip__panel"
+            :class="`snake-tooltip__panel--${placement}`"
+            :style="panelStyle"
+            @click.stop
+        >
             <view v-if="visibleArrow" class="snake-tooltip__arrow" />
             <view class="snake-tooltip__content" :class="contentClass" :style="contentStyle">
                 <slot name="content">{{ content }}</slot>

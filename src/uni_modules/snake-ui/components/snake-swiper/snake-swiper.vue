@@ -51,10 +51,15 @@ watch(
 );
 const actualRadius = computed(() => props.borderRadius ?? props.radius);
 const rootStyle = computed(() => [
-    { height: addUnit(props.height, 'rpx'), borderRadius: addUnit(actualRadius.value, 'rpx'), backgroundColor: props.bgColor },
+    {
+        height: addUnit(props.height, 'rpx'),
+        borderRadius: addUnit(actualRadius.value, 'rpx'),
+        backgroundColor: props.bgColor
+    },
     props.customStyle
 ]);
-const source = (item: SwiperItem) => (typeof item === 'string' ? item : String(item?.[props.name] ?? item?.image ?? item?.src ?? item?.url ?? ''));
+const source = (item: SwiperItem) =>
+    typeof item === 'string' ? item : String(item?.[props.name] ?? item?.image ?? item?.src ?? item?.url ?? '');
 const itemTitle = (item: SwiperItem) => (typeof item === 'string' ? '' : String(item?.title ?? item?.text ?? ''));
 const showIndicator = computed(() => props.indicator !== false);
 const margin = computed(() => (props.effect3d ? addUnit(props.effect3dPreviousMargin, 'rpx') : props.previousMargin));
@@ -101,22 +106,24 @@ function finish(event: any) {
                         v-if="(showTitle || title) && itemTitle(item)"
                         class="snake-swiper__title"
                         :style="[titleStyle, { paddingBottom: titlePaddingBottom }]"
-                        >{{ itemTitle(item) }}</text
                     >
+                        {{ itemTitle(item) }}
+                    </text>
                 </view>
             </swiper-item>
         </swiper>
         <view v-if="showIndicator" class="snake-swiper__indicator" :class="indicatorClass">
             <slot name="indicator" :current="active" :total="list.length">
                 <text v-if="mode === 'number'" class="snake-swiper__number">{{ active + 1 }}/{{ list.length }}</text>
-                <view v-else-if="mode !== 'none'" class="snake-swiper__dots" :class="`is-${mode}`"
-                    ><view
+                <view v-else-if="mode !== 'none'" class="snake-swiper__dots" :class="`is-${mode}`">
+                    <view
                         v-for="(_, index) in list"
                         :key="index"
                         class="snake-swiper__dot"
                         :class="{ 'is-active': index === active }"
                         :style="{ backgroundColor: index === active ? indicatorActiveColor : indicatorColor }"
-                /></view>
+                    />
+                </view>
             </slot>
         </view>
     </view>

@@ -129,12 +129,12 @@ function formatFileSize(bytes?: number) {
                         height="200"
                     />
                     <view class="upload-actions">
-                        <snake-button type="primary" :disabled="manualFiles.length === 0" @tap="startManualUpload"
-                            >开始上传</snake-button
-                        >
-                        <snake-button :disabled="manualFiles.length === 0" @tap="clearManualFiles"
-                            >清空列表</snake-button
-                        >
+                        <snake-button type="primary" :disabled="manualFiles.length === 0" @tap="startManualUpload">
+                            开始上传
+                        </snake-button>
+                        <snake-button :disabled="manualFiles.length === 0" @tap="clearManualFiles">
+                            清空列表
+                        </snake-button>
                     </view>
                 </view>
             </view>

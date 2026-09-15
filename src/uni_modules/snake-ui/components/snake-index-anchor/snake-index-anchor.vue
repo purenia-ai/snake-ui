@@ -23,9 +23,10 @@ const style = computed(() => [list?.anchorStyle(props.index) ?? {}, props.custom
 </script>
 <template>
     <view class="snake-index-anchor__wrapper" :style="wrapperStyle">
-        <view :id="anchorId" class="snake-index-anchor" :class="[customClass, { 'is-active': active }]" :style="style"
-            ><slot v-if="useSlot" /><text v-else>{{ text || index }}</text></view
-        >
+        <view :id="anchorId" class="snake-index-anchor" :class="[customClass, { 'is-active': active }]" :style="style">
+            <slot v-if="useSlot" />
+            <text v-else>{{ text || index }}</text>
+        </view>
     </view>
 </template>
 <style scoped>

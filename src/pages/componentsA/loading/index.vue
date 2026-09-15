@@ -32,7 +32,9 @@ const controls: DemoControl[] = [
         ]
     }
 ];
-const state = reactive<Record<string, DemoValue>>(Object.fromEntries(controls.map(control => [control.key, control.defaultValue])));
+const state = reactive<Record<string, DemoValue>>(
+    Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))
+);
 const localizedControls = computed(() => {
     const _locale = localeName.value;
     return controls.map(control => ({
@@ -51,24 +53,29 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 <template>
     <DemoPage :title="title" :desc="text('统一展示按钮、图片和页面中的加载状态。')">
-        <DemoSection variant="preview" :title="text('演示效果')"
-            ><view class="demo-stack"
-                ><text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text
-                ><view class="demo-feedback-row"
-                    ><snake-loading
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-stack">
+                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
+                <view class="demo-feedback-row">
+                    <snake-loading
                         :type="state.loadingType as any"
                         :size="Number(state.loadingSize)"
                         :direction="state.loadingDirection as any"
-                        :text="isEnglish ? 'Loading' : '加载中'" /></view
-                ><text class="demo-variant-title">{{ isEnglish ? 'Types' : '加载形态' }}</text
-                ><view class="demo-feedback-row"
-                    ><snake-loading type="circular" text="Circular" /><snake-loading type="spinner" text="Spinner" /><snake-loading
-                        type="dots"
-                        text="Dots" /><snake-loading type="wave" text="Wave" /></view></view
-        ></DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')"
-            ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue"
-        /></DemoSection>
+                        :text="isEnglish ? 'Loading' : '加载中'"
+                    />
+                </view>
+                <text class="demo-variant-title">{{ isEnglish ? 'Types' : '加载形态' }}</text>
+                <view class="demo-feedback-row">
+                    <snake-loading type="circular" text="Circular" />
+                    <snake-loading type="spinner" text="Spinner" />
+                    <snake-loading type="dots" text="Dots" />
+                    <snake-loading type="wave" text="Wave" />
+                </view>
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
     </DemoPage>
 </template>
 <style scoped>

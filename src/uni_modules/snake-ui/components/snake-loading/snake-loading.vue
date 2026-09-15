@@ -12,9 +12,9 @@
                 <view v-for="index in 4" :key="index" class="snake-loading__wave-bar"><view /></view>
             </view>
         </view>
-        <view v-if="$slots.default || text" class="snake-loading__text" :style="textStyle"
-            ><slot>{{ text }}</slot></view
-        >
+        <view v-if="$slots.default || text" class="snake-loading__text" :style="textStyle">
+            <slot>{{ text }}</slot>
+        </view>
     </view>
 </template>
 
@@ -46,7 +46,10 @@ const props = withDefaults(defineProps<LoadingProps>(), {
 });
 
 const spinnerDots = Array.from({ length: 12 }, (_, index) => index + 1);
-const rootStyle = computed(() => [{ color: props.inheritColor ? 'inherit' : props.color } as CSSProperties, props.customStyle]);
+const rootStyle = computed(() => [
+    { color: props.inheritColor ? 'inherit' : props.color } as CSSProperties,
+    props.customStyle
+]);
 const spinnerStyle = computed(() => ({
     width: addUnit(props.size),
     height: addUnit(props.size),

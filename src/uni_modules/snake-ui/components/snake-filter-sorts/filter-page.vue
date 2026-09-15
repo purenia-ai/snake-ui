@@ -3,7 +3,12 @@
         <view class="scroll-panel" id="scroll-panel">
             <view class="list-box">
                 <view class="left">
-                    <scroll-view scroll-y :style="{ height: scrollHeight + 'px' }" :scroll-into-view="leftIntoView" :scroll-with-animation="false">
+                    <scroll-view
+                        scroll-y
+                        :style="{ height: scrollHeight + 'px' }"
+                        :scroll-into-view="leftIntoView"
+                        :scroll-with-animation="false"
+                    >
                         <view
                             class="item"
                             v-for="(item, index) in filterList"
@@ -26,7 +31,12 @@
                         :scroll-with-animation="false"
                         @scroll="mainScroll"
                     >
-                        <view class="item main-item" v-for="(item, index) in filterList" :key="index" :id="'item-' + index">
+                        <view
+                            class="item main-item"
+                            v-for="(item, index) in filterList"
+                            :key="index"
+                            :id="'item-' + index"
+                        >
                             <view class="title" v-if="item.value !== 'brandFilter'">
                                 <text>{{ item.name }}</text>
                                 <snake-tooltip
@@ -37,7 +47,11 @@
                                     custom-style="--snake-tooltip-background: #eafff5"
                                     content-style="width: calc(100vw - 238rpx); padding: 14rpx"
                                 >
-                                    <snake-icon name="info-circle" size="26rpx" custom-class="filter-page__tooltip-icon"></snake-icon>
+                                    <snake-icon
+                                        name="info-circle"
+                                        size="26rpx"
+                                        custom-class="filter-page__tooltip-icon"
+                                    ></snake-icon>
                                     <template #content><mp-html :content="item.desc"></mp-html></template>
                                 </snake-tooltip>
                             </view>
@@ -79,7 +93,9 @@
                     <view v-if="filterList.length - 1 === leftIndex" class="filter-page__brand-panel">
                         <view class="title" v-if="filterList[leftIndex]">
                             <text>{{ filterList[leftIndex].name }}</text>
-                            <text class="filter-page__count">（已选{{ filterParams[filterList[leftIndex].value].length }}个）</text>
+                            <text class="filter-page__count">
+                                （已选{{ filterParams[filterList[leftIndex].value].length }}个）
+                            </text>
                         </view>
 
                         <snake-index-list-panel
@@ -105,7 +121,9 @@
                                             })
                                         "
                                     >
-                                        <view class="filter-page__brand-name" hover-class="u-hover-class">{{ cell }}</view>
+                                        <view class="filter-page__brand-name" hover-class="u-hover-class">
+                                            {{ cell }}
+                                        </view>
                                         <snake-icon
                                             v-if="filterParams.brandFilter.includes(cell)"
                                             name="checkmark"
@@ -127,8 +145,18 @@
         <!-- 底部按钮 -->
         <view class="filter-footer">
             <view class="filter-page__save-row" @click="isDefaultSave = !isDefaultSave">
-                <snake-icon v-if="isDefaultSave" name="checkbox-mark" size="28rpx" color="var(--snake-color-primary, #06d290)"></snake-icon>
-                <snake-icon v-else name="circle" size="28rpx" color="var(--snake-color-text-muted, #acacb7)"></snake-icon>
+                <snake-icon
+                    v-if="isDefaultSave"
+                    name="checkbox-mark"
+                    size="28rpx"
+                    color="var(--snake-color-primary, #06d290)"
+                ></snake-icon>
+                <snake-icon
+                    v-else
+                    name="circle"
+                    size="28rpx"
+                    color="var(--snake-color-text-muted, #acacb7)"
+                ></snake-icon>
                 <text class="filter-page__save-text">保存为默认筛选</text>
             </view>
 
@@ -139,9 +167,14 @@
                     plain
                     customStyle="width: 168rpx; height: 76rpx;"
                     @click="resetFilter"
-                    >重置</snake-button
                 >
-                <snake-button type="primary" customStyle="width: 228rpx; height: 76rpx; margin-left: 20rpx;" @click="confirmFilter">
+                    重置
+                </snake-button>
+                <snake-button
+                    type="primary"
+                    customStyle="width: 228rpx; height: 76rpx; margin-left: 20rpx;"
+                    @click="confirmFilter"
+                >
                     确定
                 </snake-button>
             </view>

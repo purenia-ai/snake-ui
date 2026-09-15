@@ -63,15 +63,14 @@ function updateValue(key: string, value: DemoValue) {
                     :is-dot="Boolean(state.loadDot)"
                 />
                 <text class="demo-variant-title">{{ isEnglish ? 'All states' : '全部状态' }}</text>
-                <snake-loadmore status="loadmore" /><snake-loadmore status="loading" /><snake-loadmore
-                    status="nomore"
-                    is-dot
-                />
+                <snake-loadmore status="loadmore" />
+                <snake-loadmore status="loading" />
+                <snake-loadmore status="nomore" is-dot />
             </view>
         </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')"
-            ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue"
-        /></DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
     </DemoPage>
 </template>
 

@@ -90,8 +90,8 @@ onBeforeUnmount(() => menu?.unregister(itemId));
             :style="{ color, fontSize: addUnit(menu?.titleSize.value || 28, 'rpx') }"
             @click="toggle"
         >
-            <text class="snake-drop-item__title">{{ displayTitle }}</text
-            ><snake-icon
+            <text class="snake-drop-item__title">{{ displayTitle }}</text>
+            <snake-icon
                 class="snake-drop-item__arrow"
                 :name="isOpen ? 'arrow-up' : 'arrow-down'"
                 :size="menu?.menuIconSize.value || 18"
@@ -119,9 +119,10 @@ onBeforeUnmount(() => menu?.unregister(itemId));
                     class="snake-drop-item__option"
                     :class="{ 'is-active': option.value === modelValue, 'is-disabled': option.disabled }"
                     @click="select(option.value, option.disabled)"
-                    ><text>{{ option.label }}</text
-                    ><snake-icon v-if="option.value === modelValue" name="checkmark"
-                /></view>
+                >
+                    <text>{{ option.label }}</text>
+                    <snake-icon v-if="option.value === modelValue" name="checkmark" />
+                </view>
             </scroll-view>
         </snake-transition>
     </view>

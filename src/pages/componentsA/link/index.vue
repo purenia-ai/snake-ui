@@ -82,9 +82,9 @@ function onLinkClick(href: string) {
                 <text class="demo-variant-sub">{{ lastClick || (isEnglish ? 'No event yet' : '暂无事件') }}</text>
             </view>
         </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')"
-            ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue"
-        /></DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
     </DemoPage>
 </template>
 

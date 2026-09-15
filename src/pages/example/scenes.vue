@@ -41,10 +41,10 @@ const open = (path: string) => uni.navigateTo({ url: path });
                 >
                     <view class="scene-card__icon"><snake-icon :name="item.icon || group.icon" :size="22" /></view>
                     <view class="scene-card__body">
-                        <view class="scene-card__title-row"
-                            ><text class="scene-card__title">{{ text(item.title) }}</text
-                            ><text v-if="item.badge" class="scene-card__badge">{{ item.badge }}</text></view
-                        >
+                        <view class="scene-card__title-row">
+                            <text class="scene-card__title">{{ text(item.title) }}</text>
+                            <text v-if="item.badge" class="scene-card__badge">{{ item.badge }}</text>
+                        </view>
                         <text class="scene-card__en">{{ item.titleEn }}</text>
                         <text class="scene-card__desc">{{ text(item.desc) }}</text>
                     </view>

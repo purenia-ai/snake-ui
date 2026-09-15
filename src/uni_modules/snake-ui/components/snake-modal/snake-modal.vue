@@ -7,9 +7,14 @@
         :close-on-click-overlay="effectiveConfig.maskCloseAble"
         :custom-style="popupStyle"
         :custom-class="effectiveConfig.customClass"
-        @close="popupClose">
+        @close="popupClose"
+    >
         <view class="snake-modal" :style="toStyle(effectiveConfig.customStyle)">
-            <view v-if="effectiveConfig.showTitle" class="snake-modal__title snake-modal__line-1" :style="toStyle(effectiveConfig.titleStyle)">
+            <view
+                v-if="effectiveConfig.showTitle"
+                class="snake-modal__title snake-modal__line-1"
+                :style="toStyle(effectiveConfig.titleStyle)"
+            >
                 {{ effectiveConfig.title }}
             </view>
             <view class="snake-modal__content">
@@ -20,26 +25,39 @@
                     <text>{{ effectiveConfig.content }}</text>
                 </view>
             </view>
-            <view v-if="effectiveConfig.showCancelButton || effectiveConfig.showConfirmButton" class="snake-modal__footer">
+            <view
+                v-if="effectiveConfig.showCancelButton || effectiveConfig.showConfirmButton"
+                class="snake-modal__footer"
+            >
                 <view
                     v-if="effectiveConfig.showCancelButton"
                     :hover-stay-time="100"
                     hover-class="snake-modal__btn--hover"
                     class="snake-modal__footer__button"
                     :style="toStyle(cancelBtnStyle)"
-                    @tap="cancel">
+                    @tap="cancel"
+                >
                     {{ effectiveConfig.cancelText }}
                 </view>
                 <view
                     v-if="effectiveConfig.showConfirmButton || slots['confirm-button']"
-                    :class="['snake-modal__footer__button', effectiveConfig.showCancelButton ? 'snake-modal__footer__button--border-left' : '']"
+                    :class="[
+                        'snake-modal__footer__button',
+                        effectiveConfig.showCancelButton ? 'snake-modal__footer__button--border-left' : ''
+                    ]"
                     :hover-stay-time="100"
                     :hover-class="effectiveConfig.asyncClose ? 'none' : 'snake-modal__btn--hover'"
                     :style="toStyle(confirmBtnStyle)"
-                    @tap="confirm">
+                    @tap="confirm"
+                >
                     <slot v-if="slots['confirm-button']" name="confirm-button"></slot>
                     <template v-else>
-                        <snake-loading v-if="loading" type="circular" :size="20" :color="effectiveConfig.confirmColor"></snake-loading>
+                        <snake-loading
+                            v-if="loading"
+                            type="circular"
+                            :size="20"
+                            :color="effectiveConfig.confirmColor"
+                        ></snake-loading>
                         <template v-else>{{ effectiveConfig.confirmText }}</template>
                     </template>
                 </view>
@@ -92,13 +110,25 @@ const loading = ref(false);
 const isGlobal = computed(() => !!props.global);
 const isPage = computed(() => !!props.page);
 const showEvent = computed(() =>
-    isGlobal.value ? SNAKE_MODAL_GLOBAL_EVENT_SHOW : isPage.value ? getEventWithCurrentPage(SNAKE_MODAL_EVENT_SHOW, props.page) : ''
+    isGlobal.value
+        ? SNAKE_MODAL_GLOBAL_EVENT_SHOW
+        : isPage.value
+          ? getEventWithCurrentPage(SNAKE_MODAL_EVENT_SHOW, props.page)
+          : ''
 );
 const hideEvent = computed(() =>
-    isGlobal.value ? SNAKE_MODAL_GLOBAL_EVENT_HIDE : isPage.value ? getEventWithCurrentPage(SNAKE_MODAL_EVENT_HIDE, props.page) : ''
+    isGlobal.value
+        ? SNAKE_MODAL_GLOBAL_EVENT_HIDE
+        : isPage.value
+          ? getEventWithCurrentPage(SNAKE_MODAL_EVENT_HIDE, props.page)
+          : ''
 );
 const clearLoadingEvent = computed(() =>
-    isGlobal.value ? SNAKE_MODAL_GLOBAL_EVENT_CLEAR_LOADING : isPage.value ? getEventWithCurrentPage(SNAKE_MODAL_EVENT_CLEAR_LOADING, props.page) : ''
+    isGlobal.value
+        ? SNAKE_MODAL_GLOBAL_EVENT_CLEAR_LOADING
+        : isPage.value
+          ? getEventWithCurrentPage(SNAKE_MODAL_EVENT_CLEAR_LOADING, props.page)
+          : ''
 );
 
 // 存储用户传入的回调函数
@@ -164,9 +194,13 @@ const effectiveConfig = computed(() => {
 });
 
 // 取消按钮样式
-const cancelBtnStyle = computed(() => Object.assign({ color: effectiveConfig.value.cancelColor }, effectiveConfig.value.cancelStyle));
+const cancelBtnStyle = computed(() =>
+    Object.assign({ color: effectiveConfig.value.cancelColor }, effectiveConfig.value.cancelStyle)
+);
 // 确认按钮样式
-const confirmBtnStyle = computed(() => Object.assign({ color: effectiveConfig.value.confirmColor }, effectiveConfig.value.confirmStyle));
+const confirmBtnStyle = computed(() =>
+    Object.assign({ color: effectiveConfig.value.confirmColor }, effectiveConfig.value.confirmStyle)
+);
 // 弹窗层级
 const uZIndex = computed(() => Number(effectiveConfig.value.zIndex || zIndex.popup));
 // 弹窗自定义样式（宽度 / 圆角 / 键盘避让）

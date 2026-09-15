@@ -97,19 +97,20 @@ function more(event: any) {
             :disable-touch="disableTouch"
             @change="change"
         >
-            <swiper-item v-for="(item, index) in items" :key="`${item}-${index}`" class="snake-notice-bar__item"
-                ><text class="snake-notice-bar__text">{{ item }}</text></swiper-item
-            >
+            <swiper-item v-for="(item, index) in items" :key="`${item}-${index}`" class="snake-notice-bar__item">
+                <text class="snake-notice-bar__text">{{ item }}</text>
+            </swiper-item>
         </swiper>
-        <view v-else class="snake-notice-bar__marquee"
-            ><view
+        <view v-else class="snake-notice-bar__marquee">
+            <view
                 class="snake-notice-bar__marquee-track"
                 :class="{ 'is-playing': autoplay && playState === 'play' }"
                 :style="{ animationDuration: marqueeDuration }"
-                ><text>{{ items.join('    ') }}</text
-                ><text v-if="isCircular">&nbsp;&nbsp;&nbsp;&nbsp;{{ items.join('    ') }}</text></view
-            ></view
-        >
+            >
+                <text>{{ items.join('    ') }}</text>
+                <text v-if="isCircular">&nbsp;&nbsp;&nbsp;&nbsp;{{ items.join('    ') }}</text>
+            </view>
+        </view>
         <snake-icon v-if="moreIcon" class="snake-notice-bar__trailing" name="right" @click="more" />
         <snake-icon v-if="closeIcon" class="snake-notice-bar__trailing" name="close" @click="close" />
     </view>

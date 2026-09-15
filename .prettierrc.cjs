@@ -1,24 +1,42 @@
 /**
- * Snake UI formatting rules, based on the uView-Pro project conventions.
- * @type {import('prettier').Config}
+ * Prettier 代码格式化配置
+ * 详见：https://prettier.io/docs/en/options.html
  */
 module.exports = {
-    arrowParens: 'avoid',
-    bracketSameLine: true,
+    // 箭头函数参数是否加括号
+    arrowParens: 'avoid', // always/avoid
+    // 对象字面量大括号间是否加空格
     bracketSpacing: true,
+    // 换行符风格（auto/lf/crlf/cr）
     endOfLine: 'auto',
-    htmlWhitespaceSensitivity: 'css',
+    // HTML 空白敏感度
+    htmlWhitespaceSensitivity: 'ignore',
+    // 是否在文件头插入 @prettier
     insertPragma: false,
+    // HTML/Vue 标签的 > 是否与最后一个属性同行
+    bracketSameLine: false,
+    // JSX 使用单引号
     jsxSingleQuote: true,
-    printWidth: 150,
+    // 每行最大字符数
+    printWidth: 120, // 推荐 100~120
+    // markdown/文档换行策略
     proseWrap: 'preserve',
+    // 对象属性是否强制加引号
     quoteProps: 'as-needed',
+    // 是否要求文件头有 @prettier
     requirePragma: false,
+    // 语句末尾加分号
     semi: true,
+    // 使用单引号
     singleQuote: true,
+    // tab 宽度
     tabWidth: 4,
-    trailingComma: 'none',
+    // 末尾是否加逗号
+    trailingComma: 'none', // es5/none/all
+    // 使用 tab 还是空格
     useTabs: false,
+    // Vue 文件 script/style 是否缩进
     vueIndentScriptAndStyle: false,
+    // 是否格式化嵌入的代码（如 HTML <script>）
     embeddedLanguageFormatting: 'auto'
 };

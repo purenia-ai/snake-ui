@@ -48,7 +48,8 @@ function toggle(event: unknown) {
     emit('click', event);
     if (props.disabled || props.loading) return;
     const next = checked.value ? props.inactiveValue : props.activeValue;
-    if (props.vibrateShort && typeof uni !== 'undefined' && uni.vibrateShort) uni.vibrateShort({ fail: () => undefined });
+    if (props.vibrateShort && typeof uni !== 'undefined' && uni.vibrateShort)
+        uni.vibrateShort({ fail: () => undefined });
     emit('update:modelValue', next);
     emit('change', next);
     void formItem?.notify('change');
@@ -66,9 +67,11 @@ function toggle(event: unknown) {
         @click="toggle"
         @keydown.enter.prevent="toggle($event)"
         @keydown.space.prevent="toggle($event)"
-        ><view class="snake-switch__thumb" :style="thumbStyle"
-            ><snake-loading v-if="loading" :size="numericSize * 0.55" :color="checked ? activeColor : '#909399'" /></view
-    ></view>
+    >
+        <view class="snake-switch__thumb" :style="thumbStyle">
+            <snake-loading v-if="loading" :size="numericSize * 0.55" :color="checked ? activeColor : '#909399'" />
+        </view>
+    </view>
 </template>
 <style scoped>
 .snake-switch {

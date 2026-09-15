@@ -56,8 +56,8 @@ function updateValue(key: string, value: DemoValue) {
 <template>
     <DemoPage :title="title" :desc="text('标签页用于在同层级内容之间快速切换。')">
         <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-tabs-showcase"
-                ><snake-tabs
+            <view class="demo-tabs-showcase">
+                <snake-tabs
                     :list="tabs"
                     :current="current"
                     :is-scroll="Boolean(state.tabsScrollable)"
@@ -65,14 +65,13 @@ function updateValue(key: string, value: DemoValue) {
                     :font-size="Number(state.tabsSize)"
                     :is-dot="Boolean(state.tabsDot)"
                     @change="current = $event"
-                /><view class="demo-tab-content"
-                    >{{ isEnglish ? 'Selected: ' : '当前选中：' }}{{ currentLabel }}</view
-                ></view
-            >
+                />
+                <view class="demo-tab-content">{{ isEnglish ? 'Selected: ' : '当前选中：' }}{{ currentLabel }}</view>
+            </view>
         </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')"
-            ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue"
-        /></DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
     </DemoPage>
 </template>
 

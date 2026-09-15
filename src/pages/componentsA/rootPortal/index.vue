@@ -54,48 +54,56 @@ function updateValue(key: string, value: DemoValue) {
             <view class="demo-stack">
                 <text class="demo-variant-title">{{ isEnglish ? 'Transformed cage' : '带 transform 的容器' }}</text>
                 <view class="demo-portal-cage" :style="{ transform: cageTransform }">
-                    <text class="demo-portal-tip">{{
-                        isEnglish
-                            ? 'A fixed popup here would be trapped, scaled and clipped'
-                            : '这里的 fixed 弹层会被困住：跟随缩放、被裁剪'
-                    }}</text>
-                    <snake-button type="primary" size="small" @click="show = true">{{
-                        isEnglish ? 'Show popup' : '显示弹层'
-                    }}</snake-button>
+                    <text class="demo-portal-tip">
+                        {{
+                            isEnglish
+                                ? 'A fixed popup here would be trapped, scaled and clipped'
+                                : '这里的 fixed 弹层会被困住：跟随缩放、被裁剪'
+                        }}
+                    </text>
+                    <snake-button type="primary" size="small" @click="show = true">
+                        {{ isEnglish ? 'Show popup' : '显示弹层' }}
+                    </snake-button>
                     <snake-root-portal v-if="state.usePortal">
                         <snake-popup :show="show" mode="bottom" round @close="show = false">
                             <view class="demo-portal-content">
-                                <text class="demo-portal-title">{{
-                                    isEnglish ? 'Portaled popup' : '传送后的弹层'
-                                }}</text>
-                                <text class="demo-portal-text">{{
-                                    isEnglish
-                                        ? 'Rendered at the page root; theme vars still apply.'
-                                        : '渲染在页面根节点，主题变量依然生效。'
-                                }}</text>
-                                <snake-button size="small" @click="show = false">{{
-                                    isEnglish ? 'Close' : '关闭'
-                                }}</snake-button>
+                                <text class="demo-portal-title">
+                                    {{ isEnglish ? 'Portaled popup' : '传送后的弹层' }}
+                                </text>
+                                <text class="demo-portal-text">
+                                    {{
+                                        isEnglish
+                                            ? 'Rendered at the page root; theme vars still apply.'
+                                            : '渲染在页面根节点，主题变量依然生效。'
+                                    }}
+                                </text>
+                                <snake-button size="small" @click="show = false">
+                                    {{ isEnglish ? 'Close' : '关闭' }}
+                                </snake-button>
                             </view>
                         </snake-popup>
                     </snake-root-portal>
                     <snake-popup v-if="!state.usePortal" :show="show" mode="bottom" round @close="show = false">
                         <view class="demo-portal-content">
                             <text class="demo-portal-title">{{ isEnglish ? 'Trapped popup' : '被困住的弹层' }}</text>
-                            <text class="demo-portal-text">{{
-                                isEnglish ? 'Trapped by the transformed cage.' : '被 transform 容器困住，无法铺满视口。'
-                            }}</text>
-                            <snake-button size="small" @click="show = false">{{
-                                isEnglish ? 'Close' : '关闭'
-                            }}</snake-button>
+                            <text class="demo-portal-text">
+                                {{
+                                    isEnglish
+                                        ? 'Trapped by the transformed cage.'
+                                        : '被 transform 容器困住，无法铺满视口。'
+                                }}
+                            </text>
+                            <snake-button size="small" @click="show = false">
+                                {{ isEnglish ? 'Close' : '关闭' }}
+                            </snake-button>
                         </view>
                     </snake-popup>
                 </view>
             </view>
         </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')"
-            ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue"
-        /></DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
     </DemoPage>
 </template>
 

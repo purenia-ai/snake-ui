@@ -38,16 +38,19 @@ function updateValue(key: string, value: DemoValue) {
 }
 </script>
 <template>
-    <DemoPage :title="title" :desc="text('展示商品网格或列表，并承载价格和状态信息。')"
-        ><DemoSection variant="preview" :title="text('演示效果')"
-            ><snake-goods-list
+    <DemoPage :title="title" :desc="text('展示商品网格或列表，并承载价格和状态信息。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <snake-goods-list
                 class="demo-goods-list-showcase"
                 :goods-list="goods"
                 :list-type="String(state.goodsMode)"
                 :commodity-type="0"
                 :page-margin="Number(state.goodsMargin)"
-                :image-margin="10" /></DemoSection
-        ><DemoSection variant="controls" :title="text('参数配置')"
-            ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" /></DemoSection
-    ></DemoPage>
+                :image-margin="10"
+            />
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
 </template>

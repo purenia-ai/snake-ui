@@ -32,14 +32,14 @@ function updateValue(key: string, value: DemoValue) {
             <view class="demo-trigger demo-overlay-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Overlay content' : '遮罩内容' }}</text>
                 <snake-button @click="visible = true">{{ isEnglish ? 'Open overlay' : '打开遮罩' }}</snake-button>
-                <snake-overlay v-model="visible"
-                    ><view class="demo-overlay-tip">{{ state.overlayTip }}</view></snake-overlay
-                >
+                <snake-overlay v-model="visible">
+                    <view class="demo-overlay-tip">{{ state.overlayTip }}</view>
+                </snake-overlay>
             </view>
         </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')"
-            ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue"
-        /></DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
     </DemoPage>
 </template>
 

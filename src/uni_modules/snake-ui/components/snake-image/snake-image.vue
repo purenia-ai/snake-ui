@@ -11,7 +11,8 @@
             :webp="webp"
             :style="imageStyle"
             @load="onLoad"
-            @error="onError" />
+            @error="onError"
+        />
         <view v-if="isLoading && showLoading" class="snake-image__status">
             <slot name="loading">
                 <image v-if="loadingImg" class="snake-image__status-image" :src="loadingImg" mode="aspectFit" />
@@ -116,9 +117,11 @@ function observeViewport() {
     }
     try {
         observer = uni.createIntersectionObserver(instance?.proxy as any, { thresholds: [0, 0.01] });
-        observer.relativeToViewport({ top: props.lazyThreshold, bottom: props.lazyThreshold }).observe('.snake-image', result => {
-            if (result?.intersectionRatio > 0) startLoading();
-        });
+        observer
+            .relativeToViewport({ top: props.lazyThreshold, bottom: props.lazyThreshold })
+            .observe('.snake-image', result => {
+                if (result?.intersectionRatio > 0) startLoading();
+            });
     } catch {
         startLoading();
     }

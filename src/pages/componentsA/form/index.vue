@@ -10,41 +10,61 @@
                     :size="formSize"
                     :error-type="formErrorType"
                     :border-bottom="Boolean(state.formBorder)"
-                    :label-position="state.formTopLabel ? 'top' : 'left'">
-                    <snake-form-item :label="isEnglish ? 'Name' : '姓名'" prop="name" :required="Boolean(state.formRequired)" left-icon="account"
-                        ><snake-input v-model="model.name" :placeholder="isEnglish ? 'Enter your name' : '请输入姓名'" clearable
-                    /></snake-form-item>
-                    <snake-form-item :label="isEnglish ? 'Bio' : '简介'" prop="intro"
-                        ><snake-textarea v-model="model.intro" :maxlength="60" count height="150"
-                    /></snake-form-item>
-                    <snake-form-item :label="isEnglish ? 'Fruit' : '水果'" prop="fruit"
-                        ><snake-checkbox-group v-model="model.fruit"
-                            ><snake-checkbox name="apple">{{ isEnglish ? 'Apple' : '苹果' }}</snake-checkbox
-                            ><snake-checkbox name="pear">{{ isEnglish ? 'Pear' : '雪梨' }}</snake-checkbox></snake-checkbox-group
-                        ></snake-form-item
-                    >
-                    <snake-form-item :label="isEnglish ? 'Flavor' : '味道'" prop="flavor"
-                        ><snake-radio-group v-model="model.flavor"
-                            ><snake-radio name="sweet">{{ isEnglish ? 'Sweet' : '鲜甜' }}</snake-radio
-                            ><snake-radio name="spicy">{{ isEnglish ? 'Spicy' : '香辣' }}</snake-radio></snake-radio-group
-                        ></snake-form-item
-                    >
-                    <snake-form-item :label="isEnglish ? 'Enabled' : '启用'" prop="enabled"
-                        ><template #right><snake-switch v-model="model.enabled" /></template
-                    ></snake-form-item>
+                    :label-position="state.formTopLabel ? 'top' : 'left'"
+                >
                     <snake-form-item
+                        :label="isEnglish ? 'Name' : '姓名'"
+                        prop="name"
+                        :required="Boolean(state.formRequired)"
+                        left-icon="account"
+                        label-width="120"
+                    >
+                        <snake-input
+                            v-model="model.name"
+                            :placeholder="isEnglish ? 'Enter your name' : '请输入姓名'"
+                            clearable
+                        />
+                    </snake-form-item>
+                    <snake-form-item :label="isEnglish ? 'Bio' : '简介'" prop="intro">
+                        <snake-textarea v-model="model.intro" :maxlength="60" count height="150" />
+                    </snake-form-item>
+                    <snake-form-item :label="isEnglish ? 'Fruit' : '水果'" prop="fruit">
+                        <snake-checkbox-group v-model="model.fruit">
+                            <snake-checkbox name="apple">{{ isEnglish ? 'Apple' : '苹果' }}</snake-checkbox>
+                            <snake-checkbox name="pear">{{ isEnglish ? 'Pear' : '雪梨' }}</snake-checkbox>
+                        </snake-checkbox-group>
+                    </snake-form-item>
+                    <snake-form-item :label="isEnglish ? 'Flavor' : '味道'" prop="flavor">
+                        <snake-radio-group v-model="model.flavor">
+                            <snake-radio name="sweet">{{ isEnglish ? 'Sweet' : '鲜甜' }}</snake-radio>
+                            <snake-radio name="spicy">{{ isEnglish ? 'Spicy' : '香辣' }}</snake-radio>
+                        </snake-radio-group>
+                    </snake-form-item>
+                    <snake-form-item :label="isEnglish ? 'Enabled' : '启用'" prop="enabled">
+                        <template #right><snake-switch v-model="model.enabled" /></template>
+                    </snake-form-item>
+                    <snake-form-item
+                        label-width="120"
                         :label="isEnglish ? 'Account' : '账户'"
                         prop="accounts.0.name"
                         right-icon="arrow-right"
                         :right-icon-style="{ color: 'var(--snake-color-text-muted)' }"
-                        ><template #leftIcon><snake-icon name="account" /></template
-                        ><snake-input v-model="model.accounts[0].name" :placeholder="isEnglish ? 'Enter account' : '请输入账户名'"
-                    /></snake-form-item>
+                    >
+                        <template #leftIcon><snake-icon name="account" /></template>
+                        <snake-input
+                            v-model="model.accounts[0].name"
+                            :placeholder="isEnglish ? 'Enter account' : '请输入账户名'"
+                        />
+                    </snake-form-item>
                 </snake-form>
-                <view class="demo-form__actions"
-                    ><snake-button size="small" @click="submitForm">{{ isEnglish ? 'Validate' : '提交校验' }}</snake-button
-                    ><snake-button size="small" plain @click="resetForm">{{ isEnglish ? 'Reset' : '重置' }}</snake-button></view
-                >
+                <view class="demo-form__actions">
+                    <snake-button size="small" @click="submitForm">
+                        {{ isEnglish ? 'Validate' : '提交校验' }}
+                    </snake-button>
+                    <snake-button size="small" plain @click="resetForm">
+                        {{ isEnglish ? 'Reset' : '重置' }}
+                    </snake-button>
+                </view>
                 <text class="demo-form__message">{{ message }}</text>
             </view>
         </DemoSection>
@@ -127,7 +147,9 @@ const localizedControls = computed(() => {
     return controls.map(control => ({ ...control, label: demoText(control.label) }));
 });
 const formSize = computed(() => String(state.formSize) as 'small' | 'default' | 'large');
-const formErrorType = computed(() => [String(state.formErrorType)] as Array<'message' | 'toast' | 'border-bottom' | 'border'>);
+const formErrorType = computed(
+    () => [String(state.formErrorType)] as Array<'message' | 'toast' | 'border-bottom' | 'border'>
+);
 const title = computed(() => {
     const _locale = localeName.value;
     return demoTitle('form', '表单');

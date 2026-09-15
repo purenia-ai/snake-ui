@@ -1,9 +1,9 @@
 <template>
-  <view>
-    <!-- #ifdef MP-WEIXIN -->
-    <official-account></official-account>
-    <!-- #endif -->
-  </view>
+    <view>
+        <!-- #ifdef MP-WEIXIN -->
+        <official-account></official-account>
+        <!-- #endif -->
+    </view>
 </template>
 
 <script setup lang="ts">

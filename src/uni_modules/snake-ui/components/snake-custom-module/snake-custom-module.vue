@@ -1,8 +1,8 @@
 <template>
-  <view class="custommodule">
-    <!-- <slot :name="datas.slotName" /> -->
-    <slot />
-  </view>
+    <view class="custommodule">
+        <!-- <slot :name="datas.slotName" /> -->
+        <slot />
+    </view>
 </template>
 
 <script setup lang="ts">
@@ -20,6 +20,6 @@ defineSlots<CustomModuleSlots>();
 
 <style scoped lang="scss">
 .custommodule {
-  height: 100%;
+    height: 100%;
 }
 </style>

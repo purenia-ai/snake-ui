@@ -57,27 +57,28 @@ function updateValue(key: string, value: DemoValue) {
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack demo-transition-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Interactive transition' : '交互动画' }}</text>
-                <snake-button size="small" @click="visible = !visible">{{
-                    isEnglish ? 'Toggle' : '切换显示'
-                }}</snake-button>
+                <snake-button size="small" @click="visible = !visible">
+                    {{ isEnglish ? 'Toggle' : '切换显示' }}
+                </snake-button>
                 <snake-transition
                     :show="visible"
                     :name="state.transitionName as any"
                     :duration="Number(state.transitionDuration)"
-                    ><view class="demo-transition-card">Snake Transition</view></snake-transition
                 >
+                    <view class="demo-transition-card">Snake Transition</view>
+                </snake-transition>
                 <text class="demo-variant-title">{{ isEnglish ? 'Preset: fade and zoom' : '预设：淡入与缩放' }}</text>
-                <view class="demo-feedback-row"
-                    ><snake-transition show name="fade"><view class="demo-transition-chip">Fade</view></snake-transition
-                    ><snake-transition show name="zoom-in"
-                        ><view class="demo-transition-chip">Zoom</view></snake-transition
-                    ></view
-                >
+                <view class="demo-feedback-row">
+                    <snake-transition show name="fade"><view class="demo-transition-chip">Fade</view></snake-transition>
+                    <snake-transition show name="zoom-in">
+                        <view class="demo-transition-chip">Zoom</view>
+                    </snake-transition>
+                </view>
             </view>
         </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')"
-            ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue"
-        /></DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
     </DemoPage>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
-  <view class="richtext">
-    <mp-html :content="datas.myValue"></mp-html>
-  </view>
+    <view class="richtext">
+        <mp-html :content="datas.myValue"></mp-html>
+    </view>
 </template>
 
 <script setup lang="ts">
@@ -18,7 +18,7 @@ withDefaults(defineProps<RichTextProps>(), { datas: () => ({}) });
 
 <style lang="scss" scoped>
 .richtext {
-  padding: 0 20rpx;
-  white-space: break-word !important;
+    padding: 0 20rpx;
+    white-space: break-word !important;
 }
 </style>

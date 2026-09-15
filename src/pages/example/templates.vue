@@ -39,55 +39,65 @@ const openComponent = (path: string) => uni.navigateTo({ url: path });
         </view>
         <DemoSection bare variant="preview" :title="text('模板预览')">
             <view class="template-preview">
-                <view class="template-preview__top"
-                    ><text class="template-preview__eyebrow">{{ current.titleEn }}</text
-                    ><text class="template-preview__title">{{ text(current.title) }}</text
-                    ><text class="template-preview__desc">{{ text(current.desc) }}</text></view
-                >
-                <view v-if="active === 'commerce-home'" class="template-preview__body"
-                    ><snake-picture-ads
+                <view class="template-preview__top">
+                    <text class="template-preview__eyebrow">{{ current.titleEn }}</text>
+                    <text class="template-preview__title">{{ text(current.title) }}</text>
+                    <text class="template-preview__desc">{{ text(current.desc) }}</text>
+                </view>
+                <view v-if="active === 'commerce-home'" class="template-preview__body">
+                    <snake-picture-ads
                         :datas="{
                             imageList: [
                                 { src: '/static/logo.png', url: '' },
                                 { src: '/static/logo.png', url: '' }
                             ],
                             height: 180
-                        }" /><snake-graphic-navigation
+                        }"
+                    />
+                    <snake-graphic-navigation
                         :datas="{
                             imageList: [
                                 { text: '新品', src: '/static/logo.png', url: '' },
                                 { text: '活动', src: '/static/logo.png', url: '' },
                                 { text: '服务', src: '/static/logo.png', url: '' }
                             ]
-                        }" /><snake-goods-list
+                        }"
+                    />
+                    <snake-goods-list
                         :goods-list="goods"
                         list-type="sale"
                         :commodity-type="0"
                         :page-margin="12"
                         :image-margin="8"
-                /></view>
-                <view v-else-if="active === 'campaign'" class="template-preview__body"
-                    ><snake-notice
+                    />
+                </view>
+                <view v-else-if="active === 'campaign'" class="template-preview__body">
+                    <snake-notice
                         :datas="{
                             direction: 'row',
                             textList: [{ text: 'Snake UI 限时活动进行中', url: '' }]
-                        }" /><snake-picture-ads
+                        }"
+                    />
+                    <snake-picture-ads
                         :datas="{
                             imageList: [{ src: '/static/logo.png', url: '' }],
                             height: 210
-                        }" /><snake-activity-list :list="activities" current="001"
-                /></view>
-                <view v-else class="template-preview__body"
-                    ><snake-cms
+                        }"
+                    />
+                    <snake-activity-list :list="activities" current="001" />
+                </view>
+                <view v-else class="template-preview__body">
+                    <snake-cms
                         :page-info="{ pageId: 'template-preview' }"
                         :page-components="[{ component: 'notice' }, { component: 'graphicnavigation' }]"
                         :scroll-top="0"
-                /></view>
+                    />
+                </view>
             </view>
         </DemoSection>
         <DemoSection :title="text('使用的组件')" :description="text('点击组件卡片查看独立 API 演示')">
-            <view class="component-links"
-                ><view
+            <view class="component-links">
+                <view
                     v-for="item in active === 'commerce-home'
                         ? [
                               { title: '商品列表', path: '/pages/componentsB/goodsList/index' },
@@ -103,9 +113,11 @@ const openComponent = (path: string) => uni.navigateTo({ url: path });
                     :key="item.path"
                     class="component-link"
                     @click="openComponent(item.path)"
-                    ><text>{{ text(item.title) }}</text
-                    ><snake-icon name="arrow-right" :size="16" /></view
-            ></view>
+                >
+                    <text>{{ text(item.title) }}</text>
+                    <snake-icon name="arrow-right" :size="16" />
+                </view>
+            </view>
         </DemoSection>
     </DemoPage>
 </template>

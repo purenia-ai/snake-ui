@@ -19,4 +19,15 @@ const lineStyle = computed(() => ({
 }));
 </script>
 
-<style scoped>.cms-v2-divider { display: flex; box-sizing: border-box; align-items: center; width: 100%; } .cms-v2-divider__line { width: 100%; height: 0; }</style>
+<style scoped>
+.cms-v2-divider {
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    width: 100%;
+}
+.cms-v2-divider__line {
+    width: 100%;
+    height: 0;
+}
+</style>

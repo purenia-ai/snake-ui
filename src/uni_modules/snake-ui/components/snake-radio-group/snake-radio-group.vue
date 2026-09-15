@@ -77,9 +77,9 @@ linkChildren({ props, setValue });
 defineExpose({ props, getData, setValue });
 </script>
 <template>
-    <view class="snake-radio-group snake-radio-group--clearfix" :style="customStyle" :class="customClass"
-        ><slot
-    /></view>
+    <view class="snake-radio-group snake-radio-group--clearfix" :style="customStyle" :class="customClass">
+        <slot />
+    </view>
 </template>
 <style scoped>
 .snake-radio-group {

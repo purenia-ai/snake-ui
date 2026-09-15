@@ -25,26 +25,29 @@ function updateValue(key: string, value: DemoValue) {
 
 <template>
     <DemoPage :title="title" :desc="text('下拉菜单容器保证同一时间只展开一个菜单项。')">
-        <DemoSection variant="preview" :title="text('演示效果')"
-            ><view class="demo-menu demo-drop-menu-showcase"
-                ><snake-drop-menu
-                    ><snake-drop-menu-item :title="String(state.menuTitle)"
-                        ><view class="demo-menu-panel">{{
-                            isEnglish
-                                ? 'Place filters or other business content here'
-                                : '这里可以放筛选项或其他业务内容'
-                        }}</view></snake-drop-menu-item
-                    ><snake-drop-menu-item :title="isEnglish ? 'Sort by' : '排序方式'"
-                        ><view class="demo-menu-panel">{{
-                            isEnglish ? 'Recommended · Latest · Price' : '综合排序 · 最新发布 · 价格优先'
-                        }}</view></snake-drop-menu-item
-                    ></snake-drop-menu
-                ></view
-            ></DemoSection
-        >
-        <DemoSection variant="controls" :title="text('参数配置')"
-            ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue"
-        /></DemoSection>
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-menu demo-drop-menu-showcase">
+                <snake-drop-menu>
+                    <snake-drop-menu-item :title="String(state.menuTitle)">
+                        <view class="demo-menu-panel">
+                            {{
+                                isEnglish
+                                    ? 'Place filters or other business content here'
+                                    : '这里可以放筛选项或其他业务内容'
+                            }}
+                        </view>
+                    </snake-drop-menu-item>
+                    <snake-drop-menu-item :title="isEnglish ? 'Sort by' : '排序方式'">
+                        <view class="demo-menu-panel">
+                            {{ isEnglish ? 'Recommended · Latest · Price' : '综合排序 · 最新发布 · 价格优先' }}
+                        </view>
+                    </snake-drop-menu-item>
+                </snake-drop-menu>
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
     </DemoPage>
 </template>
 

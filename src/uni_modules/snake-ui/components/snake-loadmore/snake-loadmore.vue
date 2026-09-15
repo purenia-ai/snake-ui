@@ -35,8 +35,11 @@ const emit = defineEmits<LoadmoreEmits>();
 const labels = computed(() => (typeof props.loadText === 'object' ? props.loadText : {}));
 const label = computed(() => {
     if (props.status === 'loading') return props.loadingText || labels.value.loading || translate('common.loading');
-    if (props.status === 'nomore') return props.isDot ? '●' : props.nomoreText || labels.value.nomore || translate('common.noMore');
-    return (typeof props.loadText === 'string' ? props.loadText : labels.value.loadmore) || translate('common.loadMore');
+    if (props.status === 'nomore')
+        return props.isDot ? '●' : props.nomoreText || labels.value.nomore || translate('common.noMore');
+    return (
+        (typeof props.loadText === 'string' ? props.loadText : labels.value.loadmore) || translate('common.loadMore')
+    );
 });
 const rootStyle = computed(() => [
     {
@@ -63,7 +66,8 @@ function click() {
                 v-if="status === 'loading' && icon"
                 :type="iconType === 'flower' ? 'spinner' : iconType === 'circle' ? 'circular' : 'spinner'"
                 :color="iconColor"
-                size="34" />
+                size="34"
+            />
             <text class="snake-loadmore__text">{{ label }}</text>
         </view>
         <SnakeLine class="snake-loadmore__line" length="50%" />

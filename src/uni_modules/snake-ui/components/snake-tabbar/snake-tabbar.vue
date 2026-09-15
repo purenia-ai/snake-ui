@@ -44,7 +44,9 @@ const tabItems = computed(() => (props.items.length ? props.items : props.list))
 // 只有调用方显式传入 v-model 时才按索引高亮，避免默认值覆盖 `current`。
 const usesModelValue = computed(() => 'modelValue' in (getCurrentInstance()?.vnode.props ?? {}));
 // 任一项指定宽度后，未指定项必须改为填充剩余空间，不能再按百分比分配。
-const hasCustomWidth = computed(() => tabItems.value.some(item => item.width !== undefined && item.width !== null && item.width !== ''));
+const hasCustomWidth = computed(() =>
+    tabItems.value.some(item => item.width !== undefined && item.width !== null && item.width !== '')
+);
 const currentPage = computed(() => {
     const pages = getCurrentPages();
     return pages.length ? `/${pages[pages.length - 1].route}` : '';
@@ -123,7 +125,8 @@ function itemStyle(item: TabbarItem): Record<string, string> {
 
     if (props.midButton && item.midButton) {
         // 图标绝对定位后不再参与文档流，额外顶部内边距为标签留出空间。
-        const size = Number.parseFloat(String(itemIconSize(item))) || Number.parseFloat(String(props.midButtonSize)) || 100;
+        const size =
+            Number.parseFloat(String(itemIconSize(item))) || Number.parseFloat(String(props.midButtonSize)) || 100;
         style.paddingTop = addUnit(size / 2 + 8, 'rpx');
         style.boxSizing = 'border-box';
     }
@@ -186,19 +189,25 @@ async function clickItem(item: TabbarItem, index: number) {
                 :aria-current="isActive(item, index) ? 'page' : undefined"
                 @tap.stop="clickItem(item, index)"
             >
-                <view class="snake-tabbar__icon-wrap" :style="{ gap: addUnit(item.gap ?? gap, 'rpx') }"
-                    ><SnakeIcon
+                <view class="snake-tabbar__icon-wrap" :style="{ gap: addUnit(item.gap ?? gap, 'rpx') }">
+                    <SnakeIcon
                         v-if="iconName(item, index)"
                         :name="iconName(item, index)"
                         :size="itemIconSize(item)"
                         :bold="isActive(item, index)"
                         :color="isActive(item, index) ? activeColor : inactiveColor"
                         :custom-prefix="iconPrefix(item)"
-                    /><text v-if="item.badge !== undefined || item.count !== undefined || item.isDot" class="snake-tabbar__badge">{{
-                        item.isDot ? '' : (item.badge ?? item.count)
-                    }}</text></view
-                >
-                <text class="snake-tabbar__label" :style="{ fontSize: addUnit(itemTextSize(item), 'rpx') }">{{ item.text }}</text>
+                    />
+                    <text
+                        v-if="item.badge !== undefined || item.count !== undefined || item.isDot"
+                        class="snake-tabbar__badge"
+                    >
+                        {{ item.isDot ? '' : (item.badge ?? item.count) }}
+                    </text>
+                </view>
+                <text class="snake-tabbar__label" :style="{ fontSize: addUnit(itemTextSize(item), 'rpx') }">
+                    {{ item.text }}
+                </text>
             </view>
         </view>
     </view>

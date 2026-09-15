@@ -45,7 +45,11 @@ const placeholderHeight = computed(() => navbarHeight.value + statusBarHeight.va
 const backgroundStyle = computed(() =>
     typeof props.background === 'string' ? { background: props.background } : props.background
 );
-const rootStyle = computed(() => [backgroundStyle.value, { zIndex: Number(props.zIndex) || zIndex.navbar }, props.customStyle]);
+const rootStyle = computed(() => [
+    backgroundStyle.value,
+    { zIndex: Number(props.zIndex) || zIndex.navbar },
+    props.customStyle
+]);
 const innerStyle = computed(() => ({ height: navbarHeight.value + 'px' }));
 const titleStyle = computed(() => ({
     width: addUnit(props.titleWidth, 'rpx'),
@@ -80,9 +84,9 @@ function goBack(event: unknown) {
                         @click="goBack"
                     >
                         <snake-icon :name="backIconName" :size="backIconSize ?? 'inherit'" :color="backIconColor" />
-                        <text v-if="backText" class="snake-navbar__back-text" :style="backTextStyle">{{
-                            backText
-                        }}</text>
+                        <text v-if="backText" class="snake-navbar__back-text" :style="backTextStyle">
+                            {{ backText }}
+                        </text>
                     </view>
                     <slot name="left" />
                 </view>
@@ -158,12 +162,12 @@ function goBack(event: unknown) {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-	.snake-navbar__title,
-	.snake-navbar__content {
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		left: 50%;
+.snake-navbar__title,
+.snake-navbar__content {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
     z-index: 1;
     display: flex;
     align-items: center;

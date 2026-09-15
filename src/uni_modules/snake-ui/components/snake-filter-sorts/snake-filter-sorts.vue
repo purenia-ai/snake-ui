@@ -1,5 +1,10 @@
 <template>
-    <view v-if="filters.topFilter" id="filtersId" class="filter-sorts" :style="[{ backgroundColor: bgColor }, customStyle]">
+    <view
+        v-if="filters.topFilter"
+        id="filtersId"
+        class="filter-sorts"
+        :style="[{ backgroundColor: bgColor }, customStyle]"
+    >
         <view class="filter-sorts__toolbar" role="toolbar" aria-label="商品排序与筛选">
             <template v-for="(item, index) in filters.topFilter" :key="index">
                 <view
@@ -24,8 +29,18 @@
                 ></snake-button-sort>
             </template>
             <snake-drop-menu ref="dropMenuRef" custom-style="flex: 1; min-width: 0; background: transparent;">
-                <snake-drop-menu-item title="筛选" custom-style="height: 70vh" :before-toggle="handleBeforeToggle" @close="dropMenuClose">
-                    <filterPage :show="showDrawer" :filters="filters" :defaultParams="filterParams" @confirm="filterConfirm"></filterPage>
+                <snake-drop-menu-item
+                    title="筛选"
+                    custom-style="height: 70vh"
+                    :before-toggle="handleBeforeToggle"
+                    @close="dropMenuClose"
+                >
+                    <filterPage
+                        :show="showDrawer"
+                        :filters="filters"
+                        :defaultParams="filterParams"
+                        @confirm="filterConfirm"
+                    ></filterPage>
                 </snake-drop-menu-item>
             </snake-drop-menu>
         </view>

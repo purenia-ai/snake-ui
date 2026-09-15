@@ -69,7 +69,12 @@ function runValidation(targetFields: FormField[], callback?: FormCallback, showT
                 }
                 if (++count !== targetFields.length) return;
                 resolve(valid);
-                if (showToast && !props.errorType.includes('none') && props.errorType.includes('toast') && errors.length > 0) {
+                if (
+                    showToast &&
+                    !props.errorType.includes('none') &&
+                    props.errorType.includes('toast') &&
+                    errors.length > 0
+                ) {
                     toast(errors[0].message);
                 }
                 callback?.(valid, errors);

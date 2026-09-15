@@ -3,7 +3,8 @@
         <view
             class="snake-countdown__item"
             :style="itemStyle"
-            v-if="showDays && (hideZeroDay || (!hideZeroDay && d !== '00'))">
+            v-if="showDays && (hideZeroDay || (!hideZeroDay && d !== '00'))"
+        >
             <view class="snake-countdown__time" :style="letterStyle">
                 {{ d }}
             </view>
@@ -15,7 +16,8 @@
                 color: separatorColor,
                 paddingBottom: separator === 'colon' ? '4rpx' : 0
             }"
-            v-if="showDays && (hideZeroDay || (!hideZeroDay && d !== '00'))">
+            v-if="showDays && (hideZeroDay || (!hideZeroDay && d !== '00'))"
+        >
             {{ separator === 'colon' && showHours ? ':' : t('countDown.day') }}
         </view>
         <view class="snake-countdown__item" :style="itemStyle" v-if="showHours">
@@ -30,7 +32,8 @@
                 color: separatorColor,
                 paddingBottom: separator === 'colon' ? '4rpx' : 0
             }"
-            v-if="showHours">
+            v-if="showHours"
+        >
             {{ separator === 'colon' && showMinutes ? ':' : t('countDown.hour') }}
         </view>
         <view class="snake-countdown__item" :style="itemStyle" v-if="showMinutes">
@@ -45,7 +48,8 @@
                 color: separatorColor,
                 paddingBottom: separator === 'colon' ? '4rpx' : 0
             }"
-            v-if="showMinutes">
+            v-if="showMinutes"
+        >
             {{ separator === 'colon' && showSeconds ? ':' : t('countDown.minute') }}
         </view>
         <view class="snake-countdown__item" :style="itemStyle" v-if="showSeconds">
@@ -56,7 +60,8 @@
         <view
             class="snake-countdown__colon"
             :style="{ fontSize: separatorSize + 'rpx', color: separatorColor, paddingBottom: 0 }"
-            v-if="showSeconds && separator === 'zh'">
+            v-if="showSeconds && separator === 'zh'"
+        >
             {{ t('countDown.second') }}
         </view>
     </view>

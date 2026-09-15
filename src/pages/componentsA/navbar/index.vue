@@ -42,15 +42,15 @@ function updateValue(key: string, value: DemoValue) {
                     :fixed="false"
                     :safe-area-inset-top="false"
                 >
-                    <template #right
-                        ><text class="demo-navbar-preview__action">{{ isEnglish ? 'More' : '更多' }}</text></template
-                    >
+                    <template #right>
+                        <text class="demo-navbar-preview__action">{{ isEnglish ? 'More' : '更多' }}</text>
+                    </template>
                 </snake-navbar>
             </view>
         </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')"
-            ><DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue"
-        /></DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
     </DemoPage>
 </template>
 
