@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
-import { getPathValue, setPathValue } from '../src/uni_modules/snake-ui/libs/form/path.ts';
+import { cloneFormValue, getPathValue, setPathValue } from '../src/uni_modules/snake-ui/libs/form/path.ts';
 import { validateFormValue } from '../src/uni_modules/snake-ui/libs/form/validate.ts';
 
 const root = new URL('../src/uni_modules/snake-ui/', import.meta.url);
@@ -16,6 +16,16 @@ test('form path helpers support nested objects and arrays', () => {
     assert.equal(model.items[0].title, 'Updated');
     assert.equal(setPathValue(model, 'profile.contact.mobile', '13800000000'), true);
     assert.equal(getPathValue(model, 'profile.contact.mobile'), '13800000000');
+    assert.equal(setPathValue(model, 'items[0].title', 'Bracket updated'), true);
+    assert.equal(model.items[0].title, 'Bracket updated');
+});
+
+test('form path helpers clone reset snapshots instead of retaining mutable references', () => {
+    const initial = { tags: ['first'], profile: { verified: false } };
+    const snapshot = cloneFormValue(initial);
+    initial.tags.push('changed');
+    initial.profile.verified = true;
+    assert.deepEqual(snapshot, { tags: ['first'], profile: { verified: false } });
 });
 
 test('form validator covers built-in, trigger, sync, and async rules', async () => {
@@ -70,13 +80,22 @@ test('form exposes validation and field lifecycle APIs', async () => {
     assert.match(source, /labelWidth: 90/);
 });
 
-test('form item ignores stale async validation and clears reset timers on unmount', async () => {
+test('form item waits for model updates, ignores stale validation, and resets immediately', async () => {
     const source = await read('components/snake-form-item/snake-form-item.vue');
     assert.match(source, /let validationVersion = 0/);
     assert.match(source, /if \(version !== validationVersion\)/);
     assert.match(source, /validationVersion \+= 1;/);
-    assert.match(source, /let resetTimer: ReturnType<typeof setTimeout> \| undefined/);
-    assert.match(source, /if \(resetTimer\) clearTimeout\(resetTimer\)/);
+    assert.match(source, /return nextTick\(\)\.then\(/);
+    assert.match(source, /validateState\.value = ''/);
+    assert.match(source, /validateMessage\.value = ''/);
+});
+
+test('form item keeps uView error channels independent and supports bracket array rule paths', async () => {
+    const source = await read('components/snake-form-item/snake-form-item.vue');
+    assert.match(source, /showError\('border'\)/);
+    assert.ok(source.includes(".replace(/\\[(\\d+)\\]/g, '.$1')"));
+    assert.ok(source.includes(".replace(/(?:^|\\.)(\\d+)(?=\\.|$)/g, '.defaultField.fields')"));
+    assert.match(source, /setPathValue\(model, props\.prop, cloneFormValue\(initialValue\.value\)\)/);
 });
 
 test('form item matches uView Pro layout, size, slots, and field protocol', async () => {

@@ -7,7 +7,7 @@
 
 import { computed, inject, nextTick, onBeforeUnmount, onMounted, provide, ref, useSlots } from 'vue';
 import { addUnit } from '../../libs/function/unit';
-import { getPathValue, type FormRule, type FormTrigger } from '../../libs/form';
+import { cloneFormValue, getPathValue, setPathValue, type FormRule, type FormTrigger } from '../../libs/form';
 import Schema from '../../libs/form/async-validator.min';
 import { formKey } from '../snake-form/types';
 import { formItemKey } from './types';
@@ -44,7 +44,6 @@ const initialValue = ref<unknown>('');
 const validateState = ref<'success' | 'error' | 'validating' | ''>('');
 const validateMessage = ref('');
 let validationVersion = 0;
-let resetTimer: ReturnType<typeof setTimeout> | undefined;
 
 const sizeConfig = {
     small: { fontSize: 24, iconSize: 28, messageSize: 20 },
@@ -62,7 +61,8 @@ const actualFontSize = computed(() => addUnit(actualSize.value in sizeConfig ? c
 const currentIconSize = computed(() => currentSizeConfig.value.iconSize);
 const errorType = computed(() => form?.errorType.value || ['message']);
 const showError = (type: string) => !errorType.value.includes('none') && errorType.value.includes(type);
-const errorVisible = computed(() => validateState.value === 'error' && !errorType.value.includes('none'));
+// Controls only need error state when the form explicitly requests an input border.
+const errorVisible = computed(() => validateState.value === 'error' && showError('border'));
 
 const elLabelWidth = computed(() => {
     if (props.labelWidth !== '' && props.labelWidth !== 0) return props.labelWidth;
@@ -82,7 +82,7 @@ const labelWidth = computed(() =>
 
 function getRules(): FormRule[] {
     const allRules = form?.rules.value || {};
-    const dynamicPath = props.prop.replace(/(\.|^)(\d+)\./, '.defaultField.fields.');
+    const dynamicPath = props.prop.replace(/\[(\d+)\]/g, '.$1').replace(/(?:^|\.)(\d+)(?=\.|$)/g, '.defaultField.fields');
     const fieldRules = allRules[props.prop] || getPathValue(allRules, dynamicPath);
     return ([] as FormRule[]).concat((fieldRules || []) as FormRule | FormRule[]);
 }
@@ -124,16 +124,10 @@ function resetField() {
     validationVersion += 1;
     const model = form?.model.value;
     if (model && props.prop) {
-        const parts = props.prop.split('.');
-        let owner: any = model;
-        for (let index = 0; index < parts.length - 1; index += 1) owner = owner?.[parts[index]];
-        if (owner) owner[parts[parts.length - 1]] = initialValue.value;
+        setPathValue(model, props.prop, cloneFormValue(initialValue.value));
     }
-    if (resetTimer) clearTimeout(resetTimer);
-    resetTimer = setTimeout(() => {
-        validateState.value = 'success';
-        validateMessage.value = '';
-    }, 50);
+    validateState.value = '';
+    validateMessage.value = '';
 }
 
 const exposedField = { validation, resetField, prop: props.prop };
@@ -141,18 +135,22 @@ onMounted(() => {
     nextTick(() => {
         if (!props.prop) return;
         form?.register(exposedField as any);
-        initialValue.value = getPathValue(form?.model.value, props.prop);
+        initialValue.value = cloneFormValue(getPathValue(form?.model.value, props.prop));
     });
 });
 onBeforeUnmount(() => {
     validationVersion += 1;
-    if (resetTimer) clearTimeout(resetTimer);
     if (!props.prop) return;
     form?.unregister(exposedField as any);
 });
 
 function notify(trigger: FormTrigger): Promise<void> {
-    return new Promise(resolve => validation(trigger, () => resolve()));
+    return nextTick().then(
+        () =>
+            new Promise(resolve => {
+                validation(trigger, () => resolve());
+            })
+    );
 }
 provide(formItemKey, {
     error: validateMessage,
@@ -174,8 +172,7 @@ defineExpose({ validation, resetField, onFormBlur, onFormChange });
             },
             customClass
         ]"
-        :style="customStyle"
-    >
+        :style="customStyle">
         <view class="snake-form-item__body" :style="{ flexDirection: elLabelPosition === 'left' ? 'row' : 'column' }">
             <view
                 class="snake-form-item__left"
@@ -183,8 +180,7 @@ defineExpose({ validation, resetField, onFormBlur, onFormChange });
                     width: labelWidth,
                     flex: `0 0 ${labelWidth}`,
                     marginBottom: elLabelPosition === 'left' ? 0 : '10rpx'
-                }"
-            >
+                }">
                 <view v-if="required || leftIcon || label || $slots.label || $slots.leftIcon" class="snake-form-item__left-content">
                     <text v-if="required" class="snake-form-item__required">*</text>
                     <view v-if="leftIcon || $slots.leftIcon" class="snake-form-item__left-icon">
@@ -200,8 +196,7 @@ defineExpose({ validation, resetField, onFormBlur, onFormChange });
                             {
                                 justifyContent: elLabelAlign === 'left' ? 'flex-start' : elLabelAlign === 'center' ? 'center' : 'flex-end'
                             }
-                        ]"
-                    >
+                        ]">
                         <slot name="label">{{ label }}</slot>
                     </view>
                 </view>
@@ -216,8 +211,7 @@ defineExpose({ validation, resetField, onFormBlur, onFormChange });
                                 :name="rightIcon"
                                 :size="currentIconSize"
                                 :custom-prefix="rightIconPrefix"
-                                :custom-style="rightIconStyle"
-                            />
+                                :custom-style="rightIconStyle" />
                         </slot>
                         <slot name="right" />
                     </view>
@@ -231,8 +225,7 @@ defineExpose({ validation, resetField, onFormBlur, onFormChange });
                 paddingLeft: elLabelPosition === 'left' && label ? addUnit(elLabelWidth, 'rpx') : '0',
                 fontSize: addUnit(currentSizeConfig.messageSize, 'rpx'),
                 lineHeight: addUnit(currentSizeConfig.messageSize, 'rpx')
-            }"
-        >
+            }">
             {{ validateMessage }}
         </view>
     </view>
