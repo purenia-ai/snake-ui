@@ -1,3 +1,91 @@
+<template>
+    <view
+        class="snake-form-item"
+        :class="[
+            {
+                'snake-form-item--border-bottom': elBorderBottom,
+                'snake-form-item--border-bottom-error': validateState === 'error' && showError('border-bottom'),
+                'snake-form-item--border-error': validateState === 'error' && showError('border')
+            },
+            customClass
+        ]"
+        :style="customStyle"
+    >
+        <view class="snake-form-item__body" :style="{ flexDirection: elLabelPosition === 'left' ? 'row' : 'column' }">
+            <view
+                class="snake-form-item__left"
+                :style="{
+                    width: labelWidth,
+                    flex: `0 0 ${labelWidth}`,
+                    marginBottom: elLabelPosition === 'left' ? 0 : '10rpx'
+                }"
+            >
+                <view
+                    v-if="required || leftIcon || label || $slots.label || $slots.leftIcon"
+                    class="snake-form-item__left-content"
+                >
+                    <text v-if="required" class="snake-form-item__required">*</text>
+                    <view v-if="leftIcon || $slots.leftIcon" class="snake-form-item__left-icon">
+                        <slot name="leftIcon">
+                            <snake-icon
+                                :name="leftIcon"
+                                :size="currentIconSize"
+                                :custom-prefix="leftIconPrefix"
+                                :custom-style="leftIconStyle"
+                            />
+                        </slot>
+                    </view>
+                    <view
+                        class="snake-form-item__label"
+                        :style="[
+                            elLabelStyle,
+                            { fontSize: actualFontSize },
+                            {
+                                justifyContent:
+                                    elLabelAlign === 'left'
+                                        ? 'flex-start'
+                                        : elLabelAlign === 'center'
+                                          ? 'center'
+                                          : 'flex-end'
+                            }
+                        ]"
+                    >
+                        <slot name="label">{{ label }}</slot>
+                    </view>
+                </view>
+            </view>
+            <view class="snake-form-item__right">
+                <view class="snake-form-item__content">
+                    <view class="snake-form-item__slot"><slot /></view>
+                    <view v-if="$slots.right || $slots.rightIcon || rightIcon" class="snake-form-item__right-icon">
+                        <slot name="rightIcon">
+                            <snake-icon
+                                v-if="rightIcon"
+                                :name="rightIcon"
+                                :size="currentIconSize"
+                                :custom-prefix="rightIconPrefix"
+                                :custom-style="rightIconStyle"
+                            />
+                        </slot>
+                        <slot name="right" />
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view
+            v-if="validateState === 'error' && showError('message')"
+            class="snake-form-item__message"
+            :style="{
+                paddingLeft: elLabelPosition === 'left' && label ? addUnit(elLabelWidth, 'rpx') : '0',
+                fontSize: addUnit(currentSizeConfig.messageSize, 'rpx'),
+                lineHeight: addUnit(currentSizeConfig.messageSize, 'rpx')
+            }"
+        >
+            {{ validateMessage }}
+        </view>
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component FormItem
@@ -170,94 +258,6 @@ provide(formItemKey, {
 });
 defineExpose({ validation, resetField, onFormBlur, onFormChange });
 </script>
-
-<template>
-    <view
-        class="snake-form-item"
-        :class="[
-            {
-                'snake-form-item--border-bottom': elBorderBottom,
-                'snake-form-item--border-bottom-error': validateState === 'error' && showError('border-bottom'),
-                'snake-form-item--border-error': validateState === 'error' && showError('border')
-            },
-            customClass
-        ]"
-        :style="customStyle"
-    >
-        <view class="snake-form-item__body" :style="{ flexDirection: elLabelPosition === 'left' ? 'row' : 'column' }">
-            <view
-                class="snake-form-item__left"
-                :style="{
-                    width: labelWidth,
-                    flex: `0 0 ${labelWidth}`,
-                    marginBottom: elLabelPosition === 'left' ? 0 : '10rpx'
-                }"
-            >
-                <view
-                    v-if="required || leftIcon || label || $slots.label || $slots.leftIcon"
-                    class="snake-form-item__left-content"
-                >
-                    <text v-if="required" class="snake-form-item__required">*</text>
-                    <view v-if="leftIcon || $slots.leftIcon" class="snake-form-item__left-icon">
-                        <slot name="leftIcon">
-                            <snake-icon
-                                :name="leftIcon"
-                                :size="currentIconSize"
-                                :custom-prefix="leftIconPrefix"
-                                :custom-style="leftIconStyle"
-                            />
-                        </slot>
-                    </view>
-                    <view
-                        class="snake-form-item__label"
-                        :style="[
-                            elLabelStyle,
-                            { fontSize: actualFontSize },
-                            {
-                                justifyContent:
-                                    elLabelAlign === 'left'
-                                        ? 'flex-start'
-                                        : elLabelAlign === 'center'
-                                          ? 'center'
-                                          : 'flex-end'
-                            }
-                        ]"
-                    >
-                        <slot name="label">{{ label }}</slot>
-                    </view>
-                </view>
-            </view>
-            <view class="snake-form-item__right">
-                <view class="snake-form-item__content">
-                    <view class="snake-form-item__slot"><slot /></view>
-                    <view v-if="$slots.right || $slots.rightIcon || rightIcon" class="snake-form-item__right-icon">
-                        <slot name="rightIcon">
-                            <snake-icon
-                                v-if="rightIcon"
-                                :name="rightIcon"
-                                :size="currentIconSize"
-                                :custom-prefix="rightIconPrefix"
-                                :custom-style="rightIconStyle"
-                            />
-                        </slot>
-                        <slot name="right" />
-                    </view>
-                </view>
-            </view>
-        </view>
-        <view
-            v-if="validateState === 'error' && showError('message')"
-            class="snake-form-item__message"
-            :style="{
-                paddingLeft: elLabelPosition === 'left' && label ? addUnit(elLabelWidth, 'rpx') : '0',
-                fontSize: addUnit(currentSizeConfig.messageSize, 'rpx'),
-                lineHeight: addUnit(currentSizeConfig.messageSize, 'rpx')
-            }"
-        >
-            {{ validateMessage }}
-        </view>
-    </view>
-</template>
 
 <style scoped>
 .snake-form-item {

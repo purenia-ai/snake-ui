@@ -1,3 +1,43 @@
+<template>
+    <view class="snake-slider" :class="[customClass, { 'is-disabled': disabled }]" :style="rootStyle">
+        <text v-if="showEdgeValue" class="snake-slider__edge">{{ minValue }}</text>
+        <view class="snake-slider__main">
+            <view
+                class="snake-slider__track"
+                :style="{ height: addUnit(height, 'rpx'), backgroundColor: inactiveColor }"
+                role="slider"
+                :aria-valuemin="minValue"
+                :aria-valuemax="maxValue"
+                :aria-valuenow="current"
+                :aria-disabled="disabled"
+                :tabindex="disabled ? -1 : 0"
+                @click="tap"
+                @keydown.left.prevent="adjust(-1)"
+                @keydown.down.prevent="adjust(-1)"
+                @keydown.right.prevent="adjust(1)"
+                @keydown.up.prevent="adjust(1)"
+                @touchstart.stop.prevent="start"
+                @touchmove.stop.prevent="move"
+                @touchend.stop.prevent="end"
+                @touchcancel.stop.prevent="end"
+            >
+                <view class="snake-slider__active" :style="activeStyle" />
+                <view class="snake-slider__block" :style="blockStyleValue">
+                    <slot v-if="useSlot || $slots.default" :value="current" />
+                </view>
+                <text
+                    v-if="showValue"
+                    class="snake-slider__value"
+                    :class="`is-${valuePosition}`"
+                    :style="{ left: `${percent}%` }"
+                >
+                    {{ current }}
+                </text>
+            </view>
+        </view>
+        <text v-if="showEdgeValue" class="snake-slider__edge">{{ maxValue }}</text>
+    </view>
+</template>
 <script setup lang="ts">
 /**
  * @component Slider
@@ -146,46 +186,6 @@ function adjust(direction: -1 | 1) {
 onMounted(() => void update());
 defineExpose<SliderExpose>({ update });
 </script>
-<template>
-    <view class="snake-slider" :class="[customClass, { 'is-disabled': disabled }]" :style="rootStyle">
-        <text v-if="showEdgeValue" class="snake-slider__edge">{{ minValue }}</text>
-        <view class="snake-slider__main">
-            <view
-                class="snake-slider__track"
-                :style="{ height: addUnit(height, 'rpx'), backgroundColor: inactiveColor }"
-                role="slider"
-                :aria-valuemin="minValue"
-                :aria-valuemax="maxValue"
-                :aria-valuenow="current"
-                :aria-disabled="disabled"
-                :tabindex="disabled ? -1 : 0"
-                @click="tap"
-                @keydown.left.prevent="adjust(-1)"
-                @keydown.down.prevent="adjust(-1)"
-                @keydown.right.prevent="adjust(1)"
-                @keydown.up.prevent="adjust(1)"
-                @touchstart.stop.prevent="start"
-                @touchmove.stop.prevent="move"
-                @touchend.stop.prevent="end"
-                @touchcancel.stop.prevent="end"
-            >
-                <view class="snake-slider__active" :style="activeStyle" />
-                <view class="snake-slider__block" :style="blockStyleValue">
-                    <slot v-if="useSlot || $slots.default" :value="current" />
-                </view>
-                <text
-                    v-if="showValue"
-                    class="snake-slider__value"
-                    :class="`is-${valuePosition}`"
-                    :style="{ left: `${percent}%` }"
-                >
-                    {{ current }}
-                </text>
-            </view>
-        </view>
-        <text v-if="showEdgeValue" class="snake-slider__edge">{{ maxValue }}</text>
-    </view>
-</template>
 <style scoped>
 .snake-slider {
     display: flex;

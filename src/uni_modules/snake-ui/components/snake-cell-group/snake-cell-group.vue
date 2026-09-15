@@ -1,3 +1,12 @@
+<template>
+    <view class="snake-cell-group" :class="customClass" :style="customStyle">
+        <view v-if="title" class="snake-cell-group__title" :style="titleStyle">{{ title }}</view>
+        <view class="snake-cell-group__body" :class="{ 'snake-cell-group__body--border': border }">
+            <slot />
+        </view>
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component CellGroup
@@ -10,15 +19,6 @@ import { cellGroupProps } from './types';
 defineOptions({ name: 'CellGroup', options: { virtualHost: true, styleIsolation: 'shared' } });
 defineProps(cellGroupProps);
 </script>
-
-<template>
-    <view class="snake-cell-group" :class="customClass" :style="customStyle">
-        <view v-if="title" class="snake-cell-group__title" :style="titleStyle">{{ title }}</view>
-        <view class="snake-cell-group__body" :class="{ 'snake-cell-group__body--border': border }">
-            <slot />
-        </view>
-    </view>
-</template>
 
 <style scoped>
 .snake-cell-group {

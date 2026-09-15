@@ -1,3 +1,25 @@
+<template>
+    <view :class="['snake-subsection', `snake-subsection--${mode}`, customClass]" :style="rootStyle" role="tablist">
+        <view v-if="list.length" class="snake-subsection__slider" :style="sliderStyle" />
+        <view
+            v-for="(option, index) in list"
+            :key="index"
+            class="snake-subsection__item"
+            :class="{ 'is-disabled': isDisabled(option) }"
+            :style="itemStyle(option, index)"
+            role="tab"
+            :aria-selected="index === activeIndex"
+            :aria-disabled="isDisabled(option)"
+            :tabindex="isDisabled(option) ? -1 : index === activeIndex ? 0 : -1"
+            @click="select(option, index)"
+            @keydown.left.prevent="selectAdjacent(index, -1)"
+            @keydown.right.prevent="selectAdjacent(index, 1)"
+        >
+            <text class="snake-subsection__text">{{ optionName(option) }}</text>
+        </view>
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component Subsection
@@ -112,28 +134,6 @@ function selectAdjacent(index: number, direction: -1 | 1) {
     }
 }
 </script>
-
-<template>
-    <view :class="['snake-subsection', `snake-subsection--${mode}`, customClass]" :style="rootStyle" role="tablist">
-        <view v-if="list.length" class="snake-subsection__slider" :style="sliderStyle" />
-        <view
-            v-for="(option, index) in list"
-            :key="index"
-            class="snake-subsection__item"
-            :class="{ 'is-disabled': isDisabled(option) }"
-            :style="itemStyle(option, index)"
-            role="tab"
-            :aria-selected="index === activeIndex"
-            :aria-disabled="isDisabled(option)"
-            :tabindex="isDisabled(option) ? -1 : index === activeIndex ? 0 : -1"
-            @click="select(option, index)"
-            @keydown.left.prevent="selectAdjacent(index, -1)"
-            @keydown.right.prevent="selectAdjacent(index, 1)"
-        >
-            <text class="snake-subsection__text">{{ optionName(option) }}</text>
-        </view>
-    </view>
-</template>
 
 <style scoped>
 .snake-subsection {

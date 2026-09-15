@@ -1,3 +1,23 @@
+<template>
+    <DemoPage :title="title" :desc="text('在少量互斥选项之间快速切换，支持按钮和描边分段模式。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-subsection-showcase">
+                <snake-subsection
+                    :list="isEnglish ? ['Pending payment', 'To ship', 'To receive'] : ['待付款', '待发货', '待收货']"
+                    :current="Number(state.subsectionCurrent)"
+                    :mode="state.subsectionMode as any"
+                    :bold="Boolean(state.subsectionBold)"
+                    :animation="Boolean(state.subsectionAnimation)"
+                    @change="state.subsectionCurrent = $event"
+                />
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { computed, reactive } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -52,23 +72,3 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 </script>
-
-<template>
-    <DemoPage :title="title" :desc="text('在少量互斥选项之间快速切换，支持按钮和描边分段模式。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-subsection-showcase">
-                <snake-subsection
-                    :list="isEnglish ? ['Pending payment', 'To ship', 'To receive'] : ['待付款', '待发货', '待收货']"
-                    :current="Number(state.subsectionCurrent)"
-                    :mode="state.subsectionMode as any"
-                    :bold="Boolean(state.subsectionBold)"
-                    :animation="Boolean(state.subsectionAnimation)"
-                    @change="state.subsectionCurrent = $event"
-                />
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>

@@ -1,3 +1,41 @@
+<template>
+    <view class="snake-textarea" :class="[customClass, rootClass]" :style="rootStyle">
+        <textarea
+            class="snake-textarea__native"
+            :value="innerValue"
+            :placeholder="placeholder"
+            :placeholder-style="`color:${placeholderColor};${placeholderStyle}`"
+            :maxlength="maxlength"
+            :auto-height="autoHeight"
+            :fixed="fixed"
+            :disabled="disabled || readonly"
+            :focus="focus"
+            :cursor="cursor"
+            :selection-start="selectionStart"
+            :selection-end="selectionEnd"
+            :confirm-type="confirmType as any"
+            :confirm-hold="confirmHold"
+            :adjust-position="adjustPosition"
+            :hold-keyboard="holdKeyboard"
+            :cursor-spacing="cursorSpacing"
+            :show-confirm-bar="showConfirmBar"
+            :style="{ color, fontSize: addUnit(fontSize, 'rpx') }"
+            @input="onInput"
+            @focus="
+                focused = true;
+                emit('focus', $event);
+            "
+            @blur="onBlur"
+            @confirm="emit('confirm', String($event.detail?.value ?? innerValue), $event)"
+            @linechange="emit('linechange', $event)"
+            @keyboardheightchange="emit('keyboardheightchange', $event)"
+            @compositionstart="composing = true"
+            @compositionend="onCompositionEnd"
+        />
+        <text v-if="count && maxlength > 0" class="snake-textarea__count">{{ innerValue.length }}/{{ maxlength }}</text>
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component Textarea
@@ -89,44 +127,6 @@ function onBlur(event: any) {
     void formItem?.notify('blur');
 }
 </script>
-
-<template>
-    <view class="snake-textarea" :class="[customClass, rootClass]" :style="rootStyle">
-        <textarea
-            class="snake-textarea__native"
-            :value="innerValue"
-            :placeholder="placeholder"
-            :placeholder-style="`color:${placeholderColor};${placeholderStyle}`"
-            :maxlength="maxlength"
-            :auto-height="autoHeight"
-            :fixed="fixed"
-            :disabled="disabled || readonly"
-            :focus="focus"
-            :cursor="cursor"
-            :selection-start="selectionStart"
-            :selection-end="selectionEnd"
-            :confirm-type="confirmType as any"
-            :confirm-hold="confirmHold"
-            :adjust-position="adjustPosition"
-            :hold-keyboard="holdKeyboard"
-            :cursor-spacing="cursorSpacing"
-            :show-confirm-bar="showConfirmBar"
-            :style="{ color, fontSize: addUnit(fontSize, 'rpx') }"
-            @input="onInput"
-            @focus="
-                focused = true;
-                emit('focus', $event);
-            "
-            @blur="onBlur"
-            @confirm="emit('confirm', String($event.detail?.value ?? innerValue), $event)"
-            @linechange="emit('linechange', $event)"
-            @keyboardheightchange="emit('keyboardheightchange', $event)"
-            @compositionstart="composing = true"
-            @compositionend="onCompositionEnd"
-        />
-        <text v-if="count && maxlength > 0" class="snake-textarea__count">{{ innerValue.length }}/{{ maxlength }}</text>
-    </view>
-</template>
 
 <style scoped>
 .snake-textarea {

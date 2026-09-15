@@ -1,48 +1,3 @@
-<script setup lang="ts">
-import { computed, reactive } from 'vue';
-import { demoTitle, useDemoLocale } from '../../../common/demo-i18n';
-import type { DemoControl, DemoValue } from '../../../common/demo-types';
-import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
-import DemoPage from '../../../components/demo-page/demo-page.vue';
-import DemoSection from '../../../components/demo-section/demo-section.vue';
-
-const { localeName, text } = useDemoLocale();
-const controls: DemoControl[] = [
-    { key: 'loading', label: '显示骨架', type: 'switch', defaultValue: true },
-    { key: 'animated', label: '流光动画', type: 'switch', defaultValue: true },
-    {
-        key: 'variant',
-        label: '占位形态',
-        type: 'select',
-        defaultValue: 'rect',
-        options: [
-            { label: '文本', value: 'text' },
-            { label: '矩形', value: 'rect' },
-            { label: '圆形', value: 'circle' },
-            { label: '图片', value: 'image' }
-        ]
-    }
-];
-const state = reactive<Record<string, DemoValue>>(
-    Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))
-);
-const localizedControls = computed(() => {
-    const _locale = localeName.value;
-    return controls.map(control => ({
-        ...control,
-        label: text(control.label),
-        options: control.options?.map(option => ({ ...option, label: text(option.label) }))
-    }));
-});
-const title = computed(() => {
-    const _locale = localeName.value;
-    return demoTitle('skeleton', '骨架屏');
-});
-function updateValue(key: string, value: DemoValue) {
-    state[key] = value;
-}
-</script>
-
 <template>
     <DemoPage :title="title" :desc="text('在首次加载时预显示接近真实内容的页面结构。')">
         <DemoSection variant="preview" :title="text('快速模式')">
@@ -89,6 +44,51 @@ function updateValue(key: string, value: DemoValue) {
         </DemoSection>
     </DemoPage>
 </template>
+
+<script setup lang="ts">
+import { computed, reactive } from 'vue';
+import { demoTitle, useDemoLocale } from '../../../common/demo-i18n';
+import type { DemoControl, DemoValue } from '../../../common/demo-types';
+import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
+import DemoPage from '../../../components/demo-page/demo-page.vue';
+import DemoSection from '../../../components/demo-section/demo-section.vue';
+
+const { localeName, text } = useDemoLocale();
+const controls: DemoControl[] = [
+    { key: 'loading', label: '显示骨架', type: 'switch', defaultValue: true },
+    { key: 'animated', label: '流光动画', type: 'switch', defaultValue: true },
+    {
+        key: 'variant',
+        label: '占位形态',
+        type: 'select',
+        defaultValue: 'rect',
+        options: [
+            { label: '文本', value: 'text' },
+            { label: '矩形', value: 'rect' },
+            { label: '圆形', value: 'circle' },
+            { label: '图片', value: 'image' }
+        ]
+    }
+];
+const state = reactive<Record<string, DemoValue>>(
+    Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))
+);
+const localizedControls = computed(() => {
+    const _locale = localeName.value;
+    return controls.map(control => ({
+        ...control,
+        label: text(control.label),
+        options: control.options?.map(option => ({ ...option, label: text(option.label) }))
+    }));
+});
+const title = computed(() => {
+    const _locale = localeName.value;
+    return demoTitle('skeleton', '骨架屏');
+});
+function updateValue(key: string, value: DemoValue) {
+    state[key] = value;
+}
+</script>
 
 <style scoped>
 .demo-skeleton-showcase,

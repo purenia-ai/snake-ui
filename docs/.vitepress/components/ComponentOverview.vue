@@ -1,3 +1,69 @@
+<template>
+    <div class="component-overview">
+        <div class="component-search">
+            <label class="component-search__label" for="component-search-input"> 搜索全部组件 </label>
+            <div class="component-search__control">
+                <svg aria-hidden="true" viewBox="0 0 24 24">
+                    <path d="m21 21-4.35-4.35m2.35-5.15a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z" />
+                </svg>
+                <input
+                    id="component-search-input"
+                    v-model="query"
+                    type="search"
+                    placeholder="搜索 Button、按钮或 button-sort"
+                    autocomplete="off"
+                />
+                <button v-if="query" type="button" aria-label="清空组件搜索" @click="clearQuery">清空</button>
+            </div>
+            <p class="component-search__meta" aria-live="polite">
+                <template v-if="normalizedQuery">找到 {{ resultCount }} 个组件</template>
+                <template v-else-if="selectedCategory !== 'all'"
+                    >{{ selectedCategory }}共 {{ categoryCount }} 个组件</template
+                >
+                <template v-else>共 {{ componentCount }} 个通用组件</template>
+            </p>
+            <div class="component-filters" role="group" aria-label="按组件分类筛选">
+                <button
+                    v-for="option in categoryOptions"
+                    :key="option.value"
+                    type="button"
+                    :class="{ 'is-active': selectedCategory === option.value }"
+                    :aria-pressed="selectedCategory === option.value"
+                    @click="selectCategory(option.value)"
+                >
+                    {{ option.label }}<span>{{ option.count }}</span>
+                </button>
+            </div>
+        </div>
+
+        <div v-if="filteredGroups.length" class="component-groups">
+            <section v-for="group in filteredGroups" :key="group.title" class="component-group">
+                <header class="component-group__header">
+                    <h2>{{ group.title }}</h2>
+                    <span>{{ group.items.length }}</span>
+                </header>
+                <div class="component-grid">
+                    <a v-for="item in group.items" :key="item.link" class="component-card" :href="withBase(item.link)">
+                        <span class="component-card__copy">
+                            <strong>{{ item.name }}</strong>
+                            <span>{{ item.title }}</span>
+                        </span>
+                        <svg aria-hidden="true" viewBox="0 0 20 20">
+                            <path d="m7.5 5 5 5-5 5" />
+                        </svg>
+                    </a>
+                </div>
+            </section>
+        </div>
+
+        <div v-else class="component-empty" role="status">
+            <span>没有找到“{{ query.trim() }}”相关的组件</span>
+            <button v-if="normalizedQuery" type="button" @click="clearQuery">清空搜索</button>
+            <button v-else type="button" @click="selectCategory('all')">查看全部</button>
+        </div>
+    </div>
+</template>
+
 <script setup lang="ts">
 import { withBase } from 'vitepress';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
@@ -83,74 +149,6 @@ onBeforeUnmount(() => {
     if (typeof window !== 'undefined') window.removeEventListener('popstate', readUrlState);
 });
 </script>
-
-<template>
-    <div class="component-overview">
-        <div class="component-search">
-            <label class="component-search__label" for="component-search-input">
-                搜索全部组件
-            </label>
-            <div class="component-search__control">
-                <svg aria-hidden="true" viewBox="0 0 24 24">
-                    <path d="m21 21-4.35-4.35m2.35-5.15a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z" />
-                </svg>
-                <input
-                    id="component-search-input"
-                    v-model="query"
-                    type="search"
-                    placeholder="搜索 Button、按钮或 button-sort"
-                    autocomplete="off"
-                />
-                <button v-if="query" type="button" aria-label="清空组件搜索" @click="clearQuery">清空</button>
-            </div>
-            <p class="component-search__meta" aria-live="polite">
-                <template v-if="normalizedQuery">找到 {{ resultCount }} 个组件</template>
-                <template v-else-if="selectedCategory !== 'all'"
-                    >{{ selectedCategory }}共 {{ categoryCount }} 个组件</template
-                >
-                <template v-else>共 {{ componentCount }} 个通用组件</template>
-            </p>
-            <div class="component-filters" role="group" aria-label="按组件分类筛选">
-                <button
-                    v-for="option in categoryOptions"
-                    :key="option.value"
-                    type="button"
-                    :class="{ 'is-active': selectedCategory === option.value }"
-                    :aria-pressed="selectedCategory === option.value"
-                    @click="selectCategory(option.value)"
-                >
-                    {{ option.label }}<span>{{ option.count }}</span>
-                </button>
-            </div>
-        </div>
-
-        <div v-if="filteredGroups.length" class="component-groups">
-            <section v-for="group in filteredGroups" :key="group.title" class="component-group">
-                <header class="component-group__header">
-                    <h2>{{ group.title }}</h2>
-                    <span>{{ group.items.length }}</span>
-                </header>
-                <div class="component-grid">
-                    <a v-for="item in group.items" :key="item.link" class="component-card" :href="withBase(item.link)">
-                        <span class="component-card__copy">
-                            <strong>{{ item.name }}</strong>
-                            <span>{{ item.title }}</span>
-                        </span>
-                        <svg aria-hidden="true" viewBox="0 0 20 20">
-                            <path d="m7.5 5 5 5-5 5" />
-                        </svg>
-                    </a>
-                </div>
-            </section>
-        </div>
-
-        <div v-else class="component-empty" role="status">
-            <span>没有找到“{{ query.trim() }}”相关的组件</span>
-            <button v-if="normalizedQuery" type="button" @click="clearQuery">清空搜索</button>
-            <button v-else type="button" @click="selectCategory('all')">查看全部</button>
-        </div>
-    </div>
-</template>
 
 <style scoped>
 .component-overview {

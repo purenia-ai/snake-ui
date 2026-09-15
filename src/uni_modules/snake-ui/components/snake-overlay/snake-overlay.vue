@@ -1,3 +1,19 @@
+<template>
+    <snake-transition
+        :show="visible"
+        name="fade"
+        :duration="duration"
+        :custom-class="['snake-overlay', customClass].filter(Boolean).join(' ')"
+        :custom-style="overlayStyle"
+        @click="click"
+        @after-enter="emit('opened')"
+        @after-leave="emit('closed')"
+        @touchmove.stop.prevent="lockScroll ? stopTouchMove() : undefined"
+    >
+        <slot />
+    </snake-transition>
+</template>
+
 <script setup lang="ts">
 /**
  * @component Overlay
@@ -45,22 +61,6 @@ function stopTouchMove() {
     // uni-app 通过空处理器阻止遮罩上的 touchmove 冒泡。
 }
 </script>
-
-<template>
-    <snake-transition
-        :show="visible"
-        name="fade"
-        :duration="duration"
-        :custom-class="['snake-overlay', customClass].filter(Boolean).join(' ')"
-        :custom-style="overlayStyle"
-        @click="click"
-        @after-enter="emit('opened')"
-        @after-leave="emit('closed')"
-        @touchmove.stop.prevent="lockScroll ? stopTouchMove() : undefined"
-    >
-        <slot />
-    </snake-transition>
-</template>
 
 <style>
 .snake-overlay {

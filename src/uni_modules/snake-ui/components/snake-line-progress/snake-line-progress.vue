@@ -1,3 +1,23 @@
+<template>
+    <view
+        class="snake-line-progress"
+        :style="{ borderRadius: round ? '100rpx' : '0', height: `${height}rpx`, backgroundColor: inactiveColor }"
+    >
+        <view
+            :class="[
+                type ? `snake-line-progress__active--${type}` : '',
+                striped ? 'snake-line-progress__active--striped' : '',
+                striped && stripedActive ? 'snake-line-progress__active--striped-active' : ''
+            ]"
+            class="snake-line-progress__active"
+            :style="progressStyle"
+        >
+            <slot v-if="slots.default" />
+            <text class="snake-line-progress__percent" v-else-if="showPercent">{{ percent }}%</text>
+        </view>
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component LineProgress
@@ -20,26 +40,6 @@ const progressStyle = computed(() => {
     return style;
 });
 </script>
-
-<template>
-    <view
-        class="snake-line-progress"
-        :style="{ borderRadius: round ? '100rpx' : '0', height: `${height}rpx`, backgroundColor: inactiveColor }"
-    >
-        <view
-            :class="[
-                type ? `snake-line-progress__active--${type}` : '',
-                striped ? 'snake-line-progress__active--striped' : '',
-                striped && stripedActive ? 'snake-line-progress__active--striped-active' : ''
-            ]"
-            class="snake-line-progress__active"
-            :style="progressStyle"
-        >
-            <slot v-if="slots.default" />
-            <text class="snake-line-progress__percent" v-else-if="showPercent">{{ percent }}%</text>
-        </view>
-    </view>
-</template>
 
 <style scoped>
 .snake-line-progress {

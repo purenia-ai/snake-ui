@@ -1,15 +1,3 @@
-<script setup lang="ts">
-import { computed } from 'vue';
-import DemoPage from '../../../components/demo-page/demo-page.vue';
-import { useDemoLocale } from '../../../common/demo-i18n';
-import { useLocale, useTheme } from '../../../uni_modules/snake-ui';
-
-const { currentTheme, darkMode, color, toggleDarkMode } = useTheme();
-const { currentLocale, t, setLocale } = useLocale();
-const nextLocale = computed(() => (currentLocale.value.name === 'zh-CN' ? 'en-US' : 'zh-CN'));
-const { text } = useDemoLocale();
-</script>
-
 <template>
     <DemoPage :title="text('主题与语言')" :desc="text('响应式 Hooks 实时切换')">
         <view class="card">
@@ -30,6 +18,18 @@ const { text } = useDemoLocale();
         </view>
     </DemoPage>
 </template>
+
+<script setup lang="ts">
+import { computed } from 'vue';
+import DemoPage from '../../../components/demo-page/demo-page.vue';
+import { useDemoLocale } from '../../../common/demo-i18n';
+import { useLocale, useTheme } from '../../../uni_modules/snake-ui';
+
+const { currentTheme, darkMode, color, toggleDarkMode } = useTheme();
+const { currentLocale, t, setLocale } = useLocale();
+const nextLocale = computed(() => (currentLocale.value.name === 'zh-CN' ? 'en-US' : 'zh-CN'));
+const { text } = useDemoLocale();
+</script>
 
 <style scoped>
 .card {

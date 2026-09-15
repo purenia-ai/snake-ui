@@ -1,21 +1,3 @@
-<script setup lang="ts">
-import { computed, ref } from 'vue';
-import DemoPage from '../../components/demo-page/demo-page.vue';
-import DemoSection from '../../components/demo-section/demo-section.vue';
-import { useDemoLocale } from '../../common/demo-i18n';
-import { goods, activities } from '../../common/fixtures';
-import templates from './templates.config';
-
-defineOptions({ name: 'ExampleTemplates' });
-const { text } = useDemoLocale();
-const active = ref('commerce-home');
-const current = computed(() => templates.find(item => item.key === active.value) || templates[0]);
-const choose = (key: string) => {
-    active.value = key;
-};
-const openComponent = (path: string) => uni.navigateTo({ url: path });
-</script>
-
 <template>
     <DemoPage
         tabbar
@@ -121,6 +103,24 @@ const openComponent = (path: string) => uni.navigateTo({ url: path });
         </DemoSection>
     </DemoPage>
 </template>
+
+<script setup lang="ts">
+import { computed, ref } from 'vue';
+import DemoPage from '../../components/demo-page/demo-page.vue';
+import DemoSection from '../../components/demo-section/demo-section.vue';
+import { useDemoLocale } from '../../common/demo-i18n';
+import { goods, activities } from '../../common/fixtures';
+import templates from './templates.config';
+
+defineOptions({ name: 'ExampleTemplates' });
+const { text } = useDemoLocale();
+const active = ref('commerce-home');
+const current = computed(() => templates.find(item => item.key === active.value) || templates[0]);
+const choose = (key: string) => {
+    active.value = key;
+};
+const openComponent = (path: string) => uni.navigateTo({ url: path });
+</script>
 
 <style lang="scss" scoped>
 @import '../../common/demo.scss';

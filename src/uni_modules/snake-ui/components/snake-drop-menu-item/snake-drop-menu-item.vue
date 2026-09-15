@@ -1,3 +1,48 @@
+<template>
+    <view class="snake-drop-item">
+        <view
+            class="snake-drop-item__trigger"
+            :style="{ color, fontSize: addUnit(menu?.titleSize.value || 28, 'rpx') }"
+            @click="toggle"
+        >
+            <text class="snake-drop-item__title">{{ displayTitle }}</text>
+            <snake-icon
+                class="snake-drop-item__arrow"
+                :name="isOpen ? 'arrow-up' : 'arrow-down'"
+                :size="menu?.menuIconSize.value || 18"
+                aria-hidden="true"
+            />
+        </view>
+        <view
+            v-if="isOpen"
+            class="snake-drop-item__mask"
+            :style="{ top: `${menu?.menuTop.value || 0}px`, zIndex: menu?.zIndex.value || zIndex.dropdown }"
+            @click="maskClick"
+        />
+        <snake-transition
+            :show="isOpen"
+            name="fade-down"
+            :duration="menu?.duration.value || 300"
+            custom-class="snake-drop-item__panel"
+            :custom-style="panelStyle"
+        >
+            <slot v-if="$slots.default" />
+            <scroll-view v-else class="snake-drop-item__options" scroll-y>
+                <view
+                    v-for="(option, index) in options"
+                    :key="index"
+                    class="snake-drop-item__option"
+                    :class="{ 'is-active': option.value === modelValue, 'is-disabled': option.disabled }"
+                    @click="select(option.value, option.disabled)"
+                >
+                    <text>{{ option.label }}</text>
+                    <snake-icon v-if="option.value === modelValue" name="checkmark" />
+                </view>
+            </scroll-view>
+        </snake-transition>
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component DropMenuItem
@@ -82,51 +127,6 @@ watch(isOpen, (value, previous) => {
 });
 onBeforeUnmount(() => menu?.unregister(itemId));
 </script>
-
-<template>
-    <view class="snake-drop-item">
-        <view
-            class="snake-drop-item__trigger"
-            :style="{ color, fontSize: addUnit(menu?.titleSize.value || 28, 'rpx') }"
-            @click="toggle"
-        >
-            <text class="snake-drop-item__title">{{ displayTitle }}</text>
-            <snake-icon
-                class="snake-drop-item__arrow"
-                :name="isOpen ? 'arrow-up' : 'arrow-down'"
-                :size="menu?.menuIconSize.value || 18"
-                aria-hidden="true"
-            />
-        </view>
-        <view
-            v-if="isOpen"
-            class="snake-drop-item__mask"
-            :style="{ top: `${menu?.menuTop.value || 0}px`, zIndex: menu?.zIndex.value || zIndex.dropdown }"
-            @click="maskClick"
-        />
-        <snake-transition
-            :show="isOpen"
-            name="fade-down"
-            :duration="menu?.duration.value || 300"
-            custom-class="snake-drop-item__panel"
-            :custom-style="panelStyle"
-        >
-            <slot v-if="$slots.default" />
-            <scroll-view v-else class="snake-drop-item__options" scroll-y>
-                <view
-                    v-for="(option, index) in options"
-                    :key="index"
-                    class="snake-drop-item__option"
-                    :class="{ 'is-active': option.value === modelValue, 'is-disabled': option.disabled }"
-                    @click="select(option.value, option.disabled)"
-                >
-                    <text>{{ option.label }}</text>
-                    <snake-icon v-if="option.value === modelValue" name="checkmark" />
-                </view>
-            </scroll-view>
-        </snake-transition>
-    </view>
-</template>
 
 <style scoped>
 .snake-drop-item {

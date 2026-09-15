@@ -1,32 +1,3 @@
-<script setup lang="ts">
-/**
- * @component CellItem
- * @description 单元格条目，一般搭配 CellGroup 用于列表场景，支持图标、标题、描述、右侧内容与箭头。
- * @see /components/cell
- */
-
-import { computed, useSlots } from 'vue';
-import Icon from '../snake-icon/snake-icon.vue';
-import { cellItemProps, type CellItemEmits } from './types';
-
-defineOptions({ name: 'CellItem', options: { virtualHost: true, styleIsolation: 'shared' } });
-const props = defineProps(cellItemProps);
-const emit = defineEmits<CellItemEmits>();
-const slots = useSlots();
-
-/** 箭头旋转样式。 */
-const arrowStyle = computed(() => {
-    if (props.arrowDirection === 'up') return { transform: 'rotate(-90deg)' };
-    if (props.arrowDirection === 'down') return { transform: 'rotate(90deg)' };
-    return { transform: 'rotate(0deg)' };
-});
-
-/** 点击事件，回调中返回 index 标识当前条目。 */
-function onClick() {
-    emit('click', props.index);
-}
-</script>
-
 <template>
     <view
         class="snake-cell-item"
@@ -70,6 +41,35 @@ function onClick() {
         </view>
     </view>
 </template>
+
+<script setup lang="ts">
+/**
+ * @component CellItem
+ * @description 单元格条目，一般搭配 CellGroup 用于列表场景，支持图标、标题、描述、右侧内容与箭头。
+ * @see /components/cell
+ */
+
+import { computed, useSlots } from 'vue';
+import Icon from '../snake-icon/snake-icon.vue';
+import { cellItemProps, type CellItemEmits } from './types';
+
+defineOptions({ name: 'CellItem', options: { virtualHost: true, styleIsolation: 'shared' } });
+const props = defineProps(cellItemProps);
+const emit = defineEmits<CellItemEmits>();
+const slots = useSlots();
+
+/** 箭头旋转样式。 */
+const arrowStyle = computed(() => {
+    if (props.arrowDirection === 'up') return { transform: 'rotate(-90deg)' };
+    if (props.arrowDirection === 'down') return { transform: 'rotate(90deg)' };
+    return { transform: 'rotate(0deg)' };
+});
+
+/** 点击事件，回调中返回 index 标识当前条目。 */
+function onClick() {
+    emit('click', props.index);
+}
+</script>
 
 <style scoped>
 .snake-cell-item {

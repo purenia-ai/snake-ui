@@ -1,28 +1,3 @@
-<script setup lang="ts">
-import { computed, reactive } from 'vue';
-import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
-import type { DemoControl, DemoValue } from '../../../common/demo-types';
-import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
-import DemoPage from '../../../components/demo-page/demo-page.vue';
-import DemoSection from '../../../components/demo-section/demo-section.vue';
-
-const { localeName, text } = useDemoLocale();
-const isEnglish = computed(() => localeName.value === 'en-US');
-const controls: DemoControl[] = [{ key: 'menuTitle', label: '菜单标题', type: 'input', defaultValue: '筛选条件' }];
-const state = reactive<Record<string, DemoValue>>({ menuTitle: '筛选条件' });
-const localizedControls = computed(() => {
-    const _locale = localeName.value;
-    return controls.map(control => ({ ...control, label: demoText(control.label) }));
-});
-const title = computed(() => {
-    const _locale = localeName.value;
-    return demoTitle('drop-menu', '下拉菜单');
-});
-function updateValue(key: string, value: DemoValue) {
-    state[key] = value;
-}
-</script>
-
 <template>
     <DemoPage :title="title" :desc="text('下拉菜单容器保证同一时间只展开一个菜单项。')">
         <DemoSection variant="preview" :title="text('演示效果')">
@@ -50,6 +25,31 @@ function updateValue(key: string, value: DemoValue) {
         </DemoSection>
     </DemoPage>
 </template>
+
+<script setup lang="ts">
+import { computed, reactive } from 'vue';
+import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
+import type { DemoControl, DemoValue } from '../../../common/demo-types';
+import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
+import DemoPage from '../../../components/demo-page/demo-page.vue';
+import DemoSection from '../../../components/demo-section/demo-section.vue';
+
+const { localeName, text } = useDemoLocale();
+const isEnglish = computed(() => localeName.value === 'en-US');
+const controls: DemoControl[] = [{ key: 'menuTitle', label: '菜单标题', type: 'input', defaultValue: '筛选条件' }];
+const state = reactive<Record<string, DemoValue>>({ menuTitle: '筛选条件' });
+const localizedControls = computed(() => {
+    const _locale = localeName.value;
+    return controls.map(control => ({ ...control, label: demoText(control.label) }));
+});
+const title = computed(() => {
+    const _locale = localeName.value;
+    return demoTitle('drop-menu', '下拉菜单');
+});
+function updateValue(key: string, value: DemoValue) {
+    state[key] = value;
+}
+</script>
 
 <style scoped>
 .demo-menu {

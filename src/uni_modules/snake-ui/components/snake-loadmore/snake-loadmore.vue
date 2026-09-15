@@ -1,3 +1,19 @@
+<template>
+    <view class="snake-loadmore" :class="customClass" :style="rootStyle" @click="click">
+        <SnakeLine class="snake-loadmore__line" length="50%" />
+        <view class="snake-loadmore__content">
+            <Loading
+                v-if="status === 'loading' && icon"
+                :type="iconType === 'flower' ? 'spinner' : iconType === 'circle' ? 'circular' : 'spinner'"
+                :color="iconColor"
+                size="34"
+            />
+            <text class="snake-loadmore__text">{{ label }}</text>
+        </view>
+        <SnakeLine class="snake-loadmore__line" length="50%" />
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component Loadmore
@@ -57,22 +73,6 @@ function click() {
     if (props.status === 'loadmore') emit('loadmore');
 }
 </script>
-
-<template>
-    <view class="snake-loadmore" :class="customClass" :style="rootStyle" @click="click">
-        <SnakeLine class="snake-loadmore__line" length="50%" />
-        <view class="snake-loadmore__content">
-            <Loading
-                v-if="status === 'loading' && icon"
-                :type="iconType === 'flower' ? 'spinner' : iconType === 'circle' ? 'circular' : 'spinner'"
-                :color="iconColor"
-                size="34"
-            />
-            <text class="snake-loadmore__text">{{ label }}</text>
-        </view>
-        <SnakeLine class="snake-loadmore__line" length="50%" />
-    </view>
-</template>
 
 <style scoped>
 .snake-loadmore {

@@ -1,3 +1,13 @@
+<template>
+    <DemoPage :title="title" :desc="text('根据业务场景展示居中或底部营销弹窗。')" viewport>
+        <DemoSection bare variant="preview" :title="text('演示效果')">
+            <snake-page-popup class="demo-page-popup-showcase" :datas="data" />
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
 <script setup lang="ts">
 import { computed, reactive } from 'vue';
 import { popupData } from '../../../common/fixtures';
@@ -37,13 +47,3 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 </script>
-<template>
-    <DemoPage :title="title" :desc="text('根据业务场景展示居中或底部营销弹窗。')" viewport>
-        <DemoSection bare variant="preview" :title="text('演示效果')">
-            <snake-page-popup class="demo-page-popup-showcase" :datas="data" />
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>

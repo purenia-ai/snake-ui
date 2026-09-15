@@ -1,3 +1,27 @@
+<template>
+    <DemoPage :title="title" :desc="text('管理一组互斥的单选值。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-control-stack demo-radio-showcase">
+                <text class="demo-variant-title">{{ isEnglish ? 'Exclusive selection' : '互斥选择' }}</text>
+                <snake-radio-group
+                    v-model="value"
+                    :disabled="Boolean(state.choiceDisabled)"
+                    :size="String(state.choiceSize)"
+                    :wrap="Boolean(state.choiceWrap)"
+                    :width="state.choiceWidth === 'auto' ? 'auto' : Number(state.choiceWidth)"
+                >
+                    <snake-radio name="sweet">{{ isEnglish ? 'Sweet' : '鲜甜' }}</snake-radio>
+                    <snake-radio name="spicy">{{ isEnglish ? 'Spicy' : '香辣' }}</snake-radio>
+                    <snake-radio name="mild">{{ isEnglish ? 'Mild' : '清淡' }}</snake-radio>
+                </snake-radio-group>
+                <text>{{ isEnglish ? 'Selected: ' : '已选：' }}{{ value }}</text>
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -51,30 +75,6 @@ function updateValue(key: string, nextValue: DemoValue) {
     state[key] = nextValue;
 }
 </script>
-<template>
-    <DemoPage :title="title" :desc="text('管理一组互斥的单选值。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-control-stack demo-radio-showcase">
-                <text class="demo-variant-title">{{ isEnglish ? 'Exclusive selection' : '互斥选择' }}</text>
-                <snake-radio-group
-                    v-model="value"
-                    :disabled="Boolean(state.choiceDisabled)"
-                    :size="String(state.choiceSize)"
-                    :wrap="Boolean(state.choiceWrap)"
-                    :width="state.choiceWidth === 'auto' ? 'auto' : Number(state.choiceWidth)"
-                >
-                    <snake-radio name="sweet">{{ isEnglish ? 'Sweet' : '鲜甜' }}</snake-radio>
-                    <snake-radio name="spicy">{{ isEnglish ? 'Spicy' : '香辣' }}</snake-radio>
-                    <snake-radio name="mild">{{ isEnglish ? 'Mild' : '清淡' }}</snake-radio>
-                </snake-radio-group>
-                <text>{{ isEnglish ? 'Selected: ' : '已选：' }}{{ value }}</text>
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 <style scoped>
 .demo-control-stack {
     display: flex;

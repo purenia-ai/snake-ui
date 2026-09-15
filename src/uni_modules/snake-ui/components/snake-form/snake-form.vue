@@ -1,3 +1,7 @@
+<template>
+    <view class="snake-form" :class="customClass" :style="customStyle"><slot /></view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component Form
@@ -112,10 +116,6 @@ provide(formKey, {
 
 defineExpose({ setRules, resetFields, validate, validateField, addField, removeField, fields, rules, props, model });
 </script>
-
-<template>
-    <view class="snake-form" :class="customClass" :style="customStyle"><slot /></view>
-</template>
 
 <style scoped>
 .snake-form {

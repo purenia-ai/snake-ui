@@ -1,37 +1,3 @@
-<script setup lang="ts">
-import DemoPage from '../../components/demo-page/demo-page.vue';
-import { useDemoLocale } from '../../common/demo-i18n';
-
-defineOptions({ name: 'ExampleAbout' });
-
-const { text } = useDemoLocale();
-const docsUrl = 'https://m.puresnake.com/snake-ui/';
-const repositoryUrl = 'https://github.com/zwbcode/snake-ui';
-const capabilities = [
-    'Vue 3 与 uni-app 跨端',
-    '商城与 CMS 组件',
-    '多主题与暗黑模式',
-    '中英文国际化',
-    'HTTP、Hooks 与常用工具'
-];
-
-function copyDocsUrl() {
-    uni.setClipboardData({
-        data: docsUrl,
-        success: () => uni.showToast({ title: text('文档地址已复制'), icon: 'success' })
-    });
-}
-
-function openExternal(url: string) {
-    // #ifdef H5
-    window.open(url, '_blank');
-    // #endif
-    // #ifndef H5
-    uni.setClipboardData({ data: url, success: () => uni.showToast({ title: text('链接已复制'), icon: 'none' }) });
-    // #endif
-}
-</script>
-
 <template>
     <DemoPage
         tabbar
@@ -82,6 +48,40 @@ function openExternal(url: string) {
         </view>
     </DemoPage>
 </template>
+
+<script setup lang="ts">
+import DemoPage from '../../components/demo-page/demo-page.vue';
+import { useDemoLocale } from '../../common/demo-i18n';
+
+defineOptions({ name: 'ExampleAbout' });
+
+const { text } = useDemoLocale();
+const docsUrl = 'https://m.puresnake.com/snake-ui/';
+const repositoryUrl = 'https://github.com/zwbcode/snake-ui';
+const capabilities = [
+    'Vue 3 与 uni-app 跨端',
+    '商城与 CMS 组件',
+    '多主题与暗黑模式',
+    '中英文国际化',
+    'HTTP、Hooks 与常用工具'
+];
+
+function copyDocsUrl() {
+    uni.setClipboardData({
+        data: docsUrl,
+        success: () => uni.showToast({ title: text('文档地址已复制'), icon: 'success' })
+    });
+}
+
+function openExternal(url: string) {
+    // #ifdef H5
+    window.open(url, '_blank');
+    // #endif
+    // #ifndef H5
+    uni.setClipboardData({ data: url, success: () => uni.showToast({ title: text('链接已复制'), icon: 'none' }) });
+    // #endif
+}
+</script>
 
 <style lang="scss" scoped>
 @import '../../common/demo.scss';

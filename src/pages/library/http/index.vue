@@ -1,3 +1,13 @@
+<template>
+    <DemoPage title="HTTP 请求" desc="配置、传输层与错误模型">
+        <view class="actions">
+            <snake-button type="primary" size="small" @click="request('/profile')">成功请求</snake-button>
+            <snake-button type="error" size="small" plain @click="request('/failure')">模拟失败</snake-button>
+        </view>
+        <text class="output">{{ output }}</text>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { ref } from 'vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
@@ -22,16 +32,6 @@ async function request(path: string) {
     }
 }
 </script>
-
-<template>
-    <DemoPage title="HTTP 请求" desc="配置、传输层与错误模型">
-        <view class="actions">
-            <snake-button type="primary" size="small" @click="request('/profile')">成功请求</snake-button>
-            <snake-button type="error" size="small" plain @click="request('/failure')">模拟失败</snake-button>
-        </view>
-        <text class="output">{{ output }}</text>
-    </DemoPage>
-</template>
 
 <style scoped>
 .actions {

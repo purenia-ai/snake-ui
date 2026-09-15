@@ -1,3 +1,31 @@
+<template>
+    <DemoPage :title="title" :desc="text('单列、多列与多列联动的底部选择器。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-stack demo-select-showcase">
+                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
+                <snake-button type="primary" :custom-style="{ width: '240rpx' }" @click="selectShow = true">
+                    {{ text('打开选择器') }}
+                </snake-button>
+                <text class="demo-variant-sub">{{ text('选择结果') }}：{{ lastResult }}</text>
+                <snake-select
+                    v-model="selectShow"
+                    :list="currentList()"
+                    :mode="String(state.slMode)"
+                    :mask-close-able="Boolean(state.slMaskClose)"
+                    :safe-area-inset-bottom="Boolean(state.slSafeArea)"
+                    title="请选择"
+                    @confirm="onConfirm"
+                    @cancel="onCancel"
+                    @close="onClose"
+                />
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -101,34 +129,6 @@ function onClose() {
     lastResult.value = text('已关闭');
 }
 </script>
-
-<template>
-    <DemoPage :title="title" :desc="text('单列、多列与多列联动的底部选择器。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-stack demo-select-showcase">
-                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
-                <snake-button type="primary" :custom-style="{ width: '240rpx' }" @click="selectShow = true">
-                    {{ text('打开选择器') }}
-                </snake-button>
-                <text class="demo-variant-sub">{{ text('选择结果') }}：{{ lastResult }}</text>
-                <snake-select
-                    v-model="selectShow"
-                    :list="currentList()"
-                    :mode="String(state.slMode)"
-                    :mask-close-able="Boolean(state.slMaskClose)"
-                    :safe-area-inset-bottom="Boolean(state.slSafeArea)"
-                    title="请选择"
-                    @confirm="onConfirm"
-                    @cancel="onCancel"
-                    @close="onClose"
-                />
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 
 <style scoped>
 .demo-stack {

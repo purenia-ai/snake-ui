@@ -1,3 +1,40 @@
+<template>
+    <view class="snake-navbar-host">
+        <view
+            :class="['snake-navbar', { 'is-fixed': fixed, 'has-border': borderBottom }, customClass]"
+            :style="rootStyle"
+        >
+            <view class="snake-navbar__status" :style="{ height: statusBarHeight + 'px' }" />
+            <view class="snake-navbar__inner" :style="innerStyle">
+                <view class="snake-navbar__left">
+                    <view
+                        v-if="isBack"
+                        class="snake-navbar__back"
+                        hover-class="snake-navbar__hit--hover"
+                        @click="goBack"
+                    >
+                        <snake-icon :name="backIconName" :size="backIconSize ?? 'inherit'" :color="backIconColor" />
+                        <text v-if="backText" class="snake-navbar__back-text" :style="backTextStyle">
+                            {{ backText }}
+                        </text>
+                    </view>
+                    <slot name="left" />
+                </view>
+
+                <view v-if="title" class="snake-navbar__title" :style="titleStyle">{{ title }}</view>
+                <view v-else class="snake-navbar__content"><slot /></view>
+
+                <view class="snake-navbar__right"><slot name="right" /></view>
+            </view>
+        </view>
+        <view
+            v-if="fixed && !immersive"
+            class="snake-navbar__placeholder"
+            :style="{ height: placeholderHeight + 'px' }"
+        />
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component Navbar
@@ -67,43 +104,6 @@ function goBack(event: unknown) {
     uni.navigateBack();
 }
 </script>
-
-<template>
-    <view class="snake-navbar-host">
-        <view
-            :class="['snake-navbar', { 'is-fixed': fixed, 'has-border': borderBottom }, customClass]"
-            :style="rootStyle"
-        >
-            <view class="snake-navbar__status" :style="{ height: statusBarHeight + 'px' }" />
-            <view class="snake-navbar__inner" :style="innerStyle">
-                <view class="snake-navbar__left">
-                    <view
-                        v-if="isBack"
-                        class="snake-navbar__back"
-                        hover-class="snake-navbar__hit--hover"
-                        @click="goBack"
-                    >
-                        <snake-icon :name="backIconName" :size="backIconSize ?? 'inherit'" :color="backIconColor" />
-                        <text v-if="backText" class="snake-navbar__back-text" :style="backTextStyle">
-                            {{ backText }}
-                        </text>
-                    </view>
-                    <slot name="left" />
-                </view>
-
-                <view v-if="title" class="snake-navbar__title" :style="titleStyle">{{ title }}</view>
-                <view v-else class="snake-navbar__content"><slot /></view>
-
-                <view class="snake-navbar__right"><slot name="right" /></view>
-            </view>
-        </view>
-        <view
-            v-if="fixed && !immersive"
-            class="snake-navbar__placeholder"
-            :style="{ height: placeholderHeight + 'px' }"
-        />
-    </view>
-</template>
 
 <style scoped>
 .snake-navbar-host,

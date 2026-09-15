@@ -1,3 +1,25 @@
+<template>
+    <DemoPage :title="title" :desc="text('用于列表底部，反馈可加载、加载中和没有更多三种状态。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-stack demo-loadmore-showcase">
+                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
+                <snake-loadmore
+                    :status="String(state.loadStatus)"
+                    :icon-type="String(state.loadIcon)"
+                    :is-dot="Boolean(state.loadDot)"
+                />
+                <text class="demo-variant-title">{{ isEnglish ? 'All states' : '全部状态' }}</text>
+                <snake-loadmore status="loadmore" />
+                <snake-loadmore status="loading" />
+                <snake-loadmore status="nomore" is-dot />
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { computed, reactive } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -51,28 +73,6 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 </script>
-
-<template>
-    <DemoPage :title="title" :desc="text('用于列表底部，反馈可加载、加载中和没有更多三种状态。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-stack demo-loadmore-showcase">
-                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
-                <snake-loadmore
-                    :status="String(state.loadStatus)"
-                    :icon-type="String(state.loadIcon)"
-                    :is-dot="Boolean(state.loadDot)"
-                />
-                <text class="demo-variant-title">{{ isEnglish ? 'All states' : '全部状态' }}</text>
-                <snake-loadmore status="loadmore" />
-                <snake-loadmore status="loading" />
-                <snake-loadmore status="nomore" is-dot />
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 
 <style scoped>
 .demo-stack {

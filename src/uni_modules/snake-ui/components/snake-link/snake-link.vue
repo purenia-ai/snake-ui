@@ -1,3 +1,18 @@
+<template>
+    <text
+        class="snake-link"
+        :style="{
+            color: color,
+            fontSize: `${fontSize}rpx`,
+            borderBottom: underLine ? `1px solid ${lineColor || color}` : 'none',
+            paddingBottom: underLine ? '0rpx' : '0'
+        }"
+        @click.stop="openLink"
+    >
+        <slot>{{ text }}</slot>
+    </text>
+</template>
+
 <script setup lang="ts">
 /**
  * @component Link
@@ -46,21 +61,6 @@ function openLink() {
     // #endif
 }
 </script>
-
-<template>
-    <text
-        class="snake-link"
-        :style="{
-            color: color,
-            fontSize: `${fontSize}rpx`,
-            borderBottom: underLine ? `1px solid ${lineColor || color}` : 'none',
-            paddingBottom: underLine ? '0rpx' : '0'
-        }"
-        @click.stop="openLink"
-    >
-        <slot>{{ text }}</slot>
-    </text>
-</template>
 
 <style scoped>
 .snake-link {

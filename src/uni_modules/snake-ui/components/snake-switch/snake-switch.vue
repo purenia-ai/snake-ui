@@ -1,3 +1,21 @@
+<template>
+    <view
+        class="snake-switch"
+        :class="[customClass, { 'is-disabled': disabled || loading }]"
+        :style="[trackStyle, customStyle]"
+        role="switch"
+        :aria-checked="checked"
+        :aria-disabled="disabled || loading"
+        :tabindex="disabled || loading ? -1 : 0"
+        @click="toggle"
+        @keydown.enter.prevent="toggle($event)"
+        @keydown.space.prevent="toggle($event)"
+    >
+        <view class="snake-switch__thumb" :style="thumbStyle">
+            <snake-loading v-if="loading" :size="numericSize * 0.55" :color="checked ? activeColor : '#909399'" />
+        </view>
+    </view>
+</template>
 <script setup lang="ts">
 /**
  * @component Switch
@@ -55,24 +73,6 @@ function toggle(event: unknown) {
     void formItem?.notify('change');
 }
 </script>
-<template>
-    <view
-        class="snake-switch"
-        :class="[customClass, { 'is-disabled': disabled || loading }]"
-        :style="[trackStyle, customStyle]"
-        role="switch"
-        :aria-checked="checked"
-        :aria-disabled="disabled || loading"
-        :tabindex="disabled || loading ? -1 : 0"
-        @click="toggle"
-        @keydown.enter.prevent="toggle($event)"
-        @keydown.space.prevent="toggle($event)"
-    >
-        <view class="snake-switch__thumb" :style="thumbStyle">
-            <snake-loading v-if="loading" :size="numericSize * 0.55" :color="checked ? activeColor : '#909399'" />
-        </view>
-    </view>
-</template>
 <style scoped>
 .snake-switch {
     display: inline-flex;

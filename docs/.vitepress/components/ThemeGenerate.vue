@@ -1,3 +1,234 @@
+<template>
+    <div class="tg">
+        <div class="tg-toolbar">
+            <span class="tg-toolbar__label">色票分组</span>
+            <span class="tg-toolbar__actions">
+                <button type="button" class="tg-btn tg-btn--mini" @click="expandAll">全部展开</button>
+                <span class="tg-toolbar__divider" />
+                <button type="button" class="tg-btn tg-btn--mini" @click="collapseAll">全部折叠</button>
+            </span>
+        </div>
+
+        <div v-if="restoredHint" class="tg-restored">{{ restoredHint }}</div>
+
+        <p class="tg-intro">请为下列色票选择颜色，支持可选的暗黑模式色值。支持智能生成颜色值、随机主题颜色等。</p>
+
+        <section v-for="section in colorSections" :key="section.id" class="tg-section">
+            <header class="tg-section__header">
+                <div>
+                    <h3 class="tg-section__title">{{ section.label }}</h3>
+                    <p v-if="section.desc" class="tg-section__desc">{{ section.desc }}</p>
+                </div>
+            </header>
+            <div v-for="group in section.groups" :key="group.id" class="tg-group">
+                <div class="tg-group__header">
+                    <span class="tg-group__label">{{ group.label }}</span>
+                    <span class="tg-group__actions">
+                        <button
+                            v-if="group.random && !collapsed[group.id]"
+                            type="button"
+                            class="tg-btn tg-btn--mini tg-btn--green"
+                            @click="randomizeTheme"
+                        >
+                            随机主题
+                        </button>
+                        <button
+                            v-if="group.smart && !collapsed[group.id]"
+                            type="button"
+                            class="tg-btn tg-btn--mini tg-btn--primary"
+                            @click="smartGenerateGroup(group)"
+                        >
+                            智能生成
+                        </button>
+                        <button type="button" class="tg-btn tg-btn--mini" @click="toggleGroup(group.id)">
+                            {{ collapsed[group.id] ? '展开' : '折叠' }}
+                        </button>
+                    </span>
+                </div>
+                <div v-if="!collapsed[group.id]" class="tg-grid">
+                    <div
+                        v-for="key in group.keys"
+                        :key="key"
+                        class="tg-card"
+                        role="button"
+                        tabindex="0"
+                        @click="openPicker('light', key)"
+                        @keydown.enter="openPicker('light', key)"
+                    >
+                        <div class="tg-card__swatch" :style="swatchStyle('light', key)">
+                            <span class="tg-card__name">{{ tokenLabels[key] }}</span>
+                            <span class="tg-card__value">{{ light[key] }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="tg-preview">
+            <header class="tg-preview__header">
+                <h3 class="tg-preview__title">实时预览</h3>
+            </header>
+            <div class="tg-preview-area" :style="previewStyle">
+                <div class="tg-preview-swatches">
+                    <span v-for="swatch in previewSwatches" :key="swatch.key" class="tg-preview-swatch">
+                        <span class="tg-preview-swatch__dot" :style="{ background: swatch.value }" />
+                        <span class="tg-preview-swatch__label">{{ swatch.label }}</span>
+                    </span>
+                </div>
+                <div class="tg-preview-top">
+                    <button type="button" class="tg-preview-btn tg-preview-btn--primary">主按钮</button>
+                    <button type="button" class="tg-preview-btn tg-preview-btn--ghost">次按钮</button>
+                </div>
+                <div class="tg-preview-card">
+                    <h4 class="tg-preview-card__title">卡片标题</h4>
+                    <p class="tg-preview-card__text">这是一段示例内容，用于展示文字色与背景色的搭配。</p>
+                    <div class="tg-preview-chips">
+                        <span class="tg-preview-chip tg-preview-chip--success">成功</span>
+                        <span class="tg-preview-chip tg-preview-chip--warning">警告</span>
+                        <span class="tg-preview-chip tg-preview-chip--info">信息</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="tg-darkbar">
+            <button
+                type="button"
+                class="tg-switch"
+                :class="{ 'tg-switch--on': darkEnabled }"
+                role="switch"
+                :aria-checked="darkEnabled"
+                @click="toggleDark"
+            >
+                <span class="tg-switch__knob" />
+            </button>
+            <span class="tg-darkbar__text">启用暗黑色值（可选）</span>
+            <button
+                type="button"
+                class="tg-btn tg-btn--mini tg-btn--primary"
+                :disabled="!darkEnabled"
+                @click="refreshDark"
+            >
+                刷新暗黑色值
+            </button>
+        </div>
+        <p class="tg-darkbar__note">提示：开启暗黑色值后，系统会基于亮色方案智能生成暗黑初始色值，您可以逐项覆盖。</p>
+
+        <div v-if="darkEnabled" class="tg-dark">
+            <p class="tg-dark__hint">暗黑色值（可选，默认由亮色智能生成）：</p>
+            <section v-for="section in colorSections" :key="'dark-' + section.id" class="tg-section tg-section--dark">
+                <header class="tg-section__header">
+                    <h3 class="tg-section__title">dark - {{ section.label }}</h3>
+                </header>
+                <div v-for="group in section.groups" :key="'dark-group-' + group.id" class="tg-group tg-group--compact">
+                    <span class="tg-group__label">{{ group.label }}</span>
+                    <div class="tg-grid">
+                        <div
+                            v-for="key in group.keys"
+                            :key="'d-' + key"
+                            class="tg-card"
+                            role="button"
+                            tabindex="0"
+                            @click="openPicker('dark', key)"
+                            @keydown.enter="openPicker('dark', key)"
+                        >
+                            <div class="tg-card__swatch" :style="swatchStyle('dark', key)">
+                                <span class="tg-card__name">dark - {{ tokenLabels[key] }}</span>
+                                <span class="tg-card__value">{{ dark[key] }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <section class="tg-meta">
+            <p class="tg-meta__tip">请填写主题元信息（name/label/description），为上述已选择颜色赋予名称。</p>
+            <div class="tg-meta-row">
+                <input class="tg-input" v-model="draftName" placeholder="name（英文必填，如 blue）" />
+                <input class="tg-input" v-model="draftLabel" placeholder="label（显示名称，如 蓝色）" />
+                <input
+                    class="tg-input tg-input--wide"
+                    v-model="draftDescription"
+                    placeholder="description（简短描述）"
+                />
+            </div>
+            <p class="tg-meta-tip">
+                如需多个主题，请先将当前已配置好的变量添加到导出队列，继续进行下一套主题配置，最后导出即可！
+            </p>
+            <div class="tg-actions">
+                <button type="button" class="tg-btn" @click="resetAll">重置</button>
+                <button type="button" class="tg-btn tg-btn--info" @click="addToQueue">添加到导出队列</button>
+                <button type="button" class="tg-btn tg-btn--danger" @click="clearQueue">清空队列</button>
+                <button type="button" class="tg-btn tg-btn--primary" @click="exportThemes">导出</button>
+                <button type="button" class="tg-btn tg-btn--ghost" @click="copyCode">复制代码</button>
+            </div>
+            <div v-if="queued.length" class="tg-queue">
+                <p class="tg-queue__title">导出队列（{{ queued.length }}）</p>
+                <div v-for="(theme, index) in queued" :key="theme.name" class="tg-queue-item">
+                    <span class="tg-queue-item__swatch" :style="{ background: theme.color.primary }" />
+                    <span class="tg-queue-item__info">{{ index + 1 }}. {{ theme.label }}（{{ theme.name }}）</span>
+                    <button type="button" class="tg-queue-item__remove" @click="removeFromQueue(index)">移除</button>
+                </div>
+            </div>
+            <p class="tg-export-hint">
+                导出文件为 snake-ui.theme.ts，覆盖 demo 工程 src/snake-ui.theme.ts 后重新编译即可使用。
+            </p>
+        </section>
+
+        <div v-if="picker.visible" class="tg-mask" @click="cancelPicker">
+            <div class="tg-dialog" role="dialog" @click.stop>
+                <p class="tg-dialog__title">{{ tokenLabels[picker.key] }}（{{ picker.key }}）</p>
+                <div class="tg-dialog__body">
+                    <div
+                        class="tg-sv"
+                        :style="svPanelStyle"
+                        @pointerdown.prevent.stop="onPanelDown"
+                        @pointermove="onPanelMove"
+                        @pointerup="onPanelUp"
+                        @pointercancel="onPanelUp"
+                    >
+                        <div class="tg-sv__handle" :style="svHandleStyle" />
+                    </div>
+                    <div
+                        class="tg-hue"
+                        :style="hueBarStyle"
+                        @pointerdown.prevent.stop="onHueDown"
+                        @pointermove="onHueMove"
+                        @pointerup="onHueUp"
+                        @pointercancel="onHueUp"
+                    >
+                        <div class="tg-hue__handle" :style="hueHandleStyle" />
+                    </div>
+                    <div class="tg-field">
+                        <span class="tg-field__label">颜色值</span>
+                        <input class="tg-field__input" v-model="picker.draft" placeholder="#RRGGBB" />
+                    </div>
+                    <div class="tg-presets">
+                        <button
+                            v-for="preset in presetColors"
+                            :key="preset"
+                            type="button"
+                            class="tg-preset"
+                            :style="{ background: preset }"
+                            @click="applyPreset(preset)"
+                        />
+                    </div>
+                </div>
+                <div class="tg-dialog__footer">
+                    <button type="button" class="tg-btn tg-btn--mini" @click="cancelPicker">取消</button>
+                    <button type="button" class="tg-btn tg-btn--mini tg-btn--primary" @click="confirmPicker">
+                        确定
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <transition name="tg-toast">
+            <div v-if="toast" class="tg-toast" :class="`tg-toast--${toast.type}`">{{ toast.text }}</div>
+        </transition>
+    </div>
+</template>
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 
@@ -995,237 +1226,6 @@ function resetAll(): void {
     notify('已重置为默认色板', 'success');
 }
 </script>
-<template>
-    <div class="tg">
-        <div class="tg-toolbar">
-            <span class="tg-toolbar__label">色票分组</span>
-            <span class="tg-toolbar__actions">
-                <button type="button" class="tg-btn tg-btn--mini" @click="expandAll">全部展开</button>
-                <span class="tg-toolbar__divider" />
-                <button type="button" class="tg-btn tg-btn--mini" @click="collapseAll">全部折叠</button>
-            </span>
-        </div>
-
-        <div v-if="restoredHint" class="tg-restored">{{ restoredHint }}</div>
-
-        <p class="tg-intro">请为下列色票选择颜色，支持可选的暗黑模式色值。支持智能生成颜色值、随机主题颜色等。</p>
-
-        <section v-for="section in colorSections" :key="section.id" class="tg-section">
-            <header class="tg-section__header">
-                <div>
-                    <h3 class="tg-section__title">{{ section.label }}</h3>
-                    <p v-if="section.desc" class="tg-section__desc">{{ section.desc }}</p>
-                </div>
-            </header>
-            <div v-for="group in section.groups" :key="group.id" class="tg-group">
-                <div class="tg-group__header">
-                    <span class="tg-group__label">{{ group.label }}</span>
-                    <span class="tg-group__actions">
-                        <button
-                            v-if="group.random && !collapsed[group.id]"
-                            type="button"
-                            class="tg-btn tg-btn--mini tg-btn--green"
-                            @click="randomizeTheme"
-                        >
-                            随机主题
-                        </button>
-                        <button
-                            v-if="group.smart && !collapsed[group.id]"
-                            type="button"
-                            class="tg-btn tg-btn--mini tg-btn--primary"
-                            @click="smartGenerateGroup(group)"
-                        >
-                            智能生成
-                        </button>
-                        <button type="button" class="tg-btn tg-btn--mini" @click="toggleGroup(group.id)">
-                            {{ collapsed[group.id] ? '展开' : '折叠' }}
-                        </button>
-                    </span>
-                </div>
-                <div v-if="!collapsed[group.id]" class="tg-grid">
-                    <div
-                        v-for="key in group.keys"
-                        :key="key"
-                        class="tg-card"
-                        role="button"
-                        tabindex="0"
-                        @click="openPicker('light', key)"
-                        @keydown.enter="openPicker('light', key)"
-                    >
-                        <div class="tg-card__swatch" :style="swatchStyle('light', key)">
-                            <span class="tg-card__name">{{ tokenLabels[key] }}</span>
-                            <span class="tg-card__value">{{ light[key] }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="tg-preview">
-            <header class="tg-preview__header">
-                <h3 class="tg-preview__title">实时预览</h3>
-            </header>
-            <div class="tg-preview-area" :style="previewStyle">
-                <div class="tg-preview-swatches">
-                    <span v-for="swatch in previewSwatches" :key="swatch.key" class="tg-preview-swatch">
-                        <span class="tg-preview-swatch__dot" :style="{ background: swatch.value }" />
-                        <span class="tg-preview-swatch__label">{{ swatch.label }}</span>
-                    </span>
-                </div>
-                <div class="tg-preview-top">
-                    <button type="button" class="tg-preview-btn tg-preview-btn--primary">主按钮</button>
-                    <button type="button" class="tg-preview-btn tg-preview-btn--ghost">次按钮</button>
-                </div>
-                <div class="tg-preview-card">
-                    <h4 class="tg-preview-card__title">卡片标题</h4>
-                    <p class="tg-preview-card__text">这是一段示例内容，用于展示文字色与背景色的搭配。</p>
-                    <div class="tg-preview-chips">
-                        <span class="tg-preview-chip tg-preview-chip--success">成功</span>
-                        <span class="tg-preview-chip tg-preview-chip--warning">警告</span>
-                        <span class="tg-preview-chip tg-preview-chip--info">信息</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="tg-darkbar">
-            <button
-                type="button"
-                class="tg-switch"
-                :class="{ 'tg-switch--on': darkEnabled }"
-                role="switch"
-                :aria-checked="darkEnabled"
-                @click="toggleDark"
-            >
-                <span class="tg-switch__knob" />
-            </button>
-            <span class="tg-darkbar__text">启用暗黑色值（可选）</span>
-            <button
-                type="button"
-                class="tg-btn tg-btn--mini tg-btn--primary"
-                :disabled="!darkEnabled"
-                @click="refreshDark"
-            >
-                刷新暗黑色值
-            </button>
-        </div>
-        <p class="tg-darkbar__note">提示：开启暗黑色值后，系统会基于亮色方案智能生成暗黑初始色值，您可以逐项覆盖。</p>
-
-        <div v-if="darkEnabled" class="tg-dark">
-            <p class="tg-dark__hint">暗黑色值（可选，默认由亮色智能生成）：</p>
-            <section v-for="section in colorSections" :key="'dark-' + section.id" class="tg-section tg-section--dark">
-                <header class="tg-section__header">
-                    <h3 class="tg-section__title">dark - {{ section.label }}</h3>
-                </header>
-                <div v-for="group in section.groups" :key="'dark-group-' + group.id" class="tg-group tg-group--compact">
-                    <span class="tg-group__label">{{ group.label }}</span>
-                    <div class="tg-grid">
-                        <div
-                            v-for="key in group.keys"
-                            :key="'d-' + key"
-                            class="tg-card"
-                            role="button"
-                            tabindex="0"
-                            @click="openPicker('dark', key)"
-                            @keydown.enter="openPicker('dark', key)"
-                        >
-                            <div class="tg-card__swatch" :style="swatchStyle('dark', key)">
-                                <span class="tg-card__name">dark - {{ tokenLabels[key] }}</span>
-                                <span class="tg-card__value">{{ dark[key] }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <section class="tg-meta">
-            <p class="tg-meta__tip">请填写主题元信息（name/label/description），为上述已选择颜色赋予名称。</p>
-            <div class="tg-meta-row">
-                <input class="tg-input" v-model="draftName" placeholder="name（英文必填，如 blue）" />
-                <input class="tg-input" v-model="draftLabel" placeholder="label（显示名称，如 蓝色）" />
-                <input
-                    class="tg-input tg-input--wide"
-                    v-model="draftDescription"
-                    placeholder="description（简短描述）"
-                />
-            </div>
-            <p class="tg-meta-tip">
-                如需多个主题，请先将当前已配置好的变量添加到导出队列，继续进行下一套主题配置，最后导出即可！
-            </p>
-            <div class="tg-actions">
-                <button type="button" class="tg-btn" @click="resetAll">重置</button>
-                <button type="button" class="tg-btn tg-btn--info" @click="addToQueue">添加到导出队列</button>
-                <button type="button" class="tg-btn tg-btn--danger" @click="clearQueue">清空队列</button>
-                <button type="button" class="tg-btn tg-btn--primary" @click="exportThemes">导出</button>
-                <button type="button" class="tg-btn tg-btn--ghost" @click="copyCode">复制代码</button>
-            </div>
-            <div v-if="queued.length" class="tg-queue">
-                <p class="tg-queue__title">导出队列（{{ queued.length }}）</p>
-                <div v-for="(theme, index) in queued" :key="theme.name" class="tg-queue-item">
-                    <span class="tg-queue-item__swatch" :style="{ background: theme.color.primary }" />
-                    <span class="tg-queue-item__info">{{ index + 1 }}. {{ theme.label }}（{{ theme.name }}）</span>
-                    <button type="button" class="tg-queue-item__remove" @click="removeFromQueue(index)">移除</button>
-                </div>
-            </div>
-            <p class="tg-export-hint">
-                导出文件为 snake-ui.theme.ts，覆盖 demo 工程 src/snake-ui.theme.ts 后重新编译即可使用。
-            </p>
-        </section>
-
-        <div v-if="picker.visible" class="tg-mask" @click="cancelPicker">
-            <div class="tg-dialog" role="dialog" @click.stop>
-                <p class="tg-dialog__title">{{ tokenLabels[picker.key] }}（{{ picker.key }}）</p>
-                <div class="tg-dialog__body">
-                    <div
-                        class="tg-sv"
-                        :style="svPanelStyle"
-                        @pointerdown.prevent.stop="onPanelDown"
-                        @pointermove="onPanelMove"
-                        @pointerup="onPanelUp"
-                        @pointercancel="onPanelUp"
-                    >
-                        <div class="tg-sv__handle" :style="svHandleStyle" />
-                    </div>
-                    <div
-                        class="tg-hue"
-                        :style="hueBarStyle"
-                        @pointerdown.prevent.stop="onHueDown"
-                        @pointermove="onHueMove"
-                        @pointerup="onHueUp"
-                        @pointercancel="onHueUp"
-                    >
-                        <div class="tg-hue__handle" :style="hueHandleStyle" />
-                    </div>
-                    <div class="tg-field">
-                        <span class="tg-field__label">颜色值</span>
-                        <input class="tg-field__input" v-model="picker.draft" placeholder="#RRGGBB" />
-                    </div>
-                    <div class="tg-presets">
-                        <button
-                            v-for="preset in presetColors"
-                            :key="preset"
-                            type="button"
-                            class="tg-preset"
-                            :style="{ background: preset }"
-                            @click="applyPreset(preset)"
-                        />
-                    </div>
-                </div>
-                <div class="tg-dialog__footer">
-                    <button type="button" class="tg-btn tg-btn--mini" @click="cancelPicker">取消</button>
-                    <button type="button" class="tg-btn tg-btn--mini tg-btn--primary" @click="confirmPicker">
-                        确定
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <transition name="tg-toast">
-            <div v-if="toast" class="tg-toast" :class="`tg-toast--${toast.type}`">{{ toast.text }}</div>
-        </transition>
-    </div>
-</template>
 <style scoped>
 .tg {
     --tg-bg: var(--vp-c-bg);

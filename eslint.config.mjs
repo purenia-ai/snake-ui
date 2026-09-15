@@ -55,6 +55,7 @@ export default tseslint.config(
             '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
             'vue/attribute-hyphenation': 'off',
             'vue/attributes-order': 'off',
+            'vue/block-order': ['error', { order: ['template', ['script', 'script[setup]'], 'style'] }],
             'vue/component-definition-name-casing': 'off',
             'vue/multi-word-component-names': 'off',
             'vue/no-v-html': 'off',

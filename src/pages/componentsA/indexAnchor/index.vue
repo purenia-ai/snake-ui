@@ -1,3 +1,27 @@
+<template>
+    <DemoPage :title="title" :desc="text('索引锚点定义分组位置，需要放在 IndexList 内使用。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-index demo-index-anchor-showcase">
+                <snake-index-list-panel :index-list="letters" active-color="#06D290">
+                    <view v-for="letter in letters" :key="letter">
+                        <snake-index-anchor
+                            :index="letter"
+                            :text="`${String(state.anchorPrefix)} ${letter}`"
+                            custom-style="height: 64rpx; padding: 0 20rpx"
+                        />
+                        <view v-for="item in 3" :key="item" class="demo-index-row">
+                            {{ letter }} {{ isEnglish ? 'item' : '类内容' }} {{ item }}
+                        </view>
+                    </view>
+                </snake-index-list-panel>
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { computed, reactive } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -23,30 +47,6 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 </script>
-
-<template>
-    <DemoPage :title="title" :desc="text('索引锚点定义分组位置，需要放在 IndexList 内使用。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-index demo-index-anchor-showcase">
-                <snake-index-list-panel :index-list="letters" active-color="#06D290">
-                    <view v-for="letter in letters" :key="letter">
-                        <snake-index-anchor
-                            :index="letter"
-                            :text="`${String(state.anchorPrefix)} ${letter}`"
-                            custom-style="height: 64rpx; padding: 0 20rpx"
-                        />
-                        <view v-for="item in 3" :key="item" class="demo-index-row">
-                            {{ letter }} {{ isEnglish ? 'item' : '类内容' }} {{ item }}
-                        </view>
-                    </view>
-                </snake-index-list-panel>
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 
 <style scoped>
 .demo-index {

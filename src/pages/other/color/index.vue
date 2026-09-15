@@ -1,3 +1,32 @@
+<template>
+    <DemoPage title="Color 色彩" desc="Snake UI 当前主题色板实时预览">
+        <view v-for="group in colorGroups" :key="group.label" class="preview-card">
+            <text class="preview-card__title">{{ group.label }}</text>
+            <view class="swatch-grid">
+                <view v-for="key in group.keys" :key="key" class="swatch" :style="{ backgroundColor: color[key] }">
+                    <text>{{ colorLabels[key] }}</text>
+                    <text>{{ color[key] }}</text>
+                </view>
+            </view>
+        </view>
+
+        <view v-for="group in neutralGroups" :key="group.label" class="preview-card">
+            <text class="preview-card__title">{{ group.label }}</text>
+            <view v-for="key in group.keys" :key="key" class="token-row">
+                <view class="token-row__swatch" :style="{ backgroundColor: color[key] }"></view>
+                <text :style="{ color: color.text }">{{ colorLabels[key] }}</text>
+                <text class="token-row__value">{{ color[key] }}</text>
+            </view>
+        </view>
+
+        <view class="preview-card">
+            <text class="preview-card__title">遮罩与阴影</text>
+            <view class="overlay-demo" :style="{ backgroundColor: color.mask }"><text>Mask</text></view>
+            <view class="shadow-demo" :style="{ boxShadow: `0 8rpx 24rpx ${color.shadow}` }"><text>Shadow</text></view>
+        </view>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import { useTheme } from '../../../uni_modules/snake-ui';
@@ -34,35 +63,6 @@ const colorLabels: Record<string, string> = {
     surfaceMuted: '弱表面'
 };
 </script>
-
-<template>
-    <DemoPage title="Color 色彩" desc="Snake UI 当前主题色板实时预览">
-        <view v-for="group in colorGroups" :key="group.label" class="preview-card">
-            <text class="preview-card__title">{{ group.label }}</text>
-            <view class="swatch-grid">
-                <view v-for="key in group.keys" :key="key" class="swatch" :style="{ backgroundColor: color[key] }">
-                    <text>{{ colorLabels[key] }}</text>
-                    <text>{{ color[key] }}</text>
-                </view>
-            </view>
-        </view>
-
-        <view v-for="group in neutralGroups" :key="group.label" class="preview-card">
-            <text class="preview-card__title">{{ group.label }}</text>
-            <view v-for="key in group.keys" :key="key" class="token-row">
-                <view class="token-row__swatch" :style="{ backgroundColor: color[key] }"></view>
-                <text :style="{ color: color.text }">{{ colorLabels[key] }}</text>
-                <text class="token-row__value">{{ color[key] }}</text>
-            </view>
-        </view>
-
-        <view class="preview-card">
-            <text class="preview-card__title">遮罩与阴影</text>
-            <view class="overlay-demo" :style="{ backgroundColor: color.mask }"><text>Mask</text></view>
-            <view class="shadow-demo" :style="{ boxShadow: `0 8rpx 24rpx ${color.shadow}` }"><text>Shadow</text></view>
-        </view>
-    </DemoPage>
-</template>
 
 <style scoped>
 .preview-card {

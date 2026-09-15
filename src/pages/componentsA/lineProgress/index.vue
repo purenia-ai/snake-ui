@@ -1,3 +1,30 @@
+<template>
+    <DemoPage :title="title" :desc="text('以线形进度展示任务完成情况，支持条纹与百分比。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-stack demo-line-progress-showcase">
+                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
+                <snake-line-progress
+                    :percent="Number(state.lpPercent)"
+                    :type="String(state.lpType)"
+                    :show-percent="Boolean(state.lpShowPercent)"
+                    :striped="Boolean(state.lpStriped)"
+                    :striped-active="Boolean(state.lpStripedActive)"
+                    :round="Boolean(state.lpRound)"
+                />
+                <text class="demo-variant-title">{{ isEnglish ? 'Theme presets' : '主题预设' }}</text>
+                <snake-line-progress :percent="30" type="primary" />
+                <snake-line-progress :percent="50" type="success" />
+                <snake-line-progress :percent="60" type="warning" />
+                <snake-line-progress :percent="70" type="error" />
+                <snake-line-progress :percent="80" type="info" />
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { computed, reactive } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -48,33 +75,6 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 </script>
-
-<template>
-    <DemoPage :title="title" :desc="text('以线形进度展示任务完成情况，支持条纹与百分比。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-stack demo-line-progress-showcase">
-                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
-                <snake-line-progress
-                    :percent="Number(state.lpPercent)"
-                    :type="String(state.lpType)"
-                    :show-percent="Boolean(state.lpShowPercent)"
-                    :striped="Boolean(state.lpStriped)"
-                    :striped-active="Boolean(state.lpStripedActive)"
-                    :round="Boolean(state.lpRound)"
-                />
-                <text class="demo-variant-title">{{ isEnglish ? 'Theme presets' : '主题预设' }}</text>
-                <snake-line-progress :percent="30" type="primary" />
-                <snake-line-progress :percent="50" type="success" />
-                <snake-line-progress :percent="60" type="warning" />
-                <snake-line-progress :percent="70" type="error" />
-                <snake-line-progress :percent="80" type="info" />
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 
 <style scoped>
 .demo-stack {

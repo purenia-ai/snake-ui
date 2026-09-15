@@ -1,3 +1,9 @@
+<template>
+    <DefaultTheme.Layout :class="layoutClass">
+        <template #doc-before><PreviewFrame /></template>
+    </DefaultTheme.Layout>
+</template>
+
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useData } from 'vitepress';
@@ -9,9 +15,3 @@ const layoutClass = computed(() => ({
     'snake-preview-layout': Boolean(frontmatter.value.preview)
 }));
 </script>
-
-<template>
-    <DefaultTheme.Layout :class="layoutClass">
-        <template #doc-before><PreviewFrame /></template>
-    </DefaultTheme.Layout>
-</template>

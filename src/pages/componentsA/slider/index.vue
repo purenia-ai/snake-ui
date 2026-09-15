@@ -1,3 +1,23 @@
+<template>
+    <DemoPage :title="title" :desc="text('通过点击或触摸拖动选择范围内的数值。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-control-stack demo-slider-showcase">
+                <text class="demo-variant-title">{{ isEnglish ? 'Touch and keyboard' : '触摸与键盘操作' }}</text>
+                <snake-slider
+                    v-model="value"
+                    :step="Number(state.sliderStep)"
+                    :show-value="Boolean(state.sliderShowValue)"
+                    :disabled="Boolean(state.sliderDisabled)"
+                    show-edge-value
+                />
+                <text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ value }}</text>
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -28,26 +48,6 @@ function updateValue(key: string, nextValue: DemoValue) {
     state[key] = nextValue;
 }
 </script>
-<template>
-    <DemoPage :title="title" :desc="text('通过点击或触摸拖动选择范围内的数值。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-control-stack demo-slider-showcase">
-                <text class="demo-variant-title">{{ isEnglish ? 'Touch and keyboard' : '触摸与键盘操作' }}</text>
-                <snake-slider
-                    v-model="value"
-                    :step="Number(state.sliderStep)"
-                    :show-value="Boolean(state.sliderShowValue)"
-                    :disabled="Boolean(state.sliderDisabled)"
-                    show-edge-value
-                />
-                <text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ value }}</text>
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 <style scoped>
 .demo-control-stack {
     display: flex;

@@ -1,3 +1,13 @@
+<template>
+    <DemoPage :title="title" :desc="text('在页面边缘提供始终可见的营销或客服入口。')" viewport>
+        <DemoSection bare variant="preview" :title="text('演示效果')">
+            <snake-floating-bubble class="demo-floating-bubble-showcase" :datas="data" :scroll-top="scrollTop" />
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 import { floatingBubbleData } from '../../../common/fixtures';
@@ -38,13 +48,3 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 </script>
-<template>
-    <DemoPage :title="title" :desc="text('在页面边缘提供始终可见的营销或客服入口。')" viewport>
-        <DemoSection bare variant="preview" :title="text('演示效果')">
-            <snake-floating-bubble class="demo-floating-bubble-showcase" :datas="data" :scroll-top="scrollTop" />
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>

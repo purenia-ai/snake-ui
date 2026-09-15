@@ -1,3 +1,19 @@
+<template>
+    <DemoPage :title="title" :desc="text('根据页面装修配置按顺序渲染完整的 CMS 页面。')" viewport>
+        <DemoSection bare variant="preview" :title="text('演示效果')">
+            <snake-cms
+                class="demo-snake-cms-showcase"
+                :page-info="pageInfo"
+                :page-components="components"
+                :scroll-top="scrollTop"
+            />
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -41,19 +57,3 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 </script>
-
-<template>
-    <DemoPage :title="title" :desc="text('根据页面装修配置按顺序渲染完整的 CMS 页面。')" viewport>
-        <DemoSection bare variant="preview" :title="text('演示效果')">
-            <snake-cms
-                class="demo-snake-cms-showcase"
-                :page-info="pageInfo"
-                :page-components="components"
-                :scroll-top="scrollTop"
-            />
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>

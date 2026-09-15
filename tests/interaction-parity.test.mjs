@@ -33,6 +33,16 @@ test('notice bar keeps uView playback semantics with Snake visibility controls',
     assert.match(source, /@animationend="marqueeEnd"/);
     assert.match(source, /name="volume"/);
     assert.match(source, /snake-notice-bar__marquee-primary">\{\{ marqueeText \}\}<\/view>/);
+    assert.match(source, /const canScroll = computed\(\(\) => marqueeWidth\.value > 0 && contentWidth\.value > marqueeWidth\.value\)/);
+    assert.match(source, /const hasMarqueeDimensions = computed\(\(\) => marqueeWidth\.value > 0 && contentWidth\.value > 0\)/);
+    assert.match(source, /query\.select\('\.snake-notice-bar__marquee-measure'\)\.boundingClientRect\(\)/);
+    assert.match(source, /contentWidth\.value = Number\(measureText\?\.width\) \|\| Number\(content\?\.width\) \|\| 0/);
+    assert.match(source, /volumeSize: 34/);
+    assert.match(source, /paddingLeft: !props\.isCircular && canScroll\.value \? `\$\{marqueeWidth\.value\}px` : undefined/);
+    assert.match(source, /'is-playing': playing && \(isCircular \? hasMarqueeDimensions : canScroll\)/);
+    assert.match(source, /transform: translateX\(var\(--snake-notice-marquee-width\)\)/);
+    assert.match(source, /transform: translateX\(calc\(-1 \* var\(--snake-notice-content-width\)\)\)/);
+    assert.doesNotMatch(source, /snake-notice-bar__marquee-copy/);
     assert.match(source, /defineExpose\(\{ reset \}\)/);
 });
 

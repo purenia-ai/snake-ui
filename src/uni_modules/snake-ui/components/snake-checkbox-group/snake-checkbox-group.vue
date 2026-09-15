@@ -1,3 +1,8 @@
+<template>
+    <view class="snake-checkbox-group snake-checkbox-group--clearfix" :style="customStyle" :class="customClass">
+        <slot />
+    </view>
+</template>
 <script setup lang="ts">
 /**
  * @component CheckboxGroup
@@ -132,11 +137,6 @@ defineExpose({
     getChildrenCount: () => children.length
 });
 </script>
-<template>
-    <view class="snake-checkbox-group snake-checkbox-group--clearfix" :style="customStyle" :class="customClass">
-        <slot />
-    </view>
-</template>
 <style scoped>
 .snake-checkbox-group {
     /* #ifndef MP || APP-NVUE */

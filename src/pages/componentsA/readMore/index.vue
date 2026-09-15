@@ -1,3 +1,30 @@
+<template>
+    <DemoPage :title="title" :desc="text('长内容先收起一部分，点击展开全文。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-stack demo-read-more-showcase">
+                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
+                <snake-read-more
+                    ref="readMoreRef"
+                    :toggle="Boolean(state.rmToggle)"
+                    :show-height="Number(state.rmShowHeight)"
+                    :color="String(state.rmColor)"
+                    :text-indent="'0'"
+                    @open="() => {}"
+                    @close="() => {}"
+                >
+                    <text>{{ longContent }}</text>
+                </snake-read-more>
+                <snake-button type="primary" plain :custom-style="{ width: '240rpx' }" @click="reMeasure">
+                    {{ isEnglish ? 'Re-measure' : '重新测量' }}
+                </snake-button>
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -59,33 +86,6 @@ function reMeasure() {
     readMoreRef.value?.init();
 }
 </script>
-
-<template>
-    <DemoPage :title="title" :desc="text('长内容先收起一部分，点击展开全文。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-stack demo-read-more-showcase">
-                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
-                <snake-read-more
-                    ref="readMoreRef"
-                    :toggle="Boolean(state.rmToggle)"
-                    :show-height="Number(state.rmShowHeight)"
-                    :color="String(state.rmColor)"
-                    :text-indent="'0'"
-                    @open="() => {}"
-                    @close="() => {}"
-                >
-                    <text>{{ longContent }}</text>
-                </snake-read-more>
-                <snake-button type="primary" plain :custom-style="{ width: '240rpx' }" @click="reMeasure">
-                    {{ isEnglish ? 'Re-measure' : '重新测量' }}
-                </snake-button>
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 
 <style scoped>
 .demo-stack {

@@ -1,3 +1,11 @@
+<template>
+    <view
+        class="snake-skeleton-item"
+        :class="[`snake-skeleton-item--${variant}`, { 'snake-skeleton-item--animated': isAnimated }]"
+        :style="itemStyle"
+    />
+</template>
+
 <script setup lang="ts">
 /**
  * @component SkeletonItem
@@ -48,14 +56,6 @@ const variantDefaults: Record<NonNullable<SkeletonItemProps['variant']>, Variant
     image: { width: '100%', height: '100px', radius: '8px' }
 };
 </script>
-
-<template>
-    <view
-        class="snake-skeleton-item"
-        :class="[`snake-skeleton-item--${variant}`, { 'snake-skeleton-item--animated': isAnimated }]"
-        :style="itemStyle"
-    />
-</template>
 
 <style scoped>
 .snake-skeleton-item {

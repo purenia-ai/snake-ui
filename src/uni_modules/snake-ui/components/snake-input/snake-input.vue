@@ -1,3 +1,44 @@
+<template>
+    <view class="snake-input" :class="[customClass, rootClass]" :style="rootStyle" @click="emit('click', $event)">
+        <slot name="prefix"><snake-icon v-if="prefixIcon" :name="prefixIcon" class="snake-input__icon" /></slot>
+        <input
+            class="snake-input__native"
+            :value="innerValue"
+            :type="type === 'password' ? 'text' : type"
+            :password="actualPassword"
+            :placeholder="placeholder"
+            :placeholder-style="`color:${placeholderColor};${placeholderStyle}`"
+            :maxlength="maxlength"
+            :disabled="disabled || readonly"
+            :focus="focus"
+            :cursor="cursor"
+            :selection-start="selectionStart"
+            :selection-end="selectionEnd"
+            :confirm-type="confirmType as any"
+            :confirm-hold="confirmHold"
+            :adjust-position="adjustPosition"
+            :hold-keyboard="holdKeyboard"
+            :cursor-spacing="cursorSpacing"
+            :style="inputStyle"
+            @input="onInput"
+            @focus="onFocus"
+            @blur="onBlur"
+            @confirm="confirm"
+            @keyboardheightchange="emit('keyboardheightchange', $event)"
+            @compositionstart="composing = true"
+            @compositionend="onCompositionEnd"
+        />
+        <snake-icon v-if="showClear" name="close-circle-fill" class="snake-input__action" @click="clear" />
+        <snake-icon
+            v-if="showPassword && (type === 'password' || password)"
+            :name="passwordVisible ? 'eye' : 'eye-off'"
+            class="snake-input__action"
+            @click="passwordVisible = !passwordVisible"
+        />
+        <slot name="suffix"><snake-icon v-if="suffixIcon" :name="suffixIcon" class="snake-input__icon" /></slot>
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component Input
@@ -129,47 +170,6 @@ function confirm(event: any) {
     emit('confirm', String(event.detail?.value ?? innerValue.value), event);
 }
 </script>
-
-<template>
-    <view class="snake-input" :class="[customClass, rootClass]" :style="rootStyle" @click="emit('click', $event)">
-        <slot name="prefix"><snake-icon v-if="prefixIcon" :name="prefixIcon" class="snake-input__icon" /></slot>
-        <input
-            class="snake-input__native"
-            :value="innerValue"
-            :type="type === 'password' ? 'text' : type"
-            :password="actualPassword"
-            :placeholder="placeholder"
-            :placeholder-style="`color:${placeholderColor};${placeholderStyle}`"
-            :maxlength="maxlength"
-            :disabled="disabled || readonly"
-            :focus="focus"
-            :cursor="cursor"
-            :selection-start="selectionStart"
-            :selection-end="selectionEnd"
-            :confirm-type="confirmType as any"
-            :confirm-hold="confirmHold"
-            :adjust-position="adjustPosition"
-            :hold-keyboard="holdKeyboard"
-            :cursor-spacing="cursorSpacing"
-            :style="inputStyle"
-            @input="onInput"
-            @focus="onFocus"
-            @blur="onBlur"
-            @confirm="confirm"
-            @keyboardheightchange="emit('keyboardheightchange', $event)"
-            @compositionstart="composing = true"
-            @compositionend="onCompositionEnd"
-        />
-        <snake-icon v-if="showClear" name="close-circle-fill" class="snake-input__action" @click="clear" />
-        <snake-icon
-            v-if="showPassword && (type === 'password' || password)"
-            :name="passwordVisible ? 'eye' : 'eye-off'"
-            class="snake-input__action"
-            @click="passwordVisible = !passwordVisible"
-        />
-        <slot name="suffix"><snake-icon v-if="suffixIcon" :name="suffixIcon" class="snake-input__icon" /></slot>
-    </view>
-</template>
 
 <style scoped>
 .snake-input {

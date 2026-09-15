@@ -1,3 +1,11 @@
+<template>
+    <DemoPage title="路由跳转" desc="Promise 化的 uni-app 导航">
+        <view class="path">/pages/componentsA/button/index?id=7</view>
+        <snake-button type="primary" @click="openButton">打开 Button 示例</snake-button>
+        <text class="log">{{ log }}</text>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { ref } from 'vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
@@ -13,14 +21,6 @@ async function openButton() {
     }
 }
 </script>
-
-<template>
-    <DemoPage title="路由跳转" desc="Promise 化的 uni-app 导航">
-        <view class="path">/pages/componentsA/button/index?id=7</view>
-        <snake-button type="primary" @click="openButton">打开 Button 示例</snake-button>
-        <text class="log">{{ log }}</text>
-    </DemoPage>
-</template>
 
 <style scoped>
 .path {

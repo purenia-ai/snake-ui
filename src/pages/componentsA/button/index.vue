@@ -1,3 +1,53 @@
+<template>
+    <DemoPage :title="title" :desc="text('按钮用于触发即时操作，支持主题、朴素、禁用和加载状态。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-button-showcase">
+                <view class="demo-button-section">
+                    <text class="demo-button-section__title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
+                    <snake-button
+                        :type="String(state.type)"
+                        :size="state.buttonSize as any"
+                        :shape="state.buttonShape as any"
+                        :plain="Boolean(state.plain)"
+                        :disabled="Boolean(state.disabled)"
+                        :loading="Boolean(state.loading)"
+                        :ripple="Boolean(state.ripple)"
+                    >
+                        Snake Button
+                    </snake-button>
+                </view>
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+        <DemoSection :title="isEnglish ? 'Current code' : '当前代码'">
+            <view class="demo-button-code">
+                <text selectable>{{ currentCode }}</text>
+            </view>
+            <view class="demo-button-actions">
+                <button type="button" class="demo-button-action demo-button-action--primary" @tap="copyCode">
+                    {{
+                        copyState === 'success'
+                            ? isEnglish
+                                ? 'Copied'
+                                : '已复制'
+                            : isEnglish
+                              ? 'Copy code'
+                              : '复制代码'
+                    }}
+                </button>
+                <button type="button" class="demo-button-action" @tap="resetState">
+                    {{ isEnglish ? 'Reset' : '恢复默认' }}
+                </button>
+            </view>
+            <text v-if="copyState === 'error'" class="demo-button-feedback" aria-live="polite">
+                {{ isEnglish ? 'Copy failed. Select the code manually.' : '复制失败，请手动选择代码。' }}
+            </text>
+        </DemoSection>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -98,56 +148,6 @@ function copyCode() {
     });
 }
 </script>
-
-<template>
-    <DemoPage :title="title" :desc="text('按钮用于触发即时操作，支持主题、朴素、禁用和加载状态。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-button-showcase">
-                <view class="demo-button-section">
-                    <text class="demo-button-section__title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
-                    <snake-button
-                        :type="String(state.type)"
-                        :size="state.buttonSize as any"
-                        :shape="state.buttonShape as any"
-                        :plain="Boolean(state.plain)"
-                        :disabled="Boolean(state.disabled)"
-                        :loading="Boolean(state.loading)"
-                        :ripple="Boolean(state.ripple)"
-                    >
-                        Snake Button
-                    </snake-button>
-                </view>
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-        <DemoSection :title="isEnglish ? 'Current code' : '当前代码'">
-            <view class="demo-button-code">
-                <text selectable>{{ currentCode }}</text>
-            </view>
-            <view class="demo-button-actions">
-                <button type="button" class="demo-button-action demo-button-action--primary" @tap="copyCode">
-                    {{
-                        copyState === 'success'
-                            ? isEnglish
-                                ? 'Copied'
-                                : '已复制'
-                            : isEnglish
-                              ? 'Copy code'
-                              : '复制代码'
-                    }}
-                </button>
-                <button type="button" class="demo-button-action" @tap="resetState">
-                    {{ isEnglish ? 'Reset' : '恢复默认' }}
-                </button>
-            </view>
-            <text v-if="copyState === 'error'" class="demo-button-feedback" aria-live="polite">
-                {{ isEnglish ? 'Copy failed. Select the code manually.' : '复制失败，请手动选择代码。' }}
-            </text>
-        </DemoSection>
-    </DemoPage>
-</template>
 
 <style scoped>
 .demo-button-showcase {

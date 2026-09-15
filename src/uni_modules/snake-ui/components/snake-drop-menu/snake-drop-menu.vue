@@ -1,3 +1,13 @@
+<template>
+    <view
+        class="snake-drop-menu"
+        :class="[customClass, { 'snake-drop-menu--border': borderBottom }]"
+        :style="[{ height: addUnit(height, 'px'), zIndex: props.zIndex }, customStyle]"
+    >
+        <slot />
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component DropMenu
@@ -100,16 +110,6 @@ provide(dropMenuKey, {
 onMounted(() => void updateDropMenuRect());
 defineExpose<DropMenuExpose>({ updateDropMenuRect, colseAll, close, open, highlight });
 </script>
-
-<template>
-    <view
-        class="snake-drop-menu"
-        :class="[customClass, { 'snake-drop-menu--border': borderBottom }]"
-        :style="[{ height: addUnit(height, 'px'), zIndex: props.zIndex }, customStyle]"
-    >
-        <slot />
-    </view>
-</template>
 <style scoped>
 .snake-drop-menu {
     position: relative;

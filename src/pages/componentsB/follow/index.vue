@@ -1,3 +1,21 @@
+<template>
+    <DemoPage :title="title" :desc="text('用于引导用户关注公众号或品牌账号。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view
+                :class="[
+                    'demo-follow',
+                    'demo-follow-showcase',
+                    { 'demo-follow--strong': state.followScene === 'strong' }
+                ]"
+            >
+                <snake-follow />
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
 <script setup lang="ts">
 import { computed, reactive } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -35,24 +53,6 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 </script>
-<template>
-    <DemoPage :title="title" :desc="text('用于引导用户关注公众号或品牌账号。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view
-                :class="[
-                    'demo-follow',
-                    'demo-follow-showcase',
-                    { 'demo-follow--strong': state.followScene === 'strong' }
-                ]"
-            >
-                <snake-follow />
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 <style scoped>
 .demo-follow {
     padding: 24rpx;

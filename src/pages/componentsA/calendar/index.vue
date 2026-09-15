@@ -1,3 +1,40 @@
+<template>
+    <DemoPage :title="title" :desc="text('单个或范围日期选择，支持农历与节日。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-stack demo-calendar-showcase">
+                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
+                <snake-button type="primary" :custom-style="{ width: '240rpx' }" @click="calendarShow = true">
+                    {{ text('打开日历') }}
+                </snake-button>
+                <text class="demo-variant-sub">{{ text('选择结果') }}：{{ lastResult }}</text>
+                <snake-calendar
+                    v-model="calendarShow"
+                    :mode="String(state.cMode)"
+                    :show-lunar="Boolean(state.cShowLunar)"
+                    :min-date="String(state.cMinDate)"
+                    :closeable="Boolean(state.cCloseable)"
+                    :mask-close-able="Boolean(state.cMaskClose)"
+                    :default-select-today="Boolean(state.cDefaultToday)"
+                    @change="onCalendarChange"
+                    @close="calendarShow = false"
+                />
+                <text class="demo-variant-title">{{ text('页面内联日历') }}</text>
+                <snake-calendar
+                    is-page
+                    :show-lunar="true"
+                    :mode="'range'"
+                    :default-select-today="false"
+                    :closeable="false"
+                    @change="onCalendarChange"
+                />
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -49,43 +86,6 @@ function onCalendarChange(value: { result?: string; startDate?: string; endDate?
     lastResult.value = value.result || `${value.startDate || ''} ~ ${value.endDate || ''}`;
 }
 </script>
-
-<template>
-    <DemoPage :title="title" :desc="text('单个或范围日期选择，支持农历与节日。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-stack demo-calendar-showcase">
-                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
-                <snake-button type="primary" :custom-style="{ width: '240rpx' }" @click="calendarShow = true">
-                    {{ text('打开日历') }}
-                </snake-button>
-                <text class="demo-variant-sub">{{ text('选择结果') }}：{{ lastResult }}</text>
-                <snake-calendar
-                    v-model="calendarShow"
-                    :mode="String(state.cMode)"
-                    :show-lunar="Boolean(state.cShowLunar)"
-                    :min-date="String(state.cMinDate)"
-                    :closeable="Boolean(state.cCloseable)"
-                    :mask-close-able="Boolean(state.cMaskClose)"
-                    :default-select-today="Boolean(state.cDefaultToday)"
-                    @change="onCalendarChange"
-                    @close="calendarShow = false"
-                />
-                <text class="demo-variant-title">{{ text('页面内联日历') }}</text>
-                <snake-calendar
-                    is-page
-                    :show-lunar="true"
-                    :mode="'range'"
-                    :default-select-today="false"
-                    :closeable="false"
-                    @change="onCalendarChange"
-                />
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 
 <style scoped>
 .demo-stack {

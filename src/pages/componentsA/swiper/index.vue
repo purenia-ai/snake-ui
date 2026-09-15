@@ -1,3 +1,25 @@
+<template>
+    <DemoPage :title="title" :desc="text('用于图片或内容轮播，支持自动播放、标题和指示器。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-swiper-showcase">
+                <snake-swiper
+                    :list="slides"
+                    :height="Number(state.swiperHeight)"
+                    :radius="Number(state.radius)"
+                    :indicator="Boolean(state.swiperIndicator)"
+                    :indicator-mode="String(state.swiperMode)"
+                    :effect3d="Boolean(state.swiperEffect3d)"
+                    :show-title="Boolean(state.swiperTitle)"
+                    :autoplay="Boolean(state.swiperAutoplay)"
+                />
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { computed, reactive } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -59,25 +81,3 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 </script>
-
-<template>
-    <DemoPage :title="title" :desc="text('用于图片或内容轮播，支持自动播放、标题和指示器。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-swiper-showcase">
-                <snake-swiper
-                    :list="slides"
-                    :height="Number(state.swiperHeight)"
-                    :radius="Number(state.radius)"
-                    :indicator="Boolean(state.swiperIndicator)"
-                    :indicator-mode="String(state.swiperMode)"
-                    :effect3d="Boolean(state.swiperEffect3d)"
-                    :show-title="Boolean(state.swiperTitle)"
-                    :autoplay="Boolean(state.swiperAutoplay)"
-                />
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>

@@ -1,3 +1,62 @@
+<template>
+    <view v-if="show" class="snake-tabbar-spacer" :style="spacerStyle" />
+    <view
+        v-if="show"
+        :class="[
+            'snake-tabbar',
+            customClass,
+            {
+                'snake-tabbar--fixed': fixed,
+                'snake-tabbar--safe': safeAreaInsetBottom,
+                'snake-tabbar--border': borderTop
+            }
+        ]"
+        :style="rootStyle"
+        role="navigation"
+        @touchmove.stop.prevent="() => {}"
+    >
+        <view class="snake-tabbar__inner" :style="{ height: addUnit(height, 'rpx') }">
+            <view
+                v-for="(item, index) in tabItems"
+                :key="String(itemKey(item, index))"
+                :class="[
+                    'snake-tabbar__item',
+                    {
+                        'snake-tabbar__item--active': isActive(item, index),
+                        'snake-tabbar__item--disabled': item.disabled,
+                        'snake-tabbar__item--mid': midButton && item.midButton
+                    }
+                ]"
+                hover-class="snake-tabbar__item--hover"
+                :style="itemStyle(item)"
+                :aria-label="item.text || ''"
+                :aria-current="isActive(item, index) ? 'page' : undefined"
+                @tap.stop="clickItem(item, index)"
+            >
+                <view class="snake-tabbar__icon-wrap" :style="{ gap: addUnit(item.gap ?? gap, 'rpx') }">
+                    <SnakeIcon
+                        v-if="iconName(item, index)"
+                        :name="iconName(item, index)"
+                        :size="itemIconSize(item)"
+                        :bold="isActive(item, index)"
+                        :color="isActive(item, index) ? activeColor : inactiveColor"
+                        :custom-prefix="iconPrefix(item)"
+                    />
+                    <text
+                        v-if="item.badge !== undefined || item.count !== undefined || item.isDot"
+                        class="snake-tabbar__badge"
+                    >
+                        {{ item.isDot ? '' : (item.badge ?? item.count) }}
+                    </text>
+                </view>
+                <text class="snake-tabbar__label" :style="{ fontSize: addUnit(itemTextSize(item), 'rpx') }">
+                    {{ item.text }}
+                </text>
+            </view>
+        </view>
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component Tabbar
@@ -153,65 +212,6 @@ async function clickItem(item: TabbarItem, index: number) {
     else emit('update:modelValue', index);
 }
 </script>
-
-<template>
-    <view v-if="show" class="snake-tabbar-spacer" :style="spacerStyle" />
-    <view
-        v-if="show"
-        :class="[
-            'snake-tabbar',
-            customClass,
-            {
-                'snake-tabbar--fixed': fixed,
-                'snake-tabbar--safe': safeAreaInsetBottom,
-                'snake-tabbar--border': borderTop
-            }
-        ]"
-        :style="rootStyle"
-        role="navigation"
-        @touchmove.stop.prevent="() => {}"
-    >
-        <view class="snake-tabbar__inner" :style="{ height: addUnit(height, 'rpx') }">
-            <view
-                v-for="(item, index) in tabItems"
-                :key="String(itemKey(item, index))"
-                :class="[
-                    'snake-tabbar__item',
-                    {
-                        'snake-tabbar__item--active': isActive(item, index),
-                        'snake-tabbar__item--disabled': item.disabled,
-                        'snake-tabbar__item--mid': midButton && item.midButton
-                    }
-                ]"
-                hover-class="snake-tabbar__item--hover"
-                :style="itemStyle(item)"
-                :aria-label="item.text || ''"
-                :aria-current="isActive(item, index) ? 'page' : undefined"
-                @tap.stop="clickItem(item, index)"
-            >
-                <view class="snake-tabbar__icon-wrap" :style="{ gap: addUnit(item.gap ?? gap, 'rpx') }">
-                    <SnakeIcon
-                        v-if="iconName(item, index)"
-                        :name="iconName(item, index)"
-                        :size="itemIconSize(item)"
-                        :bold="isActive(item, index)"
-                        :color="isActive(item, index) ? activeColor : inactiveColor"
-                        :custom-prefix="iconPrefix(item)"
-                    />
-                    <text
-                        v-if="item.badge !== undefined || item.count !== undefined || item.isDot"
-                        class="snake-tabbar__badge"
-                    >
-                        {{ item.isDot ? '' : (item.badge ?? item.count) }}
-                    </text>
-                </view>
-                <text class="snake-tabbar__label" :style="{ fontSize: addUnit(itemTextSize(item), 'rpx') }">
-                    {{ item.text }}
-                </text>
-            </view>
-        </view>
-    </view>
-</template>
 
 <style lang="scss" scoped>
 .snake-tabbar-spacer {

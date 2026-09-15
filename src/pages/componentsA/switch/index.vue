@@ -1,3 +1,21 @@
+<template>
+    <DemoPage :title="title" :desc="text('支持加载、禁用和自定义值的开关。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-control-stack demo-switch-showcase">
+                <text class="demo-variant-title">{{ isEnglish ? 'Switch states' : '开关状态' }}</text>
+                <snake-switch
+                    v-model="value"
+                    :loading="Boolean(state.switchLoading)"
+                    :disabled="Boolean(state.switchDisabled)"
+                />
+                <text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ value }}</text>
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -25,24 +43,6 @@ function updateValue(key: string, nextValue: DemoValue) {
     state[key] = nextValue;
 }
 </script>
-<template>
-    <DemoPage :title="title" :desc="text('支持加载、禁用和自定义值的开关。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-control-stack demo-switch-showcase">
-                <text class="demo-variant-title">{{ isEnglish ? 'Switch states' : '开关状态' }}</text>
-                <snake-switch
-                    v-model="value"
-                    :loading="Boolean(state.switchLoading)"
-                    :disabled="Boolean(state.switchDisabled)"
-                />
-                <text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ value }}</text>
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 <style scoped>
 .demo-control-stack {
     display: flex;

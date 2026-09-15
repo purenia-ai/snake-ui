@@ -1,55 +1,3 @@
-<script setup lang="ts">
-import { computed, ref } from 'vue';
-import DemoPage from '../../components/demo-page/demo-page.vue';
-import { demoText, useDemoLocale } from '../../common/demo-i18n';
-import rawGroups from './components.config';
-
-defineOptions({ name: 'ExampleComponents' });
-import { currentTheme, isDarkMode, setTheme, themes, toggleDarkMode } from '../../uni_modules/snake-ui';
-
-const groups = ref(rawGroups);
-const searchText = ref('');
-const activeGroup = ref('all');
-const groupFilters = computed(() => [
-    { key: 'all', label: '全部', count: groups.value.reduce((sum, group) => sum + group.list.length, 0) },
-    ...groups.value.map(group => ({ key: group.groupNameEn, label: group.groupName, count: group.list.length }))
-]);
-
-const filteredGroups = computed(() => {
-    const keyword = searchText.value.trim().toLowerCase();
-    return groups.value
-        .filter(group => activeGroup.value === 'all' || group.groupNameEn === activeGroup.value)
-        .map(group => ({
-            ...group,
-            list: group.list.filter(item => {
-                const searchSource = [
-                    item.title,
-                    item.titleEn,
-                    item.desc,
-                    item.path,
-                    group.groupName,
-                    group.groupNameEn,
-                    item.cms ? 'cms 内容管理' : ''
-                ]
-                    .join(' ')
-                    .toLowerCase();
-                return searchSource.includes(keyword);
-            })
-        }))
-        .filter(group => group.list.length > 0);
-});
-
-const resultCount = computed(() => filteredGroups.value.reduce((sum, group) => sum + group.list.length, 0));
-const { localeName, nextLocaleLabel, switchLocale, text } = useDemoLocale();
-const isEnglish = computed(() => localeName.value === 'en-US');
-const themeLabel = computed(() => text(isDarkMode() ? '浅色' : '深色'));
-const chineseTitle = (title: string, titleEn: string) => title.replace(titleEn, '').trim();
-const openComponent = (path: string) => uni.navigateTo({ url: path });
-const clearSearch = () => {
-    searchText.value = '';
-};
-</script>
-
 <template>
     <DemoPage
         tabbar
@@ -154,6 +102,58 @@ const clearSearch = () => {
         </view>
     </DemoPage>
 </template>
+
+<script setup lang="ts">
+import { computed, ref } from 'vue';
+import DemoPage from '../../components/demo-page/demo-page.vue';
+import { demoText, useDemoLocale } from '../../common/demo-i18n';
+import rawGroups from './components.config';
+
+defineOptions({ name: 'ExampleComponents' });
+import { currentTheme, isDarkMode, setTheme, themes, toggleDarkMode } from '../../uni_modules/snake-ui';
+
+const groups = ref(rawGroups);
+const searchText = ref('');
+const activeGroup = ref('all');
+const groupFilters = computed(() => [
+    { key: 'all', label: '全部', count: groups.value.reduce((sum, group) => sum + group.list.length, 0) },
+    ...groups.value.map(group => ({ key: group.groupNameEn, label: group.groupName, count: group.list.length }))
+]);
+
+const filteredGroups = computed(() => {
+    const keyword = searchText.value.trim().toLowerCase();
+    return groups.value
+        .filter(group => activeGroup.value === 'all' || group.groupNameEn === activeGroup.value)
+        .map(group => ({
+            ...group,
+            list: group.list.filter(item => {
+                const searchSource = [
+                    item.title,
+                    item.titleEn,
+                    item.desc,
+                    item.path,
+                    group.groupName,
+                    group.groupNameEn,
+                    item.cms ? 'cms 内容管理' : ''
+                ]
+                    .join(' ')
+                    .toLowerCase();
+                return searchSource.includes(keyword);
+            })
+        }))
+        .filter(group => group.list.length > 0);
+});
+
+const resultCount = computed(() => filteredGroups.value.reduce((sum, group) => sum + group.list.length, 0));
+const { localeName, nextLocaleLabel, switchLocale, text } = useDemoLocale();
+const isEnglish = computed(() => localeName.value === 'en-US');
+const themeLabel = computed(() => text(isDarkMode() ? '浅色' : '深色'));
+const chineseTitle = (title: string, titleEn: string) => title.replace(titleEn, '').trim();
+const openComponent = (path: string) => uni.navigateTo({ url: path });
+const clearSearch = () => {
+    searchText.value = '';
+};
+</script>
 
 <style lang="scss" scoped>
 @import '../../common/demo.scss';

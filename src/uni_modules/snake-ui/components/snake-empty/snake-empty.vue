@@ -1,3 +1,16 @@
+<template>
+    <view v-if="show" class="snake-empty" :class="customClass" :style="rootStyle">
+        <slot name="icon">
+            <image v-if="isImage" class="snake-empty__image" :src="iconName" mode="aspectFit" :style="imageStyle" />
+            <snake-icon v-else :name="iconName" :color="iconColor" :size="iconSize ?? 'inherit'" />
+        </slot>
+        <slot>
+            <text class="snake-empty__text" :style="textStyle">{{ displayText }}</text>
+        </slot>
+        <view v-if="$slots.bottom" class="snake-empty__bottom"><slot name="bottom" /></view>
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component Empty
@@ -65,19 +78,6 @@ const rootStyle = computed(() => [{ marginTop: addUnit(props.marginTop, 'rpx') }
 const imageStyle = computed(() => ({ width: addUnit(props.iconSize, 'rpx'), height: addUnit(props.iconSize, 'rpx') }));
 const textStyle = computed(() => ({ color: props.color || props.textColor, fontSize: addUnit(props.fontSize, 'rpx') }));
 </script>
-
-<template>
-    <view v-if="show" class="snake-empty" :class="customClass" :style="rootStyle">
-        <slot name="icon">
-            <image v-if="isImage" class="snake-empty__image" :src="iconName" mode="aspectFit" :style="imageStyle" />
-            <snake-icon v-else :name="iconName" :color="iconColor" :size="iconSize ?? 'inherit'" />
-        </slot>
-        <slot>
-            <text class="snake-empty__text" :style="textStyle">{{ displayText }}</text>
-        </slot>
-        <view v-if="$slots.bottom" class="snake-empty__bottom"><slot name="bottom" /></view>
-    </view>
-</template>
 
 <style scoped>
 .snake-empty {

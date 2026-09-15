@@ -1,3 +1,22 @@
+<template>
+    <DemoPage :title="title" :desc="text('支持字数统计和自适应高度的多行文本输入。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-control-stack demo-textarea-showcase">
+                <text class="demo-variant-title">{{ isEnglish ? 'Multiline input' : '多行输入' }}</text>
+                <snake-textarea
+                    v-model="value"
+                    :count="Boolean(state.textareaCount)"
+                    :auto-height="Boolean(state.textareaAuto)"
+                    :maxlength="80"
+                />
+                <text>{{ isEnglish ? `${value.length} characters` : `已输入 ${value.length} 个字` }}</text>
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -25,25 +44,6 @@ function updateValue(key: string, nextValue: DemoValue) {
     state[key] = nextValue;
 }
 </script>
-<template>
-    <DemoPage :title="title" :desc="text('支持字数统计和自适应高度的多行文本输入。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-control-stack demo-textarea-showcase">
-                <text class="demo-variant-title">{{ isEnglish ? 'Multiline input' : '多行输入' }}</text>
-                <snake-textarea
-                    v-model="value"
-                    :count="Boolean(state.textareaCount)"
-                    :auto-height="Boolean(state.textareaAuto)"
-                    :maxlength="80"
-                />
-                <text>{{ isEnglish ? `${value.length} characters` : `已输入 ${value.length} 个字` }}</text>
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 <style scoped>
 .demo-control-stack {
     display: flex;

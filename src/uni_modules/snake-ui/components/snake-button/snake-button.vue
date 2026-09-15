@@ -1,3 +1,62 @@
+<template>
+    <button
+        id="snake-wave-btn"
+        class="snake-button snake-line-1 snake-fix-ios-appearance"
+        data-eventsync="true"
+        :class="[
+            `snake-size-${size}`,
+            plain ? `snake-button--${type}--plain` : '',
+            loading ? 'snake-loading' : '',
+            shape === 'circle' ? 'snake-round-circle' : '',
+            hairLine ? hairLineClass : 'snake-button--bold-border',
+            `snake-button--${type}`,
+            disabled ? `snake-button--${type}--disabled` : '',
+            customClass
+        ]"
+        :hover-start-time="Number(hoverStartTime)"
+        :hover-stay-time="Number(hoverStayTime)"
+        :disabled="disabled"
+        :form-type="formType || undefined"
+        :open-type="disabled || loading ? undefined : openType || undefined"
+        :app-parameter="appParameter"
+        :hover-stop-propagation="hoverStopPropagation"
+        :send-message-title="sendMessageTitle"
+        :send-message-path="sendMessagePath"
+        :lang="lang"
+        :data-name="dataName"
+        :session-from="sessionFrom"
+        :send-message-img="sendMessageImg"
+        :show-message-card="showMessageCard"
+        :style="rootStyle"
+        :hover-class="hoverClassName"
+        :loading="loading"
+        @tap.stop="click"
+        @getauthorize="getAuthorize"
+        @getuserinfo="forward('getuserinfo', $event)"
+        @contact="forward('contact', $event)"
+        @getphonenumber="forward('getphonenumber', $event)"
+        @error="forward('error', $event)"
+        @launchapp="forward('launchapp', $event)"
+        @opensetting="forward('opensetting', $event)"
+        @chooseavatar="forward('chooseavatar', $event)"
+        @agreeprivacyauthorization="forward('agreeprivacyauthorization', $event)"
+    >
+        <slot>{{ text }}</slot>
+        <view
+            v-if="ripple"
+            class="snake-wave-ripple"
+            :class="{ 'snake-wave-active': waveActive }"
+            :style="{
+                top: `${rippleTop}px`,
+                left: `${rippleLeft}px`,
+                width: `${targetWidth}px`,
+                height: `${targetWidth}px`,
+                backgroundColor: rippleBgColor || 'rgba(0, 0, 0, 0.15)'
+            }"
+        />
+    </button>
+</template>
+
 <script setup lang="ts">
 /**
  * @component Button
@@ -74,65 +133,6 @@ function getAuthorize(event: unknown) {
     else if (props.scope === 'userInfo') emit('getuserinfo', event);
 }
 </script>
-
-<template>
-    <button
-        id="snake-wave-btn"
-        class="snake-button snake-line-1 snake-fix-ios-appearance"
-        data-eventsync="true"
-        :class="[
-            `snake-size-${size}`,
-            plain ? `snake-button--${type}--plain` : '',
-            loading ? 'snake-loading' : '',
-            shape === 'circle' ? 'snake-round-circle' : '',
-            hairLine ? hairLineClass : 'snake-button--bold-border',
-            `snake-button--${type}`,
-            disabled ? `snake-button--${type}--disabled` : '',
-            customClass
-        ]"
-        :hover-start-time="Number(hoverStartTime)"
-        :hover-stay-time="Number(hoverStayTime)"
-        :disabled="disabled"
-        :form-type="formType || undefined"
-        :open-type="disabled || loading ? undefined : openType || undefined"
-        :app-parameter="appParameter"
-        :hover-stop-propagation="hoverStopPropagation"
-        :send-message-title="sendMessageTitle"
-        :send-message-path="sendMessagePath"
-        :lang="lang"
-        :data-name="dataName"
-        :session-from="sessionFrom"
-        :send-message-img="sendMessageImg"
-        :show-message-card="showMessageCard"
-        :style="rootStyle"
-        :hover-class="hoverClassName"
-        :loading="loading"
-        @tap.stop="click"
-        @getauthorize="getAuthorize"
-        @getuserinfo="forward('getuserinfo', $event)"
-        @contact="forward('contact', $event)"
-        @getphonenumber="forward('getphonenumber', $event)"
-        @error="forward('error', $event)"
-        @launchapp="forward('launchapp', $event)"
-        @opensetting="forward('opensetting', $event)"
-        @chooseavatar="forward('chooseavatar', $event)"
-        @agreeprivacyauthorization="forward('agreeprivacyauthorization', $event)"
-    >
-        <slot>{{ text }}</slot>
-        <view
-            v-if="ripple"
-            class="snake-wave-ripple"
-            :class="{ 'snake-wave-active': waveActive }"
-            :style="{
-                top: `${rippleTop}px`,
-                left: `${rippleLeft}px`,
-                width: `${targetWidth}px`,
-                height: `${targetWidth}px`,
-                backgroundColor: rippleBgColor || 'rgba(0, 0, 0, 0.15)'
-            }"
-        />
-    </button>
-</template>
 
 <style scoped>
 .snake-button::after {

@@ -1,3 +1,13 @@
+<template>
+    <DemoPage :title="title" :desc="text('用于焦点广告轮播，支持间距、圆角和播放间隔。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <snake-picture-ads class="demo-picture-ads-showcase" :datas="data" />
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
 <script setup lang="ts">
 import { computed, reactive } from 'vue';
 import { pictureAdsData } from '../../../common/fixtures';
@@ -38,13 +48,3 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 </script>
-<template>
-    <DemoPage :title="title" :desc="text('用于焦点广告轮播，支持间距、圆角和播放间隔。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <snake-picture-ads class="demo-picture-ads-showcase" :datas="data" />
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>

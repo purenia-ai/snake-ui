@@ -1,3 +1,41 @@
+<template>
+    <DemoPage :title="title" :desc="text('组合单元格条目与分组容器，用于设置和个人中心等列表场景。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-stack demo-cell-showcase">
+                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
+                <snake-cell-group :title="String(state.cgTitle)" :border="Boolean(state.cgBorder)">
+                    <snake-cell-item
+                        :icon="String(state.ciIcon)"
+                        :title="String(state.ciTitle)"
+                        :label="String(state.ciLabel)"
+                        :arrow="Boolean(state.ciArrow)"
+                        :arrow-direction="String(state.ciArrowDirection)"
+                        :required="Boolean(state.ciRequired)"
+                        :center="Boolean(state.ciCenter)"
+                        value="内容"
+                        index="live"
+                        @click="cellClicked"
+                    />
+                </snake-cell-group>
+                <text class="demo-variant-title">{{ isEnglish ? 'Grouped cells' : '分组示例' }}</text>
+                <snake-cell-group :title="isEnglish ? 'Personal center' : '个人中心'">
+                    <snake-cell-item icon="phone" title="手机号码" value="138****8000" />
+                    <snake-cell-item title="地址管理" value="收货地址" index="1" @click="cellClicked" />
+                    <snake-cell-item title="必填示例" required :arrow="false" index="2" @click="cellClicked">
+                        <template #right-icon>
+                            <view class="demo-cell-tag">{{ isEnglish ? 'Custom' : '自定义' }}</view>
+                        </template>
+                    </snake-cell-item>
+                </snake-cell-group>
+                <text class="demo-variant-sub">{{ text('点击条目') }}：{{ clickedIndex || '—' }}</text>
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -62,44 +100,6 @@ function cellClicked(index: string | number) {
     clickedIndex.value = index;
 }
 </script>
-
-<template>
-    <DemoPage :title="title" :desc="text('组合单元格条目与分组容器，用于设置和个人中心等列表场景。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-stack demo-cell-showcase">
-                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
-                <snake-cell-group :title="String(state.cgTitle)" :border="Boolean(state.cgBorder)">
-                    <snake-cell-item
-                        :icon="String(state.ciIcon)"
-                        :title="String(state.ciTitle)"
-                        :label="String(state.ciLabel)"
-                        :arrow="Boolean(state.ciArrow)"
-                        :arrow-direction="String(state.ciArrowDirection)"
-                        :required="Boolean(state.ciRequired)"
-                        :center="Boolean(state.ciCenter)"
-                        value="内容"
-                        index="live"
-                        @click="cellClicked"
-                    />
-                </snake-cell-group>
-                <text class="demo-variant-title">{{ isEnglish ? 'Grouped cells' : '分组示例' }}</text>
-                <snake-cell-group :title="isEnglish ? 'Personal center' : '个人中心'">
-                    <snake-cell-item icon="phone" title="手机号码" value="138****8000" />
-                    <snake-cell-item title="地址管理" value="收货地址" index="1" @click="cellClicked" />
-                    <snake-cell-item title="必填示例" required :arrow="false" index="2" @click="cellClicked">
-                        <template #right-icon>
-                            <view class="demo-cell-tag">{{ isEnglish ? 'Custom' : '自定义' }}</view>
-                        </template>
-                    </snake-cell-item>
-                </snake-cell-group>
-                <text class="demo-variant-sub">{{ text('点击条目') }}：{{ clickedIndex || '—' }}</text>
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 
 <style scoped>
 .demo-stack {

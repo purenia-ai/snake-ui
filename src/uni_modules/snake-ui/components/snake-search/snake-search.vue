@@ -1,3 +1,56 @@
+<template>
+    <view class="snake-search" :class="customClass" :style="[{ margin: margin }, customStyle]" @click="clickHandler">
+        <view
+            class="snake-search__content"
+            :style="{
+                backgroundColor: bgColor,
+                borderRadius: shape === 'round' ? '100rpx' : '10rpx',
+                border: borderStyle,
+                height: `${height}rpx`
+            }"
+        >
+            <view class="snake-search__icon">
+                <snake-icon :size="30" :name="searchIcon" :color="searchIconColor || color" />
+            </view>
+            <input
+                confirm-type="search"
+                :value="modelValue"
+                :focus="focus"
+                :maxlength="Number(maxlength)"
+                :adjust-position="adjustPosition"
+                :placeholder="placeholderText"
+                :placeholder-style="`color: ${placeholderColor}`"
+                class="snake-search__input"
+                type="text"
+                :style="[
+                    {
+                        textAlign: inputAlign,
+                        color: color,
+                        backgroundColor: bgColor,
+                        pointerEvents: disabled ? 'none' : 'auto'
+                    },
+                    inputStyle
+                ]"
+                @blur="blur"
+                @confirm="search"
+                @input="inputChange"
+                @focus="getFocus"
+            />
+            <view v-if="keyword && clearabled && focused" class="snake-search__clear" @click="clear">
+                <snake-icon name="close-circle-fill" size="34" color="var(--snake-color-text-light, #c0c4cc)" />
+            </view>
+        </view>
+        <view
+            :style="[actionStyle]"
+            class="snake-search__action"
+            :class="{ 'snake-search__action--active': showActionBtn || show }"
+            @click.stop.prevent="custom"
+        >
+            {{ actionTextValue }}
+        </view>
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component Search
@@ -101,59 +154,6 @@ function clickHandler() {
     if (props.disabled) emit('click');
 }
 </script>
-
-<template>
-    <view class="snake-search" :class="customClass" :style="[{ margin: margin }, customStyle]" @click="clickHandler">
-        <view
-            class="snake-search__content"
-            :style="{
-                backgroundColor: bgColor,
-                borderRadius: shape === 'round' ? '100rpx' : '10rpx',
-                border: borderStyle,
-                height: `${height}rpx`
-            }"
-        >
-            <view class="snake-search__icon">
-                <snake-icon :size="30" :name="searchIcon" :color="searchIconColor || color" />
-            </view>
-            <input
-                confirm-type="search"
-                :value="modelValue"
-                :focus="focus"
-                :maxlength="Number(maxlength)"
-                :adjust-position="adjustPosition"
-                :placeholder="placeholderText"
-                :placeholder-style="`color: ${placeholderColor}`"
-                class="snake-search__input"
-                type="text"
-                :style="[
-                    {
-                        textAlign: inputAlign,
-                        color: color,
-                        backgroundColor: bgColor,
-                        pointerEvents: disabled ? 'none' : 'auto'
-                    },
-                    inputStyle
-                ]"
-                @blur="blur"
-                @confirm="search"
-                @input="inputChange"
-                @focus="getFocus"
-            />
-            <view v-if="keyword && clearabled && focused" class="snake-search__clear" @click="clear">
-                <snake-icon name="close-circle-fill" size="34" color="var(--snake-color-text-light, #c0c4cc)" />
-            </view>
-        </view>
-        <view
-            :style="[actionStyle]"
-            class="snake-search__action"
-            :class="{ 'snake-search__action--active': showActionBtn || show }"
-            @click.stop.prevent="custom"
-        >
-            {{ actionTextValue }}
-        </view>
-    </view>
-</template>
 
 <style scoped>
 .snake-search {

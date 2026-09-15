@@ -1,3 +1,25 @@
+<template>
+    <view class="snake-tooltip" :class="customClass" :style="customStyle">
+        <view class="snake-tooltip__target" @click.stop="toggle"><slot /></view>
+
+        <snake-overlay v-if="visible" :show="visible" :opacity="0" :z-index="layerZIndex" @click="clickOverlay" />
+
+        <view
+            v-if="visible"
+            class="snake-tooltip__panel"
+            :class="`snake-tooltip__panel--${placement}`"
+            :style="panelStyle"
+            @click.stop
+        >
+            <view v-if="visibleArrow" class="snake-tooltip__arrow" />
+            <view class="snake-tooltip__content" :class="contentClass" :style="contentStyle">
+                <slot name="content">{{ content }}</slot>
+            </view>
+            <view v-if="closeable" class="snake-tooltip__close" @click.stop="close">×</view>
+        </view>
+    </view>
+</template>
+
 <script lang="ts">
 // 同页 Tooltip 共用关闭注册表，避免多个独立组件实例同时展开。
 const tooltipClosers = new Set<() => void>();
@@ -91,28 +113,6 @@ onBeforeUnmount(() => tooltipClosers.delete(close));
 
 defineExpose<TooltipExpose>({ open, close, toggle });
 </script>
-
-<template>
-    <view class="snake-tooltip" :class="customClass" :style="customStyle">
-        <view class="snake-tooltip__target" @click.stop="toggle"><slot /></view>
-
-        <snake-overlay v-if="visible" :show="visible" :opacity="0" :z-index="layerZIndex" @click="clickOverlay" />
-
-        <view
-            v-if="visible"
-            class="snake-tooltip__panel"
-            :class="`snake-tooltip__panel--${placement}`"
-            :style="panelStyle"
-            @click.stop
-        >
-            <view v-if="visibleArrow" class="snake-tooltip__arrow" />
-            <view class="snake-tooltip__content" :class="contentClass" :style="contentStyle">
-                <slot name="content">{{ content }}</slot>
-            </view>
-            <view v-if="closeable" class="snake-tooltip__close" @click.stop="close">×</view>
-        </view>
-    </view>
-</template>
 
 <style scoped lang="scss">
 .snake-tooltip {

@@ -1,3 +1,204 @@
+<template>
+    <snake-popup
+        v-model="popupValue"
+        mode="bottom"
+        :overlay="!isPage"
+        :close-on-click-overlay="maskCloseAble"
+        :safe-area-inset-bottom="safeAreaInsetBottom"
+        :z-index="layerZIndex"
+        :round="borderRadius"
+        :closeable="closeable"
+        :custom-style="popupCustomStyle"
+        @close="onPopupClose"
+    >
+        <view class="snake-calendar" :class="[customClass, { 'snake-calendar--page': isPage }]" :style="[customStyle]">
+            <view v-if="!isPage" class="snake-calendar__header">
+                <view v-if="!slots.tooltip" class="snake-calendar__header__text">{{ toolTipValue }}</view>
+                <slot v-else name="tooltip" />
+            </view>
+            <view class="snake-calendar__action">
+                <view class="snake-calendar__action__icon">
+                    <snake-icon
+                        v-if="changeYear"
+                        name="arrow-left-double"
+                        :color="yearArrowColor"
+                        @click="changeYearHandler(0)"
+                    />
+                </view>
+                <view class="snake-calendar__action__icon">
+                    <snake-icon
+                        v-if="changeMonth"
+                        name="arrow-left"
+                        :color="monthArrowColor"
+                        @click="changeMonthHandler(0)"
+                    />
+                </view>
+                <view class="snake-calendar__action__text">{{ showTitle }}</view>
+                <view class="snake-calendar__action__icon">
+                    <snake-icon
+                        v-if="changeMonth"
+                        name="arrow-right"
+                        :color="monthArrowColor"
+                        @click="changeMonthHandler(1)"
+                    />
+                </view>
+                <view class="snake-calendar__action__icon">
+                    <snake-icon
+                        v-if="changeYear"
+                        name="arrow-right-double"
+                        :color="yearArrowColor"
+                        @click="changeYearHandler(1)"
+                    />
+                </view>
+            </view>
+            <view class="snake-calendar__week-day">
+                <view v-for="(item, index) in weekDayZh" :key="index" class="snake-calendar__week-day__text">
+                    {{ item }}
+                </view>
+            </view>
+            <view class="snake-calendar__content">
+                <!-- 前置空白部分 -->
+                <block v-for="(item, index) in weekdayArr" :key="index">
+                    <view class="snake-calendar__content__item"></view>
+                </block>
+                <view
+                    v-for="(item, index) in daysArr"
+                    :key="index"
+                    class="snake-calendar__content__item"
+                    :class="{
+                        'snake-calendar__content__item--hover': openDisAbled(year, month, index + 1),
+                        'snake-calendar__content--start-date':
+                            (mode === 'range' && startDate === `${year}-${formatNum(month)}-${formatNum(index + 1)}`) ||
+                            mode === 'date',
+                        'snake-calendar__content--end-date':
+                            (mode === 'range' && endDate === `${year}-${formatNum(month)}-${formatNum(index + 1)}`) ||
+                            mode === 'date',
+                        'snake-calendar__content--checked': isCheckedDate(index + 1),
+                        'snake-calendar__content--today-checked': isTodayChecked(index + 1),
+                        'snake-calendar__content--checkin-mode': checkinMode
+                    }"
+                    :style="{
+                        backgroundColor:
+                            !checkinMode && checkedDates.length === 0 && !todayChecked ? getColor(index, 1) : ''
+                    }"
+                    @click="dateClick(index)"
+                >
+                    <view
+                        class="snake-calendar__content__item__inner"
+                        :class="{ 'snake-calendar__content__item__inner--today-checked': isTodayChecked(index + 1) }"
+                        :style="{
+                            color: getCheckinTextColor(index + 1) || getColor(index, 2),
+                            backgroundColor: getCheckinColor(index + 1)
+                        }"
+                    >
+                        <!-- 今日已打卡时显示对勾，否则显示日期 -->
+                        <view v-if="isTodayChecked(index + 1)" class="snake-calendar__content__item__checkmark">
+                            <snake-icon name="checkmark" size="36" :color="checkedColor" />
+                        </view>
+                        <template v-else>
+                            <!-- 自定义日期内容插槽 - 优先级最高 -->
+                            <template v-if="useDateSlot">
+                                <view class="snake-calendar__content__item__day">{{ index + 1 }}</view>
+                                <view
+                                    class="snake-calendar__content__item__lunar"
+                                    :style="{ color: getSlotColor(index + 1) }"
+                                >
+                                    <slot name="date" :date="getDateInfo(index + 1)" />
+                                </view>
+                            </template>
+                            <template v-else>
+                                <!-- 日期数字右上角标记：休/班 -->
+                                <view
+                                    v-if="isHoliday(index + 1)"
+                                    class="snake-calendar__content__item__mark snake-calendar__content__item__mark--holiday"
+                                    :style="{ color: getHolidayWorkdayColor(index + 1, holidayColor) }"
+                                >
+                                    {{ t('holiday') }}
+                                </view>
+                                <view
+                                    v-else-if="isWorkday(index + 1)"
+                                    class="snake-calendar__content__item__mark snake-calendar__content__item__mark--workday"
+                                    :style="{ color: getHolidayWorkdayColor(index + 1, workdayColor) }"
+                                >
+                                    {{ t('workday') }}
+                                </view>
+                                <view class="snake-calendar__content__item__day">{{ index + 1 }}</view>
+                                <!-- 范围选择开始日期显示"开始" -->
+                                <view
+                                    v-if="
+                                        mode === 'range' &&
+                                        startDate === `${year}-${formatNum(month)}-${formatNum(index + 1)}` &&
+                                        startDate !== endDate
+                                    "
+                                    class="snake-calendar__content__item__lunar"
+                                    :style="{ color: activeColor }"
+                                >
+                                    {{ startTextValue }}
+                                </view>
+                                <!-- 范围选择结束日期显示"结束" -->
+                                <view
+                                    v-else-if="
+                                        mode === 'range' &&
+                                        endDate === `${year}-${formatNum(month)}-${formatNum(index + 1)}`
+                                    "
+                                    class="snake-calendar__content__item__lunar"
+                                    :style="{ color: activeColor }"
+                                >
+                                    {{ endTextValue }}
+                                </view>
+                                <!-- 节日名称 -->
+                                <view
+                                    v-else-if="getFestival(index + 1)"
+                                    class="snake-calendar__content__item__lunar snake-calendar__content__item__festival"
+                                    :style="{ color: getHolidayWorkdayColor(index + 1, festivalColor) }"
+                                >
+                                    {{ getFestival(index + 1) }}
+                                </view>
+                                <!-- 农历 -->
+                                <view
+                                    v-else-if="showLunar"
+                                    class="snake-calendar__content__item__lunar"
+                                    :style="{ color: getCheckinLunarColor(index + 1) || getColor(index, 2) }"
+                                >
+                                    {{
+                                        lunarArr[index]?.dayCn === '初一'
+                                            ? lunarArr[index].monthCn
+                                            : (lunarArr[index]?.dayCn ?? '')
+                                    }}
+                                </view>
+                                <!-- 占位元素：当有节日/农历数据时保持高度一致 -->
+                                <view
+                                    v-else-if="showFestival"
+                                    class="snake-calendar__content__item__lunar snake-calendar__content__item__placeholder"
+                                ></view>
+                            </template>
+                        </template>
+                    </view>
+                </view>
+                <view class="snake-calendar__content__bg-month">{{ month }}</view>
+            </view>
+            <!-- 页面模式下不显示确定按钮，选择完成自动触发 change 事件 -->
+            <view v-if="!isPage" class="snake-calendar__bottom">
+                <view class="snake-calendar__bottom__choose">
+                    <text>{{ mode === 'date' ? activeDate : startDate }}</text>
+                    <text v-if="endDate">{{ t('to') }}{{ endDate }}</text>
+                </view>
+                <view class="snake-calendar__bottom__btn">
+                    <snake-button
+                        :type="btnType"
+                        :disabled="btnDisable"
+                        shape="circle"
+                        size="default"
+                        @click="btnFix(false)"
+                    >
+                        {{ t('confirmText') }}
+                    </snake-button>
+                </view>
+            </view>
+        </view>
+    </snake-popup>
+</template>
+
 <script setup lang="ts">
 /**
  * @component Calendar
@@ -620,207 +821,6 @@ function btnFix(show: boolean) {
     }
 }
 </script>
-
-<template>
-    <snake-popup
-        v-model="popupValue"
-        mode="bottom"
-        :overlay="!isPage"
-        :close-on-click-overlay="maskCloseAble"
-        :safe-area-inset-bottom="safeAreaInsetBottom"
-        :z-index="layerZIndex"
-        :round="borderRadius"
-        :closeable="closeable"
-        :custom-style="popupCustomStyle"
-        @close="onPopupClose"
-    >
-        <view class="snake-calendar" :class="[customClass, { 'snake-calendar--page': isPage }]" :style="[customStyle]">
-            <view v-if="!isPage" class="snake-calendar__header">
-                <view v-if="!slots.tooltip" class="snake-calendar__header__text">{{ toolTipValue }}</view>
-                <slot v-else name="tooltip" />
-            </view>
-            <view class="snake-calendar__action">
-                <view class="snake-calendar__action__icon">
-                    <snake-icon
-                        v-if="changeYear"
-                        name="arrow-left-double"
-                        :color="yearArrowColor"
-                        @click="changeYearHandler(0)"
-                    />
-                </view>
-                <view class="snake-calendar__action__icon">
-                    <snake-icon
-                        v-if="changeMonth"
-                        name="arrow-left"
-                        :color="monthArrowColor"
-                        @click="changeMonthHandler(0)"
-                    />
-                </view>
-                <view class="snake-calendar__action__text">{{ showTitle }}</view>
-                <view class="snake-calendar__action__icon">
-                    <snake-icon
-                        v-if="changeMonth"
-                        name="arrow-right"
-                        :color="monthArrowColor"
-                        @click="changeMonthHandler(1)"
-                    />
-                </view>
-                <view class="snake-calendar__action__icon">
-                    <snake-icon
-                        v-if="changeYear"
-                        name="arrow-right-double"
-                        :color="yearArrowColor"
-                        @click="changeYearHandler(1)"
-                    />
-                </view>
-            </view>
-            <view class="snake-calendar__week-day">
-                <view v-for="(item, index) in weekDayZh" :key="index" class="snake-calendar__week-day__text">
-                    {{ item }}
-                </view>
-            </view>
-            <view class="snake-calendar__content">
-                <!-- 前置空白部分 -->
-                <block v-for="(item, index) in weekdayArr" :key="index">
-                    <view class="snake-calendar__content__item"></view>
-                </block>
-                <view
-                    v-for="(item, index) in daysArr"
-                    :key="index"
-                    class="snake-calendar__content__item"
-                    :class="{
-                        'snake-calendar__content__item--hover': openDisAbled(year, month, index + 1),
-                        'snake-calendar__content--start-date':
-                            (mode === 'range' && startDate === `${year}-${formatNum(month)}-${formatNum(index + 1)}`) ||
-                            mode === 'date',
-                        'snake-calendar__content--end-date':
-                            (mode === 'range' && endDate === `${year}-${formatNum(month)}-${formatNum(index + 1)}`) ||
-                            mode === 'date',
-                        'snake-calendar__content--checked': isCheckedDate(index + 1),
-                        'snake-calendar__content--today-checked': isTodayChecked(index + 1),
-                        'snake-calendar__content--checkin-mode': checkinMode
-                    }"
-                    :style="{
-                        backgroundColor:
-                            !checkinMode && checkedDates.length === 0 && !todayChecked ? getColor(index, 1) : ''
-                    }"
-                    @click="dateClick(index)"
-                >
-                    <view
-                        class="snake-calendar__content__item__inner"
-                        :class="{ 'snake-calendar__content__item__inner--today-checked': isTodayChecked(index + 1) }"
-                        :style="{
-                            color: getCheckinTextColor(index + 1) || getColor(index, 2),
-                            backgroundColor: getCheckinColor(index + 1)
-                        }"
-                    >
-                        <!-- 今日已打卡时显示对勾，否则显示日期 -->
-                        <view v-if="isTodayChecked(index + 1)" class="snake-calendar__content__item__checkmark">
-                            <snake-icon name="checkmark" size="36" :color="checkedColor" />
-                        </view>
-                        <template v-else>
-                            <!-- 自定义日期内容插槽 - 优先级最高 -->
-                            <template v-if="useDateSlot">
-                                <view class="snake-calendar__content__item__day">{{ index + 1 }}</view>
-                                <view
-                                    class="snake-calendar__content__item__lunar"
-                                    :style="{ color: getSlotColor(index + 1) }"
-                                >
-                                    <slot name="date" :date="getDateInfo(index + 1)" />
-                                </view>
-                            </template>
-                            <template v-else>
-                                <!-- 日期数字右上角标记：休/班 -->
-                                <view
-                                    v-if="isHoliday(index + 1)"
-                                    class="snake-calendar__content__item__mark snake-calendar__content__item__mark--holiday"
-                                    :style="{ color: getHolidayWorkdayColor(index + 1, holidayColor) }"
-                                >
-                                    {{ t('holiday') }}
-                                </view>
-                                <view
-                                    v-else-if="isWorkday(index + 1)"
-                                    class="snake-calendar__content__item__mark snake-calendar__content__item__mark--workday"
-                                    :style="{ color: getHolidayWorkdayColor(index + 1, workdayColor) }"
-                                >
-                                    {{ t('workday') }}
-                                </view>
-                                <view class="snake-calendar__content__item__day">{{ index + 1 }}</view>
-                                <!-- 范围选择开始日期显示"开始" -->
-                                <view
-                                    v-if="
-                                        mode === 'range' &&
-                                        startDate === `${year}-${formatNum(month)}-${formatNum(index + 1)}` &&
-                                        startDate !== endDate
-                                    "
-                                    class="snake-calendar__content__item__lunar"
-                                    :style="{ color: activeColor }"
-                                >
-                                    {{ startTextValue }}
-                                </view>
-                                <!-- 范围选择结束日期显示"结束" -->
-                                <view
-                                    v-else-if="
-                                        mode === 'range' &&
-                                        endDate === `${year}-${formatNum(month)}-${formatNum(index + 1)}`
-                                    "
-                                    class="snake-calendar__content__item__lunar"
-                                    :style="{ color: activeColor }"
-                                >
-                                    {{ endTextValue }}
-                                </view>
-                                <!-- 节日名称 -->
-                                <view
-                                    v-else-if="getFestival(index + 1)"
-                                    class="snake-calendar__content__item__lunar snake-calendar__content__item__festival"
-                                    :style="{ color: getHolidayWorkdayColor(index + 1, festivalColor) }"
-                                >
-                                    {{ getFestival(index + 1) }}
-                                </view>
-                                <!-- 农历 -->
-                                <view
-                                    v-else-if="showLunar"
-                                    class="snake-calendar__content__item__lunar"
-                                    :style="{ color: getCheckinLunarColor(index + 1) || getColor(index, 2) }"
-                                >
-                                    {{
-                                        lunarArr[index]?.dayCn === '初一'
-                                            ? lunarArr[index].monthCn
-                                            : (lunarArr[index]?.dayCn ?? '')
-                                    }}
-                                </view>
-                                <!-- 占位元素：当有节日/农历数据时保持高度一致 -->
-                                <view
-                                    v-else-if="showFestival"
-                                    class="snake-calendar__content__item__lunar snake-calendar__content__item__placeholder"
-                                ></view>
-                            </template>
-                        </template>
-                    </view>
-                </view>
-                <view class="snake-calendar__content__bg-month">{{ month }}</view>
-            </view>
-            <!-- 页面模式下不显示确定按钮，选择完成自动触发 change 事件 -->
-            <view v-if="!isPage" class="snake-calendar__bottom">
-                <view class="snake-calendar__bottom__choose">
-                    <text>{{ mode === 'date' ? activeDate : startDate }}</text>
-                    <text v-if="endDate">{{ t('to') }}{{ endDate }}</text>
-                </view>
-                <view class="snake-calendar__bottom__btn">
-                    <snake-button
-                        :type="btnType"
-                        :disabled="btnDisable"
-                        shape="circle"
-                        size="default"
-                        @click="btnFix(false)"
-                    >
-                        {{ t('confirmText') }}
-                    </snake-button>
-                </view>
-            </view>
-        </view>
-    </snake-popup>
-</template>
 
 <style scoped>
 .snake-calendar {

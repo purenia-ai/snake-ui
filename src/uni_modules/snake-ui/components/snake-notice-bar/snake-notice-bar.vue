@@ -1,3 +1,47 @@
+<template>
+    <view
+        v-if="visible"
+        class="snake-notice-bar"
+        :class="customClass"
+        :style="rootStyle"
+        @click="emit('click', current)"
+    >
+        <snake-icon v-if="volumeIcon" class="snake-notice-bar__leading" name="volume" :size="volumeSize ?? 'inherit'" />
+        <swiper
+            v-if="vertical"
+            class="snake-notice-bar__swiper"
+            vertical
+            circular
+            :autoplay="playing"
+            :interval="duration"
+            :duration="300"
+            :disable-touch="disableTouch"
+            @change="change"
+        >
+            <swiper-item v-for="(item, index) in items" :key="`${item}-${index}`" class="snake-notice-bar__item">
+                <text class="snake-notice-bar__text">{{ item }}</text>
+            </swiper-item>
+        </swiper>
+        <view v-else class="snake-notice-bar__marquee">
+            <view
+                :key="marqueeKey"
+                class="snake-notice-bar__marquee-track"
+                :class="{
+                    'is-playing': playing && (isCircular ? hasMarqueeDimensions : canScroll),
+                    'is-circular': isCircular
+                }"
+                :style="marqueeStyle"
+                @animationend="marqueeEnd"
+            >
+                <view class="snake-notice-bar__marquee-primary">{{ marqueeText }}</view>
+            </view>
+            <view class="snake-notice-bar__marquee-measure">{{ marqueeText }}</view>
+        </view>
+        <snake-icon v-if="moreIcon" class="snake-notice-bar__trailing" name="right" @click="more" />
+        <snake-icon v-if="closeIcon" class="snake-notice-bar__trailing" name="close" @click="close" />
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component NoticeBar
@@ -18,7 +62,7 @@ import {
 } from 'vue';
 import { onPageHide, onPageShow } from '@dcloudio/uni-app';
 import { addUnit } from '../../libs/function/unit';
-import Icon from '../snake-icon/snake-icon.vue';
+import snakeIcon from '../snake-icon/snake-icon.vue';
 import type { NoticeBarEmits, NoticeBarProps } from './types';
 
 defineOptions({ name: 'NoticeBar', options: { virtualHost: true, styleIsolation: 'shared' } });
@@ -32,7 +76,7 @@ const props = withDefaults(defineProps<NoticeBarProps>(), {
     show: undefined,
     autoplay: true,
     volumeIcon: false,
-    volumeSize: 18,
+    volumeSize: 34,
     moreIcon: false,
     closeIcon: false,
     bgColor: '',
@@ -61,7 +105,6 @@ const pageActive = ref(true);
 const marqueeKey = ref(0);
 const marqueeWidth = ref(0);
 const contentWidth = ref(0);
-const loopDistance = ref(0);
 let staticItemTimer: ReturnType<typeof setTimeout> | undefined;
 let measurementId = 0;
 
@@ -74,15 +117,14 @@ const visible = computed(() => localShow.value && (!props.noListHidden || items.
 const playing = computed(() => visible.value && pageActive.value && props.autoplay && props.playState === 'play');
 const currentText = computed(() => items.value[current.value] ?? '');
 const marqueeText = computed(() => (props.isCircular ? items.value.join('    ') : currentText.value));
-const canScroll = computed(() => marqueeWidth.value > 0 && contentWidth.value > 0);
+const canScroll = computed(() => marqueeWidth.value > 0 && contentWidth.value > marqueeWidth.value);
+const hasMarqueeDimensions = computed(() => marqueeWidth.value > 0 && contentWidth.value > 0);
 const speedInPixels = computed(() => {
     const speed = Math.max(1, Number(props.speed) || 1);
     return typeof uni === 'undefined' ? speed / 2 : Math.max(1, uni.upx2px(speed));
 });
 const marqueeDuration = computed(() => {
-    const distance = props.isCircular
-        ? loopDistance.value || contentWidth.value
-        : marqueeWidth.value + contentWidth.value;
+    const distance = marqueeWidth.value + contentWidth.value;
     return `${Math.max(0.5, distance / speedInPixels.value)}s`;
 });
 const themeColor = computed(
@@ -103,8 +145,9 @@ const rootStyle = computed(() => [
 ]);
 const marqueeStyle = computed(() => ({
     animationDuration: marqueeDuration.value,
-    paddingLeft: props.isCircular ? undefined : `${marqueeWidth.value}px`,
-    '--snake-notice-loop-distance': `-${loopDistance.value || contentWidth.value}px`
+    paddingLeft: !props.isCircular && canScroll.value ? `${marqueeWidth.value}px` : undefined,
+    '--snake-notice-marquee-width': `${marqueeWidth.value}px`,
+    '--snake-notice-content-width': `${contentWidth.value}px`
 }));
 
 function clearStaticItemTimer() {
@@ -118,16 +161,14 @@ function measure() {
         const query = uni.createSelectorQuery().in(instance?.proxy as any);
         query.select('.snake-notice-bar__marquee').boundingClientRect();
         query.select('.snake-notice-bar__marquee-primary').boundingClientRect();
-        query.select('.snake-notice-bar__marquee-copy').boundingClientRect();
+        query.select('.snake-notice-bar__marquee-measure').boundingClientRect();
         query.exec(result => {
             if (id !== measurementId) return;
             const wrap = result?.[0] as UniApp.NodeInfo | undefined;
             const content = result?.[1] as UniApp.NodeInfo | undefined;
-            const copy = result?.[2] as UniApp.NodeInfo | undefined;
+            const measureText = result?.[2] as UniApp.NodeInfo | undefined;
             marqueeWidth.value = Number(wrap?.width) || 0;
-            contentWidth.value = Number(content?.width) || 0;
-            const measuredLoopDistance = Number(copy?.left) - Number(content?.left);
-            loopDistance.value = Number.isFinite(measuredLoopDistance) ? Math.max(0, measuredLoopDistance) : 0;
+            contentWidth.value = Number(measureText?.width) || Number(content?.width) || 0;
             scheduleStaticItem();
         });
     });
@@ -141,6 +182,8 @@ function reset() {
     clearStaticItemTimer();
     current.value = 0;
     lastVerticalIndex.value = 0;
+    marqueeWidth.value = 0;
+    contentWidth.value = 0;
     marqueeKey.value += 1;
     measure();
     scheduleStaticItem();
@@ -217,49 +260,6 @@ onBeforeUnmount(() => {
 defineExpose({ reset });
 </script>
 
-<template>
-    <view
-        v-if="visible"
-        class="snake-notice-bar"
-        :class="customClass"
-        :style="rootStyle"
-        @click="emit('click', current)"
-    >
-        <snake-icon v-if="volumeIcon" class="snake-notice-bar__leading" name="volume" :size="volumeSize ?? 'inherit'" />
-        <swiper
-            v-if="vertical"
-            class="snake-notice-bar__swiper"
-            vertical
-            circular
-            :autoplay="playing"
-            :interval="duration"
-            :duration="300"
-            :disable-touch="disableTouch"
-            @change="change"
-        >
-            <swiper-item v-for="(item, index) in items" :key="`${item}-${index}`" class="snake-notice-bar__item">
-                <text class="snake-notice-bar__text">{{ item }}</text>
-            </swiper-item>
-        </swiper>
-        <view v-else class="snake-notice-bar__marquee">
-            <view
-                :key="marqueeKey"
-                class="snake-notice-bar__marquee-track"
-                :class="{ 'is-playing': playing && canScroll, 'is-circular': isCircular }"
-                :style="marqueeStyle"
-                @animationend="marqueeEnd"
-            >
-                <view class="snake-notice-bar__marquee-primary">{{ marqueeText }}</view>
-                <view v-if="isCircular" class="snake-notice-bar__marquee-copy"
-                    >&nbsp;&nbsp;&nbsp;&nbsp;{{ marqueeText }}</view
-                >
-            </view>
-        </view>
-        <snake-icon v-if="moreIcon" class="snake-notice-bar__trailing" name="right" @click="more" />
-        <snake-icon v-if="closeIcon" class="snake-notice-bar__trailing" name="close" @click="close" />
-    </view>
-</template>
-
 <style scoped>
 .snake-notice-bar {
     box-sizing: border-box;
@@ -291,9 +291,16 @@ defineExpose({ reset });
     white-space: nowrap;
 }
 .snake-notice-bar__marquee {
+    position: relative;
     flex: 1;
     min-width: 0;
     overflow: hidden;
+    white-space: nowrap;
+}
+.snake-notice-bar__marquee-measure {
+    position: absolute;
+    visibility: hidden;
+    width: max-content;
     white-space: nowrap;
 }
 .snake-notice-bar__marquee-track {
@@ -301,8 +308,7 @@ defineExpose({ reset });
     width: max-content;
     white-space: nowrap;
 }
-.snake-notice-bar__marquee-primary,
-.snake-notice-bar__marquee-copy {
+.snake-notice-bar__marquee-primary {
     flex: none;
 }
 .snake-notice-bar__marquee-track.is-playing.is-circular {
@@ -313,10 +319,10 @@ defineExpose({ reset });
 }
 @keyframes snake-notice-marquee-loop {
     from {
-        transform: translateX(0);
+        transform: translateX(var(--snake-notice-marquee-width));
     }
     to {
-        transform: translateX(var(--snake-notice-loop-distance));
+        transform: translateX(calc(-1 * var(--snake-notice-content-width)));
     }
 }
 @keyframes snake-notice-marquee-once {

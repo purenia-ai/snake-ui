@@ -1,3 +1,41 @@
+<template>
+    <DemoPage :title="title" :desc="text('图片容器支持不同填充模式、圆角和加载失败状态。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-stack">
+                <text class="demo-variant-title">{{ text('正常图片') }}</text>
+                <snake-image
+                    src="/static/logo.png"
+                    width="100%"
+                    height="320rpx"
+                    :radius="Number(state.radius)"
+                    :mode="String(state.imageMode)"
+                />
+                <text class="demo-variant-title">{{ text('加载失败') }}</text>
+                <snake-image src="/static/not-found.png" width="100%" height="180rpx" :radius="Number(state.radius)" />
+                <text class="demo-variant-title">
+                    {{ localeName === 'en-US' ? 'Viewport lazy loading' : '视口懒加载' }}
+                </text>
+                <snake-image
+                    src="/static/logo.png"
+                    lazy-load
+                    width="100%"
+                    height="180rpx"
+                    :radius="Number(state.radius)"
+                >
+                    <template #loading>
+                        <view class="demo-image-placeholder">
+                            {{ localeName === 'en-US' ? 'Loading…' : '正在加载…' }}
+                        </view>
+                    </template>
+                </snake-image>
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { computed, reactive } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -38,44 +76,6 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 </script>
-
-<template>
-    <DemoPage :title="title" :desc="text('图片容器支持不同填充模式、圆角和加载失败状态。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-stack">
-                <text class="demo-variant-title">{{ text('正常图片') }}</text>
-                <snake-image
-                    src="/static/logo.png"
-                    width="100%"
-                    height="320rpx"
-                    :radius="Number(state.radius)"
-                    :mode="String(state.imageMode)"
-                />
-                <text class="demo-variant-title">{{ text('加载失败') }}</text>
-                <snake-image src="/static/not-found.png" width="100%" height="180rpx" :radius="Number(state.radius)" />
-                <text class="demo-variant-title">
-                    {{ localeName === 'en-US' ? 'Viewport lazy loading' : '视口懒加载' }}
-                </text>
-                <snake-image
-                    src="/static/logo.png"
-                    lazy-load
-                    width="100%"
-                    height="180rpx"
-                    :radius="Number(state.radius)"
-                >
-                    <template #loading>
-                        <view class="demo-image-placeholder">
-                            {{ localeName === 'en-US' ? 'Loading…' : '正在加载…' }}
-                        </view>
-                    </template>
-                </snake-image>
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 
 <style scoped>
 .demo-stack {

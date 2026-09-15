@@ -1,3 +1,16 @@
+<template>
+    <view
+        v-if="rendered"
+        class="snake-transition"
+        :class="[customClass, phaseClass]"
+        :style="rootStyle"
+        @animationend="onAnimationEnd"
+        @click="emit('click', $event)"
+    >
+        <slot />
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component Transition
@@ -108,19 +121,6 @@ watch(
 
 onBeforeUnmount(clearFallback);
 </script>
-
-<template>
-    <view
-        v-if="rendered"
-        class="snake-transition"
-        :class="[customClass, phaseClass]"
-        :style="rootStyle"
-        @animationend="onAnimationEnd"
-        @click="emit('click', $event)"
-    >
-        <slot />
-    </view>
-</template>
 
 <style scoped lang="scss">
 .snake-transition {

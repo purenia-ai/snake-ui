@@ -1,3 +1,13 @@
+<template>
+    <view class="snake-radio" :style="[radioStyle, customStyle]" :class="customClass">
+        <view class="snake-radio__icon-wrap" @tap="toggle" :class="iconClass" :style="iconStyle">
+            <snake-icon name="checkmark" :size="elIconSize" :color="iconColor" />
+        </view>
+        <view class="snake-radio__label" @tap="onClickLabel" :style="{ fontSize: labelFontSize }">
+            <slot>{{ label }}</slot>
+        </view>
+    </view>
+</template>
 <script setup lang="ts">
 /**
  * @component Radio
@@ -204,16 +214,6 @@ function setRadioCheckedStatus() {
     radioGroup.value?.setValue(radioValue.value);
 }
 </script>
-<template>
-    <view class="snake-radio" :style="[radioStyle, customStyle]" :class="customClass">
-        <view class="snake-radio__icon-wrap" @tap="toggle" :class="iconClass" :style="iconStyle">
-            <snake-icon name="checkmark" :size="elIconSize" :color="iconColor" />
-        </view>
-        <view class="snake-radio__label" @tap="onClickLabel" :style="{ fontSize: labelFontSize }">
-            <slot>{{ label }}</slot>
-        </view>
-    </view>
-</template>
 <style scoped>
 .snake-radio {
     /* #ifndef APP-NVUE */

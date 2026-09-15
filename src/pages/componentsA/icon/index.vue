@@ -1,3 +1,49 @@
+<template>
+    <DemoPage :title="title" :desc="text('浏览 Snake UI 自有字体图标，并实时调整尺寸、颜色和标签。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-icon-showcase demo-icon-showcase--grouped">
+                <view class="demo-icon-preview">
+                    <snake-icon
+                        :name="selectedIcon"
+                        :color="String(state.iconColor)"
+                        :size="Number(state.iconSize)"
+                        :bold="Boolean(state.iconBold)"
+                        :label="String(state.iconLabel)"
+                        :label-pos="state.iconLabelPos as any"
+                        label-size="14px"
+                        space="8px"
+                    />
+                    <text class="demo-icon-preview__name">{{ selectedIcon }}</text>
+                </view>
+                <view class="demo-icon-heading">
+                    <text>{{ isEnglish ? 'Built-in icons' : '内置图标' }}</text>
+                    <text class="demo-icon-heading__count">{{ iconNames.length }}</text>
+                </view>
+                <view class="demo-icons">
+                    <view
+                        v-for="name in iconNames"
+                        :key="name"
+                        :class="['demo-icon-item', { 'demo-icon-item--active': selectedIcon === name }]"
+                        hover-class="demo-icon-item--pressed"
+                        @click="selectedIcon = name"
+                    >
+                        <snake-icon
+                            :name="name"
+                            :color="selectedIcon === name ? String(state.iconColor) : 'currentColor'"
+                            :size="Number(state.iconSize)"
+                            :bold="Boolean(state.iconBold)"
+                        />
+                        <text class="demo-icon-item__name">{{ name }}</text>
+                    </view>
+                </view>
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -59,52 +105,6 @@ function updateValue(key: string, value: DemoValue) {
 
 const selectedIcon = ref('search');
 </script>
-
-<template>
-    <DemoPage :title="title" :desc="text('浏览 Snake UI 自有字体图标，并实时调整尺寸、颜色和标签。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-icon-showcase demo-icon-showcase--grouped">
-                <view class="demo-icon-preview">
-                    <snake-icon
-                        :name="selectedIcon"
-                        :color="String(state.iconColor)"
-                        :size="Number(state.iconSize)"
-                        :bold="Boolean(state.iconBold)"
-                        :label="String(state.iconLabel)"
-                        :label-pos="state.iconLabelPos as any"
-                        label-size="14px"
-                        space="8px"
-                    />
-                    <text class="demo-icon-preview__name">{{ selectedIcon }}</text>
-                </view>
-                <view class="demo-icon-heading">
-                    <text>{{ isEnglish ? 'Built-in icons' : '内置图标' }}</text>
-                    <text class="demo-icon-heading__count">{{ iconNames.length }}</text>
-                </view>
-                <view class="demo-icons">
-                    <view
-                        v-for="name in iconNames"
-                        :key="name"
-                        :class="['demo-icon-item', { 'demo-icon-item--active': selectedIcon === name }]"
-                        hover-class="demo-icon-item--pressed"
-                        @click="selectedIcon = name"
-                    >
-                        <snake-icon
-                            :name="name"
-                            :color="selectedIcon === name ? String(state.iconColor) : 'currentColor'"
-                            :size="Number(state.iconSize)"
-                            :bold="Boolean(state.iconBold)"
-                        />
-                        <text class="demo-icon-item__name">{{ name }}</text>
-                    </view>
-                </view>
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 
 <style scoped>
 .demo-icons {

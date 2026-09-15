@@ -1,13 +1,3 @@
-<script setup lang="ts">
-type DemoSectionVariant = 'default' | 'preview' | 'controls';
-
-withDefaults(defineProps<{ title?: string; description?: string; bare?: boolean; variant?: DemoSectionVariant }>(), {
-    title: '',
-    bare: false,
-    variant: 'default'
-});
-</script>
-
 <template>
     <view v-if="!bare" :class="['demo-section', `demo-section--${variant}`]">
         <view v-if="title || description" class="demo-section__head">
@@ -20,6 +10,16 @@ withDefaults(defineProps<{ title?: string; description?: string; bare?: boolean;
     </view>
     <slot v-else />
 </template>
+
+<script setup lang="ts">
+type DemoSectionVariant = 'default' | 'preview' | 'controls';
+
+withDefaults(defineProps<{ title?: string; description?: string; bare?: boolean; variant?: DemoSectionVariant }>(), {
+    title: '',
+    bare: false,
+    variant: 'default'
+});
+</script>
 
 <style lang="scss" scoped>
 @import '../../common/demo.scss';

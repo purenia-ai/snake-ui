@@ -1,3 +1,28 @@
+<template>
+    <DemoPage :title="title" :desc="text('在没有数据时提供清晰的占位和下一步提示。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-stack demo-empty-showcase">
+                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
+                <snake-empty
+                    :mode="String(state.emptyMode)"
+                    :icon="state.showIcon ? '/static/logo.png' : ''"
+                    :icon-size="Number(state.emptyIconSize)"
+                    :text="String(state.text)"
+                    :text-color="String(state.textColor)"
+                />
+                <text class="demo-variant-title">{{ isEnglish ? 'Semantic states' : '语义状态' }}</text>
+                <view class="demo-empty-grid">
+                    <snake-empty mode="search" :text="isEnglish ? 'No results' : '没有搜索结果'" icon-size="72" />
+                    <snake-empty mode="wifi" :text="isEnglish ? 'Network error' : '网络连接异常'" icon-size="72" />
+                </view>
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { computed, reactive } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -64,31 +89,6 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 </script>
-
-<template>
-    <DemoPage :title="title" :desc="text('在没有数据时提供清晰的占位和下一步提示。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-stack demo-empty-showcase">
-                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
-                <snake-empty
-                    :mode="String(state.emptyMode)"
-                    :icon="state.showIcon ? '/static/logo.png' : ''"
-                    :icon-size="Number(state.emptyIconSize)"
-                    :text="String(state.text)"
-                    :text-color="String(state.textColor)"
-                />
-                <text class="demo-variant-title">{{ isEnglish ? 'Semantic states' : '语义状态' }}</text>
-                <view class="demo-empty-grid">
-                    <snake-empty mode="search" :text="isEnglish ? 'No results' : '没有搜索结果'" icon-size="72" />
-                    <snake-empty mode="wifi" :text="isEnglish ? 'Network error' : '网络连接异常'" icon-size="72" />
-                </view>
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 
 <style scoped>
 .demo-stack {

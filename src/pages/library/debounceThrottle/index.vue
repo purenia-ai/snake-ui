@@ -1,3 +1,20 @@
+<template>
+    <DemoPage title="节流与防抖" desc="连续点击，观察触发次数">
+        <view class="card">
+            <text class="title">防抖 600ms</text>
+            <text class="count">{{ debounceRuns }}</text>
+            <text class="meta">点击 {{ debounceClicks }} 次</text>
+            <snake-button type="primary" size="small" @click="clickDebounce">连续点击</snake-button>
+        </view>
+        <view class="card">
+            <text class="title">节流 600ms</text>
+            <text class="count">{{ throttleRuns }}</text>
+            <text class="meta">点击 {{ throttleClicks }} 次</text>
+            <snake-button type="success" size="small" @click="clickThrottle">连续点击</snake-button>
+        </view>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { onBeforeUnmount, ref } from 'vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
@@ -22,23 +39,6 @@ onBeforeUnmount(() => {
     runThrottle.cancel();
 });
 </script>
-
-<template>
-    <DemoPage title="节流与防抖" desc="连续点击，观察触发次数">
-        <view class="card">
-            <text class="title">防抖 600ms</text>
-            <text class="count">{{ debounceRuns }}</text>
-            <text class="meta">点击 {{ debounceClicks }} 次</text>
-            <snake-button type="primary" size="small" @click="clickDebounce">连续点击</snake-button>
-        </view>
-        <view class="card">
-            <text class="title">节流 600ms</text>
-            <text class="count">{{ throttleRuns }}</text>
-            <text class="meta">点击 {{ throttleClicks }} 次</text>
-            <snake-button type="success" size="small" @click="clickThrottle">连续点击</snake-button>
-        </view>
-    </DemoPage>
-</template>
 
 <style scoped>
 .card {

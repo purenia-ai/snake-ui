@@ -1,3 +1,7 @@
+<template>
+    <view class="snake-line" :class="customClass" :style="[lineStyle, customStyle]" />
+</template>
+
 <script setup lang="ts">
 /**
  * @component Line
@@ -30,10 +34,6 @@ const lineStyle = computed(() => {
     return style;
 });
 </script>
-
-<template>
-    <view class="snake-line" :class="customClass" :style="[lineStyle, customStyle]" />
-</template>
 
 <style scoped>
 .snake-line {

@@ -1,3 +1,73 @@
+<template>
+    <view
+        v-if="show"
+        class="snake-text"
+        :class="[
+            bold ? 'snake-text--bold' : '',
+            block ? 'snake-text--block' : 'snake-text--inline',
+            lines ? 'snake-text--ellipsis snake-text--block' : '',
+            `snake-text--align-${align}`,
+            customClass
+        ]"
+        :style="[textStyle, customStyle]"
+        @click="onClick"
+    >
+        <!-- 前置图标 -->
+        <view v-if="prefixIcon" class="snake-text__icon snake-text__prefix-icon">
+            <snake-icon :name="prefixIcon" :custom-style="iconStyle" />
+        </view>
+        <!-- 价格模式 -->
+        <text
+            v-if="mode === 'price'"
+            class="snake-text__price"
+            :class="[type && `snake-text__value--${type}`]"
+            :style="textValueStyle"
+        >
+            <slot>￥{{ displayValue }}</slot>
+        </text>
+        <!-- link 模式 -->
+        <snake-link
+            v-else-if="mode === 'link'"
+            :text="String(displayValue)"
+            :href="href"
+            under-line
+            :style="textValueStyle"
+        />
+        <!-- 开放能力模式 -->
+        <template v-else-if="openType">
+            <button
+                class="snake-text__button snake-text__value"
+                :class="[type && `snake-text__value--${type}`]"
+                :style="textValueStyle"
+                :open-type="openType"
+                :lang="lang"
+                :session-from="sessionFrom"
+                :send-message-title="sendMessageTitle"
+                :send-message-path="sendMessagePath"
+                :send-message-img="sendMessageImg"
+                :show-message-card="showMessageCard"
+                :app-parameter="appParameter"
+                @getuserinfo="onGetUserInfo"
+                @contact="onContact"
+                @getphonenumber="onGetPhoneNumber"
+                @error="onError"
+                @launchapp="onLaunchApp"
+                @opensetting="onOpenSetting"
+            >
+                <slot>{{ displayValue }}</slot>
+            </button>
+        </template>
+        <!-- 默认模式 -->
+        <text v-else class="snake-text__value" :class="[type && `snake-text__value--${type}`]" :style="textValueStyle">
+            <slot>{{ displayValue }}</slot>
+        </text>
+        <!-- 后缀图标 -->
+        <view v-if="suffixIcon" class="snake-text__icon snake-text__suffix-icon">
+            <snake-icon :name="suffixIcon" :custom-style="iconStyle" />
+        </view>
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component Text
@@ -137,76 +207,6 @@ function onOpenSetting(event: unknown) {
     emit('opensetting', (event as { detail?: unknown })?.detail);
 }
 </script>
-
-<template>
-    <view
-        v-if="show"
-        class="snake-text"
-        :class="[
-            bold ? 'snake-text--bold' : '',
-            block ? 'snake-text--block' : 'snake-text--inline',
-            lines ? 'snake-text--ellipsis snake-text--block' : '',
-            `snake-text--align-${align}`,
-            customClass
-        ]"
-        :style="[textStyle, customStyle]"
-        @click="onClick"
-    >
-        <!-- 前置图标 -->
-        <view v-if="prefixIcon" class="snake-text__icon snake-text__prefix-icon">
-            <snake-icon :name="prefixIcon" :custom-style="iconStyle" />
-        </view>
-        <!-- 价格模式 -->
-        <text
-            v-if="mode === 'price'"
-            class="snake-text__price"
-            :class="[type && `snake-text__value--${type}`]"
-            :style="textValueStyle"
-        >
-            <slot>￥{{ displayValue }}</slot>
-        </text>
-        <!-- link 模式 -->
-        <snake-link
-            v-else-if="mode === 'link'"
-            :text="String(displayValue)"
-            :href="href"
-            under-line
-            :style="textValueStyle"
-        />
-        <!-- 开放能力模式 -->
-        <template v-else-if="openType">
-            <button
-                class="snake-text__button snake-text__value"
-                :class="[type && `snake-text__value--${type}`]"
-                :style="textValueStyle"
-                :open-type="openType"
-                :lang="lang"
-                :session-from="sessionFrom"
-                :send-message-title="sendMessageTitle"
-                :send-message-path="sendMessagePath"
-                :send-message-img="sendMessageImg"
-                :show-message-card="showMessageCard"
-                :app-parameter="appParameter"
-                @getuserinfo="onGetUserInfo"
-                @contact="onContact"
-                @getphonenumber="onGetPhoneNumber"
-                @error="onError"
-                @launchapp="onLaunchApp"
-                @opensetting="onOpenSetting"
-            >
-                <slot>{{ displayValue }}</slot>
-            </button>
-        </template>
-        <!-- 默认模式 -->
-        <text v-else class="snake-text__value" :class="[type && `snake-text__value--${type}`]" :style="textValueStyle">
-            <slot>{{ displayValue }}</slot>
-        </text>
-        <!-- 后缀图标 -->
-        <view v-if="suffixIcon" class="snake-text__icon snake-text__suffix-icon">
-            <snake-icon :name="suffixIcon" :custom-style="iconStyle" />
-        </view>
-    </view>
-</template>
 
 <style scoped>
 .snake-text {

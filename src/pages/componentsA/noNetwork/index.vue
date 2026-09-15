@@ -1,3 +1,19 @@
+<template>
+    <DemoPage :title="title" :desc="text('自动监听网络状态，断网时全屏提示并支持重试。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-stack demo-no-network-showcase">
+                <text class="demo-variant-title">{{ text('如何查看真实效果') }}</text>
+                <text class="demo-variant-sub">{{ text('关闭手机的 Wi-Fi 和移动数据后，可查看全屏断网提示。') }}</text>
+                <text class="demo-variant-sub">{{ text('组件在线时自动隐藏；断网后点击重试会触发事件反馈。') }}</text>
+                <snake-no-network :tips="String(state.nnTips)" :image="String(state.nnImage)" @retry="handleRetry" />
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { computed, reactive } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -43,22 +59,6 @@ function handleRetry() {
     uni.showToast({ title: text('已触发重试事件'), icon: 'none', position: 'top' });
 }
 </script>
-
-<template>
-    <DemoPage :title="title" :desc="text('自动监听网络状态，断网时全屏提示并支持重试。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-stack demo-no-network-showcase">
-                <text class="demo-variant-title">{{ text('如何查看真实效果') }}</text>
-                <text class="demo-variant-sub">{{ text('关闭手机的 Wi-Fi 和移动数据后，可查看全屏断网提示。') }}</text>
-                <text class="demo-variant-sub">{{ text('组件在线时自动隐藏；断网后点击重试会触发事件反馈。') }}</text>
-                <snake-no-network :tips="String(state.nnTips)" :image="String(state.nnImage)" @retry="handleRetry" />
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 
 <style scoped>
 .demo-stack {

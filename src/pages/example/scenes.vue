@@ -1,14 +1,3 @@
-<script setup lang="ts">
-import DemoPage from '../../components/demo-page/demo-page.vue';
-import DemoSection from '../../components/demo-section/demo-section.vue';
-import { useDemoLocale } from '../../common/demo-i18n';
-import scenes from './scenes.config';
-
-defineOptions({ name: 'ExampleScenes' });
-const { text } = useDemoLocale();
-const open = (path: string) => uni.navigateTo({ url: path });
-</script>
-
 <template>
     <DemoPage
         tabbar
@@ -54,6 +43,17 @@ const open = (path: string) => uni.navigateTo({ url: path });
         </DemoSection>
     </DemoPage>
 </template>
+
+<script setup lang="ts">
+import DemoPage from '../../components/demo-page/demo-page.vue';
+import DemoSection from '../../components/demo-section/demo-section.vue';
+import { useDemoLocale } from '../../common/demo-i18n';
+import scenes from './scenes.config';
+
+defineOptions({ name: 'ExampleScenes' });
+const { text } = useDemoLocale();
+const open = (path: string) => uni.navigateTo({ url: path });
+</script>
 
 <style lang="scss" scoped>
 @import '../../common/demo.scss';

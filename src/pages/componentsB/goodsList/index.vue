@@ -1,3 +1,20 @@
+<template>
+    <DemoPage :title="title" :desc="text('展示商品网格或列表，并承载价格和状态信息。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <snake-goods-list
+                class="demo-goods-list-showcase"
+                :goods-list="goods"
+                :list-type="String(state.goodsMode)"
+                :commodity-type="0"
+                :page-margin="Number(state.goodsMargin)"
+                :image-margin="10"
+            />
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
 <script setup lang="ts">
 import { computed, reactive } from 'vue';
 import { goods } from '../../../common/fixtures';
@@ -37,20 +54,3 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 </script>
-<template>
-    <DemoPage :title="title" :desc="text('展示商品网格或列表，并承载价格和状态信息。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <snake-goods-list
-                class="demo-goods-list-showcase"
-                :goods-list="goods"
-                :list-type="String(state.goodsMode)"
-                :commodity-type="0"
-                :page-margin="Number(state.goodsMargin)"
-                :image-margin="10"
-            />
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>

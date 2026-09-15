@@ -1,3 +1,37 @@
+<template>
+    <DemoPage :title="title" :desc="text('以横向或竖向线条分隔内容块，支持半像素细线。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-stack demo-line-showcase">
+                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
+                <snake-line
+                    margin="16rpx 0"
+                    :direction="String(state.lineDirection)"
+                    :color="String(state.lineColor)"
+                    :border-style="String(state.lineBorderStyle)"
+                    :hair-line="Boolean(state.lineHair)"
+                />
+                <view class="demo-line-col-box">
+                    <snake-line
+                        direction="col"
+                        length="160"
+                        :color="String(state.lineColor)"
+                        :border-style="String(state.lineBorderStyle)"
+                        :hair-line="Boolean(state.lineHair)"
+                    />
+                    <text class="demo-line-col-text">{{ isEnglish ? 'Vertical' : '竖向线条' }}</text>
+                </view>
+                <text class="demo-variant-title">{{ isEnglish ? 'Line styles' : '线条类型' }}</text>
+                <snake-line margin="16rpx 0" border-style="solid" />
+                <snake-line margin="16rpx 0" border-style="dashed" />
+                <snake-line margin="16rpx 0" border-style="dotted" />
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { computed, reactive } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -62,40 +96,6 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 </script>
-
-<template>
-    <DemoPage :title="title" :desc="text('以横向或竖向线条分隔内容块，支持半像素细线。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-stack demo-line-showcase">
-                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
-                <snake-line
-                    margin="16rpx 0"
-                    :direction="String(state.lineDirection)"
-                    :color="String(state.lineColor)"
-                    :border-style="String(state.lineBorderStyle)"
-                    :hair-line="Boolean(state.lineHair)"
-                />
-                <view class="demo-line-col-box">
-                    <snake-line
-                        direction="col"
-                        length="160"
-                        :color="String(state.lineColor)"
-                        :border-style="String(state.lineBorderStyle)"
-                        :hair-line="Boolean(state.lineHair)"
-                    />
-                    <text class="demo-line-col-text">{{ isEnglish ? 'Vertical' : '竖向线条' }}</text>
-                </view>
-                <text class="demo-variant-title">{{ isEnglish ? 'Line styles' : '线条类型' }}</text>
-                <snake-line margin="16rpx 0" border-style="solid" />
-                <snake-line margin="16rpx 0" border-style="dashed" />
-                <snake-line margin="16rpx 0" border-style="dotted" />
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 
 <style scoped>
 .demo-stack {

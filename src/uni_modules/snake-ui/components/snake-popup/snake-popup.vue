@@ -1,3 +1,38 @@
+<template>
+    <view class="snake-popup" :style="rootStyle">
+        <!-- 三层结构：根 / 遮罩 / 面板，全部收在根的层叠上下文内 -->
+        <snake-overlay
+            v-if="overlay"
+            :show="localShow"
+            :z-index="uZIndex - 2"
+            :duration="duration"
+            :opacity="overlayOpacity"
+            :lock-scroll="lockScroll"
+            :custom-style="overlayStyle"
+            @click="overlayClick"
+        />
+        <snake-transition
+            :show="localShow"
+            :name="transitionName"
+            :duration="duration"
+            :custom-class="['snake-popup__panel', `snake-popup__panel--${mode}`, customClass].filter(Boolean).join(' ')"
+            :custom-style="panelStyle"
+            @after-enter="emit('opened')"
+            @after-leave="emit('closed')"
+        >
+            <slot />
+            <view
+                v-if="closeable"
+                class="snake-popup__close"
+                :class="`snake-popup__close--${closeIconPos}`"
+                @click.stop="close"
+            >
+                <snake-icon :name="closeIcon" :color="closeIconColor" :size="closeIconSize" />
+            </view>
+        </snake-transition>
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component Popup
@@ -127,41 +162,6 @@ function overlayClick(event: unknown) {
 
 defineExpose({ open, close });
 </script>
-
-<template>
-    <view class="snake-popup" :style="rootStyle">
-        <!-- 三层结构：根 / 遮罩 / 面板，全部收在根的层叠上下文内 -->
-        <snake-overlay
-            v-if="overlay"
-            :show="localShow"
-            :z-index="uZIndex - 2"
-            :duration="duration"
-            :opacity="overlayOpacity"
-            :lock-scroll="lockScroll"
-            :custom-style="overlayStyle"
-            @click="overlayClick"
-        />
-        <snake-transition
-            :show="localShow"
-            :name="transitionName"
-            :duration="duration"
-            :custom-class="['snake-popup__panel', `snake-popup__panel--${mode}`, customClass].filter(Boolean).join(' ')"
-            :custom-style="panelStyle"
-            @after-enter="emit('opened')"
-            @after-leave="emit('closed')"
-        >
-            <slot />
-            <view
-                v-if="closeable"
-                class="snake-popup__close"
-                :class="`snake-popup__close--${closeIconPos}`"
-                @click.stop="close"
-            >
-                <snake-icon :name="closeIcon" :color="closeIconColor" :size="closeIconSize" />
-            </view>
-        </snake-transition>
-    </view>
-</template>
 
 <style>
 /* 全屏定位根：为遮罩与面板提供专属层叠上下文；隐藏时空根不拦截

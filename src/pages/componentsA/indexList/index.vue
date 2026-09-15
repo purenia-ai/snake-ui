@@ -1,3 +1,31 @@
+<template>
+    <DemoPage :title="title" :desc="text('通过右侧索引快速定位列表中的分组内容。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-index demo-index-list-showcase">
+                <snake-index-list
+                    :index-list="letters"
+                    :scroll-top="scrollTop"
+                    :active-color="String(state.indexColor)"
+                >
+                    <view v-for="letter in letters" :key="letter">
+                        <snake-index-anchor
+                            :index="letter"
+                            :text="letter"
+                            custom-style="height: 64rpx; padding: 0 20rpx"
+                        />
+                        <view v-for="item in 3" :key="item" class="demo-index-row">
+                            {{ letter }} {{ isEnglish ? 'item' : '类内容' }} {{ item }}
+                        </view>
+                    </view>
+                </snake-index-list>
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { onPageScroll } from '@dcloudio/uni-app';
 import { computed, reactive, ref } from 'vue';
@@ -43,34 +71,6 @@ onPageScroll(event => {
     scrollTop.value = event.scrollTop;
 });
 </script>
-
-<template>
-    <DemoPage :title="title" :desc="text('通过右侧索引快速定位列表中的分组内容。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-index demo-index-list-showcase">
-                <snake-index-list
-                    :index-list="letters"
-                    :scroll-top="scrollTop"
-                    :active-color="String(state.indexColor)"
-                >
-                    <view v-for="letter in letters" :key="letter">
-                        <snake-index-anchor
-                            :index="letter"
-                            :text="letter"
-                            custom-style="height: 64rpx; padding: 0 20rpx"
-                        />
-                        <view v-for="item in 3" :key="item" class="demo-index-row">
-                            {{ letter }} {{ isEnglish ? 'item' : '类内容' }} {{ item }}
-                        </view>
-                    </view>
-                </snake-index-list>
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 
 <style scoped>
 .demo-index-row {

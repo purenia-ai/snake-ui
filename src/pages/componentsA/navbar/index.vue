@@ -1,3 +1,27 @@
+<template>
+    <DemoPage :title="title" :desc="text('用于页面顶部导航，支持返回操作、安全区、标题和左右插槽。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-navbar-preview demo-navbar-showcase">
+                <snake-navbar
+                    :title="String(state.navbarTitle)"
+                    :is-back="Boolean(state.navbarBack)"
+                    :border-bottom="Boolean(state.navbarBorder)"
+                    :title-bold="Boolean(state.navbarBold)"
+                    :fixed="false"
+                    :safe-area-inset-top="false"
+                >
+                    <template #right>
+                        <text class="demo-navbar-preview__action">{{ isEnglish ? 'More' : '更多' }}</text>
+                    </template>
+                </snake-navbar>
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { computed, reactive } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -29,30 +53,6 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 </script>
-
-<template>
-    <DemoPage :title="title" :desc="text('用于页面顶部导航，支持返回操作、安全区、标题和左右插槽。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-navbar-preview demo-navbar-showcase">
-                <snake-navbar
-                    :title="String(state.navbarTitle)"
-                    :is-back="Boolean(state.navbarBack)"
-                    :border-bottom="Boolean(state.navbarBorder)"
-                    :title-bold="Boolean(state.navbarBold)"
-                    :fixed="false"
-                    :safe-area-inset-top="false"
-                >
-                    <template #right>
-                        <text class="demo-navbar-preview__action">{{ isEnglish ? 'More' : '更多' }}</text>
-                    </template>
-                </snake-navbar>
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 
 <style scoped>
 .demo-navbar-preview {

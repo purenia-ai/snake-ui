@@ -1,31 +1,3 @@
-<script setup lang="ts">
-import { computed, reactive } from 'vue';
-import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
-import type { DemoControl, DemoValue } from '../../../common/demo-types';
-import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
-import DemoPage from '../../../components/demo-page/demo-page.vue';
-import DemoSection from '../../../components/demo-section/demo-section.vue';
-
-const { localeName, text } = useDemoLocale();
-const isEnglish = computed(() => localeName.value === 'en-US');
-const controls: DemoControl[] = [
-    { key: 'stickyDisabled', label: '关闭吸顶', type: 'switch', defaultValue: false },
-    { key: 'stickyOffset', label: '顶部距离', type: 'slider', defaultValue: 0, min: 0, max: 80, step: 10, unit: 'rpx' }
-];
-const state = reactive<Record<string, DemoValue>>({ stickyDisabled: false, stickyOffset: 0 });
-const localizedControls = computed(() => {
-    const _locale = localeName.value;
-    return controls.map(control => ({ ...control, label: demoText(control.label) }));
-});
-const title = computed(() => {
-    const _locale = localeName.value;
-    return demoTitle('sticky', '吸顶');
-});
-function updateValue(key: string, value: DemoValue) {
-    state[key] = value;
-}
-</script>
-
 <template>
     <DemoPage :title="title" :desc="text('页面滚动时将重要内容固定在指定顶部位置。')" viewport>
         <DemoSection bare variant="preview" :title="text('演示效果')">
@@ -53,6 +25,34 @@ function updateValue(key: string, value: DemoValue) {
         </DemoSection>
     </DemoPage>
 </template>
+
+<script setup lang="ts">
+import { computed, reactive } from 'vue';
+import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
+import type { DemoControl, DemoValue } from '../../../common/demo-types';
+import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
+import DemoPage from '../../../components/demo-page/demo-page.vue';
+import DemoSection from '../../../components/demo-section/demo-section.vue';
+
+const { localeName, text } = useDemoLocale();
+const isEnglish = computed(() => localeName.value === 'en-US');
+const controls: DemoControl[] = [
+    { key: 'stickyDisabled', label: '关闭吸顶', type: 'switch', defaultValue: false },
+    { key: 'stickyOffset', label: '顶部距离', type: 'slider', defaultValue: 0, min: 0, max: 80, step: 10, unit: 'rpx' }
+];
+const state = reactive<Record<string, DemoValue>>({ stickyDisabled: false, stickyOffset: 0 });
+const localizedControls = computed(() => {
+    const _locale = localeName.value;
+    return controls.map(control => ({ ...control, label: demoText(control.label) }));
+});
+const title = computed(() => {
+    const _locale = localeName.value;
+    return demoTitle('sticky', '吸顶');
+});
+function updateValue(key: string, value: DemoValue) {
+    state[key] = value;
+}
+</script>
 
 <style scoped>
 .demo-scroll {

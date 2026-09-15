@@ -1,3 +1,25 @@
+<template>
+    <view
+        v-if="!isConnected"
+        class="snake-no-network"
+        :style="{ zIndex: layerZIndex }"
+        @touchmove.stop.prevent="() => {}"
+    >
+        <view class="snake-no-network__inner">
+            <image class="snake-no-network__icon" :src="image || imageSrc" mode="widthFix" />
+            <view class="snake-no-network__tips">{{ tipsValue }}</view>
+            <view
+                class="snake-no-network__retry"
+                :hover-stay-time="150"
+                hover-class="snake-no-network__retry--hover"
+                @click="retry"
+            >
+                {{ t('retry') }}
+            </view>
+        </view>
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component NoNetwork
@@ -59,28 +81,6 @@ function retry() {
 
 defineExpose<NoNetworkExpose>({ retry });
 </script>
-
-<template>
-    <view
-        v-if="!isConnected"
-        class="snake-no-network"
-        :style="{ zIndex: layerZIndex }"
-        @touchmove.stop.prevent="() => {}"
-    >
-        <view class="snake-no-network__inner">
-            <image class="snake-no-network__icon" :src="image || imageSrc" mode="widthFix" />
-            <view class="snake-no-network__tips">{{ tipsValue }}</view>
-            <view
-                class="snake-no-network__retry"
-                :hover-stay-time="150"
-                hover-class="snake-no-network__retry--hover"
-                @click="retry"
-            >
-                {{ t('retry') }}
-            </view>
-        </view>
-    </view>
-</template>
 
 <style scoped>
 .snake-no-network {

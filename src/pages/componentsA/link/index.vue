@@ -1,3 +1,28 @@
+<template>
+    <DemoPage :title="title" :desc="text('跨端打开链接或复制到粘贴板。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-stack demo-link-showcase">
+                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
+                <view>
+                    <snake-link
+                        :href="String(state.lHref)"
+                        :under-line="Boolean(state.lUnderLine)"
+                        :default-click="Boolean(state.lDefaultClick)"
+                        :color="String(state.lColor)"
+                        @click="onLinkClick"
+                    >
+                        {{ isEnglish ? 'Visit Snake UI' : '访问 Snake UI 仓库' }}
+                    </snake-link>
+                </view>
+                <text class="demo-variant-sub">{{ lastClick || (isEnglish ? 'No event yet' : '暂无事件') }}</text>
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -62,31 +87,6 @@ function onLinkClick(href: string) {
     lastClick.value = `${text('点击事件')}：${href}`;
 }
 </script>
-
-<template>
-    <DemoPage :title="title" :desc="text('跨端打开链接或复制到粘贴板。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-stack demo-link-showcase">
-                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
-                <view>
-                    <snake-link
-                        :href="String(state.lHref)"
-                        :under-line="Boolean(state.lUnderLine)"
-                        :default-click="Boolean(state.lDefaultClick)"
-                        :color="String(state.lColor)"
-                        @click="onLinkClick"
-                    >
-                        {{ isEnglish ? 'Visit Snake UI' : '访问 Snake UI 仓库' }}
-                    </snake-link>
-                </view>
-                <text class="demo-variant-sub">{{ lastClick || (isEnglish ? 'No event yet' : '暂无事件') }}</text>
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 
 <style scoped>
 .demo-stack {

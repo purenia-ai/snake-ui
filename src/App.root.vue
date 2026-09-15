@@ -1,3 +1,9 @@
+<template>
+    <ConfigProvider>
+        <slot />
+    </ConfigProvider>
+</template>
+
 <script setup lang="ts">
 /**
  * 应用级虚拟根组件(由 vite-plugin-snake-root 自动包裹到每个页面模板)。
@@ -7,9 +13,3 @@
  */
 import ConfigProvider from './uni_modules/snake-ui/components/snake-config-provider/snake-config-provider.vue';
 </script>
-
-<template>
-    <ConfigProvider>
-        <slot />
-    </ConfigProvider>
-</template>

@@ -1,3 +1,32 @@
+<template>
+    <DemoPage :title="title" :desc="text('弹出层支持从页面不同方向出现并承载业务内容。')" viewport>
+        <DemoSection bare variant="preview" :title="text('演示效果')">
+            <view class="demo-trigger demo-popup-showcase">
+                <text class="demo-variant-title">
+                    {{ isEnglish ? 'Position and closing behavior' : '位置与关闭行为' }}
+                </text>
+                <snake-button @click="visible = true">{{ isEnglish ? 'Open popup' : '打开弹窗' }}</snake-button>
+                <snake-popup
+                    v-model="visible"
+                    :mode="state.popupMode as any"
+                    :close-on-click-overlay="Boolean(state.closeOverlay)"
+                >
+                    <view class="demo-popup">
+                        <text class="demo-popup__title">Snake Popup</text>
+                        <text>{{ isEnglish ? 'This is an interactive popup.' : '这是一个可交互的弹出层。' }}</text>
+                        <snake-button custom-style="margin-top: 32rpx" @click="visible = false">
+                            {{ isEnglish ? 'Close' : '关闭' }}
+                        </snake-button>
+                    </view>
+                </snake-popup>
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -40,35 +69,6 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 </script>
-
-<template>
-    <DemoPage :title="title" :desc="text('弹出层支持从页面不同方向出现并承载业务内容。')" viewport>
-        <DemoSection bare variant="preview" :title="text('演示效果')">
-            <view class="demo-trigger demo-popup-showcase">
-                <text class="demo-variant-title">
-                    {{ isEnglish ? 'Position and closing behavior' : '位置与关闭行为' }}
-                </text>
-                <snake-button @click="visible = true">{{ isEnglish ? 'Open popup' : '打开弹窗' }}</snake-button>
-                <snake-popup
-                    v-model="visible"
-                    :mode="state.popupMode as any"
-                    :close-on-click-overlay="Boolean(state.closeOverlay)"
-                >
-                    <view class="demo-popup">
-                        <text class="demo-popup__title">Snake Popup</text>
-                        <text>{{ isEnglish ? 'This is an interactive popup.' : '这是一个可交互的弹出层。' }}</text>
-                        <snake-button custom-style="margin-top: 32rpx" @click="visible = false">
-                            {{ isEnglish ? 'Close' : '关闭' }}
-                        </snake-button>
-                    </view>
-                </snake-popup>
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 
 <style scoped>
 .demo-trigger {

@@ -1,3 +1,20 @@
+<template>
+    <DemoPage :title="title" :desc="text('全屏遮罩用于隔离当前页面与浮层操作。')" viewport>
+        <DemoSection bare variant="preview" :title="text('演示效果')">
+            <view class="demo-trigger demo-overlay-showcase">
+                <text class="demo-variant-title">{{ isEnglish ? 'Overlay content' : '遮罩内容' }}</text>
+                <snake-button @click="visible = true">{{ isEnglish ? 'Open overlay' : '打开遮罩' }}</snake-button>
+                <snake-overlay v-model="visible">
+                    <view class="demo-overlay-tip">{{ state.overlayTip }}</view>
+                </snake-overlay>
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -25,23 +42,6 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 </script>
-
-<template>
-    <DemoPage :title="title" :desc="text('全屏遮罩用于隔离当前页面与浮层操作。')" viewport>
-        <DemoSection bare variant="preview" :title="text('演示效果')">
-            <view class="demo-trigger demo-overlay-showcase">
-                <text class="demo-variant-title">{{ isEnglish ? 'Overlay content' : '遮罩内容' }}</text>
-                <snake-button @click="visible = true">{{ isEnglish ? 'Open overlay' : '打开遮罩' }}</snake-button>
-                <snake-overlay v-model="visible">
-                    <view class="demo-overlay-tip">{{ state.overlayTip }}</view>
-                </snake-overlay>
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 
 <style scoped>
 .demo-trigger {

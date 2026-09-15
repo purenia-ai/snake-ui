@@ -1,3 +1,53 @@
+<template>
+    <view :class="['demo-page', { 'demo-page--viewport': viewport }]" :style="shellThemeStyle">
+        <template v-if="!viewport">
+            <snake-navbar
+                :title="title"
+                :is-back="navBack"
+                :custom-back="goBack"
+                :background="background"
+                title-color="#ffffff"
+                back-icon-color="#ffffff"
+                :border-bottom="false"
+                title-bold
+            >
+                <template #right>
+                    <view class="demo-nav__actions">
+                        <view
+                            class="demo-nav__hit demo-nav__locale"
+                            hover-class="demo-nav__hit--hover"
+                            @click="switchLocale"
+                        >
+                            <text>{{ nextLocaleLabel }}</text>
+                        </view>
+                        <view v-if="navHome" class="demo-nav__hit" hover-class="demo-nav__hit--hover" @click="goHome()">
+                            <text class="demo-nav__home">{{ text('首页') }}</text>
+                        </view>
+                    </view>
+                </template>
+            </snake-navbar>
+
+            <view v-if="eyebrow || desc" class="demo-page-header">
+                <text v-if="eyebrow" class="demo-page-header__category">{{ eyebrow }}</text>
+                <text class="demo-page-header__title">{{ title }}</text>
+                <view v-if="desc" class="demo-page-header__desc">{{ desc }}</view>
+            </view>
+
+            <view class="demo-body">
+                <slot />
+                <snake-tabbar
+                    v-if="tabbar"
+                    :items="tabItems"
+                    :current="currentTab"
+                    :mid-button="true"
+                    @change="switchTab"
+                />
+            </view>
+        </template>
+        <slot v-else />
+    </view>
+</template>
+
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, reactive, toRefs, watch } from 'vue';
 import { color, darkMode, systemDark, themeStyle } from '../../uni_modules/snake-ui';
@@ -104,56 +154,6 @@ function switchTab(key: string | number) {
     if (route && key !== currentTab.value) uni.switchTab({ url: route });
 }
 </script>
-
-<template>
-    <view :class="['demo-page', { 'demo-page--viewport': viewport }]" :style="shellThemeStyle">
-        <template v-if="!viewport">
-            <snake-navbar
-                :title="title"
-                :is-back="navBack"
-                :custom-back="goBack"
-                :background="background"
-                title-color="#ffffff"
-                back-icon-color="#ffffff"
-                :border-bottom="false"
-                title-bold
-            >
-                <template #right>
-                    <view class="demo-nav__actions">
-                        <view
-                            class="demo-nav__hit demo-nav__locale"
-                            hover-class="demo-nav__hit--hover"
-                            @click="switchLocale"
-                        >
-                            <text>{{ nextLocaleLabel }}</text>
-                        </view>
-                        <view v-if="navHome" class="demo-nav__hit" hover-class="demo-nav__hit--hover" @click="goHome()">
-                            <text class="demo-nav__home">{{ text('首页') }}</text>
-                        </view>
-                    </view>
-                </template>
-            </snake-navbar>
-
-            <view v-if="eyebrow || desc" class="demo-page-header">
-                <text v-if="eyebrow" class="demo-page-header__category">{{ eyebrow }}</text>
-                <text class="demo-page-header__title">{{ title }}</text>
-                <view v-if="desc" class="demo-page-header__desc">{{ desc }}</view>
-            </view>
-
-            <view class="demo-body">
-                <slot />
-                <snake-tabbar
-                    v-if="tabbar"
-                    :items="tabItems"
-                    :current="currentTab"
-                    :mid-button="true"
-                    @change="switchTab"
-                />
-            </view>
-        </template>
-        <slot v-else />
-    </view>
-</template>
 
 <style lang="scss" scoped>
 @import '../../common/demo.scss';

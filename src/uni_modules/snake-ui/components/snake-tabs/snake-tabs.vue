@@ -1,3 +1,40 @@
+<template>
+    <view class="snake-tabs" :style="rootStyle" :class="customClass">
+        <view>
+            <scroll-view
+                scroll-x
+                class="snake-tabs__scroll-view"
+                :scroll-left="scrollLeft"
+                :show-scrollbar="false"
+                scroll-with-animation
+            >
+                <view :id="id" class="snake-tabs__scroll-box" :class="{ 'snake-tabs__scroll-flex': !isScroll }">
+                    <view
+                        v-for="(item, index) in list"
+                        :id="`${id}-item-${index}`"
+                        :key="index"
+                        class="snake-tabs__item snake-line-1"
+                        :class="{ 'snake-tabs__item--hidden': item.hidden }"
+                        :style="tabItemStyle(index)"
+                        @tap="clickTab(index)"
+                    >
+                        <view
+                            v-if="Number(badgeCount(item)) !== 0"
+                            class="snake-tabs__badge"
+                            :class="{ 'snake-tabs__badge--dot': isDot }"
+                            :style="{ top: `${offset[0]}rpx`, right: `${offset[1]}rpx` }"
+                        >
+                            {{ badgeText(item) }}
+                        </view>
+                        {{ itemValue(item, name, 'name') }}
+                    </view>
+                    <view v-if="showBar" class="snake-tabs__bar" :style="tabBarStyle" />
+                </view>
+            </scroll-view>
+        </view>
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component Tabs
@@ -189,43 +226,6 @@ onBeforeUnmount(() => {
 
 defineExpose({ init, clickTab, scrollByIndex });
 </script>
-
-<template>
-    <view class="snake-tabs" :style="rootStyle" :class="customClass">
-        <view>
-            <scroll-view
-                scroll-x
-                class="snake-tabs__scroll-view"
-                :scroll-left="scrollLeft"
-                :show-scrollbar="false"
-                scroll-with-animation
-            >
-                <view :id="id" class="snake-tabs__scroll-box" :class="{ 'snake-tabs__scroll-flex': !isScroll }">
-                    <view
-                        v-for="(item, index) in list"
-                        :id="`${id}-item-${index}`"
-                        :key="index"
-                        class="snake-tabs__item snake-line-1"
-                        :class="{ 'snake-tabs__item--hidden': item.hidden }"
-                        :style="tabItemStyle(index)"
-                        @tap="clickTab(index)"
-                    >
-                        <view
-                            v-if="Number(badgeCount(item)) !== 0"
-                            class="snake-tabs__badge"
-                            :class="{ 'snake-tabs__badge--dot': isDot }"
-                            :style="{ top: `${offset[0]}rpx`, right: `${offset[1]}rpx` }"
-                        >
-                            {{ badgeText(item) }}
-                        </view>
-                        {{ itemValue(item, name, 'name') }}
-                    </view>
-                    <view v-if="showBar" class="snake-tabs__bar" :style="tabBarStyle" />
-                </view>
-            </scroll-view>
-        </view>
-    </view>
-</template>
 
 <style scoped>
 .snake-tabs,

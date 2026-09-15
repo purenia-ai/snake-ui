@@ -1,3 +1,13 @@
+<template>
+    <DemoPage :title="title" :desc="text('在装修页面中滚动展示多条业务公告。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <snake-notice class="demo-notice-showcase" :datas="data" />
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
 <script setup lang="ts">
 import { computed, reactive } from 'vue';
 import { noticeData } from '../../../common/fixtures';
@@ -42,13 +52,3 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 </script>
-<template>
-    <DemoPage :title="title" :desc="text('在装修页面中滚动展示多条业务公告。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <snake-notice class="demo-notice-showcase" :datas="data" />
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>

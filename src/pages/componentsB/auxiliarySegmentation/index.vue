@@ -1,3 +1,13 @@
+<template>
+    <DemoPage :title="title" :desc="text('在装修区块之间提供留白或分隔线。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <snake-auxiliary-segmentation class="demo-auxiliary-segmentation-showcase" :datas="data" />
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
 <script setup lang="ts">
 import { computed, reactive } from 'vue';
 import { auxiliaryData } from '../../../common/fixtures';
@@ -24,13 +34,3 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 </script>
-<template>
-    <DemoPage :title="title" :desc="text('在装修区块之间提供留白或分隔线。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <snake-auxiliary-segmentation class="demo-auxiliary-segmentation-showcase" :datas="data" />
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>

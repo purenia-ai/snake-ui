@@ -1,25 +1,3 @@
-<script setup lang="ts">
-import { ref } from 'vue';
-import '../../../src/uni_modules/snake-ui/iconfont.css';
-import { iconNames } from '../../../src/uni_modules/snake-ui/components/snake-icon/icon-names';
-
-const copiedIcon = ref('');
-let resetTimer: ReturnType<typeof setTimeout> | undefined;
-
-async function copyIcon(name: string) {
-    try {
-        await navigator.clipboard.writeText(name);
-        copiedIcon.value = name;
-        if (resetTimer) clearTimeout(resetTimer);
-        resetTimer = setTimeout(() => {
-            copiedIcon.value = '';
-        }, 1600);
-    } catch {
-        copiedIcon.value = '';
-    }
-}
-</script>
-
 <template>
     <div class="icon-gallery">
         <div class="icon-gallery__meta">
@@ -45,6 +23,28 @@ async function copyIcon(name: string) {
         </p>
     </div>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+import '../../../src/uni_modules/snake-ui/iconfont.css';
+import { iconNames } from '../../../src/uni_modules/snake-ui/components/snake-icon/icon-names';
+
+const copiedIcon = ref('');
+let resetTimer: ReturnType<typeof setTimeout> | undefined;
+
+async function copyIcon(name: string) {
+    try {
+        await navigator.clipboard.writeText(name);
+        copiedIcon.value = name;
+        if (resetTimer) clearTimeout(resetTimer);
+        resetTimer = setTimeout(() => {
+            copiedIcon.value = '';
+        }, 1600);
+    } catch {
+        copiedIcon.value = '';
+    }
+}
+</script>
 
 <style scoped>
 .icon-gallery {

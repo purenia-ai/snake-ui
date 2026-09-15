@@ -1,3 +1,13 @@
+<template>
+    <DemoPage :title="title" :desc="text('在装修页面中承载视频播放内容。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <snake-videos class="demo-videos-showcase" :datas="data" />
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
 <script setup lang="ts">
 import { computed, reactive } from 'vue';
 import { localImage } from '../../../common/fixtures';
@@ -37,13 +47,3 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 </script>
-<template>
-    <DemoPage :title="title" :desc="text('在装修页面中承载视频播放内容。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <snake-videos class="demo-videos-showcase" :datas="data" />
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>

@@ -1,67 +1,3 @@
-<script setup lang="ts">
-import { ref } from 'vue';
-import type { UploadExpose, UploadFileItem, UploadRequest } from '../../../uni_modules/snake-ui';
-import DemoPage from '../../../components/demo-page/demo-page.vue';
-
-const demoImage = 'https://cdn.puresnake.com/joker/recycle/like.png';
-const successfulFile = (name: string, size: number, fileType: 'image' | 'video' | 'file', url: string) => ({
-    url,
-    name,
-    size,
-    fileType,
-    status: 'success' as const,
-    progress: 100,
-    error: false
-});
-
-const imageFiles = ref<UploadFileItem[]>([successfulFile('snake-ui.png', 86 * 1024, 'image', demoImage)]);
-const documentFiles = ref<UploadFileItem[]>([
-    successfulFile('组件设计说明.pdf', 2.4 * 1024 * 1024, 'file', 'https://example.com/design.pdf')
-]);
-const videoFiles = ref<UploadFileItem[]>([]);
-const manualFiles = ref<UploadFileItem[]>([]);
-const customButtonFiles = ref<UploadFileItem[]>([]);
-const customListFiles = ref<UploadFileItem[]>([
-    successfulFile('季度产品报告.pdf', 3.2 * 1024 * 1024, 'file', 'https://example.com/report.pdf'),
-    successfulFile('组件接口清单.docx', 468 * 1024, 'file', 'https://example.com/component-spec.docx')
-]);
-
-const manualUploadRef = ref<UploadExpose | null>(null);
-const customListUploadRef = ref<UploadExpose | null>(null);
-
-// 演示上传适配器；真实项目可在此获取 STS 并上传到 OSS、COS 或业务服务器。
-const mockUpload: UploadRequest = async (file, { onProgress }) => {
-    onProgress(30);
-    await delay(180);
-    onProgress(70);
-    await delay(180);
-    return { url: file.path || file.url || demoImage, response: { provider: 'demo-storage', success: true } };
-};
-
-function delay(duration: number) {
-    return new Promise<void>(resolve => setTimeout(resolve, duration));
-}
-
-function startManualUpload() {
-    manualUploadRef.value?.upload();
-}
-
-function clearManualFiles() {
-    manualUploadRef.value?.clear();
-}
-
-function removeCustomFile(index: number) {
-    customListUploadRef.value?.remove(index);
-}
-
-function formatFileSize(bytes?: number) {
-    if (!bytes) return '0 B';
-    if (bytes < 1024) return `${bytes} B`;
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-    return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
-}
-</script>
-
 <template>
     <DemoPage
         class="upload-demo-page"
@@ -223,6 +159,70 @@ function formatFileSize(bytes?: number) {
         </view>
     </DemoPage>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+import type { UploadExpose, UploadFileItem, UploadRequest } from '../../../uni_modules/snake-ui';
+import DemoPage from '../../../components/demo-page/demo-page.vue';
+
+const demoImage = 'https://cdn.puresnake.com/joker/recycle/like.png';
+const successfulFile = (name: string, size: number, fileType: 'image' | 'video' | 'file', url: string) => ({
+    url,
+    name,
+    size,
+    fileType,
+    status: 'success' as const,
+    progress: 100,
+    error: false
+});
+
+const imageFiles = ref<UploadFileItem[]>([successfulFile('snake-ui.png', 86 * 1024, 'image', demoImage)]);
+const documentFiles = ref<UploadFileItem[]>([
+    successfulFile('组件设计说明.pdf', 2.4 * 1024 * 1024, 'file', 'https://example.com/design.pdf')
+]);
+const videoFiles = ref<UploadFileItem[]>([]);
+const manualFiles = ref<UploadFileItem[]>([]);
+const customButtonFiles = ref<UploadFileItem[]>([]);
+const customListFiles = ref<UploadFileItem[]>([
+    successfulFile('季度产品报告.pdf', 3.2 * 1024 * 1024, 'file', 'https://example.com/report.pdf'),
+    successfulFile('组件接口清单.docx', 468 * 1024, 'file', 'https://example.com/component-spec.docx')
+]);
+
+const manualUploadRef = ref<UploadExpose | null>(null);
+const customListUploadRef = ref<UploadExpose | null>(null);
+
+// 演示上传适配器；真实项目可在此获取 STS 并上传到 OSS、COS 或业务服务器。
+const mockUpload: UploadRequest = async (file, { onProgress }) => {
+    onProgress(30);
+    await delay(180);
+    onProgress(70);
+    await delay(180);
+    return { url: file.path || file.url || demoImage, response: { provider: 'demo-storage', success: true } };
+};
+
+function delay(duration: number) {
+    return new Promise<void>(resolve => setTimeout(resolve, duration));
+}
+
+function startManualUpload() {
+    manualUploadRef.value?.upload();
+}
+
+function clearManualFiles() {
+    manualUploadRef.value?.clear();
+}
+
+function removeCustomFile(index: number) {
+    customListUploadRef.value?.remove(index);
+}
+
+function formatFileSize(bytes?: number) {
+    if (!bytes) return '0 B';
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+}
+</script>
 
 <style scoped>
 .upload-demo-page {

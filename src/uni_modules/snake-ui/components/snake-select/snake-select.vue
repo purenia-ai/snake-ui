@@ -1,3 +1,63 @@
+<template>
+    <view class="snake-select" :class="customClass" :style="customStyle">
+        <snake-popup
+            v-model="popupValue"
+            mode="bottom"
+            :close-on-click-overlay="maskCloseAble"
+            :safe-area-inset-bottom="safeAreaInsetBottom"
+            :z-index="popupZIndex"
+            @click-overlay="overlayClick"
+        >
+            <view class="snake-select__panel">
+                <view class="snake-select__header" @touchmove.stop.prevent="">
+                    <view
+                        class="snake-select__header__cancel snake-select__header__btn"
+                        :style="{ color: cancelColor }"
+                        hover-class="snake-select__btn--hover"
+                        :hover-stay-time="150"
+                        @click="getResult('cancel')"
+                    >
+                        {{ cancelTextValue }}
+                    </view>
+                    <view class="snake-select__header__title snake-select__ellipsis">{{ title }}</view>
+                    <view
+                        class="snake-select__header__confirm snake-select__header__btn"
+                        :style="{ color: moving ? cancelColor : confirmColor }"
+                        hover-class="snake-select__btn--hover"
+                        :hover-stay-time="150"
+                        @touchmove.stop=""
+                        @click.stop="getResult('confirm')"
+                    >
+                        {{ confirmTextValue }}
+                    </view>
+                </view>
+                <view class="snake-select__body">
+                    <picker-view
+                        v-if="modelValue && readyToRender"
+                        :value="defaultSelector"
+                        class="snake-select__body__picker-view"
+                        mask-class="snake-select__mask"
+                        indicator-class="snake-select__indicator"
+                        @pickstart="pickstart"
+                        @pickend="pickend"
+                        @change="columnChange"
+                    >
+                        <picker-view-column v-for="(item, index) in columnData" :key="index">
+                            <view
+                                v-for="(item1, index1) in item"
+                                :key="index1"
+                                class="snake-select__body__picker-view__item"
+                            >
+                                <view class="snake-select__ellipsis">{{ item1[labelName] }}</view>
+                            </view>
+                        </picker-view-column>
+                    </picker-view>
+                </view>
+            </view>
+        </snake-popup>
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component Select
@@ -234,66 +294,6 @@ function is2DList(list: SelectItem[] | SelectItem[][]): list is SelectItem[][] {
     return Array.isArray(list) && list.length > 0 && Array.isArray(list[0]);
 }
 </script>
-
-<template>
-    <view class="snake-select" :class="customClass" :style="customStyle">
-        <snake-popup
-            v-model="popupValue"
-            mode="bottom"
-            :close-on-click-overlay="maskCloseAble"
-            :safe-area-inset-bottom="safeAreaInsetBottom"
-            :z-index="popupZIndex"
-            @click-overlay="overlayClick"
-        >
-            <view class="snake-select__panel">
-                <view class="snake-select__header" @touchmove.stop.prevent="">
-                    <view
-                        class="snake-select__header__cancel snake-select__header__btn"
-                        :style="{ color: cancelColor }"
-                        hover-class="snake-select__btn--hover"
-                        :hover-stay-time="150"
-                        @click="getResult('cancel')"
-                    >
-                        {{ cancelTextValue }}
-                    </view>
-                    <view class="snake-select__header__title snake-select__ellipsis">{{ title }}</view>
-                    <view
-                        class="snake-select__header__confirm snake-select__header__btn"
-                        :style="{ color: moving ? cancelColor : confirmColor }"
-                        hover-class="snake-select__btn--hover"
-                        :hover-stay-time="150"
-                        @touchmove.stop=""
-                        @click.stop="getResult('confirm')"
-                    >
-                        {{ confirmTextValue }}
-                    </view>
-                </view>
-                <view class="snake-select__body">
-                    <picker-view
-                        v-if="modelValue && readyToRender"
-                        :value="defaultSelector"
-                        class="snake-select__body__picker-view"
-                        mask-class="snake-select__mask"
-                        indicator-class="snake-select__indicator"
-                        @pickstart="pickstart"
-                        @pickend="pickend"
-                        @change="columnChange"
-                    >
-                        <picker-view-column v-for="(item, index) in columnData" :key="index">
-                            <view
-                                v-for="(item1, index1) in item"
-                                :key="index1"
-                                class="snake-select__body__picker-view__item"
-                            >
-                                <view class="snake-select__ellipsis">{{ item1[labelName] }}</view>
-                            </view>
-                        </picker-view-column>
-                    </picker-view>
-                </view>
-            </view>
-        </snake-popup>
-    </view>
-</template>
 
 <style scoped>
 .snake-select__panel {

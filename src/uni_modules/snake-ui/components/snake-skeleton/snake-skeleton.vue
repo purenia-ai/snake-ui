@@ -1,3 +1,33 @@
+<template>
+    <view class="snake-skeleton" :style="rootStyle">
+        <template v-if="loading">
+            <slot v-if="$slots.template" name="template" />
+            <view v-else class="snake-skeleton__wrapper">
+                <SkeletonItem
+                    v-if="avatar"
+                    variant="circle"
+                    :width="avatarSize"
+                    :height="avatarSize"
+                    :radius="avatarRadius"
+                    custom-style="flex: none; margin-right: 15px"
+                />
+                <view class="snake-skeleton__content">
+                    <SkeletonItem v-if="title" variant="text" :width="titleWidth" :height="titleHeight" />
+                    <SkeletonItem
+                        v-for="(item, index) in rowItems"
+                        :key="index"
+                        variant="text"
+                        :width="item.width"
+                        :height="item.height"
+                        :custom-style="{ marginTop: item.marginTop }"
+                    />
+                </view>
+            </view>
+        </template>
+        <slot v-else />
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component Skeleton
@@ -58,36 +88,6 @@ function resolveRowValue(
     return shortenLastRow && index === count - 1 ? '70%' : value;
 }
 </script>
-
-<template>
-    <view class="snake-skeleton" :style="rootStyle">
-        <template v-if="loading">
-            <slot v-if="$slots.template" name="template" />
-            <view v-else class="snake-skeleton__wrapper">
-                <SkeletonItem
-                    v-if="avatar"
-                    variant="circle"
-                    :width="avatarSize"
-                    :height="avatarSize"
-                    :radius="avatarRadius"
-                    custom-style="flex: none; margin-right: 15px"
-                />
-                <view class="snake-skeleton__content">
-                    <SkeletonItem v-if="title" variant="text" :width="titleWidth" :height="titleHeight" />
-                    <SkeletonItem
-                        v-for="(item, index) in rowItems"
-                        :key="index"
-                        variant="text"
-                        :width="item.width"
-                        :height="item.height"
-                        :custom-style="{ marginTop: item.marginTop }"
-                    />
-                </view>
-            </view>
-        </template>
-        <slot v-else />
-    </view>
-</template>
 
 <style scoped>
 .snake-skeleton {

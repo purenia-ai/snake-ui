@@ -1,3 +1,13 @@
+<template>
+    <DemoPage :title="title" :desc="text('以图标和文字组合多个快捷导航入口。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <snake-graphic-navigation class="demo-graphic-navigation-showcase" :datas="data" />
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
 <script setup lang="ts">
 import { computed, reactive } from 'vue';
 import { navigationData } from '../../../common/fixtures';
@@ -42,13 +52,3 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 </script>
-<template>
-    <DemoPage :title="title" :desc="text('以图标和文字组合多个快捷导航入口。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <snake-graphic-navigation class="demo-graphic-navigation-showcase" :datas="data" />
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>

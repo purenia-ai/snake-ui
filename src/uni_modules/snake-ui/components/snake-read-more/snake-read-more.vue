@@ -1,3 +1,41 @@
+<template>
+    <view>
+        <view
+            class="snake-read-more__content"
+            :class="[elId, customClass]"
+            :style="[
+                {
+                    height: isLongContent && !showMore ? `${showHeight}rpx` : 'auto',
+                    textIndent: textIndent
+                },
+                customStyle
+            ]"
+        >
+            <slot />
+        </view>
+        <view
+            v-if="isLongContent"
+            class="snake-read-more__toggle"
+            :class="{ 'snake-read-more__toggle--open': showMore }"
+            :style="[innerShadowStyle]"
+            @click="toggleReadMore"
+        >
+            <text
+                class="snake-read-more__toggle__btn"
+                :style="{
+                    fontSize: `${fontSize}rpx`,
+                    color: color
+                }"
+            >
+                {{ showMore ? openTextValue : closeTextValue }}
+            </text>
+            <view class="snake-read-more__toggle__btn__icon">
+                <snake-icon :color="color" :size="fontSize" :name="showMore ? 'arrow-up' : 'arrow-down'" />
+            </view>
+        </view>
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component ReadMore
@@ -68,44 +106,6 @@ function toggleReadMore() {
     else emit('close', props.index);
 }
 </script>
-
-<template>
-    <view>
-        <view
-            class="snake-read-more__content"
-            :class="[elId, customClass]"
-            :style="[
-                {
-                    height: isLongContent && !showMore ? `${showHeight}rpx` : 'auto',
-                    textIndent: textIndent
-                },
-                customStyle
-            ]"
-        >
-            <slot />
-        </view>
-        <view
-            v-if="isLongContent"
-            class="snake-read-more__toggle"
-            :class="{ 'snake-read-more__toggle--open': showMore }"
-            :style="[innerShadowStyle]"
-            @click="toggleReadMore"
-        >
-            <text
-                class="snake-read-more__toggle__btn"
-                :style="{
-                    fontSize: `${fontSize}rpx`,
-                    color: color
-                }"
-            >
-                {{ showMore ? openTextValue : closeTextValue }}
-            </text>
-            <view class="snake-read-more__toggle__btn__icon">
-                <snake-icon :color="color" :size="fontSize" :name="showMore ? 'arrow-up' : 'arrow-down'" />
-            </view>
-        </view>
-    </view>
-</template>
 
 <style scoped>
 .snake-read-more__content {

@@ -1,3 +1,13 @@
+<template>
+    <view class="snake-checkbox" :style="[checkboxStyle, customStyle]" :class="customClass">
+        <view class="snake-checkbox__icon-wrap" @tap="toggle" :class="iconClass" :style="iconStyle">
+            <snake-icon name="checkmark" :size="checkboxIconSize" :color="iconColor" />
+        </view>
+        <view class="snake-checkbox__label" @tap="onClickLabel" :style="{ fontSize: labelFontSize }">
+            <slot>{{ label }}</slot>
+        </view>
+    </view>
+</template>
 <script setup lang="ts">
 /**
  * @component Checkbox
@@ -197,16 +207,6 @@ defineExpose({
     props
 });
 </script>
-<template>
-    <view class="snake-checkbox" :style="[checkboxStyle, customStyle]" :class="customClass">
-        <view class="snake-checkbox__icon-wrap" @tap="toggle" :class="iconClass" :style="iconStyle">
-            <snake-icon name="checkmark" :size="checkboxIconSize" :color="iconColor" />
-        </view>
-        <view class="snake-checkbox__label" @tap="onClickLabel" :style="{ fontSize: labelFontSize }">
-            <slot>{{ label }}</slot>
-        </view>
-    </view>
-</template>
 <style scoped>
 .snake-checkbox {
     /* #ifndef APP-NVUE */

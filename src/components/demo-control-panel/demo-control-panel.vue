@@ -1,21 +1,3 @@
-<script setup lang="ts">
-import type { DemoControl, DemoValue } from '../../common/demo-types';
-import { useDemoLocale } from '../../common/demo-i18n';
-
-const props = defineProps<{ controls: DemoControl[]; values: Record<string, DemoValue> }>();
-const emit = defineEmits<{ change: [key: string, value: DemoValue] }>();
-const { text } = useDemoLocale();
-
-function selectedIndex(control: DemoControl): number {
-    return Math.max(0, control.options?.findIndex(option => option.value === props.values[control.key]) ?? 0);
-}
-
-function selectOption(control: DemoControl, index: number) {
-    const option = control.options?.[index];
-    if (option) emit('change', control.key, option.value);
-}
-</script>
-
 <template>
     <view class="demo-controls">
         <view v-for="control in controls" :key="control.key" class="demo-control">
@@ -60,6 +42,24 @@ function selectOption(control: DemoControl, index: number) {
         </view>
     </view>
 </template>
+
+<script setup lang="ts">
+import type { DemoControl, DemoValue } from '../../common/demo-types';
+import { useDemoLocale } from '../../common/demo-i18n';
+
+const props = defineProps<{ controls: DemoControl[]; values: Record<string, DemoValue> }>();
+const emit = defineEmits<{ change: [key: string, value: DemoValue] }>();
+const { text } = useDemoLocale();
+
+function selectedIndex(control: DemoControl): number {
+    return Math.max(0, control.options?.findIndex(option => option.value === props.values[control.key]) ?? 0);
+}
+
+function selectOption(control: DemoControl, index: number) {
+    const option = control.options?.[index];
+    if (option) emit('change', control.key, option.value);
+}
+</script>
 
 <style lang="scss" scoped>
 @import '../../common/demo.scss';

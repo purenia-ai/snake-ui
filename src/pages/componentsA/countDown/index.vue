@@ -1,3 +1,40 @@
+<template>
+    <DemoPage :title="title" :desc="text('用于活动截止等场景的倒计时，通过数字变化给用户明确的时间感受。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-stack demo-countdown-showcase">
+                <snake-count-down
+                    :key="countdownKey"
+                    :timestamp="Number(state.cTimestamp)"
+                    :separator="String(state.cSeparator)"
+                    :show-days="Boolean(state.cShowDays)"
+                    :show-hours="Boolean(state.cShowHours)"
+                    :show-minutes="Boolean(state.cShowMinutes)"
+                    :show-seconds="Boolean(state.cShowSeconds)"
+                    :hide-zero-day="Boolean(state.cHideZeroDay)"
+                    :show-border="Boolean(state.cShowBorder)"
+                    border-color="#06D290"
+                    separator-color="#8a8b99"
+                    color="#06D290"
+                    bg-color="rgba(6, 210, 144, 0.08)"
+                    height="56"
+                    @end="onEnd"
+                    @change="onChange"
+                />
+                <view class="demo-countdown-showcase__meta">
+                    <text>{{ finished ? text('已结束') : `${text('当前剩余')}: ${restSeconds}s` }}</text>
+                    <snake-button size="mini" custom-style="width: auto" @click="restart">
+                        {{ isEnglish ? 'Restart' : '重新开始' }}
+                    </snake-button>
+                </view>
+            </view>
+        </DemoSection>
+
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -60,43 +97,6 @@ function onChange(seconds: number) {
     restSeconds.value = seconds;
 }
 </script>
-
-<template>
-    <DemoPage :title="title" :desc="text('用于活动截止等场景的倒计时，通过数字变化给用户明确的时间感受。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-stack demo-countdown-showcase">
-                <snake-count-down
-                    :key="countdownKey"
-                    :timestamp="Number(state.cTimestamp)"
-                    :separator="String(state.cSeparator)"
-                    :show-days="Boolean(state.cShowDays)"
-                    :show-hours="Boolean(state.cShowHours)"
-                    :show-minutes="Boolean(state.cShowMinutes)"
-                    :show-seconds="Boolean(state.cShowSeconds)"
-                    :hide-zero-day="Boolean(state.cHideZeroDay)"
-                    :show-border="Boolean(state.cShowBorder)"
-                    border-color="#06D290"
-                    separator-color="#8a8b99"
-                    color="#06D290"
-                    bg-color="rgba(6, 210, 144, 0.08)"
-                    height="56"
-                    @end="onEnd"
-                    @change="onChange"
-                />
-                <view class="demo-countdown-showcase__meta">
-                    <text>{{ finished ? text('已结束') : `${text('当前剩余')}: ${restSeconds}s` }}</text>
-                    <snake-button size="mini" custom-style="width: auto" @click="restart">
-                        {{ isEnglish ? 'Restart' : '重新开始' }}
-                    </snake-button>
-                </view>
-            </view>
-        </DemoSection>
-
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 
 <style scoped lang="scss">
 .demo-countdown-showcase {

@@ -1,3 +1,38 @@
+<template>
+    <view class="snake-index-list" :class="customClass" :style="customStyle">
+        <slot />
+        <view
+            v-if="indexList.length"
+            class="snake-index-list__rail"
+            :style="[{ zIndex: props.zIndex }, railStyle]"
+            aria-label="索引导航"
+            @touchstart.stop.prevent="touchSelect"
+            @touchmove.stop.prevent="touchSelect"
+            @touchend.stop.prevent="touching = false"
+            @touchcancel.stop.prevent="touching = false"
+        >
+            <view
+                v-for="(item, index) in indexList"
+                :key="`${item}-${index}`"
+                class="snake-index-list__key"
+                :class="{ 'is-active': activeIndex === index }"
+                :style="{ color: activeIndex === index ? activeColor : inactiveColor }"
+                @click="scrollTo(index)"
+            >
+                {{ item }}
+            </view>
+        </view>
+        <view
+            v-if="indexList.length"
+            class="snake-index-list__bubble"
+            :class="{ 'is-visible': touching }"
+            :style="{ zIndex: props.zIndex + 1 }"
+        >
+            {{ activeIndex >= 0 ? indexList[activeIndex] : '' }}
+        </view>
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component IndexList
@@ -151,41 +186,6 @@ watch(
 onMounted(() => void update());
 defineExpose({ scrollTo, update });
 </script>
-
-<template>
-    <view class="snake-index-list" :class="customClass" :style="customStyle">
-        <slot />
-        <view
-            v-if="indexList.length"
-            class="snake-index-list__rail"
-            :style="[{ zIndex: props.zIndex }, railStyle]"
-            aria-label="索引导航"
-            @touchstart.stop.prevent="touchSelect"
-            @touchmove.stop.prevent="touchSelect"
-            @touchend.stop.prevent="touching = false"
-            @touchcancel.stop.prevent="touching = false"
-        >
-            <view
-                v-for="(item, index) in indexList"
-                :key="`${item}-${index}`"
-                class="snake-index-list__key"
-                :class="{ 'is-active': activeIndex === index }"
-                :style="{ color: activeIndex === index ? activeColor : inactiveColor }"
-                @click="scrollTo(index)"
-            >
-                {{ item }}
-            </view>
-        </view>
-        <view
-            v-if="indexList.length"
-            class="snake-index-list__bubble"
-            :class="{ 'is-visible': touching }"
-            :style="{ zIndex: props.zIndex + 1 }"
-        >
-            {{ activeIndex >= 0 ? indexList[activeIndex] : '' }}
-        </view>
-    </view>
-</template>
 
 <style scoped>
 .snake-index-list {

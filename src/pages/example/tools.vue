@@ -1,28 +1,3 @@
-<script setup lang="ts">
-import { computed, ref } from 'vue';
-import DemoPage from '../../components/demo-page/demo-page.vue';
-import { useDemoLocale } from '../../common/demo-i18n';
-import tools from './tools.config';
-
-defineOptions({ name: 'ExampleTools' });
-
-const { text } = useDemoLocale();
-const openTool = (url: string) => uni.navigateTo({ url });
-const searchText = ref('');
-const groups = computed(() => {
-    const keyword = searchText.value.trim().toLowerCase();
-    const map = new Map<string, { title: string; titleEn: string; items: typeof tools }>();
-    tools.forEach(tool => {
-        const source = `${tool.title} ${tool.desc} ${tool.category} ${tool.categoryEn}`.toLowerCase();
-        if (keyword && !source.includes(keyword)) return;
-        const group = map.get(tool.category) || { title: tool.category, titleEn: tool.categoryEn, items: [] };
-        group.items.push(tool);
-        map.set(tool.category, group);
-    });
-    return [...map.values()];
-});
-</script>
-
 <template>
     <DemoPage
         tabbar
@@ -70,6 +45,31 @@ const groups = computed(() => {
         </view>
     </DemoPage>
 </template>
+
+<script setup lang="ts">
+import { computed, ref } from 'vue';
+import DemoPage from '../../components/demo-page/demo-page.vue';
+import { useDemoLocale } from '../../common/demo-i18n';
+import tools from './tools.config';
+
+defineOptions({ name: 'ExampleTools' });
+
+const { text } = useDemoLocale();
+const openTool = (url: string) => uni.navigateTo({ url });
+const searchText = ref('');
+const groups = computed(() => {
+    const keyword = searchText.value.trim().toLowerCase();
+    const map = new Map<string, { title: string; titleEn: string; items: typeof tools }>();
+    tools.forEach(tool => {
+        const source = `${tool.title} ${tool.desc} ${tool.category} ${tool.categoryEn}`.toLowerCase();
+        if (keyword && !source.includes(keyword)) return;
+        const group = map.get(tool.category) || { title: tool.category, titleEn: tool.categoryEn, items: [] };
+        group.items.push(tool);
+        map.set(tool.category, group);
+    });
+    return [...map.values()];
+});
+</script>
 
 <style lang="scss" scoped>
 @import '../../common/demo.scss';

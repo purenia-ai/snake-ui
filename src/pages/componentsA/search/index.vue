@@ -1,3 +1,32 @@
+<template>
+    <DemoPage :title="title" :desc="text('集成占位、清除与操作按钮的常用搜索输入。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-stack demo-search-showcase">
+                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
+                <snake-search
+                    v-model="keyword"
+                    :shape="String(state.sShape)"
+                    :show-action="Boolean(state.sShowAction)"
+                    :clearabled="Boolean(state.sClear)"
+                    :animation="Boolean(state.sAnimation)"
+                    :placeholder="String(state.sPlaceholder)"
+                    margin="16rpx 0"
+                    @search="onSearch"
+                    @clear="onClear"
+                />
+                <text class="demo-variant-sub">{{ text('搜索内容') }}：{{ keyword || '—' }}</text>
+                <text class="demo-variant-sub">{{ lastEvent || (isEnglish ? 'No event yet' : '暂无事件') }}</text>
+                <text class="demo-variant-title">{{ isEnglish ? 'Variants' : '变体示例' }}</text>
+                <snake-search :show-action="false" placeholder="自定义背景" bg-color="#ffffff" margin="16rpx 0" />
+                <snake-search shape="square" height="68" placeholder="方形搜索框" margin="16rpx 0" />
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -57,35 +86,6 @@ function onClear() {
     lastEvent.value = text('点击清除');
 }
 </script>
-
-<template>
-    <DemoPage :title="title" :desc="text('集成占位、清除与操作按钮的常用搜索输入。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-stack demo-search-showcase">
-                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
-                <snake-search
-                    v-model="keyword"
-                    :shape="String(state.sShape)"
-                    :show-action="Boolean(state.sShowAction)"
-                    :clearabled="Boolean(state.sClear)"
-                    :animation="Boolean(state.sAnimation)"
-                    :placeholder="String(state.sPlaceholder)"
-                    margin="16rpx 0"
-                    @search="onSearch"
-                    @clear="onClear"
-                />
-                <text class="demo-variant-sub">{{ text('搜索内容') }}：{{ keyword || '—' }}</text>
-                <text class="demo-variant-sub">{{ lastEvent || (isEnglish ? 'No event yet' : '暂无事件') }}</text>
-                <text class="demo-variant-title">{{ isEnglish ? 'Variants' : '变体示例' }}</text>
-                <snake-search :show-action="false" placeholder="自定义背景" bg-color="#ffffff" margin="16rpx 0" />
-                <snake-search shape="square" height="68" placeholder="方形搜索框" margin="16rpx 0" />
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 
 <style scoped>
 .demo-stack {

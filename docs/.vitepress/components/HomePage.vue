@@ -1,3 +1,215 @@
+<template>
+    <main class="snake-home">
+        <section class="snake-hero" aria-labelledby="snake-home-title">
+            <div class="snake-hero__mesh" aria-hidden="true" />
+            <div class="snake-home__container snake-hero__inner">
+                <div class="snake-hero__content">
+                    <p class="snake-kicker"><span /> UNI-APP · COMMERCE · CMS</p>
+                    <h1 id="snake-home-title">把商城页面，<br /><span>组装成系统</span></h1>
+                    <p class="snake-hero__lead">
+                        Snake UI 是面向 uni-app 商城与 CMS
+                        场景的组件库。用真实源码契约连接配置、组件与业务，让页面更快落地，也更容易维护。
+                    </p>
+                    <div class="snake-hero__badges" aria-label="技术栈">
+                        <span>Vue 3</span><span>TypeScript</span><span>uni-app</span><span>CMS Ready</span>
+                    </div>
+                    <div class="snake-hero__actions">
+                        <a class="snake-button snake-button--brand" :href="internalLink('/guide/getting-started')"
+                            >快速开始 <span>→</span></a
+                        >
+                        <a class="snake-button snake-button--soft" :href="internalLink('/components/intro')"
+                            >浏览组件</a
+                        >
+                        <a
+                            class="snake-button snake-button--ghost"
+                            href="https://m.puresnake.com/snake-ui/h5/"
+                            target="_blank"
+                            rel="noreferrer"
+                            >在线演示 ↗</a
+                        >
+                    </div>
+                    <div class="snake-install" aria-label="安装 Snake UI">
+                        <code>{{ installCommand }}</code>
+                        <button type="button" @click="copyInstallCommand">{{ copyStatus || '复制' }}</button>
+                        <span class="snake-install__status" aria-live="polite">{{ copyStatus }}</span>
+                    </div>
+                </div>
+                <div class="snake-orbit" aria-hidden="true">
+                    <div class="snake-orbit__halo snake-orbit__halo--outer" />
+                    <div class="snake-orbit__halo snake-orbit__halo--inner" />
+                    <div class="snake-orbit__core">
+                        <img
+                            class="snake-orbit__logo snake-orbit__logo--light"
+                            :src="internalLink('/snake-mark-light.svg')"
+                            alt=""
+                        />
+                        <img
+                            class="snake-orbit__logo snake-orbit__logo--dark"
+                            :src="internalLink('/snake-mark-dark.svg')"
+                            alt=""
+                        />
+                    </div>
+                    <div class="snake-float-card snake-float-card--cms"><b>CMS</b><span>配置驱动</span></div>
+                    <div class="snake-float-card snake-float-card--theme"><b>Theme</b><span>多主题</span></div>
+                    <div class="snake-float-card snake-float-card--platform"><b>Multi-end</b><span>一次开发</span></div>
+                </div>
+            </div>
+            <a class="snake-scroll-cue" href="#snake-capabilities" aria-label="查看核心能力"
+                ><i /><span>向下探索</span></a
+            >
+        </section>
+
+        <section class="snake-stats" aria-label="项目概览">
+            <div class="snake-home__container snake-stats__grid">
+                <article v-for="stat in stats" :key="stat.label" class="snake-stat-card">
+                    <div class="snake-stat-card__icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path :d="stat.icon" />
+                        </svg>
+                    </div>
+                    <div class="snake-stat-card__content">
+                        <p>
+                            <strong>{{ stat.value }}</strong
+                            ><em>{{ stat.suffix }}</em>
+                        </p>
+                        <b>{{ stat.label }}</b>
+                        <span>{{ stat.hint }}</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="snake-capabilities" class="snake-section snake-capabilities">
+            <div class="snake-home__container">
+                <header class="snake-section__header">
+                    <p>WHY SNAKE UI</p>
+                    <h2>为真实商城业务而生</h2>
+                    <span>从页面装修到组件运行时，每一层都有明确契约。</span>
+                </header>
+                <div class="snake-feature-grid">
+                    <a
+                        v-for="(feature, index) in features"
+                        :key="feature.title"
+                        class="snake-feature-card"
+                        :href="internalLink(feature.link)"
+                    >
+                        <span class="snake-feature-card__index">{{ String(index + 1).padStart(2, '0') }}</span>
+                        <p>{{ feature.eyebrow }}</p>
+                        <h3>{{ feature.title }}</h3>
+                        <span>{{ feature.details }}</span
+                        ><b>了解更多 <i>→</i></b>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="snake-section snake-popular">
+            <div class="snake-home__container">
+                <header class="snake-section__header snake-section__header--row">
+                    <div>
+                        <p>POPULAR PICKS</p>
+                        <h2>从高频能力开始</h2>
+                        <span>组件、组合式函数与工具均可直接进入完整文档。</span>
+                    </div>
+                    <a :href="internalLink('/components/intro')">查看全部组件 →</a>
+                </header>
+                <div class="snake-popular__grid">
+                    <a
+                        v-for="item in popular"
+                        :key="item.name"
+                        :href="internalLink(item.link)"
+                        class="snake-popular-card"
+                        ><span class="snake-popular-card__mark">S</span>
+                        <div>
+                            <b>{{ item.name }}</b
+                            ><span>{{ item.title }}</span>
+                        </div>
+                        <em>{{ item.tag }}</em
+                        ><i>↗</i></a
+                    >
+                </div>
+            </div>
+        </section>
+
+        <section class="snake-section snake-demo">
+            <div class="snake-home__container snake-demo__panel">
+                <div class="snake-demo__copy">
+                    <p>LIVE EXPERIENCE</p>
+                    <h2>文档与真实示例，保持同一步调</h2>
+                    <span
+                        >每个组件页面都能连接独立的 uni-app H5 演示。阅读 API、查看效果、回到源码，路径始终清晰。</span
+                    >
+                    <div class="snake-hero__actions">
+                        <a
+                            class="snake-button snake-button--brand"
+                            href="https://m.puresnake.com/snake-ui/h5/"
+                            target="_blank"
+                            rel="noreferrer"
+                            >打开在线演示 ↗</a
+                        ><a class="snake-button snake-button--dark" :href="internalLink('/components/intro')"
+                            >组件总览</a
+                        >
+                    </div>
+                </div>
+                <div class="snake-demo__window" aria-hidden="true">
+                    <div class="snake-demo__window-bar"><i /><i /><i /><span>m.puresnake.com/snake-ui</span></div>
+                    <div class="snake-demo__window-body">
+                        <div class="snake-demo__phone">
+                            <span /><strong>S</strong>
+                            <p>Snake UI</p>
+                            <i />
+                        </div>
+                        <div class="snake-demo__code"><span /><span /><span /><span /><b /></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="snake-section snake-next">
+            <div class="snake-home__container">
+                <header class="snake-section__header">
+                    <p>START BUILDING</p>
+                    <h2>选择你的下一步</h2>
+                </header>
+                <div class="snake-next__grid">
+                    <a :href="internalLink('/components/quickstart')"
+                        ><span>01</span>
+                        <div>
+                            <b>基础组件接入</b>
+                            <p>完成安装、配置与第一个组件</p>
+                        </div>
+                        <i>→</i></a
+                    >
+                    <a :href="internalLink('/cms/getting-started')"
+                        ><span>02</span>
+                        <div>
+                            <b>CMS 页面接入</b>
+                            <p>用页面配置渲染商城模块</p>
+                        </div>
+                        <i>→</i></a
+                    >
+                    <a :href="internalLink('/components/intro')"
+                        ><span>03</span>
+                        <div>
+                            <b>组件总览</b>
+                            <p>按业务域浏览全部组件</p>
+                        </div>
+                        <i>→</i></a
+                    >
+                    <a href="https://github.com/zwbcode/snake-ui" target="_blank" rel="noreferrer"
+                        ><span>04</span>
+                        <div>
+                            <b>源代码</b>
+                            <p>查看实现并参与项目建设</p>
+                        </div>
+                        <i>↗</i></a
+                    >
+                </div>
+            </div>
+        </section>
+    </main>
+</template>
+
 <script setup lang="ts">
 import { withBase } from 'vitepress';
 import { onBeforeUnmount, ref } from 'vue';
@@ -118,179 +330,3 @@ onBeforeUnmount(() => {
     if (copyTimer) clearTimeout(copyTimer);
 });
 </script>
-
-<template>
-    <main class="snake-home">
-        <section class="snake-hero" aria-labelledby="snake-home-title">
-            <div class="snake-hero__mesh" aria-hidden="true" />
-            <div class="snake-home__container snake-hero__inner">
-                <div class="snake-hero__content">
-                    <p class="snake-kicker"><span /> UNI-APP · COMMERCE · CMS</p>
-                    <h1 id="snake-home-title">把商城页面，<br /><span>组装成系统</span></h1>
-                    <p class="snake-hero__lead">
-                        Snake UI 是面向 uni-app 商城与 CMS 场景的组件库。用真实源码契约连接配置、组件与业务，让页面更快落地，也更容易维护。
-                    </p>
-                    <div class="snake-hero__badges" aria-label="技术栈">
-                        <span>Vue 3</span><span>TypeScript</span><span>uni-app</span><span>CMS Ready</span>
-                    </div>
-                    <div class="snake-hero__actions">
-                        <a class="snake-button snake-button--brand" :href="internalLink('/guide/getting-started')">快速开始 <span>→</span></a>
-                        <a class="snake-button snake-button--soft" :href="internalLink('/components/intro')">浏览组件</a>
-                        <a class="snake-button snake-button--ghost" href="https://m.puresnake.com/snake-ui/h5/" target="_blank" rel="noreferrer"
-                            >在线演示 ↗</a
-                        >
-                    </div>
-                    <div class="snake-install" aria-label="安装 Snake UI">
-                        <code>{{ installCommand }}</code>
-                        <button type="button" @click="copyInstallCommand">{{ copyStatus || '复制' }}</button>
-                        <span class="snake-install__status" aria-live="polite">{{ copyStatus }}</span>
-                    </div>
-                </div>
-                <div class="snake-orbit" aria-hidden="true">
-                    <div class="snake-orbit__halo snake-orbit__halo--outer" />
-                    <div class="snake-orbit__halo snake-orbit__halo--inner" />
-                    <div class="snake-orbit__core">
-                        <img class="snake-orbit__logo snake-orbit__logo--light" :src="internalLink('/snake-mark-light.svg')" alt="" />
-                        <img class="snake-orbit__logo snake-orbit__logo--dark" :src="internalLink('/snake-mark-dark.svg')" alt="" />
-                    </div>
-                    <div class="snake-float-card snake-float-card--cms"><b>CMS</b><span>配置驱动</span></div>
-                    <div class="snake-float-card snake-float-card--theme"><b>Theme</b><span>多主题</span></div>
-                    <div class="snake-float-card snake-float-card--platform"><b>Multi-end</b><span>一次开发</span></div>
-                </div>
-            </div>
-            <a class="snake-scroll-cue" href="#snake-capabilities" aria-label="查看核心能力"><i /><span>向下探索</span></a>
-        </section>
-
-        <section class="snake-stats" aria-label="项目概览">
-            <div class="snake-home__container snake-stats__grid">
-                <article v-for="stat in stats" :key="stat.label" class="snake-stat-card">
-                    <div class="snake-stat-card__icon">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path :d="stat.icon" />
-                        </svg>
-                    </div>
-                    <div class="snake-stat-card__content">
-                        <p>
-                            <strong>{{ stat.value }}</strong
-                            ><em>{{ stat.suffix }}</em>
-                        </p>
-                        <b>{{ stat.label }}</b>
-                        <span>{{ stat.hint }}</span>
-                    </div>
-                </article>
-            </div>
-        </section>
-
-        <section id="snake-capabilities" class="snake-section snake-capabilities">
-            <div class="snake-home__container">
-                <header class="snake-section__header">
-                    <p>WHY SNAKE UI</p>
-                    <h2>为真实商城业务而生</h2>
-                    <span>从页面装修到组件运行时，每一层都有明确契约。</span>
-                </header>
-                <div class="snake-feature-grid">
-                    <a v-for="(feature, index) in features" :key="feature.title" class="snake-feature-card" :href="internalLink(feature.link)">
-                        <span class="snake-feature-card__index">{{ String(index + 1).padStart(2, '0') }}</span>
-                        <p>{{ feature.eyebrow }}</p>
-                        <h3>{{ feature.title }}</h3>
-                        <span>{{ feature.details }}</span
-                        ><b>了解更多 <i>→</i></b>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <section class="snake-section snake-popular">
-            <div class="snake-home__container">
-                <header class="snake-section__header snake-section__header--row">
-                    <div>
-                        <p>POPULAR PICKS</p>
-                        <h2>从高频能力开始</h2>
-                        <span>组件、组合式函数与工具均可直接进入完整文档。</span>
-                    </div>
-                    <a :href="internalLink('/components/intro')">查看全部组件 →</a>
-                </header>
-                <div class="snake-popular__grid">
-                    <a v-for="item in popular" :key="item.name" :href="internalLink(item.link)" class="snake-popular-card"
-                        ><span class="snake-popular-card__mark">S</span>
-                        <div>
-                            <b>{{ item.name }}</b
-                            ><span>{{ item.title }}</span>
-                        </div>
-                        <em>{{ item.tag }}</em
-                        ><i>↗</i></a
-                    >
-                </div>
-            </div>
-        </section>
-
-        <section class="snake-section snake-demo">
-            <div class="snake-home__container snake-demo__panel">
-                <div class="snake-demo__copy">
-                    <p>LIVE EXPERIENCE</p>
-                    <h2>文档与真实示例，保持同一步调</h2>
-                    <span>每个组件页面都能连接独立的 uni-app H5 演示。阅读 API、查看效果、回到源码，路径始终清晰。</span>
-                    <div class="snake-hero__actions">
-                        <a class="snake-button snake-button--brand" href="https://m.puresnake.com/snake-ui/h5/" target="_blank" rel="noreferrer"
-                            >打开在线演示 ↗</a
-                        ><a class="snake-button snake-button--dark" :href="internalLink('/components/intro')">组件总览</a>
-                    </div>
-                </div>
-                <div class="snake-demo__window" aria-hidden="true">
-                    <div class="snake-demo__window-bar"><i /><i /><i /><span>m.puresnake.com/snake-ui</span></div>
-                    <div class="snake-demo__window-body">
-                        <div class="snake-demo__phone">
-                            <span /><strong>S</strong>
-                            <p>Snake UI</p>
-                            <i />
-                        </div>
-                        <div class="snake-demo__code"><span /><span /><span /><span /><b /></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="snake-section snake-next">
-            <div class="snake-home__container">
-                <header class="snake-section__header">
-                    <p>START BUILDING</p>
-                    <h2>选择你的下一步</h2>
-                </header>
-                <div class="snake-next__grid">
-                    <a :href="internalLink('/components/quickstart')"
-                        ><span>01</span>
-                        <div>
-                            <b>基础组件接入</b>
-                            <p>完成安装、配置与第一个组件</p>
-                        </div>
-                        <i>→</i></a
-                    >
-                    <a :href="internalLink('/cms/getting-started')"
-                        ><span>02</span>
-                        <div>
-                            <b>CMS 页面接入</b>
-                            <p>用页面配置渲染商城模块</p>
-                        </div>
-                        <i>→</i></a
-                    >
-                    <a :href="internalLink('/components/intro')"
-                        ><span>03</span>
-                        <div>
-                            <b>组件总览</b>
-                            <p>按业务域浏览全部组件</p>
-                        </div>
-                        <i>→</i></a
-                    >
-                    <a href="https://github.com/zwbcode/snake-ui" target="_blank" rel="noreferrer"
-                        ><span>04</span>
-                        <div>
-                            <b>源代码</b>
-                            <p>查看实现并参与项目建设</p>
-                        </div>
-                        <i>↗</i></a
-                    >
-                </div>
-            </div>
-        </section>
-    </main>
-</template>

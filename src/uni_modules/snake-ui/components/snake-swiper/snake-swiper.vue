@@ -1,3 +1,55 @@
+<template>
+    <view class="snake-swiper" :class="customClass" :style="rootStyle">
+        <swiper
+            class="snake-swiper__body"
+            :current="currentIndex"
+            :autoplay="autoplay"
+            :interval="interval"
+            :duration="duration"
+            :circular="circular"
+            :previous-margin="margin"
+            :next-margin="effect3d ? margin : nextMargin"
+            @change="change"
+            @animationfinish="finish"
+        >
+            <swiper-item v-for="(item, index) in list" :key="index" class="snake-swiper__item">
+                <view
+                    class="snake-swiper__content"
+                    :style="{
+                        borderRadius: addUnit(actualRadius, 'rpx'),
+                        transform: effect3d && index !== active ? 'scaleY(0.9)' : 'scaleY(1)',
+                        margin: effect3d && index !== active ? '0 20rpx' : 0
+                    }"
+                    @click.stop.prevent="emit('click', index)"
+                >
+                    <image class="snake-swiper__image" :src="source(item)" :mode="imgMode as any" />
+                    <text
+                        v-if="(showTitle || title) && itemTitle(item)"
+                        class="snake-swiper__title"
+                        :style="[titleStyle, { paddingBottom: titlePaddingBottom }]"
+                    >
+                        {{ itemTitle(item) }}
+                    </text>
+                </view>
+            </swiper-item>
+        </swiper>
+        <view v-if="showIndicator" class="snake-swiper__indicator" :class="indicatorClass">
+            <slot name="indicator" :current="active" :total="list.length">
+                <text v-if="mode === 'number'" class="snake-swiper__number">{{ active + 1 }}/{{ list.length }}</text>
+                <view v-else-if="mode !== 'none'" class="snake-swiper__dots" :class="`is-${mode}`">
+                    <view
+                        v-for="(_, index) in list"
+                        :key="index"
+                        class="snake-swiper__dot"
+                        :class="{ 'is-active': index === active }"
+                        :style="{ backgroundColor: index === active ? indicatorActiveColor : indicatorColor }"
+                    />
+                </view>
+            </slot>
+        </view>
+    </view>
+</template>
+
 <script setup lang="ts">
 /**
  * @component Swiper
@@ -76,58 +128,6 @@ function finish(event: any) {
     emit('animationfinish', { current: Number(event.detail?.current) || 0, source: event.detail?.source });
 }
 </script>
-
-<template>
-    <view class="snake-swiper" :class="customClass" :style="rootStyle">
-        <swiper
-            class="snake-swiper__body"
-            :current="currentIndex"
-            :autoplay="autoplay"
-            :interval="interval"
-            :duration="duration"
-            :circular="circular"
-            :previous-margin="margin"
-            :next-margin="effect3d ? margin : nextMargin"
-            @change="change"
-            @animationfinish="finish"
-        >
-            <swiper-item v-for="(item, index) in list" :key="index" class="snake-swiper__item">
-                <view
-                    class="snake-swiper__content"
-                    :style="{
-                        borderRadius: addUnit(actualRadius, 'rpx'),
-                        transform: effect3d && index !== active ? 'scaleY(0.9)' : 'scaleY(1)',
-                        margin: effect3d && index !== active ? '0 20rpx' : 0
-                    }"
-                    @click.stop.prevent="emit('click', index)"
-                >
-                    <image class="snake-swiper__image" :src="source(item)" :mode="imgMode as any" />
-                    <text
-                        v-if="(showTitle || title) && itemTitle(item)"
-                        class="snake-swiper__title"
-                        :style="[titleStyle, { paddingBottom: titlePaddingBottom }]"
-                    >
-                        {{ itemTitle(item) }}
-                    </text>
-                </view>
-            </swiper-item>
-        </swiper>
-        <view v-if="showIndicator" class="snake-swiper__indicator" :class="indicatorClass">
-            <slot name="indicator" :current="active" :total="list.length">
-                <text v-if="mode === 'number'" class="snake-swiper__number">{{ active + 1 }}/{{ list.length }}</text>
-                <view v-else-if="mode !== 'none'" class="snake-swiper__dots" :class="`is-${mode}`">
-                    <view
-                        v-for="(_, index) in list"
-                        :key="index"
-                        class="snake-swiper__dot"
-                        :class="{ 'is-active': index === active }"
-                        :style="{ backgroundColor: index === active ? indicatorActiveColor : indicatorColor }"
-                    />
-                </view>
-            </slot>
-        </view>
-    </view>
-</template>
 
 <style scoped>
 .snake-swiper,

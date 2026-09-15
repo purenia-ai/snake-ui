@@ -1,3 +1,37 @@
+<template>
+    <DemoPage :title="title" :desc="text('价格、脱敏、日期与链接等常用文本场景。')">
+        <DemoSection variant="preview" :title="text('演示效果')">
+            <view class="demo-stack demo-text-showcase">
+                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
+                <snake-text
+                    :mode="String(state.tMode)"
+                    :type="String(state.tType)"
+                    :text="sampleText()"
+                    :format="sampleFormat()"
+                    :bold="Boolean(state.tBold)"
+                    :block="Boolean(state.tBlock)"
+                    :lines="String(state.tLines)"
+                    :size="Number(state.tSize)"
+                    :color="String(state.tColor) || undefined"
+                    :prefix-icon="String(state.tPrefix)"
+                    :suffix-icon="String(state.tSuffix)"
+                    href="https://github.com/zwbcode/snake-ui"
+                    @click="onTextClick"
+                />
+                <text class="demo-variant-sub">{{ lastClick || (isEnglish ? 'No event yet' : '暂无事件') }}</text>
+                <text class="demo-variant-title">{{ isEnglish ? 'Preset modes' : '模式示例' }}</text>
+                <snake-text :text="'13800138000'" mode="phone" format="encrypt" />
+                <snake-text :text="'张三丰'" mode="name" format="encrypt" />
+                <snake-text :text="1288" mode="price" />
+                <snake-text :text="new Date(2026, 0, 1).getTime()" mode="date" />
+            </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+    </DemoPage>
+</template>
+
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
@@ -128,40 +162,6 @@ function onTextClick() {
     lastClick.value = text('点击事件');
 }
 </script>
-
-<template>
-    <DemoPage :title="title" :desc="text('价格、脱敏、日期与链接等常用文本场景。')">
-        <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-stack demo-text-showcase">
-                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
-                <snake-text
-                    :mode="String(state.tMode)"
-                    :type="String(state.tType)"
-                    :text="sampleText()"
-                    :format="sampleFormat()"
-                    :bold="Boolean(state.tBold)"
-                    :block="Boolean(state.tBlock)"
-                    :lines="String(state.tLines)"
-                    :size="Number(state.tSize)"
-                    :color="String(state.tColor) || undefined"
-                    :prefix-icon="String(state.tPrefix)"
-                    :suffix-icon="String(state.tSuffix)"
-                    href="https://github.com/zwbcode/snake-ui"
-                    @click="onTextClick"
-                />
-                <text class="demo-variant-sub">{{ lastClick || (isEnglish ? 'No event yet' : '暂无事件') }}</text>
-                <text class="demo-variant-title">{{ isEnglish ? 'Preset modes' : '模式示例' }}</text>
-                <snake-text :text="'13800138000'" mode="phone" format="encrypt" />
-                <snake-text :text="'张三丰'" mode="name" format="encrypt" />
-                <snake-text :text="1288" mode="price" />
-                <snake-text :text="new Date(2026, 0, 1).getTime()" mode="date" />
-            </view>
-        </DemoSection>
-        <DemoSection variant="controls" :title="text('参数配置')">
-            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
-        </DemoSection>
-    </DemoPage>
-</template>
 
 <style scoped>
 .demo-stack {
