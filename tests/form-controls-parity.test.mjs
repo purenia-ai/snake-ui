@@ -80,6 +80,20 @@ test('form exposes validation and field lifecycle APIs', async () => {
     assert.match(source, /labelWidth: 90/);
 });
 
+test('form demo covers rules, nested contacts, and exposed form actions', async () => {
+    const source = await readFile(new URL('../src/pages/componentsA/form/index.vue', import.meta.url), 'utf8');
+    for (const prop of ['name', 'mobile', 'password', 'rePassword', 'intro', 'fruit', 'flavor', 'agreement', 'accounts']) {
+        assert.match(source, new RegExp(`${prop}:`));
+    }
+    assert.match(source, /:prop="`accounts\.\$\{index\}\.name`"/);
+    assert.match(source, /formRef\.value\?\.validate\(/);
+    assert.match(source, /formRef\.value\?\.validateField\('name'\)/);
+    assert.match(source, /formRef\.value\?\.validateField\(\['name', 'password'\]\)/);
+    assert.match(source, /formRef\.value\?\.setRules\(rules\.value\)/);
+    assert.match(source, /formRef\.value\?\.resetFields\(\)/);
+    assert.match(source, /function removeLastContact\(\)[\s\S]*model\.accounts\.pop\(\)/);
+});
+
 test('form item waits for model updates, ignores stale validation, and resets immediately', async () => {
     const source = await read('components/snake-form-item/snake-form-item.vue');
     assert.match(source, /let validationVersion = 0/);

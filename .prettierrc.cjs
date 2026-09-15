@@ -10,7 +10,7 @@ module.exports = {
     // 换行符风格（auto/lf/crlf/cr）
     endOfLine: 'auto',
     // HTML 空白敏感度
-    htmlWhitespaceSensitivity: 'ignore',
+    htmlWhitespaceSensitivity: 'css',
     // 是否在文件头插入 @prettier
     insertPragma: false,
     // HTML/Vue 标签的 > 是否与最后一个属性同行
