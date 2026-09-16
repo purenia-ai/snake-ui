@@ -62,3 +62,9 @@ export type ImageEmits = {
     /** click 事件携带的参数。 */
     click: [event: unknown];
 };
+
+/** Image 组件通过模板 ref 暴露的实例方法。 */
+export interface ImageExpose {
+    /** 按当前资源和懒加载策略重新请求图片。 */
+    reload: () => void;
+}

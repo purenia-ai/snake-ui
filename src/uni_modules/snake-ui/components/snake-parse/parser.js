@@ -261,15 +261,21 @@ Parser.prototype.getUrl = function (url) {
         } else if (domain) {
             // 否则补充整个域名
             url = domain + url;
-        } /* #ifdef APP-PLUS */ else {
+        }
+        // #ifdef APP-PLUS
+        else {
             url = plus.io.convertLocalFileSystemURL(url);
-        } /* #endif */
+        }
+        // #endif
     } else if (!url.includes('data:') && !url.includes('://')) {
         if (domain) {
             url = domain + '/' + url;
-        } /* #ifdef APP-PLUS */ else {
+        }
+        // #ifdef APP-PLUS
+        else {
             url = plus.io.convertLocalFileSystemURL(url);
-        } /* #endif */
+        }
+        // #endif
     }
     return url;
 };
@@ -480,15 +486,13 @@ Parser.prototype.onOpenTag = function (selfClose) {
             // 通过 base 标签设置主域名
             if (node.name === 'base' && !this.options.domain) {
                 this.options.domain = attrs.href;
-            } /* #ifndef APP-PLUS-NVUE */ else if (
-                node.name === 'source' &&
-                parent &&
-                (parent.name === 'video' || parent.name === 'audio') &&
-                attrs.src
-            ) {
+            }
+            // #ifndef APP-PLUS-NVUE
+            else if (node.name === 'source' && parent && (parent.name === 'video' || parent.name === 'audio') && attrs.src) {
                 // 设置 source 标签（仅父节点为 video 或 audio 时有效）
                 parent.src.push(attrs.src);
-            } /* #endif */
+            }
+            // #endif
             return;
         }
 
@@ -851,13 +855,11 @@ Parser.prototype.popNode = function () {
         node.name = 'span';
     }
 
-    if (
-        node.name === 'a' ||
-        node.name === 'ad' ||
-        // #ifdef H5 || APP-PLUS
-        node.name === 'iframe' // eslint-disable-line
-        // #endif
-    ) {
+    let shouldExpose = node.name === 'a' || node.name === 'ad';
+    // #ifdef H5 || APP-PLUS
+    shouldExpose = shouldExpose || node.name === 'iframe';
+    // #endif
+    if (shouldExpose) {
         this.expose();
     } else if (node.name === 'video') {
         if ((styleObj.height || '').includes('auto')) {
@@ -1170,15 +1172,14 @@ Parser.prototype.popNode = function () {
         }
     }
     // flex 布局时部分样式需要提取到 rich-text 外层
-    const flex =
-        parent &&
-        ((parent.attrs.style || '').includes('flex') || (parent.attrs.style || '').includes('grid')) &&
-        // #ifdef MP-WEIXIN
-        // 检查基础库版本 virtualHost 是否可用
-        !(node.c && wx.getNFCAdapter) && // eslint-disable-line
-        // #endif
-        // #ifndef MP-WEIXIN || MP-QQ || MP-BAIDU || MP-TOUTIAO
-        !node.c; // eslint-disable-line
+    let flex =
+        parent && ((parent.attrs.style || '').includes('flex') || (parent.attrs.style || '').includes('grid'));
+    // #ifdef MP-WEIXIN
+    // 检查基础库版本 virtualHost 是否可用
+    flex = flex && !(node.c && wx.getNFCAdapter); // eslint-disable-line
+    // #endif
+    // #ifndef MP-WEIXIN || MP-QQ || MP-BAIDU || MP-TOUTIAO
+    flex = flex && !node.c; // eslint-disable-line
     // #endif
     if (flex) {
         node.f = ';max-width:100%';
@@ -1192,7 +1193,8 @@ Parser.prototype.popNode = function () {
     for (const key in styleObj) {
         if (styleObj[key]) {
             const val = `;${key}:${styleObj[key].replace(' !important', '')}`;
-            /* #ifndef APP-PLUS-NVUE */
+            let shouldAppendStyle = true;
+            // #ifndef APP-PLUS-NVUE
             if (
                 flex &&
                 ((key.includes('flex') && key !== 'flex-direction') ||
@@ -1205,7 +1207,10 @@ Parser.prototype.popNode = function () {
                 if (key === 'width') {
                     attrs.style += ';width:100%';
                 }
-            } else /* #endif */ {
+                shouldAppendStyle = false;
+            }
+            // #endif
+            if (shouldAppendStyle) {
                 attrs.style += val;
             }
         }

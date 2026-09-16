@@ -9,5 +9,6 @@ unpackage
 *.log
 *.min.js
 *.map
+src/uni_modules/snake-ui/components/snake-parse/**
 pnpm-lock.yaml
 package-lock.json

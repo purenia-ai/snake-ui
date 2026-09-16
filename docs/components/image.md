@@ -15,7 +15,15 @@ preview: /pages/componentsA/image/index
 ## 基础用法
 
 ```vue
-<snake-image src="/static/logo.png" alt="Snake UI 标志" width="100%" height="320rpx" mode="aspectFill" :radius="16" preview />
+<snake-image
+    src="/static/logo.png"
+    alt="Snake UI 标志"
+    width="100%"
+    height="320rpx"
+    mode="aspectFill"
+    :radius="16"
+    preview
+/>
 <snake-image src="/static/avatar.png" alt="用户头像" width="120rpx" height="120rpx" shape="circle" />
 ```
 
@@ -55,10 +63,16 @@ preview: /pages/componentsA/image/index
 
 ## 视口懒加载
 
-`lazy-load` 使用 `uni.createIntersectionObserver`，仅在进入视口预加载距离后请求真实图片；真实图片创建后，组件也会传递原生 `image` 的 `lazy-load`，无需配置第二个开关。`loadingImg` 与 `errorImg` 在组件内部按状态直接渲染，未配置时才回退为默认图标；需要复杂状态内容时使用同名插槽，插槽优先。
+`lazy-load` 使用 `uni.createIntersectionObserver`，仅在进入视口预加载距离后创建真实图片请求。组件不会同时启用原生 `image` 的 `lazy-load`，避免两套懒加载调度相互影响。`loadingImg` 与 `errorImg` 在组件内部按状态直接渲染，未配置时才回退为默认图标；需要复杂状态内容时使用同名插槽，插槽优先。
 
 ```vue
-<snake-image src="/static/product.png" lazy-load :lazy-threshold="160" loading-img="/static/image-loading.png" error-img="/static/image-error.png" />
+<snake-image
+    src="/static/product.png"
+    lazy-load
+    :lazy-threshold="160"
+    loading-img="/static/image-loading.png"
+    error-img="/static/image-error.png"
+/>
 ```
 
 `lazy-threshold` 默认为 `100`；数值越大，图片会在距视口更远的位置开始请求。
@@ -86,7 +100,13 @@ preview: /pages/componentsA/image/index
 传入 `preview` 后，点击图片会调用 `uni.previewImage`。使用 `preview-urls` 可提供预览图集合；集合应包含当前 `src`。
 
 ```vue
-<snake-image src="/static/product-1.png" width="240rpx" height="240rpx" preview :preview-urls="['/static/product-1.png', '/static/product-2.png']" />
+<snake-image
+    src="/static/product-1.png"
+    width="240rpx"
+    height="240rpx"
+    preview
+    :preview-urls="['/static/product-1.png', '/static/product-2.png']"
+/>
 ```
 
 ## API
@@ -116,6 +136,12 @@ preview: /pages/componentsA/image/index
 | `error` | 图片加载失败 | `event` |
 | `click` | 点击图片     | `event` |
 
+### Methods
+
+| 方法名   | 说明                                  | 参数 |
+| -------- | ------------------------------------- | ---- |
+| `reload` | 按当前 `src` 和懒加载策略重新请求图片 | -    |
+
 ### Slots
 
 | 插槽名    | 说明               |
@@ -125,7 +151,10 @@ preview: /pages/componentsA/image/index
 
 ## 主题变量
 
-| 变量名                        | 说明               |
-| ----------------------------- | ------------------ |
-| `--snake-color-surface-muted` | 图片容器默认背景色 |
-| `--snake-color-text-muted`    | 状态图标默认颜色   |
+| 变量名                        | 说明                       |
+| ----------------------------- | -------------------------- |
+| `--snake-color-surface-muted` | 图片容器默认背景色         |
+| `--snake-color-text-muted`    | 状态图标默认颜色           |
+| `--snake-image-bg`            | 图片容器默认背景色         |
+| `--snake-image-status-color`  | 加载状态文字与图标颜色     |
+| `--snake-image-error-color`   | 加载失败状态文字与图标颜色 |

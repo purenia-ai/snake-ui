@@ -525,11 +525,15 @@ export default {
          */
         imgLoad(e) {
             const i = e.currentTarget.dataset.i;
+            let hasOriginalWidth = false;
             /* #ifndef H5 || (APP-PLUS && VUE2) */
             if (!this.childs[i].w) {
                 // 设置原宽度
                 this.ctrl[i] = e.detail.width;
-            } else /* #endif */ if ((this.opts[1] && !this.ctrl[i]) || this.ctrl[i] === -1) {
+                hasOriginalWidth = true;
+            }
+            /* #endif */
+            if (!hasOriginalWidth && ((this.opts[1] && !this.ctrl[i]) || this.ctrl[i] === -1)) {
                 // 加载完毕，取消加载中占位图
                 this.ctrl[i] = 1;
             }

@@ -73,8 +73,18 @@ test('image, overlay, popup and sticky expose behavioral APIs', async () => {
         read('components/snake-popup/types.ts'),
         read('components/snake-sticky/types.ts')
     ]);
-    for (const prop of ['fade', 'preview', 'showLoading', 'showMenuByLongpress', 'lazyLoad', 'lazyThreshold', 'loadingImg', 'errorImg'])
+    for (const prop of [
+        'fade',
+        'preview',
+        'showLoading',
+        'showMenuByLongpress',
+        'lazyLoad',
+        'lazyThreshold',
+        'loadingImg',
+        'errorImg'
+    ])
         assert.match(image, new RegExp(`${prop}\\?`));
+    assert.match(image, /ImageExpose/);
     for (const prop of ['lockScroll', 'show']) assert.match(overlay, new RegExp(`${prop}\\?`));
     for (const event of ['opened', 'closed', "'click-overlay'"]) assert.match(popup, new RegExp(event));
     for (const event of ['fixed', 'unfixed', 'change']) assert.match(sticky, new RegExp(event));
@@ -88,6 +98,11 @@ test('image owns viewport lazy loading and configured state artwork', async () =
     assert.match(image, /v-if="loadingImg" class="snake-image__status-image"/);
     assert.match(image, /v-if="errorImg" class="snake-image__status-image"/);
     assert.match(image, /onBeforeUnmount\(disconnectObserver\)/);
+    assert.match(image, /:key="imageKey"/);
+    assert.doesNotMatch(image, /:lazy-load="lazyLoad"/);
+    assert.match(image, /status\.value === 'success'/);
+    assert.match(image, /translate\('image\.error'\)/);
+    assert.match(image, /defineExpose<ImageExpose>\(\{ reload \}\)/);
 });
 
 test('popup exposes overlay scroll locking as a public option', async () => {
