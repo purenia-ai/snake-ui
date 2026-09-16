@@ -67,8 +67,7 @@ const retryCount = ref(0);
 const previewFrame = ref<HTMLIFrameElement>();
 const isDesktopPreview = ref(false);
 const defaultSystemStatusStyle = {
-    backgroundColor: '#06D290',
-    backgroundImage: 'linear-gradient(90deg, #2EBD7C, #A6EBD3)',
+    background: '#007A55',
     color: '#ffffff'
 };
 const systemStatusStyle = ref({ ...defaultSystemStatusStyle });
@@ -145,15 +144,14 @@ function receivePreviewNavbarTheme(
     event: MessageEvent<{
         type?: string;
         backgroundColor?: string;
-        backgroundImage?: string;
         color?: string;
     }>
 ) {
     if (event.source !== previewFrame.value?.contentWindow || event.data?.type !== 'snake-ui:preview-navbar-theme')
         return;
-    const { backgroundColor, backgroundImage, color } = event.data;
-    if (!backgroundColor || !backgroundImage || !color) return;
-    systemStatusStyle.value = { backgroundColor, backgroundImage, color };
+    const { backgroundColor, color } = event.data;
+    if (!backgroundColor || !color) return;
+    systemStatusStyle.value = { background: backgroundColor, color };
 }
 
 function retryPreview() {

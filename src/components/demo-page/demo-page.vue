@@ -49,8 +49,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, reactive, toRefs, watch } from 'vue';
-import { color, darkMode, systemDark, themeStyle } from '../../uni_modules/snake-ui';
+import { computed, onBeforeUnmount, onMounted, toRefs, watch } from 'vue';
+import { color, currentTheme, darkMode, systemDark, themeStyle } from '../../uni_modules/snake-ui';
 import type { DemoTab } from '../../common/demo-types';
 import { useDemoLocale } from '../../common/demo-i18n';
 
@@ -89,18 +89,17 @@ const shellThemeStyle = computed(() => ({
     ...themeStyle.value,
     '--snake-demo-accent-text': isDark.value ? color.primary : color.primaryDeep
 }));
-const background = reactive({
-    backgroundColor: 'var(--snake-color-primary)',
-    backgroundImage: 'linear-gradient(90deg, var(--snake-color-primary-dark), var(--snake-color-primary-disabled))'
-});
+const navbarColor = computed(() =>
+    currentTheme.value.name === 'snake' ? (isDark.value ? '#01513B' : '#007A55') : color.primaryDeep
+);
+const background = computed(() => ({ backgroundColor: navbarColor.value }));
 
 function postPreviewNavbarTheme() {
     if (typeof window === 'undefined' || window.parent === window) return;
     window.parent.postMessage(
         {
             type: 'snake-ui:preview-navbar-theme',
-            backgroundColor: color.primary,
-            backgroundImage: `linear-gradient(90deg, ${color.primaryDark}, ${color.primaryDisabled})`,
+            backgroundColor: navbarColor.value,
             color: '#ffffff'
         },
         '*'
@@ -111,7 +110,7 @@ function handlePreviewThemeRequest(event: MessageEvent<{ type?: string }>) {
     if (event.data?.type === 'snake-ui:request-preview-navbar-theme') postPreviewNavbarTheme();
 }
 
-watch(() => [color.primary, color.primaryDark, color.primaryDisabled], postPreviewNavbarTheme, { immediate: true });
+watch(navbarColor, postPreviewNavbarTheme, { immediate: true });
 onMounted(() => window.addEventListener('message', handlePreviewThemeRequest));
 onBeforeUnmount(() => window.removeEventListener('message', handlePreviewThemeRequest));
 

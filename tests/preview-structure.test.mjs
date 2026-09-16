@@ -176,8 +176,10 @@ test('component demos use one restrained shared presentation system', async () =
 
     assert.doesNotMatch(theme, /snake-demo-nav-gradient|snake-demo-page-tint|snake-demo-card-shadow/);
     assert.match(page, /demo-page-header__title/);
-    assert.match(page, /backgroundColor:\s*'var\(--snake-color-primary\)'/);
-    assert.match(page, /backgroundImage:\s*'linear-gradient\(90deg, var\(--snake-color-primary-dark\), var\(--snake-color-primary-disabled\)\)'/);
+    assert.match(page, /currentTheme\.value\.name === 'snake'/);
+    assert.match(page, /isDark\.value \? '#01513B' : '#007A55'/);
+    assert.match(page, /backgroundColor: navbarColor\.value/);
+    assert.doesNotMatch(page, /backgroundImage:\s*'linear-gradient\(90deg, var\(--snake-color-primary-dark\), var\(--snake-color-primary-disabled\)\)'/);
     assert.doesNotMatch(page, /background-image:\s*\$snake-page-tint/);
     assert.match(section, /DemoSectionVariant = 'default' \| 'preview' \| 'controls'/);
     assert.match(section, /demo-section--preview[^}]*border-bottom:\s*1rpx dashed/s);
@@ -326,6 +328,8 @@ test('docs and preview shell use the approved brand green system', async () => {
     assert.match(frame, /preview-phone__system-status/);
     assert.match(frame, /snake-ui:preview-navbar-theme/);
     assert.match(frame, /:style="systemStatusStyle"/);
+    assert.match(frame, /background:\s*'#007A55'/);
+    assert.match(frame, /systemStatusStyle\.value = \{ background: backgroundColor, color \}/);
     assert.match(frame, /preview-phone__battery/);
     assert.match(frame, /<svg class="preview-phone__wifi" viewBox="0 0 16 16"/);
     assert.match(css, /\.preview-phone__island\s*{[^}]*top:\s*31px/s);
