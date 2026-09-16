@@ -367,6 +367,72 @@ test('http matches uView defaults, plugin injection, and AutoHttp API generation
     request.http.reset();
 });
 
+test('http preserves platform failures, strips internal fields, and keeps concurrent loading visible', async () => {
+    const originalRequest = uni.request;
+    const originalShowLoading = uni.showLoading;
+    const originalHideLoading = uni.hideLoading;
+    const pending = [];
+    const calls = [];
+    let showCount = 0;
+    let hideCount = 0;
+    uni.showLoading = () => {
+        showCount += 1;
+    };
+    uni.hideLoading = () => {
+        hideCount += 1;
+    };
+    uni.request = options => {
+        calls.push(options);
+        pending.push(options);
+    };
+    request.http.reset();
+
+    try {
+        const first = request.http.get('/first', {}, { meta: { loading: true, originalData: false } });
+        const second = request.http.get('/second', {}, { meta: { loading: true, originalData: false } });
+        assert.equal(showCount, 1);
+        assert.equal('meta' in calls[0], false);
+        assert.equal('params' in calls[0], false);
+        assert.equal('baseUrl' in calls[0], false);
+
+        pending[0].complete?.({ statusCode: 200, data: { id: 1 }, header: {} });
+        await first;
+        assert.equal(hideCount, 0);
+        pending[1].complete?.({ statusCode: 201, data: { id: 2 }, header: {} });
+        assert.deepEqual(await second, { id: 2 });
+        assert.equal(hideCount, 1);
+
+        request.http.setInterceptor({
+            response: response => ({ handledStatus: response.statusCode })
+        });
+        const unauthorized = request.http.get('/unauthorized');
+        pending[2].complete?.({ statusCode: 401, errMsg: 'request:fail http status error' });
+        assert.deepEqual(await unauthorized, { handledStatus: 401 });
+
+        const failed = request.http.get('/failed');
+        pending[3].complete?.({ errMsg: 'request:fail ssl handshake failed', error: 12 });
+        await assert.rejects(
+            failed,
+            error =>
+                error instanceof request.RequestError &&
+                error.kind === 'transport' &&
+                error.message === 'request:fail ssl handshake failed' &&
+                error.platformError?.error === 12
+        );
+
+        request.http.setInterceptor({ request: () => Promise.reject(new Error('token refresh failed')) });
+        await assert.rejects(
+            request.http.get('/interceptor'),
+            error => error instanceof request.RequestError && error.kind === 'interceptor' && error.message.includes('request interceptor failed')
+        );
+    } finally {
+        request.http.reset();
+        uni.request = originalRequest;
+        uni.showLoading = originalShowLoading;
+        uni.hideLoading = originalHideLoading;
+    }
+});
+
 test('theme variables are injected once at the page level via snake-config-provider', async () => {
     const componentsRoot = resolve(import.meta.dirname, '../src/uni_modules/snake-ui/components');
     async function vueFiles(directory) {

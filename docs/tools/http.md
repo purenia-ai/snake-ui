@@ -8,7 +8,7 @@ preview: /pages/library/http/index
 
 `http` 是请求模块的规范单例。`snakeHttp` 仅作为兼容别名保留；请求模块默认导出 `httpPlugin`，可通过 `app.use(httpPlugin, { requestConfig, interceptor })` 挂载 `this.$http`；使用 `app.use(SnakeUI)` 时，`$http` 与 `$snake.http` 同时可用。
 
-为兼容 uView，默认 `meta.originalData` 为 `true`，因此调用方会收到完整的 `uni.request` 响应。传入 `meta: { originalData: false }` 后才返回 `response.data`，且非 200 状态会 reject。请求拦截器取消仍会 reject `RequestError`，不会产生永久 pending 的 Promise。
+默认 `meta.originalData` 为 `true`，因此调用方会收到完整的 `uni.request` 响应。传入 `meta: { originalData: false }` 后才返回 `response.data`，且非 2xx 状态会 reject。请求拦截器取消仍会 reject `RequestError`，不会产生永久 pending 的 Promise。
 
 `http` 是面向 uni-app 的轻量请求客户端，支持 TypeScript、全局配置、请求/响应拦截器、Loading、Toast、自定义传输层和多实例。
 
@@ -78,7 +78,7 @@ configureHttp({
 
 ## 响应与错误
 
-默认 `meta.originalData: true` 时返回完整响应；设置为 `false` 后，HTTP 200 返回 `response.data`，其他状态会 reject。传输失败、拦截器失败和取消都会 reject Promise。
+默认 `meta.originalData: true` 时返回完整响应；设置为 `false` 后，任意 HTTP 2xx 返回 `response.data`，其他状态会 reject。传输失败、拦截器失败和取消都会 reject Promise。并发开启 `meta.loading` 时，Loading 会在最后一个请求结束后才关闭。
 
 ```ts
 import { http, RequestError } from '@puresnake/snake-ui';
@@ -87,12 +87,12 @@ try {
     await http.get('/profile');
 } catch (error) {
     if (error instanceof RequestError) {
-        console.log(error.kind, error.statusCode, error.config);
+        console.log(error.kind, error.statusCode, error.config, error.platformError);
     }
 }
 ```
 
-`kind` 为 `canceled`、`http`、`transport` 或 `interceptor`。
+`kind` 为 `canceled`、`http`、`transport` 或 `interceptor`。`transport` 错误会保留宿主的原始失败对象到 `platformError`；支付宝小程序的 `errMsg`、网络/证书/域名错误可据此直接排查。Snake 内部的 `baseUrl`、`meta` 与 `params` 不会透传给 `uni.request`。
 
 ## 多实例与自定义传输
 

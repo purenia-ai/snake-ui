@@ -28,6 +28,8 @@ export class RequestError extends Error {
     readonly config?: RequestOptions;
     readonly response?: unknown;
     readonly statusCode?: number;
+    /** 原始宿主网络错误，例如支付宝小程序返回的 errMsg。 */
+    readonly platformError?: unknown;
 
     constructor(
         message: string,
@@ -36,6 +38,7 @@ export class RequestError extends Error {
             config?: RequestOptions;
             response?: unknown;
             statusCode?: number;
+            platformError?: unknown;
             cause?: unknown;
         } = {}
     ) {
@@ -45,6 +48,7 @@ export class RequestError extends Error {
         this.config = options.config;
         this.response = options.response;
         this.statusCode = options.statusCode;
+        this.platformError = options.platformError;
     }
 }
 
@@ -57,14 +61,33 @@ function isHttpResponse(value: unknown): value is RequestResponse {
     return Boolean(value && typeof value === 'object' && typeof (value as RequestResponse).statusCode === 'number');
 }
 
+function isSuccessfulStatus(statusCode: number): boolean {
+    return statusCode >= 200 && statusCode < 300;
+}
+
+function getErrorMessage(error: unknown, fallback: string): string {
+    if (typeof error === 'string' && error) return error;
+    if (error && typeof error === 'object') {
+        const message =
+            (error as { errMsg?: unknown; message?: unknown }).errMsg || (error as { message?: unknown }).message;
+        if (typeof message === 'string' && message) return message;
+    }
+    return fallback;
+}
+
+let loadingCount = 0;
+
 function showLoading(): void {
+    loadingCount += 1;
+    if (loadingCount > 1) return;
     if (typeof uni !== 'undefined' && typeof uni.showLoading === 'function') {
         uni.showLoading({ title: translate('common.loading'), mask: true });
     }
 }
 
 function hideLoading(): void {
-    if (typeof uni !== 'undefined' && typeof uni.hideLoading === 'function') uni.hideLoading();
+    loadingCount = Math.max(0, loadingCount - 1);
+    if (loadingCount === 0 && typeof uni !== 'undefined' && typeof uni.hideLoading === 'function') uni.hideLoading();
 }
 
 function showError(message: string): void {
@@ -79,12 +102,28 @@ function uniTransport(options: RequestOptions): Promise<RequestResponse> {
             reject(new RequestError('[Snake UI] uni.request is unavailable.', { kind: 'transport', config: options }));
             return;
         }
+        // meta、baseUrl 和 params 是 Snake 的内部配置，不应透传给各小程序运行时。
+        const { baseUrl: _baseUrl, meta: _meta, params: _params, ...platformOptions } = options;
         uni.request({
-            ...options,
+            ...platformOptions,
             method: options.method || 'GET',
             data: options.data ?? options.params,
-            success: response => resolve(response as RequestResponse),
-            fail: error => reject(error)
+            // 支付宝小程序会把 HTTP 401 等非成功状态送入 fail，但 complete 仍能提供 statusCode。
+            // 只要收到 HTTP 状态就交给上层响应拦截器；没有状态码时才是网络层失败。
+            complete: result => {
+                if (isHttpResponse(result)) {
+                    resolve(result);
+                    return;
+                }
+                reject(
+                    new RequestError(getErrorMessage(result, translate('network.error')), {
+                        kind: 'transport',
+                        config: options,
+                        platformError: result,
+                        cause: result
+                    })
+                );
+            }
         });
     });
 }
@@ -145,7 +184,16 @@ export class Request {
     async request<T = unknown>(options: RequestOptions): Promise<T> {
         let config = this.mergeOptions(options);
         if (this.interceptor.request) {
-            const intercepted = await this.interceptor.request(config);
+            let intercepted: RequestOptions | false;
+            try {
+                intercepted = await this.interceptor.request(config);
+            } catch (error) {
+                throw new RequestError('[Snake UI] request interceptor failed.', {
+                    kind: 'interceptor',
+                    config,
+                    cause: error
+                });
+            }
             if (intercepted === false) {
                 throw new RequestError(translate('network.canceled'), { kind: 'canceled', config });
             }
@@ -157,7 +205,7 @@ export class Request {
             const raw = await this.send(config);
             if (isHttpResponse(raw)) raw.config = config;
             // originalData=true 时 interceptor 接收完整平台响应，状态码校验也由它负责；否则本层校验并仅传 data。
-            if (isHttpResponse(raw) && !meta.originalData && raw.statusCode !== 200) {
+            if (isHttpResponse(raw) && !meta.originalData && !isSuccessfulStatus(raw.statusCode)) {
                 throw new RequestError(`HTTP ${raw.statusCode}`, {
                     kind: 'http',
                     config,
@@ -167,7 +215,17 @@ export class Request {
             }
             const response = meta.originalData || !isHttpResponse(raw) ? raw : raw.data;
             if (!this.interceptor.response) return response as T;
-            const intercepted = await this.interceptor.response(response, config);
+            let intercepted: T | false;
+            try {
+                intercepted = await this.interceptor.response(response, config);
+            } catch (error) {
+                throw new RequestError('[Snake UI] response interceptor failed.', {
+                    kind: 'interceptor',
+                    config,
+                    response,
+                    cause: error
+                });
+            }
             if (intercepted === false) {
                 throw new RequestError('[Snake UI] response rejected by interceptor.', {
                     kind: 'interceptor',
@@ -180,9 +238,10 @@ export class Request {
             const normalized =
                 error instanceof RequestError
                     ? error
-                    : new RequestError(translate('network.error'), {
+                    : new RequestError(getErrorMessage(error, translate('network.error')), {
                           kind: 'transport',
                           config,
+                          platformError: error,
                           cause: error
                       });
             if (meta.toast) showError(normalized.message);
@@ -213,6 +272,7 @@ export class Request {
         this.interceptor = {};
         this.transport = undefined;
         this.legacyAdapter = undefined;
+        loadingCount = 0;
     }
 }
 
@@ -248,7 +308,11 @@ export function isFunction(value: unknown): value is (...args: any[]) => unknown
 }
 
 export function isPromise(value: unknown): value is Promise<unknown> {
-    return Boolean(value && typeof (value as Promise<unknown>).then === 'function' && typeof (value as Promise<unknown>).catch === 'function');
+    return Boolean(
+        value &&
+        typeof (value as Promise<unknown>).then === 'function' &&
+        typeof (value as Promise<unknown>).catch === 'function'
+    );
 }
 
 export class AutoHttp {
@@ -261,8 +325,13 @@ export class AutoHttp {
             return { ...api, ...extra };
         }
 
-        use(urlConfig: RequestOptions, config: Partial<Omit<RequestOptions, 'url'>> & { url?: string | (() => string) } = {}): Promise<T> {
-            const url: string = isFunction(config.url) ? `${urlConfig.url}${config.url()}` : (config.url ?? urlConfig.url);
+        use(
+            urlConfig: RequestOptions,
+            config: Partial<Omit<RequestOptions, 'url'>> & { url?: string | (() => string) } = {}
+        ): Promise<T> {
+            const url: string = isFunction(config.url)
+                ? `${urlConfig.url}${config.url()}`
+                : (config.url ?? urlConfig.url);
             const { url: _url, ...overrides } = config;
             const method = (config.method ?? urlConfig.method ?? 'GET') as RequestMethod;
             const options = deepMerge(urlConfig, { ...overrides, url, method }) as RequestOptions;
