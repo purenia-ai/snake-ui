@@ -8,7 +8,7 @@ triggers: ['data-contract', 'CMS', '页面数据协议']
 
 ## 页面信封
 
-每个区块使用统一信封：
+新页面推荐使用 v2 信封（以下为协议示意类型，公开的容器入参类型为 `CmsComponentConfig`）：
 
 ```ts
 interface CmsV2Block {
@@ -89,4 +89,6 @@ interface CmsV2TextItem {
 
 ## 版本共存
 
-页面配置统一使用 `{ component, active, props }` 信封，并由宿主在进入 `snake-cms` 前完成边界校验。
+`snake-cms` 可以在同一页面中渲染 v1 和 v2 区块。v1 使用未带 `v2.` 前缀的 `component` 和 `setStyle`，例如 `{ component: 'images', setStyle: { imageList: [] } }`；v2 使用 `{ component: 'v2.images', active: true, props: { ... } }`。v1 可通过 `visible: false` 或 `setStyle.showComponent: false` 隐藏，v2 使用 `active: false`。
+
+宿主应在数据进入 `snake-cms` 前校验数组和对象；新配置使用 v2，已有 v1 页面无需一次性迁移。

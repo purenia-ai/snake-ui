@@ -1463,7 +1463,15 @@ Form 容器没有独立视觉令牌，FormItem 直接使用以下全局变量：
 ## 基础用法
 
 ```vue
-<snake-image src="/static/logo.png" alt="Snake UI 标志" width="100%" height="320rpx" mode="aspectFill" :radius="16" preview />
+<snake-image
+    src="/static/logo.png"
+    alt="Snake UI 标志"
+    width="100%"
+    height="320rpx"
+    mode="aspectFill"
+    :radius="16"
+    preview
+/>
 <snake-image src="/static/avatar.png" alt="用户头像" width="120rpx" height="120rpx" shape="circle" />
 ```
 
@@ -1503,10 +1511,16 @@ Form 容器没有独立视觉令牌，FormItem 直接使用以下全局变量：
 
 ## 视口懒加载
 
-`lazy-load` 使用 `uni.createIntersectionObserver`，仅在进入视口预加载距离后请求真实图片；真实图片创建后，组件也会传递原生 `image` 的 `lazy-load`，无需配置第二个开关。`loadingImg` 与 `errorImg` 在组件内部按状态直接渲染，未配置时才回退为默认图标；需要复杂状态内容时使用同名插槽，插槽优先。
+`lazy-load` 使用 `uni.createIntersectionObserver`，仅在进入视口预加载距离后创建真实图片请求。组件不会同时启用原生 `image` 的 `lazy-load`，避免两套懒加载调度相互影响。`loadingImg` 与 `errorImg` 在组件内部按状态直接渲染，未配置时才回退为默认图标；需要复杂状态内容时使用同名插槽，插槽优先。
 
 ```vue
-<snake-image src="/static/product.png" lazy-load :lazy-threshold="160" loading-img="/static/image-loading.png" error-img="/static/image-error.png" />
+<snake-image
+    src="/static/product.png"
+    lazy-load
+    :lazy-threshold="160"
+    loading-img="/static/image-loading.png"
+    error-img="/static/image-error.png"
+/>
 ```
 
 `lazy-threshold` 默认为 `100`；数值越大，图片会在距视口更远的位置开始请求。
@@ -1534,7 +1548,13 @@ Form 容器没有独立视觉令牌，FormItem 直接使用以下全局变量：
 传入 `preview` 后，点击图片会调用 `uni.previewImage`。使用 `preview-urls` 可提供预览图集合；集合应包含当前 `src`。
 
 ```vue
-<snake-image src="/static/product-1.png" width="240rpx" height="240rpx" preview :preview-urls="['/static/product-1.png', '/static/product-2.png']" />
+<snake-image
+    src="/static/product-1.png"
+    width="240rpx"
+    height="240rpx"
+    preview
+    :preview-urls="['/static/product-1.png', '/static/product-2.png']"
+/>
 ```
 
 ## API
@@ -1564,6 +1584,12 @@ Form 容器没有独立视觉令牌，FormItem 直接使用以下全局变量：
 | `error` | 图片加载失败 | `event` |
 | `click` | 点击图片     | `event` |
 
+### Methods
+
+| 方法名   | 说明                                  | 参数 |
+| -------- | ------------------------------------- | ---- |
+| `reload` | 按当前 `src` 和懒加载策略重新请求图片 | -    |
+
 ### Slots
 
 | 插槽名    | 说明               |
@@ -1573,10 +1599,12 @@ Form 容器没有独立视觉令牌，FormItem 直接使用以下全局变量：
 
 ## 主题变量
 
-| 变量名                        | 说明               |
-| ----------------------------- | ------------------ |
-| `--snake-color-surface-muted` | 图片容器默认背景色 |
-| `--snake-color-text-muted`    | 状态图标默认颜色   |
+| 变量名                        | 说明                       |
+| ----------------------------- | -------------------------- |
+| `--snake-color-surface-muted` | 图片容器默认背景色         |
+| `--snake-color-text-muted`    | 状态图标默认颜色           |
+| `--snake-image-status-color`  | 加载状态文字与图标颜色     |
+| `--snake-image-error-color`   | 加载失败状态文字与图标颜色 |
 
 <!-- Source: docs/components/index-anchor.md -->
 
@@ -2624,18 +2652,18 @@ Overlay 没有直接使用 CSS 主题变量。遮罩透明度、层级和自定�
 
 ## Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `content` | HTML 字符串 | `string` | `''` |
-| `domain` | 相对链接主域名 | `string` | `''` |
-| `containerStyle` | 根容器样式 | `string` | `''` |
-| `tagStyle` | 标签默认样式 | `Record<string, string>` | `{}` |
-| `previewImg` / `lazyLoad` | 图片预览、懒加载 | `boolean \| string` | `true` / `false` |
-| `loadingImg` / `errorImg` | 图片占位图 | `string` | `''` |
-| `showImgMenu` / `copyLink` | 图片菜单、外链处理 | `boolean \| string` | `true` |
-| `pauseVideo` / `scrollTable` | 媒体自动暂停、表格横滑 | `boolean \| string` | `true` / `false` |
-| `selectable` / `useAnchor` | 文本选择、页内锚点 | `boolean \| string` / `boolean \| number` | `false` |
-| `setTitle` | 是否将 HTML `title` 设为页面标题 | `boolean \| string` | `true` |
+| 参数                         | 说明                             | 类型                                      | 默认值           |
+| ---------------------------- | -------------------------------- | ----------------------------------------- | ---------------- |
+| `content`                    | HTML 字符串                      | `string`                                  | `''`             |
+| `domain`                     | 相对链接主域名                   | `string`                                  | `''`             |
+| `containerStyle`             | 根容器样式                       | `string`                                  | `''`             |
+| `tagStyle`                   | 标签默认样式                     | `Record<string, string>`                  | `{}`             |
+| `previewImg` / `lazyLoad`    | 图片预览、懒加载                 | `boolean \| string`                       | `true` / `false` |
+| `loadingImg` / `errorImg`    | 图片占位图                       | `string`                                  | `''`             |
+| `showImgMenu` / `copyLink`   | 图片菜单、外链处理               | `boolean \| string`                       | `true`           |
+| `pauseVideo` / `scrollTable` | 媒体自动暂停、表格横滑           | `boolean \| string`                       | `true` / `false` |
+| `selectable` / `useAnchor`   | 文本选择、页内锚点               | `boolean \| string` / `boolean \| number` | `false`          |
+| `setTitle`                   | 是否将 HTML `title` 设为页面标题 | `boolean \| string`                       | `true`           |
 
 ## Events 与 Methods
 
@@ -4623,6 +4651,7 @@ Upload 没有组件专属令牌，直接复用以下全局变量：
 | `items`           | `CmsV2ImageItem[]`                                   | `[]`        | 轮播图片及链接 |
 
 运行时把秒转换为 swiper 使用的毫秒。
+`progressbar` 在轮播底部显示当前页进度；未提供图片时不显示进度条。省略 `indicator.type` 时使用圆点指示器。
 
 <!-- Source: docs/cms/coupon.md -->
 
@@ -4692,7 +4721,7 @@ Upload 没有组件专属令牌，直接复用以下全局变量：
 
 ## 页面信封
 
-每个区块使用统一信封：
+新页面推荐使用 v2 信封（以下为协议示意类型，公开的容器入参类型为 `CmsComponentConfig`）：
 
 ```ts
 interface CmsV2Block {
@@ -4773,7 +4802,9 @@ interface CmsV2TextItem {
 
 ## 版本共存
 
-页面配置统一使用 `{ component, active, props }` 信封，并由宿主在进入 `snake-cms` 前完成边界校验。
+`snake-cms` 可以在同一页面中渲染 v1 和 v2 区块。v1 使用未带 `v2.` 前缀的 `component` 和 `setStyle`，例如 `{ component: 'images', setStyle: { imageList: [] } }`；v2 使用 `{ component: 'v2.images', active: true, props: { ... } }`。v1 可通过 `visible: false` 或 `setStyle.showComponent: false` 隐藏，v2 使用 `active: false`。
+
+宿主应在数据进入 `snake-cms` 前校验数组和对象；新配置使用 v2，已有 v1 页面无需一次性迁移。
 
 <!-- Source: docs/cms/divider.md -->
 
@@ -4832,7 +4863,7 @@ interface CmsV2TextItem {
 
 # CMS 快速接入
 
-Snake CMS 用来把后端保存的页面装修配置渲染成 uni-app 页面。配置使用 `{ component: 'v2.*', active, props }` 信封，其中 `v2.*` 是运行时要求的组件标识。
+Snake CMS 用来把后端保存的页面装修配置渲染成 uni-app 页面。新页面使用 `{ component: 'v2.*', active, props }` 信封；已有 v1 配置仍可渲染，见[版本共存](/cms/data-contract#版本共存)。
 
 ```text
 装修编辑器 -> 业务后端 -> 页面接口 -> 数据适配 -> <snake-cms>
@@ -4872,29 +4903,13 @@ const pageComponents: CmsComponentConfig[] = [
 ];
 ```
 
-远端 JSON 不能直接当成可信类型。建议在页面适配层统一补齐数组并过滤无效配置：
-
-```ts
-function normalizeCmsPage(input: Record<string, unknown>) {
-    const rawComponents = Array.isArray(input.pageComponents) ? input.pageComponents : [];
-
-    return {
-        pageInfo: {
-            pageId: String(input.pageId || 'default'),
-            name: String(input.name || '')
-        },
-        pageComponents: rawComponents.filter((item): item is CmsComponentConfig =>
-            Boolean(item && typeof item === 'object' && typeof (item as CmsComponentConfig).component === 'string')
-        )
-    };
-}
-```
+远端 JSON 不能直接当成可信类型。下面的页面示例把数组和组件标识校验放在 `normalizeCmsPage()` 中；宿主可按自己的接口结构补充字段转换。
 
 `active === false` 的区块不会渲染。完整字段规则见[页面数据协议](/cms/data-contract)。
 
 ## 2. 在页面中渲染
 
-纯展示组件不需要配置业务服务。页面取得数据后，直接传入 `pageInfo` 和 `pageComponents`：
+纯展示组件不需要配置业务服务。下面假设宿主的 `api.pages.detail(id)` 返回已解析的 `{ pageId, pageSetup?, pageComponents }` 对象；请替换为项目中的页面接口：
 
 ```vue
 <script setup lang="ts">
@@ -4909,16 +4924,49 @@ import type {
 } from '@puresnake/snake-ui';
 import { api } from '@/services/api';
 
-const cmsRef = ref<CmsExposed>();
+const cmsRef = ref<CmsExposed | null>(null);
 const pageInfo = ref<CmsPageInfo>({});
 const pageComponents = ref<CmsComponentConfig[]>([]);
 const scrollTop = ref(0);
+const pageId = ref('home');
+const loadError = ref('');
+
+function normalizeCmsPage(input: unknown): { pageInfo: CmsPageInfo; pageComponents: CmsComponentConfig[] } {
+    const record = input && typeof input === 'object' && !Array.isArray(input)
+        ? input as Record<string, unknown>
+        : {};
+    const setup = record.pageSetup && typeof record.pageSetup === 'object' && !Array.isArray(record.pageSetup)
+        ? record.pageSetup as Record<string, unknown>
+        : {};
+    const rawComponents = Array.isArray(record.pageComponents) ? record.pageComponents : [];
+
+    return {
+        pageInfo: {
+            pageId: String(record.pageId ?? record.id ?? 'default'),
+            name: String(setup.name ?? record.name ?? '')
+        },
+        pageComponents: rawComponents.filter((item): item is CmsComponentConfig =>
+            Boolean(item && typeof item === 'object' && typeof item.component === 'string')
+        )
+    };
+}
+
+async function loadPage() {
+    try {
+        const response = await api.pages.detail(pageId.value);
+        const page = normalizeCmsPage(response);
+        pageInfo.value = page.pageInfo;
+        pageComponents.value = page.pageComponents;
+        loadError.value = '';
+    } catch (error) {
+        loadError.value = '页面加载失败，请重试';
+        console.error('[CMS] page load failed', error);
+    }
+}
 
 onLoad(async query => {
-    const response = await api.pages.detail(String(query.id || 'home'));
-    const page = normalizeCmsPage(response);
-    pageInfo.value = page.pageInfo;
-    pageComponents.value = page.pageComponents;
+    pageId.value = String(query.id || 'home');
+    await loadPage();
 });
 
 onPageScroll(event => {
@@ -4929,7 +4977,7 @@ onReachBottom(() => cmsRef.value?.loadMore());
 
 onPullDownRefresh(async () => {
     try {
-        await cmsRef.value?.init();
+        await loadPage();
     } finally {
         uni.stopPullDownRefresh();
     }
@@ -4945,18 +4993,21 @@ function reportError(error: CmsError) {
 </script>
 
 <template>
-    <snake-cms
-        ref="cmsRef"
-        :page-info="pageInfo"
-        :page-components="pageComponents"
-        :scroll-top="scrollTop"
-        @diagnostic="reportDiagnostic"
-        @error="reportError"
-    />
+    <view>
+        <view v-if="loadError" @click="loadPage">{{ loadError }}</view>
+        <snake-cms
+            ref="cmsRef"
+            :page-info="pageInfo"
+            :page-components="pageComponents"
+            :scroll-top="scrollTop"
+            @diagnostic="reportDiagnostic"
+            @error="reportError"
+        />
+    </view>
 </template>
 ```
 
-页面触底时调用 `loadMore()`；下拉刷新或更换整页配置后调用 `init()`；加载失败后可以调用 `retry()`。
+页面触底时调用 `loadMore()`。下拉刷新重新请求页面配置；`pageInfo` 或 `pageComponents` 变化时，容器会自动初始化商品数据，无需再次调用 `init()`。如果只想用当前配置重新加载商品，可调用 `init()` 或 `retry()`；页面接口失败时重新调用 `loadPage()`。
 
 ## 3. 按需注入业务服务
 
@@ -5233,9 +5284,9 @@ CMS 会忽略过期请求结果，页面切换或重新初始化后，较早返�
 
 # CMS 组件总览
 
-页面把 long-editor 保存的 `{ component: 'v2.*', active, props }` 数组交给 `<snake-cms>`，由容器按配置渲染对应区块。
+页面把 SankeEditor 保存的 `{ component: 'v2.*', active, props }` 数组交给 `<snake-cms>`，由容器按配置渲染对应区块。已有 v1 配置也可继续使用。
 
-> 这里列出的是 `snake-cms` 的配置能力，不是独立 easycom 标签；`v2.*` 是运行时要求的组件标识。
+> 这里列出的是 `snake-cms` 的 v2 配置能力，不是独立 easycom 标签；v2 区块的组件标识必须带 `v2.` 前缀。
 
 ## 平台兼容性
 
@@ -5273,7 +5324,7 @@ CMS 会忽略过期请求结果，页面切换或重新初始化后，较早返�
 推荐在安装 Snake UI 时统一配置。服务接收规范化后的组件配置和页面上下文，接口地址、响应转换、详情路由均由应用决定：
 
 ```ts
-import SnakeUI from '@r2nd/snake-ui';
+import SnakeUI from '@puresnake/snake-ui';
 
 app.use(SnakeUI, {
     cms: {
@@ -5299,10 +5350,10 @@ app.use(SnakeUI, {
             },
             coupon: {
                 async check({ config }) {
-                    return api.coupon.check(config.couponId);
+                    return api.coupon.check(config.coupon?.id);
                 },
                 async receive({ config }) {
-                    return api.coupon.receive(config.couponId);
+                    return api.coupon.receive(config.coupon?.id);
                 }
             },
             link: {
@@ -5326,7 +5377,8 @@ app.use(SnakeUI, {
 | `pageInfo`        | 页面 ID、名称和页面级业务信息          | `CmsPageInfo`          | `{}`   |
 | `pageComponents`  | 按顺序排列的装修配置                   | `CmsComponentConfig[]` | `[]`   |
 | `scrollTop`       | 页面滚动位置                           | `number`               | `0`    |
-| `stickyOffsetTop` | 商品区吸顶顶部偏移                     | `number`               | `0`    |
+| `stickyOffsetTop` | 商品区和搜索框吸顶顶部偏移             | `number`               | `0`    |
+| `stickyCustomNavHeight` | 自定义导航栏高度，px             | `number`               | `0`    |
 | `cmsOptions`      | 当前实例的服务、别名、资源和规范化配置 | `CmsOptions`           | `{}`   |
 
 ### Events
@@ -5645,6 +5697,8 @@ app.use(SnakeUI, {
 
 `SearchImage` 还包含 `show/src/link/width/height/borderRadius/marginRight`；图标项包含 `src/link/width/height`。所有点击依赖 [link service](/cms/services#链接服务)。
 
+`style.position: 1` 使用容器的 `scrollTop`、`stickyOffsetTop` 和 `stickyCustomNavHeight` 吸顶；`0` 保持普通页面布局。
+
 <!-- Source: docs/cms/services.md -->
 
 # CMS 业务服务接入
@@ -5685,6 +5739,8 @@ const commerce: CmsCommerceService = {
 需要活动场次或筛选元数据时实现 `getActivities`、`getFilters`。分页由 `snake-cms` 的 `loadMore()` 触发。
 
 ## 优惠券服务
+
+v2 优惠券的 `config.coupon` 对应编辑器保存的优惠券对象。为兼容旧服务，v2 适配器也提供同值的 `config.couponObj`；原有 v1 优惠券仍使用 `couponObj`。
 
 ```ts
 const coupon: CmsCouponService = {
@@ -7579,7 +7635,7 @@ guid('order'); // order-...
 
 `http` 是请求模块的规范单例。`snakeHttp` 仅作为兼容别名保留；请求模块默认导出 `httpPlugin`，可通过 `app.use(httpPlugin, { requestConfig, interceptor })` 挂载 `this.$http`；使用 `app.use(SnakeUI)` 时，`$http` 与 `$snake.http` 同时可用。
 
-为兼容 uView，默认 `meta.originalData` 为 `true`，因此调用方会收到完整的 `uni.request` 响应。传入 `meta: { originalData: false }` 后才返回 `response.data`，且非 200 状态会 reject。请求拦截器取消仍会 reject `RequestError`，不会产生永久 pending 的 Promise。
+默认 `meta.originalData` 为 `true`，因此调用方会收到完整的 `uni.request` 响应。传入 `meta: { originalData: false }` 后才返回 `response.data`，且非 2xx 状态会 reject。请求拦截器取消仍会 reject `RequestError`，不会产生永久 pending 的 Promise。
 
 `http` 是面向 uni-app 的轻量请求客户端，支持 TypeScript、全局配置、请求/响应拦截器、Loading、Toast、自定义传输层和多实例。
 
@@ -7649,7 +7705,7 @@ configureHttp({
 
 ## 响应与错误
 
-默认 `meta.originalData: true` 时返回完整响应；设置为 `false` 后，HTTP 200 返回 `response.data`，其他状态会 reject。传输失败、拦截器失败和取消都会 reject Promise。
+默认 `meta.originalData: true` 时返回完整响应；设置为 `false` 后，任意 HTTP 2xx 返回 `response.data`，其他状态会 reject。传输失败、拦截器失败和取消都会 reject Promise。并发开启 `meta.loading` 时，Loading 会在最后一个请求结束后才关闭。
 
 ```ts
 import { http, RequestError } from '@puresnake/snake-ui';
@@ -7658,12 +7714,12 @@ try {
     await http.get('/profile');
 } catch (error) {
     if (error instanceof RequestError) {
-        console.log(error.kind, error.statusCode, error.config);
+        console.log(error.kind, error.statusCode, error.config, error.platformError);
     }
 }
 ```
 
-`kind` 为 `canceled`、`http`、`transport` 或 `interceptor`。
+`kind` 为 `canceled`、`http`、`transport` 或 `interceptor`。`transport` 错误会保留宿主的原始失败对象到 `platformError`；支付宝小程序的 `errMsg`、网络/证书/域名错误可据此直接排查。Snake 内部的 `baseUrl`、`meta` 与 `params` 不会透传给 `uni.request`。
 
 ## 多实例与自定义传输
 

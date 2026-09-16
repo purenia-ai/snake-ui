@@ -13,6 +13,7 @@
 import { computed } from 'vue';
 import Coupon from '../../../snake-coupon/snake-coupon.vue';
 import type { CmsCouponService, CmsError, CmsLinkService, CmsPageInfo } from '../../../../libs/cms';
+import { v2CouponLegacyData } from './shared';
 const props = defineProps<{
     data: Record<string, any>;
     couponService?: CmsCouponService;
@@ -20,14 +21,5 @@ const props = defineProps<{
     pageInfo?: CmsPageInfo;
 }>();
 defineEmits<{ error: [error: CmsError]; received: [] }>();
-const legacyData = computed(() => ({
-    modeType: props.data.mode || 'page',
-    popupMode: props.data.popupMode || 'bottom',
-    couponObj: props.data.coupon,
-    beforeImage: props.data.before?.image || '',
-    beforeUrl: props.data.before?.link?.http || '',
-    afterImage: props.data.after?.image || '',
-    afterUrl: props.data.after?.link?.http || '',
-    type: String(props.data.after?.link?.httpType || 10)
-}));
+const legacyData = computed(() => v2CouponLegacyData(props.data));
 </script>

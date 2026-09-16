@@ -1,6 +1,6 @@
 # CMS 快速接入
 
-Snake CMS 用来把后端保存的页面装修配置渲染成 uni-app 页面。配置使用 `{ component: 'v2.*', active, props }` 信封，其中 `v2.*` 是运行时要求的组件标识。
+Snake CMS 用来把后端保存的页面装修配置渲染成 uni-app 页面。新页面使用 `{ component: 'v2.*', active, props }` 信封；已有 v1 配置仍可渲染，见[版本共存](/cms/data-contract#版本共存)。
 
 ```text
 装修编辑器 -> 业务后端 -> 页面接口 -> 数据适配 -> <snake-cms>
@@ -40,53 +40,64 @@ const pageComponents: CmsComponentConfig[] = [
 ];
 ```
 
-远端 JSON 不能直接当成可信类型。建议在页面适配层统一补齐数组并过滤无效配置：
-
-```ts
-function normalizeCmsPage(input: Record<string, unknown>) {
-    const rawComponents = Array.isArray(input.pageComponents) ? input.pageComponents : [];
-
-    return {
-        pageInfo: {
-            pageId: String(input.pageId || 'default'),
-            name: String(input.name || '')
-        },
-        pageComponents: rawComponents.filter((item): item is CmsComponentConfig =>
-            Boolean(item && typeof item === 'object' && typeof (item as CmsComponentConfig).component === 'string')
-        )
-    };
-}
-```
+远端 JSON 不能直接当成可信类型。下面的页面示例把数组和组件标识校验放在 `normalizeCmsPage()` 中；宿主可按自己的接口结构补充字段转换。
 
 `active === false` 的区块不会渲染。完整字段规则见[页面数据协议](/cms/data-contract)。
 
 ## 2. 在页面中渲染
 
-纯展示组件不需要配置业务服务。页面取得数据后，直接传入 `pageInfo` 和 `pageComponents`：
+纯展示组件不需要配置业务服务。下面假设宿主的 `api.pages.detail(id)` 返回已解析的 `{ pageId, pageSetup?, pageComponents }` 对象；请替换为项目中的页面接口：
 
 ```vue
 <script setup lang="ts">
 import { onLoad, onPageScroll, onReachBottom, onPullDownRefresh } from '@dcloudio/uni-app';
 import { ref } from 'vue';
-import type {
-    CmsComponentConfig,
-    CmsDiagnostic,
-    CmsError,
-    CmsExposed,
-    CmsPageInfo
-} from '@puresnake/snake-ui';
+import type { CmsComponentConfig, CmsDiagnostic, CmsError, CmsExposed, CmsPageInfo } from '@puresnake/snake-ui';
 import { api } from '@/services/api';
 
-const cmsRef = ref<CmsExposed>();
+const cmsRef = ref<CmsExposed | null>(null);
 const pageInfo = ref<CmsPageInfo>({});
 const pageComponents = ref<CmsComponentConfig[]>([]);
 const scrollTop = ref(0);
+const pageId = ref('home');
+const loadError = ref('');
+
+function normalizeCmsPage(input: unknown): { pageInfo: CmsPageInfo; pageComponents: CmsComponentConfig[] } {
+    const record =
+        input && typeof input === 'object' && !Array.isArray(input) ? (input as Record<string, unknown>) : {};
+    const setup =
+        record.pageSetup && typeof record.pageSetup === 'object' && !Array.isArray(record.pageSetup)
+            ? (record.pageSetup as Record<string, unknown>)
+            : {};
+    const rawComponents = Array.isArray(record.pageComponents) ? record.pageComponents : [];
+
+    return {
+        pageInfo: {
+            pageId: String(record.pageId ?? record.id ?? 'default'),
+            name: String(setup.name ?? record.name ?? '')
+        },
+        pageComponents: rawComponents.filter((item): item is CmsComponentConfig =>
+            Boolean(item && typeof item === 'object' && typeof item.component === 'string')
+        )
+    };
+}
+
+async function loadPage() {
+    try {
+        const response = await api.pages.detail(pageId.value);
+        const page = normalizeCmsPage(response);
+        pageInfo.value = page.pageInfo;
+        pageComponents.value = page.pageComponents;
+        loadError.value = '';
+    } catch (error) {
+        loadError.value = '页面加载失败，请重试';
+        console.error('[CMS] page load failed', error);
+    }
+}
 
 onLoad(async query => {
-    const response = await api.pages.detail(String(query.id || 'home'));
-    const page = normalizeCmsPage(response);
-    pageInfo.value = page.pageInfo;
-    pageComponents.value = page.pageComponents;
+    pageId.value = String(query.id || 'home');
+    await loadPage();
 });
 
 onPageScroll(event => {
@@ -97,7 +108,7 @@ onReachBottom(() => cmsRef.value?.loadMore());
 
 onPullDownRefresh(async () => {
     try {
-        await cmsRef.value?.init();
+        await loadPage();
     } finally {
         uni.stopPullDownRefresh();
     }
@@ -113,18 +124,21 @@ function reportError(error: CmsError) {
 </script>
 
 <template>
-    <snake-cms
-        ref="cmsRef"
-        :page-info="pageInfo"
-        :page-components="pageComponents"
-        :scroll-top="scrollTop"
-        @diagnostic="reportDiagnostic"
-        @error="reportError"
-    />
+    <view>
+        <view v-if="loadError" @click="loadPage">{{ loadError }}</view>
+        <snake-cms
+            ref="cmsRef"
+            :page-info="pageInfo"
+            :page-components="pageComponents"
+            :scroll-top="scrollTop"
+            @diagnostic="reportDiagnostic"
+            @error="reportError"
+        />
+    </view>
 </template>
 ```
 
-页面触底时调用 `loadMore()`；下拉刷新或更换整页配置后调用 `init()`；加载失败后可以调用 `retry()`。
+页面触底时调用 `loadMore()`。下拉刷新重新请求页面配置；`pageInfo` 或 `pageComponents` 变化时，容器会自动初始化商品数据，无需再次调用 `init()`。如果只想用当前配置重新加载商品，可调用 `init()` 或 `retry()`；页面接口失败时重新调用 `loadPage()`。
 
 ## 3. 按需注入业务服务
 

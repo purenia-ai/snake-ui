@@ -175,12 +175,19 @@
                 :page-info="pageInfo"
             />
             <cms-v2-richtext v-else-if="item.component === 'v2.richtext'" :data="item.props" />
-            <cms-v2-search
-                v-else-if="item.component === 'v2.search'"
-                :data="item.props"
-                :link-service="options.services?.link"
-                :page-info="pageInfo"
-            />
+            <template v-else-if="item.component === 'v2.search'">
+                <snake-sticky
+                    v-if="searchStickyEnabled(item.props)"
+                    :offset-top="stickyOffsetTop"
+                    :custom-nav-height="stickyCustomNavHeight"
+                    :scroll-top="scrollTop"
+                    :bg-color="item.props.style?.backgroundColor || '#f9f9f9'"
+                    :z-index="20"
+                >
+                    <cms-v2-search :data="item.props" :link-service="options.services?.link" :page-info="pageInfo" />
+                </snake-sticky>
+                <cms-v2-search v-else :data="item.props" :link-service="options.services?.link" :page-info="pageInfo" />
+            </template>
             <cms-v2-video v-else-if="item.component === 'v2.video'" :data="item.props" />
             <slot v-else name="extension" :item="item" :page-info="pageInfo" />
         </template>
@@ -241,6 +248,7 @@ import CmsV2Popup from './blocks/v2/cms-v2-popup.vue';
 import CmsV2Richtext from './blocks/v2/cms-v2-richtext.vue';
 import CmsV2Search from './blocks/v2/cms-v2-search.vue';
 import CmsV2Video from './blocks/v2/cms-v2-video.vue';
+import { searchStickyEnabled } from './blocks/v2/shared';
 import { normalizeCmsComponents, reportCmsDiagnostic, resolveCmsOptions, useCmsCommerce } from '../../libs/cms';
 import type { CmsDiagnostic, CmsError, CmsOptions, CmsPageInfo, CmsStateChange } from './types';
 

@@ -29,6 +29,37 @@ const normalize = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/cms
 const blocks = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/cms/blocks.ts');
 const commerceModule = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/cms/use-commerce.ts');
 const runtime = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/runtime/index.ts');
+const v2Shared = await server.ssrLoadModule('/src/uni_modules/snake-ui/components/snake-cms/blocks/v2/shared.ts');
+
+test('CMS v2 coupon keeps both public and legacy coupon fields for host services', () => {
+    const coupon = { id: 'coupon-1' };
+    const input = { coupon, before: { image: 'before.png' }, after: { link: { httpType: 11, http: 'https://example.com' } } };
+    const result = v2Shared.v2CouponLegacyData(input);
+
+    assert.equal(result.coupon, coupon);
+    assert.equal(result.couponObj, coupon);
+    assert.equal(result.beforeImage, 'before.png');
+    assert.equal(result.afterUrl, 'https://example.com');
+    assert.equal(result.type, '11');
+    assert.equal(input.couponObj, undefined);
+});
+
+test('CMS v2 carousel resolves indicator defaults and progress for each slide', () => {
+    assert.equal(v2Shared.carouselIndicatorType({}), 'bullets');
+    for (const type of ['none', 'bullets', 'fraction', 'progressbar']) {
+        assert.equal(v2Shared.carouselIndicatorType({ indicator: { type } }), type);
+    }
+    assert.equal(v2Shared.carouselProgress(0, 0), 0);
+    assert.equal(v2Shared.carouselProgress(0, 4), 25);
+    assert.equal(v2Shared.carouselProgress(1, 4), 50);
+    assert.equal(v2Shared.carouselProgress(3, 4), 100);
+});
+
+test('CMS v2 search enables sticky positioning only for position 1', () => {
+    assert.equal(v2Shared.searchStickyEnabled({}), false);
+    assert.equal(v2Shared.searchStickyEnabled({ style: { position: 0 } }), false);
+    assert.equal(v2Shared.searchStickyEnabled({ style: { position: 1 } }), true);
+});
 
 test('CMS normalizes aliases, preserves extensions, and keeps only one commerce section', () => {
     const input = [

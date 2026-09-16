@@ -33,3 +33,5 @@
 | `style.showBorder`                                          | `boolean`            | `true`     | 显示边框                 |
 
 `SearchImage` 还包含 `show/src/link/width/height/borderRadius/marginRight`；图标项包含 `src/link/width/height`。所有点击依赖 [link service](/cms/services#链接服务)。
+
+`style.position: 1` 使用容器的 `scrollTop`、`stickyOffsetTop` 和 `stickyCustomNavHeight` 吸顶；`0` 保持普通页面布局。

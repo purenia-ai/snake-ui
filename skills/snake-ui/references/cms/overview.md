@@ -6,9 +6,9 @@ triggers: ['overview', 'CMS', '组件总览']
 
 # CMS 组件总览
 
-页面把 long-editor 保存的 `{ component: 'v2.*', active, props }` 数组交给 `<snake-cms>`，由容器按配置渲染对应区块。
+页面把 SankeEditor 保存的 `{ component: 'v2.*', active, props }` 数组交给 `<snake-cms>`，由容器按配置渲染对应区块。已有 v1 配置也可继续使用。
 
-> 这里列出的是 `snake-cms` 的配置能力，不是独立 easycom 标签；`v2.*` 是运行时要求的组件标识。
+> 这里列出的是 `snake-cms` 的 v2 配置能力，不是独立 easycom 标签；v2 区块的组件标识必须带 `v2.` 前缀。
 
 ## 平台兼容性
 
@@ -46,7 +46,7 @@ triggers: ['overview', 'CMS', '组件总览']
 推荐在安装 Snake UI 时统一配置。服务接收规范化后的组件配置和页面上下文，接口地址、响应转换、详情路由均由应用决定：
 
 ```ts
-import SnakeUI from '@r2nd/snake-ui';
+import SnakeUI from '@puresnake/snake-ui';
 
 app.use(SnakeUI, {
     cms: {
@@ -72,10 +72,10 @@ app.use(SnakeUI, {
             },
             coupon: {
                 async check({ config }) {
-                    return api.coupon.check(config.couponId);
+                    return api.coupon.check(config.coupon?.id);
                 },
                 async receive({ config }) {
-                    return api.coupon.receive(config.couponId);
+                    return api.coupon.receive(config.coupon?.id);
                 }
             },
             link: {
@@ -94,13 +94,14 @@ app.use(SnakeUI, {
 
 ### Props
 
-| 参数              | 说明                                   | 类型                   | 默认值 |
-| ----------------- | -------------------------------------- | ---------------------- | ------ |
-| `pageInfo`        | 页面 ID、名称和页面级业务信息          | `CmsPageInfo`          | `{}`   |
-| `pageComponents`  | 按顺序排列的装修配置                   | `CmsComponentConfig[]` | `[]`   |
-| `scrollTop`       | 页面滚动位置                           | `number`               | `0`    |
-| `stickyOffsetTop` | 商品区吸顶顶部偏移                     | `number`               | `0`    |
-| `cmsOptions`      | 当前实例的服务、别名、资源和规范化配置 | `CmsOptions`           | `{}`   |
+| 参数                    | 说明                                   | 类型                   | 默认值 |
+| ----------------------- | -------------------------------------- | ---------------------- | ------ |
+| `pageInfo`              | 页面 ID、名称和页面级业务信息          | `CmsPageInfo`          | `{}`   |
+| `pageComponents`        | 按顺序排列的装修配置                   | `CmsComponentConfig[]` | `[]`   |
+| `scrollTop`             | 页面滚动位置                           | `number`               | `0`    |
+| `stickyOffsetTop`       | 商品区和搜索框吸顶顶部偏移             | `number`               | `0`    |
+| `stickyCustomNavHeight` | 自定义导航栏高度，px                   | `number`               | `0`    |
+| `cmsOptions`            | 当前实例的服务、别名、资源和规范化配置 | `CmsOptions`           | `{}`   |
 
 ### Events
 

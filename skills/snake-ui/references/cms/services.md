@@ -43,6 +43,8 @@ const commerce: CmsCommerceService = {
 
 ## 优惠券服务
 
+v2 优惠券的 `config.coupon` 对应编辑器保存的优惠券对象。为兼容旧服务，v2 适配器也提供同值的 `config.couponObj`；原有 v1 优惠券仍使用 `couponObj`。
+
 ```ts
 const coupon: CmsCouponService = {
     async check({ config }) {

@@ -29,3 +29,4 @@
 | `items`           | `CmsV2ImageItem[]`                                   | `[]`        | 轮播图片及链接 |
 
 运行时把秒转换为 swiper 使用的毫秒。
+`progressbar` 在轮播底部显示当前页进度；未提供图片时不显示进度条。省略 `indicator.type` 时使用圆点指示器。

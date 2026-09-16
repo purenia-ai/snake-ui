@@ -11,8 +11,10 @@ export interface CmsProps {
     pageComponents?: CmsComponentConfig[];
     /** 页面或容器当前滚动距离。 */
     scrollTop?: number;
-    /** CMS 商品区域吸顶偏移量。 */
+    /** CMS 商品区域和搜索框吸顶偏移量，按 rpx 处理。 */
     stickyOffsetTop?: number;
+    /** 自定义导航栏高度，单位 px。 */
+    stickyCustomNavHeight?: number;
     /** 当前实例使用的 CMS 服务与兼容配置。 */
     cmsOptions?: CmsOptions;
 }
