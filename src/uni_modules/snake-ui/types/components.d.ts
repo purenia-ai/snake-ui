@@ -69,6 +69,7 @@ import type { NoticeProps } from '../components/snake-notice/types';
 import type { PagePopupProps } from '../components/snake-page-popup/types';
 import type { PictureAdsProps } from '../components/snake-picture-ads/types';
 import type { RichTextProps } from '../components/snake-rich-text/types';
+import type { ParseEmits, ParseProps } from '../components/snake-parse/types';
 import type { FloatingBubbleProps } from '../components/snake-floating-bubble/types';
 import type { VideosProps } from '../components/snake-videos/types';
 
@@ -142,6 +143,7 @@ export * from '../components/snake-notice/types';
 export * from '../components/snake-page-popup/types';
 export * from '../components/snake-picture-ads/types';
 export * from '../components/snake-rich-text/types';
+export * from '../components/snake-parse/types';
 export * from '../components/snake-floating-bubble/types';
 export * from '../components/snake-videos/types';
 
@@ -177,6 +179,7 @@ export const SnakeNotice: Component<NoticeProps>;
 export const SnakePagePopup: Component<PagePopupProps>;
 export const SnakePictureAds: Component<PictureAdsProps>;
 export const SnakeRichText: Component<RichTextProps>;
+export const SnakeParse: Component<ParseProps, ParseEmits>;
 export const SnakeFloatingBubble: Component<FloatingBubbleProps>;
 export const SnakeVideos: Component<VideosProps>;
 export const SnakeButton: Component<ButtonProps, ButtonEmits>;

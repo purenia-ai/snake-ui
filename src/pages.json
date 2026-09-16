@@ -103,6 +103,7 @@
                 { "path": "magicCube/index", "style": { "navigationBarTitleText": "魔方布局" } },
                 { "path": "videos/index", "style": { "navigationBarTitleText": "视频" } },
                 { "path": "richText/index", "style": { "navigationBarTitleText": "富文本" } },
+                { "path": "parse/index", "style": { "navigationBarTitleText": "富文本解析" } },
                 { "path": "notice/index", "style": { "navigationBarTitleText": "公告" } },
                 { "path": "auxiliarySegmentation/index", "style": { "navigationBarTitleText": "辅助分割线" } },
                 { "path": "graphicNavigation/index", "style": { "navigationBarTitleText": "图文导航" } },

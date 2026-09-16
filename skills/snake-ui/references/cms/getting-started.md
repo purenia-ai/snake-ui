@@ -119,7 +119,8 @@ function reportError(error: CmsError) {
         :page-components="pageComponents"
         :scroll-top="scrollTop"
         @diagnostic="reportDiagnostic"
-        @error="reportError" />
+        @error="reportError"
+    />
 </template>
 ```
 

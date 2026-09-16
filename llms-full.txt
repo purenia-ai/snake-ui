@@ -565,17 +565,17 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 
 #### Props
 
-| 参数                          | 说明                                             | 类型               | 默认值       |
-| ----------------------------- | ------------------------------------------------ | ------------------ | ------------ |
-| `modelValue`                  | 是否选中，支持 v-model                           | `boolean`          | `false`      |
-| `value` / `name`              | 兼容旧 API 的值 / 数据项标识，`value` 非空时优先 | `string \| number` | `''`         |
-| `label`                       | 展示标签文本                                     | `string`           | `''`         |
-| `shape`                       | square/circle 形状                               | `string`           | 继承 Group   |
-| `disabled` / `labelDisabled`  | 禁用 / 禁止点击标签选中                          | `boolean`          | `false`      |
-| `activeColor`                 | 选中颜色，设置后覆盖父级 activeColor             | `string`           | 主题色       |
-| `iconSize` / `labelSize`      | 勾号与标签字号，单位 rpx                         | `UnitValue`        | 按 size 预设 |
-| `size`                        | 整体尺寸 small/default/large                     | `string`           | 继承 Group   |
-| `customClass` / `customStyle` | 自定义类名和样式                                 | `string \| style`  | `''`         |
+| 参数                          | 说明                                 | 类型               | 默认值       |
+| ----------------------------- | ------------------------------------ | ------------------ | ------------ |
+| `modelValue`                  | 是否选中，支持 v-model               | `boolean`          | `false`      |
+| `name`                        | 数据项标识符                         | `string \| number` | `''`         |
+| `label`                       | 展示标签文本                         | `string`           | `''`         |
+| `shape`                       | square/circle 形状                   | `string`           | 继承 Group   |
+| `disabled` / `labelDisabled`  | 禁用 / 禁止点击标签选中              | `boolean`          | `false`      |
+| `activeColor`                 | 选中颜色，设置后覆盖父级 activeColor | `string`           | 主题色       |
+| `iconSize` / `labelSize`      | 勾号与标签字号，单位 rpx             | `UnitValue`        | 按 size 预设 |
+| `size`                        | 整体尺寸 small/default/large         | `string`           | 继承 Group   |
+| `customClass` / `customStyle` | 自定义类名和样式                     | `string \| style`  | `''`         |
 
 #### Events
 
@@ -2470,6 +2470,8 @@ function handleRetry() {
 <snake-notice-bar volume-icon text="欢迎使用 Snake UI" />
 ```
 
+横向模式根据实际内容宽度和 `speed` 计算动画时长，并在有内容时持续播放。`play-state="paused"` 会暂停播放。
+
 ## 纵向轮播与操作
 
 ```vue
@@ -2484,44 +2486,49 @@ function handleRetry() {
 />
 ```
 
-横向模式会根据 `speed` 生成跑马灯；设置 `play-state="paused"` 可暂停，纵向模式使用原生 swiper。
+纵向模式使用原生 swiper；横向 `is-circular="false"` 会逐条播放，最后一条完成后触发 `end`。
 
-## 关闭与更多
+## 关闭与重置
 
-关闭图标只通知业务，是否继续渲染通知栏由外部 `show` 控制。更多图标适合跳转公告列表。
+关闭图标会立即隐藏组件，并同步触发 `close`、`update:show` 与 `update:modelValue`。使用 `v-model:show` 或标准 `v-model` 可由父组件同步可见性。
 
 ```vue
-<snake-notice-bar :show="showNotice" text="系统公告" close-icon more-icon @close="showNotice = false" @get-more="goNoticeList" />
+<snake-notice-bar v-model:show="showNotice" text="系统公告" close-icon more-icon @get-more="goNoticeList" />
 ```
+
+通过组件 ref 调用 `reset()`，可从第一条消息重新开始并重新测量尺寸。
 
 ## API
 
 ### Props
 
-| 参数                                    | 说明                                     | 类型                        | 默认值               |
-| --------------------------------------- | ---------------------------------------- | --------------------------- | -------------------- |
-| `list` / `text`                         | 通知列表或单条文字                       | `string[] \| string`        | `[]` / `''`          |
-| `type`                                  | primary/success/warning/error/info 主题  | `string`                    | `warning`            |
-| `mode` / `direction`                    | horizontal/vertical；row/column 兼容写法 | `string`                    | `horizontal` / `row` |
-| `show` / `autoplay`                     | 是否显示、是否自动播放                   | `boolean`                   | `true`               |
-| `volumeIcon` / `moreIcon` / `closeIcon` | 左侧提示、更多、关闭图标                 | `boolean`                   | `false`              |
-| `bgColor` / `color` / `fontSize`        | 背景、文字颜色和字号                     | `string \| number`          | 主题默认值           |
-| `duration`                              | 纵向轮播间隔，ms                         | `number`                    | `3000`               |
-| `speed`                                 | 横向滚动速度                             | `number`                    | `80`                 |
-| `isCircular` / `playState`              | 是否循环、play/paused                    | `boolean \| string`         | `true` / `play`      |
-| `disableTouch`                          | 纵向轮播是否禁用手势                     | `boolean`                   | `true`               |
-| `borderRadius` / `padding`              | 圆角和内边距                             | `string \| number`          | `0` / 默认内边距     |
-| `noListHidden`                          | 没有内容时是否隐藏                       | `boolean`                   | `true`               |
-| `customClass` / `customStyle`           | 自定义类名和样式                         | `string \| object \| array` | `''`                 |
+| 参数                                    | 说明                                         | 类型                        | 默认值               |
+| --------------------------------------- | -------------------------------------------- | --------------------------- | -------------------- |
+| `list` / `text`                         | 通知列表或文本                               | `string[] \| string`        | `[]` / `''`          |
+| `type`                                  | `primary/success/warning/error/info` 主题    | `string`                    | `warning`            |
+| `mode` / `direction`                    | `horizontal/vertical`，`row/column` 兼容写法 | `string`                    | `horizontal` / `row` |
+| `modelValue` / `show`                   | `v-model` / `v-model:show` 可见性            | `boolean`                   | `true`               |
+| `autoplay` / `playState`                | 是否自动播放、`play/paused` 播放状态         | `boolean \| string`         | `true` / `play`      |
+| `volumeIcon` / `moreIcon` / `closeIcon` | 左侧提示、更多、关闭图标                     | `boolean`                   | `false`              |
+| `bgColor` / `color` / `fontSize`        | 背景、文字颜色和字号                         | `string \| number`          | 主题默认值           |
+| `duration`                              | 纵向轮播间隔及横向静态消息停留时间（ms）     | `number`                    | `3000`               |
+| `speed`                                 | 横向滚动速度（rpx/s）                        | `number`                    | `80`                 |
+| `isCircular`                            | 横向是否无缝循环                             | `boolean`                   | `true`               |
+| `disableTouch`                          | 纵向轮播是否禁用手势                         | `boolean`                   | `true`               |
+| `borderRadius` / `padding`              | 圆角与内边距                                 | `string \| number`          | `0` / `18rpx 24rpx`  |
+| `noListHidden`                          | 无内容时是否隐藏                             | `boolean`                   | `true`               |
+| `customClass` / `customStyle`           | 自定义类名与样式                             | `string \| object \| array` | `''`                 |
 
 ### Events
 
-| 事件名    | 触发时机     | 参数     |
-| --------- | ------------ | -------- |
-| `click`   | 点击当前通知 | 当前索引 |
-| `change`  | 纵向通知切换 | 当前索引 |
-| `close`   | 点击关闭图标 | -        |
-| `getMore` | 点击更多图标 | -        |
+| 事件名                              | 触发时机                                 | 参数      |
+| ----------------------------------- | ---------------------------------------- | --------- |
+| `update:modelValue` / `update:show` | 关闭时同步可见性                         | `boolean` |
+| `click`                             | 点击当前通知                             | 当前索引  |
+| `change`                            | 纵向通知切换                             | 当前索引  |
+| `close`                             | 点击关闭图标                             | -         |
+| `getMore`                           | 点击更多图标                             | -         |
+| `end`                               | 非循环横向播放完成，或纵向消息完成一整轮 | -         |
 
 ## 主题变量
 
@@ -2602,6 +2609,43 @@ function handleRetry() {
 ## 主题变量
 
 Overlay 没有直接使用 CSS 主题变量。遮罩透明度、层级和自定义外观分别通过 `opacity`、`zIndex` 与 `customStyle` 配置。
+
+<!-- Source: docs/components/parse.md -->
+
+# Parse 富文本解析
+
+`snake-parse` 用于渲染文章、商品详情等 HTML 内容。内置 HTML 解析、图片预览、链接处理、表格横向滚动、音视频与 App-NVue 支持，可独立使用。
+
+## 基础用法
+
+```vue
+<snake-parse :content="article" preview-img scroll-table @linktap="onLinkTap" />
+```
+
+## Props
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `content` | HTML 字符串 | `string` | `''` |
+| `domain` | 相对链接主域名 | `string` | `''` |
+| `containerStyle` | 根容器样式 | `string` | `''` |
+| `tagStyle` | 标签默认样式 | `Record<string, string>` | `{}` |
+| `previewImg` / `lazyLoad` | 图片预览、懒加载 | `boolean \| string` | `true` / `false` |
+| `loadingImg` / `errorImg` | 图片占位图 | `string` | `''` |
+| `showImgMenu` / `copyLink` | 图片菜单、外链处理 | `boolean \| string` | `true` |
+| `pauseVideo` / `scrollTable` | 媒体自动暂停、表格横滑 | `boolean \| string` | `true` / `false` |
+| `selectable` / `useAnchor` | 文本选择、页内锚点 | `boolean \| string` / `boolean \| number` | `false` |
+| `setTitle` | 是否将 HTML `title` 设为页面标题 | `boolean \| string` | `true` |
+
+## Events 与 Methods
+
+事件：`load`、`ready`、`imgtap`、`linktap`、`play`、`pause`、`fullscreenchange`、`error`。
+
+组件 ref 方法：`setContent(content, append)`、`getText()`、`getRect()`、`navigateTo(id, offset)`、`pauseMedia()`、`setPlaybackRate(rate)`。
+
+## 安全与兼容
+
+解析器按标签白名单渲染，移除脚本、表单和事件属性。H5 与 App 端可渲染 `iframe`、`embed`，因此不可信 HTML 仍应在服务端完成清洗，并限制可访问的嵌入地址；小程序端会忽略这些嵌入标签。H5、App、小程序使用原生节点；App-NVue 使用内置 WebView 处理复杂内容。
 
 <!-- Source: docs/components/popup.md -->
 
@@ -2831,16 +2875,16 @@ import Button from './uni_modules/snake-ui/components/snake-button/snake-button.
 
 #### Props
 
-| 参数                          | 说明                                             | 类型               | 默认值       |
-| ----------------------------- | ------------------------------------------------ | ------------------ | ------------ |
-| `label`                       | 展示标签文本                                     | `string`           | `''`         |
-| `value` / `name`              | 兼容旧 API 的值 / 数据项标识，`value` 非空时优先 | `string \| number` | `''`         |
-| `shape`                       | circle/square 形状                               | `string`           | 继承 Group   |
-| `disabled` / `labelDisabled`  | 禁用 / 禁止点击标签选中                          | `boolean`          | `false`      |
-| `activeColor`                 | 选中颜色，设置后覆盖父级 activeColor             | `string`           | 主题色       |
-| `iconSize` / `labelSize`      | 勾号与标签字号，单位 rpx                         | `UnitValue`        | 按 size 预设 |
-| `size`                        | 整体尺寸 small/default/large                     | `string`           | 继承 Group   |
-| `customClass` / `customStyle` | 自定义类名和样式                                 | `string \| style`  | `''`         |
+| 参数                          | 说明                                 | 类型               | 默认值       |
+| ----------------------------- | ------------------------------------ | ------------------ | ------------ |
+| `label`                       | 展示标签文本                         | `string`           | `''`         |
+| `name`                        | 数据项标识符                         | `string \| number` | `''`         |
+| `shape`                       | circle/square 形状                   | `string`           | 继承 Group   |
+| `disabled` / `labelDisabled`  | 禁用 / 禁止点击标签选中              | `boolean`          | `false`      |
+| `activeColor`                 | 选中颜色，设置后覆盖父级 activeColor | `string`           | 主题色       |
+| `iconSize` / `labelSize`      | 勾号与标签字号，单位 rpx             | `UnitValue`        | 按 size 预设 |
+| `size`                        | 整体尺寸 small/default/large         | `string`           | 继承 Group   |
+| `customClass` / `customStyle` | 自定义类名和样式                     | `string \| style`  | `''`         |
 
 #### Events
 
@@ -4126,13 +4170,13 @@ Tooltip 用于展示与触发元素相关的简短说明或非操作性内容。
 
 ## 富内容与受控显示
 
-`content` 插槽可承载 `mp-html` 等内容组件；使用 `v-model` 可由页面主动控制显隐。
+`content` 插槽可承载 `snake-parse` 等内容组件；使用 `v-model` 可由页面主动控制显隐。
 
 ```vue
 <snake-tooltip v-model="showDetail" placement="bottom-start" :offset="10">
     <snake-icon name="info-circle" size="28rpx" />
     <template #content>
-        <mp-html :content="description" />
+        <snake-parse :content="description" />
     </template>
 </snake-tooltip>
 ```

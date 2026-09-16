@@ -6,8 +6,8 @@
                     <text class="demo-button-section__title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
                     <snake-button
                         :type="String(state.type)"
-                        :size="state.buttonSize as any"
-                        :shape="state.buttonShape as any"
+                        :size="state.buttonSize"
+                        :shape="state.buttonShape"
                         :plain="Boolean(state.plain)"
                         :disabled="Boolean(state.disabled)"
                         :loading="Boolean(state.loading)"

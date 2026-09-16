@@ -14,6 +14,7 @@ export const componentGroups: ComponentGroup[] = [
     {
         title: '基础组件',
         items: [
+            { name: 'Parse', title: '富文本解析', link: '/components/parse' },
             { name: 'ConfigProvider', title: '全局配置', link: '/components/config-provider' },
             { name: 'Button', title: '按钮', link: '/components/button' },
             { name: 'Icon', title: '图标', link: '/components/icon' },

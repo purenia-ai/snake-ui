@@ -86,6 +86,7 @@ export * from './components/snake-notice/types';
 export * from './components/snake-page-popup/types';
 export * from './components/snake-picture-ads/types';
 export * from './components/snake-rich-text/types';
+export * from './components/snake-parse/types';
 export * from './components/snake-floating-bubble/types';
 export * from './components/snake-videos/types';
 export * from './libs';

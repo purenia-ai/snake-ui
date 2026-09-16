@@ -1,13 +1,13 @@
 <template>
     <view class="richtext">
-        <mp-html :content="datas.myValue"></mp-html>
+        <snake-parse :content="datas.myValue"></snake-parse>
     </view>
 </template>
 
 <script setup lang="ts">
 /**
  * @component RichText
- * @description 使用 `mp-html` 渲染 CMS 提供的 HTML 内容。
+ * @description 渲染 CMS 提供的 HTML 内容。
  */
 
 import type { RichTextProps } from './types';

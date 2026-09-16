@@ -48,11 +48,13 @@
                                     content-style="width: calc(100vw - 238rpx); padding: 14rpx"
                                 >
                                     <snake-icon
-                                        name="info-circle"
+                                        name="question-circle"
                                         size="26rpx"
                                         custom-class="filter-page__tooltip-icon"
                                     ></snake-icon>
-                                    <template #content><mp-html :content="item.desc"></mp-html></template>
+                                    <template #content>
+                                        <snake-parse :content="item.desc"></snake-parse>
+                                    </template>
                                 </snake-tooltip>
                             </view>
                             <view class="price-input-box" v-if="item.value === 'priceFilter'">

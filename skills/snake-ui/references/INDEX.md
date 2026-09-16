@@ -35,6 +35,7 @@
 - [组件使用注意事项](components/note.md)
 - [NoticeBar 通知栏](components/notice-bar.md)
 - [Overlay 遮罩层](components/overlay.md)
+- [Parse 富文本解析](components/parse.md)
 - [Popup 弹出层](components/popup.md)
 - [快速上手](components/quickstart.md)
 - [Radio 单选框](components/radio.md)

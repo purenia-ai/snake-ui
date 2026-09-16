@@ -68,16 +68,16 @@ triggers: ['radio', 'snake-radio', 'Radio', '单选框']
 
 #### Props
 
-| 参数                          | 说明                                             | 类型               | 默认值       |
-| ----------------------------- | ------------------------------------------------ | ------------------ | ------------ |
-| `label`                       | 展示标签文本                                     | `string`           | `''`         |
-| `value` / `name`              | 兼容旧 API 的值 / 数据项标识，`value` 非空时优先 | `string \| number` | `''`         |
-| `shape`                       | circle/square 形状                               | `string`           | 继承 Group   |
-| `disabled` / `labelDisabled`  | 禁用 / 禁止点击标签选中                          | `boolean`          | `false`      |
-| `activeColor`                 | 选中颜色，设置后覆盖父级 activeColor             | `string`           | 主题色       |
-| `iconSize` / `labelSize`      | 勾号与标签字号，单位 rpx                         | `UnitValue`        | 按 size 预设 |
-| `size`                        | 整体尺寸 small/default/large                     | `string`           | 继承 Group   |
-| `customClass` / `customStyle` | 自定义类名和样式                                 | `string \| style`  | `''`         |
+| 参数                          | 说明                                 | 类型               | 默认值       |
+| ----------------------------- | ------------------------------------ | ------------------ | ------------ |
+| `label`                       | 展示标签文本                         | `string`           | `''`         |
+| `name`                        | 数据项标识符                         | `string \| number` | `''`         |
+| `shape`                       | circle/square 形状                   | `string`           | 继承 Group   |
+| `disabled` / `labelDisabled`  | 禁用 / 禁止点击标签选中              | `boolean`          | `false`      |
+| `activeColor`                 | 选中颜色，设置后覆盖父级 activeColor | `string`           | 主题色       |
+| `iconSize` / `labelSize`      | 勾号与标签字号，单位 rpx             | `UnitValue`        | 按 size 预设 |
+| `size`                        | 整体尺寸 small/default/large         | `string`           | 继承 Group   |
+| `customClass` / `customStyle` | 自定义类名和样式                     | `string \| style`  | `''`         |
 
 #### Events
 
