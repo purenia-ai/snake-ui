@@ -1,0 +1,17 @@
+# Demo favicon design
+
+## Goal
+
+Give the Snake UI H5 demo a browser favicon that matches the existing product identity.
+
+## Design
+
+- Reuse the existing dark-background, green `S` Snake UI mark from `src/static/logo.png` without redesigning it.
+- Export `public/favicon.ico` with 16, 32, and 48 pixel representations for broad browser compatibility.
+- Add `<link rel="icon" href="/favicon.ico" sizes="any" />` to the root `index.html` `<head>`.
+- Keep the change limited to the H5 entry page and its favicon asset. Do not alter the documentation-site marks, application logo, or runtime components.
+
+## Validation
+
+- Confirm the ICO contains the required sizes and can be decoded.
+- Run the H5 production build and confirm the generated output contains the favicon reference and asset.
