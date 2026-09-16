@@ -155,6 +155,5 @@ preview: /pages/componentsA/image/index
 | ----------------------------- | -------------------------- |
 | `--snake-color-surface-muted` | 图片容器默认背景色         |
 | `--snake-color-text-muted`    | 状态图标默认颜色           |
-| `--snake-image-bg`            | 图片容器默认背景色         |
 | `--snake-image-status-color`  | 加载状态文字与图标颜色     |
 | `--snake-image-error-color`   | 加载失败状态文字与图标颜色 |

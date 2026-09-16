@@ -94,7 +94,7 @@ const rootStyle = computed(() => [
         width: addUnit(props.width),
         height: autoHeight.value ? 'auto' : addUnit(props.height),
         borderRadius: props.shape === 'circle' ? '50%' : addUnit(props.radius),
-        backgroundColor: props.bgColor || 'var(--snake-image-bg, var(--snake-color-surface-muted, #f1f1f1))'
+        backgroundColor: props.bgColor
     },
     props.customStyle
 ]);
