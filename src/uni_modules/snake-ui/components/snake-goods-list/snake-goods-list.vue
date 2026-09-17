@@ -2,7 +2,17 @@
     <scroll-view v-if="layout === 'swipe'" scroll-x class="goods-list-scroll" :style="{ backgroundColor: bgColor }">
         <view class="goods-list goods-list--swipe" :style="listStyle">
             <block v-for="(item, index) in goodsList" :key="item.id">
-                <view class="item" :style="itemStyle" @click.stop="$emit('item-click', item, index)">
+                <view
+                    class="item"
+                    :style="[itemStyle]"
+                    role="link"
+                    tabindex="0"
+                    :aria-label="`查看商品：${item.name || item.goodsName || item.id || index + 1}`"
+                    @click.stop="$emit('item-click', item, index)"
+                    @keydown.enter.prevent="$emit('item-click', item, index)"
+                    @keydown.space.prevent="$emit('item-click', item, index)"
+                >
+                    <!-- 图片 -->
                     <view class="card-img" :style="imageStyle">
                         <snake-image
                             :src="imageFilter(item)"
@@ -12,15 +22,193 @@
                             width="100%"
                             height="100%"
                             lazy-load
-                        />
+                        ></snake-image>
+
+                        <!-- 直购已出售蒙层 -->
+                        <template v-if="listType === 'sale' || listType === 'new'">
+                            <view
+                                class="mantle"
+                                v-if="(item.channelStatus === 'off' || item.amount <= 0) && listType === 'sale'"
+                            >
+                                <image v-if="assets.goodsSoldOut" class="mantle__image" :src="assets.goodsSoldOut" />
+                            </view>
+                            <view v-if="item.newestTime && item.status === 'selling'" class="dailyNew-time">
+                                {{ item.newestTime }}上新
+                            </view>
+                        </template>
+
+                        <!-- 验货标签 -->
+                        <view style="position: absolute; top: 20rpx; left: 20rpx" v-if="item.saleType === 'send'">
+                            <image
+                                v-if="assets.goodsInspection"
+                                style="width: 80rpx; height: 24rpx"
+                                :src="assets.goodsInspection"
+                                mode="widthFix"
+                            />
+                        </view>
+
+                        <!-- 拍卖已出售蒙层 -->
+                        <template v-if="listType === 'auction'">
+                            <view
+                                v-if="
+                                    (item.channelStatus === 'off' || item.amount <= 0) &&
+                                    item.activityInfo &&
+                                    item.activityInfo.status === 'init' &&
+                                    item.activityInfo.startTime < Date.now()
+                                "
+                                class="mantle"
+                            >
+                                <image v-if="assets.goodsSoldOut" class="mantle__image" :src="assets.goodsSoldOut" />
+                            </view>
+
+                            <!-- 标签 -->
+                            <view class="auction-tag">
+                                <view class="image-warp">
+                                    <!-- 新人标签 -->
+                                    <template v-if="item.tag">
+                                        <image
+                                            v-if="assets.goodsNewcomer"
+                                            class="new-image"
+                                            :src="assets.goodsNewcomer"
+                                        />
+                                        <view class="tag-text">{{ item.tag.title }}</view>
+                                    </template>
+                                    <!-- 出价标签 -->
+                                    <template
+                                        v-if="item.activityInfo && item.activityInfo.attendance && attendanceShow"
+                                    >
+                                        <image
+                                            v-if="assets.goodsPopular"
+                                            class="hot-image"
+                                            :src="assets.goodsPopular"
+                                        />
+                                        <view class="tag-text">{{ item.activityInfo.attendance }}人出价中</view>
+                                    </template>
+                                </view>
+                            </view>
+                            <!-- 出价价格 -->
+                            <view
+                                v-if="item.activityInfo && item.activityInfo.myRank"
+                                class="auction__tips"
+                                :style="tipsStyle(item)"
+                            >
+                                <text class="price">{{ item.activityInfo.myRank }}</text>
+                            </view>
+                        </template>
                     </view>
+
+                    <!-- 内容 -->
                     <view class="goods-content">
-                        <view class="goods-name line-clamp-2">{{ item.name || item.goodsName }}</view>
-                        <view class="goods-desc"
-                            ><view class="price">{{
-                                item.price || item.discountPrice || item.salePrice || 0
-                            }}</view></view
-                        >
+                        <template v-if="listType === 'sale' || listType === 'new'">
+                            <view class="goods-name line-clamp-2">{{ item.name || item.goodsName }}</view>
+
+                            <view class="goods-desc">
+                                <view class="price" v-if="isShowPice(item)">
+                                    {{ item.price || item.discountPrice || item.jokerPrice || item.salePrice || 0 }}
+                                </view>
+
+                                <view class="size" v-if="item.size">
+                                    <view class="line-clamp-1" style="max-width: 100rpx">{{ item.size }}</view>
+                                    <view
+                                        v-if="item.gradeName || item.grade"
+                                        class="line-clamp-1"
+                                        style="max-width: 90rpx"
+                                    >
+                                        · {{ item.gradeName || item.grade }}
+                                    </view>
+                                </view>
+                                <view v-if="item.type == 'deep' && item.amount" class="stock">
+                                    库存 {{ item.amount > 99 ? '99+' : item.amount }}
+                                </view>
+                            </view>
+                            <!-- 标签 -->
+                            <view class="goods-tag" v-if="listType === 'sale'">
+                                <view
+                                    v-if="item.jokerDiscount"
+                                    class="item-tags"
+                                    style="background: #26273a; border: none"
+                                >
+                                    <text
+                                        style="
+                                            font-size: 20rpx;
+                                            line-height: 30rpx;
+                                            color: transparent;
+                                            background: linear-gradient(90deg, #dabda8 0%, #eedacc 100%);
+                                            -webkit-background-clip: text;
+                                        "
+                                    >
+                                        {{ item.jokerDiscount || '99' }}
+                                    </text>
+                                </view>
+                                <view
+                                    v-if="showTag && item.activityInfo && item.activityInfo.activityTag"
+                                    class="item-tags"
+                                >
+                                    {{ item.activityInfo.activityTag }}
+                                </view>
+                                <view v-if="item.savePrice" class="item-tags">省¥{{ item.savePrice }}</view>
+                                <view v-if="showTag && item.activityTag === 'new'" class="item-tags">新人专享</view>
+                                <view v-if="showTag && item.activityTag === 'discount'" class="item-tags"
+                                    >限时折扣</view
+                                >
+                                <view
+                                    v-if="item.packTag === true"
+                                    class="item-tags"
+                                    style="color: #2d57e7; background: #eaf1ff; border: 2rpx solid #2d57e7"
+                                >
+                                    支持打包
+                                </view>
+                                <view
+                                    v-if="
+                                        item.activityInfo &&
+                                        item.activityInfo.activityType === 'auction' &&
+                                        isEndTime(item)
+                                    "
+                                    class="item-tags"
+                                    style="color: #7a3bff; background: #f3eaff; border: 2rpx solid #f3eaff"
+                                >
+                                    捡漏
+                                </view>
+                            </view>
+                        </template>
+                        <!--  拍卖 -->
+                        <template v-if="listType === 'auction'">
+                            <view class="goods-tag" style="padding-bottom: 10rpx">
+                                <view
+                                    v-if="item.activityInfo && item.activityInfo.endTime && isEndTime(item)"
+                                    class="item-tags"
+                                    style="color: #7a3bff; background: #f3eaff; border: 2rpx solid #f3eaff"
+                                >
+                                    捡漏
+                                </view>
+                            </view>
+                            <view class="goods-name line-clamp-2">{{ item.size }} | {{ item.name }}</view>
+                            <view class="goods-desc">
+                                <view class="goods-auction-price">
+                                    <view class="price">
+                                        <text>{{ (item.activityInfo && item.activityInfo.startPrice) || 0 }}</text>
+                                        <text class="text">起报</text>
+                                    </view>
+                                    <text v-if="listType === 'offer'" class="offer__price">¥1200最高还价</text>
+                                </view>
+                                <view
+                                    class="auction__btn"
+                                    hover-class="u-hover-class"
+                                    :style="btnBgStyle(item)"
+                                    @click.stop="$emit('handlerOffer', item, index)"
+                                >
+                                    {{
+                                        item.activityInfo &&
+                                        item.activityInfo.status === 'init' &&
+                                        item.activityInfo.startTime > Date.now()
+                                            ? '未开始'
+                                            : item.activityInfo && item.activityInfo.myPrice
+                                              ? '修改报价'
+                                              : '参与报价'
+                                    }}
+                                </view>
+                            </view>
+                        </template>
                     </view>
                 </view>
             </block>
