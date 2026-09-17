@@ -26,8 +26,23 @@
                     {{ tab.label }}
                 </view>
             </scroll-view>
+            <scroll-view
+                v-if="data.bars.filter === 'custom' && data.bars.filterList.length"
+                scroll-x
+                class="cms-v2-goods__filters"
+            >
+                <view class="cms-v2-goods__filters-inner">
+                    <view
+                        v-for="(item, index) in data.bars.filterList"
+                        :key="item.id || index"
+                        class="cms-v2-goods__filter-chip"
+                    >
+                        {{ item.name }}
+                    </view>
+                </view>
+            </scroll-view>
             <snake-filter-sorts
-                v-if="data.bars.filter"
+                v-else-if="data.bars.filter === true"
                 :goods-list-length="goodsList.length"
                 :filters="filtersData"
                 :bg-color="data.style.backgroundColor"
@@ -112,5 +127,24 @@ const rootStyle = computed(() => ({ backgroundColor: props.data.style?.backgroun
 .cms-v2-goods__tab--active {
     color: var(--snake-color-primary, #06d290);
     font-weight: 600;
+}
+.cms-v2-goods__filters {
+    width: 100%;
+    white-space: nowrap;
+}
+.cms-v2-goods__filters-inner {
+    display: inline-flex;
+    gap: 16rpx;
+    min-width: 100%;
+    padding: 16rpx 20rpx;
+    box-sizing: border-box;
+}
+.cms-v2-goods__filter-chip {
+    flex: 0 0 auto;
+    padding: 10rpx 24rpx;
+    border-radius: 999rpx;
+    background: rgba(0, 0, 0, 0.05);
+    font-size: 24rpx;
+    line-height: 32rpx;
 }
 </style>
