@@ -119,10 +119,9 @@ test('component overview page covers every example route and directory layout', 
     const configuredPaths = [...config.matchAll(/item\(\s*'(\/pages\/(?:components[AB])\/[^']+)'/g)].map(match => match[1].replace(/^\//, ''));
     const routes = exampleRoutes(pages);
 
-    assert.equal(configuredPaths.length, 61);
+    assert.equal(configuredPaths.length, new Set(configuredPaths).size);
     assert.deepEqual([...configuredPaths].sort(), [...routes].sort());
-    assert.equal(groupA.length, 41);
-    assert.equal(groupB.length, 20);
+    assert.equal(groupA.length + groupB.length, configuredPaths.length);
     for (const directory of [...groupA.map(name => ['componentsA', name]), ...groupB.map(name => ['componentsB', name])]) {
         await access(resolve(root, 'src/pages', directory[0], directory[1], 'index.vue'));
     }

@@ -5,6 +5,7 @@ export interface ComponentItem {
     title: string;
     titleEn: string;
     desc: string;
+    descEn: string;
     cms?: boolean;
 }
 
@@ -15,11 +16,77 @@ export interface ComponentGroup {
     list: ComponentItem[];
 }
 
+const englishDescriptions: Record<string, string> = {
+    Button: 'Trigger actions with primary, plain, disabled and loading states.',
+    Icon: 'A versatile icon set with customizable size and color.',
+    Image: 'Display images with lazy loading, placeholders, rounded corners and fit modes.',
+    Loading: 'Show consistent loading states for components and pages.',
+    Skeleton: 'Preview page structure while content loads.',
+    Transition: 'Create consistent enter and leave animations across platforms.',
+    RootPortal: 'Move overlays to the page root so fixed layers work in complex layouts.',
+    Text: 'Format prices, masked values, dates, links and other text.',
+    Link: 'Open links or copy them to the clipboard across platforms.',
+    Form: 'Manage fields, validation rules, reset actions and errors together.',
+    Input: 'Single-line input with clear, password and slot options.',
+    Textarea: 'Multi-line input with auto height and character counts.',
+    Checkbox: 'Select multiple values individually or as a group.',
+    Radio: 'Select one value individually or from a group.',
+    Switch: 'Toggle boolean or custom switch values.',
+    Slider: 'Choose a value by tapping or dragging.',
+    Search: 'Search input with a placeholder, clear action and action button.',
+    Select: 'Choose from single, multiple or linked columns in a bottom sheet.',
+    Upload: 'Upload images, videos and files with OSS adapter support.',
+    Calendar: 'Pick single or range dates with lunar dates and holidays.',
+    Loadmore: 'Show ready, loading and no-more-content states.',
+    LineProgress: 'Show task progress with a line, stripes and percentage.',
+    ReadMore: 'Collapse long content and expand it on demand.',
+    Empty: 'Explain an empty state and guide the next action.',
+    'Count Down': 'Count down to an event or campaign deadline.',
+    NoticeBar: 'Scroll notices horizontally or rotate multiple notices vertically.',
+    Overlay: 'Separate the current page from a floating layer.',
+    Popup: 'Present content in a panel that enters from any side.',
+    NoNetwork: 'Detect lost connectivity and offer a full-screen retry action.',
+    Swiper: 'Show slides with autoplay, indicators and titles.',
+    Sticky: 'Keep important content visible while the page scrolls.',
+    Line: 'Separate content horizontally or vertically with fine lines.',
+    Cell: 'Build grouped rows for settings, profiles and lists.',
+    Navbar: 'Navigate between pages with back actions and safe-area support.',
+    Tabs: 'Switch quickly between content at the same level.',
+    Subsection: 'Choose between a small set of exclusive options.',
+    ButtonSort: 'Cycle through ascending, descending and default sort order.',
+    DropMenu: 'Coordinate multiple expandable menu options.',
+    IndexList: 'Jump between groups using an alphabetical index.',
+    IndexListPanel: 'Browse indexed groups inside a popup or fixed-height area.',
+    IndexAnchor: 'Mark content groups within an indexed list.',
+    'Snake CMS': 'Render a complete CMS page from ordered configuration.',
+    CustomModule: 'Insert custom business content through named slots.',
+    Images: 'Show one or more images from CMS layout data.',
+    PictureAds: 'Rotate banner ads with configurable spacing, corners and timing.',
+    MagicCube: 'Arrange marketing images and links in a configurable grid.',
+    Videos: 'Play video content inside a CMS page.',
+    RichText: 'Render formatted text and images edited in the CMS.',
+    Parse: 'Parse and render full HTML rich text across platforms.',
+    Notice: 'Display scrolling business announcements on a CMS page.',
+    AuxiliarySegmentation: 'Add spacing or dividers between CMS blocks.',
+    GraphicNavigation: 'Create quick links with icons and text.',
+    CommoditySearch: 'Add a product search entry to a commerce page.',
+    FloatingBubble: 'Keep a marketing or support entry in view.',
+    PagePopup: 'Show a marketing popup for the current business context.',
+    JumpApplet: 'Open a target mini program from a button.',
+    Follow: 'Invite users to follow a brand or public account.',
+    GoodsList: 'Show products in a grid with prices and status.',
+    ActivityList: 'Browse and choose campaigns or auction sessions.',
+    FilterSorts: 'Open product sorting and multi-condition filters.',
+    ListSwitching: 'Switch product displays between list and grid.',
+    Coupon: 'Show coupon status and provide a claim action.'
+};
+
 const item = (path: string, title: string, titleEn: string, desc: string, cms = false): ComponentItem => ({
     path,
     title,
     titleEn,
     desc,
+    descEn: englishDescriptions[titleEn],
     cms
 });
 
