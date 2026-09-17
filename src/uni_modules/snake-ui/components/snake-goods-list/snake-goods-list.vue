@@ -1,5 +1,32 @@
 <template>
-    <view class="goods-list" :style="{ padding: `15rpx ${pageMargin + imageMargin}rpx 0`, backgroundColor: bgColor }">
+    <scroll-view v-if="layout === 'swipe'" scroll-x class="goods-list-scroll" :style="{ backgroundColor: bgColor }">
+        <view class="goods-list goods-list--swipe" :style="listStyle">
+            <block v-for="(item, index) in goodsList" :key="item.id">
+                <view class="item" :style="itemStyle" @click.stop="$emit('item-click', item, index)">
+                    <view class="card-img" :style="imageStyle">
+                        <snake-image
+                            :src="imageFilter(item)"
+                            :loading-img="assets.goodsLoading || ''"
+                            :error-img="assets.goodsError || ''"
+                            mode="aspectFill"
+                            width="100%"
+                            height="100%"
+                            lazy-load
+                        />
+                    </view>
+                    <view class="goods-content">
+                        <view class="goods-name line-clamp-2">{{ item.name || item.goodsName }}</view>
+                        <view class="goods-desc"
+                            ><view class="price">{{
+                                item.price || item.discountPrice || item.salePrice || 0
+                            }}</view></view
+                        >
+                    </view>
+                </view>
+            </block>
+        </view>
+    </scroll-view>
+    <view v-else class="goods-list" :style="listStyle">
         <block v-for="(item, index) in goodsList" :key="item.id">
             <view
                 class="item"
@@ -12,7 +39,7 @@
                 @keydown.space.prevent="$emit('item-click', item, index)"
             >
                 <!-- 图片 -->
-                <view class="card-img">
+                <view class="card-img" :style="imageStyle">
                     <snake-image
                         :src="imageFilter(item)"
                         :loading-img="assets.goodsLoading || ''"
@@ -121,12 +148,15 @@
                                     {{ item.jokerDiscount || '99' }}
                                 </text>
                             </view>
-                            <view v-if="item.activityInfo && item.activityInfo.activityTag" class="item-tags">
+                            <view
+                                v-if="showTag && item.activityInfo && item.activityInfo.activityTag"
+                                class="item-tags"
+                            >
                                 {{ item.activityInfo.activityTag }}
                             </view>
                             <view v-if="item.savePrice" class="item-tags">省¥{{ item.savePrice }}</view>
-                            <view v-if="item.activityTag === 'new'" class="item-tags">新人专享</view>
-                            <view v-if="item.activityTag === 'discount'" class="item-tags">限时折扣</view>
+                            <view v-if="showTag && item.activityTag === 'new'" class="item-tags">新人专享</view>
+                            <view v-if="showTag && item.activityTag === 'discount'" class="item-tags">限时折扣</view>
                             <view
                                 v-if="item.packTag === true"
                                 class="item-tags"
@@ -241,15 +271,30 @@ export default {
         assets: {
             type: Object,
             default: () => ({})
-        }
+        },
+        layout: { type: String, default: 'grid' },
+        cardRadius: { type: Number, default: 10 },
+        showTag: { type: Boolean, default: true }
     },
     data() {
         return {};
     },
     computed: {
+        listStyle() {
+            return { padding: `15rpx ${this.pageMargin + this.imageMargin}rpx 0`, backgroundColor: this.bgColor };
+        },
         itemStyle() {
-            const style = { width: `calc(${100 / (this.commodityType + 2)}% - ${this.imageMargin}rpx)` };
+            const style = {
+                width:
+                    this.layout === 'swipe'
+                        ? '300rpx'
+                        : `calc(${100 / (this.commodityType + 2)}% - ${this.imageMargin}rpx)`,
+                borderRadius: `${this.cardRadius}rpx`
+            };
             return style;
+        },
+        imageStyle() {
+            return { borderRadius: `${this.cardRadius}rpx ${this.cardRadius}rpx 0 0` };
         },
         // 报价按钮背景颜色
         btnBgStyle() {
@@ -318,6 +363,22 @@ export default {
     flex-wrap: wrap;
     justify-content: space-between;
     padding: 20rpx 20rpx 0;
+}
+.goods-list-scroll {
+    width: 100%;
+    white-space: nowrap;
+}
+.goods-list--swipe {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    gap: 10rpx;
+    min-width: 100%;
+    box-sizing: border-box;
+}
+.goods-list--swipe .item {
+    display: inline-block;
+    flex: 0 0 300rpx;
+    white-space: normal;
 }
 
 .item {

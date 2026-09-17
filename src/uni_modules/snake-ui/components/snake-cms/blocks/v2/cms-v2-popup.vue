@@ -1,16 +1,14 @@
 <template>
     <snake-popup
+        v-if="data.image"
         v-model="show"
         :mode="data.popupMode === 'center' ? 'center' : 'bottom'"
         :bg-color="data.popupMode === 'center' ? 'transparent' : '#fff'"
+        safe-area-inset-bottom
+        close-on-click-overlay
     >
         <view class="cms-v2-popup">
-            <image
-                class="cms-v2-popup__image"
-                :src="data.image || ''"
-                mode="widthFix"
-                @click="openV2Link(data.link, linkService, pageInfo)"
-            />
+            <image class="cms-v2-popup__image" :src="data.image || ''" mode="widthFix" @click="handleImageClick" />
             <view class="cms-v2-popup__close" @click="show = false">×</view>
         </view>
     </snake-popup>
@@ -20,8 +18,12 @@
 import { ref } from 'vue';
 import Popup from '../../../snake-popup/snake-popup.vue';
 import { openV2Link, type V2BlockProps } from './shared';
-defineProps<V2BlockProps>();
+const props = defineProps<V2BlockProps>();
 const show = ref(true);
+const handleImageClick = async () => {
+    await openV2Link(props.data.link, props.linkService, props.pageInfo);
+    show.value = false;
+};
 </script>
 <style scoped>
 .cms-v2-popup {

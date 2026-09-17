@@ -7,11 +7,13 @@
                 :key="index"
                 @click.stop="openV2Link(item.link, linkService, pageInfo)"
             >
-                <text class="cms-v2-notice__text">{{ item.text }}</text>
+                <text class="cms-v2-notice__text" :style="textStyle">{{ item.text }}</text>
             </swiper-item>
         </swiper>
         <view v-else class="cms-v2-notice__row">
-            <text class="cms-v2-notice__text">{{ data.noticeText }}</text>
+            <view class="cms-v2-notice__marquee" :style="marqueeStyle">
+                <text class="cms-v2-notice__text">{{ data.noticeText }}</text>
+            </view>
         </view>
     </view>
 </template>
@@ -27,6 +29,11 @@ const rootStyle = computed(() => ({
     color: props.data.style?.textColor || '#2d57e7',
     backgroundColor: props.data.style?.backgroundColor || '#eaf1ff'
 }));
+const marqueeStyle = computed(() => ({
+    animationDuration: `${Math.max(8, String(props.data.noticeText || '').length * 0.35)}s`,
+    lineHeight: rpx(props.data.style?.height, 72)
+}));
+const textStyle = computed(() => ({ lineHeight: rpx(props.data.style?.height, 72) }));
 const handleClick = () =>
     props.data.direction === 'column' ? undefined : openV2Link(props.data.link, props.linkService, props.pageInfo);
 </script>
@@ -48,7 +55,26 @@ const handleClick = () =>
     overflow: hidden;
 }
 .cms-v2-notice__text {
-    line-height: 72rpx;
     white-space: nowrap;
+}
+.cms-v2-notice__marquee {
+    display: inline-block;
+    min-width: 100%;
+    padding-left: 100%;
+    animation: cms-v2-notice-marquee 12s linear infinite;
+}
+@keyframes cms-v2-notice-marquee {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .cms-v2-notice__marquee {
+        padding-left: 0;
+        animation: none;
+    }
 }
 </style>

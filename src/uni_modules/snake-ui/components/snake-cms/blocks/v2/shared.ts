@@ -45,7 +45,7 @@ export function rpx(value: unknown, fallback = 0): string {
 export function blockStyle(style: V2Record = {}): CSSProperties {
     return {
         boxSizing: 'border-box',
-        minHeight: style.heightMode === 'fixed' ? rpx(style.height) : undefined,
+        height: style.heightMode === 'fixed' ? rpx(style.height) : undefined,
         marginLeft: rpx(style.pageMargin),
         marginRight: rpx(style.pageMargin),
         borderRadius: rpx(style.imageRadius ?? style.radius),
@@ -54,12 +54,31 @@ export function blockStyle(style: V2Record = {}): CSSProperties {
     };
 }
 
+export function mediaHeightStyle(style: V2Record = {}, fallback = 360): CSSProperties {
+    return { height: style.heightMode === 'fixed' ? rpx(style.height, 200) : rpx(fallback) };
+}
+
 export async function openV2Link(
     link: V2Record | undefined,
     service?: CmsLinkService,
-    pageInfo?: CmsPageInfo
+    pageInfo?: CmsPageInfo,
+    extraData?: Record<string, unknown>
 ): Promise<void> {
     const url = typeof link?.http === 'string' ? link.http.trim() : '';
     if (!url || !service) return;
-    await service.open({ type: Number(link?.httpType) === 11 ? 'external' : 'navigate', url }, { pageInfo });
+    const external = Number(link?.httpType) === 11;
+    if (external ? !/^https?:\/\//i.test(url) : /^(?:javascript|vbscript|data):/i.test(url)) return;
+    await service.open({ type: external ? 'external' : 'navigate', url, extraData }, { pageInfo });
+}
+
+export function sanitizeRichText(input: unknown): string {
+    if (typeof input !== 'string') return '';
+    return input
+        .replace(/<(script|style|iframe|object|embed|form)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, '')
+        .replace(/<\/?(?:script|style|iframe|object|embed|form|meta|link)\b[^>]*>/gi, '')
+        .replace(/\s(?:on\w+|srcdoc|style)\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, '')
+        .replace(
+            /\s(?:href|src)\s*=\s*(?:"\s*(?:javascript|vbscript|data\s*:\s*text\/html)[^"]*"|'\s*(?:javascript|vbscript|data\s*:\s*text\/html)[^']*'|(?:javascript|vbscript|data\s*:\s*text\/html)[^\s>]*)/gi,
+            ''
+        );
 }

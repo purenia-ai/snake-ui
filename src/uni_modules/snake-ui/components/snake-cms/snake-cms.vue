@@ -16,7 +16,7 @@
             <snake-jump-applet
                 v-else-if="item.component === 'jumpApplet'"
                 :datas="item.setStyle"
-                :link-service="options.services?.link"
+                :link-service="linkService"
                 :page-info="pageInfo"
             />
             <snake-follow v-else-if="item.component === 'follow'" :datas="item.setStyle" />
@@ -29,7 +29,7 @@
                 v-else-if="item.component === 'coupon'"
                 :datas="item.setStyle"
                 :coupon-service="options.services?.coupon"
-                :link-service="options.services?.link"
+                :link-service="linkService"
                 :page-info="pageInfo"
             />
             <snake-page-popup v-else-if="item.component === 'pagePopup'" :datas="item.setStyle" />
@@ -111,14 +111,14 @@
             <cms-v2-carousel
                 v-else-if="item.component === 'v2.carousel'"
                 :data="item.props"
-                :link-service="options.services?.link"
+                :link-service="linkService"
                 :page-info="pageInfo"
             />
             <cms-v2-coupon
                 v-else-if="item.component === 'v2.coupon'"
                 :data="item.props"
                 :coupon-service="options.services?.coupon"
-                :link-service="options.services?.link"
+                :link-service="linkService"
                 :page-info="pageInfo"
                 @error="emit('error', $event)"
             />
@@ -129,7 +129,7 @@
             <cms-v2-floatbutton
                 v-else-if="item.component === 'v2.floatbutton'"
                 :data="item.props"
-                :link-service="options.services?.link"
+                :link-service="linkService"
                 :page-info="pageInfo"
             />
             <cms-v2-goods-list
@@ -140,38 +140,46 @@
                 :loading-status="goodsLoadingStatus"
                 :status="status"
                 :assets="options.assets"
+                :filters-data="filtersData"
+                :activity-list="activityList"
+                :activity-current="activityCurrent"
+                :scroll-top="scrollTop"
+                :sticky-offset-top="stickyOffsetTop"
+                :sticky-custom-nav-height="stickyCustomNavHeight"
                 @tab-change="changeTab"
+                @activity-change="changeActivity"
+                @filter-change="confirmFilter"
                 @item-click="handleGoodsClick"
                 @offer-click="handleOfferClick"
             />
             <cms-v2-hotzone
                 v-else-if="item.component === 'v2.hotzone'"
                 :data="item.props"
-                :link-service="options.services?.link"
+                :link-service="linkService"
                 :page-info="pageInfo"
             />
             <cms-v2-images
                 v-else-if="item.component === 'v2.images'"
                 :data="item.props"
-                :link-service="options.services?.link"
+                :link-service="linkService"
                 :page-info="pageInfo"
             />
             <cms-v2-magiccube
                 v-else-if="item.component === 'v2.magiccube'"
                 :data="item.props"
-                :link-service="options.services?.link"
+                :link-service="linkService"
                 :page-info="pageInfo"
             />
             <cms-v2-notice
                 v-else-if="item.component === 'v2.notice'"
                 :data="item.props"
-                :link-service="options.services?.link"
+                :link-service="linkService"
                 :page-info="pageInfo"
             />
             <cms-v2-popup
                 v-else-if="item.component === 'v2.popup'"
                 :data="item.props"
-                :link-service="options.services?.link"
+                :link-service="linkService"
                 :page-info="pageInfo"
             />
             <cms-v2-richtext v-else-if="item.component === 'v2.richtext'" :data="item.props" />
@@ -184,9 +192,9 @@
                     :bg-color="item.props.style?.backgroundColor || '#f9f9f9'"
                     :z-index="20"
                 >
-                    <cms-v2-search :data="item.props" :link-service="options.services?.link" :page-info="pageInfo" />
+                    <cms-v2-search :data="item.props" :link-service="linkService" :page-info="pageInfo" />
                 </snake-sticky>
-                <cms-v2-search v-else :data="item.props" :link-service="options.services?.link" :page-info="pageInfo" />
+                <cms-v2-search v-else :data="item.props" :link-service="linkService" :page-info="pageInfo" />
             </template>
             <cms-v2-video v-else-if="item.component === 'v2.video'" :data="item.props" />
             <slot v-else name="extension" :item="item" :page-info="pageInfo" />
@@ -250,7 +258,8 @@ import CmsV2Search from './blocks/v2/cms-v2-search.vue';
 import CmsV2Video from './blocks/v2/cms-v2-video.vue';
 import { searchStickyEnabled } from './blocks/v2/shared';
 import { normalizeCmsComponents, reportCmsDiagnostic, resolveCmsOptions, useCmsCommerce } from '../../libs/cms';
-import type { CmsDiagnostic, CmsError, CmsOptions, CmsPageInfo, CmsStateChange } from './types';
+import { CmsError } from './types';
+import type { CmsDiagnostic, CmsLinkService, CmsOptions, CmsPageInfo, CmsStateChange } from './types';
 
 defineOptions({
     name: 'Cms',
@@ -286,6 +295,21 @@ const emit = defineEmits<{
 }>();
 
 const options = computed(() => resolveCmsOptions(props.cmsOptions));
+const linkService = computed<CmsLinkService | undefined>(() => {
+    const service = options.value.services?.link;
+    if (!service) return undefined;
+    return {
+        async open(action, context) {
+            try {
+                await service.open(action, context);
+            } catch (cause) {
+                const error = new CmsError('link', 'CMS link failed to open.', cause);
+                emit('error', error);
+            }
+        },
+        createScheme: service.createScheme?.bind(service)
+    };
+});
 // 先规范化别名、扩展组件和重复商品区，模板只消费稳定的静态组件映射。
 const normalized = computed(() => normalizeCmsComponents(props.pageComponents, props.pageInfo, options.value));
 const components = computed(() => normalized.value.components);

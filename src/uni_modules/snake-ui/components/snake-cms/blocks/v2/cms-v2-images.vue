@@ -6,7 +6,8 @@
                 :key="item.id ?? index"
                 class="cms-v2-images__image"
                 :src="item.src || ''"
-                mode="widthFix"
+                :mode="imageMode"
+                :style="imageStyle"
                 @click="openV2Link(item.link, linkService, pageInfo)"
             />
         </view>
@@ -19,6 +20,10 @@ import { blockStyle, openV2Link, rpx, type V2BlockProps } from './shared';
 const props = defineProps<V2BlockProps>();
 const items = computed(() => (Array.isArray(props.data.items) ? props.data.items : []));
 const rootStyle = computed(() => blockStyle(props.data.style));
+const imageMode = computed(() => (props.data.style?.heightMode === 'fixed' ? 'aspectFill' : 'widthFix'));
+const imageStyle = computed(() =>
+    props.data.style?.heightMode === 'fixed' ? { height: rpx(props.data.style?.height, 360) } : undefined
+);
 const gridStyle = computed(() => ({
     gridTemplateColumns: `repeat(${props.data.layout?.mode === 'grid' ? Math.min(4, Math.max(1, Number(props.data.layout?.columns) || 2)) : 1}, minmax(0, 1fr))`,
     gap: rpx(props.data.style?.gap)

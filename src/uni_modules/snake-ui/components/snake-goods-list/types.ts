@@ -38,6 +38,12 @@ export interface GoodsListProps<Item extends GoodsListItem = GoodsListItem> {
     attendanceShow?: boolean;
     /** 组件使用的可替换资源地址。 */
     assets?: Record<string, string>;
+    /** 商品排列方式。 */
+    layout?: 'grid' | 'swipe';
+    /** 商品卡片圆角，单位 rpx。 */
+    cardRadius?: number;
+    /** 是否显示营销标签。 */
+    showTag?: boolean;
 }
 
 /** GoodsList 组件的事件契约。 */

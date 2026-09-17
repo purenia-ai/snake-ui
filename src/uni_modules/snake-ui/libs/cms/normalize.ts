@@ -1,14 +1,27 @@
 import { deepClone } from '../function';
 import { isCmsBuiltinComponent, cmsBlocks } from './blocks';
 export { cmsBuiltinComponents } from './blocks';
-import type { CmsBuiltinComponent, CmsComponentConfig, CmsDiagnostic, CmsNormalizedComponent, CmsOptions, CmsPageInfo } from './types';
+import type {
+    CmsBuiltinComponent,
+    CmsComponentConfig,
+    CmsDiagnostic,
+    CmsNormalizedComponent,
+    CmsOptions,
+    CmsPageInfo
+} from './types';
+import type { CmsV2BuiltinComponent } from './blocks';
+import { normalizeCmsV2Props } from './v2';
 
 export interface CmsNormalizeResult {
     components: CmsNormalizedComponent[];
     diagnostics: CmsDiagnostic[];
 }
 
-export function normalizeCmsComponents(input: unknown, pageInfo: CmsPageInfo = {}, options: CmsOptions = {}): CmsNormalizeResult {
+export function normalizeCmsComponents(
+    input: unknown,
+    pageInfo: CmsPageInfo = {},
+    options: CmsOptions = {}
+): CmsNormalizeResult {
     const diagnostics: CmsDiagnostic[] = [];
     const components: CmsNormalizedComponent[] = [];
     const aliases: Record<string, CmsBuiltinComponent> = { videoss: 'videos', ...(options.aliases || {}) };
@@ -56,7 +69,7 @@ export function normalizeCmsComponents(input: unknown, pageInfo: CmsPageInfo = {
         const version = item.component.startsWith('v2.') ? 2 : 1;
         const setStyle = item.setStyle && typeof item.setStyle === 'object' ? item.setStyle : {};
         const hasValidV2Props = item.props !== null && typeof item.props === 'object' && !Array.isArray(item.props);
-        const componentProps = hasValidV2Props ? item.props || {} : {};
+        let componentProps = hasValidV2Props ? item.props || {} : {};
         if (version === 1 && (item.visible === false || setStyle.showComponent === false)) return;
         if (version === 2 && item.active === false) return;
 
@@ -78,6 +91,9 @@ export function normalizeCmsComponents(input: unknown, pageInfo: CmsPageInfo = {
                 component,
                 message: `CMS component "${component}" has an invalid protocol version.`
             });
+        }
+        if (builtin && version === 2 && cmsBlocks[component].version === 2) {
+            componentProps = normalizeCmsV2Props(component as CmsV2BuiltinComponent, componentProps);
         }
         if (component === 'goodslist' || component === 'v2.goodslist') {
             if (hasCommerceSection) {

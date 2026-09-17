@@ -33,7 +33,11 @@ const v2Shared = await server.ssrLoadModule('/src/uni_modules/snake-ui/component
 
 test('CMS v2 coupon keeps both public and legacy coupon fields for host services', () => {
     const coupon = { id: 'coupon-1' };
-    const input = { coupon, before: { image: 'before.png' }, after: { link: { httpType: 11, http: 'https://example.com' } } };
+    const input = {
+        coupon,
+        before: { image: 'before.png' },
+        after: { link: { httpType: 11, http: 'https://example.com' } }
+    };
     const result = v2Shared.v2CouponLegacyData(input);
 
     assert.equal(result.coupon, coupon);
@@ -140,8 +144,47 @@ test('CMS normalizes v1 and v2 components without collapsing their data envelope
     );
     assert.equal(result.components[0].setStyle.imageList[0].src, 'legacy.png');
     assert.equal(result.components[1].props.layout.mode, 'grid');
-    assert.deepEqual(result.components[2].props, {});
+    assert.equal(result.components[2].props.src, '');
+    assert.equal(result.components[2].props.style.heightMode, 'auto');
     assert.ok(result.diagnostics.some(item => item.component === 'v2.video' && item.code === 'invalid-component'));
+});
+
+test('CMS v2 normalization fills defaults, coerces primitives, and drops undeclared fields', () => {
+    const result = normalize.normalizeCmsComponents([
+        {
+            component: 'v2.search',
+            props: { isSearch: 'true', style: { height: 999, position: '1' }, internalOnly: 'drop' }
+        }
+    ]);
+    const props = result.components[0].props;
+    assert.equal(props.isSearch, true);
+    assert.equal(props.style.height, 80);
+    assert.equal(props.style.position, 1);
+    assert.equal(props.searchText.length > 0, true);
+    assert.equal(props.internalOnly, undefined);
+});
+
+test('CMS rich text sanitizer removes executable markup and inline event handlers', () => {
+    const dirty =
+        '<p onclick="run()" style="color:red">safe</p><script>alert(1)</script><a href=javascript:run()>x</a>';
+    const clean = v2Shared.sanitizeRichText(dirty);
+    assert.equal(clean.includes('onclick'), false);
+    assert.equal(clean.includes('<script'), false);
+    assert.equal(clean.includes('javascript:'), false);
+    assert.equal(clean.includes('alert(1)'), false);
+    assert.equal(clean.includes('style='), false);
+    assert.equal(clean.includes('safe'), true);
+});
+
+test('CMS v2 links reject executable and invalid external URLs', async () => {
+    const actions = [];
+    const service = { open: action => actions.push(action) };
+    await v2Shared.openV2Link({ httpType: 10, http: 'javascript:run()' }, service);
+    await v2Shared.openV2Link({ httpType: 11, http: '/relative' }, service);
+    await v2Shared.openV2Link({ httpType: 11, http: 'https://example.com' }, service, {}, { keyword: 'shoe' });
+    assert.equal(actions.length, 1);
+    assert.equal(actions[0].url, 'https://example.com');
+    assert.equal(actions[0].extraData.keyword, 'shoe');
 });
 
 test('CMS commerce controller paginates through a host service without mutating config', async () => {

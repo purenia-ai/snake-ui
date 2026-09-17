@@ -2,11 +2,12 @@
     <view class="cms-v2-carousel" :style="rootStyle">
         <swiper
             class="cms-v2-carousel__swiper"
+            :style="mediaStyle"
             :autoplay="data.play?.autoplay !== false"
             :interval="interval"
             :circular="data.play?.loop !== false"
             :indicator-dots="indicatorType === 'bullets'"
-            :indicator-color="data.indicator?.color || '#c8c9cc'"
+            indicator-color="rgba(255, 255, 255, 0.55)"
             :indicator-active-color="data.indicator?.color || '#1989fa'"
             @change="current = $event.detail.current"
         >
@@ -30,7 +31,14 @@
 <script setup lang="ts">
 /** @component CmsV2Carousel @description CMS v2 图片轮播内部渲染器。 @see /cms/overview */
 import { computed, ref } from 'vue';
-import { blockStyle, carouselIndicatorType, carouselProgress, openV2Link, type V2BlockProps } from './shared';
+import {
+    blockStyle,
+    carouselIndicatorType,
+    carouselProgress,
+    mediaHeightStyle,
+    openV2Link,
+    type V2BlockProps
+} from './shared';
 const props = defineProps<V2BlockProps>();
 const current = ref(0);
 const items = computed(() => (Array.isArray(props.data.items) ? props.data.items : []));
@@ -41,6 +49,7 @@ const progressStyle = computed(() => ({
     backgroundColor: props.data.indicator?.color || '#1989fa'
 }));
 const rootStyle = computed(() => blockStyle(props.data.style));
+const mediaStyle = computed(() => mediaHeightStyle(props.data.style));
 </script>
 <style scoped>
 .cms-v2-carousel {
@@ -48,7 +57,6 @@ const rootStyle = computed(() => blockStyle(props.data.style));
 }
 .cms-v2-carousel__swiper {
     width: 100%;
-    min-height: 360rpx;
 }
 .cms-v2-carousel__image {
     width: 100%;

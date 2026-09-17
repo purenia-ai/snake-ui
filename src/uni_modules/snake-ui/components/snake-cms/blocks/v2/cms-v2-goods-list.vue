@@ -1,16 +1,42 @@
 <template>
     <view class="cms-v2-goods" :style="rootStyle">
-        <scroll-view v-if="data.bars?.tabs?.enabled && tabs.length" scroll-x class="cms-v2-goods__tabs">
-            <view
-                v-for="(tab, index) in tabs"
-                :key="tab.id ?? index"
-                class="cms-v2-goods__tab"
-                :class="{ 'cms-v2-goods__tab--active': index === tabsCurrent }"
-                @click="$emit('tab-change', index, tabs)"
-            >
-                {{ tab.label }}
-            </view>
-        </scroll-view>
+        <snake-activity-list
+            v-if="data.bars.activitySession && data.display.cardType === 'auction'"
+            :list="activityList"
+            :current="activityCurrent"
+            @change="$emit('activity-change', $event)"
+        />
+        <snake-sticky
+            v-if="showBars"
+            :offset-top="stickyOffsetTop"
+            :custom-nav-height="stickyCustomNavHeight"
+            :scroll-top="scrollTop"
+            :disabled="!data.bars.sticky"
+            :bg-color="data.style.backgroundColor"
+            :z-index="19"
+        >
+            <scroll-view v-if="data.bars.tabs.enabled && tabs.length" scroll-x class="cms-v2-goods__tabs">
+                <view
+                    v-for="(tab, index) in tabs"
+                    :key="tab.id ?? index"
+                    class="cms-v2-goods__tab"
+                    :class="{ 'cms-v2-goods__tab--active': index === tabsCurrent }"
+                    @click="$emit('tab-change', index, tabs)"
+                >
+                    {{ tab.label }}
+                </view>
+            </scroll-view>
+            <snake-filter-sorts
+                v-if="data.bars.filter"
+                :goods-list-length="goodsList.length"
+                :filters="filtersData"
+                :bg-color="data.style.backgroundColor"
+                :show-tabs="data.bars.tabs.enabled && !!tabs.length"
+                :sort="data.query.sort"
+                :custom-style="{ padding: '0 20rpx' }"
+                @change="$emit('filter-change', $event)"
+            />
+        </snake-sticky>
         <snake-goods-list
             :goods-list="goodsList"
             :list-type="data.display?.cardType || 'sale'"
@@ -20,6 +46,9 @@
             :image-margin="data.style?.gap"
             :bg-color="data.style?.backgroundColor"
             :assets="assets"
+            :layout="data.display.layout"
+            :card-radius="data.style.radius"
+            :show-tag="data.display.showTag"
             @item-click="(item: Record<string, any>, index: number) => $emit('item-click', item, index)"
             @handler-offer="(item: Record<string, any>, index: number) => $emit('offer-click', item, index)"
         />
@@ -36,8 +65,11 @@
 /** @component CmsV2GoodsList @description CMS v2 商品楼层内部渲染器。 @see /cms/overview */
 import { computed } from 'vue';
 import Empty from '../../../snake-empty/snake-empty.vue';
+import ActivityList from '../../../snake-activity-list/snake-activity-list.vue';
+import FilterSorts from '../../../snake-filter-sorts/snake-filter-sorts.vue';
 import GoodsList from '../../../snake-goods-list/snake-goods-list.vue';
 import Loadmore from '../../../snake-loadmore/snake-loadmore.vue';
+import Sticky from '../../../snake-sticky/snake-sticky.vue';
 import type { CmsAssets, CmsStatus } from '../../../../libs/cms';
 import type { LoadmoreStatus } from '../../../snake-loadmore/types';
 const props = defineProps<{
@@ -47,18 +79,28 @@ const props = defineProps<{
     loadingStatus: LoadmoreStatus;
     status: CmsStatus;
     assets?: CmsAssets;
+    filtersData: Record<string, any>;
+    activityList: Record<string, any>[];
+    activityCurrent: string | number;
+    scrollTop: number;
+    stickyOffsetTop: number;
+    stickyCustomNavHeight: number;
 }>();
 defineEmits<{
     'tab-change': [index: number, list: Record<string, any>[]];
     'item-click': [item: Record<string, any>, index: number];
     'offer-click': [item: Record<string, any>, index: number];
+    'activity-change': [item: Record<string, any>];
+    'filter-change': [params: Record<string, any>];
 }>();
 const tabs = computed(() => (Array.isArray(props.data.bars?.tabs?.list) ? props.data.bars.tabs.list : []));
+const showBars = computed(
+    () => (props.data.bars?.tabs?.enabled && tabs.value.length) || Boolean(props.data.bars?.filter)
+);
 const rootStyle = computed(() => ({ backgroundColor: props.data.style?.backgroundColor || '#f8f8f8' }));
 </script>
 <style scoped>
 .cms-v2-goods__tabs {
-    display: flex;
     width: 100%;
     white-space: nowrap;
 }
