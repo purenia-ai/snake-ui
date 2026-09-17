@@ -9,18 +9,8 @@
                     </view>
                     <text class="catalog-header__desc">{{ text('面向 uni-app 商城与 CMS 场景的组件库') }}</text>
                 </view>
-                <button
-                    class="appearance-toggle"
-                    :class="{ 'appearance-toggle--active': appearanceOpen }"
-                    :aria-label="text('外观')"
-                    :aria-expanded="appearanceOpen"
-                    @click="appearanceOpen = !appearanceOpen"
-                >
-                    <snake-icon name="setting" :size="17" />
-                    <text>{{ text('外观') }}</text>
-                </button>
             </view>
-            <view v-if="appearanceOpen" class="appearance-panel">
+            <view class="appearance-panel">
                 <view class="appearance-panel__row">
                     <text class="appearance-panel__label">{{ text('主题') }}</text>
                     <view class="theme-options">
@@ -38,13 +28,23 @@
                 </view>
                 <view class="appearance-panel__row">
                     <text class="appearance-panel__label">{{ text('显示模式') }}</text>
-                    <button class="mode-button" @click="toggleDarkMode">{{ themeLabel }}</button>
+                    <view class="mode-options">
+                        <button
+                            v-for="mode in displayModes"
+                            :key="mode.value"
+                            class="mode-button"
+                            :class="{ 'mode-button--active': darkMode === mode.value }"
+                            @click="setDarkMode(mode.value)"
+                        >
+                            {{ text(mode.label) }}
+                        </button>
+                    </view>
                 </view>
             </view>
             <snake-sticky :custom-nav-height="navbarOffset" bg-color="var(--snake-color-surface)" :z-index="20">
                 <view class="search-sticky">
                     <view class="search-box">
-                        <snake-icon name="search" :size="19" />
+                        <snake-icon name="search" :size="38" />
                         <input
                             v-model="searchText"
                             class="search-box__input"
@@ -58,7 +58,7 @@
                             :aria-label="text('清空')"
                             @click="clearSearch"
                         >
-                            <snake-icon name="close" :size="16" />
+                            <snake-icon name="close" :size="32" />
                         </button>
                     </view>
                 </view>
@@ -82,7 +82,7 @@
             </view>
 
             <view v-if="resultCount === 0" class="overview__empty">
-                <view class="empty-icon"><snake-icon name="empty-search" :size="28" /></view>
+                <view class="empty-icon"><snake-icon name="empty-search" :size="56" /></view>
                 <text class="empty-title">{{ text('没有找到相关组件') }}</text>
                 <text class="empty-desc">{{ text('换个关键词试试') }}</text>
                 <button class="empty-reset" @click="resetFilters">{{ text('重置筛选') }}</button>
@@ -112,7 +112,7 @@
                             </view>
                             <text class="card__desc">{{ isEnglish ? item.descEn : item.desc }}</text>
                         </view>
-                        <snake-icon name="arrow-right" class="card__arrow" :size="18" />
+                        <snake-icon name="arrow-right" class="card__arrow" :size="36" />
                     </view>
                 </view>
             </view>
@@ -127,12 +127,18 @@ import { useDemoLocale } from '../../common/demo-i18n';
 import rawGroups from './components.config';
 
 defineOptions({ name: 'ExampleComponents' });
-import { currentTheme, isDarkMode, setTheme, themes, toggleDarkMode } from '../../uni_modules/snake-ui';
+import { useTheme, type DarkMode } from '../../uni_modules/snake-ui';
+
+const { currentTheme, darkMode, setDarkMode, setTheme, themes } = useTheme();
+const displayModes: { value: DarkMode; label: string }[] = [
+    { value: 'auto', label: '跟随系统' },
+    { value: 'light', label: '浅色' },
+    { value: 'dark', label: '深色' }
+];
 
 const groups = ref(rawGroups);
 const searchText = ref('');
 const activeGroup = ref('all');
-const appearanceOpen = ref(false);
 const totalCount = groups.value.reduce((sum, group) => sum + group.list.length, 0);
 const navbarOffset = (() => {
     try {
@@ -179,7 +185,6 @@ const filteredGroups = computed(() => {
 const resultCount = computed(() => filteredGroups.value.reduce((sum, group) => sum + group.list.length, 0));
 const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
-const themeLabel = computed(() => text(isDarkMode() ? '浅色' : '深色'));
 const openComponent = (path: string) => uni.navigateTo({ url: path });
 const clearSearch = () => {
     searchText.value = '';

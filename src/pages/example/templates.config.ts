@@ -3,7 +3,7 @@ import type { DemoCatalogItem } from '../../common/demo-types';
 const templates: DemoCatalogItem[] = [
     {
         key: 'commerce-home',
-        path: '/pages/example/templates?template=commerce-home',
+        path: '/pages/showcase/commerceHome/index',
         title: '商品首页',
         titleEn: 'Commerce home',
         desc: '轮播、导航、商品列表和优惠券组合的首页模板。',
@@ -13,7 +13,7 @@ const templates: DemoCatalogItem[] = [
     },
     {
         key: 'campaign',
-        path: '/pages/example/templates?template=campaign',
+        path: '/pages/showcase/campaign/index',
         title: '活动专题页',
         titleEn: 'Campaign page',
         desc: '活动通知、营销广告、倒计时和商品内容组合。',
@@ -23,7 +23,7 @@ const templates: DemoCatalogItem[] = [
     },
     {
         key: 'cms-content',
-        path: '/pages/example/templates?template=cms-content',
+        path: '/pages/showcase/cmsContent/index',
         title: 'CMS 内容页',
         titleEn: 'CMS content page',
         desc: '适合装修系统的内容模块编排和预览页面。',

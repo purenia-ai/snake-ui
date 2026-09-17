@@ -2,6 +2,44 @@ import type { DemoCatalogGroup } from '../../common/demo-types';
 
 const scenes: DemoCatalogGroup[] = [
     {
+        key: 'showcases',
+        title: '完整场景',
+        titleEn: 'Complete scenes',
+        icon: 'home',
+        items: [
+            {
+                key: 'commerce-home',
+                kind: 'scene',
+                path: '/pages/showcase/commerceHome/index',
+                title: '商品首页',
+                titleEn: 'Commerce home',
+                desc: '从导航、商品浏览到优惠券的完整首页。',
+                icon: 'home',
+                badge: 'new'
+            },
+            {
+                key: 'campaign',
+                kind: 'scene',
+                path: '/pages/showcase/campaign/index',
+                title: '活动专题页',
+                titleEn: 'Campaign page',
+                desc: '组合通知、倒计时、活动场次与商品。',
+                icon: 'star-fill',
+                badge: 'business'
+            },
+            {
+                key: 'cms-content',
+                kind: 'scene',
+                path: '/pages/showcase/cmsContent/index',
+                title: 'CMS 内容页',
+                titleEn: 'CMS content page',
+                desc: '使用真实装修配置编排内容模块。',
+                icon: 'file-text',
+                badge: 'cms'
+            }
+        ]
+    },
+    {
         key: 'commerce',
         title: '商品业务',
         titleEn: 'Commerce',

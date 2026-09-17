@@ -3,9 +3,8 @@
         <DemoSection variant="preview" :title="text('演示效果')">
             <snake-parse
                 :content="content"
-                domain="https://6874-html-foe72-1259071903.tcb.qcloud.la/demo"
-                lazy-load
-                scroll-table
+                :lazy-load="Boolean(state.lazyLoad)"
+                :scroll-table="Boolean(state.scrollTable)"
                 selectable
                 use-anchor
                 :tag-style="tagStyle"
@@ -14,18 +13,30 @@
                 @imgtap="imgTap"
                 @linktap="linkTap"
             />
+            <text v-if="feedback" class="parse-feedback" aria-live="polite">{{ feedback }}</text>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="controls" :values="state" @change="updateValue" />
         </DemoSection>
     </DemoPage>
 </template>
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue';
 import { demoTitle, useDemoLocale } from '../../../common/demo-i18n';
+import type { DemoControl, DemoValue } from '../../../common/demo-types';
+import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 import demoContent from './content';
 
 const { localeName, text } = useDemoLocale();
 const content = ref('');
+const feedback = ref('');
+const controls = computed<DemoControl[]>(() => [
+    { key: 'lazyLoad', label: text('图片懒加载'), type: 'switch', defaultValue: true },
+    { key: 'scrollTable', label: text('表格横向滚动'), type: 'switch', defaultValue: true }
+]);
+const state = reactive<Record<string, DemoValue>>({ lazyLoad: true, scrollTable: true });
 const tagStyle = {
     table: 'box-sizing:border-box;border-top:1px solid #dfe2e5;border-left:1px solid #dfe2e5;',
     th: 'border-right:1px solid #dfe2e5;border-bottom:1px solid #dfe2e5;',
@@ -37,21 +48,36 @@ const title = computed(() => {
     return demoTitle('parse', 'Parse 富文本解析');
 });
 
-onMounted(() =>
-    setTimeout(() => {
+let timer: ReturnType<typeof setTimeout> | undefined;
+onMounted(() => {
+    timer = setTimeout(() => {
         content.value = demoContent;
-    }, 200)
-);
+    }, 200);
+});
+onBeforeUnmount(() => {
+    if (timer) clearTimeout(timer);
+});
+function updateValue(key: string, value: DemoValue) {
+    state[key] = value;
+}
 function load() {
-    console.log('snake-parse nodes loaded');
+    feedback.value = text('内容已加载');
 }
 function ready() {
-    console.log('snake-parse content ready');
+    feedback.value = text('内容已就绪');
 }
 function imgTap() {
-    console.log('snake-parse image tapped');
+    feedback.value = text('已点击图片');
 }
 function linkTap() {
-    console.log('snake-parse link tapped');
+    feedback.value = text('已点击链接');
 }
 </script>
+<style scoped>
+.parse-feedback {
+    display: block;
+    margin: 16rpx;
+    color: var(--snake-color-primary-deep);
+    font-size: 24rpx;
+}
+</style>

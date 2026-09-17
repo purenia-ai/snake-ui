@@ -11,14 +11,14 @@
             <image class="brand-card__logo" src="/static/logo.png" mode="aspectFit" />
             <view class="brand-card__body">
                 <text class="brand-card__name">Snake UI</text>
-                <text class="brand-card__version">Demo v0.0.0</text>
+                <text class="brand-card__version">Vue 3 · uni-app</text>
             </view>
         </view>
 
         <view class="about-stats">
             <view>
-                <text class="about-stats__value">71</text>
-                <text class="about-stats__label">{{ text('示例页面') }}</text>
+                <text class="about-stats__value">{{ componentCount }}</text>
+                <text class="about-stats__label">{{ text('组件演示') }}</text>
             </view>
             <view>
                 <text class="about-stats__value">Vue 3</text>
@@ -52,10 +52,12 @@
 <script setup lang="ts">
 import DemoPage from '../../components/demo-page/demo-page.vue';
 import { useDemoLocale } from '../../common/demo-i18n';
+import componentGroups from './components.config';
 
 defineOptions({ name: 'ExampleAbout' });
 
 const { text } = useDemoLocale();
+const componentCount = componentGroups.reduce((sum, group) => sum + group.list.length, 0);
 const docsUrl = 'https://m.puresnake.com/snake-ui/';
 const repositoryUrl = 'https://github.com/zwbcode/snake-ui';
 const capabilities = [

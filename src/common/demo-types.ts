@@ -31,6 +31,7 @@ export type DemoCatalogBadge = 'new' | 'cms' | 'business';
 export interface DemoCatalogItem {
     key: string;
     path: string;
+    kind?: 'scene' | 'component';
     title: string;
     titleEn: string;
     desc: string;

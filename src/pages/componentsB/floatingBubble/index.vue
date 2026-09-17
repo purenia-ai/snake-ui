@@ -10,6 +10,7 @@
 </template>
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
+import { onPageScroll } from '@dcloudio/uni-app';
 import { floatingBubbleData } from '../../../common/fixtures';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
@@ -18,6 +19,9 @@ import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
 const scrollTop = ref(0);
+onPageScroll(event => {
+    scrollTop.value = event.scrollTop;
+});
 const controls: DemoControl[] = [
     {
         key: 'floatingBubbleSize',

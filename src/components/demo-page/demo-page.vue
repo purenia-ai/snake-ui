@@ -44,7 +44,18 @@
                 />
             </view>
         </template>
-        <slot v-else />
+        <template v-else>
+            <view class="demo-viewport-nav">
+                <button class="demo-viewport-nav__back" :aria-label="text('返回')" @click="goBack">
+                    ← {{ text('返回') }}
+                </button>
+                <text class="demo-viewport-nav__title">{{ title }}</text>
+                <button class="demo-viewport-nav__locale" :aria-label="text('切换语言')" @click="switchLocale">
+                    {{ nextLocaleLabel }}
+                </button>
+            </view>
+            <slot />
+        </template>
     </view>
 </template>
 
@@ -111,8 +122,12 @@ function handlePreviewThemeRequest(event: MessageEvent<{ type?: string }>) {
 }
 
 watch(navbarColor, postPreviewNavbarTheme, { immediate: true });
-onMounted(() => window.addEventListener('message', handlePreviewThemeRequest));
-onBeforeUnmount(() => window.removeEventListener('message', handlePreviewThemeRequest));
+onMounted(() => {
+    if (typeof window !== 'undefined') window.addEventListener('message', handlePreviewThemeRequest);
+});
+onBeforeUnmount(() => {
+    if (typeof window !== 'undefined') window.removeEventListener('message', handlePreviewThemeRequest);
+});
 
 const { nextLocaleLabel, switchLocale, text } = useDemoLocale();
 const tabItems = computed(() => [
@@ -167,6 +182,44 @@ function switchTab(key: string | number) {
 
 .demo-page--viewport {
     background: var(--snake-color-surface);
+}
+.demo-viewport-nav {
+    position: relative;
+    z-index: 30;
+    display: flex;
+    min-height: 80rpx;
+    padding: var(--status-bar-height, env(safe-area-inset-top, 0px)) 18rpx 0;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12rpx;
+    border-bottom: 1px solid var(--snake-color-divider);
+    background: var(--snake-color-surface);
+    color: var(--snake-color-text);
+}
+.demo-viewport-nav__back,
+.demo-viewport-nav__locale {
+    flex: none;
+    min-height: 64rpx;
+    margin: 0;
+    padding: 0 12rpx;
+    border: 0;
+    color: var(--snake-color-primary-deep);
+    background: transparent;
+    font-size: 24rpx;
+    line-height: 64rpx;
+}
+.demo-viewport-nav__back::after,
+.demo-viewport-nav__locale::after {
+    border: 0;
+}
+.demo-viewport-nav__title {
+    overflow: hidden;
+    min-width: 0;
+    color: var(--snake-color-text);
+    font-size: 27rpx;
+    font-weight: 650;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .demo-nav__actions {

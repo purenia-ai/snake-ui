@@ -95,3 +95,26 @@ test('tool overview uses semantic detail directories', async () => {
         assert.match(pages, new RegExp(`"path":\\s*"${pagePath.join('/')}"`));
     }
 });
+
+test('scene and template catalogs link to registered full-page showcases', async () => {
+    const [pages, scenes, templates, content] = await Promise.all([
+        read('src/pages.json'),
+        read('src/pages/example/scenes.config.ts'),
+        read('src/pages/example/templates.config.ts'),
+        read('src/components/showcase-content/showcase-content.vue')
+    ]);
+    const routes = [
+        ['commerceHome', 'commerce-home'],
+        ['campaign', 'campaign'],
+        ['cmsContent', 'cms-content']
+    ];
+    assert.match(pages, /"root":\s*"pages\/showcase"/);
+    for (const [directory, key] of routes) {
+        const path = `/pages/showcase/${directory}/index`;
+        assert.match(pages, new RegExp(`"path":\\s*"${directory}/index"`));
+        assert.ok(scenes.includes(path), `${path} missing from scenes`);
+        assert.ok(templates.includes(path), `${path} missing from templates`);
+        assert.ok(content.includes(`kind === '${key}'`) || key === 'cms-content');
+        await read(`src/pages/showcase/${directory}/index.vue`);
+    }
+});

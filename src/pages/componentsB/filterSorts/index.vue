@@ -8,7 +8,11 @@
                 :bg-color="String(state.filterBg)"
                 :show-tabs="Boolean(state.filterTabs)"
                 :scroll-top="scrollTop"
+                @change="onFilterChange"
             />
+            <text v-if="selection" class="demo-selection" aria-live="polite"
+                >{{ text('当前筛选') }}: {{ selection }}</text
+            >
         </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
             <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
@@ -17,6 +21,7 @@
 </template>
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
+import { onPageScroll } from '@dcloudio/uni-app';
 import { filters } from '../../../common/fixtures';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
@@ -25,6 +30,13 @@ import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
 const scrollTop = ref(0);
+const selection = ref('');
+onPageScroll(event => {
+    scrollTop.value = event.scrollTop;
+});
+function onFilterChange(params: Record<string, string | number | boolean>) {
+    selection.value = JSON.stringify(params);
+}
 const controls: DemoControl[] = [
     { key: 'filterTabs', label: '显示筛选标签', type: 'switch', defaultValue: true },
     {
@@ -55,3 +67,12 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 </script>
+<style scoped>
+.demo-selection {
+    display: block;
+    padding: 12rpx 20rpx;
+    color: var(--snake-color-text-secondary);
+    font-size: 22rpx;
+    overflow-wrap: anywhere;
+}
+</style>

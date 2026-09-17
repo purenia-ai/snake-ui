@@ -2,6 +2,7 @@
     <DemoPage :title="title" :desc="text('通过按钮触发目标小程序跳转。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <snake-jump-applet class="demo-jump-applet-showcase" :datas="data" />
+            <text class="demo-hint">{{ text('请配置真实小程序 ID 后测试跳转；当前仅展示按钮样式。') }}</text>
         </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
             <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
@@ -52,3 +53,12 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 </script>
+<style scoped>
+.demo-hint {
+    display: block;
+    margin: 16rpx;
+    color: var(--snake-color-text-muted);
+    font-size: 22rpx;
+    line-height: 1.5;
+}
+</style>

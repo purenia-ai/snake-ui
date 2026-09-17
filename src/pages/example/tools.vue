@@ -9,16 +9,25 @@
     >
         <view class="tools-hero">
             <text class="tools-hero__eyebrow">SNAKE / TOOLKIT</text>
-            <text class="tools-hero__title">让常用能力触手可及</text>
-            <text class="tools-hero__desc">网络、运行时和基础 Hooks 的跨端示例。</text>
+            <text class="tools-hero__title">{{ text('让常用能力触手可及') }}</text>
+            <text class="tools-hero__desc">{{ text('网络、运行时和基础 Hooks 的跨端示例。') }}</text>
         </view>
         <view class="tool-search">
             <snake-icon name="search" :size="19" />
             <input v-model="searchText" :placeholder="text('搜索工具')" confirm-type="search" />
+            <button
+                v-if="searchText"
+                class="tool-search__clear"
+                :aria-label="text('清空搜索')"
+                @click="searchText = ''"
+            >
+                <snake-icon name="close" :size="16" />
+            </button>
         </view>
         <view v-if="!groups.length" class="tool-empty">
             <snake-icon name="search" :size="30" />
             <text>{{ text('没有找到相关工具') }}</text>
+            <button class="tool-empty__reset" @click="searchText = ''">{{ text('清空搜索') }}</button>
         </view>
         <view v-for="group in groups" :key="group.title" class="tool-group">
             <view class="tool-group__header">
@@ -124,6 +133,29 @@ const groups = computed(() => {
     height: 100%;
     color: var(--snake-color-text);
     font-size: 26rpx;
+}
+.tool-search__clear,
+.tool-empty__reset {
+    margin: 0;
+    border: 0;
+    background: transparent;
+    color: var(--snake-color-primary-deep);
+}
+.tool-search__clear::after,
+.tool-empty__reset::after {
+    border: 0;
+}
+.tool-search__clear {
+    display: flex;
+    width: 56rpx;
+    height: 56rpx;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+.tool-empty__reset {
+    padding: 0 20rpx;
+    font-size: 24rpx;
 }
 .tool-group {
     margin-bottom: 28rpx;

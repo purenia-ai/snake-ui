@@ -16,6 +16,7 @@
 
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
+import { onPageScroll } from '@dcloudio/uni-app';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
 import { cmsComponents } from '../../../common/fixtures';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
@@ -25,6 +26,9 @@ import DemoSection from '../../../components/demo-section/demo-section.vue';
 
 const { localeName, text } = useDemoLocale();
 const scrollTop = ref(0);
+onPageScroll(event => {
+    scrollTop.value = event.scrollTop;
+});
 const pageInfo = { pageId: 'preview' };
 const controls: DemoControl[] = [
     {

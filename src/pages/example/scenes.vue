@@ -11,8 +11,8 @@
         <view class="scene-hero">
             <view class="scene-hero__glow" />
             <text class="scene-hero__eyebrow">SNAKE / SCENES</text>
-            <text class="scene-hero__title">把组件放进真实业务里</text>
-            <text class="scene-hero__desc">从商品浏览到内容营销，直接查看可复用的组合方式。</text>
+            <text class="scene-hero__title">{{ text('把组件放进真实业务里') }}</text>
+            <text class="scene-hero__desc">{{ text('从商品浏览到内容营销，直接查看可复用的组合方式。') }}</text>
         </view>
         <DemoSection
             v-for="group in scenes"
@@ -32,7 +32,9 @@
                     <view class="scene-card__body">
                         <view class="scene-card__title-row">
                             <text class="scene-card__title">{{ text(item.title) }}</text>
-                            <text v-if="item.badge" class="scene-card__badge">{{ item.badge }}</text>
+                            <text class="scene-card__badge">{{
+                                text(item.kind === 'scene' ? '完整场景' : '组件演示')
+                            }}</text>
                         </view>
                         <text class="scene-card__en">{{ item.titleEn }}</text>
                         <text class="scene-card__desc">{{ text(item.desc) }}</text>

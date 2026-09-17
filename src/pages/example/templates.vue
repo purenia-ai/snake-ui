@@ -9,7 +9,7 @@
         :nav-home="false"
     >
         <view class="template-switcher">
-            <view
+            <button
                 v-for="item in templates"
                 :key="item.key"
                 :class="['template-tab', { 'template-tab--active': item.key === active }]"
@@ -17,7 +17,7 @@
             >
                 <snake-icon :name="item.icon || 'page'" :size="18" />
                 <text>{{ text(item.title) }}</text>
-            </view>
+            </button>
         </view>
         <DemoSection bare variant="preview" :title="text('模板预览')">
             <view class="template-preview">
@@ -26,74 +26,21 @@
                     <text class="template-preview__title">{{ text(current.title) }}</text>
                     <text class="template-preview__desc">{{ text(current.desc) }}</text>
                 </view>
-                <view v-if="active === 'commerce-home'" class="template-preview__body">
-                    <snake-picture-ads
-                        :datas="{
-                            imageList: [
-                                { src: '/static/logo.png', url: '' },
-                                { src: '/static/logo.png', url: '' }
-                            ],
-                            height: 180
-                        }"
-                    />
-                    <snake-graphic-navigation
-                        :datas="{
-                            imageList: [
-                                { text: '新品', src: '/static/logo.png', url: '' },
-                                { text: '活动', src: '/static/logo.png', url: '' },
-                                { text: '服务', src: '/static/logo.png', url: '' }
-                            ]
-                        }"
-                    />
-                    <snake-goods-list
-                        :goods-list="goods"
-                        list-type="sale"
-                        :commodity-type="0"
-                        :page-margin="12"
-                        :image-margin="8"
-                    />
-                </view>
-                <view v-else-if="active === 'campaign'" class="template-preview__body">
-                    <snake-notice
-                        :datas="{
-                            direction: 'row',
-                            textList: [{ text: 'Snake UI 限时活动进行中', url: '' }]
-                        }"
-                    />
-                    <snake-picture-ads
-                        :datas="{
-                            imageList: [{ src: '/static/logo.png', url: '' }],
-                            height: 210
-                        }"
-                    />
-                    <snake-activity-list :list="activities" current="001" />
-                </view>
-                <view v-else class="template-preview__body">
-                    <snake-cms
-                        :page-info="{ pageId: 'template-preview' }"
-                        :page-components="[{ component: 'notice' }, { component: 'graphicnavigation' }]"
-                        :scroll-top="0"
-                    />
+                <ShowcaseContent :key="active" :kind="active" compact />
+                <view class="template-preview__actions">
+                    <snake-button type="primary" @click="openTemplate(current.path)">{{
+                        text('查看完整页面')
+                    }}</snake-button>
                 </view>
             </view>
         </DemoSection>
         <DemoSection :title="text('使用的组件')" :description="text('点击组件卡片查看独立 API 演示')">
             <view class="component-links">
                 <view
-                    v-for="item in active === 'commerce-home'
-                        ? [
-                              { title: '商品列表', path: '/pages/componentsB/goodsList/index' },
-                              { title: '图文导航', path: '/pages/componentsB/graphicNavigation/index' },
-                              { title: '轮播广告', path: '/pages/componentsB/pictureAds/index' }
-                          ]
-                        : active === 'campaign'
-                          ? [
-                                { title: '活动列表', path: '/pages/componentsB/activityList/index' },
-                                { title: '通知公告', path: '/pages/componentsB/notice/index' }
-                            ]
-                          : [{ title: 'Snake CMS', path: '/pages/componentsB/snakeCms/index' }]"
+                    v-for="item in related[active]"
                     :key="item.path"
                     class="component-link"
+                    hover-class="component-link--hover"
                     @click="openComponent(item.path)"
                 >
                     <text>{{ text(item.title) }}</text>
@@ -108,18 +55,36 @@
 import { computed, ref } from 'vue';
 import DemoPage from '../../components/demo-page/demo-page.vue';
 import DemoSection from '../../components/demo-section/demo-section.vue';
+import ShowcaseContent from '../../components/showcase-content/showcase-content.vue';
 import { useDemoLocale } from '../../common/demo-i18n';
-import { goods, activities } from '../../common/fixtures';
 import templates from './templates.config';
 
 defineOptions({ name: 'ExampleTemplates' });
 const { text } = useDemoLocale();
-const active = ref('commerce-home');
+type TemplateKey = 'commerce-home' | 'campaign' | 'cms-content';
+const active = ref<TemplateKey>('commerce-home');
 const current = computed(() => templates.find(item => item.key === active.value) || templates[0]);
+const related: Record<TemplateKey, { title: string; path: string }[]> = {
+    'commerce-home': [
+        { title: '商品列表', path: '/pages/componentsB/goodsList/index' },
+        { title: '图文导航', path: '/pages/componentsB/graphicNavigation/index' },
+        { title: '轮播广告', path: '/pages/componentsB/pictureAds/index' },
+        { title: '优惠券', path: '/pages/componentsB/coupon/index' }
+    ],
+    campaign: [
+        { title: '活动列表', path: '/pages/componentsB/activityList/index' },
+        { title: '通知公告', path: '/pages/componentsB/notice/index' },
+        { title: '倒计时', path: '/pages/componentsA/countDown/index' },
+        { title: '商品列表', path: '/pages/componentsB/goodsList/index' }
+    ],
+    'cms-content': [{ title: 'Snake CMS', path: '/pages/componentsB/snakeCms/index' }]
+};
 const choose = (key: string) => {
-    active.value = key;
+    if (!(key in related)) return;
+    active.value = key as TemplateKey;
 };
 const openComponent = (path: string) => uni.navigateTo({ url: path });
+const openTemplate = (path: string) => uni.navigateTo({ url: path });
 </script>
 
 <style lang="scss" scoped>
@@ -134,6 +99,7 @@ const openComponent = (path: string) => uni.navigateTo({ url: path });
 .template-tab {
     display: flex;
     flex: none;
+    margin: 0;
     padding: 18rpx 22rpx;
     align-items: center;
     gap: 10rpx;
@@ -142,6 +108,10 @@ const openComponent = (path: string) => uni.navigateTo({ url: path });
     color: var(--snake-color-text-secondary);
     background: var(--snake-color-surface);
     font-size: 24rpx;
+    line-height: 1.3;
+}
+.template-tab::after {
+    border: 0;
 }
 .template-tab--active {
     border-color: var(--snake-color-primary);
@@ -182,8 +152,8 @@ const openComponent = (path: string) => uni.navigateTo({ url: path });
     font-size: 24rpx;
     line-height: 1.5;
 }
-.template-preview__body {
-    padding: 18rpx;
+.template-preview__actions {
+    padding: 20rpx;
 }
 .component-links {
     display: grid;
@@ -199,5 +169,9 @@ const openComponent = (path: string) => uni.navigateTo({ url: path });
     color: var(--snake-color-text);
     background: var(--snake-color-surface);
     font-size: 26rpx;
+}
+.component-link--hover {
+    border-color: var(--snake-color-primary);
+    background: var(--snake-color-primary-light);
 }
 </style>

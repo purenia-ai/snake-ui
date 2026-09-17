@@ -1,21 +1,23 @@
 <template>
-    <DemoPage title="路由跳转" desc="Promise 化的 uni-app 导航">
+    <DemoPage :title="text('路由跳转')" :desc="text('Promise 化的 uni-app 导航')">
         <view class="path">/pages/componentsA/button/index?id=7</view>
-        <snake-button type="primary" @click="openButton">打开 Button 示例</snake-button>
-        <text class="log">{{ log }}</text>
+        <snake-button type="primary" @click="openButton">{{ text('打开 Button 示例') }}</snake-button>
+        <text class="log">{{ log || text('尚未导航') }}</text>
     </DemoPage>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
+import { useDemoLocale } from '../../../common/demo-i18n';
 import { route } from '../../../uni_modules/snake-ui';
 
-const log = ref('尚未导航');
+const { text } = useDemoLocale();
+const log = ref('');
 async function openButton() {
     try {
         await route('/pages/componentsA/button/index', { source: 'route-demo', id: 7 });
-        log.value = 'navigateTo 调用成功';
+        log.value = text('navigateTo 调用成功');
     } catch (error) {
         log.value = error instanceof Error ? error.message : String(error);
     }

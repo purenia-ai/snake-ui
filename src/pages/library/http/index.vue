@@ -1,20 +1,24 @@
 <template>
-    <DemoPage title="HTTP 请求" desc="配置、传输层与错误模型">
+    <DemoPage :title="text('HTTP 请求')" :desc="text('配置、传输层与错误模型')">
         <view class="actions">
-            <snake-button type="primary" size="small" @click="request('/profile')">成功请求</snake-button>
-            <snake-button type="error" size="small" plain @click="request('/failure')">模拟失败</snake-button>
+            <snake-button type="primary" size="small" @click="request('/profile')">{{ text('成功请求') }}</snake-button>
+            <snake-button type="error" size="small" plain @click="request('/failure')">{{
+                text('模拟失败')
+            }}</snake-button>
         </view>
-        <text class="output">{{ output }}</text>
+        <text class="output">{{ output || text('点击按钮发起本地 Mock 请求') }}</text>
     </DemoPage>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
+import { useDemoLocale } from '../../../common/demo-i18n';
 import { Request, RequestError } from '../../../uni_modules/snake-ui';
 
 const client = new Request();
-const output = ref('点击按钮发起本地 Mock 请求');
+const { text } = useDemoLocale();
+const output = ref('');
 client.setTransport(async options => {
     await new Promise(resolve => setTimeout(resolve, 400));
     return options.url.includes('failure')
@@ -23,12 +27,12 @@ client.setTransport(async options => {
 });
 
 async function request(path: string) {
-    output.value = '请求中…';
+    output.value = text('请求中…');
     try {
         output.value = JSON.stringify(await client.get(path), null, 2);
     } catch (error) {
         output.value =
-            error instanceof RequestError ? `${error.kind}: ${error.statusCode} ${error.message}` : String(error);
+            error instanceof RequestError ? `${error.kind}: ${error.statusCode} ${text(error.message)}` : String(error);
     }
 }
 </script>

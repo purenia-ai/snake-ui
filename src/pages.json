@@ -133,6 +133,14 @@
                 { "path": "themeLocale/index", "style": { "navigationBarTitleText": "主题与语言" } },
                 { "path": "color/index", "style": { "navigationBarTitleText": "色彩" } }
             ]
+        },
+        {
+            "root": "pages/showcase",
+            "pages": [
+                { "path": "commerceHome/index", "style": { "navigationBarTitleText": "商品首页" } },
+                { "path": "campaign/index", "style": { "navigationBarTitleText": "活动专题页" } },
+                { "path": "cmsContent/index", "style": { "navigationBarTitleText": "CMS 内容页" } }
+            ]
         }
     ],
     "globalStyle": {
