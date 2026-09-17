@@ -425,14 +425,19 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 
 ## 0.1.0（2026-08-14）
 
-- 45 个通用组件文档入口，基于 Vue 3 + TypeScript 构建
+- 通用组件文档入口基于 Vue 3 + TypeScript 构建
 - 14 个配置驱动的 CMS 页面区块，统一由 `snake-cms` 渲染
 - 兼容安卓、iOS、微信小程序、H5 等
 - 详尽的文档支持，现代化的演示效果
 - easycom 按需引入，精简打包体积
 
-基础组件（10）
+## 当前组件索引
 
+以下清单随组件目录更新，当前共 45 个通用组件入口。
+
+基础组件（11）
+
+- Parse 富文本解析
 - ConfigProvider 全局配置
 - Button 按钮
 - Icon 图标
@@ -696,10 +701,10 @@ Snake UI 用统一的色彩 token 表达品牌、状态、文字与界面层级�
 ```
 
 ```ts
-import { color, useTheme } from '@puresnake/snake-ui';
+import { useTheme } from '@puresnake/snake-ui';
 
 const { color } = useTheme();
-console.log(color.primary, color.primary);
+console.log(color.primary, color.text);
 ```
 
 ::: tip 多主题与暗黑模式
@@ -2644,36 +2649,65 @@ Overlay 没有直接使用 CSS 主题变量。遮罩透明度、层级和自定�
 
 `snake-parse` 用于渲染文章、商品详情等 HTML 内容。内置 HTML 解析、图片预览、链接处理、表格横向滚动、音视频与 App-NVue 支持，可独立使用。
 
+## 平台兼容性
+
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
+
+App-NVue 通过内置 WebView 渲染复杂内容；`iframe`、`embed` 等嵌入标签仅在 H5 与 App 上渲染。平台差异见下方“安全与兼容”。
+
 ## 基础用法
 
 ```vue
 <snake-parse :content="article" preview-img scroll-table @linktap="onLinkTap" />
 ```
 
-## Props
+`content` 接收 HTML 字符串；图片预览由 `preview-img` 控制，表格内容较宽时可启用 `scroll-table`。
+
+## API
+
+### Props
 
 | 参数                         | 说明                             | 类型                                      | 默认值           |
 | ---------------------------- | -------------------------------- | ----------------------------------------- | ---------------- |
 | `content`                    | HTML 字符串                      | `string`                                  | `''`             |
-| `domain`                     | 相对链接主域名                   | `string`                                  | `''`             |
+| `domain`                     | 相对链接主域名                   | `string`                                  | —                |
 | `containerStyle`             | 根容器样式                       | `string`                                  | `''`             |
-| `tagStyle`                   | 标签默认样式                     | `Record<string, string>`                  | `{}`             |
+| `tagStyle`                   | 标签默认样式                     | `Record<string, string>`                  | —                |
 | `previewImg` / `lazyLoad`    | 图片预览、懒加载                 | `boolean \| string`                       | `true` / `false` |
 | `loadingImg` / `errorImg`    | 图片占位图                       | `string`                                  | `''`             |
 | `showImgMenu` / `copyLink`   | 图片菜单、外链处理               | `boolean \| string`                       | `true`           |
-| `pauseVideo` / `scrollTable` | 媒体自动暂停、表格横滑           | `boolean \| string`                       | `true` / `false` |
-| `selectable` / `useAnchor`   | 文本选择、页内锚点               | `boolean \| string` / `boolean \| number` | `false`          |
+| `pauseVideo` / `scrollTable` | 媒体自动暂停、表格横滑           | `boolean \| string`                       | `true` / —       |
+| `selectable` / `useAnchor`   | 文本选择、页内锚点               | `boolean \| string` / `boolean \| number` | —                |
 | `setTitle`                   | 是否将 HTML `title` 设为页面标题 | `boolean \| string`                       | `true`           |
 
-## Events 与 Methods
+### Events
 
-事件：`load`、`ready`、`imgtap`、`linktap`、`play`、`pause`、`fullscreenchange`、`error`。
+| 事件                 | 触发时机与参数                                   |
+| -------------------- | ------------------------------------------------ |
+| `load`               | 内容解析并加载后触发                             |
+| `ready`              | 图片等内容就绪后触发，参数为节点布局信息或空对象 |
+| `imgtap` / `linktap` | 点击图片或链接时触发，传入相应属性               |
+| `play` / `error`     | 媒体播放或出错时触发                             |
 
-组件 ref 方法：`setContent(content, append)`、`getText()`、`getRect()`、`navigateTo(id, offset)`、`pauseMedia()`、`setPlaybackRate(rate)`。
+### Methods
+
+组件 ref 提供 `setContent(content, append)`、`getText()`、`getRect()`、`navigateTo(id, offset)`、`pauseMedia()` 和 `setPlaybackRate(rate)`。
+
+### Slots
+
+| 名称      | 说明                                     |
+| --------- | ---------------------------------------- |
+| `default` | `content` 尚未解析出节点时显示的占位内容 |
 
 ## 安全与兼容
 
 解析器按标签白名单渲染，移除脚本、表单和事件属性。H5 与 App 端可渲染 `iframe`、`embed`，因此不可信 HTML 仍应在服务端完成清洗，并限制可访问的嵌入地址；小程序端会忽略这些嵌入标签。H5、App、小程序使用原生节点；App-NVue 使用内置 WebView 处理复杂内容。
+
+## 主题变量
+
+Parse 没有专用的 `--snake-parse-*` 变量。可通过 `containerStyle` 设置容器样式、通过 `tagStyle` 设置标签默认样式；需要跟随全局主题时，使用[色彩令牌](/components/color)。
 
 <!-- Source: docs/components/popup.md -->
 
@@ -4915,13 +4949,7 @@ const pageComponents: CmsComponentConfig[] = [
 <script setup lang="ts">
 import { onLoad, onPageScroll, onReachBottom, onPullDownRefresh } from '@dcloudio/uni-app';
 import { ref } from 'vue';
-import type {
-    CmsComponentConfig,
-    CmsDiagnostic,
-    CmsError,
-    CmsExposed,
-    CmsPageInfo
-} from '@puresnake/snake-ui';
+import type { CmsComponentConfig, CmsDiagnostic, CmsError, CmsExposed, CmsPageInfo } from '@puresnake/snake-ui';
 import { api } from '@/services/api';
 
 const cmsRef = ref<CmsExposed | null>(null);
@@ -4932,12 +4960,12 @@ const pageId = ref('home');
 const loadError = ref('');
 
 function normalizeCmsPage(input: unknown): { pageInfo: CmsPageInfo; pageComponents: CmsComponentConfig[] } {
-    const record = input && typeof input === 'object' && !Array.isArray(input)
-        ? input as Record<string, unknown>
-        : {};
-    const setup = record.pageSetup && typeof record.pageSetup === 'object' && !Array.isArray(record.pageSetup)
-        ? record.pageSetup as Record<string, unknown>
-        : {};
+    const record =
+        input && typeof input === 'object' && !Array.isArray(input) ? (input as Record<string, unknown>) : {};
+    const setup =
+        record.pageSetup && typeof record.pageSetup === 'object' && !Array.isArray(record.pageSetup)
+            ? (record.pageSetup as Record<string, unknown>)
+            : {};
     const rawComponents = Array.isArray(record.pageComponents) ? record.pageComponents : [];
 
     return {
@@ -5372,14 +5400,14 @@ app.use(SnakeUI, {
 
 ### Props
 
-| 参数              | 说明                                   | 类型                   | 默认值 |
-| ----------------- | -------------------------------------- | ---------------------- | ------ |
-| `pageInfo`        | 页面 ID、名称和页面级业务信息          | `CmsPageInfo`          | `{}`   |
-| `pageComponents`  | 按顺序排列的装修配置                   | `CmsComponentConfig[]` | `[]`   |
-| `scrollTop`       | 页面滚动位置                           | `number`               | `0`    |
-| `stickyOffsetTop` | 商品区和搜索框吸顶顶部偏移             | `number`               | `0`    |
-| `stickyCustomNavHeight` | 自定义导航栏高度，px             | `number`               | `0`    |
-| `cmsOptions`      | 当前实例的服务、别名、资源和规范化配置 | `CmsOptions`           | `{}`   |
+| 参数                    | 说明                                   | 类型                   | 默认值 |
+| ----------------------- | -------------------------------------- | ---------------------- | ------ |
+| `pageInfo`              | 页面 ID、名称和页面级业务信息          | `CmsPageInfo`          | `{}`   |
+| `pageComponents`        | 按顺序排列的装修配置                   | `CmsComponentConfig[]` | `[]`   |
+| `scrollTop`             | 页面滚动位置                           | `number`               | `0`    |
+| `stickyOffsetTop`       | 商品区和搜索框吸顶顶部偏移             | `number`               | `0`    |
+| `stickyCustomNavHeight` | 自定义导航栏高度，px                   | `number`               | `0`    |
+| `cmsOptions`            | 当前实例的服务、别名、资源和规范化配置 | `CmsOptions`           | `{}`   |
 
 ### Events
 
@@ -7395,6 +7423,8 @@ colorToRgba('#06d290', 0.5); // rgba(6, 210, 144, 0.5)
 
 `rgbToHex` 会把通道取整并限制在 0–255；非法十六进制输入在 `colorToRgba` 中原样返回。
 
+`hexToRgb` 接受带或不带 `#` 的三位、六位十六进制颜色，解析失败返回 `undefined`。`colorToRgba` 的 `alpha` 默认为 1，并限制在 0–1。需要读取当前主题色而非转换固定颜色时，使用[颜色管理](/tools/use-color)。
+
 ## 颜色渐变
 
 ```ts
@@ -7405,6 +7435,15 @@ colorGradient('#000000', '#ffffff', 3);
 ```
 
 `steps <= 0` 或颜色无效时返回空数组。
+
+## API 速查
+
+| 方法                               | 返回值                                   |
+| ---------------------------------- | ---------------------------------------- |
+| `hexToRgb(value)`                  | `{ r, g, b }` 或 `undefined`             |
+| `rgbToHex(r, g, b)`                | 六位十六进制字符串                       |
+| `colorToRgba(value, alpha = 1)`    | RGBA 字符串；无效颜色原样返回            |
+| `colorGradient(start, end, steps)` | 渐变颜色数组；`steps = 1` 时只返回起点色 |
 
 <!-- Source: docs/tools/debounce-throttle.md -->
 
@@ -7418,18 +7457,14 @@ colorGradient('#000000', '#ffffff', 3);
 import { debounce } from '@puresnake/snake-ui';
 
 const search = debounce((keyword: string) => {
-    loadSuggestions(keyword);
+    console.log('搜索建议', keyword);
 }, 500);
 
 search('snake');
 search.cancel();
 ```
 
-```ts
-debounce(callback, (wait = 300), (immediate = false));
-```
-
-`immediate: true` 会在首个调用立即执行，后续调用只刷新等待窗口。
+`immediate: true` 会在首个调用立即执行，后续调用只刷新等待窗口。`debounce` 返回的包装函数没有返回业务回调结果；`cancel()` 取消尚未触发的定时调用。
 
 ## 节流
 
@@ -7441,11 +7476,7 @@ const measure = throttle(() => {
 }, 200);
 ```
 
-```ts
-throttle(callback, (wait = 300));
-```
-
-节流函数会保留等待窗口内最后一次调用，并在窗口结束时执行。返回函数同样提供 `cancel()`。
+节流函数在窗口外立即执行；等待窗口内首次排队的调用会在窗口结束时执行，后续调用不会替换它的参数。返回函数同样提供 `cancel()`，取消后重置计时基准。
 
 ## 在 Vue 中清理
 
@@ -7453,11 +7484,20 @@ throttle(callback, (wait = 300));
 import { onBeforeUnmount } from 'vue';
 import { debounce } from '@puresnake/snake-ui';
 
-const save = debounce(persist, 600);
+const save = debounce(() => console.log('保存草稿'), 600);
 onBeforeUnmount(save.cancel);
 ```
 
 组件卸载前取消定时器，避免离开页面后继续修改状态。
+
+## 参数
+
+| 函数                                  | 参数                           | 默认值                            |
+| ------------------------------------- | ------------------------------ | --------------------------------- |
+| `debounce(callback, wait, immediate)` | 回调、等待毫秒数、是否立即执行 | `wait = 300`，`immediate = false` |
+| `throttle(callback, wait)`            | 回调、窗口毫秒数               | `wait = 300`                      |
+
+需要在组合式代码中使用时，还可选择[useDebounce 与 useThrottle](/tools/use-rate-limit)；这两个封装同样需要手动清理。
 
 <!-- Source: docs/tools/deep-clone.md -->
 
@@ -7476,6 +7516,12 @@ copy.profile.name = 'Pro';
 
 函数保留对象图中的循环关系，但不会复制类实例的私有语义。业务模型实例应使用其自身的序列化或复制方法。
 
+## API 与边界
+
+`deepClone<T>(value: T): T` 接受任意值。原始值和函数直接返回；对象、数组、`Date`、`Map`、`Set` 会创建新引用，循环引用及 Symbol 键会保留。`Map` 的键和值也会递归复制。
+
+需要隔离可变配置或快照时使用它。类实例会按普通对象重建，原型方法、私有字段等不会保留；这类数据应使用专门的复制方法。
+
 <!-- Source: docs/tools/deep-merge.md -->
 
 # 对象深合并
@@ -7493,6 +7539,12 @@ const config = deepMerge(
 ```
 
 该函数适合配置合并。需要按主键合并数组时，应在业务层明确实现数组策略。
+
+## API 与覆盖规则
+
+`deepMerge<T>(target: T, ...sources: Partial<T>[]): T` 从左到右合并来源，返回新对象，输入对象不变。只有前后两侧都是普通对象时才递归合并；数组、`Date`、`Map` 等由后一个来源整体替换为副本。
+
+例如主题默认配置与页面配置可以合并；若要把数组按 `id` 合并，需在调用前明确业务规则。嵌套引用的复制规则见[对象深拷贝](/tools/deep-clone)。
 
 <!-- Source: docs/tools/emitter.md -->
 
@@ -7513,6 +7565,17 @@ off();
 ```
 
 实例提供 `on`、`off`、`emit` 和 `clear`。页面级事件应在卸载时退订；父子组件通信优先使用 Props/Events，跨域共享状态优先使用明确的 store。
+
+## API 与生命周期
+
+| 方法                  | 行为                                                             |
+| --------------------- | ---------------------------------------------------------------- |
+| `on(name, handler)`   | 注册处理函数；同一事件下重复注册同一函数只保留一次，返回解绑函数 |
+| `off(name, handler?)` | 删除指定处理函数；不传 `handler` 时删除该事件的全部处理函数      |
+| `emit(name, payload)` | 同步通知该事件的处理函数，无返回值                               |
+| `clear()`             | 删除实例中的全部事件                                             |
+
+`createEmitter()` 每次创建独立实例；导出的 `emitter` 是共享实例。Vue 页面或组件中的订阅应在 `onBeforeUnmount` 中调用 `on()` 返回的解绑函数。处理函数中的异常会同步传给调用方，`emit` 不会替你捕获。
 
 <!-- Source: docs/tools/fast-use.md -->
 
@@ -7547,24 +7610,31 @@ await uni.$snake.sleep(300);
 
 ## HTTP 与 Hooks
 
-```ts
+```vue
+<script setup lang="ts">
 import { http, useLocale, useTheme } from '@puresnake/snake-ui';
 
-const profile = await http.get<User>('/profile');
 const { setLocale } = useLocale();
 const { toggleDarkMode } = useTheme();
+
+async function loadProfile() {
+    return http.get<{ id: number }>('/profile', {}, { meta: { originalData: false } });
+}
+</script>
 ```
 
 ## 入口建议
 
-| 场景                     | 入口                            |
-| ------------------------ | ------------------------------- |
-| 新的 TypeScript 代码     | 从 `@puresnake/snake-ui` 按需导入          |
-| 模板中的简单提示或格式化 | `$snake`                        |
-| 旧 Options API 项目      | `uni.$snake` 或逐步改为按需导入 |
-| Vue 响应式状态           | `use*` 组合式函数（如 `useTheme` / `useColor`）          |
+| 场景                     | 入口                                            |
+| ------------------------ | ----------------------------------------------- |
+| 新的 TypeScript 代码     | 从 `@puresnake/snake-ui` 按需导入               |
+| 模板中的简单提示或格式化 | `$snake`                                        |
+| 旧 Options API 项目      | `uni.$snake` 或逐步改为按需导入                 |
+| Vue 响应式状态           | `use*` 组合式函数（如 `useTheme` / `useColor`） |
 
 不要同时维护自定义工具副本和 Snake UI 入口；先确认现有工具是否满足需求，再决定是否封装业务层。
+
+`http` 默认返回完整响应，例子通过 `originalData: false` 显式获取数据体；请在业务 API 层统一约定。组合式函数应在 Vue 组件的 `<script setup>` 或其他有效的组件执行上下文中调用；路由、剪贴板和请求等能力依赖 uni-app 运行时。
 
 <!-- Source: docs/tools/formatters.md -->
 
@@ -7581,6 +7651,8 @@ formatPrice(12345.6, 2, ',', '.'); // 12.345,60
 
 `formatPrice(value, decimals = 0, decimalPoint = '.', thousandsSeparator = ',')` 会把无效数字安全处理为 0。
 
+输入可为数字或数字字符串，返回带千分位的字符串。`decimals` 默认 0，负数按 0 处理；该函数会剥离输入中的非数字字符，若业务需严格校验原始金额，应先用[规则校验](/tools/test)或服务端规则检查。
+
 ## 姓名脱敏
 
 ```ts
@@ -7592,25 +7664,51 @@ formatName('欧阳小明'); // 欧**明
 
 该函数按 JavaScript 字符串长度处理，不承担合规级数据脱敏；日志和持久化数据仍应在服务端处理。
 
+## API 速查
+
+| 方法                                                                | 参数与返回值                                                         |
+| ------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `formatPrice(value, decimals?, decimalPoint?, thousandsSeparator?)` | 格式化数字或字符串，返回字符串                                       |
+| `formatName(value)`                                                 | 接受字符串，返回脱敏后的字符串；单字原样、两字保留首字、其余保留首尾 |
+
 <!-- Source: docs/tools/get-rect.md -->
 
 # 节点布局信息
 
 `getRect(selector, instance?)` 使用 uni-app selector query 获取首个节点的位置与尺寸。
 
-```ts
+```vue
+<script setup lang="ts">
+import { getCurrentInstance, onMounted } from 'vue';
 import { getRect } from '@puresnake/snake-ui';
 
-const rect = await getRect('.goods-card', instance);
-console.log(rect.width, rect.top);
+const instance = getCurrentInstance();
+
+onMounted(async () => {
+    const rect = await getRect('.goods-card', instance);
+    console.log(rect.width, rect.top);
+
+    const cards = await getRect('.goods-card', instance, true);
+    console.log(cards.length);
+});
+</script>
+
+<template>
+    <view class="goods-card">商品</view>
+</template>
 ```
 
-| 参数       | 说明                             |
-| ---------- | -------------------------------- |
-| `selector` | CSS 选择器                       |
-| `instance` | 可选的组件实例，用于限定查询范围 |
+| 参数       | 说明                                                 |
+| ---------- | ---------------------------------------------------- |
+| `selector` | CSS 选择器                                           |
+| `instance` | 可选的组件实例或查询上下文，用于限定查询范围         |
+| `all`      | 默认 `false`，传 `true` 时查询全部匹配节点，返回数组 |
 
-查询不到节点时 Promise 会拒绝。应在挂载完成并等待 DOM 更新后调用；组合式写法见[useRect](/tools/use-rect)。
+## 返回值与调用时机
+
+`getRect(selector, instance?, all?)` 返回 Promise。单节点查询无结果时得到宽高及坐标均为 0 的兜底对象；`all: true` 无结果时得到空数组，不会因未匹配而拒绝。
+
+应在节点渲染并完成 DOM 更新后调用。需要响应式结果和手动刷新时，使用[useRect](/tools/use-rect)。
 
 <!-- Source: docs/tools/guid.md -->
 
@@ -7625,7 +7723,15 @@ guid(); // snake-...
 guid('order'); // order-...
 ```
 
-它适合临时节点、表单项和请求追踪键，不保证跨系统永久唯一，数据库主键应由服务端生成。
+## API 与使用边界
+
+`guid(prefix = 'snake'): string` 返回 `前缀-时间戳-随机段` 形式的字符串。每次调用都会生成新值，适合在创建列表项时生成稳定的前端 `key`：
+
+```ts
+const item = { id: guid('item'), label: '新项目' };
+```
+
+不要在每次渲染时重新调用，否则列表 `key` 会变化。它不保证跨系统永久唯一，也不具备密码学安全性；数据库主键和安全令牌应由相应系统生成。
 
 <!-- Source: docs/tools/http.md -->
 
@@ -7649,11 +7755,11 @@ interface Goods {
     name: string;
 }
 
-const goods = await http.get<Goods[]>('/goods', { page: 1 });
+const goods = await http.get<Goods[]>('/goods', { page: 1 }, { meta: { originalData: false } });
 await http.post('/orders', { goodsId: goods[0].id });
 ```
 
-`get(url, params, options)` 把第二个参数作为查询数据；`post/put/delete` 把第二个参数作为请求数据。
+`get(url, params, options)` 把第二个参数作为查询数据；`post/put/delete` 把第二个参数作为请求数据。示例显式设置 `originalData: false`，以获得接口数据；默认返回完整 uni-app 响应，不能直接当作商品数组使用。
 
 ## 全局配置
 
@@ -7743,7 +7849,12 @@ analytics.setTransport(async options => ({
 // api/goods.ts
 import { http } from '@puresnake/snake-ui';
 
-export const getGoods = (page: number) => http.get<Goods[]>('/goods', { page });
+interface Goods {
+    id: number;
+    name: string;
+}
+
+export const getGoods = (page: number) => http.get<Goods[]>('/goods', { page }, { meta: { originalData: false } });
 ```
 
 页面只调用业务 API，不重复处理 base URL、Token 和通用错误。
@@ -7767,6 +7878,17 @@ await api.detail({ url: () => '/42' });
 ## 平台说明
 
 默认 transport 依赖 `uni.request`。上传、下载和流式响应不属于当前客户端职责，应使用对应 uni-app API 或宿主适配器。
+
+## API 速查
+
+| 入口                   | 用途                                            |
+| ---------------------- | ----------------------------------------------- |
+| `http`                 | 全局请求单例，提供 `get/post/put/delete` 等方法 |
+| `configureHttp(setup)` | 配置全局请求与拦截器                            |
+| `new Request()`        | 创建独立配置、拦截器和传输层的客户端            |
+| `RequestError`         | 捕获取消、HTTP、传输或拦截器错误                |
+
+请在项目中统一选择“完整响应”或“数据体”返回约定，并在业务 API 层固定配置，避免同一类型参数对应不同返回形状。
 
 <!-- Source: docs/tools/intro.md -->
 
@@ -7806,6 +7928,8 @@ await uni.$snake.route('/pages/order/detail', { id: 1 });
 - 新项目先阅读[快速使用](/tools/fast-use)，确定统一的导入约定。
 - 接口接入查看[HTTP 请求](/tools/http)。
 - 页面跳转查看[路由跳转](/tools/route)，高频调用节流查看[节流与防抖](/tools/debounce-throttle)。
+- 纯数据处理可从[对象深合并](/tools/deep-merge)、[时间格式化](/tools/time)或[规则校验](/tools/test)进入。
+- 主题、语言及提示分别查看[主题管理](/tools/use-theme)、[多语言](/tools/use-locale)和[useToast](/tools/use-toast)。
 
 <!-- Source: docs/tools/platform.md -->
 
@@ -7824,6 +7948,8 @@ await sleep(300);
 ```
 
 `clipboard` 在 API 不可用或调用失败时拒绝 Promise；`toast(title, duration)` 使用无图标轻提示。
+
+`toast` 默认展示 2000 ms，空标题不会调用平台 API；`sleep(delay = 0)` 返回延时 Promise。`clipboard` 只负责写入剪贴板，若业务需要自定义成功提示，应在成功后自行展示。
 
 ## 系统信息
 
@@ -7845,6 +7971,19 @@ type2icon('success'); // checkmark-circle
 
 支持 `success`、`warning`、`error` 和 `info`，未知值回退到信息图标。
 
+## API 与平台边界
+
+| 方法                            | 返回值与说明                              |
+| ------------------------------- | ----------------------------------------- |
+| `clipboard(value)`              | `Promise<void>`；复制失败时拒绝           |
+| `toast(title, duration = 2000)` | `void`；调用 `uni.showToast` 的无图标模式 |
+| `sleep(delay = 0)`              | `Promise<void>`；按毫秒等待               |
+| `getSystemInfo()/sys()`         | 实时读取的 uni-app 系统信息               |
+| `os()`                          | 系统信息中的 `platform` 小写字符串        |
+| `type2icon(type)`               | 与语义类型对应的图标名                    |
+
+剪贴板、提示和系统信息依赖宿主 uni-app API；服务端或普通 Node 环境不能直接调用这些入口。
+
 <!-- Source: docs/tools/query-params.md -->
 
 # 对象转 URL 参数
@@ -7857,10 +7996,14 @@ import { getQueryParams, queryParams } from '@puresnake/snake-ui';
 getQueryParams('/pages/search?q=Snake+UI&page=2');
 // { q: 'Snake UI', page: '2' }
 
-queryParams('?empty=&tag=new');
+queryParams('?empty=&tag=new'); // { empty: '', tag: 'new' }
 ```
 
-键和值会执行 URL 解码，加号按空格处理。重复键保留最后一个值，以维持 `Record<string, string>` 返回类型。参数序列化由[路由跳转](/tools/route)统一完成。
+## 返回值与边界
+
+`getQueryParams(url: string): Record<string, string>` 取第一个 `?` 到 `#` 之间的内容。键和值会执行 URL 解码，加号按空格处理；重复键保留最后一个值，无查询串时返回空对象。
+
+该工具按第一个 `=` 拆分参数值，值中再出现未编码的 `=` 会被截断；请先对参数编码。非法百分号编码会抛出 `URIError`。生成跳转参数时使用[路由跳转](/tools/route)。
 
 <!-- Source: docs/tools/random-array.md -->
 
@@ -7876,7 +8019,11 @@ const result = randomArray(source);
 // source 仍为 [1, 2, 3, 4]
 ```
 
-随机顺序不适合密码学、抽奖或可审计场景。
+## API 与边界
+
+`randomArray<T>(values: readonly T[]): T[]` 接受只读数组并返回新数组，元素对象本身仍是原引用；空数组返回空数组。适合随机展示非敏感的推荐项或题目顺序。
+
+底层随机数来自 `Math.random()`。随机顺序不适合密码学、抽奖或可审计场景；需要可复现顺序时也应使用业务指定的随机种子方案。
 
 <!-- Source: docs/tools/random.md -->
 
@@ -7891,7 +8038,11 @@ random(1, 6); // 1 到 6
 random(10, 5); // 5 到 10
 ```
 
-底层使用 `Math.random()`，不适合安全令牌、密码学或公平性要求高的抽奖。
+## API 与边界
+
+`random(min = 0, max = 1): number` 返回闭区间内的整数；`random()` 因而返回 0 或 1。小数下界向上取整、上界向下取整，调用方应提供至少包含一个整数的区间。
+
+底层使用 `Math.random()`，不适合安全令牌、密码学或公平性要求高的抽奖。打乱列表可使用[数组乱序](/tools/random-array)。
 
 <!-- Source: docs/tools/route.md -->
 
@@ -7926,6 +8077,8 @@ await route({
 await route({ type: 'back', delta: 2 });
 ```
 
+`delta` 默认为 1，输入会取整且最小为 1。`animationType` 和 `animationDuration` 仅在 `navigateTo`、`redirectTo` 时透传，具体动画效果由目标平台决定。
+
 ## 参数编码
 
 字符串、数字和布尔值会写入 query；`null` 与 `undefined` 被忽略；数组使用重复键；已有 query 与 hash 会被保留。
@@ -7947,6 +8100,12 @@ await route('/pages/search#result', {
 - 已有组件可继续使用 `navTo()`；它在 `navigateTo` 失败后尝试 `switchTab`。
 - `route()` 不处理任意 H5 外链或小程序跳转，这些策略应由业务 link service 统一负责。
 
+## API 与失败处理
+
+`route(url, params?)` 和 `route(options)` 都返回 `Promise<void>`。缺少 URL、导航类型不支持、平台 API 不可用或跳转失败时，Promise 会拒绝；调用方应在关键导航处处理失败。
+
+`navTo(url?)` 返回 `void`，还识别 H5 HTTP 外链、`/miniprogram` 和 `/serviceChat` 等旧业务协议。其特殊协议由运行平台及宿主 API 决定，错误无法通过 Promise 捕获；新业务应明确采用自己的链接策略。
+
 <!-- Source: docs/tools/style-unit.md -->
 
 # 样式与单位
@@ -7960,6 +8119,7 @@ import { addUnit } from '@puresnake/snake-ui';
 
 addUnit(24); // 24rpx
 addUnit('1rem'); // 1rem
+addUnit('12 24px'); // 12rpx 24px
 ```
 
 ## 样式转换
@@ -7974,6 +8134,17 @@ toStyle({ backgroundColor: '#fff' }, 'color:#222');
 ```
 
 `toStyle` 后传入的声明覆盖同名属性；null、undefined 和空字符串不会写入结果。
+
+## API 与边界
+
+| 方法                                 | 行为                                                   |
+| ------------------------------------ | ------------------------------------------------------ |
+| `addUnit(value = 0, unit = 'rpx')`   | 给裸数字追加单位，含多值简写；空值返回 `0rpx`          |
+| `kebabCase(name)`                    | 将驼峰、空格或下划线写法转换为 CSS 短横线写法          |
+| `addStyle(style, target = 'object')` | 将声明串转为样式对象；`target = 'string'` 时返回字符串 |
+| `toStyle(...styles)`                 | 合并样式对象或声明串，返回 CSS 声明串                  |
+
+`addUnit` 只补全单位，不做 px 与 rpx 的比例换算。请按 uni-app 尺寸体系传入值；涉及页面宽度的换算要先确认设备视口。
 
 <!-- Source: docs/tools/test.md -->
 
@@ -8003,7 +8174,20 @@ test.empty({});
 | `string/object/array` | 基础类型                       |
 | `empty`               | null、空字符串、空数组或空对象 |
 
-这些规则用于前端即时反馈，不能代替服务端校验或安全验证。
+## 其他常用方法
+
+| 方法                         | 判断内容                                      |
+| ---------------------------- | --------------------------------------------- |
+| `date/dateISO`               | 可解析日期、`yyyy/mm/dd` 或 `yyyy-mm-dd` 形式 |
+| `digits/amount`              | 纯数字、最多两位小数的金额格式                |
+| `idCard/carNo`               | 大陆身份证号码格式、车牌号码格式              |
+| `contains/range/rangeLength` | 包含指定内容、数值区间、字符串长度区间        |
+| `jsonString`                 | 可解析为对象或数组的 JSON 字符串              |
+| `code(value, len = 6)`       | 固定长度的数字验证码                          |
+| `image/video`                | 常见图片或视频文件扩展名                      |
+| `func/promise/regExp`        | 函数、Promise 形对象、正则对象                |
+
+所有方法返回布尔值；`empty` 的别名为 `isEmpty`。这些规则适合前端即时反馈，部分格式判断只检查形状，不能代替服务端校验或安全验证。
 
 <!-- Source: docs/tools/time.md -->
 
@@ -8039,6 +8223,16 @@ timeFrom(Date.now() - 5 * 60 * 1000); // 5分钟前
 
 `timeFrom()` 接受 `Date`、日期字符串、秒级或毫秒级时间戳。无效时间返回空字符串；未来时间返回“刚刚”；超过 30 天返回 `yyyy-mm-dd`。
 
+## 参数与边界
+
+| 方法                          | 参数                                   | 返回值                             |
+| ----------------------------- | -------------------------------------- | ---------------------------------- |
+| `formatTime(value, pattern?)` | 日期值；默认模板 `yyyy-mm-dd hh:MM:ss` | 格式化字符串，非法日期返回空字符串 |
+| `timeFormat(value, pattern?)` | `formatTime` 的兼容别名                | 同上                               |
+| `timeFrom(value, now?)`       | 日期值；`now` 可注入当前毫秒时间戳     | 相对时间或日期字符串               |
+
+`formatTime` 对 10 位数字按秒级时间戳处理，`timeFrom` 对绝对值小于 `1e12` 的数字按秒处理。令牌中的月份 `mm` 与分钟 `MM` 区分大小写；输出使用运行环境的本地时区。
+
 <!-- Source: docs/tools/trim.md -->
 
 # 去除空格
@@ -8054,7 +8248,11 @@ trim('Snake  ', 'right'); // 'Snake'
 trim('Snake UI', 'all'); // 'SnakeUI'
 ```
 
-`position` 可选 `both`、`left`、`right` 或 `all`。
+## API 与使用场景
+
+`trim(value: string, position: 'both' | 'left' | 'right' | 'all' = 'both'): string` 返回处理后的新字符串。`both` 只去除首尾空白，`all` 删除整串中的空白，包括换行和制表符；需要保留词间空格时不要选 `all`。
+
+它适合表单输入的轻量整理。请先确认输入是字符串；金额、号码等领域格式仍应交给专门校验器，参见[规则校验](/tools/test)。
 
 <!-- Source: docs/tools/use-color.md -->
 
@@ -8074,7 +8272,14 @@ function applyBrand() {
 </script>
 ```
 
-`color` 是共享响应式色板。修改会影响使用 Snake CSS 变量的组件；临时的单组件颜色应优先使用组件 Props。
+## 返回值与作用范围
+
+| 成员              | 用途                                                    |
+| ----------------- | ------------------------------------------------------- |
+| `color`           | 当前主题的共享响应式色板，可读取 `color.primary` 等颜色 |
+| `setColor(patch)` | 覆盖当前主题的部分颜色并更新对应 CSS 变量               |
+
+`color` 是共享状态，修改会影响使用 Snake CSS 变量的组件；它不是仅作用于调用组件的局部样式。临时的单组件颜色应优先使用组件 Props。主题切换和暗色模式见[主题管理](/tools/use-theme)。
 
 <!-- Source: docs/tools/use-locale.md -->
 
@@ -8188,6 +8393,12 @@ app.use(SnakeUI, {
 
 语言和主题可以在右侧手机预览中直接切换。应用级接入、语言包组织和业务国际化协同方式见[国际化指南](/guide/internationalization)，完整插件配置参见[全局配置总览](/guide/foundation)。
 
+## API 速查
+
+`useLocale(namespace?)` 返回 `currentLocale`、`locales`、`t`、`initLocales` 和 `setLocale`。`t(key, replacements?, locale?)` 返回翻译字符串；传入命名空间后，`key` 相对于该命名空间。`setLocale(name)` 返回布尔值，表示切换是否成功。
+
+`currentLocale` 与 `locales` 是响应式状态。仅需在组件外查询文案时可以使用 `translate(key, replacements?, locale?)`；应用启动阶段的初始化与覆盖策略以[国际化指南](/guide/internationalization)为准。
+
 <!-- Source: docs/tools/use-modal.md -->
 
 # useModal
@@ -8226,14 +8437,18 @@ function confirmDelete() {
 
 ## API
 
-| 方法 | 说明 |
-| --- | --- |
-| `show(contentOrOptions)` | 显示 modal；传入字符串时作为 `content` |
+| 方法                        | 说明                                                       |
+| --------------------------- | ---------------------------------------------------------- |
+| `show(contentOrOptions)`    | 显示 modal；传入字符串时作为 `content`                     |
 | `confirm(contentOrOptions)` | 显示带确认/取消按钮的 modal，默认 `showCancelButton: true` |
-| `close()` | 关闭 modal |
-| `clearLoading()` | 清除确认按钮 loading 状态（异步关闭场景） |
+| `close()`                   | 关闭 modal                                                 |
+| `clearLoading()`            | 清除确认按钮 loading 状态（异步关闭场景）                  |
 
 `contentOrOptions` 与 `<snake-modal>` 的 props 一一对应（除 `modelValue`），并额外支持 `onConfirm` / `onCancel` 回调。
+
+`confirm()` 默认显示确认和取消按钮；四个方法均返回 `void`，不会等待用户选择。异步确认时，业务应在成功后调用 `close()`；若请求失败并需要恢复确认按钮状态，可调用 `clearLoading()`。
+
+页面级和全局实例的作用域需与 `useModal` 的调用模式一致。
 
 <!-- Source: docs/tools/use-rate-limit.md -->
 
@@ -8246,8 +8461,8 @@ function confirmDelete() {
 import { onBeforeUnmount } from 'vue';
 import { useDebounce, useThrottle } from '@puresnake/snake-ui';
 
-const save = useDebounce(persist, 500);
-const measure = useThrottle(updateLayout, 200);
+const save = useDebounce(() => console.log('保存草稿'), 500);
+const measure = useThrottle(() => console.log('重新计算布局'), 200);
 
 onBeforeUnmount(() => {
     save.cancel();
@@ -8256,7 +8471,11 @@ onBeforeUnmount(() => {
 </script>
 ```
 
-参数和执行时机与[节流与防抖](/tools/debounce-throttle)一致。组合式函数不会自动在卸载时取消，调用方仍需显式清理。
+## API 与清理
+
+`useDebounce(callback, wait = 300)` 和 `useThrottle(callback, wait = 300)` 分别返回带 `cancel()` 的函数。两者都透传回调参数并返回 `void`；`useDebounce` 不提供底层 `debounce` 的 `immediate` 参数。
+
+组合式函数不会自动在卸载时取消，调用方仍需显式清理。节流等待窗口内的执行时机与示例见[节流与防抖](/tools/debounce-throttle)。
 
 <!-- Source: docs/tools/use-rect.md -->
 
@@ -8266,17 +8485,27 @@ onBeforeUnmount(() => {
 
 ```vue
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import { useRect } from '@puresnake/snake-ui';
 
 const { rect, getRect, refresh } = useRect('.toolbar');
 
-await getRect();           // 测量并写入 rect
-console.log(rect.value);   // 响应式的节点信息
-await refresh('.other');   // 换选择器重新测量
+onMounted(async () => {
+    await getRect(); // 测量并写入 rect
+    console.log(rect.value);
+});
+
+async function measureOther() {
+    await refresh('.other'); // 换选择器重新测量
+}
 </script>
 ```
 
-查询不到节点时 Promise 会拒绝。`all` 传 `true` 时用 `selectAll` 匹配全部，`rect` 为节点数组。
+## 返回值与边界
+
+`useRect(selector?, all = false)` 返回响应式 `rect`，以及 `getRect(selector?, delay = 0)`、`refresh(selector?, delay?)`。两种方法都会等待 Vue 下一轮 DOM 更新，再按可选毫秒延迟查询；查询结果写入 `rect.value` 并作为 Promise 结果返回。
+
+未提供选择器时直接返回当前 `rect.value`；查询没有匹配项时可能得到 `null` 或空数组，调用方应按实际结果处理。`all: true` 使用 `selectAll`。只需一次性查询且希望得到零值兜底对象时，使用[节点布局信息](/tools/get-rect)。
 
 <!-- Source: docs/tools/use-router.md -->
 
@@ -8296,7 +8525,11 @@ async function openOrder(id: number) {
 </script>
 ```
 
-新代码使用 `route`；只有需要 `navigateTo → switchTab` 隐式降级的旧流程才使用 `navTo`。完整参数见[路由跳转](/tools/route)。
+## 返回值与选择
+
+`useRouter()` 返回 `{ route, navTo }`，与按需导入的同名函数共享实现。`route` 返回 Promise，导航失败时可用 `try/catch` 处理；`navTo` 返回 `void`，保留旧项目的特殊链接处理与 `navigateTo → switchTab` 降级。
+
+新代码优先使用 `route`。两种入口的参数、特殊链接与平台行为见[路由跳转](/tools/route)。
 
 <!-- Source: docs/tools/use-theme.md -->
 
@@ -8323,7 +8556,26 @@ const {
 </script>
 ```
 
-`currentTheme`、`themes`、`darkMode`、`color` 和 `themeStyle` 是响应式状态。应用级主题注册和持久化策略见[多主题与暗黑模式](/guide/multi-theme)。
+## 切换主题
+
+```vue
+<script setup lang="ts">
+import { useTheme } from '@puresnake/snake-ui';
+
+const { currentTheme, darkMode, setTheme, setDarkMode } = useTheme();
+
+function useDarkTheme() {
+    setTheme('snake');
+    setDarkMode('dark'); // 也可传 'light' 或 'auto'
+}
+</script>
+```
+
+## 返回值与状态
+
+`currentTheme`、`themes`、`darkMode`、`color`、`cssVars` 和 `themeStyle` 是响应式状态；`themeStyle` 是 CSS 变量对象的计算值。`initTheme` 用于初始化，`setTheme`、`setThemeColor`、`setDarkMode`、`toggleDarkMode` 与 `isInDarkMode` 用于切换或读取模式。
+
+主题是应用级共享状态。主题注册、系统跟随和持久化策略见[多主题与暗黑模式](/guide/multi-theme)，仅调整当前色板见[颜色管理](/tools/use-color)。
 
 <!-- Source: docs/tools/use-toast.md -->
 
@@ -8337,8 +8589,8 @@ const {
 
 ```vue
 <template>
-  <!-- 全局 toast，承接 useToast() 的事件 -->
-  <snake-toast global />
+    <!-- 全局 toast，承接 useToast() 的事件 -->
+    <snake-toast global />
 </template>
 ```
 
@@ -8355,7 +8607,7 @@ toast.success('操作成功');
 toast.error('操作失败');
 toast.warning('请注意');
 toast.info('提示信息');
-toast.loading('加载中...'); // 常驻，需手动 close()
+toast.loading('加载中…'); // 常驻，需手动 close()
 </script>
 ```
 
@@ -8363,21 +8615,23 @@ toast.loading('加载中...'); // 常驻，需手动 close()
 
 ```ts
 toast.show({
-  title: '受价格波动影响，订单将自动终止',
-  icon: false,        // 不显示图标
-  position: 'bottom', // center / top / bottom
-  duration: 3000,     // ms，0 或省略表示常驻
+    title: '受价格波动影响，订单将自动终止',
+    icon: false, // 不显示图标
+    position: 'bottom', // center / top / bottom
+    duration: 3000 // ms；0 表示常驻，省略时使用组件默认值 2000
 });
 ```
 
 ## API
 
-| 方法 | 说明 |
-|---|---|
-| `show(titleOrOptions)` | 显示默认样式 toast |
-| `success/error/warning/info(titleOrOptions)` | 显示对应类型 toast |
-| `loading(titleOrOptions)` | 显示加载动画（默认常驻） |
-| `close()` | 关闭 toast |
+| 方法                                         | 说明                     |
+| -------------------------------------------- | ------------------------ |
+| `show(titleOrOptions)`                       | 显示默认样式 toast       |
+| `success/error/warning/info(titleOrOptions)` | 显示对应类型 toast       |
+| `loading(titleOrOptions)`                    | 显示加载动画（默认常驻） |
+| `close()`                                    | 关闭 toast               |
+
+四个提示类型方法和 `show()` 都返回 `void`，不能 `await` 提示消失。`loading()` 未指定 `duration` 时会显式设为 0；完成异步任务后应调用 `close()`。需要固定展示时长的普通提示，传入正数毫秒值。
 
 ## 模式
 
@@ -8391,15 +8645,23 @@ toast.show({
 
 ```vue
 <template>
-  <snake-toast ref="toastRef" />
+    <snake-toast ref="toastRef" />
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const toastRef = ref();
-toastRef.value?.show({ title: '提示', type: 'success' });
-toastRef.value?.hide();
+const toastRef = ref<{ show: (options: { title: string; type: string }) => void; hide: () => void } | null>(null);
+
+function notify() {
+    toastRef.value?.show({ title: '提示', type: 'success' });
+}
+
+function dismiss() {
+    toastRef.value?.hide();
+}
 </script>
 ```
+
+`ref` 只有在组件挂载后才有值，应在事件处理或挂载后调用。只需短暂的无图标提示时，也可使用[平台辅助](/tools/platform)中的 `toast()`。
 

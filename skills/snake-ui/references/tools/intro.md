@@ -40,3 +40,5 @@ await uni.$snake.route('/pages/order/detail', { id: 1 });
 - 新项目先阅读[快速使用](/tools/fast-use)，确定统一的导入约定。
 - 接口接入查看[HTTP 请求](/tools/http)。
 - 页面跳转查看[路由跳转](/tools/route)，高频调用节流查看[节流与防抖](/tools/debounce-throttle)。
+- 纯数据处理可从[对象深合并](/tools/deep-merge)、[时间格式化](/tools/time)或[规则校验](/tools/test)进入。
+- 主题、语言及提示分别查看[主题管理](/tools/use-theme)、[多语言](/tools/use-locale)和[useToast](/tools/use-toast)。

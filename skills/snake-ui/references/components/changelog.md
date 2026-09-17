@@ -8,14 +8,19 @@ triggers: ['changelog', 'snake-changelog', '更新日志']
 
 ## 0.1.0（2026-08-14）
 
-- 45 个通用组件文档入口，基于 Vue 3 + TypeScript 构建
+- 通用组件文档入口基于 Vue 3 + TypeScript 构建
 - 14 个配置驱动的 CMS 页面区块，统一由 `snake-cms` 渲染
 - 兼容安卓、iOS、微信小程序、H5 等
 - 详尽的文档支持，现代化的演示效果
 - easycom 按需引入，精简打包体积
 
-基础组件（10）
+## 当前组件索引
 
+以下清单随组件目录更新，当前共 45 个通用组件入口。
+
+基础组件（11）
+
+- Parse 富文本解析
 - ConfigProvider 全局配置
 - Button 按钮
 - Icon 图标

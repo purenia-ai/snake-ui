@@ -22,11 +22,11 @@ interface Goods {
     name: string;
 }
 
-const goods = await http.get<Goods[]>('/goods', { page: 1 });
+const goods = await http.get<Goods[]>('/goods', { page: 1 }, { meta: { originalData: false } });
 await http.post('/orders', { goodsId: goods[0].id });
 ```
 
-`get(url, params, options)` 把第二个参数作为查询数据；`post/put/delete` 把第二个参数作为请求数据。
+`get(url, params, options)` 把第二个参数作为查询数据；`post/put/delete` 把第二个参数作为请求数据。示例显式设置 `originalData: false`，以获得接口数据；默认返回完整 uni-app 响应，不能直接当作商品数组使用。
 
 ## 全局配置
 
@@ -116,7 +116,12 @@ analytics.setTransport(async options => ({
 // api/goods.ts
 import { http } from '@puresnake/snake-ui';
 
-export const getGoods = (page: number) => http.get<Goods[]>('/goods', { page });
+interface Goods {
+    id: number;
+    name: string;
+}
+
+export const getGoods = (page: number) => http.get<Goods[]>('/goods', { page }, { meta: { originalData: false } });
 ```
 
 页面只调用业务 API，不重复处理 base URL、Token 和通用错误。
@@ -140,3 +145,14 @@ await api.detail({ url: () => '/42' });
 ## 平台说明
 
 默认 transport 依赖 `uni.request`。上传、下载和流式响应不属于当前客户端职责，应使用对应 uni-app API 或宿主适配器。
+
+## API 速查
+
+| 入口                   | 用途                                            |
+| ---------------------- | ----------------------------------------------- |
+| `http`                 | 全局请求单例，提供 `get/post/put/delete` 等方法 |
+| `configureHttp(setup)` | 配置全局请求与拦截器                            |
+| `new Request()`        | 创建独立配置、拦截器和传输层的客户端            |
+| `RequestError`         | 捕获取消、HTTP、传输或拦截器错误                |
+
+请在项目中统一选择“完整响应”或“数据体”返回约定，并在业务 API 层固定配置，避免同一类型参数对应不同返回形状。

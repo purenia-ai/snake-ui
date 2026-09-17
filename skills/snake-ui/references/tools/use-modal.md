@@ -48,3 +48,7 @@ function confirmDelete() {
 | `clearLoading()`            | 清除确认按钮 loading 状态（异步关闭场景）                  |
 
 `contentOrOptions` 与 `<snake-modal>` 的 props 一一对应（除 `modelValue`），并额外支持 `onConfirm` / `onCancel` 回调。
+
+`confirm()` 默认显示确认和取消按钮；四个方法均返回 `void`，不会等待用户选择。异步确认时，业务应在成功后调用 `close()`；若请求失败并需要恢复确认按钮状态，可调用 `clearLoading()`。
+
+页面级和全局实例的作用域需与 `useModal` 的调用模式一致。

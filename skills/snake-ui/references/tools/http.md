@@ -10,7 +10,7 @@ triggers: ['http', 'HTTP', '请求']
 
 `http` 是请求模块的规范单例。`snakeHttp` 仅作为兼容别名保留；请求模块默认导出 `httpPlugin`，可通过 `app.use(httpPlugin, { requestConfig, interceptor })` 挂载 `this.$http`；使用 `app.use(SnakeUI)` 时，`$http` 与 `$snake.http` 同时可用。
 
-为兼容 uView，默认 `meta.originalData` 为 `true`，因此调用方会收到完整的 `uni.request` 响应。传入 `meta: { originalData: false }` 后才返回 `response.data`，且非 200 状态会 reject。请求拦截器取消仍会 reject `RequestError`，不会产生永久 pending 的 Promise。
+默认 `meta.originalData` 为 `true`，因此调用方会收到完整的 `uni.request` 响应。传入 `meta: { originalData: false }` 后才返回 `response.data`，且非 2xx 状态会 reject。请求拦截器取消仍会 reject `RequestError`，不会产生永久 pending 的 Promise。
 
 `http` 是面向 uni-app 的轻量请求客户端，支持 TypeScript、全局配置、请求/响应拦截器、Loading、Toast、自定义传输层和多实例。
 
@@ -24,11 +24,11 @@ interface Goods {
     name: string;
 }
 
-const goods = await http.get<Goods[]>('/goods', { page: 1 });
+const goods = await http.get<Goods[]>('/goods', { page: 1 }, { meta: { originalData: false } });
 await http.post('/orders', { goodsId: goods[0].id });
 ```
 
-`get(url, params, options)` 把第二个参数作为查询数据；`post/put/delete` 把第二个参数作为请求数据。
+`get(url, params, options)` 把第二个参数作为查询数据；`post/put/delete` 把第二个参数作为请求数据。示例显式设置 `originalData: false`，以获得接口数据；默认返回完整 uni-app 响应，不能直接当作商品数组使用。
 
 ## 全局配置
 
@@ -80,7 +80,7 @@ configureHttp({
 
 ## 响应与错误
 
-默认 `meta.originalData: true` 时返回完整响应；设置为 `false` 后，HTTP 200 返回 `response.data`，其他状态会 reject。传输失败、拦截器失败和取消都会 reject Promise。
+默认 `meta.originalData: true` 时返回完整响应；设置为 `false` 后，任意 HTTP 2xx 返回 `response.data`，其他状态会 reject。传输失败、拦截器失败和取消都会 reject Promise。并发开启 `meta.loading` 时，Loading 会在最后一个请求结束后才关闭。
 
 ```ts
 import { http, RequestError } from '@puresnake/snake-ui';
@@ -89,12 +89,12 @@ try {
     await http.get('/profile');
 } catch (error) {
     if (error instanceof RequestError) {
-        console.log(error.kind, error.statusCode, error.config);
+        console.log(error.kind, error.statusCode, error.config, error.platformError);
     }
 }
 ```
 
-`kind` 为 `canceled`、`http`、`transport` 或 `interceptor`。
+`kind` 为 `canceled`、`http`、`transport` 或 `interceptor`。`transport` 错误会保留宿主的原始失败对象到 `platformError`；支付宝小程序的 `errMsg`、网络/证书/域名错误可据此直接排查。Snake 内部的 `baseUrl`、`meta` 与 `params` 不会透传给 `uni.request`。
 
 ## 多实例与自定义传输
 
@@ -118,7 +118,12 @@ analytics.setTransport(async options => ({
 // api/goods.ts
 import { http } from '@puresnake/snake-ui';
 
-export const getGoods = (page: number) => http.get<Goods[]>('/goods', { page });
+interface Goods {
+    id: number;
+    name: string;
+}
+
+export const getGoods = (page: number) => http.get<Goods[]>('/goods', { page }, { meta: { originalData: false } });
 ```
 
 页面只调用业务 API，不重复处理 base URL、Token 和通用错误。
@@ -142,3 +147,14 @@ await api.detail({ url: () => '/42' });
 ## 平台说明
 
 默认 transport 依赖 `uni.request`。上传、下载和流式响应不属于当前客户端职责，应使用对应 uni-app API 或宿主适配器。
+
+## API 速查
+
+| 入口                   | 用途                                            |
+| ---------------------- | ----------------------------------------------- |
+| `http`                 | 全局请求单例，提供 `get/post/put/delete` 等方法 |
+| `configureHttp(setup)` | 配置全局请求与拦截器                            |
+| `new Request()`        | 创建独立配置、拦截器和传输层的客户端            |
+| `RequestError`         | 捕获取消、HTTP、传输或拦截器错误                |
+
+请在项目中统一选择“完整响应”或“数据体”返回约定，并在业务 API 层固定配置，避免同一类型参数对应不同返回形状。

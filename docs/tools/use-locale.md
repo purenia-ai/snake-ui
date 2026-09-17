@@ -111,3 +111,9 @@ app.use(SnakeUI, {
 因此英文包缺少 `checkout.submit` 时会显示中文词条；中文也缺少时会直接显示 `checkout.submit`，不会渲染空文本。
 
 语言和主题可以在右侧手机预览中直接切换。应用级接入、语言包组织和业务国际化协同方式见[国际化指南](/guide/internationalization)，完整插件配置参见[全局配置总览](/guide/foundation)。
+
+## API 速查
+
+`useLocale(namespace?)` 返回 `currentLocale`、`locales`、`t`、`initLocales` 和 `setLocale`。`t(key, replacements?, locale?)` 返回翻译字符串；传入命名空间后，`key` 相对于该命名空间。`setLocale(name)` 返回布尔值，表示切换是否成功。
+
+`currentLocale` 与 `locales` 是响应式状态。仅需在组件外查询文案时可以使用 `translate(key, replacements?, locale?)`；应用启动阶段的初始化与覆盖策略以[国际化指南](/guide/internationalization)为准。

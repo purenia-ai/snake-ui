@@ -95,10 +95,10 @@ Snake UI 用统一的色彩 token 表达品牌、状态、文字与界面层级�
 ```
 
 ```ts
-import { color, useTheme } from '@puresnake/snake-ui';
+import { useTheme } from '@puresnake/snake-ui';
 
 const { color } = useTheme();
-console.log(color.primary, color.primary);
+console.log(color.primary, color.text);
 ```
 
 ::: tip 多主题与暗黑模式

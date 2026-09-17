@@ -35,12 +35,17 @@ await uni.$snake.sleep(300);
 
 ## HTTP 与 Hooks
 
-```ts
+```vue
+<script setup lang="ts">
 import { http, useLocale, useTheme } from '@puresnake/snake-ui';
 
-const profile = await http.get<User>('/profile');
 const { setLocale } = useLocale();
 const { toggleDarkMode } = useTheme();
+
+async function loadProfile() {
+    return http.get<{ id: number }>('/profile', {}, { meta: { originalData: false } });
+}
+</script>
 ```
 
 ## 入口建议
@@ -53,3 +58,5 @@ const { toggleDarkMode } = useTheme();
 | Vue 响应式状态           | `use*` 组合式函数（如 `useTheme` / `useColor`） |
 
 不要同时维护自定义工具副本和 Snake UI 入口；先确认现有工具是否满足需求，再决定是否封装业务层。
+
+`http` 默认返回完整响应，例子通过 `originalData: false` 显式获取数据体；请在业务 API 层统一约定。组合式函数应在 Vue 组件的 `<script setup>` 或其他有效的组件执行上下文中调用；路由、剪贴板和请求等能力依赖 uni-app 运行时。
