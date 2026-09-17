@@ -33,7 +33,7 @@
                 :title="`${title} 实时预览`"
                 loading="eager"
                 scrolling="auto"
-                @load="markLoaded"
+                @load="requestPreviewTheme"
             />
             <div v-if="!loaded && !timedOut" class="preview-phone__status" role="status" aria-live="polite">
                 正在连接 H5 预览…
@@ -44,8 +44,9 @@
                 role="status"
                 aria-live="polite"
             >
-                <strong>预览服务未启动</strong>
-                <span>请运行 <code>pnpm docs:dev:preview</code></span>
+                <strong>预览暂时不可用</strong>
+                <span v-if="isDev">请确认已运行 <code>pnpm docs:dev:preview</code></span>
+                <span v-else>请重试或在新窗口打开</span>
                 <div class="preview-phone__status-actions">
                     <button type="button" @click="retryPreview">重新连接</button>
                     <a :href="previewUrl" target="_blank" rel="noreferrer">新窗口打开</a>
@@ -66,6 +67,7 @@ const timedOut = ref(false);
 const retryCount = ref(0);
 const previewFrame = ref<HTMLIFrameElement>();
 const isDesktopPreview = ref(false);
+const isDev = import.meta.env.DEV;
 const defaultSystemStatusStyle = {
     background: '#007A55',
     color: '#ffffff'
@@ -133,11 +135,10 @@ function armTimeout() {
     }, 8000);
 }
 
-function markLoaded() {
-    loaded.value = true;
-    timedOut.value = false;
-    clearTimeoutState();
-    previewFrame.value?.contentWindow?.postMessage({ type: 'snake-ui:request-preview-navbar-theme' }, '*');
+function requestPreviewTheme() {
+    if (!previewUrl.value) return;
+    const targetOrigin = new URL(previewUrl.value, window.location.href).origin;
+    previewFrame.value?.contentWindow?.postMessage({ type: 'snake-ui:request-preview-navbar-theme' }, targetOrigin);
 }
 
 function receivePreviewNavbarTheme(
@@ -147,15 +148,24 @@ function receivePreviewNavbarTheme(
         color?: string;
     }>
 ) {
-    if (event.source !== previewFrame.value?.contentWindow || event.data?.type !== 'snake-ui:preview-navbar-theme')
+    if (
+        !previewUrl.value ||
+        event.source !== previewFrame.value?.contentWindow ||
+        event.origin !== new URL(previewUrl.value, window.location.href).origin ||
+        event.data?.type !== 'snake-ui:preview-navbar-theme'
+    )
         return;
     const { backgroundColor, color } = event.data;
     if (!backgroundColor || !color) return;
     systemStatusStyle.value = { background: backgroundColor, color };
+    loaded.value = true;
+    timedOut.value = false;
+    clearTimeoutState();
 }
 
 function retryPreview() {
     retryCount.value += 1;
+    systemStatusStyle.value = { ...defaultSystemStatusStyle };
     armTimeout();
 }
 
@@ -165,11 +175,7 @@ function syncPreviewMode() {
     else document.documentElement.style.removeProperty('--preview-scale');
 }
 
-watch(previewUrl, () => {
-    resetPreviewState();
-    if (showDesktopPreview.value) armTimeout();
-});
-watch(showDesktopPreview, visible => {
+watch([previewUrl, showDesktopPreview], ([, visible]) => {
     resetPreviewState();
     if (visible) armTimeout();
 });

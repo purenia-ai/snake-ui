@@ -264,7 +264,7 @@ test('narrow previews use a link and do not create a hidden iframe', async () =>
 
     assert.match(frame, /v-if="previewUrl && !showDesktopPreview"/);
     assert.match(frame, /v-else-if="showDesktopPreview"/);
-    assert.match(frame, /watch\(showDesktopPreview, visible =>/);
+    assert.match(frame, /watch\(\[previewUrl, showDesktopPreview\], \(\[, visible\]\) =>/);
     assert.match(frame, /previewMediaQuery\?\.removeEventListener/);
     assert.match(frame, /document\.documentElement\.style\.removeProperty\('--preview-scale'\)/);
 });
@@ -298,6 +298,9 @@ test('desktop preview exposes accessible manual recovery after a timeout', async
     assert.match(frame, /aria-live="polite"/);
     assert.match(frame, /@click="retryPreview">重新连接/);
     assert.match(frame, /:href="previewUrl"[^>]+target="_blank"[^>]*>新窗口打开/);
+    assert.match(frame, /@load="requestPreviewTheme"/);
+    assert.match(frame, /event\.origin !== new URL\(previewUrl\.value, window\.location\.href\)\.origin/);
+    assert.match(frame, /systemStatusStyle\.value = \{ background: backgroundColor, color \};\s*loaded\.value = true/s);
 });
 
 test('production preview is emitted below the documentation base path', async () => {
@@ -308,7 +311,7 @@ test('production preview is emitted below the documentation base path', async ()
     assert.match(buildScript, /docs\/\.vitepress\/dist\/h5/);
     assert.doesNotMatch(buildScript, /docs\/\.vitepress\/dist\/preview/);
 });
-test('docs and preview shell use the approved brand green system', async () => {
+test('docs retain brand green while the preview shell uses neutral device colors', async () => {
     const config = await readFile(resolve(root, 'docs/.vitepress/config.mts'), 'utf8');
     const frame = await readFile(resolve(root, 'docs/.vitepress/theme/PreviewFrame.vue'), 'utf8');
     const css = await readFile(resolve(root, 'docs/.vitepress/theme/custom.css'), 'utf8');
@@ -321,7 +324,8 @@ test('docs and preview shell use the approved brand green system', async () => {
     assert.match(css, /--snake-brand-active:\s*#04a873/i);
     assert.match(css, /--snake-brand-text:\s*#007a55/i);
     assert.match(css, /--snake-brand-ink:\s*#073b2a/i);
-    assert.match(css, /\.preview-phone\s*{[^}]*linear-gradient\([^}]*#f8fffc/is);
+    assert.match(css, /\.preview-phone\s*{[^}]*linear-gradient\([^}]*#303238/is);
+    assert.match(css, /\.dark \.preview-phone\s*{[^}]*linear-gradient\([^}]*#434951/is);
     assert.doesNotMatch(frame, /preview-panel__header/);
     assert.doesNotMatch(css, /preview-panel__header|preview-live-pulse/);
     assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
