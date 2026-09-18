@@ -18,13 +18,14 @@
 import { computed, reactive, ref } from 'vue';
 import { onPageScroll } from '@dcloudio/uni-app';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
-import { cmsComponents } from '../../../common/fixtures';
+import { cmsComponents, navigationData, noticeData } from '../../../common/fixtures';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 
 const { localeName, text } = useDemoLocale();
+const isEnglish = computed(() => localeName.value === 'en-US');
 const scrollTop = ref(0);
 onPageScroll(event => {
     scrollTop.value = event.scrollTop;
@@ -43,7 +44,35 @@ const controls: DemoControl[] = [
     }
 ];
 const state = reactive<Record<string, DemoValue>>({ cmsScene: 'full' });
-const components = computed(() => (state.cmsScene === 'simple' ? cmsComponents.slice(0, 1) : cmsComponents));
+const localizedComponents = computed(() =>
+    isEnglish.value
+        ? [
+              {
+                  component: 'notice',
+                  setStyle: {
+                      ...noticeData,
+                      textList: [
+                          { text: 'Snake UI preview is ready', url: '' },
+                          { text: 'All example data runs locally', url: '' }
+                      ]
+                  }
+              },
+              {
+                  component: 'graphicnavigation',
+                  setStyle: {
+                      ...navigationData,
+                      imageList: navigationData.imageList.map((item, index) => ({
+                          ...item,
+                          text: ['New', 'Auction', 'Featured', 'Services'][index]
+                      }))
+                  }
+              }
+          ]
+        : cmsComponents
+);
+const components = computed(() =>
+    state.cmsScene === 'simple' ? localizedComponents.value.slice(0, 1) : localizedComponents.value
+);
 const localizedControls = computed(() => {
     const _locale = localeName.value;
     return controls.map(control => ({

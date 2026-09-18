@@ -91,6 +91,7 @@ export default {
     name: 'commoditysearch',
     options: { virtualHost: true, styleIsolation: 'shared' },
     props: { datas: Object },
+    emits: ['search'],
     setup() {
         const instance = getCurrentInstance();
         return { instance };
@@ -140,10 +141,9 @@ export default {
             uni.$snake.navTo(this.datas.url);
         },
         confirm(e) {
-            if (!this.datas.url) {
-                return uni.$snake.toast('跳转路径不存在');
-            }
-            uni.$snake.navTo(this.datas.url + e.detail.value);
+            const keyword = e.detail.value;
+            this.$emit('search', keyword);
+            if (this.datas.url) uni.$snake.navTo(this.datas.url + keyword);
         }
     }
 };

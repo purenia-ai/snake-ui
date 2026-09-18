@@ -9,11 +9,11 @@
                 <text class="demo-variant-sub">{{ text('选择结果') }}：{{ lastResult }}</text>
                 <snake-select
                     v-model="selectShow"
-                    :list="currentList()"
+                    :list="currentList"
                     :mode="String(state.slMode)"
                     :mask-close-able="Boolean(state.slMaskClose)"
                     :safe-area-inset-bottom="Boolean(state.slSafeArea)"
-                    title="请选择"
+                    :title="text('请选择')"
                     @confirm="onConfirm"
                     @cancel="onCancel"
                     @close="onClose"
@@ -33,6 +33,7 @@ import type { DemoControl, DemoValue } from '../../../common/demo-types';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
+import type { SelectItem } from '../../../uni_modules/snake-ui/components/snake-select/types';
 
 const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
@@ -81,6 +82,23 @@ const cascadeList = [
         ]
     }
 ];
+const englishLabels: Record<string, string> = {
+    选项一: 'Option one',
+    选项二: 'Option two',
+    选项三: 'Option three',
+    选项四: 'Option four',
+    上午: 'Morning',
+    下午: 'Afternoon',
+    华东: 'East China',
+    华南: 'South China',
+    华北: 'North China',
+    上海: 'Shanghai',
+    杭州: 'Hangzhou',
+    广州: 'Guangzhou',
+    深圳: 'Shenzhen',
+    北京: 'Beijing',
+    天津: 'Tianjin'
+};
 const controls: DemoControl[] = [
     {
         key: 'slMode',
@@ -111,13 +129,21 @@ const title = computed(() => {
     const _locale = localeName.value;
     return demoTitle('select', '列选择器');
 });
+const currentList = computed<SelectItem[] | SelectItem[][]>(() => {
+    const mode = String(state.slMode);
+    if (mode === 'mutil-column') return mutilList.map(column => localizeOptions(column));
+    if (mode === 'mutil-column-auto') return localizeOptions(cascadeList);
+    return localizeOptions(singleList);
+});
 function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
-function currentList() {
-    if (String(state.slMode) === 'mutil-column') return mutilList;
-    if (String(state.slMode) === 'mutil-column-auto') return cascadeList;
-    return singleList;
+function localizeOptions(items: SelectItem[]): SelectItem[] {
+    return items.map(item => ({
+        ...item,
+        label: isEnglish.value ? englishLabels[String(item.label)] || item.label : item.label,
+        ...(Array.isArray(item.children) ? { children: localizeOptions(item.children as SelectItem[]) } : {})
+    }));
 }
 function onConfirm(result: { label: unknown; value: unknown }[]) {
     lastResult.value = result.map(item => String(item.label)).join(' / ');

@@ -4,14 +4,19 @@
             <text class="title">{{ text('防抖 600ms') }}</text>
             <text class="count">{{ debounceRuns }}</text>
             <text class="meta">{{ text('点击') }} {{ debounceClicks }} {{ text('次') }}</text>
+            <text class="hint">{{ text('停止点击 600ms 后执行最后一次') }}</text>
             <snake-button type="primary" size="small" @click="clickDebounce">{{ text('连续点击') }}</snake-button>
         </view>
         <view class="card">
             <text class="title">{{ text('节流 600ms') }}</text>
             <text class="count">{{ throttleRuns }}</text>
             <text class="meta">{{ text('点击') }} {{ throttleClicks }} {{ text('次') }}</text>
+            <text class="hint">{{ text('首次立即执行，持续点击时每 600ms 最多执行一次') }}</text>
             <snake-button type="success" size="small" @click="clickThrottle">{{ text('连续点击') }}</snake-button>
         </view>
+        <snake-button plain size="small" class="reset-button" @click="resetCounters">{{
+            text('重置计数')
+        }}</snake-button>
     </DemoPage>
 </template>
 
@@ -35,6 +40,14 @@ function clickDebounce() {
 function clickThrottle() {
     throttleClicks.value += 1;
     runThrottle();
+}
+function resetCounters() {
+    runDebounce.cancel();
+    runThrottle.cancel();
+    debounceClicks.value = 0;
+    debounceRuns.value = 0;
+    throttleClicks.value = 0;
+    throttleRuns.value = 0;
 }
 onBeforeUnmount(() => {
     runDebounce.cancel();
@@ -66,8 +79,17 @@ onBeforeUnmount(() => {
     font-weight: 700;
 }
 .meta {
-    margin-bottom: 14px;
     color: var(--snake-color-text-muted);
     font-size: 13px;
+}
+.hint {
+    display: block;
+    margin: 6px 0 14px;
+    color: var(--snake-color-text-secondary);
+    font-size: 12px;
+    line-height: 1.5;
+}
+.reset-button {
+    margin: 0 4px;
 }
 </style>

@@ -47,7 +47,6 @@ import { computed, getCurrentInstance, nextTick, onMounted, ref, watch } from 'v
 import { guid } from '../../libs/function/guid';
 import { getRect } from '../../libs/function/getRect';
 import { useLocale } from '../../libs/hooks/useLocale';
-import Icon from '../snake-icon/snake-icon.vue';
 import { readMoreProps, type ReadMoreEmits, type ReadMoreExpose } from './types';
 
 defineOptions({ name: 'ReadMore', options: { virtualHost: true, styleIsolation: 'shared' } });
@@ -62,6 +61,7 @@ const showMore = ref(false);
 // 生成唯一 class 用于测量内容高度
 const elId = ref('');
 const instance = getCurrentInstance();
+let measureVersion = 0;
 
 // 展开后无需阴影，收起时才需要阴影样式
 const innerShadowStyle = computed(() => (showMore.value ? {} : props.shadowStyle));
@@ -79,20 +79,20 @@ watch(
 
 onMounted(() => {
     elId.value = guid();
-    nextTick(() => {
-        init();
-    });
+    void init();
 });
 
 /** 初始化内容高度判断，决定是否显示展开/收起按钮。 */
-function init() {
-    getRect(`.${elId.value}`, instance).then(rect => {
-        // 真实内容高度大于占位高度时，显示收起与展开的控制按钮
-        if (rect.height > uni.upx2px(Number(props.showHeight))) {
-            isLongContent.value = true;
-            showMore.value = false;
-        }
-    });
+async function init() {
+    const version = ++measureVersion;
+    // 先移除折叠高度，避免把已裁切的高度当作完整内容高度。
+    isLongContent.value = false;
+    await nextTick();
+    if (!elId.value) return;
+    const rect = await getRect(`.${elId.value}`, instance);
+    if (version !== measureVersion) return;
+    isLongContent.value = rect.height > uni.upx2px(Number(props.showHeight));
+    if (!isLongContent.value) showMore.value = false;
 }
 
 defineExpose<ReadMoreExpose>({ init });

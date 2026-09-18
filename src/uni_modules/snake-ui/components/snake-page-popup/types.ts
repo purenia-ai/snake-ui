@@ -15,4 +15,14 @@ export interface PagePopupData {
 export interface PagePopupProps {
     /** CMS 装修组件配置数据。 */
     datas?: PagePopupData;
+    /** 组件挂载后是否立即打开弹窗。 */
+    autoOpen?: boolean;
+}
+
+/** PagePopup 实例公开的操作。 */
+export interface PagePopupExpose {
+    /** 打开弹窗。 */
+    open(): void;
+    /** 关闭弹窗。 */
+    close(): void;
 }

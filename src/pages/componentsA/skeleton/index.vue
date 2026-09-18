@@ -29,7 +29,8 @@
             <view class="demo-skeleton-item-showcase">
                 <snake-skeleton-item
                     :variant="state.variant as any"
-                    height="120rpx"
+                    :width="state.variant === 'circle' ? '96rpx' : state.variant === 'text' ? '70%' : '100%'"
+                    :height="state.variant === 'circle' ? '96rpx' : state.variant === 'text' ? '24rpx' : '120rpx'"
                     :animated="Boolean(state.animated)"
                 />
                 <snake-skeleton-item variant="circle" width="96rpx" height="96rpx" />

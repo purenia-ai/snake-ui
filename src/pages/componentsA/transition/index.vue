@@ -15,10 +15,18 @@
                 </snake-transition>
                 <text class="demo-variant-title">{{ isEnglish ? 'Preset: fade and zoom' : '预设：淡入与缩放' }}</text>
                 <view class="demo-feedback-row">
-                    <snake-transition show name="fade"><view class="demo-transition-chip">Fade</view></snake-transition>
-                    <snake-transition show name="zoom-in">
-                        <view class="demo-transition-chip">Zoom</view>
-                    </snake-transition>
+                    <view class="demo-transition-preset">
+                        <snake-transition :key="fadeKey" show appear name="fade">
+                            <view class="demo-transition-chip">Fade</view>
+                        </snake-transition>
+                        <snake-button size="mini" @click="fadeKey++">{{ isEnglish ? 'Replay' : '重播' }}</snake-button>
+                    </view>
+                    <view class="demo-transition-preset">
+                        <snake-transition :key="zoomKey" show appear name="zoom-in">
+                            <view class="demo-transition-chip">Zoom</view>
+                        </snake-transition>
+                        <snake-button size="mini" @click="zoomKey++">{{ isEnglish ? 'Replay' : '重播' }}</snake-button>
+                    </view>
                 </view>
             </view>
         </DemoSection>
@@ -39,6 +47,8 @@ import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
 const visible = ref(true);
+const fadeKey = ref(0);
+const zoomKey = ref(0);
 const controls: DemoControl[] = [
     {
         key: 'transitionName',
@@ -110,6 +120,13 @@ function updateValue(key: string, value: DemoValue) {
     border-radius: 12rpx;
     background: var(--snake-color-primary-light);
     color: var(--snake-demo-accent-text);
+}
+.demo-transition-preset {
+    display: flex;
+    min-width: 120rpx;
+    flex-direction: column;
+    align-items: center;
+    gap: 16rpx;
 }
 .demo-transition-card {
     display: flex;

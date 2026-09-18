@@ -4,9 +4,16 @@
             <view class="swatch" :style="{ backgroundColor: color.primary }" />
             <view class="body">
                 <text class="title">{{ text(currentTheme.label || currentTheme.name) }}</text>
-                <text class="meta">darkMode: {{ darkMode }}</text>
+                <text class="meta"
+                    >{{ text('模式设置') }}: {{ text(modeLabel) }} · {{ text('当前显示') }}:
+                    {{ text(isInDarkMode() ? '暗色' : '亮色') }}</text
+                >
             </view>
-            <snake-button size="mini" @click="toggleDarkMode">{{ text('切换明暗') }}</snake-button>
+        </view>
+        <view class="mode-actions">
+            <snake-button size="mini" plain @click="setDarkMode('auto')">{{ text('跟随系统') }}</snake-button>
+            <snake-button size="mini" plain @click="setDarkMode('light')">{{ text('亮色') }}</snake-button>
+            <snake-button size="mini" plain @click="setDarkMode('dark')">{{ text('暗色') }}</snake-button>
         </view>
         <view class="card">
             <view class="locale">{{ currentLocale.name.slice(0, 2).toUpperCase() }}</view>
@@ -25,9 +32,12 @@ import DemoPage from '../../../components/demo-page/demo-page.vue';
 import { useDemoLocale } from '../../../common/demo-i18n';
 import { useLocale, useTheme } from '../../../uni_modules/snake-ui';
 
-const { currentTheme, darkMode, color, toggleDarkMode } = useTheme();
+const { currentTheme, darkMode, color, setDarkMode, isInDarkMode } = useTheme();
 const { currentLocale, t, setLocale } = useLocale();
 const nextLocale = computed(() => (currentLocale.value.name === 'zh-CN' ? 'en-US' : 'zh-CN'));
+const modeLabel = computed(() =>
+    darkMode.value === 'auto' ? '跟随系统' : darkMode.value === 'dark' ? '暗色' : '亮色'
+);
 const { text } = useDemoLocale();
 </script>
 
@@ -61,6 +71,12 @@ const { text } = useDemoLocale();
 .body {
     min-width: 0;
     flex: 1;
+}
+.mode-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: -6px 4px 18px;
 }
 .title,
 .meta {

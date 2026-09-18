@@ -11,6 +11,8 @@
                     v-model="calendarShow"
                     :mode="String(state.cMode)"
                     :show-lunar="Boolean(state.cShowLunar)"
+                    :show-festival="Boolean(state.cShowFestival)"
+                    :festivals="Boolean(state.cShowFestival) ? demoFestivals : {}"
                     :min-date="String(state.cMinDate)"
                     :closeable="Boolean(state.cCloseable)"
                     :mask-close-able="Boolean(state.cMaskClose)"
@@ -22,6 +24,8 @@
                 <snake-calendar
                     is-page
                     :show-lunar="true"
+                    :show-festival="Boolean(state.cShowFestival)"
+                    :festivals="Boolean(state.cShowFestival) ? demoFestivals : {}"
                     :mode="'range'"
                     :default-select-today="false"
                     :closeable="false"
@@ -47,6 +51,11 @@ const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
 const calendarShow = ref(false);
 const lastResult = ref('—');
+const demoFestivals = computed(() => {
+    const now = new Date();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    return { [`${now.getFullYear()}-${month}-01`]: isEnglish.value ? 'Demo day' : '示例日' };
+});
 const controls: DemoControl[] = [
     {
         key: 'cMode',
@@ -59,6 +68,7 @@ const controls: DemoControl[] = [
         ]
     },
     { key: 'cShowLunar', label: '显示农历', type: 'switch', defaultValue: true },
+    { key: 'cShowFestival', label: '显示节日', type: 'switch', defaultValue: false },
     { key: 'cMinDate', label: '最小日期', type: 'input', defaultValue: '2026-01-01', placeholder: 'YYYY-MM-DD' },
     { key: 'cCloseable', label: '显示关闭图标', type: 'switch', defaultValue: true },
     { key: 'cMaskClose', label: '点击遮罩关闭', type: 'switch', defaultValue: true },

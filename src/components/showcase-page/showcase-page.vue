@@ -8,7 +8,10 @@
                     :key="link.path"
                     class="showcase-link"
                     hover-class="showcase-link--hover"
+                    role="link"
+                    tabindex="0"
                     @click="open(link.path)"
+                    @keydown.enter.prevent="open(link.path)"
                 >
                     <text>{{ text(link.title) }}</text>
                     <snake-icon name="arrow-right" :size="16" />
@@ -50,6 +53,8 @@ const related = {
     ],
     'cms-content': [
         { title: 'Snake CMS', path: '/pages/componentsB/snakeCms/index' },
+        { title: '轮播广告', path: '/pages/componentsB/pictureAds/index' },
+        { title: '辅助分割', path: '/pages/componentsB/auxiliarySegmentation/index' },
         { title: '图文导航', path: '/pages/componentsB/graphicNavigation/index' }
     ]
 };

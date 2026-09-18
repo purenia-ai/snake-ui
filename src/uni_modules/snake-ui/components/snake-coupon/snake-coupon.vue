@@ -51,7 +51,7 @@
  * @description 检查领取资格，以页面图片或弹窗形式展示优惠券，并在领取后执行内部或外部跳转。
  */
 
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { resolveCmsOptions } from '../../libs/cms';
 import { sleep } from '../../libs/function/sleep';
 import { toast } from '../../libs/function/toast';
@@ -74,9 +74,19 @@ const isCouponCheck = ref(true);
 const tipMessage = ref('');
 const show = ref(false);
 
+let restoreTabBarTimer: ReturnType<typeof setTimeout> | undefined;
+let tabBarHidden = false;
 watch(show, value => {
-    if (!value && props.datas.modeType === 'popup' && props.datas.popupMode === 'bottom') {
-        sleep(300).then(() => uni.showTabBar({ animation: true }));
+    if (props.datas.modeType !== 'popup' || props.datas.popupMode !== 'bottom') return;
+    if (restoreTabBarTimer) clearTimeout(restoreTabBarTimer);
+    if (value) {
+        uni.hideTabBar({ animation: true });
+        tabBarHidden = true;
+    } else {
+        restoreTabBarTimer = setTimeout(() => {
+            uni.showTabBar({ animation: true });
+            tabBarHidden = false;
+        }, 300);
     }
 });
 
@@ -141,8 +151,11 @@ async function handleReceiveCoupon(): Promise<void> {
 
 onMounted(() => {
     void getCouponCheck();
-    if (props.datas.modeType === 'popup' && props.datas.popupMode === 'bottom') {
-        uni.hideTabBar({ animation: true });
+});
+onBeforeUnmount(() => {
+    if (restoreTabBarTimer) clearTimeout(restoreTabBarTimer);
+    if (tabBarHidden) {
+        uni.showTabBar({ animation: true });
     }
 });
 </script>

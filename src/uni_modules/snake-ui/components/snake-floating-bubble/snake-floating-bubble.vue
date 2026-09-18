@@ -34,6 +34,7 @@ const props = withDefaults(defineProps<FloatingBubbleProps>(), {
     background: 'transparent',
     zIndex: 6
 });
+const emit = defineEmits<{ click: [] }>();
 
 const slots = useSlots();
 const hasSlot = computed(() => !!slots.default);
@@ -107,10 +108,19 @@ function close() {
     uni.setStorageSync('suspensionList', closeList.value);
 }
 
-function handleNavigate() {
-    if (hasSlot.value || !props.datas?.url) return;
-    uni.$snake.navTo(props.datas.url);
+function reopen() {
+    const uid = props.datas?.uid;
+    if (uid === undefined) return;
+    closeList.value = closeList.value.filter(item => item !== uid);
+    uni.setStorageSync('suspensionList', closeList.value);
 }
+
+function handleNavigate() {
+    emit('click');
+    if (!hasSlot.value && props.datas?.url) uni.$snake.navTo(props.datas.url);
+}
+
+defineExpose({ reopen });
 </script>
 
 <style lang="scss" scoped>

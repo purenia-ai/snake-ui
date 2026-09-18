@@ -1,7 +1,10 @@
 <template>
     <DemoPage :title="title" :desc="text('根据业务场景展示居中或底部营销弹窗。')" viewport>
         <DemoSection bare variant="preview" :title="text('演示效果')">
-            <snake-page-popup class="demo-page-popup-showcase" :datas="data" />
+            <view class="popup-actions">
+                <snake-button @click="popupRef?.open()">{{ isEnglish ? 'Open popup' : '打开弹窗' }}</snake-button>
+            </view>
+            <snake-page-popup ref="popupRef" class="demo-page-popup-showcase" :datas="data" :auto-open="false" />
         </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
             <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
@@ -9,7 +12,7 @@
     </DemoPage>
 </template>
 <script setup lang="ts">
-import { computed, reactive } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { popupData } from '../../../common/fixtures';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
@@ -17,6 +20,8 @@ import DemoControlPanel from '../../../components/demo-control-panel/demo-contro
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
+const isEnglish = computed(() => localeName.value === 'en-US');
+const popupRef = ref<{ open(): void } | null>(null);
 const controls: DemoControl[] = [
     {
         key: 'pagePopupMode',
@@ -45,5 +50,11 @@ const title = computed(() => {
 });
 function updateValue(key: string, value: DemoValue) {
     state[key] = value;
+    if (key === 'pagePopupMode') popupRef.value?.open();
 }
 </script>
+<style scoped>
+.popup-actions {
+    padding: 24rpx;
+}
+</style>

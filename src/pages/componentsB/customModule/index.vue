@@ -1,9 +1,11 @@
 <template>
     <DemoPage :title="title" :desc="text('通过命名插槽接入业务自定义内容。')">
         <DemoSection variant="preview" :title="text('演示效果')">
-            <snake-custom-module class="demo-custom-module-showcase" :datas="data">
-                <view class="custom-card">{{ state.moduleText }}</view>
-            </snake-custom-module>
+            <snake-cms class="demo-custom-module-showcase" :page-components="modules">
+                <template #campaign>
+                    <view class="custom-card">{{ state.moduleText }}</view>
+                </template>
+            </snake-cms>
         </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
             <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
@@ -11,18 +13,27 @@
     </DemoPage>
 </template>
 <script setup lang="ts">
-import { computed, reactive } from 'vue';
+import { computed, reactive, watch } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
-const data = { slotName: 'campaign' };
-const controls: DemoControl[] = [
-    { key: 'moduleText', label: '插槽内容', type: 'input', defaultValue: '业务插槽可以在这里承载任意内容' }
-];
-const state = reactive<Record<string, DemoValue>>({ moduleText: '业务插槽可以在这里承载任意内容' });
+const modules = [{ component: 'custommodule', setStyle: { slotName: 'campaign' } }];
+const defaultTextZh = '业务插槽可以在这里承载任意内容';
+const defaultTextEn = 'Add any business content to this slot';
+const controls: DemoControl[] = [{ key: 'moduleText', label: '插槽内容', type: 'input', defaultValue: defaultTextZh }];
+const state = reactive<Record<string, DemoValue>>({ moduleText: defaultTextZh });
+watch(
+    localeName,
+    locale => {
+        if (state.moduleText === defaultTextZh || state.moduleText === defaultTextEn) {
+            state.moduleText = locale === 'en-US' ? defaultTextEn : defaultTextZh;
+        }
+    },
+    { immediate: true }
+);
 const localizedControls = computed(() => {
     const _locale = localeName.value;
     return controls.map(control => ({ ...control, label: demoText(control.label) }));

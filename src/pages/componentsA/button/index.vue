@@ -12,6 +12,7 @@
                         :disabled="Boolean(state.disabled)"
                         :loading="Boolean(state.loading)"
                         :ripple="Boolean(state.ripple)"
+                        @click="handlePreviewClick"
                     >
                         Snake Button
                     </snake-button>
@@ -137,6 +138,9 @@ function updateValue(key: string, value: DemoValue) {
 function resetState() {
     for (const control of controls) state[control.key] = control.defaultValue;
     copyState.value = 'idle';
+}
+function handlePreviewClick() {
+    uni.showToast({ title: text('按钮被点击'), icon: 'none' });
 }
 
 function copyCode() {

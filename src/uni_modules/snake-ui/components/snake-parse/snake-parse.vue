@@ -18,7 +18,9 @@
 <script>
 /**
  * mp-html v2.5.2
+ * @component SnakeParse
  * @description 富文本组件
+ * @see /components/parse
  * @tutorial https://github.com/jin-yufeng/mp-html
  * @property {String} container-style 容器的样式
  * @property {String} content 用于渲染的 html 字符串

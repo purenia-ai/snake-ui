@@ -25,7 +25,11 @@
                         :key="name"
                         :class="['demo-icon-item', { 'demo-icon-item--active': selectedIcon === name }]"
                         hover-class="demo-icon-item--pressed"
+                        role="button"
+                        tabindex="0"
+                        :aria-pressed="selectedIcon === name"
                         @click="selectedIcon = name"
+                        @keydown.enter="selectedIcon = name"
                     >
                         <snake-icon
                             :name="name"
@@ -170,6 +174,10 @@ const selectedIcon = ref('search');
 }
 .demo-icon-item--pressed {
     background: var(--snake-color-surface-muted);
+}
+.demo-icon-item:focus-visible {
+    outline: 2rpx solid var(--snake-color-primary);
+    outline-offset: -2rpx;
 }
 .demo-icon-item__name {
     display: block;

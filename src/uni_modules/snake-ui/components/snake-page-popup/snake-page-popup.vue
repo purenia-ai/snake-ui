@@ -40,27 +40,56 @@
  * @description 页面进入后立即展示居中或底部图片弹窗，并支持图片跳转。
  */
 
-import { onMounted, ref, watch } from 'vue';
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import type { PagePopupProps } from './types';
 
 defineOptions({ name: 'PagePopup', options: { virtualHost: true, styleIsolation: 'shared' } });
 
 const props = withDefaults(defineProps<PagePopupProps>(), {
-    datas: () => ({})
+    datas: () => ({}),
+    autoOpen: true
 });
-const show = ref(true);
+const show = ref(props.autoOpen);
 
 watch(show, visible => {
-    if (!visible && props.datas.popupMode === 'bottom') {
-        uni.$snake.sleep(300).then(() => uni.showTabBar({ animation: true }));
+    if (props.datas.popupMode !== 'bottom') return;
+    if (visible) {
+        uni.hideTabBar({ animation: true });
+    } else {
+        uni.$snake.sleep(300).then(() => {
+            if (!show.value || props.datas.popupMode !== 'bottom') uni.showTabBar({ animation: true });
+        });
     }
 });
 
+watch(
+    () => props.datas.popupMode,
+    (mode, previousMode) => {
+        if (!show.value) return;
+        if (mode === 'bottom') uni.hideTabBar({ animation: true });
+        else if (previousMode === 'bottom') uni.showTabBar({ animation: true });
+    }
+);
+
 onMounted(() => {
-    if (props.datas.popupMode === 'bottom') {
+    if (show.value && props.datas.popupMode === 'bottom') {
         uni.hideTabBar({ animation: true });
     }
 });
+
+onBeforeUnmount(() => {
+    if (show.value && props.datas.popupMode === 'bottom') uni.showTabBar({ animation: true });
+});
+
+function open() {
+    show.value = true;
+}
+
+function close() {
+    show.value = false;
+}
+
+defineExpose({ open, close });
 
 function handleToPage() {
     if (props.datas.url) uni.$snake.navTo(props.datas.url);

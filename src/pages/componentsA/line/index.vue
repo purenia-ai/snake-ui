@@ -3,13 +3,15 @@
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack demo-line-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
-                <snake-line
-                    margin="16rpx 0"
-                    :direction="String(state.lineDirection)"
-                    :color="String(state.lineColor)"
-                    :border-style="String(state.lineBorderStyle)"
-                    :hair-line="Boolean(state.lineHair)"
-                />
+                <view class="demo-line-live">
+                    <snake-line
+                        :direction="String(state.lineDirection)"
+                        :length="state.lineDirection === 'col' ? '120' : '100%'"
+                        :color="String(state.lineColor)"
+                        :border-style="String(state.lineBorderStyle)"
+                        :hair-line="Boolean(state.lineHair)"
+                    />
+                </view>
                 <view class="demo-line-col-box">
                     <snake-line
                         direction="col"
@@ -109,10 +111,16 @@ function updateValue(key: string, value: DemoValue) {
     font-weight: 600;
     line-height: 1.4;
 }
+.demo-line-live {
+    display: flex;
+    min-height: 144rpx;
+    align-items: center;
+    width: 100%;
+}
 .demo-line-col-box {
     display: flex;
     align-items: center;
-    height: 120rpx;
+    height: 176rpx;
     gap: 24rpx;
 }
 .demo-line-col-text {

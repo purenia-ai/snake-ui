@@ -44,17 +44,7 @@
  * @see /components/index-list-panel
  */
 
-import {
-    getCurrentInstance,
-    nextTick,
-    onBeforeUnmount,
-    onMounted,
-    provide,
-    ref,
-    toRef,
-    watch,
-    type CSSProperties
-} from 'vue';
+import { getCurrentInstance, nextTick, onMounted, provide, ref, toRef, watch, type CSSProperties } from 'vue';
 import zIndex from '../../libs/config/zIndex';
 import { addUnit } from '../../libs/function/unit';
 import { indexFromTouch, offsetTopPx, resolveIndex, indexListKey } from '../snake-index-list/types';
@@ -84,7 +74,6 @@ const railTop = ref(0);
 const railHeight = ref(0);
 const anchorOffsets = ref<number[]>([]);
 const touching = ref(false);
-let measureTimer: ReturnType<typeof setTimeout> | undefined;
 const anchorId = (value: IndexValue) => `snake-index-panel-anchor-${String(value).replace(/[^a-zA-Z0-9_-]/g, '-')}`;
 
 function setActive(index: number, selected = false) {
@@ -119,11 +108,6 @@ function touchSelect(event: any) {
 function onScroll(event: any) {
     innerScrollTop.value = Number(event.detail?.scrollTop) || 0;
     if (!anchorOffsets.value.length) void update();
-    if (measureTimer) clearTimeout(measureTimer);
-    measureTimer = setTimeout(() => {
-        measureTimer = undefined;
-        void update();
-    }, 300);
     const target = innerScrollTop.value + offsetTopPx(props.offsetTop);
     let index = 0;
     anchorOffsets.value.forEach((offset, position) => {
@@ -166,10 +150,16 @@ function indexOfAnchor(value: IndexValue) {
 function anchorStyle(value: IndexValue): CSSProperties {
     const index = indexOfAnchor(value);
     return {
-        position: props.sticky ? 'sticky' : 'relative',
-        top: props.sticky ? addUnit(props.offsetTop, 'rpx') : 'auto',
-        zIndex: props.zIndex,
         color: index === activeIndex.value ? props.activeColor : undefined
+    };
+}
+
+function wrapperStyle(): CSSProperties {
+    if (!props.sticky) return {};
+    return {
+        position: 'sticky',
+        top: addUnit(props.offsetTop, 'rpx'),
+        zIndex: props.zIndex
     };
 }
 
@@ -180,7 +170,7 @@ provide(indexListKey, {
     zIndex: toRef(props, 'zIndex'),
     anchorId,
     anchorStyle,
-    wrapperStyle: () => ({}),
+    wrapperStyle,
     isActive: value => indexOfAnchor(value) === activeIndex.value
 });
 
@@ -194,9 +184,6 @@ watch(
     { deep: true }
 );
 onMounted(() => void update());
-onBeforeUnmount(() => {
-    if (measureTimer) clearTimeout(measureTimer);
-});
 defineExpose({ scrollTo, update });
 </script>
 

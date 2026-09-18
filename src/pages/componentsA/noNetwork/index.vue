@@ -44,6 +44,7 @@ const localizedControls = computed(() => {
     return controls.map(control => ({
         ...control,
         label: demoText(control.label),
+        placeholder: control.placeholder ? demoText(control.placeholder) : undefined,
         options: control.options?.map(option => ({ ...option, label: demoText(option.label) }))
     }));
 });

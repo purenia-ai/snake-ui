@@ -4,7 +4,7 @@
             <view class="demo-stack demo-countdown-showcase">
                 <snake-count-down
                     :key="countdownKey"
-                    :timestamp="Number(state.cTimestamp)"
+                    :timestamp="durationSeconds"
                     :separator="String(state.cSeparator)"
                     :show-days="Boolean(state.cShowDays)"
                     :show-hours="Boolean(state.cShowHours)"
@@ -23,7 +23,7 @@
                 <view class="demo-countdown-showcase__meta">
                     <text>{{ finished ? text('已结束') : `${text('当前剩余')}: ${restSeconds}s` }}</text>
                     <snake-button size="mini" custom-style="width: auto" @click="restart">
-                        {{ isEnglish ? 'Restart' : '重新开始' }}
+                        {{ text('重新开始') }}
                     </snake-button>
                 </view>
             </view>
@@ -44,8 +44,7 @@ import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 
 const { localeName, text } = useDemoLocale();
-const isEnglish = computed(() => localeName.value === 'en-US');
-const restSeconds = ref(0);
+const restSeconds = ref(86461);
 const finished = ref(false);
 const countdownKey = ref(0);
 const controls: DemoControl[] = [
@@ -70,6 +69,10 @@ const controls: DemoControl[] = [
 const state = reactive<Record<string, DemoValue>>(
     Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))
 );
+const durationSeconds = computed(() => {
+    const seconds = Number(state.cTimestamp);
+    return Number.isFinite(seconds) ? Math.max(0, Math.floor(seconds)) : 0;
+});
 const localizedControls = computed(() => {
     const _locale = localeName.value;
     return controls.map(control => ({
@@ -84,9 +87,14 @@ const title = computed(() => {
 });
 function updateValue(key: string, value: DemoValue) {
     state[key] = value;
+    if (key === 'cTimestamp') {
+        restSeconds.value = durationSeconds.value;
+        finished.value = durationSeconds.value === 0;
+    }
 }
 function restart() {
-    finished.value = false;
+    restSeconds.value = durationSeconds.value;
+    finished.value = durationSeconds.value === 0;
     countdownKey.value += 1;
 }
 function onEnd() {

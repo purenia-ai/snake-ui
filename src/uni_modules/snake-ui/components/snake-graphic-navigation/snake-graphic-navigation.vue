@@ -8,7 +8,7 @@
                     v-for="(item, index) in imageList"
                     :key="index"
                     :style="{ padding: ` 0 ${datas.imgMargin}rpx`, width: 100 / imageList.length + '%' }"
-                    @click="uni.$snake.navTo(item.url)"
+                    @click="handleClick(item, index)"
                 >
                     <image
                         class="image-warp"
@@ -68,11 +68,16 @@ export default {
     name: 'snake-graphic-navigation',
     options: { virtualHost: true, styleIsolation: 'shared' },
     props: { datas: Object },
+    emits: ['click'],
     data() {
         return {};
     },
     methods: {
-        pxToRpx
+        pxToRpx,
+        handleClick(item, index) {
+            this.$emit('click', { item, index });
+            if (item.url) uni.$snake.navTo(item.url);
+        }
     },
     computed: {
         imageList() {

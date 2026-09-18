@@ -1,5 +1,5 @@
 <template>
-    <DemoPage :title="title" :desc="text('按照装修数据展示单图或多图内容。')">
+    <DemoPage :title="title" :desc="text('按平台配置展示装修图片，并调整图片边距。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <snake-images class="demo-images-showcase" :datas="data" />
         </DemoSection>
@@ -17,6 +17,7 @@ import DemoControlPanel from '../../../components/demo-control-panel/demo-contro
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
+const isEnglish = computed(() => localeName.value === 'en-US');
 const controls: DemoControl[] = [
     { key: 'contentMargin', label: '页面边距', type: 'slider', defaultValue: 20, min: 0, max: 40, step: 4, unit: 'rpx' }
 ];
@@ -25,7 +26,11 @@ const data = computed(() => ({
     ...imageData,
     platformOptions: imageData.platformOptions.map(item => ({
         ...item,
-        imgs: { ...item.imgs, paddingLR: Number(state.contentMargin) }
+        imgs: {
+            ...item.imgs,
+            alt: isEnglish.value ? 'Snake UI image preview' : 'Snake UI 图片示例',
+            paddingLR: Number(state.contentMargin)
+        }
     }))
 }));
 const localizedControls = computed(() => {

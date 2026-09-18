@@ -17,8 +17,8 @@
         <DemoSection
             v-for="group in scenes"
             :key="group.key"
-            :title="text(group.title)"
-            :description="text(group.titleEn)"
+            :title="isEnglish ? group.titleEn : group.title"
+            :description="isEnglish ? '' : group.titleEn"
         >
             <view class="scene-grid">
                 <view
@@ -26,17 +26,20 @@
                     :key="item.key"
                     class="scene-card"
                     hover-class="scene-card--hover"
+                    role="button"
+                    tabindex="0"
                     @click="open(item.path)"
+                    @keydown.enter="open(item.path)"
                 >
                     <view class="scene-card__icon"><snake-icon :name="item.icon || group.icon" :size="22" /></view>
                     <view class="scene-card__body">
                         <view class="scene-card__title-row">
-                            <text class="scene-card__title">{{ text(item.title) }}</text>
+                            <text class="scene-card__title">{{ isEnglish ? item.titleEn : item.title }}</text>
                             <text class="scene-card__badge">{{
                                 text(item.kind === 'scene' ? '完整场景' : '组件演示')
                             }}</text>
                         </view>
-                        <text class="scene-card__en">{{ item.titleEn }}</text>
+                        <text v-if="!isEnglish" class="scene-card__en">{{ item.titleEn }}</text>
                         <text class="scene-card__desc">{{ text(item.desc) }}</text>
                     </view>
                     <snake-icon name="arrow-right" :size="18" />
@@ -47,13 +50,15 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import DemoPage from '../../components/demo-page/demo-page.vue';
 import DemoSection from '../../components/demo-section/demo-section.vue';
 import { useDemoLocale } from '../../common/demo-i18n';
 import scenes from './scenes.config';
 
 defineOptions({ name: 'ExampleScenes' });
-const { text } = useDemoLocale();
+const { localeName, text } = useDemoLocale();
+const isEnglish = computed(() => localeName.value === 'en-US');
 const open = (path: string) => uni.navigateTo({ url: path });
 </script>
 
@@ -122,6 +127,10 @@ const open = (path: string) => uni.navigateTo({ url: path });
     border-color: var(--snake-color-primary);
     background: var(--snake-color-primary-light);
     transform: translateY(-2rpx);
+}
+.scene-card:focus-visible {
+    border-color: var(--snake-color-primary);
+    background: var(--snake-color-primary-light);
 }
 .scene-card__icon {
     display: flex;

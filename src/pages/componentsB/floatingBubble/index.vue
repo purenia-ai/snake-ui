@@ -1,7 +1,21 @@
 <template>
     <DemoPage :title="title" :desc="text('在页面边缘提供始终可见的营销或客服入口。')" viewport>
         <DemoSection bare variant="preview" :title="text('演示效果')">
-            <snake-floating-bubble class="demo-floating-bubble-showcase" :datas="data" :scroll-top="scrollTop" />
+            <view class="bubble-actions">
+                <snake-button size="small" @click="bubbleRef?.reopen()">
+                    {{ isEnglish ? 'Show bubble again' : '重新显示气泡' }}
+                </snake-button>
+                <text v-if="bubbleClicked" aria-live="polite">
+                    {{ isEnglish ? 'Bubble tapped' : '已点击气泡' }}
+                </text>
+            </view>
+            <snake-floating-bubble
+                ref="bubbleRef"
+                class="demo-floating-bubble-showcase"
+                :datas="data"
+                :scroll-top="scrollTop"
+                @click="bubbleClicked = true"
+            />
         </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
             <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
@@ -18,6 +32,9 @@ import DemoControlPanel from '../../../components/demo-control-panel/demo-contro
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
+const isEnglish = computed(() => localeName.value === 'en-US');
+const bubbleRef = ref<{ reopen(): void } | null>(null);
+const bubbleClicked = ref(false);
 const scrollTop = ref(0);
 onPageScroll(event => {
     scrollTop.value = event.scrollTop;
@@ -52,3 +69,13 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 </script>
+<style scoped>
+.bubble-actions {
+    display: flex;
+    align-items: center;
+    gap: 20rpx;
+    padding: 24rpx;
+    color: var(--snake-color-text-secondary);
+    font-size: 24rpx;
+}
+</style>

@@ -10,6 +10,7 @@
                 <text class="demo-variant-title">{{ isEnglish ? 'Limited selection' : '限制选择数量' }}</text>
                 <snake-checkbox-group
                     v-model="fruits"
+                    :disabled="Boolean(state.choiceDisabled)"
                     :size="String(state.choiceSize)"
                     :wrap="Boolean(state.choiceWrap)"
                     :max="2"
@@ -19,8 +20,7 @@
                     <snake-checkbox name="lemon">{{ isEnglish ? 'Lemon' : '柠檬' }}</snake-checkbox>
                 </snake-checkbox-group>
                 <text>
-                    {{ isEnglish ? 'Selected: ' : '已选：'
-                    }}{{ fruits.join(isEnglish ? ', ' : '、') || (isEnglish ? 'None' : '无') }}
+                    {{ isEnglish ? 'Selected: ' : '已选：' }}{{ selectedFruits || (isEnglish ? 'None' : '无') }}
                 </text>
             </view>
         </DemoSection>
@@ -39,7 +39,13 @@ import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
 const value = ref(true);
-const fruits = ref<unknown[]>(['apple']);
+const fruits = ref<(string | number)[]>(['apple']);
+const selectedFruits = computed(() => {
+    const labels: Record<string, string> = isEnglish.value
+        ? { apple: 'Apple', pear: 'Pear', lemon: 'Lemon' }
+        : { apple: '苹果', pear: '雪梨', lemon: '柠檬' };
+    return fruits.value.map(fruit => labels[String(fruit)] ?? String(fruit)).join(isEnglish.value ? ', ' : '、');
+});
 const controls: DemoControl[] = [
     { key: 'choiceDisabled', label: '禁用状态', type: 'switch', defaultValue: false },
     {

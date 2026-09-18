@@ -1,22 +1,24 @@
 <template>
-    <DemoPage :title="title" :desc="text('统一展示按钮、图片和页面中的加载状态。')">
+    <DemoPage :title="title" :desc="text('展示不同形态、尺寸、颜色与方向的加载指示器。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack">
                 <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
                 <view class="demo-feedback-row">
                     <snake-loading
+                        :show="Boolean(state.loadingShow)"
                         :type="state.loadingType as any"
                         :size="Number(state.loadingSize)"
                         :direction="state.loadingDirection as any"
+                        :color="String(state.loadingColor)"
                         :text="isEnglish ? 'Loading' : '加载中'"
                     />
                 </view>
                 <text class="demo-variant-title">{{ isEnglish ? 'Types' : '加载形态' }}</text>
                 <view class="demo-feedback-row">
-                    <snake-loading type="circular" text="Circular" />
-                    <snake-loading type="spinner" text="Spinner" />
-                    <snake-loading type="dots" text="Dots" />
-                    <snake-loading type="wave" text="Wave" />
+                    <snake-loading type="circular" :text="text('圆环')" />
+                    <snake-loading type="spinner" :text="text('旋转条')" />
+                    <snake-loading type="dots" :text="text('跳动点')" />
+                    <snake-loading type="wave" :text="text('波浪')" />
                 </view>
             </view>
         </DemoSection>
@@ -35,6 +37,7 @@ import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
 const controls: DemoControl[] = [
+    { key: 'loadingShow', label: '是否显示', type: 'switch', defaultValue: true },
     {
         key: 'loadingType',
         label: '加载形态',
@@ -48,6 +51,18 @@ const controls: DemoControl[] = [
         ]
     },
     { key: 'loadingSize', label: '图标尺寸', type: 'slider', defaultValue: 34, min: 16, max: 48, step: 2, unit: 'rpx' },
+    {
+        key: 'loadingColor',
+        label: '图标颜色',
+        type: 'select',
+        defaultValue: 'var(--snake-color-primary)',
+        options: [
+            { label: '主要', value: 'var(--snake-color-primary)' },
+            { label: '成功', value: 'var(--snake-color-success)' },
+            { label: '警告', value: 'var(--snake-color-warning)' },
+            { label: '错误', value: 'var(--snake-color-error)' }
+        ]
+    },
     {
         key: 'loadingDirection',
         label: '排列方向',

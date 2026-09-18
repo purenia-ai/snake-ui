@@ -46,6 +46,10 @@ const title = computed(() => {
 });
 function updateValue(key: string, nextValue: DemoValue) {
     state[key] = nextValue;
+    if (key === 'sliderStep') {
+        const step = Number(nextValue);
+        value.value = Math.min(100, Math.max(0, Math.round(value.value / step) * step));
+    }
 }
 </script>
 <style scoped>

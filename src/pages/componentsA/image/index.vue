@@ -6,6 +6,7 @@
                     <snake-image
                         ref="imageRef"
                         :src="currentSrc"
+                        :alt="isEnglish ? 'Snake UI demo image' : 'Snake UI 示例图片'"
                         :width="Number(state.width)"
                         :height="Number(state.height)"
                         :mode="String(state.mode)"
@@ -87,7 +88,6 @@ const controls: DemoControl[] = [
         defaultValue: 'logo',
         options: [
             { label: '品牌图片', value: 'logo' },
-            { label: '头像图片', value: 'avatar' },
             { label: '错误地址', value: 'error' }
         ]
     },
@@ -126,7 +126,6 @@ const state = reactive<Record<string, DemoValue>>(
     Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))
 );
 const currentSrc = computed(() => {
-    if (state.source === 'avatar') return '/static/avatar.png';
     if (state.source === 'error') return '/static/not-found.png';
     return '/static/logo.png';
 });
@@ -170,6 +169,11 @@ function reloadImage() {
 }
 function updateValue(key: string, value: DemoValue) {
     state[key] = value;
+    if (state.shape === 'circle' && (key === 'shape' || key === 'width' || key === 'height')) {
+        const size = key === 'height' ? value : state.width;
+        state.width = size;
+        state.height = size;
+    }
     if (key === 'source' || key === 'lazyLoad') loadStatus.value = 'loading';
 }
 </script>

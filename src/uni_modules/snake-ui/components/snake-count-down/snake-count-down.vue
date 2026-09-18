@@ -1,10 +1,6 @@
 <template>
     <view class="snake-countdown" :class="customClass" :style="customStyle">
-        <view
-            class="snake-countdown__item"
-            :style="itemStyle"
-            v-if="showDays && (hideZeroDay || (!hideZeroDay && d !== '00'))"
-        >
+        <view class="snake-countdown__item" :style="itemStyle" v-if="showDays && (!hideZeroDay || d !== '00')">
             <view class="snake-countdown__time" :style="letterStyle">
                 {{ d }}
             </view>
@@ -16,7 +12,7 @@
                 color: separatorColor,
                 paddingBottom: separator === 'colon' ? '4rpx' : 0
             }"
-            v-if="showDays && (hideZeroDay || (!hideZeroDay && d !== '00'))"
+            v-if="showDays && (!hideZeroDay || d !== '00')"
         >
             {{ separator === 'colon' && showHours ? ':' : t('countDown.day') }}
         </view>
@@ -74,7 +70,7 @@
  * @see /components/count-down
  */
 
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useLocale } from '../../libs/hooks/useLocale';
 import { countDownProps } from './types';
 import type { CountDownEmits, CountDownExpose } from './types';
@@ -132,6 +128,7 @@ onMounted(() => {
         start();
     }
 });
+onBeforeUnmount(clearTimer);
 
 /** 开始倒计时。 */
 function start() {

@@ -1,6 +1,7 @@
 <template>
     <view>
         <view
+            v-if="videoSrc"
             class="snake-videos__cover"
             role="button"
             tabindex="0"
@@ -9,12 +10,7 @@
             @keydown.enter.prevent="open"
             @keydown.space.prevent="open"
         >
-            <snake-image
-                :src="datas.src + '?x-oss-process=video/snapshot,t_0,f_jpg'"
-                alt="视频封面"
-                width="100%"
-                mode="widthFix"
-            ></snake-image>
+            <snake-image :src="coverSrc" alt="视频封面" width="100%" mode="widthFix"></snake-image>
             <view
                 style="
                     position: absolute;
@@ -32,6 +28,7 @@
                 <snake-icon name="play-right-fill" size="70rpx" color="#fff"></snake-icon>
             </view>
         </view>
+        <view v-else class="snake-videos__empty">{{ datas.emptyText || '暂无视频' }}</view>
 
         <!-- <video
 			class="videos"
@@ -41,7 +38,7 @@
 			@click.stop=""
 			:poster="datas.src + '?x-oss-process=video/snapshot,t_0,f_jpg'"></video> -->
 
-        <snake-popup v-model="show" mode="center" @close="show = false">
+        <snake-popup v-if="videoSrc" v-model="show" mode="center" @close="show = false">
             <view class="snake-videos__player" v-if="show" @click.stop="close">
                 <view
                     class="snake-videos__close"
@@ -55,11 +52,11 @@
                 </view>
                 <video
                     class="videos"
-                    :src="datas.src"
+                    :src="videoSrc"
                     object-fit="fill"
                     style="width: 100%"
                     @click.stop=""
-                    :poster="datas.src + '?x-oss-process=video/snapshot,t_0,f_jpg'"
+                    :poster="coverSrc"
                 ></video>
             </view>
         </snake-popup>
@@ -72,13 +69,16 @@
  * @description 显示视频首帧封面，点击后在全屏弹层中播放视频。
  */
 
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import type { VideosProps } from './types';
 
 defineOptions({ name: 'Videos', options: { virtualHost: true, styleIsolation: 'shared' } });
-withDefaults(defineProps<VideosProps>(), { datas: () => ({}), scrollTop: 0 });
+const props = withDefaults(defineProps<VideosProps>(), { datas: () => ({}), scrollTop: 0 });
 const show = ref(false);
+const videoSrc = computed(() => String(props.datas.src || ''));
+const coverSrc = computed(() => props.datas.poster || `${videoSrc.value}?x-oss-process=video/snapshot,t_0,f_jpg`);
 function open() {
+    if (!videoSrc.value) return;
     show.value = true;
 }
 function close() {
@@ -95,6 +95,14 @@ function close() {
     position: relative;
     width: 100%;
     height: 100%;
+}
+.snake-videos__empty {
+    display: flex;
+    min-height: 240rpx;
+    align-items: center;
+    justify-content: center;
+    color: var(--snake-color-text-secondary, #909399);
+    background: var(--snake-color-bg, #f7f8fa);
 }
 
 .snake-videos__player {

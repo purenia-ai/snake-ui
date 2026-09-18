@@ -9,6 +9,15 @@
                 ]"
             >
                 <snake-follow />
+                <!-- #ifndef MP-WEIXIN -->
+                <text class="follow-placeholder">
+                    {{
+                        isEnglish
+                            ? 'The follow card appears in WeChat Mini Programs.'
+                            : '关注组件仅在微信小程序中显示。'
+                    }}
+                </text>
+                <!-- #endif -->
             </view>
         </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
@@ -24,6 +33,7 @@ import DemoControlPanel from '../../../components/demo-control-panel/demo-contro
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
+const isEnglish = computed(() => localeName.value === 'en-US');
 const controls: DemoControl[] = [
     {
         key: 'followScene',
@@ -62,5 +72,11 @@ function updateValue(key: string, value: DemoValue) {
 .demo-follow--strong {
     border: 2rpx solid var(--snake-color-primary);
     background: var(--snake-color-primary-light);
+}
+.follow-placeholder {
+    display: block;
+    color: var(--snake-color-text-secondary);
+    font-size: 26rpx;
+    line-height: 1.5;
 }
 </style>

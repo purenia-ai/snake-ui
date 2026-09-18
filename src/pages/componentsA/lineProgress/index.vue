@@ -73,6 +73,8 @@ const title = computed(() => {
 });
 function updateValue(key: string, value: DemoValue) {
     state[key] = value;
+    if (key === 'lpStripedActive' && value) state.lpStriped = true;
+    if (key === 'lpStriped' && !value) state.lpStripedActive = false;
 }
 </script>
 

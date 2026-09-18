@@ -29,3 +29,15 @@ export interface FloatingBubbleProps {
     /** 层级。 */
     zIndex?: number | string;
 }
+
+/** FloatingBubble 实例公开的操作。 */
+export interface FloatingBubbleExpose {
+    /** 重新打开已关闭的悬浮入口。 */
+    reopen(): void;
+}
+
+/** FloatingBubble 点击入口时发出的事件。 */
+export interface FloatingBubbleEmits {
+    /** 用户点击悬浮入口。 */
+    click: [];
+}

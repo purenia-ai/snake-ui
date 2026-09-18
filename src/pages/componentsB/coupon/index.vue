@@ -10,7 +10,9 @@
                 @error="feedback = text('领取失败，请重试')"
             />
             <text v-if="feedback" class="demo-feedback" aria-live="polite">{{ feedback }}</text>
-            <snake-button v-if="feedback" plain size="small" @click="resetCoupon">{{ text('再次体验') }}</snake-button>
+            <snake-button v-if="state.couponMode === 'popup' || feedback" plain size="small" @click="resetCoupon">{{
+                text('再次体验')
+            }}</snake-button>
         </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
             <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
@@ -42,7 +44,13 @@ const controls: DemoControl[] = [
     }
 ];
 const state = reactive<Record<string, DemoValue>>({ couponMode: 'page' });
-const data = computed(() => ({ ...couponData, modeType: String(state.couponMode), popupMode: 'bottom' }));
+const data = computed(() => ({
+    ...couponData,
+    modeType: String(state.couponMode),
+    popupMode: 'bottom',
+    beforeImage: state.couponMode === 'popup' ? '/static/demo-coupon-popup-available.png' : couponData.beforeImage,
+    afterImage: state.couponMode === 'popup' ? '/static/demo-coupon-popup-claimed.png' : couponData.afterImage
+}));
 const localizedControls = computed(() => {
     const _locale = localeName.value;
     return controls.map(control => ({
@@ -56,6 +64,10 @@ const title = computed(() => {
     return demoTitle('coupon', '优惠券');
 });
 function updateValue(key: string, value: DemoValue) {
+    if (key === 'couponMode' && state.couponMode !== value) {
+        couponDemo.reset();
+        couponKey.value += 1;
+    }
     state[key] = value;
     feedback.value = '';
 }

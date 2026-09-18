@@ -45,5 +45,5 @@ test('Options API exposes pxToRpx to the graphic navigation template', async () 
         'src/uni_modules/snake-ui/components/snake-graphic-navigation/snake-graphic-navigation.vue',
         'utf8'
     );
-    assert.match(source, /methods:\s*{\s*pxToRpx,?\s*}/);
+    assert.match(source, /methods:\s*{\s*pxToRpx\b/);
 });

@@ -22,7 +22,7 @@
         <DemoSection bare variant="preview" :title="text('模板预览')">
             <view class="template-preview">
                 <view class="template-preview__top">
-                    <text class="template-preview__eyebrow">{{ current.titleEn }}</text>
+                    <text v-if="!isEnglish" class="template-preview__eyebrow">{{ current.titleEn }}</text>
                     <text class="template-preview__title">{{ text(current.title) }}</text>
                     <text class="template-preview__desc">{{ text(current.desc) }}</text>
                 </view>
@@ -41,9 +41,12 @@
                     :key="item.path"
                     class="component-link"
                     hover-class="component-link--hover"
+                    role="button"
+                    tabindex="0"
                     @click="openComponent(item.path)"
+                    @keydown.enter="openComponent(item.path)"
                 >
-                    <text>{{ text(item.title) }}</text>
+                    <text>{{ isEnglish ? item.titleEn : item.title }}</text>
                     <snake-icon name="arrow-right" :size="16" />
                 </view>
             </view>
@@ -60,24 +63,29 @@ import { useDemoLocale } from '../../common/demo-i18n';
 import templates from './templates.config';
 
 defineOptions({ name: 'ExampleTemplates' });
-const { text } = useDemoLocale();
+const { localeName, text } = useDemoLocale();
+const isEnglish = computed(() => localeName.value === 'en-US');
 type TemplateKey = 'commerce-home' | 'campaign' | 'cms-content';
 const active = ref<TemplateKey>('commerce-home');
 const current = computed(() => templates.find(item => item.key === active.value) || templates[0]);
-const related: Record<TemplateKey, { title: string; path: string }[]> = {
+const related: Record<TemplateKey, { title: string; titleEn: string; path: string }[]> = {
     'commerce-home': [
-        { title: '商品列表', path: '/pages/componentsB/goodsList/index' },
-        { title: '图文导航', path: '/pages/componentsB/graphicNavigation/index' },
-        { title: '轮播广告', path: '/pages/componentsB/pictureAds/index' },
-        { title: '优惠券', path: '/pages/componentsB/coupon/index' }
+        { title: '商品列表', titleEn: 'Goods list', path: '/pages/componentsB/goodsList/index' },
+        { title: '图文导航', titleEn: 'Graphic navigation', path: '/pages/componentsB/graphicNavigation/index' },
+        { title: '轮播广告', titleEn: 'Picture ads', path: '/pages/componentsB/pictureAds/index' },
+        { title: '优惠券', titleEn: 'Coupon', path: '/pages/componentsB/coupon/index' }
     ],
     campaign: [
-        { title: '活动列表', path: '/pages/componentsB/activityList/index' },
-        { title: '通知公告', path: '/pages/componentsB/notice/index' },
-        { title: '倒计时', path: '/pages/componentsA/countDown/index' },
-        { title: '商品列表', path: '/pages/componentsB/goodsList/index' }
+        { title: '活动列表', titleEn: 'Activity list', path: '/pages/componentsB/activityList/index' },
+        { title: '通知公告', titleEn: 'Notice', path: '/pages/componentsB/notice/index' },
+        { title: '倒计时', titleEn: 'Count down', path: '/pages/componentsA/countDown/index' },
+        { title: '商品列表', titleEn: 'Goods list', path: '/pages/componentsB/goodsList/index' }
     ],
-    'cms-content': [{ title: 'Snake CMS', path: '/pages/componentsB/snakeCms/index' }]
+    'cms-content': [
+        { title: 'Snake CMS', titleEn: 'Snake CMS', path: '/pages/componentsB/snakeCms/index' },
+        { title: '通知公告', titleEn: 'Notice', path: '/pages/componentsB/notice/index' },
+        { title: '图文导航', titleEn: 'Graphic navigation', path: '/pages/componentsB/graphicNavigation/index' }
+    ]
 };
 const choose = (key: string) => {
     if (!(key in related)) return;
@@ -171,6 +179,10 @@ const openTemplate = (path: string) => uni.navigateTo({ url: path });
     font-size: 26rpx;
 }
 .component-link--hover {
+    border-color: var(--snake-color-primary);
+    background: var(--snake-color-primary-light);
+}
+.component-link:focus-visible {
     border-color: var(--snake-color-primary);
     background: var(--snake-color-primary-light);
 }

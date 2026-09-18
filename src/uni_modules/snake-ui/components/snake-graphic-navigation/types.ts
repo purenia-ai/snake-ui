@@ -35,3 +35,9 @@ export interface GraphicNavigationProps {
     /** CMS 装修组件配置数据。 */
     datas?: GraphicNavigationData;
 }
+
+/** GraphicNavigation 点击入口时发出的事件。 */
+export interface GraphicNavigationEmits {
+    /** 被点击的入口及其下标。 */
+    click: [payload: { item: GraphicNavigationItem; index: number }];
+}

@@ -14,7 +14,7 @@
                     <snake-radio name="spicy">{{ isEnglish ? 'Spicy' : '香辣' }}</snake-radio>
                     <snake-radio name="mild">{{ isEnglish ? 'Mild' : '清淡' }}</snake-radio>
                 </snake-radio-group>
-                <text>{{ isEnglish ? 'Selected: ' : '已选：' }}{{ value }}</text>
+                <text>{{ isEnglish ? 'Selected: ' : '已选：' }}{{ selectedLabel }}</text>
             </view>
         </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
@@ -32,6 +32,12 @@ import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
 const value = ref('sweet');
+const selectedLabel = computed(() => {
+    const labels: Record<string, string> = isEnglish.value
+        ? { sweet: 'Sweet', spicy: 'Spicy', mild: 'Mild' }
+        : { sweet: '鲜甜', spicy: '香辣', mild: '清淡' };
+    return labels[value.value] ?? value.value;
+});
 const controls: DemoControl[] = [
     { key: 'choiceDisabled', label: '禁用状态', type: 'switch', defaultValue: false },
     {

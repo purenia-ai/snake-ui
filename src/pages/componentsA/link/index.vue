@@ -9,12 +9,15 @@
                         :under-line="Boolean(state.lUnderLine)"
                         :default-click="Boolean(state.lDefaultClick)"
                         :color="String(state.lColor)"
+                        :font-size="Number(state.lFontSize)"
                         @click="onLinkClick"
                     >
                         {{ isEnglish ? 'Visit Snake UI' : '访问 Snake UI 仓库' }}
                     </snake-link>
                 </view>
-                <text class="demo-variant-sub">{{ lastClick || (isEnglish ? 'No event yet' : '暂无事件') }}</text>
+                <text class="demo-variant-sub">
+                    {{ state.lDefaultClick ? text('点击后将打开或复制链接') : lastClick || text('暂无事件') }}
+                </text>
             </view>
         </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
@@ -43,6 +46,7 @@ const controls: DemoControl[] = [
         placeholder: '请输入链接地址'
     },
     { key: 'lUnderLine', label: '下划线', type: 'switch', defaultValue: false },
+    { key: 'lFontSize', label: '字体大小', type: 'slider', defaultValue: 28, min: 24, max: 40, step: 2, unit: 'rpx' },
     {
         key: 'lDefaultClick',
         label: '打开方式',
@@ -82,6 +86,7 @@ const title = computed(() => {
 });
 function updateValue(key: string, value: DemoValue) {
     state[key] = value;
+    if (key === 'lHref' || key === 'lDefaultClick') lastClick.value = '';
 }
 function onLinkClick(href: string) {
     lastClick.value = `${text('点击事件')}：${href}`;

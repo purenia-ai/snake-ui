@@ -42,6 +42,11 @@
             <text class="section__title">{{ text('在线文档') }}</text>
             <text class="docs-url">{{ docsUrl }}</text>
             <snake-button type="primary" plain @click="copyDocsUrl">{{ text('复制文档地址') }}</snake-button>
+            <!-- #ifdef H5 -->
+            <snake-button class="link-button" type="primary" @click="openExternal(docsUrl)">
+                {{ text('打开在线文档') }}
+            </snake-button>
+            <!-- #endif -->
             <snake-button class="link-button" plain @click="openExternal(repositoryUrl)">
                 {{ text('访问代码仓库') }}
             </snake-button>

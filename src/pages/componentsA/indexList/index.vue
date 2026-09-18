@@ -3,18 +3,18 @@
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-index demo-index-list-showcase">
                 <snake-index-list
-                    :index-list="letters"
+                    :index-list="indexDemoLetters"
                     :scroll-top="scrollTop"
                     :active-color="String(state.indexColor)"
                 >
-                    <view v-for="letter in letters" :key="letter">
+                    <view v-for="group in indexDemoGroups" :key="group.letter">
                         <snake-index-anchor
-                            :index="letter"
-                            :text="letter"
+                            :index="group.letter"
+                            :text="group.letter"
                             custom-style="height: 64rpx; padding: 0 20rpx"
                         />
-                        <view v-for="item in 3" :key="item" class="demo-index-row">
-                            {{ letter }} {{ isEnglish ? 'item' : '类内容' }} {{ item }}
+                        <view v-for="item in group.items" :key="item.en" class="demo-index-row">
+                            {{ isEnglish ? item.en : item.zh }}
                         </view>
                     </view>
                 </snake-index-list>
@@ -34,10 +34,10 @@ import type { DemoControl, DemoValue } from '../../../common/demo-types';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
+import { indexDemoGroups, indexDemoLetters } from '../../../common/index-demo-data';
 
 const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
-const letters = ['A', 'B', 'C', 'D'];
 const scrollTop = ref(0);
 const controls: DemoControl[] = [
     {

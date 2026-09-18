@@ -1,8 +1,10 @@
 <template>
     <DemoPage :title="text('HTTP 请求')" :desc="text('配置、传输层与错误模型')">
         <view class="actions">
-            <snake-button type="primary" size="small" @click="request('/profile')">{{ text('成功请求') }}</snake-button>
-            <snake-button type="error" size="small" plain @click="request('/failure')">{{
+            <snake-button type="primary" size="small" :disabled="pending" @click="request('/profile')">{{
+                text('成功请求')
+            }}</snake-button>
+            <snake-button type="error" size="small" plain :disabled="pending" @click="request('/failure')">{{
                 text('模拟失败')
             }}</snake-button>
         </view>
@@ -17,8 +19,10 @@ import { useDemoLocale } from '../../../common/demo-i18n';
 import { Request, RequestError } from '../../../uni_modules/snake-ui';
 
 const client = new Request();
+client.setConfig({ meta: { originalData: false } });
 const { text } = useDemoLocale();
 const output = ref('');
+const pending = ref(false);
 client.setTransport(async options => {
     await new Promise(resolve => setTimeout(resolve, 400));
     return options.url.includes('failure')
@@ -27,12 +31,20 @@ client.setTransport(async options => {
 });
 
 async function request(path: string) {
+    if (pending.value) return;
+    pending.value = true;
     output.value = text('请求中…');
     try {
         output.value = JSON.stringify(await client.get(path), null, 2);
     } catch (error) {
-        output.value =
-            error instanceof RequestError ? `${error.kind}: ${error.statusCode} ${text(error.message)}` : String(error);
+        if (error instanceof RequestError) {
+            const response = error.response as { data?: { message?: string } } | undefined;
+            output.value = `${text('请求失败')} · ${error.kind.toUpperCase()} ${error.statusCode || ''}\n${text(response?.data?.message || error.message)}`;
+        } else {
+            output.value = String(error);
+        }
+    } finally {
+        pending.value = false;
     }
 }
 </script>

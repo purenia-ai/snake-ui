@@ -9,6 +9,17 @@
                     :disabled="Boolean(state.switchDisabled)"
                 />
                 <text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ value }}</text>
+                <text class="demo-variant-title">{{
+                    isEnglish ? 'Custom values (100 / 0)' : '自定义值（100 / 0）'
+                }}</text>
+                <snake-switch
+                    v-model="customValue"
+                    :active-value="100"
+                    :inactive-value="0"
+                    :loading="Boolean(state.switchLoading)"
+                    :disabled="Boolean(state.switchDisabled)"
+                />
+                <text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ customValue }}</text>
             </view>
         </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
@@ -26,6 +37,7 @@ import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
 const value = ref(true);
+const customValue = ref(100);
 const controls: DemoControl[] = [
     { key: 'switchLoading', label: '加载状态', type: 'switch', defaultValue: false },
     { key: 'switchDisabled', label: '禁用状态', type: 'switch', defaultValue: false }

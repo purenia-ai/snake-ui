@@ -186,7 +186,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
@@ -214,46 +214,48 @@ const model = reactive({
 function createFormRules(requireIntro: boolean): FormRules {
     return {
         name: [
-            { required: true, message: '请输入姓名', trigger: ['change', 'blur'] },
-            { min: 2, max: 12, message: '姓名长度为 2–12 个字符', trigger: ['change', 'blur'] }
+            { required: true, message: demoText('请输入姓名'), trigger: ['change', 'blur'] },
+            { min: 2, max: 12, message: demoText('姓名长度为 2–12 个字符'), trigger: ['change', 'blur'] }
         ],
         mobile: [
-            { required: true, message: '请输入手机号', trigger: ['change', 'blur'] },
-            { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: ['change', 'blur'] }
+            { required: true, message: demoText('请输入手机号'), trigger: ['change', 'blur'] },
+            { pattern: /^1[3-9]\d{9}$/, message: demoText('请输入正确的手机号'), trigger: ['change', 'blur'] }
         ],
         password: [
-            { required: true, message: '请输入密码', trigger: ['change', 'blur'] },
+            { required: true, message: demoText('请输入密码'), trigger: ['change', 'blur'] },
             {
                 pattern: /^(?=.*[A-Za-z])(?=.*\d).{6,}$/,
-                message: '密码至少 6 位且包含字母和数字',
+                message: demoText('密码至少 6 位且包含字母和数字'),
                 trigger: ['change', 'blur']
             }
         ],
         rePassword: [
-            { required: true, message: '请再次输入密码', trigger: ['change', 'blur'] },
+            { required: true, message: demoText('请再次输入密码'), trigger: ['change', 'blur'] },
             {
                 validator: (_rule, value) => value === model.password,
-                message: '两次输入的密码不一致',
+                message: demoText('两次输入的密码不一致'),
                 trigger: ['change', 'blur']
             }
         ],
         intro: requireIntro
             ? [
-                  { required: true, message: '请输入简介', trigger: ['change', 'blur'] },
-                  { min: 5, message: '简介至少输入 5 个字', trigger: ['change', 'blur'] }
+                  { required: true, message: demoText('请输入简介'), trigger: ['change', 'blur'] },
+                  { min: 5, message: demoText('简介至少输入 5 个字'), trigger: ['change', 'blur'] }
               ]
-            : [{ min: 5, message: '简介至少输入 5 个字', trigger: ['change', 'blur'] }],
-        fruit: [{ required: true, type: 'array', min: 1, message: '请至少选择一种水果', trigger: 'change' }],
-        flavor: [{ required: true, message: '请选择口味', trigger: 'change' }],
-        agreement: [{ validator: (_rule, value) => value === true, message: '请先同意服务协议', trigger: 'change' }],
+            : [{ min: 5, message: demoText('简介至少输入 5 个字'), trigger: ['change', 'blur'] }],
+        fruit: [{ required: true, type: 'array', min: 1, message: demoText('请至少选择一种水果'), trigger: 'change' }],
+        flavor: [{ required: true, message: demoText('请选择口味'), trigger: 'change' }],
+        agreement: [
+            { validator: (_rule, value) => value === true, message: demoText('请先同意服务协议'), trigger: 'change' }
+        ],
         accounts: {
             type: 'array',
             defaultField: {
                 type: 'object',
                 fields: {
                     name: [
-                        { required: true, message: '请输入账户名', trigger: ['change', 'blur'] },
-                        { min: 2, message: '账户名至少 2 个字符', trigger: ['change', 'blur'] }
+                        { required: true, message: demoText('请输入账户名'), trigger: ['change', 'blur'] },
+                        { min: 2, message: demoText('账户名至少 2 个字符'), trigger: ['change', 'blur'] }
                     ]
                 }
             }
@@ -262,7 +264,7 @@ function createFormRules(requireIntro: boolean): FormRules {
 }
 
 const rules = ref<FormRules>(createFormRules(false));
-const message = ref('请填写表单后执行校验');
+const message = ref(demoText('请填写表单后执行校验'));
 const controls: DemoControl[] = [
     { key: 'formBorder', label: '显示分隔线', type: 'switch', defaultValue: true },
     { key: 'formTopLabel', label: '标签置顶', type: 'switch', defaultValue: false },
@@ -300,7 +302,11 @@ const state = reactive<Record<string, DemoValue>>({
 });
 const localizedControls = computed(() => {
     const _locale = localeName.value;
-    return controls.map(control => ({ ...control, label: demoText(control.label) }));
+    return controls.map(control => ({
+        ...control,
+        label: demoText(control.label),
+        options: control.options?.map(option => ({ ...option, label: demoText(option.label) }))
+    }));
 });
 const formSize = computed(() => String(state.formSize) as 'small' | 'default' | 'large');
 const formErrorType = computed(
@@ -310,42 +316,48 @@ const title = computed(() => {
     const _locale = localeName.value;
     return demoTitle('form', '表单');
 });
+watch(localeName, () => {
+    rules.value = createFormRules(strictIntro.value);
+    formRef.value?.setRules(rules.value);
+    message.value = demoText('请填写表单后执行校验');
+});
 
 function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 function addContact() {
     model.accounts.push({ id: nextAccountId++, name: '' });
-    message.value = '已添加联系人，请填写账户名';
+    message.value = demoText('已添加联系人，请填写账户名');
 }
 function removeLastContact() {
     if (model.accounts.length === 1) return;
     model.accounts.pop();
-    message.value = '已删除最后一个联系人';
+    message.value = demoText('已删除最后一个联系人');
 }
 async function submitForm() {
     const valid = await formRef.value?.validate((_valid, errors) => {
-        if (!_valid) message.value = `校验失败：${errors[0]?.message || '请检查表单'}`;
+        if (!_valid) message.value = `${demoText('校验失败')}: ${errors[0]?.message || demoText('请检查表单')}`;
     });
-    if (valid) message.value = `校验通过：${model.name}`;
+    if (valid) message.value = `${demoText('校验通过')}: ${model.name}`;
 }
 async function validateName() {
     const valid = await formRef.value?.validateField('name');
-    message.value = valid ? '姓名校验通过' : '姓名校验失败';
+    message.value = demoText(valid ? '姓名校验通过' : '姓名校验失败');
 }
 async function validateCredentials() {
     const valid = await formRef.value?.validateField(['name', 'password']);
-    message.value = valid ? '姓名和密码校验通过' : '姓名或密码校验失败';
+    message.value = demoText(valid ? '姓名和密码校验通过' : '姓名或密码校验失败');
 }
 function toggleIntroRule() {
     strictIntro.value = !strictIntro.value;
     rules.value = createFormRules(strictIntro.value);
     formRef.value?.setRules(rules.value);
-    message.value = strictIntro.value ? '简介已设为必填项' : '简介已设为可选项';
+    message.value = demoText(strictIntro.value ? '简介已设为必填项' : '简介已设为可选项');
 }
 function resetForm() {
     formRef.value?.resetFields();
-    message.value = '表单已重置';
+    model.accounts.splice(1);
+    message.value = demoText('表单已重置');
 }
 </script>
 

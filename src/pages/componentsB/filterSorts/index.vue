@@ -6,8 +6,7 @@
                 :filters="filters"
                 sort="auto"
                 :bg-color="String(state.filterBg)"
-                :show-tabs="Boolean(state.filterTabs)"
-                :scroll-top="scrollTop"
+                :show-tabs="false"
                 @change="onFilterChange"
             />
             <text v-if="selection" class="demo-selection" aria-live="polite"
@@ -21,7 +20,6 @@
 </template>
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
-import { onPageScroll } from '@dcloudio/uni-app';
 import { filters } from '../../../common/fixtures';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
@@ -29,16 +27,21 @@ import DemoControlPanel from '../../../components/demo-control-panel/demo-contro
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
-const scrollTop = ref(0);
-const selection = ref('');
-onPageScroll(event => {
-    scrollTop.value = event.scrollTop;
-});
+const selectedParams = ref<Record<string, string | number | boolean> | null>(null);
+const selection = computed(() =>
+    Object.entries(selectedParams.value || {})
+        .filter(([, value]) => value !== '')
+        .map(([key, value]) => {
+            if (key === 'sort' && value === 'auto') return text('综合');
+            if (key === 'price') return `${text('价格')}: ${text(value === 'asc' ? '升序' : '降序')}`;
+            return `${text(key === 'sizeFilter' ? '尺码' : key)}: ${String(value)}`;
+        })
+        .join(' · ')
+);
 function onFilterChange(params: Record<string, string | number | boolean>) {
-    selection.value = JSON.stringify(params);
+    selectedParams.value = { ...params };
 }
 const controls: DemoControl[] = [
-    { key: 'filterTabs', label: '显示筛选标签', type: 'switch', defaultValue: true },
     {
         key: 'filterBg',
         label: '背景颜色',
@@ -50,7 +53,7 @@ const controls: DemoControl[] = [
         ]
     }
 ];
-const state = reactive<Record<string, DemoValue>>({ filterTabs: true, filterBg: '#ffffff' });
+const state = reactive<Record<string, DemoValue>>({ filterBg: '#ffffff' });
 const localizedControls = computed(() => {
     const _locale = localeName.value;
     return controls.map(control => ({

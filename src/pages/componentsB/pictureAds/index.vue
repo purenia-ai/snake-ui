@@ -17,6 +17,7 @@ import DemoControlPanel from '../../../components/demo-control-panel/demo-contro
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
+const isEnglish = computed(() => localeName.value === 'en-US');
 const controls: DemoControl[] = [
     { key: 'adRadius', label: '广告圆角', type: 'slider', defaultValue: 16, min: 0, max: 32, step: 4, unit: 'rpx' },
     {
@@ -33,6 +34,10 @@ const controls: DemoControl[] = [
 const state = reactive<Record<string, DemoValue>>({ adRadius: 16, adInterval: 3000 });
 const data = computed(() => ({
     ...pictureAdsData,
+    imageList: pictureAdsData.imageList.map((item, index) => ({
+        ...item,
+        text: isEnglish.value ? ['New arrivals', 'Featured picks'][index] : ['新品推荐', '精选好物'][index]
+    })),
     borderRadius: Number(state.adRadius),
     interval: Number(state.adInterval)
 }));

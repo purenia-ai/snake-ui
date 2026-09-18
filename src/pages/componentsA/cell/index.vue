@@ -6,22 +6,37 @@
                 <snake-cell-group :title="String(state.cgTitle)" :border="Boolean(state.cgBorder)">
                     <snake-cell-item
                         :icon="String(state.ciIcon)"
-                        :title="String(state.ciTitle)"
+                        :title="String(state.ciTitle || text('单元格标题'))"
                         :label="String(state.ciLabel)"
                         :arrow="Boolean(state.ciArrow)"
                         :arrow-direction="String(state.ciArrowDirection)"
                         :required="Boolean(state.ciRequired)"
                         :center="Boolean(state.ciCenter)"
-                        value="内容"
+                        :value="isEnglish ? 'Value' : '内容'"
                         index="live"
                         @click="cellClicked"
                     />
                 </snake-cell-group>
                 <text class="demo-variant-title">{{ isEnglish ? 'Grouped cells' : '分组示例' }}</text>
                 <snake-cell-group :title="isEnglish ? 'Personal center' : '个人中心'">
-                    <snake-cell-item icon="phone" title="手机号码" value="138****8000" />
-                    <snake-cell-item title="地址管理" value="收货地址" index="1" @click="cellClicked" />
-                    <snake-cell-item title="必填示例" required :arrow="false" index="2" @click="cellClicked">
+                    <snake-cell-item
+                        icon="phone"
+                        :title="isEnglish ? 'Phone number' : '手机号码'"
+                        value="138****8000"
+                    />
+                    <snake-cell-item
+                        :title="isEnglish ? 'Address book' : '地址管理'"
+                        :value="isEnglish ? 'Shipping addresses' : '收货地址'"
+                        index="1"
+                        @click="cellClicked"
+                    />
+                    <snake-cell-item
+                        :title="isEnglish ? 'Required item' : '必填示例'"
+                        required
+                        :arrow="false"
+                        index="2"
+                        @click="cellClicked"
+                    >
                         <template #right-icon>
                             <view class="demo-cell-tag">{{ isEnglish ? 'Custom' : '自定义' }}</view>
                         </template>
@@ -61,7 +76,7 @@ const controls: DemoControl[] = [
             { label: '页面', value: 'page' }
         ]
     },
-    { key: 'ciTitle', label: '标题', type: 'input', defaultValue: '单元格标题', placeholder: '请输入标题' },
+    { key: 'ciTitle', label: '标题', type: 'input', defaultValue: '', placeholder: '请输入标题' },
     { key: 'ciLabel', label: '描述文字', type: 'input', defaultValue: '', placeholder: '请输入描述文字' },
     { key: 'ciArrow', label: '显示箭头', type: 'switch', defaultValue: true },
     {
@@ -86,6 +101,7 @@ const localizedControls = computed(() => {
     return controls.map(control => ({
         ...control,
         label: demoText(control.label),
+        placeholder: control.placeholder ? demoText(control.placeholder) : undefined,
         options: control.options?.map(option => ({ ...option, label: demoText(option.label) }))
     }));
 });

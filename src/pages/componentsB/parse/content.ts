@@ -23,7 +23,7 @@ export default `<title>富文本示例</title>
         </tr>
         <tr style="background-color: #f6f8fa;">
           <td align="center">内容 3</td>
-          <td align="center"><a>链接</a></td>    
+          <td align="center"><a href="#list">链接</a></td>
         </tr>
         <tr>
           <td align="center">内容 5</td>
@@ -53,7 +53,7 @@ export default `<title>富文本示例</title>
           <td align="center">内容 5</td>
         </tr>
         <tr style="background-color: #f6f8fa;">
-          <td align="center"><a>链接</a></td>
+          <td align="center"><a href="#list">链接</a></td>
           <td align="center">内容 7</td>
           <td align="center">内容 8</td>
           <td align="center">内容 9</td>
@@ -109,17 +109,17 @@ export default `<title>富文本示例</title>
     <ol style="margin-bottom: 1.5em;">
       <li>这是第一条列表项</li>
       <li>这是第二条列表项</li>
-      <li>这是第三条 <a>链接</a></li>
+      <li>这是第三条 <a href="#list">链接</a></li>
     </ol>
     <ol type="A" style="margin-bottom: 1.5em;">
       <li>这是第一条列表项</li>
       <li>这是第二条列表项</li>
-      <li>这是第三条 <a>链接</a></li>
+      <li>这是第三条 <a href="#list">链接</a></li>
     </ol>
     <ol type="I" style="margin-bottom: 1.5em;">
       <li>这是第一条列表项</li>
       <li>这是第二条列表项</li>
-      <li>这是第三条 <a>链接</a></li>
+      <li>这是第三条 <a href="#list">链接</a></li>
     </ol>
     <ul>
       <li>第一级无序列表</li>
@@ -129,7 +129,7 @@ export default `<title>富文本示例</title>
           <li>第二级无序列表
             <ul>
               <li>第三级无序列表</li>
-              <li>第三级 <a>链接</a></li>
+              <li>第三级 <a href="#list">链接</a></li>
             </ul>
           </li>
         </ul>

@@ -7,7 +7,7 @@
         </view>
 
         <template v-if="kind === 'commerce-home'">
-            <snake-picture-ads :datas="pictureAdsData" />
+            <snake-picture-ads :datas="showcasePictureAds" />
             <view class="showcase__section"
                 ><text>{{ text('发现好物') }}</text
                 ><text>01 / 03</text></view
@@ -23,6 +23,7 @@
                 :commodity-type="0"
                 :page-margin="12"
                 :image-margin="8"
+                @item-click="selectGoods"
             />
             <view class="showcase__section"
                 ><text>{{ text('专属优惠') }}</text
@@ -32,12 +33,17 @@
                 :key="couponKey"
                 :datas="couponData"
                 :coupon-service="couponDemo.service"
-                @received="feedback = text('优惠券已领取')"
-                @error="feedback = text('领取失败，请重试')"
+                @received="onCouponReceived"
+                @error="onCouponError"
             />
-            <snake-button v-if="feedback" class="showcase__reset" plain size="small" @click="resetCoupon">{{
-                text('再次体验')
-            }}</snake-button>
+            <snake-button
+                v-if="couponActionAvailable"
+                class="showcase__reset"
+                plain
+                size="small"
+                @click="resetCoupon"
+                >{{ text('再次体验') }}</snake-button
+            >
         </template>
 
         <template v-else-if="kind === 'campaign'">
@@ -46,10 +52,15 @@
                 ><text>{{ text('限时活动') }}</text
                 ><text>01 / 03</text></view
             >
-            <snake-picture-ads :datas="pictureAdsData" />
+            <snake-picture-ads :datas="showcasePictureAds" />
             <view class="showcase__countdown">
-                <text>{{ text('距离活动结束') }}</text>
-                <snake-count-down :timestamp="86461" color="var(--snake-color-primary-deep)" :show-border="true" />
+                <text>{{ text(countdownLabel) }}</text>
+                <snake-count-down
+                    :timestamp="remainingSeconds"
+                    color="var(--snake-color-primary-deep)"
+                    :show-border="true"
+                    @end="onCountdownEnd"
+                />
             </view>
             <view class="showcase__section"
                 ><text>{{ text('活动场次') }}</text
@@ -66,6 +77,7 @@
                 :commodity-type="0"
                 :page-margin="12"
                 :image-margin="8"
+                @item-click="selectGoods"
             />
         </template>
 
@@ -88,7 +100,7 @@
 import { computed, ref } from 'vue';
 import {
     activities,
-    cmsComponents,
+    auxiliaryData,
     couponData,
     createDemoCouponService,
     goods,
@@ -128,17 +140,34 @@ const showcaseActivities = computed(() =>
           }))
         : activities
 );
-const showcaseNavigation = computed(() =>
-    isEnglish.value
-        ? {
-              ...navigationData,
-              imageList: navigationData.imageList.map((item, index) => ({
-                  ...item,
-                  text: ['New', 'Auction', 'Featured', 'Services'][index]
-              }))
-          }
-        : navigationData
-);
+const showcaseNavigation = computed(() => ({
+    ...navigationData,
+    imageList: navigationData.imageList.map((item, index) => ({
+        ...item,
+        text: text(item.text),
+        url: [
+            '/pages/componentsB/goodsList/index',
+            '/pages/componentsB/activityList/index',
+            '/pages/componentsB/goodsList/index',
+            '/pages/componentsB/coupon/index'
+        ][index]
+    }))
+}));
+const showcasePictureAds = computed(() => ({
+    ...pictureAdsData,
+    imageList: [
+        {
+            src: '/static/demo-showcase-banner-1.png',
+            text: text('限时活动'),
+            url: props.kind === 'campaign' ? '/pages/componentsB/activityList/index' : '/pages/showcase/campaign/index'
+        },
+        {
+            src: '/static/demo-showcase-banner-2.png',
+            text: text('精选商品'),
+            url: '/pages/componentsB/goodsList/index'
+        }
+    ]
+}));
 const showcaseNotice = computed(() =>
     isEnglish.value
         ? {
@@ -150,16 +179,31 @@ const showcaseNotice = computed(() =>
           }
         : noticeData
 );
-const showcaseCmsComponents = computed(() =>
-    isEnglish.value
-        ? [
-              { component: 'notice', setStyle: showcaseNotice.value },
-              { component: 'graphicnavigation', setStyle: showcaseNavigation.value }
-          ]
-        : cmsComponents
-);
+const showcaseCmsComponents = computed(() => [
+    { component: 'notice', setStyle: showcaseNotice.value },
+    { component: 'pictureads', setStyle: showcasePictureAds.value },
+    { component: 'auxiliarysegmentation', setStyle: auxiliaryData },
+    { component: 'graphicnavigation', setStyle: showcaseNavigation.value }
+]);
 const currentActivity = ref('001');
+const clockNow = ref(Date.now());
+const selectedActivity = computed(() => activities.find(item => item.id === currentActivity.value) || activities[0]);
+const countdownLabel = computed(() =>
+    clockNow.value >= selectedActivity.value.endTime
+        ? '活动已结束'
+        : clockNow.value < selectedActivity.value.startTime
+          ? '距离活动开始'
+          : '距离活动结束'
+);
+const remainingSeconds = computed(() => {
+    const target =
+        clockNow.value < selectedActivity.value.startTime
+            ? selectedActivity.value.startTime
+            : selectedActivity.value.endTime;
+    return Math.max(0, Math.ceil((target - clockNow.value) / 1000));
+});
 const feedback = ref('');
+const couponActionAvailable = ref(false);
 const couponKey = ref(0);
 const couponDemo = createDemoCouponService();
 const eyebrow = computed(
@@ -181,14 +225,30 @@ const summary = computed(() =>
     )
 );
 
-function selectActivity(item: { id: string | number }) {
+function selectActivity(item: { id: string | number; name?: string }) {
     currentActivity.value = String(item.id);
-    feedback.value = text('已切换活动场次');
+    clockNow.value = Date.now();
+    feedback.value = `${text('已切换活动场次')}: ${item.name || ''}`;
+}
+function onCountdownEnd() {
+    clockNow.value = Date.now();
+}
+function selectGoods(item: { name?: string; goodsName?: string }) {
+    feedback.value = `${text('已选择商品')}: ${item.goodsName || item.name || ''}`;
+}
+function onCouponReceived() {
+    feedback.value = text('优惠券已领取');
+    couponActionAvailable.value = true;
+}
+function onCouponError() {
+    feedback.value = text('领取失败，请重试');
+    couponActionAvailable.value = true;
 }
 function resetCoupon() {
     couponDemo.reset();
     couponKey.value += 1;
     feedback.value = '';
+    couponActionAvailable.value = false;
 }
 </script>
 

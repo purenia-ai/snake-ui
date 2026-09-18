@@ -48,6 +48,7 @@
                         <input
                             v-model="searchText"
                             class="search-box__input"
+                            :aria-label="text('搜索组件')"
                             :placeholder="text('搜索组件')"
                             placeholder-class="search-box__placeholder"
                             confirm-type="search"
@@ -116,11 +117,15 @@
                     </view>
                 </view>
             </view>
+            <button v-if="scrollTop > 600" class="back-to-top" :aria-label="text('返回顶部')" @click="backToTop">
+                <snake-icon name="arrow-up" :size="32" />
+            </button>
         </view>
     </DemoPage>
 </template>
 
 <script setup lang="ts">
+import { onPageScroll } from '@dcloudio/uni-app';
 import { computed, ref } from 'vue';
 import DemoPage from '../../components/demo-page/demo-page.vue';
 import { useDemoLocale } from '../../common/demo-i18n';
@@ -139,6 +144,10 @@ const displayModes: { value: DarkMode; label: string }[] = [
 const groups = ref(rawGroups);
 const searchText = ref('');
 const activeGroup = ref('all');
+const scrollTop = ref(0);
+onPageScroll(event => {
+    scrollTop.value = event.scrollTop;
+});
 const totalCount = groups.value.reduce((sum, group) => sum + group.list.length, 0);
 const navbarOffset = (() => {
     try {
@@ -193,6 +202,7 @@ const resetFilters = () => {
     clearSearch();
     activeGroup.value = 'all';
 };
+const backToTop = () => uni.pageScrollTo({ scrollTop: 0, duration: 250 });
 </script>
 
 <style lang="scss" scoped>

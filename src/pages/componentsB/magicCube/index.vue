@@ -17,6 +17,7 @@ import DemoControlPanel from '../../../components/demo-control-panel/demo-contro
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
+const isEnglish = computed(() => localeName.value === 'en-US');
 const controls: DemoControl[] = [
     { key: 'cubeRadius', label: '图片圆角', type: 'slider', defaultValue: 12, min: 0, max: 28, step: 4, unit: 'rpx' },
     { key: 'cubeMargin', label: '图片间距', type: 'slider', defaultValue: 8, min: 0, max: 24, step: 4, unit: 'rpx' }
@@ -24,12 +25,16 @@ const controls: DemoControl[] = [
 const state = reactive<Record<string, DemoValue>>({ cubeRadius: 12, cubeMargin: 8 });
 const data = computed(() => ({
     rubiksCubeType: 1,
-    heights: 360,
+    heights: 180,
     pageMargin: 20,
     imgMargin: Number(state.cubeMargin),
     borderRadius: Number(state.cubeRadius),
     bgColor: '#ffffff',
-    imageTypeObj: { imageList: [{ src: localImage, url: '' }] }
+    imageTypeObj: {
+        1: (isEnglish.value ? ['New', 'Featured', 'Popular', 'Services'] : ['新品', '精选', '热卖', '服务']).map(
+            title => [{ src: localImage, url: '', title }]
+        )
+    }
 }));
 const localizedControls = computed(() => {
     const _locale = localeName.value;

@@ -17,6 +17,7 @@ import DemoControlPanel from '../../../components/demo-control-panel/demo-contro
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
+const isEnglish = computed(() => localeName.value === 'en-US');
 const controls: DemoControl[] = [
     {
         key: 'noticeDirection',
@@ -34,7 +35,14 @@ const state = reactive<Record<string, DemoValue>>({ noticeDirection: 'column', n
 const data = computed(() => ({
     ...noticeData,
     direction: String(state.noticeDirection),
-    isLeftIcon: Boolean(state.noticeCmsIcon)
+    isLeftIcon: Boolean(state.noticeCmsIcon),
+    noticeText: isEnglish.value ? 'Snake UI preview is ready' : 'Snake UI 文档预览已就绪',
+    textList: isEnglish.value
+        ? [
+              { text: 'Snake UI preview is ready', url: '' },
+              { text: 'All example data runs locally', url: '' }
+          ]
+        : noticeData.textList
 }));
 const localizedControls = computed(() => {
     const _locale = localeName.value;

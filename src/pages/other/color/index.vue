@@ -1,9 +1,17 @@
 <template>
     <DemoPage :title="text('Color 色彩')" :desc="text('Snake UI 当前主题色板实时预览')">
+        <view class="preview-actions">
+            <snake-button size="small" plain @click="toggleDarkMode">{{ text('切换明暗') }}</snake-button>
+        </view>
         <view v-for="group in colorGroups" :key="group.label" class="preview-card">
             <text class="preview-card__title">{{ text(group.label) }}</text>
             <view class="swatch-grid">
-                <view v-for="key in group.keys" :key="key" class="swatch" :style="{ backgroundColor: color[key] }">
+                <view
+                    v-for="key in group.keys"
+                    :key="key"
+                    class="swatch"
+                    :style="{ backgroundColor: color[key], color: readableText(color[key]) }"
+                >
                     <text>{{ text(colorLabels[key]) }}</text>
                     <text>{{ color[key] }}</text>
                 </view>
@@ -32,8 +40,18 @@ import DemoPage from '../../../components/demo-page/demo-page.vue';
 import { useDemoLocale } from '../../../common/demo-i18n';
 import { useTheme } from '../../../uni_modules/snake-ui';
 
-const { color } = useTheme();
+const { color, toggleDarkMode } = useTheme();
 const { text } = useDemoLocale();
+function readableText(background: string): string {
+    const hex = /^#([\da-f]{6})$/i.exec(background);
+    if (!hex) return color.text;
+    const channels = [0, 2, 4].map(offset => {
+        const channel = Number.parseInt(hex[1].slice(offset, offset + 2), 16) / 255;
+        return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+    });
+    const luminance = channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
+    return luminance > 0.179 ? '#17221d' : '#ffffff';
+}
 
 const colorGroups = [
     { label: '主题颜色', keys: ['primary', 'primaryDark', 'primaryDisabled', 'primaryLight'] },
@@ -67,6 +85,9 @@ const colorLabels: Record<string, string> = {
 </script>
 
 <style scoped>
+.preview-actions {
+    margin: 8px 4px 16px;
+}
 .preview-card {
     margin: 8px 4px 14px;
     padding: 16px;
@@ -92,7 +113,6 @@ const colorLabels: Record<string, string> = {
     flex-direction: column;
     justify-content: space-between;
     border-radius: 7px;
-    color: var(--snake-color-primary-ink);
     font-size: 11px;
 }
 .token-row {

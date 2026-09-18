@@ -380,6 +380,29 @@
     color: var(--snake-color-text-muted);
 }
 
+.back-to-top {
+    position: fixed;
+    z-index: 30;
+    right: 24rpx;
+    bottom: calc(160rpx + env(safe-area-inset-bottom));
+    display: flex;
+    width: 80rpx;
+    height: 80rpx;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--snake-color-divider);
+    border-radius: 50%;
+    color: var(--snake-demo-accent-text);
+    background: var(--snake-color-surface);
+    box-shadow: 0 8rpx 28rpx rgba(0, 0, 0, 0.12);
+}
+
+.back-to-top::after {
+    border: 0;
+}
+
 @media (min-width: 600px) {
     .card {
         width: calc((100% - 10px) / 2);

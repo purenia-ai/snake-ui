@@ -41,8 +41,8 @@ const scenes: DemoCatalogGroup[] = [
     },
     {
         key: 'commerce',
-        title: '商品业务',
-        titleEn: 'Commerce',
+        title: '商品组件示例',
+        titleEn: 'Commerce components',
         icon: 'shopping-cart',
         items: [
             {
@@ -85,8 +85,8 @@ const scenes: DemoCatalogGroup[] = [
     },
     {
         key: 'content',
-        title: '内容营销',
-        titleEn: 'Content & marketing',
+        title: '内容组件示例',
+        titleEn: 'Content components',
         icon: 'photo',
         items: [
             {

@@ -55,7 +55,7 @@
                             </view>
                         </view>
                         <!-- 标题 -->
-                        <view class="activity-list__title" v-if="index !== 0">
+                        <view class="activity-list__title" v-if="index !== 0 || list.length === 1">
                             <text class="activity-list__title-main">{{ item.name }}</text>
                             <text class="activity-list__title-sub" v-if="currentTime > item.startTime">
                                 {{ item.subtitle }}

@@ -27,7 +27,7 @@
  * @see /components/no-network
  */
 
-import { computed, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import zIndex from '../../libs/config/zIndex';
 import { useLocale } from '../../libs/hooks/useLocale';
 import { noNetworkProps, type NoNetworkEmits, type NoNetworkExpose } from './types';
@@ -49,11 +49,13 @@ const networkType = ref<string>('none');
 // 优先使用 props，否则取 zIndex.noNetwork
 const layerZIndex = computed(() => Number(props.zIndex) || zIndex.noNetwork);
 
+function onNetworkStatusChange(res: { isConnected: boolean; networkType: string }) {
+    isConnected.value = res.isConnected;
+    networkType.value = res.networkType;
+}
+
 onMounted(() => {
-    uni.onNetworkStatusChange(res => {
-        isConnected.value = res.isConnected;
-        networkType.value = res.networkType;
-    });
+    uni.onNetworkStatusChange(onNetworkStatusChange);
     uni.getNetworkType({
         success: res => {
             networkType.value = res.networkType;
@@ -61,6 +63,7 @@ onMounted(() => {
         }
     });
 });
+onBeforeUnmount(() => uni.offNetworkStatusChange(onNetworkStatusChange));
 
 /** 重新检查网络并发出 retry 事件。 */
 function retry() {

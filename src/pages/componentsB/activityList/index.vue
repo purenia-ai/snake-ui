@@ -7,6 +7,7 @@
                 :current="current"
                 @change="selectActivity"
             />
+            <text class="demo-selection" aria-live="polite">{{ text('当前场次') }}: {{ selectedActivityName }}</text>
         </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
             <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
@@ -36,7 +37,14 @@ const controls: DemoControl[] = [
     }
 ];
 const state = reactive<Record<string, DemoValue>>({ activityScene: 'all' });
-const list = computed(() => (state.activityScene === 'single' ? activities.slice(0, 1) : activities));
+const list = computed(() =>
+    (state.activityScene === 'single' ? activities.slice(0, 1) : activities).map(item => ({
+        ...item,
+        name: text(item.name),
+        subtitle: text(item.subtitle)
+    }))
+);
+const selectedActivityName = computed(() => list.value.find(item => item.id === current.value)?.name || '');
 const localizedControls = computed(() => {
     const _locale = localeName.value;
     return controls.map(control => ({
@@ -51,8 +59,17 @@ const title = computed(() => {
 });
 function updateValue(key: string, value: DemoValue) {
     state[key] = value;
+    if (key === 'activityScene' && value === 'single') current.value = activities[0].id;
 }
 function selectActivity(item: { id: string }) {
     current.value = item.id;
 }
 </script>
+<style scoped>
+.demo-selection {
+    display: block;
+    padding: 12rpx 20rpx;
+    color: var(--snake-color-text-secondary);
+    font-size: 22rpx;
+}
+</style>

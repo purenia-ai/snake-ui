@@ -9,16 +9,28 @@
                     :show-action="Boolean(state.sShowAction)"
                     :clearabled="Boolean(state.sClear)"
                     :animation="Boolean(state.sAnimation)"
-                    :placeholder="String(state.sPlaceholder)"
+                    :placeholder="String(state.sPlaceholder || text('请输入关键字'))"
+                    :action-text="isEnglish ? 'Search' : '搜索'"
                     margin="16rpx 0"
                     @search="onSearch"
+                    @custom="onCustom"
                     @clear="onClear"
                 />
                 <text class="demo-variant-sub">{{ text('搜索内容') }}：{{ keyword || '—' }}</text>
-                <text class="demo-variant-sub">{{ lastEvent || (isEnglish ? 'No event yet' : '暂无事件') }}</text>
+                <text class="demo-variant-sub">{{ lastEvent || text('暂无事件') }}</text>
                 <text class="demo-variant-title">{{ isEnglish ? 'Variants' : '变体示例' }}</text>
-                <snake-search :show-action="false" placeholder="自定义背景" bg-color="#ffffff" margin="16rpx 0" />
-                <snake-search shape="square" height="68" placeholder="方形搜索框" margin="16rpx 0" />
+                <snake-search
+                    :show-action="false"
+                    :placeholder="isEnglish ? 'Custom background' : '自定义背景'"
+                    bg-color="#ffffff"
+                    margin="16rpx 0"
+                />
+                <snake-search
+                    shape="square"
+                    height="68"
+                    :placeholder="isEnglish ? 'Square search field' : '方形搜索框'"
+                    margin="16rpx 0"
+                />
             </view>
         </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
@@ -57,7 +69,7 @@ const controls: DemoControl[] = [
         key: 'sPlaceholder',
         label: '占位文字',
         type: 'input',
-        defaultValue: '请输入关键字',
+        defaultValue: '',
         placeholder: '请输入占位文字'
     }
 ];
@@ -69,6 +81,7 @@ const localizedControls = computed(() => {
     return controls.map(control => ({
         ...control,
         label: demoText(control.label),
+        placeholder: control.placeholder ? demoText(control.placeholder) : undefined,
         options: control.options?.map(option => ({ ...option, label: demoText(option.label) }))
     }));
 });
@@ -80,6 +93,9 @@ function updateValue(key: string, value: DemoValue) {
     state[key] = value;
 }
 function onSearch(value: string) {
+    lastEvent.value = `${text('点击搜索')}：${value}`;
+}
+function onCustom(value: string) {
     lastEvent.value = `${text('点击搜索')}：${value}`;
 }
 function onClear() {

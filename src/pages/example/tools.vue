@@ -14,7 +14,12 @@
         </view>
         <view class="tool-search">
             <snake-icon name="search" :size="19" />
-            <input v-model="searchText" :placeholder="text('搜索工具')" confirm-type="search" />
+            <input
+                v-model="searchText"
+                :aria-label="text('搜索工具')"
+                :placeholder="text('搜索工具')"
+                confirm-type="search"
+            />
             <button
                 v-if="searchText"
                 class="tool-search__clear"
@@ -31,8 +36,8 @@
         </view>
         <view v-for="group in groups" :key="group.title" class="tool-group">
             <view class="tool-group__header">
-                <text class="tool-group__title">{{ text(group.title) }}</text>
-                <text class="tool-group__en">{{ group.titleEn }}</text>
+                <text class="tool-group__title">{{ isEnglish ? group.titleEn : group.title }}</text>
+                <text class="tool-group__en">{{ isEnglish ? group.title : group.titleEn }}</text>
                 <text class="tool-group__count">{{ group.items.length }}</text>
             </view>
             <view class="tool-list">
@@ -41,7 +46,10 @@
                     :key="tool.url"
                     class="tool-card"
                     hover-class="tool-card--hover"
+                    role="button"
+                    tabindex="0"
                     @click="openTool(tool.url)"
+                    @keydown.enter="openTool(tool.url)"
                 >
                     <view class="tool-card__icon"><snake-icon :name="tool.icon" :size="24" /></view>
                     <view class="tool-card__body">
@@ -63,14 +71,16 @@ import tools from './tools.config';
 
 defineOptions({ name: 'ExampleTools' });
 
-const { text } = useDemoLocale();
+const { localeName, text } = useDemoLocale();
+const isEnglish = computed(() => localeName.value === 'en-US');
 const openTool = (url: string) => uni.navigateTo({ url });
 const searchText = ref('');
 const groups = computed(() => {
     const keyword = searchText.value.trim().toLowerCase();
     const map = new Map<string, { title: string; titleEn: string; items: typeof tools }>();
     tools.forEach(tool => {
-        const source = `${tool.title} ${tool.desc} ${tool.category} ${tool.categoryEn}`.toLowerCase();
+        const source =
+            `${tool.title} ${text(tool.title)} ${tool.desc} ${text(tool.desc)} ${tool.category} ${tool.categoryEn} ${tool.url}`.toLowerCase();
         if (keyword && !source.includes(keyword)) return;
         const group = map.get(tool.category) || { title: tool.category, titleEn: tool.categoryEn, items: [] };
         group.items.push(tool);
@@ -204,6 +214,10 @@ const groups = computed(() => {
 }
 
 .tool-card--hover {
+    border-color: var(--snake-color-primary);
+    background: var(--snake-color-primary-light);
+}
+.tool-card:focus-visible {
     border-color: var(--snake-color-primary);
     background: var(--snake-color-primary-light);
 }

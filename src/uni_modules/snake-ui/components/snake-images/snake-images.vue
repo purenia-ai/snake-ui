@@ -5,7 +5,7 @@
             :style="{
                 padding: addUnit(imgsData.paddingLR, 'rpx')
             }"
-            role="link"
+            :role="imgsData.url ? 'link' : 'img'"
             :tabindex="imgsData.url ? 0 : -1"
             :aria-label="imgsData.alt || '查看图片链接'"
             @click="open"

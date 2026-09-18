@@ -17,6 +17,7 @@ import DemoControlPanel from '../../../components/demo-control-panel/demo-contro
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
+const isEnglish = computed(() => localeName.value === 'en-US');
 const controls: DemoControl[] = [
     {
         key: 'videoScene',
@@ -30,7 +31,13 @@ const controls: DemoControl[] = [
     }
 ];
 const state = reactive<Record<string, DemoValue>>({ videoScene: 'empty' });
-const data = computed(() => ({ src: state.videoScene === 'local' ? localImage : '' }));
+// MDN 的公开示例视频，随应用打包，示例无需依赖运行时网络。
+const demoVideo = '/static/demo-flower.mp4';
+const data = computed(() => ({
+    src: state.videoScene === 'local' ? demoVideo : '',
+    poster: localImage,
+    emptyText: isEnglish.value ? 'No video selected' : '暂无视频'
+}));
 const localizedControls = computed(() => {
     const _locale = localeName.value;
     return controls.map(control => ({

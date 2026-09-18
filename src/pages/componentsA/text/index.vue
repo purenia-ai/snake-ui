@@ -10,7 +10,7 @@
                     :format="sampleFormat()"
                     :bold="Boolean(state.tBold)"
                     :block="Boolean(state.tBlock)"
-                    :lines="String(state.tLines)"
+                    :lines="state.tLines ? Number(state.tLines) : ''"
                     :size="Number(state.tSize)"
                     :color="String(state.tColor) || undefined"
                     :prefix-icon="String(state.tPrefix)"
@@ -151,6 +151,11 @@ function sampleText(): string | number {
         case 'link':
             return isEnglish.value ? 'Open Snake UI' : '打开 Snake UI';
         default:
+            if (state.tLines) {
+                return isEnglish.value
+                    ? 'Snake UI keeps reusable interface components consistent across commerce and content pages. This longer sample lets you compare one-line and two-line truncation while adjusting text size and style.'
+                    : 'Snake UI 将常用界面组件组合到商城和内容页面中。这段较长的示例文字用于观察单行与双行截断效果，也方便比较字号、颜色和图标设置后的变化。';
+            }
             return isEnglish.value ? 'Snake UI text component' : 'Snake UI 文本组件示例';
     }
 }

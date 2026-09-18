@@ -52,12 +52,20 @@ test('every public component exposes an independent type contract', async () => 
     const packageEntry = await readFile(new URL('index.ts', root), 'utf8');
     const declarationEntry = await readFile(new URL('types/components.d.ts', root), 'utf8');
 
-    assert.equal(directories.length, 72);
+    assert.equal(directories.length, 73);
     for (const component of directories) {
         const types = await readFile(new URL(`components/${component}/types.ts`, root), 'utf8');
         assert.match(types, /export (?:interface|type) [A-Z]/, `${component}: missing public contract`);
-        assert.match(packageEntry, new RegExp(`export \\* from './components/${component}/types'`), `${component}: missing type export`);
-        assert.match(declarationEntry, new RegExp(`export \\* from '../components/${component}/types'`), `${component}: missing declaration export`);
+        assert.match(
+            packageEntry,
+            new RegExp(`export \\* from './components/${component}/types'`),
+            `${component}: missing type export`
+        );
+        assert.match(
+            declarationEntry,
+            new RegExp(`export \\* from '../components/${component}/types'`),
+            `${component}: missing declaration export`
+        );
     }
 });
 
@@ -81,7 +89,10 @@ test('every public type contract is documented for IDE consumers', async () => {
                 assert.ok(hasDocs(statement), `${component}: ${statement.name.text} 缺少 JSDoc`);
                 if (ts.isInterfaceDeclaration(statement)) {
                     for (const member of statement.members) {
-                        assert.ok(hasDocs(member), `${component}: ${statement.name.text}.${member.name?.getText(sourceFile)} 缺少 JSDoc`);
+                        assert.ok(
+                            hasDocs(member),
+                            `${component}: ${statement.name.text}.${member.name?.getText(sourceFile)} 缺少 JSDoc`
+                        );
                     }
                 }
             }
@@ -90,9 +101,16 @@ test('every public type contract is documented for IDE consumers', async () => {
                     if (!ts.isIdentifier(declaration.name) || !declaration.name.text.endsWith('Props')) continue;
                     assert.ok(hasDocs(statement), `${component}: ${declaration.name.text} 缺少 JSDoc`);
                     const initializer = declaration.initializer;
-                    if (initializer && ts.isAsExpression(initializer) && ts.isObjectLiteralExpression(initializer.expression)) {
+                    if (
+                        initializer &&
+                        ts.isAsExpression(initializer) &&
+                        ts.isObjectLiteralExpression(initializer.expression)
+                    ) {
                         for (const property of initializer.expression.properties) {
-                            assert.ok(hasDocs(property), `${component}: ${declaration.name.text}.${property.name?.getText(sourceFile)} 缺少 JSDoc`);
+                            assert.ok(
+                                hasDocs(property),
+                                `${component}: ${declaration.name.text}.${property.name?.getText(sourceFile)} 缺少 JSDoc`
+                            );
                         }
                     }
                 }
@@ -129,7 +147,10 @@ test('every Vue component explains its role and documented components expose an 
         .map(entry => entry.name)
         .sort();
     const files = directories.map(component => `components/${component}/${component}.vue`);
-    files.push('components/snake-filter-sorts/filter-page.vue', 'components/snake-list-switching/components/tree-select/index.vue');
+    files.push(
+        'components/snake-filter-sorts/filter-page.vue',
+        'components/snake-list-switching/components/tree-select/index.vue'
+    );
 
     for (const path of files) {
         const source = await readFile(new URL(path, root), 'utf8');
@@ -247,7 +268,11 @@ test('popup and overlay resolve visibility from the actually bound channel', asy
             /props\.show\s*\?\?\s*props\.modelValue/,
             `${component} 不能用 ?? 在 show 与 modelValue 间穿透（Boolean casting 下失效）`
         );
-        assert.match(source, /'show' in \(getCurrentInstance\(\)\?\.vnode\?\.props/, `${component} 需检测父组件实际绑定的通道`);
+        assert.match(
+            source,
+            /'show' in \(getCurrentInstance\(\)\?\.vnode\?\.props/,
+            `${component} 需检测父组件实际绑定的通道`
+        );
     }
 });
 
@@ -260,7 +285,10 @@ test('published styles avoid wxss-unsupported universal selectors', async () => 
         .map(entry => entry.name)
         .sort();
     const files = directories.map(component => `components/${component}/${component}.vue`);
-    files.push('components/snake-filter-sorts/filter-page.vue', 'components/snake-list-switching/components/tree-select/index.vue');
+    files.push(
+        'components/snake-filter-sorts/filter-page.vue',
+        'components/snake-list-switching/components/tree-select/index.vue'
+    );
 
     for (const path of files) {
         const source = await readFile(new URL(path, root), 'utf8');

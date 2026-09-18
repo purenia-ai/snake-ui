@@ -102,8 +102,8 @@ export const floatingBubbleData = {
 export const couponData = {
     modeType: 'page',
     couponId: 'preview',
-    beforeImage: localImage,
-    afterImage: localImage,
+    beforeImage: '/static/demo-coupon-available.png',
+    afterImage: '/static/demo-coupon-claimed.png',
     type: '10',
     afterUrl: ''
 };
@@ -192,9 +192,9 @@ export const filters = {
             name: '尺码',
             value: 'sizeFilter',
             type: 'multiple',
-            list: [
-                { name: '42', value: '42' },
-                { name: '43', value: '43' }
+            children: [
+                { label: '42', value: '42' },
+                { label: '43', value: '43' }
             ]
         }
     ],

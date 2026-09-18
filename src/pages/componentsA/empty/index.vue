@@ -5,11 +5,16 @@
                 <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
                 <snake-empty
                     :mode="String(state.emptyMode)"
-                    :icon="state.showIcon ? '/static/logo.png' : ''"
+                    :icon="state.customIcon ? '/static/logo.png' : ''"
                     :icon-size="Number(state.emptyIconSize)"
-                    :text="String(state.text)"
+                    :text="previewText"
                     :text-color="String(state.textColor)"
-                />
+                >
+                    <template v-if="!Boolean(state.showIcon)" #icon><view style="display: none" /></template>
+                    <template v-if="Boolean(state.showAction)" #bottom>
+                        <snake-button type="primary" size="small" @click="tryAgain">{{ text('重试') }}</snake-button>
+                    </template>
+                </snake-empty>
                 <text class="demo-variant-title">{{ isEnglish ? 'Semantic states' : '语义状态' }}</text>
                 <view class="demo-empty-grid">
                     <snake-empty mode="search" :text="isEnglish ? 'No results' : '没有搜索结果'" icon-size="72" />
@@ -46,8 +51,10 @@ const controls: DemoControl[] = [
             { label: '搜索为空', value: 'search' }
         ]
     },
-    { key: 'text', label: '提示文字', type: 'input', defaultValue: '暂无相关内容', placeholder: '输入空状态文案' },
+    { key: 'text', label: '提示文字', type: 'input', defaultValue: '', placeholder: '留空显示模式默认文案' },
     { key: 'showIcon', label: '显示图标', type: 'switch', defaultValue: true },
+    { key: 'customIcon', label: '使用品牌图片', type: 'switch', defaultValue: false },
+    { key: 'showAction', label: '显示操作按钮', type: 'switch', defaultValue: false },
     {
         key: 'emptyIconSize',
         label: '图标大小',
@@ -72,6 +79,19 @@ const controls: DemoControl[] = [
 const state = reactive<Record<string, DemoValue>>(
     Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))
 );
+const previewText = computed(() => {
+    const customText = String(state.text).trim();
+    if (customText) return customText;
+    if (!isEnglish.value) return '';
+    return (
+        {
+            data: 'No data',
+            list: 'No content',
+            wifi: 'Network unavailable',
+            search: 'No results'
+        }[String(state.emptyMode)] || 'No data'
+    );
+});
 const localizedControls = computed(() => {
     const _locale = localeName.value;
     return controls.map(control => ({
@@ -87,6 +107,9 @@ const title = computed(() => {
 });
 function updateValue(key: string, value: DemoValue) {
     state[key] = value;
+}
+function tryAgain() {
+    uni.showToast({ title: text('重试'), icon: 'none' });
 }
 </script>
 
