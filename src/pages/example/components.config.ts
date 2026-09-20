@@ -44,6 +44,7 @@ const englishDescriptions: Record<string, string> = {
     'Count Down': 'Count down to an event or campaign deadline.',
     NoticeBar: 'Scroll notices horizontally or rotate multiple notices vertically.',
     Overlay: 'Separate the current page from a floating layer.',
+    Tooltip: 'Show short explanations beside a trigger element.',
     Popup: 'Present content in a panel that enters from any side.',
     NoNetwork: 'Detect lost connectivity and offer a full-screen retry action.',
     Swiper: 'Show slides with autoplay, indicators and titles.',
@@ -199,6 +200,7 @@ const componentGroups: ComponentGroup[] = [
         list: [
             item('/pages/componentsA/noticeBar/index', 'NoticeBar 通知栏', 'NoticeBar', '支持横向通知与纵向多条轮播。'),
             item('/pages/componentsA/overlay/index', 'Overlay 遮罩层', 'Overlay', '隔离当前页面与浮层操作。'),
+            item('/pages/componentsA/tooltip/index', 'Tooltip 文字提示', 'Tooltip', '在触发元素旁展示简短说明。'),
             item('/pages/componentsA/popup/index', 'Popup 弹出层', 'Popup', '支持从不同方向出现并承载业务内容。'),
             item(
                 '/pages/componentsA/noNetwork/index',

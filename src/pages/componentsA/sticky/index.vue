@@ -1,5 +1,5 @@
 <template>
-    <DemoPage :title="title" :desc="text('页面滚动时将重要内容固定在指定顶部位置。')" viewport>
+    <DemoPage :title="title" :desc="text('页面滚动时将重要内容固定在指定顶部位置。')">
         <DemoSection bare variant="preview" :title="text('演示效果')">
             <view class="demo-scroll demo-sticky-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Page scroll sticky' : '页面滚动吸顶' }}</text>
@@ -10,6 +10,7 @@
                     bg-color="#06D290"
                     :disabled="Boolean(state.stickyDisabled)"
                     :offset-top="Number(state.stickyOffset)"
+                    :custom-nav-height="navbarHeight"
                 >
                     <view class="demo-sticky">
                         {{ isEnglish ? 'I stay at the top of the preview' : '我会固定在手机预览顶部' }}
@@ -36,6 +37,7 @@ import DemoSection from '../../../components/demo-section/demo-section.vue';
 
 const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
+const navbarHeight = 44 + Number(uni.getSystemInfoSync().statusBarHeight || 0);
 const controls: DemoControl[] = [
     { key: 'stickyDisabled', label: '关闭吸顶', type: 'switch', defaultValue: false },
     { key: 'stickyOffset', label: '顶部距离', type: 'slider', defaultValue: 0, min: 0, max: 80, step: 10, unit: 'rpx' }

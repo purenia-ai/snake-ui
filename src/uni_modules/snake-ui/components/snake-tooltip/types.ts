@@ -32,6 +32,8 @@ export interface TooltipProps {
     disabled?: boolean;
     /** 是否显示右上角关闭按钮。 */
     closeable?: boolean;
+    /** 是否显示关闭按钮；兼容 Wot UI 的 show-close 写法。 */
+    showClose?: boolean;
     /** 点击透明遮罩时是否关闭。 */
     closeOnClickOverlay?: boolean;
     /** 透明遮罩的层级；内容层始终比它高一层。 */
@@ -40,6 +42,10 @@ export interface TooltipProps {
     customClass?: string;
     /** 根节点自定义样式。 */
     customStyle?: StyleValue;
+    /** 箭头自定义类名。 */
+    customArrow?: string;
+    /** 浮层面板自定义类名。 */
+    customPop?: string;
     /** 浮层内容容器的自定义类名。 */
     contentClass?: string;
     /** 浮层内容容器的自定义样式。 */
@@ -69,4 +75,6 @@ export interface TooltipExpose {
     close(): void;
     /** 切换 Tooltip 显隐状态。 */
     toggle(): void;
+    /** 重新测量触发元素与浮层，刷新箭头对齐位置。 */
+    updatePosition(): Promise<void>;
 }

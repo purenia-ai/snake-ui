@@ -1,5 +1,5 @@
 <template>
-    <DemoPage :title="title" :desc="text('全屏遮罩用于隔离当前页面与浮层操作。')" viewport>
+    <DemoPage :title="title" :desc="text('全屏遮罩用于隔离当前页面与浮层操作。')">
         <DemoSection bare variant="preview" :title="text('演示效果')">
             <view class="demo-trigger demo-overlay-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Overlay content' : '遮罩内容' }}</text>

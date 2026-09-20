@@ -1,5 +1,5 @@
 <template>
-    <DemoPage :title="title" :desc="text('在页面边缘提供始终可见的营销或客服入口。')" viewport>
+    <DemoPage :title="title" :desc="text('在页面边缘提供始终可见的营销或客服入口。')">
         <DemoSection bare variant="preview" :title="text('演示效果')">
             <view class="bubble-actions">
                 <snake-button size="small" @click="bubbleRef?.reopen()">

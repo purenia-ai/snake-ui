@@ -643,6 +643,7 @@ const demoTitles: Record<string, string> = {
     loadmore: 'Load More',
     'notice-bar': 'Notice Bar',
     overlay: 'Overlay',
+    tooltip: 'Tooltip',
     popup: 'Popup',
     sticky: 'Sticky',
     navbar: 'Navbar',

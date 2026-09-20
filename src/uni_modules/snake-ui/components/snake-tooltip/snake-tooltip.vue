@@ -7,15 +7,21 @@
         <view
             v-if="visible"
             class="snake-tooltip__panel"
-            :class="`snake-tooltip__panel--${placement}`"
+            :class="[`snake-tooltip__panel--${placement}`, customPop]"
             :style="panelStyle"
             @click.stop
         >
-            <view v-if="visibleArrow" class="snake-tooltip__arrow" />
-            <view class="snake-tooltip__content" :class="contentClass" :style="contentStyle">
+            <view v-if="visibleArrow" class="snake-tooltip__arrow" :class="customArrow" />
+            <view
+                class="snake-tooltip__content"
+                :class="[contentClass, { 'snake-tooltip__content--closeable': showCloseButton }]"
+                :style="contentStyle"
+            >
                 <slot name="content">{{ content }}</slot>
             </view>
-            <view v-if="closeable" class="snake-tooltip__close" @click.stop="close">×</view>
+            <button v-if="showCloseButton" class="snake-tooltip__close" aria-label="关闭提示" @click.stop="close">
+                ×
+            </button>
         </view>
     </view>
 </template>
@@ -32,11 +38,12 @@ const tooltipClosers = new Set<() => void>();
  * @see /components/tooltip
  */
 
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import zIndexes from '../../libs/config/zIndex';
 import { addUnit } from '../../libs/function/unit';
-import Overlay from '../snake-overlay/snake-overlay.vue';
+import { getRect } from '../../libs/function/getRect';
 import type { TooltipEmits, TooltipExpose, TooltipProps } from './types';
+import { getTooltipArrowPosition } from './position';
 
 defineOptions({ name: 'Tooltip', options: { virtualHost: true, styleIsolation: 'shared' } });
 
@@ -48,10 +55,13 @@ const props = withDefaults(defineProps<TooltipProps>(), {
     visibleArrow: true,
     disabled: false,
     closeable: false,
+    showClose: false,
     closeOnClickOverlay: true,
     zIndex: zIndexes.mask,
     customClass: '',
     customStyle: '',
+    customArrow: '',
+    customPop: '',
     contentClass: '',
     contentStyle: ''
 });
@@ -59,11 +69,32 @@ const emit = defineEmits<TooltipEmits>();
 
 // 每个 Tooltip 自己保存状态，避免列表中的某个说明打开时所有说明一起渲染。
 const visible = ref(props.modelValue);
+const instance = getCurrentInstance();
+const arrowPosition = ref<{ x?: number; y?: number }>({});
+const showCloseButton = computed(() => props.closeable || props.showClose);
 const layerZIndex = computed(() => Number(props.zIndex) || zIndexes.mask);
 const panelStyle = computed(() => ({
     '--snake-tooltip-offset': addUnit(props.offset),
+    '--snake-tooltip-arrow-x': arrowPosition.value.x === undefined ? undefined : `${arrowPosition.value.x}px`,
+    '--snake-tooltip-arrow-y': arrowPosition.value.y === undefined ? undefined : `${arrowPosition.value.y}px`,
+    '--snake-tooltip-arrow-right': arrowPosition.value.x === undefined ? undefined : 'auto',
+    '--snake-tooltip-arrow-bottom': arrowPosition.value.y === undefined ? undefined : 'auto',
     zIndex: layerZIndex.value + 1
 }));
+
+let positionRequest = 0;
+async function updatePosition() {
+    const request = ++positionRequest;
+    if (!visible.value || !props.visibleArrow) return;
+    await nextTick();
+    const [target, panel] = await Promise.all([
+        getRect('.snake-tooltip__target', instance),
+        getRect('.snake-tooltip__panel', instance)
+    ]);
+    if (request !== positionRequest || !visible.value || !target.width || !panel.width || !panel.height) return;
+    const arrowSize = typeof uni.upx2px === 'function' ? uni.upx2px(16) : 8;
+    arrowPosition.value = getTooltipArrowPosition(props.placement, target, panel, arrowSize);
+}
 
 function setVisible(value: boolean) {
     if (visible.value === value) return;
@@ -102,16 +133,35 @@ watch(visible, value => {
             if (closeOther !== close) closeOther();
         }
         emit('open');
+        void updatePosition();
     } else {
+        positionRequest++;
+        arrowPosition.value = {};
         emit('close');
     }
     emit('change', { show: value });
 });
 
-onMounted(() => tooltipClosers.add(close));
+watch(
+    () => [props.placement, props.content, props.offset, props.visibleArrow, showCloseButton.value],
+    () => {
+        arrowPosition.value = {};
+        if (visible.value) void updatePosition();
+    }
+);
+
+onMounted(() => {
+    tooltipClosers.add(close);
+    if (visible.value) {
+        for (const closeOther of tooltipClosers) {
+            if (closeOther !== close) closeOther();
+        }
+        void updatePosition();
+    }
+});
 onBeforeUnmount(() => tooltipClosers.delete(close));
 
-defineExpose<TooltipExpose>({ open, close, toggle });
+defineExpose<TooltipExpose>({ open, close, toggle, updatePosition });
 </script>
 
 <style scoped lang="scss">
@@ -141,6 +191,10 @@ defineExpose<TooltipExpose>({ open, close, toggle });
     line-height: 1.5;
 }
 
+.snake-tooltip__content--closeable {
+    padding-right: 52rpx;
+}
+
 .snake-tooltip__arrow {
     position: absolute;
     width: 16rpx;
@@ -153,9 +207,22 @@ defineExpose<TooltipExpose>({ open, close, toggle });
     position: absolute;
     top: 4rpx;
     right: 8rpx;
-    padding: 4rpx;
+    display: flex;
+    width: 40rpx;
+    height: 40rpx;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
     font-size: 30rpx;
     line-height: 1;
+    color: inherit;
+    background: transparent;
+    border: 0;
+}
+
+.snake-tooltip__close::after {
+    border: 0;
 }
 
 .snake-tooltip__panel--top,
@@ -240,31 +307,33 @@ defineExpose<TooltipExpose>({ open, close, toggle });
 
 .snake-tooltip__panel--top .snake-tooltip__arrow,
 .snake-tooltip__panel--bottom .snake-tooltip__arrow {
-    left: calc(50% - 8rpx);
+    left: var(--snake-tooltip-arrow-x, calc(50% - 8rpx));
 }
 
 .snake-tooltip__panel--left .snake-tooltip__arrow,
 .snake-tooltip__panel--right .snake-tooltip__arrow {
-    top: calc(50% - 8rpx);
+    top: var(--snake-tooltip-arrow-y, calc(50% - 8rpx));
 }
 
 .snake-tooltip__panel--top-start .snake-tooltip__arrow,
 .snake-tooltip__panel--bottom-start .snake-tooltip__arrow {
-    left: 20rpx;
+    left: var(--snake-tooltip-arrow-x, 20rpx);
 }
 
 .snake-tooltip__panel--top-end .snake-tooltip__arrow,
 .snake-tooltip__panel--bottom-end .snake-tooltip__arrow {
-    right: 20rpx;
+    left: var(--snake-tooltip-arrow-x, auto);
+    right: var(--snake-tooltip-arrow-right, 20rpx);
 }
 
 .snake-tooltip__panel--left-start .snake-tooltip__arrow,
 .snake-tooltip__panel--right-start .snake-tooltip__arrow {
-    top: 16rpx;
+    top: var(--snake-tooltip-arrow-y, 16rpx);
 }
 
 .snake-tooltip__panel--left-end .snake-tooltip__arrow,
 .snake-tooltip__panel--right-end .snake-tooltip__arrow {
-    bottom: 16rpx;
+    top: var(--snake-tooltip-arrow-y, auto);
+    bottom: var(--snake-tooltip-arrow-bottom, 16rpx);
 }
 </style>

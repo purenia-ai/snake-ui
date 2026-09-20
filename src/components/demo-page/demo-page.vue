@@ -1,61 +1,47 @@
 <template>
-    <view :class="['demo-page', { 'demo-page--viewport': viewport }]" :style="shellThemeStyle">
-        <template v-if="!viewport">
-            <snake-navbar
-                :title="title"
-                :is-back="navBack"
-                :custom-back="goBack"
-                :background="background"
-                title-color="#ffffff"
-                back-icon-color="#ffffff"
-                :border-bottom="false"
-                title-bold
-            >
-                <template #right>
-                    <view class="demo-nav__actions">
-                        <view
-                            class="demo-nav__hit demo-nav__locale"
-                            hover-class="demo-nav__hit--hover"
-                            @click="switchLocale"
-                        >
-                            <text>{{ nextLocaleLabel }}</text>
-                        </view>
-                        <view v-if="navHome" class="demo-nav__hit" hover-class="demo-nav__hit--hover" @click="goHome()">
-                            <text class="demo-nav__home">{{ text('首页') }}</text>
-                        </view>
+    <view class="demo-page" :style="shellThemeStyle">
+        <snake-navbar
+            :title="title"
+            :is-back="navBack"
+            :custom-back="goBack"
+            :background="background"
+            title-color="#ffffff"
+            back-icon-color="#ffffff"
+            :border-bottom="false"
+            title-bold
+        >
+            <template #right>
+                <view class="demo-nav__actions">
+                    <view
+                        class="demo-nav__hit demo-nav__locale"
+                        hover-class="demo-nav__hit--hover"
+                        @click="switchLocale"
+                    >
+                        <text>{{ nextLocaleLabel }}</text>
                     </view>
-                </template>
-            </snake-navbar>
+                    <view v-if="navHome" class="demo-nav__hit" hover-class="demo-nav__hit--hover" @click="goHome()">
+                        <text class="demo-nav__home">{{ text('首页') }}</text>
+                    </view>
+                </view>
+            </template>
+        </snake-navbar>
 
-            <view v-if="eyebrow || desc" class="demo-page-header">
-                <text v-if="eyebrow" class="demo-page-header__category">{{ eyebrow }}</text>
-                <text class="demo-page-header__title">{{ title }}</text>
-                <view v-if="desc" class="demo-page-header__desc">{{ desc }}</view>
-            </view>
+        <view v-if="eyebrow || desc" class="demo-page-header">
+            <text v-if="eyebrow" class="demo-page-header__category">{{ eyebrow }}</text>
+            <text class="demo-page-header__title">{{ title }}</text>
+            <view v-if="desc" class="demo-page-header__desc">{{ desc }}</view>
+        </view>
 
-            <view class="demo-body">
-                <slot />
-                <snake-tabbar
-                    v-if="tabbar"
-                    :items="tabItems"
-                    :current="currentTab"
-                    :mid-button="true"
-                    @change="switchTab"
-                />
-            </view>
-        </template>
-        <template v-else>
-            <view class="demo-viewport-nav">
-                <button class="demo-viewport-nav__back" :aria-label="text('返回')" @click="goBack">
-                    ← {{ text('返回') }}
-                </button>
-                <text class="demo-viewport-nav__title">{{ title }}</text>
-                <button class="demo-viewport-nav__locale" :aria-label="text('切换语言')" @click="switchLocale">
-                    {{ nextLocaleLabel }}
-                </button>
-            </view>
+        <view class="demo-body">
             <slot />
-        </template>
+            <snake-tabbar
+                v-if="tabbar"
+                :items="tabItems"
+                :current="currentTab"
+                :mid-button="true"
+                @change="switchTab"
+            />
+        </view>
     </view>
 </template>
 
@@ -70,7 +56,6 @@ const props = withDefaults(
         title?: string;
         eyebrow?: string;
         desc?: string;
-        viewport?: boolean;
         navBack?: boolean;
         navHome?: boolean;
         tabbar?: boolean;
@@ -80,14 +65,13 @@ const props = withDefaults(
         title: '',
         eyebrow: '',
         desc: '',
-        viewport: false,
         navBack: true,
         navHome: true,
         tabbar: false,
         currentTab: 'components'
     }
 );
-const { title, eyebrow, desc, viewport, navBack, navHome, tabbar, currentTab } = toRefs(props);
+const { title, eyebrow, desc, navBack, navHome, tabbar, currentTab } = toRefs(props);
 
 /*
  * 外壳组合变量必须内联到页面根节点:uni-app H5 会把 `page` 选择器编译成
@@ -178,48 +162,6 @@ function switchTab(key: string | number) {
     background-color: var(--snake-color-surface);
     color: var(--snake-color-text);
     -webkit-font-smoothing: antialiased;
-}
-
-.demo-page--viewport {
-    background: var(--snake-color-surface);
-}
-.demo-viewport-nav {
-    position: relative;
-    z-index: 30;
-    display: flex;
-    min-height: 80rpx;
-    padding: var(--status-bar-height, env(safe-area-inset-top, 0px)) 18rpx 0;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12rpx;
-    border-bottom: 1px solid var(--snake-color-divider);
-    background: var(--snake-color-surface);
-    color: var(--snake-color-text);
-}
-.demo-viewport-nav__back,
-.demo-viewport-nav__locale {
-    flex: none;
-    min-height: 64rpx;
-    margin: 0;
-    padding: 0 12rpx;
-    border: 0;
-    color: var(--snake-color-primary-deep);
-    background: transparent;
-    font-size: 24rpx;
-    line-height: 64rpx;
-}
-.demo-viewport-nav__back::after,
-.demo-viewport-nav__locale::after {
-    border: 0;
-}
-.demo-viewport-nav__title {
-    overflow: hidden;
-    min-width: 0;
-    color: var(--snake-color-text);
-    font-size: 27rpx;
-    font-weight: 650;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 .demo-nav__actions {

@@ -60,6 +60,7 @@
                 { "path": "loadmore/index", "style": { "navigationBarTitleText": "加载更多" } },
                 { "path": "noticeBar/index", "style": { "navigationBarTitleText": "通知栏" } },
                 { "path": "overlay/index", "style": { "navigationBarTitleText": "遮罩层" } },
+                { "path": "tooltip/index", "style": { "navigationBarTitleText": "文字提示" } },
                 { "path": "popup/index", "style": { "navigationBarTitleText": "弹出层" } },
                 {
                     "path": "navbar/index",

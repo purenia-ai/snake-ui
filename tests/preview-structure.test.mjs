@@ -16,6 +16,7 @@ const foundationComponents = [
     'loadmore',
     'notice-bar',
     'overlay',
+    'tooltip',
     'popup',
     'sticky',
     'swiper',

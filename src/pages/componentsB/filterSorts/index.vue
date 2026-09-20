@@ -1,5 +1,5 @@
 <template>
-    <DemoPage :title="title" :desc="text('提供商品排序和多条件筛选入口。')" viewport>
+    <DemoPage :title="title" :desc="text('提供商品排序和多条件筛选入口。')">
         <DemoSection bare variant="preview" :title="text('演示效果')">
             <snake-filter-sorts
                 class="demo-filter-sorts-showcase"

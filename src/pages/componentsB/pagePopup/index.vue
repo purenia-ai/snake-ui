@@ -1,5 +1,5 @@
 <template>
-    <DemoPage :title="title" :desc="text('根据业务场景展示居中或底部营销弹窗。')" viewport>
+    <DemoPage :title="title" :desc="text('根据业务场景展示居中或底部营销弹窗。')">
         <DemoSection bare variant="preview" :title="text('演示效果')">
             <view class="popup-actions">
                 <snake-button @click="popupRef?.open()">{{ isEnglish ? 'Open popup' : '打开弹窗' }}</snake-button>
