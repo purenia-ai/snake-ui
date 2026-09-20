@@ -2,6 +2,8 @@ export interface ToolItem {
     text: string;
     link: `/tools/${string}`;
     apis?: string[];
+    description?: string;
+    keywords?: string[];
 }
 
 export interface ToolGroup {
@@ -77,3 +79,12 @@ export const toolGroups: ToolGroup[] = [
 ];
 
 export const documentedToolApis = toolGroups.flatMap(group => group.items.flatMap(item => item.apis || []));
+export const documentedToolItems = toolGroups.flatMap(group =>
+    group.items.map(item => ({
+        ...item,
+        description: item.description || `Snake UI ${item.text}的使用方式、参数和平台边界。`,
+        keywords: Array.from(
+            new Set([item.text, item.link.slice('/tools/'.length), ...(item.apis || []), ...(item.keywords || [])])
+        )
+    }))
+);

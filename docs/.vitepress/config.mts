@@ -1,7 +1,31 @@
 import { defineConfig } from 'vitepress';
-import { cmsBlockGroups } from './cms-block-groups';
-import { componentGroups } from './component-groups';
-import { toolGroups } from './tool-groups';
+import { cmsBlockGroups, cmsBlockItems } from './cms-block-groups';
+import { componentGroups, componentItems } from './component-groups';
+import { documentedToolItems, toolGroups } from './tool-groups';
+
+const guideDescriptions: Record<string, string> = {
+    '/guide/getting-started': '用 5 分钟在 uni-app Vue 3 项目中安装、配置并运行第一个 Snake UI 组件。',
+    '/guide/intro': '了解 Snake UI 的定位、核心能力、适用场景和使用边界。',
+    '/guide/compatibility': '查看 Snake UI 的运行环境、平台兼容性、工具链要求和能力边界。',
+    '/guide/troubleshooting': '按现象排查 Snake UI 安装、样式、组件解析、主题和 CMS 接入问题。',
+    '/guide/foundation': '集中配置 Snake UI 主题、语言、HTTP、业务适配器和 CMS 服务。',
+    '/guide/multi-theme': '注册、切换并持久化 Snake UI 多主题与暗黑模式。'
+};
+
+function resolvePageDescription(relativePath: string, title: string): string {
+    const route = `/${relativePath.replace(/\.md$/, '').replace(/\/index$/, '')}`;
+    const catalogItem =
+        componentItems.find(item => item.link === route) ||
+        cmsBlockItems.find(item => item.link === route) ||
+        documentedToolItems.find(item => item.link === route);
+
+    if (catalogItem) return catalogItem.description;
+    if (guideDescriptions[route]) return guideDescriptions[route];
+    if (route.startsWith('/cms/')) return `${title}：Snake CMS 页面装修能力、数据协议与接入说明。`;
+    if (route.startsWith('/components/')) return `${title}：Snake UI 组件的使用方式、平台边界和 API。`;
+    if (route.startsWith('/tools/')) return `${title}：Snake UI 工具与组合式函数参考。`;
+    return `${title}：Snake UI 面向 uni-app 商城与 CMS 场景的开发文档。`;
+}
 
 const componentSidebar = [
     {
@@ -70,9 +94,14 @@ export default defineConfig({
         }
     },
     head: [
-        ['meta', { name: 'theme-color', content: '#06D290' }],
+        ['meta', { name: 'theme-color', content: '#ffffff', media: '(prefers-color-scheme: light)' }],
+        ['meta', { name: 'theme-color', content: '#1b1d24', media: '(prefers-color-scheme: dark)' }],
         ['meta', { name: 'color-scheme', content: 'light dark' }]
     ],
+    transformPageData(pageData) {
+        if (pageData.frontmatter.description || pageData.frontmatter.search === false || pageData.isNotFound) return;
+        return { description: resolvePageDescription(pageData.relativePath, pageData.title) };
+    },
     themeConfig: {
         logo: {
             light: '/snake-mark-light.svg',
@@ -176,6 +205,10 @@ export default defineConfig({
             }
         ],
         socialLinks: [{ icon: 'github', link: 'https://github.com/zwbcode/snake-ui' }],
+        editLink: {
+            pattern: 'https://github.com/zwbcode/snake-ui/edit/main/docs/:path',
+            text: '编辑此页'
+        },
         sidebar: {
             '/guide/': [
                 {

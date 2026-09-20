@@ -136,7 +136,6 @@ test('high-use component docs follow the standard documentation shape', async ()
         assert.match(markdown, /^## API$/m, `${name}: API`);
         assert.match(markdown, /^#{3,4} (?:Form )?Props$/m, `${name}: props`);
         assert.match(markdown, /^## 主题变量$/m, `${name}: theme variables`);
-        assert.doesNotMatch(markdown, /^## (?:何时使用|无障碍)$/m, `${name}: omitted sections`);
         assert.doesNotMatch(markdown, /源码：/, `${name}: no source path`);
     }
 
@@ -222,6 +221,13 @@ test('high-use component docs follow the standard documentation shape', async ()
     assert.match(await document('drop-menu'), /^#### Expose$/m);
     for (const name of ['index-list', 'index-list-panel', 'count-down', 'slider', 'no-network', 'read-more']) {
         assert.match(await document(name), /^### (?:Expose|Methods)$/m, `${name}: exposed methods`);
+    }
+
+    for (const name of ['button', 'input', 'form', 'popup', 'upload', 'tabbar']) {
+        const markdown = await document(name);
+        assert.match(markdown, /^## 使用建议$/m, `${name}: usage guidance`);
+        assert.match(markdown, /^## 无障碍$/m, `${name}: accessibility guidance`);
+        assert.match(markdown, /^description: .+$/m, `${name}: page description`);
     }
 });
 

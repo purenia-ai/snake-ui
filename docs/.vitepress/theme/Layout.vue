@@ -1,6 +1,7 @@
 <template>
     <DefaultTheme.Layout :class="layoutClass">
         <template #doc-before><PreviewFrame /></template>
+        <template #doc-after><DocActions /></template>
     </DefaultTheme.Layout>
 </template>
 
@@ -8,6 +9,7 @@
 import { computed } from 'vue';
 import { useData } from 'vitepress';
 import DefaultTheme from 'vitepress/theme';
+import DocActions from './DocActions.vue';
 import PreviewFrame from './PreviewFrame.vue';
 
 const { frontmatter } = useData();

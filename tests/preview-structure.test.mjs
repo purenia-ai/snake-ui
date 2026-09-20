@@ -242,7 +242,7 @@ test('preview pages hide the outline at medium desktop widths while retaining th
     assert.match(layout, /frontmatter\.value\.preview/);
     assert.match(
         css,
-        /@media \(min-width: 1280px\) and \(max-width: 1439px\)\s*{\s*\.snake-preview-layout \.VPDoc\.has-aside \.aside\s*{[^}]*display:\s*none/s
+        /@media \(min-width: 1280px\) and \(max-width: 1599px\)\s*{\s*\.snake-preview-layout \.VPDoc\.has-aside \.aside\s*{[^}]*display:\s*none/s
     );
     assert.match(css, /\.snake-preview-layout \.VPDoc\.has-aside \.aside\s*{[^}]*max-width:\s*190px/s);
     assert.match(
@@ -312,14 +312,15 @@ test('production preview is emitted below the documentation base path', async ()
     assert.match(buildScript, /docs\/\.vitepress\/dist\/h5/);
     assert.doesNotMatch(buildScript, /docs\/\.vitepress\/dist\/preview/);
 });
-test('docs retain brand green while the preview shell uses neutral device colors', async () => {
+test('docs use surface-aware browser chrome while retaining brand green in the page', async () => {
     const config = await readFile(resolve(root, 'docs/.vitepress/config.mts'), 'utf8');
     const frame = await readFile(resolve(root, 'docs/.vitepress/theme/PreviewFrame.vue'), 'utf8');
     const css = await readFile(resolve(root, 'docs/.vitepress/theme/custom.css'), 'utf8');
     const demoTheme = await readFile(resolve(root, 'src/common/demo.scss'), 'utf8');
     const demoPage = await readFile(resolve(root, 'src/components/demo-page/demo-page.vue'), 'utf8');
 
-    assert.match(config, /theme-color[^\n]+#06D290/);
+    assert.match(config, /theme-color[^\n]+#ffffff[^\n]+prefers-color-scheme: light/);
+    assert.match(config, /theme-color[^\n]+#1b1d24[^\n]+prefers-color-scheme: dark/);
     assert.match(css, /--snake-brand-fill:\s*#06d290/i);
     assert.match(css, /--snake-brand-hover:\s*#05be83/i);
     assert.match(css, /--snake-brand-active:\s*#04a873/i);

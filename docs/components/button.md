@@ -1,10 +1,15 @@
 ---
 preview: /pages/componentsA/button/index
+description: 使用 Snake UI Button 触发提交、确认和页面操作，处理加载、禁用、节流与小程序开放能力。
 ---
 
 # Button 按钮
 
 基于 uni-app 原生 `button` 封装，覆盖常用属性、状态与交互。
+
+## 使用建议
+
+用 Button 触发即时操作，例如提交表单、确认选择或调用平台开放能力。一个操作区只保留一个主要按钮；页面跳转优先使用 [Link](/components/link) 或明确的导航组件。
 
 ## 平台兼容性
 
@@ -74,6 +79,12 @@ async function submit() {
 <snake-button open-type="getPhoneNumber" @getphonenumber="receivePhone">获取手机号</snake-button>
 <snake-button form-type="submit">提交表单</snake-button>
 ```
+
+## 无障碍
+
+- 按钮文字应描述结果，例如“保存地址”，不要只写“确定”。
+- 仅显示图标时，通过可见文字或平台支持的无障碍属性提供名称。
+- 异步操作期间使用 `loading` 表达进度；除非确实不能再次提交，否则不要用永久禁用代替状态反馈。
 
 ## API
 

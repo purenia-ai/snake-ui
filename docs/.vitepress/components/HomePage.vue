@@ -42,11 +42,15 @@
                             class="snake-orbit__logo snake-orbit__logo--light"
                             :src="internalLink('/snake-mark-light.svg')"
                             alt=""
+                            width="128"
+                            height="128"
                         />
                         <img
                             class="snake-orbit__logo snake-orbit__logo--dark"
                             :src="internalLink('/snake-mark-dark.svg')"
                             alt=""
+                            width="128"
+                            height="128"
                         />
                     </div>
                     <div class="snake-float-card snake-float-card--cms"><b>CMS</b><span>配置驱动</span></div>

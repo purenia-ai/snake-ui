@@ -40,26 +40,31 @@
                         >
                             智能生成
                         </button>
-                        <button type="button" class="tg-btn tg-btn--mini" @click="toggleGroup(group.id)">
+                        <button
+                            type="button"
+                            class="tg-btn tg-btn--mini"
+                            :aria-expanded="!collapsed[group.id]"
+                            :aria-label="`${collapsed[group.id] ? '展开' : '折叠'}${group.label}`"
+                            @click="toggleGroup(group.id)"
+                        >
                             {{ collapsed[group.id] ? '展开' : '折叠' }}
                         </button>
                     </span>
                 </div>
                 <div v-if="!collapsed[group.id]" class="tg-grid">
-                    <div
+                    <button
                         v-for="key in group.keys"
                         :key="key"
+                        type="button"
                         class="tg-card"
-                        role="button"
-                        tabindex="0"
+                        :aria-label="`编辑${tokenLabels[key]}，当前值 ${light[key]}`"
                         @click="openPicker('light', key)"
-                        @keydown.enter="openPicker('light', key)"
                     >
                         <div class="tg-card__swatch" :style="swatchStyle('light', key)">
                             <span class="tg-card__name">{{ tokenLabels[key] }}</span>
                             <span class="tg-card__value">{{ light[key] }}</span>
                         </div>
-                    </div>
+                    </button>
                 </div>
             </div>
         </section>
@@ -98,6 +103,7 @@
                 :class="{ 'tg-switch--on': darkEnabled }"
                 role="switch"
                 :aria-checked="darkEnabled"
+                aria-label="启用暗黑色值"
                 @click="toggleDark"
             >
                 <span class="tg-switch__knob" />
@@ -123,20 +129,19 @@
                 <div v-for="group in section.groups" :key="'dark-group-' + group.id" class="tg-group tg-group--compact">
                     <span class="tg-group__label">{{ group.label }}</span>
                     <div class="tg-grid">
-                        <div
+                        <button
                             v-for="key in group.keys"
                             :key="'d-' + key"
+                            type="button"
                             class="tg-card"
-                            role="button"
-                            tabindex="0"
+                            :aria-label="`编辑暗黑模式${tokenLabels[key]}，当前值 ${dark[key]}`"
                             @click="openPicker('dark', key)"
-                            @keydown.enter="openPicker('dark', key)"
                         >
                             <div class="tg-card__swatch" :style="swatchStyle('dark', key)">
                                 <span class="tg-card__name">dark - {{ tokenLabels[key] }}</span>
                                 <span class="tg-card__value">{{ dark[key] }}</span>
                             </div>
-                        </div>
+                        </button>
                     </div>
                 </div>
             </section>
@@ -145,13 +150,37 @@
         <section class="tg-meta">
             <p class="tg-meta__tip">请填写主题元信息（name/label/description），为上述已选择颜色赋予名称。</p>
             <div class="tg-meta-row">
-                <input class="tg-input" v-model="draftName" placeholder="name（英文必填，如 blue）" />
-                <input class="tg-input" v-model="draftLabel" placeholder="label（显示名称，如 蓝色）" />
-                <input
-                    class="tg-input tg-input--wide"
-                    v-model="draftDescription"
-                    placeholder="description（简短描述）"
-                />
+                <label class="tg-input-field">
+                    <span class="tg-input-label">主题标识</span>
+                    <input
+                        v-model="draftName"
+                        class="tg-input"
+                        name="theme-name"
+                        placeholder="例如 blue…"
+                        autocomplete="off"
+                        spellcheck="false"
+                    />
+                </label>
+                <label class="tg-input-field">
+                    <span class="tg-input-label">显示名称</span>
+                    <input
+                        v-model="draftLabel"
+                        class="tg-input"
+                        name="theme-label"
+                        placeholder="例如 蓝色…"
+                        autocomplete="off"
+                    />
+                </label>
+                <label class="tg-input-field tg-input-field--wide">
+                    <span class="tg-input-label">主题描述</span>
+                    <input
+                        v-model="draftDescription"
+                        class="tg-input"
+                        name="theme-description"
+                        placeholder="简要说明适用场景…"
+                        autocomplete="off"
+                    />
+                </label>
             </div>
             <p class="tg-meta-tip">
                 如需多个主题，请先将当前已配置好的变量添加到导出队列，继续进行下一套主题配置，最后导出即可！
@@ -176,9 +205,16 @@
             </p>
         </section>
 
-        <div v-if="picker.visible" class="tg-mask" @click="cancelPicker">
-            <div class="tg-dialog" role="dialog" @click.stop>
-                <p class="tg-dialog__title">{{ tokenLabels[picker.key] }}（{{ picker.key }}）</p>
+        <div v-if="picker.visible" class="tg-mask" @click.self="cancelPicker">
+            <div
+                ref="dialogRef"
+                class="tg-dialog"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="tg-dialog-title"
+                @keydown="onDialogKeydown"
+            >
+                <p id="tg-dialog-title" class="tg-dialog__title">{{ tokenLabels[picker.key] }}（{{ picker.key }}）</p>
                 <div class="tg-dialog__body">
                     <div
                         class="tg-sv"
@@ -200,10 +236,18 @@
                     >
                         <div class="tg-hue__handle" :style="hueHandleStyle" />
                     </div>
-                    <div class="tg-field">
+                    <label class="tg-field">
                         <span class="tg-field__label">颜色值</span>
-                        <input class="tg-field__input" v-model="picker.draft" placeholder="#RRGGBB" />
-                    </div>
+                        <input
+                            ref="pickerInputRef"
+                            v-model="picker.draft"
+                            class="tg-field__input"
+                            name="theme-color-value"
+                            placeholder="#RRGGBB…"
+                            autocomplete="off"
+                            spellcheck="false"
+                        />
+                    </label>
                     <div class="tg-presets">
                         <button
                             v-for="preset in presetColors"
@@ -211,6 +255,8 @@
                             type="button"
                             class="tg-preset"
                             :style="{ background: preset }"
+                            :aria-label="`使用预设颜色 ${preset}`"
+                            :title="preset"
                             @click="applyPreset(preset)"
                         />
                     </div>
@@ -225,12 +271,14 @@
         </div>
 
         <transition name="tg-toast">
-            <div v-if="toast" class="tg-toast" :class="`tg-toast--${toast.type}`">{{ toast.text }}</div>
+            <div v-if="toast" class="tg-toast" :class="`tg-toast--${toast.type}`" role="status" aria-live="polite">
+                {{ toast.text }}
+            </div>
         </transition>
     </div>
 </template>
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue';
 
 type ColorKey =
     | 'primary'
@@ -861,6 +909,9 @@ const picker = reactive<PickerState>({
     hue: 160,
     alpha: null
 });
+const dialogRef = ref<HTMLElement | null>(null);
+const pickerInputRef = ref<HTMLInputElement | null>(null);
+let pickerTrigger: HTMLElement | null = null;
 let panelDragging = false;
 let hueDragging = false;
 
@@ -877,11 +928,21 @@ function openPicker(mode: PaletteMode, key: ColorKey): void {
     picker.draft = hexOf(value);
     const hsl = hexToHsl(picker.draft);
     picker.hue = hsl ? Math.round(hsl.h) : 0;
+    pickerTrigger = typeof document === 'undefined' ? null : (document.activeElement as HTMLElement | null);
     picker.visible = true;
+    void nextTick(() => pickerInputRef.value?.focus());
+}
+
+function closePicker(): void {
+    picker.visible = false;
+    void nextTick(() => {
+        pickerTrigger?.focus();
+        pickerTrigger = null;
+    });
 }
 
 function cancelPicker(): void {
-    picker.visible = false;
+    closePicker();
 }
 
 function confirmPicker(): void {
@@ -890,12 +951,37 @@ function confirmPicker(): void {
         const hex = normalizeHex(raw);
         const value = picker.alpha != null && picker.alpha < 1 ? rgbaFromHex(hex, picker.alpha) : hex;
         commitToken(picker.mode, picker.key, value);
-        picker.visible = false;
+        closePicker();
     } else if (RGB_RE.test(raw)) {
         commitToken(picker.mode, picker.key, raw);
-        picker.visible = false;
+        closePicker();
     } else {
         notify('颜色格式无效，请输入 #RRGGBB 或 rgba()', 'error');
+    }
+}
+
+function onDialogKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Escape') {
+        event.preventDefault();
+        cancelPicker();
+        return;
+    }
+    if (event.key !== 'Tab' || !dialogRef.value) return;
+
+    const focusable = Array.from(
+        dialogRef.value.querySelectorAll<HTMLElement>(
+            'button:not([disabled]), input:not([disabled]), [href], [tabindex]:not([tabindex="-1"])'
+        )
+    );
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
     }
 }
 
@@ -1018,8 +1104,10 @@ watch(
 );
 
 function formatTime(date: Date): string {
-    const pad = (n: number) => (n < 10 ? `0${n}` : `${n}`);
-    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+    return new Intl.DateTimeFormat('zh-CN', {
+        dateStyle: 'medium',
+        timeStyle: 'short'
+    }).format(date);
 }
 
 const STORAGE_KEY = 'snake-ui.theme-generate';
@@ -1363,7 +1451,13 @@ function resetAll(): void {
 .tg-card {
     box-sizing: border-box;
     width: calc(20% - 7px);
+    padding: 0;
+    border: 0;
+    color: inherit;
+    background: transparent;
     cursor: pointer;
+    font: inherit;
+    text-align: left;
 }
 
 .tg-card__swatch {
@@ -1601,9 +1695,27 @@ function resetAll(): void {
     gap: 8px;
 }
 
+.tg-input-field {
+    display: flex;
+    min-width: 0;
+    flex: 1 1 200px;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.tg-input-field--wide {
+    flex-basis: 100%;
+}
+
+.tg-input-label {
+    color: var(--tg-text-2);
+    font-size: 11px;
+    font-weight: 600;
+}
+
 .tg-input {
     box-sizing: border-box;
-    flex: 1 1 200px;
+    width: 100%;
     height: 36px;
     padding: 0 10px;
     border: 1px solid var(--tg-border);
@@ -1611,10 +1723,6 @@ function resetAll(): void {
     background: var(--tg-bg);
     color: var(--tg-text);
     font-size: 12px;
-}
-
-.tg-input--wide {
-    flex-basis: 100%;
 }
 
 .tg-meta-tip {
@@ -1752,6 +1860,7 @@ function resetAll(): void {
     justify-content: center;
     padding: 24px;
     background: rgba(0, 0, 0, 0.45);
+    overscroll-behavior: contain;
 }
 
 .tg-dialog {

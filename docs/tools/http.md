@@ -1,5 +1,6 @@
 ---
 preview: /pages/library/http/index
+description: 配置并使用 Snake UI HTTP 客户端、拦截器、错误处理、多实例和自定义传输。
 ---
 
 # HTTP 请求

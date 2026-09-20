@@ -10,7 +10,8 @@
                     id="component-search-input"
                     v-model="query"
                     type="search"
-                    placeholder="搜索 Button、按钮或 button-sort"
+                    name="component-search"
+                    placeholder="搜索 Button、按钮或弹窗…"
                     autocomplete="off"
                 />
                 <button v-if="query" type="button" aria-label="清空组件搜索" @click="clearQuery">清空</button>
@@ -47,6 +48,7 @@
                         <span class="component-card__copy">
                             <strong>{{ item.name }}</strong>
                             <span>{{ item.title }}</span>
+                            <small>{{ item.description }}</small>
                         </span>
                         <svg aria-hidden="true" viewBox="0 0 20 20">
                             <path d="m7.5 5 5 5-5 5" />
@@ -60,6 +62,7 @@
             <span>没有找到“{{ query.trim() }}”相关的组件</span>
             <button v-if="normalizedQuery" type="button" @click="clearQuery">清空搜索</button>
             <button v-else type="button" @click="selectCategory('all')">查看全部</button>
+            <button type="button" @click="openGlobalSearch">搜索全部文档</button>
         </div>
     </div>
 </template>
@@ -98,7 +101,9 @@ const filteredGroups = computed<FilteredGroup[]>(() => {
             ...group,
             items: group.items.filter(item => {
                 const pathName = item.link.slice('/components/'.length);
-                const searchText = `${item.name} ${item.title} ${pathName}`.toLocaleLowerCase();
+                const searchText = [item.name, item.title, item.description, pathName, ...item.keywords]
+                    .join(' ')
+                    .toLocaleLowerCase();
                 return searchText.includes(normalizedQuery.value);
             })
         }))
@@ -112,6 +117,12 @@ function clearQuery() {
 
 function selectCategory(category: string) {
     selectedCategory.value = category;
+}
+
+function openGlobalSearch() {
+    if (typeof document === 'undefined') return;
+    const searchButton = document.querySelector<HTMLButtonElement>('.DocSearch-Button, .VPLocalSearchBox button');
+    searchButton?.click();
 }
 
 function readUrlState() {
@@ -248,6 +259,7 @@ onBeforeUnmount(() => {
     margin-top: 14px;
     padding-bottom: 2px;
     overflow-x: auto;
+    scroll-snap-type: x proximity;
     scrollbar-width: thin;
 }
 
@@ -269,6 +281,7 @@ onBeforeUnmount(() => {
         border-color 160ms ease,
         color 160ms ease,
         background-color 160ms ease;
+    scroll-snap-align: start;
 }
 
 .component-filters button span {
@@ -329,7 +342,7 @@ onBeforeUnmount(() => {
     display: flex;
     align-items: center;
     min-width: 0;
-    min-height: 66px;
+    min-height: 88px;
     padding: 12px 14px;
     border: 1px solid var(--vp-c-divider);
     border-radius: 8px;
@@ -373,6 +386,16 @@ onBeforeUnmount(() => {
     line-height: 18px;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.component-card__copy small {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--vp-c-text-3);
+    font-size: 11px;
+    line-height: 17px;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 }
 
 .component-card > svg {

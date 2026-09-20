@@ -2,15 +2,66 @@ export interface ComponentItem {
     name: string;
     title: string;
     link: `/components/${string}`;
+    description: string;
+    keywords: string[];
+    source: string;
     since?: string;
 }
+
+type ComponentDefinition = Omit<ComponentItem, 'description' | 'keywords' | 'source'> & {
+    description?: string;
+    keywords?: string[];
+    source?: string;
+};
 
 export interface ComponentGroup {
     title: string;
     items: ComponentItem[];
 }
 
-export const componentGroups: ComponentGroup[] = [
+interface ComponentGroupDefinition {
+    title: string;
+    items: ComponentDefinition[];
+}
+
+const componentDescriptions: Partial<Record<ComponentItem['link'], string>> = {
+    '/components/button': '触发提交、确认和页面操作，覆盖加载、禁用与开放能力。',
+    '/components/form': '组织表单字段、校验规则和错误提示，支持嵌套数据。',
+    '/components/input': '采集文本、数字和密码，支持格式化与表单校验联动。',
+    '/components/upload': '选择、预览并上传图片、视频或文件，支持自定义上传。',
+    '/components/popup': '承载对话、选择器和底部面板，处理遮罩、滚动与安全区。',
+    '/components/tabbar': '构建应用一级底部导航，支持原生 tabBar 替换和安全区。',
+    '/components/search': '提供带清空、取消和操作区的搜索输入体验。',
+    '/components/calendar': '选择单日、日期范围或多日期并处理可选边界。',
+    '/components/icon': '使用内置图标字库或自定义图标前缀展示语义图标。',
+    '/components/image': '加载、裁剪和预览图片，并提供加载失败兜底。',
+    '/components/tooltip': '在目标元素附近展示轻量提示内容和操作说明。'
+};
+
+const componentKeywords: Partial<Record<ComponentItem['link'], string[]>> = {
+    '/components/popup': ['弹窗', '抽屉', '底部面板', 'dialog', 'sheet'],
+    '/components/upload': ['文件', '图片上传', '视频上传', 'OSS', '选择文件'],
+    '/components/tabbar': ['底部导航', '原生 tabBar', '一级导航'],
+    '/components/no-network': ['断网', '离线', '重试'],
+    '/components/notice-bar': ['公告', '滚动通知', '消息条'],
+    '/components/drop-menu': ['筛选', '下拉筛选', '菜单'],
+    '/components/config-provider': ['主题', '全局配置', '暗黑模式']
+};
+
+function enrichComponent(item: ComponentDefinition): ComponentItem {
+    const slug = item.link.slice('/components/'.length);
+    const sourceSlug = slug === 'cell' ? 'cell-group' : slug;
+    return {
+        ...item,
+        description: item.description || componentDescriptions[item.link] || `在 uni-app 中实现${item.title}能力。`,
+        keywords: Array.from(
+            new Set([item.name, item.title, slug, ...(item.keywords || componentKeywords[item.link] || [])])
+        ),
+        source: item.source || `src/uni_modules/snake-ui/components/snake-${sourceSlug}/snake-${sourceSlug}.vue`
+    };
+}
+
+const componentGroupDefinitions: ComponentGroupDefinition[] = [
     {
         title: '基础组件',
         items: [
@@ -87,6 +138,11 @@ export const componentGroups: ComponentGroup[] = [
         ]
     }
 ];
+
+export const componentGroups: ComponentGroup[] = componentGroupDefinitions.map(group => ({
+    ...group,
+    items: group.items.map(enrichComponent)
+}));
 
 export const componentCount = componentGroups.reduce((total, group) => total + group.items.length, 0);
 export const componentItems = componentGroups.flatMap(group =>

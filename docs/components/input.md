@@ -1,10 +1,15 @@
 ---
 preview: /pages/componentsA/input/index
+description: 使用 Snake UI Input 采集文本、数字和密码，支持格式化、清空、插槽与 Form 校验联动。
 ---
 
 # Input 输入框
 
 基于 uni-app input，支持清空、密码显示、格式化、前后插槽和 Form 校验联动。
+
+## 使用建议
+
+Input 适合单行内容。多行输入使用 [Textarea](/components/textarea)，结构化选择优先使用 Select、Calendar 等选择组件，避免让用户手工输入可枚举值。
 
 ## 平台兼容性
 
@@ -35,6 +40,12 @@ preview: /pages/componentsA/input/index
     @confirm="submit"
 />
 ```
+
+## 无障碍
+
+- 在 `FormItem` 中提供明确的 `label`，不要只依赖 placeholder 表达字段含义。
+- 根据内容设置 `type`、`confirm-type` 和长度限制，让软键盘与输入预期一致。
+- 校验失败时保留具体错误信息，并让用户能够回到对应字段修正。
 
 ## API
 

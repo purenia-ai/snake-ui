@@ -1,5 +1,6 @@
 ---
 preview: /pages/other/themeLocale/index
+description: 使用 useTheme 响应式读取和切换 Snake UI 主题、暗色模式、颜色与 CSS 变量。
 ---
 
 # 主题管理

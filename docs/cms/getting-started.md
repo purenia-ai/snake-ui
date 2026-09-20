@@ -1,3 +1,7 @@
+---
+description: 将后端保存的页面装修配置接入 Snake CMS，并处理业务服务、诊断、失败和分页。
+---
+
 # CMS 快速接入
 
 Snake CMS 用来把后端保存的页面装修配置渲染成 uni-app 页面。新页面使用 `{ component: 'v2.*', active, props }` 信封；已有 v1 配置仍可渲染，见[版本共存](/cms/data-contract#版本共存)。

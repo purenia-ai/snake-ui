@@ -1,4 +1,5 @@
 :root {
+    color-scheme: light;
     --snake-brand-fill: #06d290;
     --snake-brand-hover: #05be83;
     --snake-brand-active: #04a873;
@@ -24,6 +25,7 @@
 }
 
 .dark {
+    color-scheme: dark;
     --vp-c-brand-1: #35e7ad;
     --vp-c-brand-2: #18d99a;
     --vp-c-brand-3: #06d290;
@@ -133,6 +135,7 @@ body {
     color: var(--vp-c-text-1);
     font-weight: 500;
     letter-spacing: 0;
+    text-wrap: balance;
 }
 
 .vp-doc h1 {
@@ -594,7 +597,7 @@ body {
     }
 }
 
-@media (min-width: 1280px) and (max-width: 1439px) {
+@media (min-width: 1280px) and (max-width: 1599px) {
     .snake-preview-layout .VPDoc.has-aside .aside {
         display: none;
     }
@@ -638,6 +641,27 @@ body {
         transition-duration: 0.01ms !important;
         animation-duration: 0.01ms !important;
     }
+}
+
+.doc-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 18px;
+    margin-top: 36px;
+    padding-top: 18px;
+    border-top: 1px solid var(--vp-c-divider);
+    font-size: 13px;
+}
+
+.doc-actions a {
+    color: var(--vp-c-brand-1);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.doc-actions a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
 }
 
 /* Documentation landing page */
