@@ -239,7 +239,7 @@ function setRadioCheckedStatus() {
     border: 1px solid var(--snake-color-border, #dcdfe6);
     transition-duration: 0.2s;
     /* #ifdef MP-TOUTIAO */
-    // 头条小程序兼容性问题，需要设置行高为 0，否则图标偏下
+    /* 头条小程序兼容性问题，需要设置行高为 0，否则图标偏下 */
     line-height: 0;
     /* #endif */
 }

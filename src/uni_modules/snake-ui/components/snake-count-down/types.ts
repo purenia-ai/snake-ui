@@ -98,4 +98,6 @@ export interface CountDownExpose {
     start: () => void;
     /** 结束倒计时。 */
     end: () => void;
+    /** 主动停止倒计时，不触发 end 事件。 */
+    destroy: () => void;
 }

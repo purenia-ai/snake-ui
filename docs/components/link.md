@@ -15,8 +15,10 @@ preview: /pages/componentsA/link/index
 ## 基础用法
 
 ```vue
-<snake-link href="https://example.com">打开链接</snake-link>
+<snake-link text="打开链接" href="https://example.com" />
 ```
+
+头条小程序不支持该位置的默认插槽渲染，请优先通过 `text` 传入链接文字；其他平台仍可使用默认插槽。
 
 `defaultClick` 为 false 时点击只触发 `click` 事件并携带链接地址，由业务自行处理跳转。
 

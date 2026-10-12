@@ -70,6 +70,23 @@ test('tabs and swiper expose navigation and indicator contracts', async () => {
     for (const name of ['indicatorPos', 'effect3d', 'animationfinish', 'titleStyle']) assert.match(swiper, new RegExp(name));
 });
 
+test('countdown clears timers on unmount and exposes explicit destroy', async () => {
+    const [source, types] = await Promise.all([
+        read('components/snake-count-down/snake-count-down.vue'),
+        read('components/snake-count-down/types.ts')
+    ]);
+    assert.match(source, /onBeforeUnmount\(clearTimer\)/);
+    assert.match(source, /function destroy\(\)[\s\S]*?clearTimer\(\)/);
+    assert.match(source, /defineExpose<CountDownExpose>\(\{[\s\S]*?destroy/);
+    assert.match(types, /destroy:\s*\(\) => void/);
+});
+
+test('link renders its text prop directly on Toutiao mini program', async () => {
+    const source = await read('components/snake-link/snake-link.vue');
+    assert.match(source, /#ifdef MP-TOUTIAO[\s\S]*?\{\{ text \}\}[\s\S]*?#endif/);
+    assert.match(source, /#ifndef MP-TOUTIAO[\s\S]*?<slot>\{\{ text \}\}<\/slot>[\s\S]*?#endif/);
+});
+
 test('swiper follows uView list reset, indicator and 3D interaction rules', async () => {
     const swiper = await read('components/snake-swiper/snake-swiper.vue');
     assert.match(swiper, /\(length, previousLength\) => \{[\s\S]*if \(length !== previousLength\) active\.value = 0/);

@@ -9,7 +9,12 @@
         }"
         @click.stop="openLink"
     >
+        <!-- #ifdef MP-TOUTIAO -->
+        {{ text }}
+        <!-- #endif -->
+        <!-- #ifndef MP-TOUTIAO -->
         <slot>{{ text }}</slot>
+        <!-- #endif -->
     </text>
 </template>
 

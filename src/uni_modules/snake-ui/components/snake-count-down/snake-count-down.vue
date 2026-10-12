@@ -178,6 +178,14 @@ function end() {
     emit('end');
 }
 
+/**
+ * 主动停止倒计时，不触发 end 事件。
+ * 适用于父组件切换场景或业务主动销毁计时任务。
+ */
+function destroy() {
+    clearTimer();
+}
+
 /** 清除定时器。 */
 function clearTimer() {
     if (timer.value) {
@@ -188,7 +196,8 @@ function clearTimer() {
 
 defineExpose<CountDownExpose>({
     start,
-    end
+    end,
+    destroy
 });
 </script>
 

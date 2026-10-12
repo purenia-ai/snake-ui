@@ -5,15 +5,14 @@
                 <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
                 <view>
                     <snake-link
+                        :text="isEnglish ? 'Visit Snake UI' : '访问 Snake UI 仓库'"
                         :href="String(state.lHref)"
                         :under-line="Boolean(state.lUnderLine)"
                         :default-click="Boolean(state.lDefaultClick)"
                         :color="String(state.lColor)"
                         :font-size="Number(state.lFontSize)"
                         @click="onLinkClick"
-                    >
-                        {{ isEnglish ? 'Visit Snake UI' : '访问 Snake UI 仓库' }}
-                    </snake-link>
+                    />
                 </view>
                 <text class="demo-variant-sub">
                     {{ state.lDefaultClick ? text('点击后将打开或复制链接') : lastClick || text('暂无事件') }}

@@ -129,8 +129,8 @@
                             ><span>{{ item.title }}</span>
                         </div>
                         <em>{{ item.tag }}</em
-                        ><i>↗</i></a
-                    >
+                        ><i>↗</i>
+                    </a>
                 </div>
             </div>
         </section>
@@ -150,7 +150,8 @@
                             target="_blank"
                             rel="noreferrer"
                             >打开在线演示 ↗</a
-                        ><a class="snake-button snake-button--dark" :href="internalLink('/components/intro')"
+                        >
+                        <a class="snake-button snake-button--dark" :href="internalLink('/components/intro')"
                             >组件总览</a
                         >
                     </div>
@@ -176,38 +177,38 @@
                     <h2>选择你的下一步</h2>
                 </header>
                 <div class="snake-next__grid">
-                    <a :href="internalLink('/components/quickstart')"
-                        ><span>01</span>
+                    <a :href="internalLink('/components/quickstart')">
+                        <span>01</span>
                         <div>
                             <b>基础组件接入</b>
                             <p>完成安装、配置与第一个组件</p>
                         </div>
-                        <i>→</i></a
-                    >
-                    <a :href="internalLink('/cms/getting-started')"
-                        ><span>02</span>
+                        <i>→</i>
+                    </a>
+                    <a :href="internalLink('/cms/getting-started')">
+                        <span>02</span>
                         <div>
                             <b>CMS 页面接入</b>
                             <p>用页面配置渲染商城模块</p>
                         </div>
-                        <i>→</i></a
-                    >
-                    <a :href="internalLink('/components/intro')"
-                        ><span>03</span>
+                        <i>→</i>
+                    </a>
+                    <a :href="internalLink('/components/intro')">
+                        <span>03</span>
                         <div>
                             <b>组件总览</b>
                             <p>按业务域浏览全部组件</p>
                         </div>
-                        <i>→</i></a
-                    >
-                    <a href="https://github.com/zwbcode/snake-ui" target="_blank" rel="noreferrer"
-                        ><span>04</span>
+                        <i>→</i>
+                    </a>
+                    <a href="https://github.com/zwbcode/snake-ui" target="_blank" rel="noreferrer">
+                        <span>04</span>
                         <div>
                             <b>源代码</b>
                             <p>查看实现并参与项目建设</p>
                         </div>
-                        <i>↗</i></a
-                    >
+                        <i>↗</i>
+                    </a>
                 </div>
             </div>
         </section>
