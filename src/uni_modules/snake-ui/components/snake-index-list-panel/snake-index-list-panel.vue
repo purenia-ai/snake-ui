@@ -221,9 +221,7 @@ defineExpose({ scrollTo, update });
     min-height: 400rpx;
 }
 .snake-index-list-panel__content {
-    box-sizing: border-box;
     height: 100%;
-    padding-right: 64rpx;
 }
 .snake-index-list-panel__rail {
     position: absolute;
