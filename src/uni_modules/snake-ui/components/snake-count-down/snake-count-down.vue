@@ -14,7 +14,7 @@
             }"
             v-if="showDays && (!hideZeroDay || d !== '00')"
         >
-            {{ separator === 'colon' && showHours ? ':' : t('countDown.day') }}
+            {{ separator === 'colon' && showHours ? ':' : t('day') }}
         </view>
         <view class="snake-countdown__item" :style="itemStyle" v-if="showHours">
             <view class="snake-countdown__time" :style="{ fontSize: fontSize + 'rpx', color: color }">
@@ -30,7 +30,7 @@
             }"
             v-if="showHours"
         >
-            {{ separator === 'colon' && showMinutes ? ':' : t('countDown.hour') }}
+            {{ separator === 'colon' && showMinutes ? ':' : t('hour') }}
         </view>
         <view class="snake-countdown__item" :style="itemStyle" v-if="showMinutes">
             <view class="snake-countdown__time" :style="{ fontSize: fontSize + 'rpx', color: color }">
@@ -46,7 +46,7 @@
             }"
             v-if="showMinutes"
         >
-            {{ separator === 'colon' && showSeconds ? ':' : t('countDown.minute') }}
+            {{ separator === 'colon' && showSeconds ? ':' : t('minute') }}
         </view>
         <view class="snake-countdown__item" :style="itemStyle" v-if="showSeconds">
             <view class="snake-countdown__time" :style="{ fontSize: fontSize + 'rpx', color: color }">
@@ -58,7 +58,7 @@
             :style="{ fontSize: separatorSize + 'rpx', color: separatorColor, paddingBottom: 0 }"
             v-if="showSeconds && separator === 'zh'"
         >
-            {{ t('countDown.second') }}
+            {{ t('second') }}
         </view>
     </view>
 </template>
