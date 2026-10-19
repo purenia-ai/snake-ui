@@ -5,7 +5,6 @@
             scroll-y
             :scroll-top="innerScrollTop"
             :scroll-into-view="scrollIntoView"
-            scroll-with-animation
             @scroll="onScroll"
         >
             <slot />
@@ -69,11 +68,18 @@ const emit = defineEmits<IndexListPanelEmits>();
 const instance = getCurrentInstance();
 const activeIndex = ref(props.indexList.length ? 0 : -1);
 const scrollIntoView = ref('');
+// Keep the command value separate from the position reported by scroll-view.
+// Binding the live scroll position back to `scroll-top` makes every scroll event
+// trigger another native scroll/layout pass, which is especially noticeable on
+// long lists and while dragging the index rail.
 const innerScrollTop = ref(Number(props.scrollTop) || 0);
+const currentScrollTop = ref(Number(props.scrollTop) || 0);
 const railTop = ref(0);
 const railHeight = ref(0);
 const anchorOffsets = ref<number[]>([]);
 const touching = ref(false);
+let updating = false;
+let scrollIntoViewTimer: ReturnType<typeof setTimeout> | undefined;
 const anchorId = (value: IndexValue) => `snake-index-panel-anchor-${String(value).replace(/[^a-zA-Z0-9_-]/g, '-')}`;
 
 function setActive(index: number, selected = false) {
@@ -90,12 +96,16 @@ function scrollTo(indexOrValue: number | IndexValue) {
     if (index < 0) return;
     setActive(index, true);
     if (index < anchorOffsets.value.length) {
-        innerScrollTop.value = anchorOffsets.value[index];
+        const nextScrollTop = Math.max(0, anchorOffsets.value[index]);
+        currentScrollTop.value = nextScrollTop;
+        innerScrollTop.value = nextScrollTop;
         scrollIntoView.value = '';
+        if (scrollIntoViewTimer) clearTimeout(scrollIntoViewTimer);
         return;
     }
     scrollIntoView.value = '';
-    setTimeout(() => (scrollIntoView.value = anchorId(props.indexList[index])), 0);
+    if (scrollIntoViewTimer) clearTimeout(scrollIntoViewTimer);
+    scrollIntoViewTimer = setTimeout(() => (scrollIntoView.value = anchorId(props.indexList[index])), 0);
 }
 
 function touchSelect(event: any) {
@@ -106,41 +116,54 @@ function touchSelect(event: any) {
 }
 
 function onScroll(event: any) {
-    innerScrollTop.value = Number(event.detail?.scrollTop) || 0;
+    currentScrollTop.value = Number(event.detail?.scrollTop) || 0;
     if (!anchorOffsets.value.length) void update();
-    const target = innerScrollTop.value + offsetTopPx(props.offsetTop);
+    const target = currentScrollTop.value + offsetTopPx(props.offsetTop) + 1;
+    let low = 0;
+    let high = anchorOffsets.value.length - 1;
     let index = 0;
-    anchorOffsets.value.forEach((offset, position) => {
-        if (offset <= target + 1) index = position;
-    });
-    setActive(index);
+    while (low <= high) {
+        const middle = (low + high) >> 1;
+        if (anchorOffsets.value[middle] <= target) {
+            index = middle;
+            low = middle + 1;
+        } else {
+            high = middle - 1;
+        }
+    }
+    if (anchorOffsets.value.length) setActive(index);
 }
 
 async function update() {
-    if (typeof uni === 'undefined') return;
-    await nextTick();
-    await new Promise<void>(resolve => {
-        const query = uni.createSelectorQuery().in(instance?.proxy as any);
-        query.select('.snake-index-list-panel__content').boundingClientRect();
-        query.select('.snake-index-list-panel__rail').boundingClientRect();
-        query.selectAll('.snake-index-anchor__wrapper').boundingClientRect();
-        query.exec((results: any[]) => {
-            const content = results?.[0];
-            const rail = results?.[1];
-            const anchors = results?.[2] || [];
-            if (rail) {
-                railTop.value = Number(rail.top) || 0;
-                railHeight.value = Number(rail.height) || 0;
-            }
-            if (content) {
-                anchorOffsets.value = anchors.map(
-                    (item: any) => Number(item.top) - Number(content.top) + innerScrollTop.value
-                );
-            }
-            activeIndex.value = props.indexList.length ? Math.max(0, activeIndex.value) : -1;
-            resolve();
+    if (typeof uni === 'undefined' || updating) return;
+    updating = true;
+    try {
+        await nextTick();
+        await new Promise<void>(resolve => {
+            const query = uni.createSelectorQuery().in(instance?.proxy as any);
+            query.select('.snake-index-list-panel__content').boundingClientRect();
+            query.select('.snake-index-list-panel__rail').boundingClientRect();
+            query.selectAll('.snake-index-anchor__wrapper').boundingClientRect();
+            query.exec((results: any[]) => {
+                const content = results?.[0];
+                const rail = results?.[1];
+                const anchors = results?.[2] || [];
+                if (rail) {
+                    railTop.value = Number(rail.top) || 0;
+                    railHeight.value = Number(rail.height) || 0;
+                }
+                if (content) {
+                    anchorOffsets.value = anchors.map(
+                        (item: any) => Number(item.top) - Number(content.top) + currentScrollTop.value
+                    );
+                }
+                activeIndex.value = props.indexList.length ? Math.max(0, activeIndex.value) : -1;
+                resolve();
+            });
         });
-    });
+    } finally {
+        updating = false;
+    }
 }
 
 function indexOfAnchor(value: IndexValue) {
@@ -176,7 +199,11 @@ provide(indexListKey, {
 
 watch(
     () => props.scrollTop,
-    value => (innerScrollTop.value = Number(value) || 0)
+    value => {
+        const nextScrollTop = Number(value) || 0;
+        currentScrollTop.value = nextScrollTop;
+        innerScrollTop.value = nextScrollTop;
+    }
 );
 watch(
     () => props.indexList,
