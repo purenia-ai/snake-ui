@@ -288,6 +288,24 @@ test('query and time helpers handle encoded and normalized values', () => {
     assert.equal(functions.timeFrom((now - 31 * 86_400_000) / 1000, now), '2026-07-20');
 });
 
+test('queryParams serializes objects into uview-compatible query strings', () => {
+    // 默认加 ? 前缀；isPrefix=false 时输出裸串
+    assert.equal(functions.queryParams({ page: 2, tag: 'new' }), '?page=2&tag=new');
+    assert.equal(functions.queryParams({ page: 2 }, false), 'page=2');
+    // 空值参数跳过
+    assert.equal(functions.queryParams({ empty: '', skip: undefined, gone: null, kept: 1 }), '?kept=1');
+    // 数组四种格式
+    assert.equal(functions.queryParams({ ids: [1, 2] }), '?ids[]=1&ids[]=2');
+    assert.equal(functions.queryParams({ ids: [1, 2] }, false, 'indices'), 'ids[0]=1&ids[1]=2');
+    assert.equal(functions.queryParams({ ids: [1, 2] }, false, 'repeat'), 'ids=1&ids=2');
+    assert.equal(functions.queryParams({ ids: [1, 2] }, false, 'comma'), 'ids=1,2');
+    assert.equal(functions.queryParams({ ids: [1, 2] }, false, 'unknown'), 'ids[]=1&ids[]=2');
+    // 对象 JSON 序列化并编码
+    assert.equal(functions.queryParams({ filter: { a: 1 } }, false), `filter=${encodeURIComponent('{"a":1}')}`);
+    // 普通值不做额外编码，与 uview 行为一致
+    assert.equal(functions.queryParams({ url: 'https://x.com/a b' }, false), 'url=https://x.com/a b');
+});
+
 test('time helpers handle 10-digit timestamps and safe identifiers', () => {
     // 10 位数字/字符串按秒级时间戳换算，与 13 位毫秒时间戳指向同一时刻
     const expectedYear = String(new Date(1700000000 * 1000).getFullYear());
