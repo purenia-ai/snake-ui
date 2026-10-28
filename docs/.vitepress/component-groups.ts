@@ -35,6 +35,7 @@ const componentDescriptions: Partial<Record<ComponentItem['link'], string>> = {
     '/components/calendar': '选择单日、日期范围或多日期并处理可选边界。',
     '/components/icon': '使用内置图标字库或自定义图标前缀展示语义图标。',
     '/components/image': '加载、裁剪和预览图片，并提供加载失败兜底。',
+    '/components/qr-code': '把文本或链接渲染为可扫描的二维码，支持中心 Logo 与导出图片。',
     '/components/tooltip': '在目标元素附近展示轻量提示内容和操作说明。'
 };
 
@@ -70,6 +71,7 @@ const componentGroupDefinitions: ComponentGroupDefinition[] = [
             { name: 'Button', title: '按钮', link: '/components/button' },
             { name: 'Icon', title: '图标', link: '/components/icon' },
             { name: 'Image', title: '图片', link: '/components/image' },
+            { name: 'QrCode', title: '二维码', link: '/components/qr-code' },
             { name: 'Loading', title: '加载', link: '/components/loading' },
             { name: 'Skeleton', title: '骨架屏', link: '/components/skeleton' },
             { name: 'Transition', title: '过渡动画', link: '/components/transition' },

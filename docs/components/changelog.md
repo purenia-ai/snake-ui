@@ -10,15 +10,16 @@
 
 ## 当前组件索引
 
-以下清单随组件目录更新，当前共 45 个通用组件入口。
+以下清单随组件目录更新，当前共 46 个通用组件入口。
 
-基础组件（11）
+基础组件（12）
 
 - Parse 富文本解析
 - ConfigProvider 全局配置
 - Button 按钮
 - Icon 图标
 - Image 图片
+- QrCode 二维码
 - Loading 加载
 - Skeleton 骨架屏
 - Transition 过渡动画

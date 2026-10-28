@@ -520,6 +520,16 @@ const englishMessages: Record<string, string> = {
     当前剩余: 'Remaining',
     已结束: 'Finished',
     重新开始: 'Restart',
+    二维码内容: 'QR content',
+    边长: 'Size',
+    纠错级别: 'Error correction',
+    留白: 'Quiet zone',
+    '显示 Logo': 'Show logo',
+    导出图片: 'Export image',
+    'L 约 7%': 'L ~7%',
+    'M 约 15%': 'M ~15%',
+    'Q 约 25%': 'Q ~25%',
+    'H 约 30%': 'H ~30%',
     '用于活动截止等场景的倒计时，通过数字变化给用户明确的时间感受。':
         'Counts down to an event deadline, giving users a clear sense of time through changing digits.',
     快速模式: 'Quick mode',
@@ -605,7 +615,9 @@ Object.assign(englishMessages, {
     '在列表和宫格商品布局之间切换。': 'Switches between product list and grid layouts.',
     '展示优惠券状态并提供领取入口。': 'Displays coupon status and a claim action.',
     '把内容传送到页面根节点，解决复杂布局下 fixed 弹层失效的问题。':
-        'Renders content at the page root to fix broken fixed layers in complex layouts.'
+        'Renders content at the page root to fix broken fixed layers in complex layouts.',
+    '把文本或链接渲染为可扫描的二维码，支持中心 Logo 与导出图片。':
+        'Renders text or links into a scannable QR code with an optional center logo and image export.'
 });
 
 Object.assign(englishMessages, {
@@ -665,6 +677,7 @@ const demoTitles: Record<string, string> = {
     link: 'Link',
     calendar: 'Calendar',
     'count-down': 'Count Down',
+    'qr-code': 'QR Code',
     form: 'Form',
     input: 'Input',
     textarea: 'Textarea',

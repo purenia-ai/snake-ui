@@ -42,6 +42,7 @@ const englishDescriptions: Record<string, string> = {
     ReadMore: 'Collapse long content and expand it on demand.',
     Empty: 'Explain an empty state and guide the next action.',
     'Count Down': 'Count down to an event or campaign deadline.',
+    QrCode: 'Render text or links into a scannable QR code.',
     NoticeBar: 'Scroll notices horizontally or rotate multiple notices vertically.',
     Overlay: 'Separate the current page from a floating layer.',
     Tooltip: 'Show short explanations beside a trigger element.',
@@ -109,6 +110,12 @@ const componentGroups: ComponentGroup[] = [
                 'Image 图片',
                 'Image',
                 '图片展示，支持视口懒加载、占位、圆角与自适应模式。'
+            ),
+            item(
+                '/pages/componentsA/qrCode/index',
+                'QrCode 二维码',
+                'QrCode',
+                '把文本或链接渲染为可扫描的二维码，支持中心 Logo 与导出图片。'
             ),
             item('/pages/componentsA/loading/index', 'Loading 加载', 'Loading', '统一展示组件和页面中的加载状态。'),
             item('/pages/componentsA/skeleton/index', 'Skeleton 骨架屏', 'Skeleton', '在首次加载时预显示页面结构。'),

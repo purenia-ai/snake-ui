@@ -27,6 +27,7 @@ export * from './components/snake-root-portal/types';
 export * from './components/snake-empty/types';
 export * from './components/snake-icon/types';
 export * from './components/snake-image/types';
+export * from './components/snake-qr-code/types';
 export * from './components/snake-loadmore/types';
 export * from './components/snake-notice-bar/types';
 export * from './components/snake-navbar/types';
