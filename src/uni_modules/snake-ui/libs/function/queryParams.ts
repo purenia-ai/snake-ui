@@ -1,6 +1,6 @@
 /**
- * URL 查询串工具：queryParams 负责「对象 → 串」拼接（与 uview 的
- * $u.queryParams 语义一致），getQueryParams 负责「串 → 对象」解析。
+ * URL 查询串工具：queryParams 负责「对象 → 串」拼接（与 uView Pro 的
+ * queryParams 语义一致），getQueryParams 负责「串 → 对象」解析。
  */
 
 /** 数组参数的序列化格式：indices 下标 / brackets 中括号 / repeat 重复键 / comma 逗号合并 */
