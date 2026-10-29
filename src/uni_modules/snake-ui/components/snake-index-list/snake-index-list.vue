@@ -211,7 +211,6 @@ defineExpose({ scrollTo, update });
 .snake-index-list {
     position: relative;
     box-sizing: border-box;
-    padding-right: 64rpx;
 }
 .snake-index-list__rail {
     position: fixed;
