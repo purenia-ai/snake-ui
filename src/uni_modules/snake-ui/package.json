@@ -2,7 +2,7 @@
     "id": "snake-ui",
     "name": "@puresnake/snake-ui",
     "displayName": "Snake UI",
-    "version": "0.1.0",
+    "version": "0.0.3",
     "description": "面向 uni-app 商城与 CMS 场景的 Vue 组件库",
     "license": "MIT",
     "author": "PURESNAKE",
@@ -30,6 +30,24 @@
             "default": "./index.ts"
         },
         "./components/*": "./components/*",
+        "./libs/*": "./libs/*",
+        "./libs/request": {
+            "types": "./libs/request/index.ts",
+            "import": "./libs/request/index.ts",
+            "default": "./libs/request/index.ts"
+        },
+        "./libs/runtime": {
+            "types": "./libs/runtime/index.ts",
+            "import": "./libs/runtime/index.ts",
+            "default": "./libs/runtime/index.ts"
+        },
+        "./libs/config/*": "./libs/config/*.ts",
+        "./libs/cms/*": "./libs/cms/*.ts",
+        "./libs/function/*": "./libs/function/*.ts",
+        "./libs/hooks/*": "./libs/hooks/*.ts",
+        "./plugins/*": "./plugins/*",
+        "./locale/*": "./locale/*",
+        "./iconfont.css": "./iconfont.css",
         "./libs": {
             "types": "./libs/index.ts",
             "import": "./libs/index.ts",

@@ -1,14 +1,24 @@
 # 更新日志
 
-## 0.1.0（2026-08-14）
+## 0.0.3（2026-10-29）
 
-- 通用组件文档入口基于 Vue 3 + TypeScript 构建
+- 修复 exports 深层路径对 TypeScript / Vite 的兼容性：`./libs/request`、`./libs/runtime` 提供显式入口；`./libs/config/*`、`./libs/cms/*`、`./libs/function/*`、`./libs/hooks/*` 映射到显式 `.ts` 文件（TS 不做扩展名探测，通配 `./libs/*` 下的无扩展名路径此前无法解析）
+
+## 0.0.2（2026-10-29）
+
+- 补齐 package.json `exports` 子路径：`./libs/*`、`./plugins/*`、`./locale/*`、`./iconfont.css`，接入方可以直接通过 `@puresnake/snake-ui/libs/...` 等子路径 import
+- 新增 `pnpm changelog:sync`：本文件单向同步到 `docs/components/changelog.md`，文档站更新日志随发版自动对齐
+
+## 0.0.1（2026-10-29）
+
+- 首个 npm 公开发布版本（`@puresnake/snake-ui`，MIT）
+- 基于 Vue 3 + TypeScript 的 uni-app 组件库，面向商城与 CMS 场景
 - 14 个配置驱动的 CMS 页面区块，统一由 `snake-cms` 渲染
-- 兼容安卓、iOS、微信小程序、H5 等
-- 详尽的文档支持，现代化的演示效果
+- 内置明暗主题（`theme.scss`）、`zh-CN` / `en-US` 多语言、基于 `uni.request` 的 HTTP 客户端与常用 hooks / 工具
 - easycom 按需引入，精简打包体积
+- 兼容 H5、微信小程序、App 等多端
 
-## 当前组件索引
+## 组件索引
 
 以下清单随组件目录更新，当前共 46 个通用组件入口。
 
