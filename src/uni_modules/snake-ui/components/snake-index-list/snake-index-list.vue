@@ -42,6 +42,7 @@
 
 import { computed, getCurrentInstance, nextTick, onMounted, provide, ref, toRef, watch, type CSSProperties } from 'vue';
 import zIndex from '../../libs/config/zIndex';
+import { createAnchorRegistry } from './anchor-registry';
 import { indexFromTouch, offsetTopPx, resolveIndex, indexListKey } from './types';
 import type { IndexListEmits, IndexListProps, IndexValue } from './types';
 
@@ -67,6 +68,8 @@ const railTop = ref(0);
 const railHeight = ref(0);
 const listLeft = ref(0);
 const listWidth = ref(0);
+// 锚点位置由锚点组件自测回报（微信端父级查询跨不过自定义组件边界）。
+const registry = createAnchorRegistry();
 const anchorTops = ref<number[]>([]);
 const anchorHeights = ref<number[]>([]);
 const currentScrollTop = computed(() => Number(props.scrollTop) || 0);
@@ -98,9 +101,15 @@ function updateActive() {
 
 function scrollTo(indexOrValue: number | IndexValue) {
     const index = resolveIndex(indexOrValue, props.indexList);
-    if (index < 0 || index >= anchorTops.value.length) return;
+    if (index < 0) return;
     setActive(index, true);
-    uni.pageScrollTo({ duration: 0, scrollTop: Math.max(0, anchorTops.value[index] - currentOffsetTop.value) });
+    const top = anchorTops.value[index];
+    if (Number.isFinite(top)) {
+        uni.pageScrollTo({ duration: 0, scrollTop: Math.max(0, top - currentOffsetTop.value) });
+        return;
+    }
+    // 兜底：锚点尚未回报时按锚点 id 定位（微信 2.23.1+ / H5 / App 支持 selector）。
+    uni.pageScrollTo({ duration: 0, selector: `#${anchorId(props.indexList[index])}` } as UniApp.PageScrollToOptions);
 }
 
 function touchSelect(event: any) {
@@ -117,11 +126,9 @@ async function update() {
         const query = uni.createSelectorQuery().in(instance?.proxy as any);
         query.select('.snake-index-list').boundingClientRect();
         query.select('.snake-index-list__rail').boundingClientRect();
-        query.selectAll('.snake-index-anchor__wrapper').boundingClientRect();
         query.exec((results: any[]) => {
             const list = results?.[0];
             const rail = results?.[1];
-            const anchors = results?.[2] || [];
             if (list) {
                 listLeft.value = Number(list.left) || 0;
                 listWidth.value = Number(list.width) || 0;
@@ -130,12 +137,21 @@ async function update() {
                 railTop.value = Number(rail.top) || 0;
                 railHeight.value = Number(rail.height) || 0;
             }
-            anchorTops.value = anchors.map((item: any) => Number(item.top) + currentScrollTop.value);
-            anchorHeights.value = anchors.map((item: any) => Number(item.height) || 0);
-            updateActive();
             resolve();
         });
     });
+    await registry.collect();
+    const tops: number[] = [];
+    const heights: number[] = [];
+    props.indexList.forEach(value => {
+        const rect = registry.rects.get(value);
+        // 未回报的锚点以 Infinity 占位，避免被滚动激活逻辑命中。
+        tops.push(rect ? rect.top + currentScrollTop.value : Number.POSITIVE_INFINITY);
+        heights.push(rect?.height || 0);
+    });
+    anchorTops.value = tops;
+    anchorHeights.value = heights;
+    updateActive();
 }
 
 function indexOfAnchor(value: IndexValue) {
@@ -173,7 +189,11 @@ provide(indexListKey, {
     anchorId,
     anchorStyle,
     wrapperStyle,
-    isActive: value => indexOfAnchor(value) === activeIndex.value
+    isActive: value => indexOfAnchor(value) === activeIndex.value,
+    measureToken: registry.measureToken,
+    registerAnchor: registry.registerAnchor,
+    unregisterAnchor: registry.unregisterAnchor,
+    reportAnchor: registry.reportAnchor
 });
 
 watch(() => props.scrollTop, updateActive);

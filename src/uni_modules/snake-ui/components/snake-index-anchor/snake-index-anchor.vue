@@ -13,7 +13,7 @@
  * @see /components/index-anchor
  */
 
-import { computed, inject } from 'vue';
+import { computed, getCurrentInstance, inject, onBeforeUnmount, onMounted, watch } from 'vue';
 import { indexListKey } from '../snake-index-list/types';
 import type { IndexAnchorProps } from './types';
 defineOptions({ name: 'IndexAnchor', options: { virtualHost: true, styleIsolation: 'shared' } });
@@ -23,11 +23,46 @@ const props = withDefaults(defineProps<IndexAnchorProps>(), {
     customClass: '',
     customStyle: ''
 });
+const instance = getCurrentInstance();
 const list = inject(indexListKey);
 const anchorId = computed(() => list?.anchorId(props.index) ?? `snake-index-anchor-${props.index}`);
 const active = computed(() => list?.isActive(props.index) ?? false);
 const wrapperStyle = computed(() => list?.wrapperStyle(props.index) ?? {});
 const style = computed(() => [list?.anchorStyle(props.index) ?? {}, props.customStyle]);
+
+// 微信端选择器查询不能跨自定义组件边界，锚点需在自身作用域内测量并回报父级。
+onMounted(() => {
+    list?.registerAnchor(props.index);
+    measure();
+});
+onBeforeUnmount(() => list?.unregisterAnchor(props.index));
+watch(
+    () => props.index,
+    (value, previous) => {
+        if (previous !== undefined && previous !== value) list?.unregisterAnchor(previous);
+        list?.registerAnchor(value);
+        measure();
+    }
+);
+watch(
+    () => list?.measureToken.value,
+    () => measure()
+);
+
+/** 测量自身节点位置并回报父级：查询限定在自身模板内，跨端可靠。 */
+function measure() {
+    if (typeof uni === 'undefined' || !instance) return;
+    uni.createSelectorQuery()
+        .in(instance?.proxy as any)
+        .select('.snake-index-anchor__wrapper')
+        .boundingClientRect()
+        .exec((results: any[]) => {
+            const rect = results?.[0];
+            if (rect) {
+                list?.reportAnchor(props.index, { top: Number(rect.top) || 0, height: Number(rect.height) || 0 });
+            }
+        });
+}
 </script>
 <style scoped>
 .snake-index-anchor__wrapper {

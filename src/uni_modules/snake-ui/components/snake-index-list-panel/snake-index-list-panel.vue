@@ -46,6 +46,7 @@
 import { getCurrentInstance, nextTick, onMounted, provide, ref, toRef, watch, type CSSProperties } from 'vue';
 import zIndex from '../../libs/config/zIndex';
 import { addUnit } from '../../libs/function/unit';
+import { createAnchorRegistry } from '../snake-index-list/anchor-registry';
 import { indexFromTouch, offsetTopPx, resolveIndex, indexListKey } from '../snake-index-list/types';
 import type { IndexValue } from '../snake-index-list/types';
 import type { IndexListPanelEmits, IndexListPanelProps } from './types';
@@ -77,6 +78,8 @@ const currentScrollTop = ref(Number(props.scrollTop) || 0);
 const railTop = ref(0);
 const railHeight = ref(0);
 const anchorOffsets = ref<number[]>([]);
+// 锚点位置由锚点组件自测回报（微信端父级查询跨不过自定义组件边界）。
+const registry = createAnchorRegistry();
 const touching = ref(false);
 let updating = false;
 let scrollIntoViewTimer: ReturnType<typeof setTimeout> | undefined;
@@ -95,8 +98,9 @@ function scrollTo(indexOrValue: number | IndexValue) {
     const index = resolveIndex(indexOrValue, props.indexList);
     if (index < 0) return;
     setActive(index, true);
-    if (index < anchorOffsets.value.length) {
-        const nextScrollTop = Math.max(0, anchorOffsets.value[index]);
+    const offset = anchorOffsets.value[index];
+    if (index < anchorOffsets.value.length && Number.isFinite(offset)) {
+        const nextScrollTop = Math.max(0, offset);
         currentScrollTop.value = nextScrollTop;
         innerScrollTop.value = nextScrollTop;
         scrollIntoView.value = '';
@@ -139,28 +143,27 @@ async function update() {
     updating = true;
     try {
         await nextTick();
-        await new Promise<void>(resolve => {
+        const contentTop = await new Promise<number>(resolve => {
             const query = uni.createSelectorQuery().in(instance?.proxy as any);
             query.select('.snake-index-list-panel__content').boundingClientRect();
             query.select('.snake-index-list-panel__rail').boundingClientRect();
-            query.selectAll('.snake-index-anchor__wrapper').boundingClientRect();
             query.exec((results: any[]) => {
                 const content = results?.[0];
                 const rail = results?.[1];
-                const anchors = results?.[2] || [];
                 if (rail) {
                     railTop.value = Number(rail.top) || 0;
                     railHeight.value = Number(rail.height) || 0;
                 }
-                if (content) {
-                    anchorOffsets.value = anchors.map(
-                        (item: any) => Number(item.top) - Number(content.top) + currentScrollTop.value
-                    );
-                }
-                activeIndex.value = props.indexList.length ? Math.max(0, activeIndex.value) : -1;
-                resolve();
+                resolve(content ? Number(content.top) || 0 : 0);
             });
         });
+        await registry.collect();
+        anchorOffsets.value = props.indexList.map(value => {
+            const rect = registry.rects.get(value);
+            // 未回报的锚点以 Infinity 占位，scrollTo 自动退回 scroll-into-view。
+            return rect ? rect.top - contentTop + currentScrollTop.value : Number.POSITIVE_INFINITY;
+        });
+        activeIndex.value = props.indexList.length ? Math.max(0, activeIndex.value) : -1;
     } finally {
         updating = false;
     }
@@ -194,7 +197,11 @@ provide(indexListKey, {
     anchorId,
     anchorStyle,
     wrapperStyle,
-    isActive: value => indexOfAnchor(value) === activeIndex.value
+    isActive: value => indexOfAnchor(value) === activeIndex.value,
+    measureToken: registry.measureToken,
+    registerAnchor: registry.registerAnchor,
+    unregisterAnchor: registry.unregisterAnchor,
+    reportAnchor: registry.reportAnchor
 });
 
 watch(

@@ -3,6 +3,14 @@ import type { UnitValue } from '../../libs/function/unit';
 import type { StyleValue } from '../../types/global';
 /** IndexValue 类型定义。 */
 export type IndexValue = string | number;
+
+/** 锚点自测的几何信息（视口坐标系）。 */
+export interface IndexAnchorRect {
+    /** 视口顶部到锚点顶部的距离，单位 px。 */
+    top: number;
+    /** 锚点高度，单位 px。 */
+    height: number;
+}
 /** IndexList 组件的公开属性。 */
 export interface IndexListProps {
     /** index list 配置。 */
@@ -66,6 +74,14 @@ export interface IndexListContext {
     wrapperStyle(index: IndexValue): CSSProperties;
     /** 判断指定项是否激活。 */
     isActive(index: IndexValue): boolean;
+    /** 自测轮次号：变化时锚点需重新测量并回报。 */
+    measureToken: Ref<number>;
+    /** 登记已挂载的锚点。 */
+    registerAnchor(value: IndexValue): void;
+    /** 注销锚点。 */
+    unregisterAnchor(value: IndexValue): void;
+    /** 锚点回报自身几何信息。 */
+    reportAnchor(value: IndexValue, rect: IndexAnchorRect): void;
 }
 
 /** IndexList ↔ Anchor / Panel 配对注入键。 */
