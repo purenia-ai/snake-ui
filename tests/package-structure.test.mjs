@@ -115,7 +115,8 @@ test('type declarations have one authoritative component entry', async () => {
     assert.match(types, /export \* from '.\/components'/);
     assert.match(components, /export const SnakeButton:/);
     assert.match(components, /export const SnakeNavbar:/);
-    assert.match(uniApp, /\$snake: GlobalAPI/);
+    assert.match(uniApp, /export interface SnakeGlobalAPI extends FoundationAPI/);
+    assert.match(uniApp, /\$snake: SnakeGlobalAPI/);
 });
 
 test('package exports and published files cover documented entry points', async () => {

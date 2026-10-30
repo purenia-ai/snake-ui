@@ -1,5 +1,11 @@
 # 更新日志
 
+## [0.0.5](https://github.com/purenia-ai/snake-ui/compare/v0.0.4...v0.0.5)（2026-10-30）
+
+### 🐛 修复 | Bug Fixes
+
+- 全局 `$snake` 类型改为可增强的 `SnakeGlobalAPI` 接口并由 `types/uni-app.d.ts` 导出：此前宿主侧再声明 `Uni.$snake`（如向 $snake 挂载业务工具后的完整类型）会与包内声明同名属性冲突，报错被 skipLibCheck 压掉后 `$snake`的类型随文件加载顺序漂移，时而是库类型、时而是宿主类型。现在宿主通过`declare module '@puresnake/snake-ui/types/uni-app'`向`SnakeGlobalAPI` 补充成员即可，`Uni.$snake` 与组件 `this.$snake` 的类型全局仅此一份声明
+
 ## [0.0.4](https://github.com/purenia-ai/snake-ui/compare/v0.0.3...v0.0.4)（2026-10-30）
 
 ### ✨ 新增 | Features
