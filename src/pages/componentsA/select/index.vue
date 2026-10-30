@@ -13,7 +13,9 @@
                     :mode="String(state.slMode)"
                     :mask-close-able="Boolean(state.slMaskClose)"
                     :safe-area-inset-bottom="Boolean(state.slSafeArea)"
-                    :title="text('请选择')"
+                    :title="String(state.slTitle) || text('请选择')"
+                    :cancel-text="String(state.slCancelText) || undefined"
+                    :confirm-text="String(state.slConfirmText) || undefined"
                     @confirm="onConfirm"
                     @cancel="onCancel"
                     @close="onClose"
@@ -112,7 +114,10 @@ const controls: DemoControl[] = [
         ]
     },
     { key: 'slMaskClose', label: '点击遮罩关闭', type: 'switch', defaultValue: true },
-    { key: 'slSafeArea', label: '底部安全区适配', type: 'switch', defaultValue: false }
+    { key: 'slSafeArea', label: '底部安全区适配', type: 'switch', defaultValue: false },
+    { key: 'slTitle', label: '选择器标题', type: 'input', defaultValue: '', placeholder: '请选择' },
+    { key: 'slCancelText', label: '取消按钮文字', type: 'input', defaultValue: '', placeholder: '取消' },
+    { key: 'slConfirmText', label: '确认按钮文字', type: 'input', defaultValue: '', placeholder: '确认' }
 ];
 const state = reactive<Record<string, DemoValue>>(
     Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))

@@ -10,6 +10,8 @@
                     :format="sampleFormat()"
                     :bold="Boolean(state.tBold)"
                     :block="Boolean(state.tBlock)"
+                    :decoration="String(state.tDecoration)"
+                    :align="String(state.tAlign)"
                     :lines="state.tLines ? Number(state.tLines) : ''"
                     :size="Number(state.tSize)"
                     :color="String(state.tColor) || undefined"
@@ -74,6 +76,28 @@ const controls: DemoControl[] = [
     },
     { key: 'tBold', label: '粗体', type: 'switch', defaultValue: false },
     { key: 'tBlock', label: '块状', type: 'switch', defaultValue: false },
+    {
+        key: 'tDecoration',
+        label: '装饰线',
+        type: 'select',
+        defaultValue: 'none',
+        options: [
+            { label: '无', value: 'none' },
+            { label: '下划线', value: 'underline' },
+            { label: '删除线', value: 'line-through' }
+        ]
+    },
+    {
+        key: 'tAlign',
+        label: '对齐方式',
+        type: 'select',
+        defaultValue: 'left',
+        options: [
+            { label: '左对齐', value: 'left' },
+            { label: '居中', value: 'center' },
+            { label: '右对齐', value: 'right' }
+        ]
+    },
     {
         key: 'tLines',
         label: '显示行数',

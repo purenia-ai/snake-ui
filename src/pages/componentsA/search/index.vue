@@ -9,6 +9,9 @@
                     :show-action="Boolean(state.sShowAction)"
                     :clearabled="Boolean(state.sClear)"
                     :animation="Boolean(state.sAnimation)"
+                    :bg-color="String(state.sBgColor)"
+                    :disabled="Boolean(state.sDisabled)"
+                    :input-align="String(state.sInputAlign)"
                     :placeholder="String(state.sPlaceholder || text('请输入关键字'))"
                     :action-text="isEnglish ? 'Search' : '搜索'"
                     margin="16rpx 0"
@@ -65,6 +68,28 @@ const controls: DemoControl[] = [
     { key: 'sShowAction', label: '显示操作按钮', type: 'switch', defaultValue: true },
     { key: 'sClear', label: '启用清除', type: 'switch', defaultValue: true },
     { key: 'sAnimation', label: '聚焦动画', type: 'switch', defaultValue: false },
+    {
+        key: 'sBgColor',
+        label: '背景颜色',
+        type: 'select',
+        defaultValue: '#f1f1f1',
+        options: [
+            { label: '默认灰', value: '#f1f1f1' },
+            { label: '白色', value: '#ffffff' },
+            { label: '薄荷', value: '#06D2901A' }
+        ]
+    },
+    { key: 'sDisabled', label: '禁用状态', type: 'switch', defaultValue: false },
+    {
+        key: 'sInputAlign',
+        label: '输入对齐',
+        type: 'select',
+        defaultValue: 'left',
+        options: [
+            { label: '左对齐', value: 'left' },
+            { label: '居中', value: 'center' }
+        ]
+    },
     {
         key: 'sPlaceholder',
         label: '占位文字',

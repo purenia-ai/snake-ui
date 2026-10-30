@@ -8,8 +8,8 @@
                     :show-height="Number(state.rmShowHeight)"
                     :color="String(state.rmColor)"
                     :text-indent="'0'"
-                    :open-text="isEnglish ? 'Collapse' : '收起'"
-                    :close-text="text('展开全文')"
+                    :open-text="String(state.rmOpenText) || (isEnglish ? 'Collapse' : '收起')"
+                    :close-text="String(state.rmCloseText) || text('展开全文')"
                     @open="lastAction = 'open'"
                     @close="lastAction = 'close'"
                 >
@@ -53,6 +53,8 @@ const longContent = computed(() =>
 );
 const controls: DemoControl[] = [
     { key: 'rmToggle', label: '显示收起', type: 'switch', defaultValue: false },
+    { key: 'rmCloseText', label: '展开文案', type: 'input', defaultValue: '', placeholder: '展开全文' },
+    { key: 'rmOpenText', label: '收起文案', type: 'input', defaultValue: '', placeholder: '收起' },
     {
         key: 'rmShowHeight',
         label: '占位高度',

@@ -11,6 +11,9 @@
                     :effect3d="Boolean(state.swiperEffect3d)"
                     :show-title="Boolean(state.swiperTitle)"
                     :autoplay="Boolean(state.swiperAutoplay)"
+                    :circular="Boolean(state.swiperCircular)"
+                    :interval="Number(state.swiperInterval)"
+                    :duration="Number(state.swiperDuration)"
                 />
             </view>
         </DemoSection>
@@ -37,6 +40,27 @@ const controls: DemoControl[] = [
     { key: 'swiperIndicator', label: '显示指示器', type: 'switch', defaultValue: true },
     { key: 'swiperTitle', label: '显示标题', type: 'switch', defaultValue: true },
     { key: 'swiperAutoplay', label: '自动播放', type: 'switch', defaultValue: true },
+    { key: 'swiperCircular', label: '衔接滑动', type: 'switch', defaultValue: true },
+    {
+        key: 'swiperInterval',
+        label: '切换间隔',
+        type: 'slider',
+        defaultValue: 3000,
+        min: 1500,
+        max: 6000,
+        step: 500,
+        unit: 'ms'
+    },
+    {
+        key: 'swiperDuration',
+        label: '动画时长',
+        type: 'slider',
+        defaultValue: 500,
+        min: 250,
+        max: 1000,
+        step: 50,
+        unit: 'ms'
+    },
     {
         key: 'swiperMode',
         label: '指示器样式',

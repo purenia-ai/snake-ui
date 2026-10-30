@@ -14,6 +14,9 @@
                     :show-festival="Boolean(state.cShowFestival)"
                     :festivals="Boolean(state.cShowFestival) ? demoFestivals : {}"
                     :min-date="String(state.cMinDate)"
+                    :max-date="String(state.cMaxDate)"
+                    :active-color="String(state.cActiveColor)"
+                    :readonly="Boolean(state.cReadonly)"
                     :closeable="Boolean(state.cCloseable)"
                     :mask-close-able="Boolean(state.cMaskClose)"
                     :default-select-today="Boolean(state.cDefaultToday)"
@@ -70,6 +73,19 @@ const controls: DemoControl[] = [
     { key: 'cShowLunar', label: '显示农历', type: 'switch', defaultValue: true },
     { key: 'cShowFestival', label: '显示节日', type: 'switch', defaultValue: false },
     { key: 'cMinDate', label: '最小日期', type: 'input', defaultValue: '2026-01-01', placeholder: 'YYYY-MM-DD' },
+    { key: 'cMaxDate', label: '最大日期', type: 'input', defaultValue: '2026-12-31', placeholder: 'YYYY-MM-DD' },
+    {
+        key: 'cActiveColor',
+        label: '激活颜色',
+        type: 'select',
+        defaultValue: '#06D290',
+        options: [
+            { label: '品牌绿', value: '#06D290' },
+            { label: '蓝色', value: '#2563eb' },
+            { label: '橙色', value: '#FF6A0C' }
+        ]
+    },
+    { key: 'cReadonly', label: '只读状态', type: 'switch', defaultValue: false },
     { key: 'cCloseable', label: '显示关闭图标', type: 'switch', defaultValue: true },
     { key: 'cMaskClose', label: '点击遮罩关闭', type: 'switch', defaultValue: true },
     { key: 'cDefaultToday', label: '默认选中今天', type: 'switch', defaultValue: true }

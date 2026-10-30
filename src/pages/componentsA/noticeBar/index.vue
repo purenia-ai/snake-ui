@@ -9,7 +9,7 @@
                     }}</text>
                 </view>
                 <snake-notice-bar
-                    type="info"
+                    :type="String(state.noticeType)"
                     :volume-icon="Boolean(state.noticeIcon)"
                     :more-icon="Boolean(state.noticeMore)"
                     :mode="liveVertical ? 'vertical' : 'horizontal'"
@@ -84,6 +84,19 @@ const actionNoticeVisible = ref(true);
 const finiteEndCount = ref(0);
 const actionMessage = ref('');
 const controls: DemoControl[] = [
+    {
+        key: 'noticeType',
+        label: '通知类型',
+        type: 'select',
+        defaultValue: 'info',
+        options: [
+            { label: '主要', value: 'primary' },
+            { label: '成功', value: 'success' },
+            { label: '警告', value: 'warning' },
+            { label: '错误', value: 'error' },
+            { label: '信息', value: 'info' }
+        ]
+    },
     {
         key: 'noticeMode',
         label: '展示模式',

@@ -10,8 +10,9 @@
                     :disabled="Boolean(state.textareaDisabled)"
                     :readonly="Boolean(state.textareaReadonly)"
                     :border="String(state.textareaBorder)"
+                    :size="String(state.textareaSize)"
                     :placeholder="isEnglish ? 'Enter a description' : '请输入内容'"
-                    :maxlength="80"
+                    :maxlength="Number(state.textareaMaxlength)"
                 />
                 <text>{{ isEnglish ? `${value.length} characters` : `已输入 ${value.length} 个字` }}</text>
             </view>
@@ -33,6 +34,27 @@ const isEnglish = computed(() => localeName.value === 'en-US');
 const value = ref('');
 const controls: DemoControl[] = [
     { key: 'textareaCount', label: '显示字数', type: 'switch', defaultValue: true },
+    {
+        key: 'textareaMaxlength',
+        label: '最大字数',
+        type: 'slider',
+        defaultValue: 80,
+        min: 20,
+        max: 200,
+        step: 10,
+        unit: '字'
+    },
+    {
+        key: 'textareaSize',
+        label: '组件尺寸',
+        type: 'select',
+        defaultValue: 'default',
+        options: [
+            { label: 'small', value: 'small' },
+            { label: 'default', value: 'default' },
+            { label: 'large', value: 'large' }
+        ]
+    },
     { key: 'textareaAuto', label: '高度自适应', type: 'switch', defaultValue: false },
     { key: 'textareaDisabled', label: '禁用状态', type: 'switch', defaultValue: false },
     { key: 'textareaReadonly', label: '只读状态', type: 'switch', defaultValue: false },
