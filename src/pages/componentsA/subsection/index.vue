@@ -77,7 +77,7 @@ const controls: DemoControl[] = [
         options: [
             { label: '白色', value: '#ffffff' },
             { label: '浅灰', value: '#f1f1f1' },
-            { label: '薄荷', value: '#eafff6' }
+            { label: '薄荷', value: '#06D2901A' }
         ]
     }
 ];

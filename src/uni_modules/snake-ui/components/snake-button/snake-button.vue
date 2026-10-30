@@ -208,7 +208,7 @@ function getAuthorize(event: unknown) {
 .snake-button--primary--plain {
     color: var(--snake-color-primary, #06d290) !important;
     border-color: var(--snake-color-primary-disabled, #71d5a1) !important;
-    background-color: var(--snake-color-primary-light, #ecf5ff) !important;
+    background-color: var(--snake-color-primary-light, #06d2901a) !important;
 }
 .snake-button--success--plain {
     color: var(--snake-color-success, #19be6b) !important;
@@ -332,7 +332,7 @@ function getAuthorize(event: unknown) {
 .snake-default-hover {
     color: var(--snake-color-primary-dark, #18b566) !important;
     border-color: var(--snake-color-primary-dark, #18b566) !important;
-    background-color: var(--snake-color-primary-light, #ecf5ff) !important;
+    background-color: var(--snake-color-primary-light, #06d2901a) !important;
 }
 .snake-primary-hover {
     color: var(--snake-color-white, #fff);

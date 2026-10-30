@@ -13,6 +13,7 @@
 
 ### ⚙️ 变更 | Changes
 
+- 品牌浅色 token 对齐规范：`--snake-color-primary-light`（含 runtime `lightPalette.primaryLight` 与 `-rgb` 变量）由遗留的 `#eeffe0` 修正为主色 10% 透明度 `#06D2901A`；同步修正 snake-button 蓝色 fallback（`#ecf5ff`）、snake-toast / snake-index-list / snake-index-list-panel / filter-sorts 的 `rgba(6,210,144,.1)` fallback 写法，以及文档站主题色板展示数据
 - 开源仓库迁移至 GitHub 组织 [purenia-ai/snake-ui](https://github.com/purenia-ai/snake-ui)，`repository` / `bugs` / `homepage` 等包元数据与文档链接同步更新，根目录补 MIT LICENSE（[b9ba6c1](https://github.com/purenia-ai/snake-ui/commit/b9ba6c1)）
 
 ### ✏️ 文档 | Documentation

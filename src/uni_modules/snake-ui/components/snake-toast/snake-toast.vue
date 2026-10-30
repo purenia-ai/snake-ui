@@ -295,14 +295,14 @@ defineExpose<ToastExpose>({
 
 .snake-type-primary {
     color: var(--snake-color-primary, #06d290);
-    background-color: var(--snake-color-primary-light, rgba(6, 210, 144, 0.1));
-    border: 1px solid var(--snake-color-primary-light, rgba(6, 210, 144, 0.1));
+    background-color: var(--snake-color-primary-light, #06d2901a);
+    border: 1px solid var(--snake-color-primary-light, #06d2901a);
 }
 
 .snake-type-success {
     color: var(--snake-color-success, #06d290);
-    background-color: var(--snake-color-success-light, rgba(6, 210, 144, 0.1));
-    border: 1px solid var(--snake-color-success-light, rgba(6, 210, 144, 0.1));
+    background-color: var(--snake-color-success-light, #06d2901a);
+    border: 1px solid var(--snake-color-success-light, #06d2901a);
 }
 
 .snake-type-error {

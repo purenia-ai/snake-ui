@@ -12,7 +12,7 @@ export const lightPalette: ThemeColor = {
     primaryDeep: '#26273A',
     primaryDeeper: '#22242E',
     primaryDisabled: '#A6EBD3',
-    primaryLight: '#EEFFE0',
+    primaryLight: '#06D2901A',
     primaryInk: '#FFFFFF',
     // 语义色与中性色默认主题（lightPalette）
     success: '#19BE6B',
@@ -269,7 +269,8 @@ function flushDocument(vars: Record<string, string>, mode: 'light' | 'dark'): vo
 
 export function applyTheme(): void {
     const mode = activeMode();
-    const palette = (mode === 'dark' ? currentTheme.value.darkColor : currentTheme.value.color) as ThemeColor | undefined;
+    const palette = (mode === 'dark' ? currentTheme.value.darkColor : currentTheme.value.color) as
+        ThemeColor | undefined;
     Object.assign(color, mode === 'dark' ? darkPalette : lightPalette, palette || {});
     const vars = createCssVars(currentTheme.value, mode);
     cssVars.value = vars;

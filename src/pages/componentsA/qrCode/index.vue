@@ -75,7 +75,7 @@ const qrCodeRef = ref<QrCodeExpose>();
 /** 配色预设：全部为深色模块 + 浅色底，保证任意配色都可稳定扫描。 */
 const presets = [
     { key: 'ink', name: '经典墨', dark: '#111827', light: '#ffffff' },
-    { key: 'mint', name: '薄荷', dark: '#04785c', light: '#eafff6' },
+    { key: 'mint', name: '薄荷', dark: '#04785c', light: '#e6faf4' },
     { key: 'indigo', name: '靛蓝', dark: '#312e81', light: '#eef2ff' },
     { key: 'amber', name: '琥珀', dark: '#92400e', light: '#fffbeb' }
 ] as const;

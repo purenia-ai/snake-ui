@@ -58,7 +58,7 @@ const controls: DemoControl[] = [
         defaultValue: '#e4e7ed',
         options: [
             { label: '默认灰', value: '#e4e7ed' },
-            { label: '浅绿', value: '#d6f5e9' },
+            { label: '浅绿', value: '#06D2901A' },
             { label: '浅蓝', value: '#dbeafe' }
         ]
     },

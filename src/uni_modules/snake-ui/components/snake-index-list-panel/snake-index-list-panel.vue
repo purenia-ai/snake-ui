@@ -254,7 +254,7 @@ defineExpose({ scrollTo, update });
 }
 .snake-index-list-panel__key.is-active {
     font-weight: 700;
-    background: var(--snake-color-primary-light, rgba(6, 210, 144, 0.1));
+    background: var(--snake-color-primary-light, #06d2901a);
 }
 .snake-index-list-panel__bubble {
     position: absolute;

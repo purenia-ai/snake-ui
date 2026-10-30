@@ -16,7 +16,7 @@
                     border-color="#06D290"
                     separator-color="#8a8b99"
                     color="#06D290"
-                    bg-color="rgba(6, 210, 144, 0.08)"
+                    bg-color="#06D2901A"
                     height="56"
                     @end="onEnd"
                     @change="onChange"
