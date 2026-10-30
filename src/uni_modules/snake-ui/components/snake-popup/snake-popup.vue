@@ -1,6 +1,46 @@
 <template>
-    <view class="snake-popup" :style="rootStyle">
-        <!-- 三层结构：根 / 遮罩 / 面板，全部收在根的层叠上下文内 -->
+    <!-- 传送模式：整棵弹层渲染到页面根节点，脱离祖先的 transform / overflow / 层叠上下文 -->
+    <snake-root-portal v-if="rootPortal">
+        <view class="snake-popup" :class="{ 'snake-popup--embedded': embedded }" :style="rootStyle">
+            <snake-overlay
+                v-if="overlay"
+                :show="localShow"
+                :z-index="uZIndex - 2"
+                :duration="duration"
+                :opacity="overlayOpacity"
+                :lock-scroll="lockScroll"
+                :custom-style="overlayStyle"
+                @click="overlayClick"
+            />
+            <snake-transition
+                :show="localShow"
+                :name="transitionName"
+                :duration="duration"
+                :custom-class="
+                    ['snake-popup__panel', `snake-popup__panel--${mode}`, customClass].filter(Boolean).join(' ')
+                "
+                :custom-style="panelStyle"
+                @before-enter="emit('before-enter')"
+                @enter="emit('enter')"
+                @after-enter="emit('opened')"
+                @before-leave="emit('before-leave')"
+                @leave="emit('leave')"
+                @after-leave="emit('closed')"
+            >
+                <slot />
+                <view
+                    v-if="closeable"
+                    class="snake-popup__close"
+                    :class="`snake-popup__close--${closeIconPos}`"
+                    @click.stop="close"
+                >
+                    <snake-icon :name="closeIcon" :color="closeIconColor" :size="closeIconSize" />
+                </view>
+            </snake-transition>
+        </view>
+    </snake-root-portal>
+    <!-- 常规模式 -->
+    <view v-else class="snake-popup" :class="{ 'snake-popup--embedded': embedded }" :style="rootStyle">
         <snake-overlay
             v-if="overlay"
             :show="localShow"
@@ -17,7 +57,11 @@
             :duration="duration"
             :custom-class="['snake-popup__panel', `snake-popup__panel--${mode}`, customClass].filter(Boolean).join(' ')"
             :custom-style="panelStyle"
+            @before-enter="emit('before-enter')"
+            @enter="emit('enter')"
             @after-enter="emit('opened')"
+            @before-leave="emit('before-leave')"
+            @leave="emit('leave')"
             @after-leave="emit('closed')"
         >
             <slot />
@@ -66,6 +110,8 @@ const props = withDefaults(defineProps<PopupProps>(), {
     closeIconPos: 'top-right',
     closeOnClickOverlay: true,
     overlay: true,
+    embedded: false,
+    rootPortal: false,
     overlayOpacity: 0.5,
     lockScroll: true,
     overlayStyle: '',
@@ -172,6 +218,15 @@ defineExpose({ open, close });
     right: 0;
     bottom: 0;
     left: 0;
+}
+/* 嵌入模式：根与面板回到文档流，随内容撑高；top/right/bottom/left 定位属性在 static 下自然失效 */
+.snake-popup--embedded {
+    position: static;
+}
+.snake-popup--embedded .snake-popup__panel {
+    position: static;
+    max-height: none;
+    overflow: visible;
 }
 .snake-popup__panel {
     /* 挂在 fixed 根内，定位基准仍是视口；行内 z-index 丢失时的基线层级（popup 档） */

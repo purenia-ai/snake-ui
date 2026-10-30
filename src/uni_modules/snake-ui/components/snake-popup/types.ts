@@ -37,6 +37,10 @@ export interface PopupProps {
     closeOnClickOverlay?: boolean;
     /** 是否显示遮罩层。 */
     overlay?: boolean;
+    /** 是否以嵌入模式渲染：根与面板回到文档流随内容撑高，不固定、不裁剪、不遮挡页面。 */
+    embedded?: boolean;
+    /** 是否将弹层传送到页面根节点渲染，避免被祖先的 transform、overflow 裁剪。 */
+    rootPortal?: boolean;
     /** 遮罩层透明度。 */
     overlayOpacity?: number;
     /** 是否阻止遮罩区域的触摸滚动。 */
@@ -73,6 +77,14 @@ export type PopupEmits = {
     close: [];
     /** closed 事件携带的参数。 */
     closed: [];
+    /** 弹层进出场各阶段事件：enter 前后、leave 前后。 */
+    'before-enter': [];
+    /** 进入动画开始。 */
+    enter: [];
+    /** 离场动画开始前。 */
+    'before-leave': [];
+    /** 离场动画开始。 */
+    leave: [];
     /** change 事件携带的参数。 */
     change: [detail: PopupChangeDetail];
     /** click-overlay 事件携带的参数。 */
