@@ -20,19 +20,19 @@ Skills 是可复用的 AI 能力包。Snake UI 通过它把组件、CMS、主题
 Snake UI 发布到 GitHub 后，在项目根目录执行：
 
 ```bash
-pnpx skills add zwbcode/snake-ui --skill snake-ui
+pnpx skills add purenia-ai/snake-ui --skill snake-ui
 ```
 
 安装器会识别仓库中的 `skills/snake-ui/`，并将它安装到所选 AI 编码工具的 Skills 目录。也可以先查看可安装内容：
 
 ```bash
-pnpx skills add zwbcode/snake-ui --list
+pnpx skills add purenia-ai/snake-ui --list
 ```
 
 ## 开源仓库
 
-- GitHub：[zwbcode/snake-ui](https://github.com/zwbcode/snake-ui)
-- 问题反馈：[GitHub Issues](https://github.com/zwbcode/snake-ui/issues)
+- GitHub：[purenia-ai/snake-ui](https://github.com/purenia-ai/snake-ui)
+- 问题反馈：[GitHub Issues](https://github.com/purenia-ai/snake-ui/issues)
 
 ## 如何使用
 

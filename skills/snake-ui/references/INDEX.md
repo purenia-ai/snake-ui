@@ -37,6 +37,7 @@
 - [Overlay 遮罩层](components/overlay.md)
 - [Parse 富文本解析](components/parse.md)
 - [Popup 弹出层](components/popup.md)
+- [QrCode 二维码](components/qr-code.md)
 - [快速上手](components/quickstart.md)
 - [Radio 单选框](components/radio.md)
 - [ReadMore 阅读更多](components/read-more.md)

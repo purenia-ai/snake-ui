@@ -12,13 +12,13 @@ Snake UI 为大语言模型（LLMs）提供两种上下文文件，帮助 AI 更
 
 ### 标准版：llms.txt
 
-地址：<https://raw.githubusercontent.com/zwbcode/snake-ui/main/llms.txt>
+地址：<https://raw.githubusercontent.com/purenia-ai/snake-ui/main/llms.txt>
 
 标准版提供项目概述、组件与文档入口、关键行为和验证命令，适合让 AI 快速建立 Snake UI 的基础认知。
 
 ### 完整版：llms-full.txt
 
-地址：<https://raw.githubusercontent.com/zwbcode/snake-ui/main/llms-full.txt>
+地址：<https://raw.githubusercontent.com/purenia-ai/snake-ui/main/llms-full.txt>
 
 完整版由 VitePress 文档自动生成，包含组件、CMS、指南和工具的完整 Markdown 内容，适合需要详细 API、使用示例和平台差异的任务。
 
