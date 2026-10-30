@@ -10,7 +10,8 @@
                         :size="Number(state.loadingSize)"
                         :direction="state.loadingDirection as any"
                         :color="String(state.loadingColor)"
-                        :text="isEnglish ? 'Loading' : '加载中'"
+                        :text="String(state.loadingText) || (isEnglish ? 'Loading' : '加载中')"
+                        :text-size="Number(state.loadingTextSize)"
                     />
                 </view>
                 <text class="demo-variant-title">{{ isEnglish ? 'Types' : '加载形态' }}</text>
@@ -38,6 +39,17 @@ const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
 const controls: DemoControl[] = [
     { key: 'loadingShow', label: '是否显示', type: 'switch', defaultValue: true },
+    { key: 'loadingText', label: '提示文字', type: 'input', defaultValue: '', placeholder: '加载中' },
+    {
+        key: 'loadingTextSize',
+        label: '文字尺寸',
+        type: 'slider',
+        defaultValue: 28,
+        min: 20,
+        max: 36,
+        step: 2,
+        unit: 'rpx'
+    },
     {
         key: 'loadingType',
         label: '加载形态',

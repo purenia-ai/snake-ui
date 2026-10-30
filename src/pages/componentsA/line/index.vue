@@ -6,7 +6,11 @@
                 <view class="demo-line-live">
                     <snake-line
                         :direction="String(state.lineDirection)"
-                        :length="state.lineDirection === 'col' ? '120' : '100%'"
+                        :length="
+                            state.lineDirection === 'col'
+                                ? String(Math.round(Number(state.lineLength) * 1.6))
+                                : `${state.lineLength}%`
+                        "
                         :color="String(state.lineColor)"
                         :border-style="String(state.lineBorderStyle)"
                         :hair-line="Boolean(state.lineHair)"
@@ -15,7 +19,7 @@
                 <view class="demo-line-col-box">
                     <snake-line
                         direction="col"
-                        length="160"
+                        :length="String(Math.round(Number(state.lineLength) * 1.6))"
                         :color="String(state.lineColor)"
                         :border-style="String(state.lineBorderStyle)"
                         :hair-line="Boolean(state.lineHair)"
@@ -55,6 +59,7 @@ const controls: DemoControl[] = [
             { label: '纵向', value: 'col' }
         ]
     },
+    { key: 'lineLength', label: '线条长度', type: 'slider', defaultValue: 100, min: 30, max: 100, step: 5, unit: '%' },
     {
         key: 'lineColor',
         label: '线条颜色',

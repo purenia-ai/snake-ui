@@ -590,6 +590,12 @@ const englishMessages: Record<string, string> = {
     动画时长: 'Animation duration',
     展开文案: 'Expand text',
     收起文案: 'Collapse text',
+    线条长度: 'Line length',
+    进度条高度: 'Bar height',
+    显示文字: 'Display text',
+    点遮罩收起: 'Close on mask tap',
+    底部边框: 'Bottom border',
+    右侧内容: 'Right value',
     '用于活动截止等场景的倒计时，通过数字变化给用户明确的时间感受。':
         'Counts down to an event deadline, giving users a clear sense of time through changing digits.',
     快速模式: 'Quick mode',

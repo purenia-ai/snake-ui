@@ -12,7 +12,8 @@
                         :arrow-direction="String(state.ciArrowDirection)"
                         :required="Boolean(state.ciRequired)"
                         :center="Boolean(state.ciCenter)"
-                        :value="isEnglish ? 'Value' : '内容'"
+                        :value="String(state.ciValue) || (isEnglish ? 'Value' : '内容')"
+                        :bg-color="String(state.ciBgColor) || undefined"
                         index="live"
                         @click="cellClicked"
                     />
@@ -77,6 +78,18 @@ const controls: DemoControl[] = [
         ]
     },
     { key: 'ciTitle', label: '标题', type: 'input', defaultValue: '', placeholder: '请输入标题' },
+    { key: 'ciValue', label: '右侧内容', type: 'input', defaultValue: '', placeholder: '请输入右侧内容' },
+    {
+        key: 'ciBgColor',
+        label: '背景颜色',
+        type: 'select',
+        defaultValue: '',
+        options: [
+            { label: '默认', value: '' },
+            { label: '白色', value: '#ffffff' },
+            { label: '薄荷', value: '#06D2901A' }
+        ]
+    },
     { key: 'ciLabel', label: '描述文字', type: 'input', defaultValue: '', placeholder: '请输入描述文字' },
     { key: 'ciArrow', label: '显示箭头', type: 'switch', defaultValue: true },
     {

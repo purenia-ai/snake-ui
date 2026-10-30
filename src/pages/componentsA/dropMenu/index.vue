@@ -2,7 +2,11 @@
     <DemoPage :title="title" :desc="text('下拉菜单容器保证同一时间只展开一个菜单项。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-menu demo-drop-menu-showcase">
-                <snake-drop-menu>
+                <snake-drop-menu
+                    :active-color="String(state.menuActiveColor) || undefined"
+                    :close-on-click-mask="Boolean(state.menuMaskClose)"
+                    :border-bottom="Boolean(state.menuBorderBottom)"
+                >
                     <snake-drop-menu-item :title="String(state.menuTitle)">
                         <view class="demo-menu-panel">
                             {{
@@ -36,11 +40,33 @@ import DemoSection from '../../../components/demo-section/demo-section.vue';
 
 const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
-const controls: DemoControl[] = [{ key: 'menuTitle', label: '菜单标题', type: 'input', defaultValue: '筛选条件' }];
-const state = reactive<Record<string, DemoValue>>({ menuTitle: '筛选条件' });
+const controls: DemoControl[] = [
+    { key: 'menuTitle', label: '菜单标题', type: 'input', defaultValue: '筛选条件' },
+    {
+        key: 'menuActiveColor',
+        label: '激活颜色',
+        type: 'select',
+        defaultValue: '',
+        options: [
+            { label: '默认', value: '' },
+            { label: '品牌绿', value: '#06D290' },
+            { label: '蓝色', value: '#2563eb' },
+            { label: '橙色', value: '#FF6A0C' }
+        ]
+    },
+    { key: 'menuMaskClose', label: '点遮罩收起', type: 'switch', defaultValue: true },
+    { key: 'menuBorderBottom', label: '底部边框', type: 'switch', defaultValue: true }
+];
+const state = reactive<Record<string, DemoValue>>(
+    Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))
+);
 const localizedControls = computed(() => {
     const _locale = localeName.value;
-    return controls.map(control => ({ ...control, label: demoText(control.label) }));
+    return controls.map(control => ({
+        ...control,
+        label: demoText(control.label),
+        options: control.options?.map(option => ({ ...option, label: demoText(option.label) }))
+    }));
 });
 const title = computed(() => {
     const _locale = localeName.value;

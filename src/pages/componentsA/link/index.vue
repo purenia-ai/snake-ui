@@ -5,7 +5,7 @@
                 <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
                 <view>
                     <snake-link
-                        :text="isEnglish ? 'Visit Snake UI' : '访问 Snake UI 仓库'"
+                        :text="String(state.lText) || (isEnglish ? 'Visit Snake UI' : '访问 Snake UI 仓库')"
                         :href="String(state.lHref)"
                         :under-line="Boolean(state.lUnderLine)"
                         :default-click="Boolean(state.lDefaultClick)"
@@ -37,6 +37,7 @@ const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
 const lastClick = ref('');
 const controls: DemoControl[] = [
+    { key: 'lText', label: '显示文字', type: 'input', defaultValue: '', placeholder: '请输入显示文字' },
     {
         key: 'lHref',
         label: '链接地址',

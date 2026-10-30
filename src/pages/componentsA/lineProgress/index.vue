@@ -6,6 +6,8 @@
                 <snake-line-progress
                     :percent="Number(state.lpPercent)"
                     :type="String(state.lpType)"
+                    :height="Number(state.lpHeight)"
+                    :inactive-color="String(state.lpInactiveColor)"
                     :show-percent="Boolean(state.lpShowPercent)"
                     :striped="Boolean(state.lpStriped)"
                     :striped-active="Boolean(state.lpStripedActive)"
@@ -37,6 +39,18 @@ const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
 const controls: DemoControl[] = [
     { key: 'lpPercent', label: '进度值', type: 'slider', defaultValue: 40, min: 0, max: 100, step: 5, unit: '%' },
+    { key: 'lpHeight', label: '进度条高度', type: 'slider', defaultValue: 28, min: 12, max: 48, step: 2, unit: 'rpx' },
+    {
+        key: 'lpInactiveColor',
+        label: '轨道底色',
+        type: 'select',
+        defaultValue: 'var(--snake-color-divider)',
+        options: [
+            { label: '默认灰', value: 'var(--snake-color-divider)' },
+            { label: '薄荷', value: '#06D2901A' },
+            { label: '浅蓝', value: '#dbeafe' }
+        ]
+    },
     {
         key: 'lpType',
         label: '主题预设',
