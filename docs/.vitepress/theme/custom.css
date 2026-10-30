@@ -58,7 +58,7 @@ body {
 .VPNavBar,
 .VPNavBar.has-sidebar .content,
 .VPNavBar:not(.home) {
-    background: color-mix(in srgb, var(--vp-c-bg) 90%, #06d290) !important;
+    background: var(--vp-c-bg) !important;
     backdrop-filter: blur(12px);
 }
 
