@@ -53,7 +53,7 @@ Snake UI 要求 Vue 3 和 uni-app 运行时。仓库中的目标平台均可编�
 
 Snake UI 遵循 MIT 协议，可免费用于任何合法项目。
 
-- 仓库：<https://github.com/zwbcode/snake-ui>
+- 仓库：<https://github.com/purenia-ai/snake-ui>
 - Npm：[`@puresnake/snake-ui`](https://www.npmjs.com/package/@puresnake/snake-ui)
 
 ## 建议阅读顺序

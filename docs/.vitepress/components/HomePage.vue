@@ -201,7 +201,7 @@
                         </div>
                         <i>→</i>
                     </a>
-                    <a href="https://github.com/zwbcode/snake-ui" target="_blank" rel="noreferrer">
+                    <a href="https://github.com/purenia-ai/snake-ui" target="_blank" rel="noreferrer">
                         <span>04</span>
                         <div>
                             <b>源代码</b>

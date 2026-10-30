@@ -8,13 +8,13 @@
     "author": "PURESNAKE",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/zwbcode/snake-ui.git",
+        "url": "git+https://github.com/purenia-ai/snake-ui.git",
         "directory": "src/uni_modules/snake-ui"
     },
     "bugs": {
-        "url": "https://github.com/zwbcode/snake-ui/issues"
+        "url": "https://github.com/purenia-ai/snake-ui/issues"
     },
-    "homepage": "https://github.com/zwbcode/snake-ui#readme",
+    "homepage": "https://github.com/purenia-ai/snake-ui#readme",
     "publishConfig": {
         "access": "public"
     },

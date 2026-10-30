@@ -204,9 +204,9 @@ export default defineConfig({
                 ]
             }
         ],
-        socialLinks: [{ icon: 'github', link: 'https://github.com/zwbcode/snake-ui' }],
+        socialLinks: [{ icon: 'github', link: 'https://github.com/purenia-ai/snake-ui' }],
         editLink: {
-            pattern: 'https://github.com/zwbcode/snake-ui/edit/main/docs/:path',
+            pattern: 'https://github.com/purenia-ai/snake-ui/edit/main/docs/:path',
             text: '编辑此页'
         },
         sidebar: {

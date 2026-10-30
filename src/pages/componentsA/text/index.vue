@@ -15,7 +15,7 @@
                     :color="String(state.tColor) || undefined"
                     :prefix-icon="String(state.tPrefix)"
                     :suffix-icon="String(state.tSuffix)"
-                    href="https://github.com/zwbcode/snake-ui"
+                    href="https://github.com/purenia-ai/snake-ui"
                     @click="onTextClick"
                 />
                 <text class="demo-variant-sub">{{ lastClick || (isEnglish ? 'No event yet' : '暂无事件') }}</text>

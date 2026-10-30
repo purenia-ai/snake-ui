@@ -64,7 +64,7 @@ defineOptions({ name: 'ExampleAbout' });
 const { text } = useDemoLocale();
 const componentCount = componentGroups.reduce((sum, group) => sum + group.list.length, 0);
 const docsUrl = 'https://m.puresnake.com/snake-ui/';
-const repositoryUrl = 'https://github.com/zwbcode/snake-ui';
+const repositoryUrl = 'https://github.com/purenia-ai/snake-ui';
 const capabilities = [
     'Vue 3 与 uni-app 跨端',
     '商城与 CMS 组件',

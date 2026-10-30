@@ -41,7 +41,7 @@ const controls: DemoControl[] = [
         key: 'lHref',
         label: '链接地址',
         type: 'input',
-        defaultValue: 'https://github.com/zwbcode/snake-ui',
+        defaultValue: 'https://github.com/purenia-ai/snake-ui',
         placeholder: '请输入链接地址'
     },
     { key: 'lUnderLine', label: '下划线', type: 'switch', defaultValue: false },

@@ -10,7 +10,7 @@ import { computed } from 'vue';
 import { useData } from 'vitepress';
 import { componentItems } from '../component-groups';
 
-const repositoryUrl = 'https://github.com/zwbcode/snake-ui';
+const repositoryUrl = 'https://github.com/purenia-ai/snake-ui';
 const { frontmatter, page, title } = useData();
 
 const showActions = computed(() => frontmatter.value.search !== false);

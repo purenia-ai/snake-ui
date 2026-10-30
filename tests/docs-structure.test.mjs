@@ -96,7 +96,7 @@ test('top navigation keeps quick start first within the guide domain', async () 
     assert.equal((config.match(/items: \[/g) || []).length >= 8, true, 'top navigation provides dropdown items');
     assert.ok(config.includes("'/cms/': cmsSidebar"));
     assert.ok(config.includes("'/tools/': toolGroups"));
-    assert.match(config, /socialLinks:\s*\[\{ icon: 'github', link: 'https:\/\/github\.com\/zwbcode\/snake-ui' \}\]/);
+    assert.match(config, /socialLinks:\s*\[\{ icon: 'github', link: 'https:\/\/github\.com\/purenia-ai\/snake-ui' \}\]/);
     assert.ok(!config.includes("text: '工具', link: '/guide/tools'"));
 });
 
