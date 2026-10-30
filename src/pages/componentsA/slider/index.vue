@@ -13,6 +13,12 @@
                 <text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ value }}</text>
             </view>
         </DemoSection>
+        <DemoSection variant="preview" :title="text('自定义范围')">
+            <view class="demo-control-stack">
+                <snake-slider v-model="rangeValue" :min="0" :max="1000" :step="50" show-value show-edge-value />
+                <text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ rangeValue }}</text>
+            </view>
+        </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
             <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
         </DemoSection>
@@ -28,6 +34,7 @@ import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
 const value = ref(35);
+const rangeValue = ref(400);
 const controls: DemoControl[] = [
     { key: 'sliderStep', label: '步长', type: 'slider', defaultValue: 5, min: 1, max: 20, step: 1 },
     { key: 'sliderShowValue', label: '显示数值', type: 'switch', defaultValue: true },

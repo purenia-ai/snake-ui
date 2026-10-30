@@ -22,6 +22,30 @@
                 <text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ customValue }}</text>
             </view>
         </DemoSection>
+        <DemoSection variant="preview" :title="text('状态总览')">
+            <view class="demo-switch-gallery">
+                <view class="demo-switch-item">
+                    <snake-switch :model-value="true" />
+                    <text>{{ text('开') }}</text>
+                </view>
+                <view class="demo-switch-item">
+                    <snake-switch :model-value="false" />
+                    <text>{{ text('关') }}</text>
+                </view>
+                <view class="demo-switch-item">
+                    <snake-switch :model-value="true" loading />
+                    <text>{{ text('加载中') }}</text>
+                </view>
+                <view class="demo-switch-item">
+                    <snake-switch :model-value="true" disabled />
+                    <text>{{ text('禁用·开') }}</text>
+                </view>
+                <view class="demo-switch-item">
+                    <snake-switch :model-value="false" disabled />
+                    <text>{{ text('禁用·关') }}</text>
+                </view>
+            </view>
+        </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
             <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
         </DemoSection>
@@ -70,5 +94,23 @@ function updateValue(key: string, nextValue: DemoValue) {
 .demo-control-stack > text {
     color: var(--snake-color-text-secondary);
     font-size: 26rpx;
+}
+.demo-switch-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32rpx 40rpx;
+    padding: 32rpx 24rpx;
+    border-radius: 16rpx;
+    background: var(--snake-color-surface-muted);
+}
+.demo-switch-item {
+    display: flex;
+    flex-direction: column;
+    gap: 14rpx;
+    align-items: center;
+}
+.demo-switch-item > text {
+    color: var(--snake-color-text-muted);
+    font-size: 22rpx;
 }
 </style>
