@@ -96,8 +96,9 @@ function updateValue(key: string, value: DemoValue) {
 .demo-card,
 .demo-skeleton-item-showcase {
     padding: 24rpx;
+    border: 1rpx solid var(--snake-color-divider);
     border-radius: 16rpx;
-    background: var(--snake-color-surface-muted);
+    background: var(--snake-color-surface);
 }
 .demo-skeleton-item-showcase {
     display: flex;

@@ -58,18 +58,23 @@ const variantDefaults: Record<NonNullable<SkeletonItemProps['variant']>, Variant
 </script>
 
 <style scoped>
+/*
+ * 占位色默认值用中性灰的半透明叠加：明暗两种模式下都随底色自适应
+ * （浅色底上呈浅灰、深色底上呈暗灰），无需主题系统注入；
+ * 业务仍可通过 --snake-skeleton-color / --snake-skeleton-highlight 覆盖。
+ */
 .snake-skeleton-item {
     box-sizing: border-box;
     flex: none;
     overflow: hidden;
-    background-color: var(--snake-skeleton-color, #f1f2f4);
+    background-color: var(--snake-skeleton-color, rgba(120, 120, 130, 0.14));
 }
 .snake-skeleton-item--animated {
     background-image: linear-gradient(
         90deg,
-        var(--snake-skeleton-color, #f1f2f4) 25%,
-        var(--snake-skeleton-highlight, #e5e7eb) 37%,
-        var(--snake-skeleton-color, #f1f2f4) 63%
+        var(--snake-skeleton-color, rgba(120, 120, 130, 0.14)) 25%,
+        var(--snake-skeleton-highlight, rgba(120, 120, 130, 0.24)) 37%,
+        var(--snake-skeleton-color, rgba(120, 120, 130, 0.14)) 63%
     );
     background-size: 400% 100%;
     animation: snake-skeleton-shimmer 1.8s ease infinite;

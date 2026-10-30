@@ -8,6 +8,7 @@
 
 ### 🐛 修复 | Bug Fixes
 
+- 修复骨架屏占位色不适配暗色模式的问题：`--snake-skeleton-color` / `--snake-skeleton-highlight` 未在任何主题层定义，组件长期落在浅灰 fallback 上，暗色背景中呈现刺眼浅灰块；默认值改为中性灰半透明叠加，明暗底色自适应，业务覆盖变量仍生效
 - `exports` 补充 `./components/snake-cms/types` 显式入口：修复业务侧 `import type ... from '@puresnake/snake-ui/components/snake-cms/types'` 在 TypeScript bundler 解析下报 TS2307 的问题。TypeScript 对 `exports` 目标不做扩展名探测，也不支持中间通配（`*/types`），组件内部模块必须逐个显式声明（[c126cbb](https://github.com/purenia-ai/snake-ui/commit/c126cbb)）
 
 ### ⚙️ 变更 | Changes
