@@ -74,10 +74,13 @@ onPageScroll(event => {
 
 <style scoped>
 .demo-index-row {
-    min-height: 160rpx;
-    padding: 28rpx 20rpx;
+    display: flex;
+    min-height: 96rpx;
+    align-items: center;
+    padding: 0 24rpx;
     border-bottom: 1rpx solid var(--snake-color-divider);
     color: var(--snake-color-text-secondary);
     background: var(--snake-color-surface);
+    font-size: 28rpx;
 }
 </style>
