@@ -211,10 +211,11 @@ function getAuthorize(event: unknown) {
     border-color: var(--snake-color-warning, #ff9900);
     background-color: var(--snake-color-warning, #ff9900);
 }
+/* 信息主题与默认按钮同为中性配色。 */
 .snake-button--info {
-    color: var(--snake-color-white, #fff);
-    border-color: var(--snake-color-info, #909399);
-    background-color: var(--snake-color-info, #909399);
+    color: var(--snake-color-text, #606266);
+    border-color: var(--snake-color-border-light, #c8c9cc);
+    background-color: var(--snake-color-surface, #fff);
 }
 .snake-button--default--disabled {
     color: var(--snake-color-text-light, #c0c4cc);
@@ -242,9 +243,9 @@ function getAuthorize(event: unknown) {
     background-color: var(--snake-color-warning-disabled, #fcbd71) !important;
 }
 .snake-button--info--disabled {
-    color: var(--snake-color-white, #fff) !important;
-    border-color: var(--snake-color-info-disabled, #c8c9cc) !important;
-    background-color: var(--snake-color-info-disabled, #c8c9cc) !important;
+    color: var(--snake-color-text-light, #c0c4cc);
+    border-color: var(--snake-color-border, #dcdfe6);
+    background-color: var(--snake-color-surface, #fff);
 }
 /* 镂空按钮的禁用态保持镂空视觉，仅整体降低透明度，避免与实心禁用态互相覆盖。 */
 .snake-button--plain-disabled {
@@ -386,8 +387,9 @@ function getAuthorize(event: unknown) {
     background: var(--snake-color-success-dark, #18b566) !important;
 }
 .snake-info-hover {
-    color: var(--snake-color-white, #fff);
-    background: var(--snake-color-info-dark, #82848a) !important;
+    color: var(--snake-color-info-dark, #82848a) !important;
+    border-color: var(--snake-color-info-dark, #82848a) !important;
+    background-color: var(--snake-color-info-light, #f4f4f5) !important;
 }
 .snake-warning-hover {
     color: var(--snake-color-white, #fff);
