@@ -2,7 +2,7 @@
     "id": "snake-ui",
     "name": "@puresnake/snake-ui",
     "displayName": "Snake UI",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "面向 uni-app 商城与 CMS 场景的 Vue 组件库",
     "license": "MIT",
     "author": "PURESNAKE",
@@ -30,6 +30,11 @@
             "default": "./index.ts"
         },
         "./components/*": "./components/*",
+        "./components/snake-cms/types": {
+            "types": "./components/snake-cms/types.ts",
+            "import": "./components/snake-cms/types.ts",
+            "default": "./components/snake-cms/types.ts"
+        },
         "./libs/*": "./libs/*",
         "./libs/request": {
             "types": "./libs/request/index.ts",
@@ -57,6 +62,11 @@
             "types": "./libs/request/index.ts",
             "import": "./libs/request/index.ts",
             "default": "./libs/request/index.ts"
+        },
+        "./qrcode": {
+            "types": "./components/snake-qr-code/qrcode.ts",
+            "import": "./components/snake-qr-code/qrcode.ts",
+            "default": "./components/snake-qr-code/qrcode.ts"
         },
         "./types": "./types/index.d.ts",
         "./types/*": "./types/*.d.ts",

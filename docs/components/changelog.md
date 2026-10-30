@@ -1,5 +1,10 @@
 # 更新日志
 
+## 0.0.4（2026-10-30）
+
+- 新增公开子路径 `@puresnake/snake-ui/qrcode`：导出二维码矩阵生成器 `generateQRCode` / `QRErrorCorrectLevel`，供海报合成等离屏 canvas 场景直接取矩阵数据（`<snake-qr-code>` 组件是屏上渲染，矩阵需求此前无法从包外获取）
+- exports 新增 `./components/snake-cms/types` 显式入口（目标显式 `.ts`）：修复业务侧 `import type ... from '@puresnake/snake-ui/components/snake-cms/types'` 在 TS bundler 解析下报 TS2307 的问题（TS 对 exports 目标不做扩展名探测，也不支持中间通配 `*/types`，只能逐个显式声明）
+
 ## 0.0.3（2026-10-29）
 
 - 修复 exports 深层路径对 TypeScript / Vite 的兼容性：`./libs/request`、`./libs/runtime` 提供显式入口；`./libs/config/*`、`./libs/cms/*`、`./libs/function/*`、`./libs/hooks/*` 映射到显式 `.ts` 文件（TS 不做扩展名探测，通配 `./libs/*` 下的无扩展名路径此前无法解析）
