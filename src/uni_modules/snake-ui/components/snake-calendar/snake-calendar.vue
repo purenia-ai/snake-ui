@@ -255,18 +255,21 @@ const min = ref<{ year: number; month: number; day: number } | null>(null);
 const max = ref<{ year: number; month: number; day: number } | null>(null);
 const weekDayZh = ref([t('sun'), t('mon'), t('tue'), t('wed'), t('thu'), t('fri'), t('sat')]);
 
-// 内置公历节日（格式：MM-DD），只收录中国法定与正式节日
+// 内置公历节日（格式：MM-DD），在移植原有条目基础上补充法定与正式节日
 const builtInFestivals: Record<string, string> = {
     '01-01': '元旦',
+    '02-14': '情人节',
     '03-08': '妇女节',
     '03-12': '植树节',
+    '04-01': '愚人节',
     '05-01': '劳动节',
     '05-04': '青年节',
     '06-01': '儿童节',
     '07-01': '建党节',
     '08-01': '建军节',
     '09-10': '教师节',
-    '10-01': '国庆节'
+    '10-01': '国庆节',
+    '12-25': '圣诞节'
 };
 
 // 内置农历节日（格式：农历月-日），由 solar2lunar 换算，无需逐年维护公历日期
