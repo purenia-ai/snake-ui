@@ -43,10 +43,20 @@
  * @see /components/index-list-panel
  */
 
-import { getCurrentInstance, nextTick, onMounted, provide, ref, toRef, watch, type CSSProperties } from 'vue';
+import {
+    getCurrentInstance,
+    nextTick,
+    onBeforeUnmount,
+    onMounted,
+    provide,
+    ref,
+    toRef,
+    watch,
+    type CSSProperties
+} from 'vue';
 import zIndex from '../../libs/config/zIndex';
 import { addUnit } from '../../libs/function/unit';
-import { createAnchorRegistry } from '../snake-index-list/anchor-registry';
+import { createAnchorRegistry, watchViewportResize } from '../snake-index-list/anchor-registry';
 import { indexFromTouch, offsetTopPx, resolveIndex, indexListKey } from '../snake-index-list/types';
 import type { IndexValue } from '../snake-index-list/types';
 import type { IndexListPanelEmits, IndexListPanelProps } from './types';
@@ -80,6 +90,7 @@ const railHeight = ref(0);
 const anchorOffsets = ref<number[]>([]);
 // 锚点位置由锚点组件自测回报（微信端父级查询跨不过自定义组件边界）。
 const registry = createAnchorRegistry();
+let stopResizeWatch: (() => void) | undefined;
 const touching = ref(false);
 let updating = false;
 let scrollIntoViewTimer: ReturnType<typeof setTimeout> | undefined;
@@ -158,6 +169,15 @@ async function update() {
             });
         });
         await registry.collect();
+        if (import.meta.env.DEV) {
+            const missing = props.indexList.filter(value => !registry.hasAnchor(value));
+            if (missing.length) {
+                console.warn(
+                    '[snake-index-list-panel] indexList 中以下索引没有挂载对应的 snake-index-anchor，定位与吸顶不会生效：',
+                    missing.join('、')
+                );
+            }
+        }
         anchorOffsets.value = props.indexList.map(value => {
             const rect = registry.rects.get(value);
             // 未回报的锚点以 Infinity 占位，scrollTo 自动退回 scroll-into-view。
@@ -217,7 +237,12 @@ watch(
     () => void update(),
     { deep: true }
 );
-onMounted(() => void update());
+onMounted(() => {
+    void update();
+    // 旋转屏 / 分屏等尺寸变化后重测锚点几何信息。
+    stopResizeWatch = watchViewportResize(() => void update());
+});
+onBeforeUnmount(() => stopResizeWatch?.());
 defineExpose({ scrollTo, update });
 </script>
 

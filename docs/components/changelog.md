@@ -5,6 +5,7 @@
 ### ✨ 新增 | Features
 
 - 新增公开子路径 `@puresnake/snake-ui/qrcode`：导出二维码矩阵生成器 `generateQRCode` / `QRErrorCorrectLevel`，供海报合成等离屏 canvas 场景直接取矩阵数据。`<snake-qr-code>` 组件为屏上渲染，矩阵需求此前无法从包外获取（[c126cbb](https://github.com/purenia-ai/snake-ui/commit/c126cbb)）
+- 索引列表（`snake-index-list` / `snake-index-list-panel`）窗口尺寸变化（旋转屏、分屏）后自动重测锚点几何信息；开发期校验 `indexList` 与实际挂载锚点的匹配，未匹配索引输出告警，不再静默失败
 
 ### 🐛 修复 | Bug Fixes
 

@@ -26,6 +26,11 @@ export function createAnchorRegistry() {
         registered.add(value);
     }
 
+    /** 判断指定索引是否已有挂载锚点登记（供容器在开发期校验 indexList 配置）。 */
+    function hasAnchor(value: IndexValue) {
+        return registered.has(value);
+    }
+
     function unregisterAnchor(value: IndexValue) {
         registered.delete(value);
         rects.delete(value);
@@ -67,9 +72,27 @@ export function createAnchorRegistry() {
         measureToken,
         rects,
         registerAnchor,
+        hasAnchor,
         unregisterAnchor,
         reportAnchor,
         collect
+    };
+}
+
+/**
+ * 监听窗口尺寸变化（旋转屏、分屏、桌面端拖拽），防抖后触发重测。
+ * 使用跨端的 uni.onWindowResize，返回解除监听函数供容器卸载时清理。
+ */
+export function watchViewportResize(callback: () => void): () => void {
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const handler = () => {
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(callback, 200);
+    };
+    uni.onWindowResize?.(handler as never);
+    return () => {
+        if (timer) clearTimeout(timer);
+        uni.offWindowResize?.(handler as never);
     };
 }
 
