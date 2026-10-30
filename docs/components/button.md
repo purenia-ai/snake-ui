@@ -26,8 +26,19 @@ description: 使用 Snake UI Button 触发提交、确认和页面操作，处�
 <snake-button type="primary">主要按钮</snake-button>
 <snake-button type="success" plain>镂空按钮</snake-button>
 <snake-button size="small" shape="circle">小型胶囊按钮</snake-button>
+<snake-button icon="search">图标按钮</snake-button>
+<snake-button type="primary" block>块级按钮</snake-button>
 <snake-button loading>加载中</snake-button>
 <snake-button disabled>不可操作</snake-button>
+```
+
+## 图标、块级与加载
+
+`icon` 传入 snake-icon 图标名，颜色与字号跟随按钮文字；`block` 让按钮占满整行；`loading` 内置品牌加载图标，颜色同样跟随按钮文字，期间不触发点击。
+
+```vue
+<snake-button type="primary" icon="right">下一步</snake-button>
+<snake-button type="primary" block :loading="submitting" @click="submit">保存</snake-button>
 ```
 
 ## 主题、尺寸和形状
@@ -90,22 +101,24 @@ async function submit() {
 
 ### Props
 
-| 参数            | 说明                   | 类型               | 默认值    |
-| --------------- | ---------------------- | ------------------ | --------- |
-| `text`          | 无默认插槽时显示的文本 | `string`           | `''`      |
-| `type`          | 主题类型               | `string`           | `default` |
-| `size`          | 按钮尺寸               | `string`           | `default` |
-| `shape`         | 按钮形状               | `square \| circle` | `square`  |
-| `plain`         | 是否镂空               | `boolean`          | `false`   |
-| `hairLine`      | 是否使用细边框         | `boolean`          | `true`    |
-| `disabled`      | 是否禁用               | `boolean`          | `false`   |
-| `loading`       | 是否显示原生加载状态   | `boolean`          | `false`   |
-| `ripple`        | 是否开启水波纹         | `boolean`          | `false`   |
-| `rippleBgColor` | 水波纹颜色             | `string`           | `''`      |
-| `hoverClass`    | 自定义按下类名         | `string`           | `''`      |
-| `throttleTime`  | 点击节流时间，单位 ms  | `number \| string` | `0`       |
-| `customClass`   | 根节点自定义类名       | `string`           | `''`      |
-| `customStyle`   | 根节点自定义样式       | `string \| object` | `{}`      |
+| 参数            | 说明                                 | 类型               | 默认值    |
+| --------------- | ------------------------------------ | ------------------ | --------- |
+| `text`          | 无默认插槽时显示的文本               | `string`           | `''`      |
+| `icon`          | 内置图标名，颜色与字号跟随按钮文字   | `string`           | `''`      |
+| `type`          | 主题类型                             | `string`           | `default` |
+| `size`          | 按钮尺寸                             | `string`           | `default` |
+| `shape`         | 按钮形状                             | `square \| circle` | `square`  |
+| `block`         | 是否为块级按钮，占满整行             | `boolean`          | `false`   |
+| `plain`         | 是否镂空                             | `boolean`          | `false`   |
+| `hairLine`      | 是否使用细边框                       | `boolean`          | `true`    |
+| `disabled`      | 是否禁用                             | `boolean`          | `false`   |
+| `loading`       | 是否显示加载状态，内置图标随文字着色 | `boolean`          | `false`   |
+| `ripple`        | 是否开启水波纹                       | `boolean`          | `false`   |
+| `rippleBgColor` | 水波纹颜色                           | `string`           | `''`      |
+| `hoverClass`    | 自定义按下类名                       | `string`           | `''`      |
+| `throttleTime`  | 点击节流时间，单位 ms                | `number \| string` | `0`       |
+| `customClass`   | 根节点自定义类名                     | `string`           | `''`      |
+| `customStyle`   | 根节点自定义样式                     | `string \| object` | `{}`      |
 
 其余原生能力参数包括 `scope`、`openType`、`formType`、`appParameter`、`hoverStopPropagation`、`lang`、`sessionFrom`、`sendMessageTitle`、`sendMessagePath`、`sendMessageImg`、`showMessageCard`、`dataName`、`hoverStartTime` 和 `hoverStayTime`。
 

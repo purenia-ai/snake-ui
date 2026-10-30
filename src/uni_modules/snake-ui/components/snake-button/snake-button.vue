@@ -1,16 +1,16 @@
 <template>
     <button
-        id="snake-wave-btn"
         class="snake-button snake-line-1 snake-fix-ios-appearance"
         data-eventsync="true"
         :class="[
             `snake-size-${size}`,
             plain ? `snake-button--${type}--plain` : '',
-            loading ? 'snake-loading' : '',
+            block ? 'snake-button--block' : '',
+            loading ? 'snake-button--loading' : '',
             shape === 'circle' ? 'snake-round-circle' : '',
             hairLine ? hairLineClass : 'snake-button--bold-border',
             `snake-button--${type}`,
-            disabled ? `snake-button--${type}--disabled` : '',
+            disabled ? (plain ? 'snake-button--plain-disabled' : `snake-button--${type}--disabled`) : '',
             customClass
         ]"
         :hover-start-time="Number(hoverStartTime)"
@@ -29,7 +29,6 @@
         :show-message-card="showMessageCard"
         :style="rootStyle"
         :hover-class="hoverClassName"
-        :loading="loading"
         @tap.stop="click"
         @getauthorize="getAuthorize"
         @getuserinfo="forward('getuserinfo', $event)"
@@ -41,6 +40,20 @@
         @chooseavatar="forward('chooseavatar', $event)"
         @agreeprivacyauthorization="forward('agreeprivacyauthorization', $event)"
     >
+        <snake-loading
+            v-if="loading"
+            inherit-color
+            direction="horizontal"
+            custom-class="snake-button__loading"
+            :class="{ 'snake-button__loading--standalone': !hasContent }"
+        />
+        <snake-icon
+            v-else-if="icon"
+            :name="icon"
+            size="inherit"
+            custom-class="snake-button__icon"
+            :class="{ 'snake-button__icon--standalone': !hasContent }"
+        />
         <slot>{{ text }}</slot>
         <view
             v-if="ripple"
@@ -63,7 +76,7 @@
  * @description 跨端按钮。
  * @see /components/button
  */
-import { computed, getCurrentInstance, nextTick, ref } from 'vue';
+import { computed, getCurrentInstance, nextTick, ref, useSlots } from 'vue';
 import { toStyle } from '../../libs/function/style';
 import { buttonProps } from './types';
 import type { ButtonEmits } from './types';
@@ -74,11 +87,15 @@ const props = defineProps(buttonProps);
 const emit = defineEmits<ButtonEmits>();
 const emitNative = emit as unknown as (name: Exclude<keyof ButtonEmits, 'click'>, event: unknown) => void;
 const instance = getCurrentInstance();
+const slots = useSlots();
 const rippleTop = ref(0);
 const rippleLeft = ref(0);
 const targetWidth = ref(0);
 const waveActive = ref(false);
 let lastClickTime = 0;
+
+/** 是否存在文字内容；纯图标/纯加载按钮不保留图标与文字间距。 */
+const hasContent = computed(() => Boolean(slots.default) || props.text !== '');
 
 const hoverClassName = computed(() => {
     if (props.loading || props.disabled || props.ripple) return '';
@@ -150,7 +167,21 @@ function getAuthorize(event: unknown) {
     border: 0;
     line-height: 1;
     cursor: pointer;
-    transition: all 0.15s;
+    transition:
+        background-color 0.15s,
+        border-color 0.15s,
+        color 0.15s,
+        opacity 0.15s;
+}
+.snake-button--block {
+    display: flex;
+    width: 100%;
+}
+.snake-button__icon:not(.snake-button__icon--standalone) {
+    margin-right: 8rpx;
+}
+.snake-button__loading:not(.snake-button__loading--standalone) {
+    margin-right: 10rpx;
 }
 .snake-button--bold-border {
     border: 1px solid var(--snake-color-white, #fff);
@@ -180,9 +211,14 @@ function getAuthorize(event: unknown) {
     border-color: var(--snake-color-warning, #ff9900);
     background-color: var(--snake-color-warning, #ff9900);
 }
-.snake-button--default--disabled {
+.snake-button--info {
     color: var(--snake-color-white, #fff);
-    border-color: var(--snake-color-border, #e4e7ed);
+    border-color: var(--snake-color-info, #909399);
+    background-color: var(--snake-color-info, #909399);
+}
+.snake-button--default--disabled {
+    color: var(--snake-color-text-light, #c0c4cc);
+    border-color: var(--snake-color-border, #dcdfe6);
     background-color: var(--snake-color-surface, #fff);
 }
 .snake-button--primary--disabled {
@@ -205,25 +241,39 @@ function getAuthorize(event: unknown) {
     border-color: var(--snake-color-warning-disabled, #fcbd71) !important;
     background-color: var(--snake-color-warning-disabled, #fcbd71) !important;
 }
+.snake-button--info--disabled {
+    color: var(--snake-color-white, #fff) !important;
+    border-color: var(--snake-color-info-disabled, #c8c9cc) !important;
+    background-color: var(--snake-color-info-disabled, #c8c9cc) !important;
+}
+/* 镂空按钮的禁用态保持镂空视觉，仅整体降低透明度，避免与实心禁用态互相覆盖。 */
+.snake-button--plain-disabled {
+    opacity: 0.55;
+}
 .snake-button--primary--plain {
     color: var(--snake-color-primary, #06d290) !important;
-    border-color: var(--snake-color-primary-disabled, #71d5a1) !important;
+    border-color: var(--snake-color-primary, #06d290) !important;
     background-color: var(--snake-color-primary-light, #06d2901a) !important;
 }
 .snake-button--success--plain {
     color: var(--snake-color-success, #19be6b) !important;
-    border-color: var(--snake-color-success-disabled, #71d5a1) !important;
+    border-color: var(--snake-color-success, #19be6b) !important;
     background-color: var(--snake-color-success-light, #dbf1e1) !important;
 }
 .snake-button--error--plain {
     color: var(--snake-color-error, #fa3534) !important;
-    border-color: var(--snake-color-error-disabled, #fab6b6) !important;
+    border-color: var(--snake-color-error, #fa3534) !important;
     background-color: var(--snake-color-error-light, #fef0f0) !important;
 }
 .snake-button--warning--plain {
     color: var(--snake-color-warning, #ff9900) !important;
-    border-color: var(--snake-color-warning-disabled, #fcbd71) !important;
+    border-color: var(--snake-color-warning, #ff9900) !important;
     background-color: var(--snake-color-warning-light, #fdf6ec) !important;
+}
+.snake-button--info--plain {
+    color: var(--snake-color-info, #909399) !important;
+    border-color: var(--snake-color-info, #909399) !important;
+    background-color: var(--snake-color-info-light, #f4f4f5) !important;
 }
 .snake-hairline-border::after {
     content: ' ';
@@ -261,8 +311,14 @@ function getAuthorize(event: unknown) {
 .snake-round-circle::after {
     border-radius: 100rpx;
 }
-.snake-loading::after {
-    background-color: hsla(0, 0%, 100%, 0.35);
+.snake-default-hover {
+    color: var(--snake-color-primary-dark, #2ebd7c) !important;
+    border-color: var(--snake-color-primary-dark, #2ebd7c) !important;
+    background-color: var(--snake-color-primary-light, #06d2901a) !important;
+}
+.snake-primary-hover {
+    color: var(--snake-color-white, #fff);
+    background: var(--snake-color-primary-dark, #2ebd7c) !important;
 }
 .snake-size-large {
     height: 100rpx;
@@ -299,44 +355,31 @@ function getAuthorize(event: unknown) {
     font-size: 22rpx;
     line-height: 50rpx;
 }
+/* 镂空按钮按压态：保持浅色底，仅加深文字与边框，不反转为实心。 */
 .snake-primary-plain-hover {
-    color: var(--snake-color-white, #fff) !important;
-    border-color: var(--snake-color-primary-dark, #18b566) !important;
-    background-color: var(--snake-color-primary-dark, #18b566) !important;
+    color: var(--snake-color-primary-dark, #2ebd7c) !important;
+    border-color: var(--snake-color-primary-dark, #2ebd7c) !important;
 }
 .snake-default-plain-hover {
-    color: var(--snake-color-white, #fff) !important;
-    border-color: var(--snake-color-primary-dark, #18b566) !important;
-    background-color: var(--snake-color-primary-dark, #18b566) !important;
-}
-.snake-success-plain-hover {
-    color: var(--snake-color-white, #fff) !important;
-    border-color: var(--snake-color-success-dark, #18b566) !important;
-    background-color: var(--snake-color-success-dark, #18b566) !important;
-}
-.snake-warning-plain-hover {
-    color: var(--snake-color-white, #fff) !important;
-    border-color: var(--snake-color-warning-dark, #f29100) !important;
-    background-color: var(--snake-color-warning-dark, #f29100) !important;
-}
-.snake-error-plain-hover {
-    color: var(--snake-color-white, #fff) !important;
-    border-color: var(--snake-color-error-dark, #dd6161) !important;
-    background-color: var(--snake-color-error-dark, #dd6161) !important;
-}
-.snake-info-plain-hover {
-    color: var(--snake-color-white, #fff) !important;
-    border-color: var(--snake-color-info-dark, #767a82) !important;
-    background-color: var(--snake-color-info-dark, #767a82) !important;
-}
-.snake-default-hover {
-    color: var(--snake-color-primary-dark, #18b566) !important;
-    border-color: var(--snake-color-primary-dark, #18b566) !important;
+    color: var(--snake-color-primary-dark, #2ebd7c) !important;
+    border-color: var(--snake-color-primary-dark, #2ebd7c) !important;
     background-color: var(--snake-color-primary-light, #06d2901a) !important;
 }
-.snake-primary-hover {
-    color: var(--snake-color-white, #fff);
-    background: var(--snake-color-primary-dark, #18b566) !important;
+.snake-success-plain-hover {
+    color: var(--snake-color-success-dark, #18b566) !important;
+    border-color: var(--snake-color-success-dark, #18b566) !important;
+}
+.snake-warning-plain-hover {
+    color: var(--snake-color-warning-dark, #f29100) !important;
+    border-color: var(--snake-color-warning-dark, #f29100) !important;
+}
+.snake-error-plain-hover {
+    color: var(--snake-color-error-dark, #dd6161) !important;
+    border-color: var(--snake-color-error-dark, #dd6161) !important;
+}
+.snake-info-plain-hover {
+    color: var(--snake-color-info-dark, #82848a) !important;
+    border-color: var(--snake-color-info-dark, #82848a) !important;
 }
 .snake-success-hover {
     color: var(--snake-color-white, #fff);
@@ -344,7 +387,7 @@ function getAuthorize(event: unknown) {
 }
 .snake-info-hover {
     color: var(--snake-color-white, #fff);
-    background: var(--snake-color-info-dark, #767a82) !important;
+    background: var(--snake-color-info-dark, #82848a) !important;
 }
 .snake-warning-hover {
     color: var(--snake-color-white, #fff);

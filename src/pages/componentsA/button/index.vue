@@ -8,6 +8,8 @@
                         :type="String(state.type)"
                         :size="state.buttonSize"
                         :shape="state.buttonShape"
+                        :icon="String(state.icon)"
+                        :block="Boolean(state.block)"
                         :plain="Boolean(state.plain)"
                         :disabled="Boolean(state.disabled)"
                         :loading="Boolean(state.loading)"
@@ -97,6 +99,19 @@ const controls: DemoControl[] = [
             { label: '胶囊', value: 'circle' }
         ]
     },
+    {
+        key: 'icon',
+        label: '内置图标',
+        type: 'select',
+        defaultValue: '',
+        options: [
+            { label: '无图标', value: '' },
+            { label: '搜索', value: 'search' },
+            { label: '对勾', value: 'checkmark' },
+            { label: '右箭头', value: 'right' }
+        ]
+    },
+    { key: 'block', label: '块级按钮', type: 'switch', defaultValue: false },
     { key: 'plain', label: '朴素样式', type: 'switch', defaultValue: false },
     { key: 'loading', label: '加载状态', type: 'switch', defaultValue: false },
     { key: 'disabled', label: '禁用状态', type: 'switch', defaultValue: false },
@@ -123,6 +138,8 @@ const currentCode = computed(() => {
     if (state.type !== 'default') attributes.push(`type="${String(state.type)}"`);
     if (state.buttonSize !== 'default') attributes.push(`size="${String(state.buttonSize)}"`);
     if (state.buttonShape !== 'square') attributes.push(`shape="${String(state.buttonShape)}"`);
+    if (state.icon) attributes.push(`icon="${String(state.icon)}"`);
+    if (state.block) attributes.push('block');
     for (const key of ['plain', 'loading', 'disabled', 'ripple']) {
         if (state[key]) attributes.push(key);
     }

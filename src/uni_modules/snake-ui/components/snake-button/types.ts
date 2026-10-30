@@ -19,10 +19,12 @@ export const buttonProps = {
     },
     /** 根节点自定义类名。 */ customClass: { type: String, default: '' },
     /** 按钮文本。 */ text: { type: String, default: '' },
+    /** 内置图标名，透传给 snake-icon，颜色与字号跟随按钮文字。 */ icon: { type: String, default: '' },
     /** 是否使用半像素细边框。 */ hairLine: { type: Boolean, default: true },
     /** 按钮主题。 */ type: { type: String as PropType<ButtonType>, default: 'default' },
     /** 按钮尺寸。 */ size: { type: String as PropType<ButtonSize>, default: 'default' },
     /** 按钮形状。 */ shape: { type: String as PropType<ButtonShape>, default: 'square' },
+    /** 是否为块级按钮，占满整行。 */ block: { type: Boolean, default: false },
     /** 是否为镂空按钮。 */ plain: { type: Boolean, default: false },
     /** 是否禁用。 */ disabled: { type: Boolean, default: false },
     /** 是否显示原生加载状态。 */ loading: { type: Boolean, default: false },
@@ -37,7 +39,6 @@ export const buttonProps = {
     /** 客服消息卡片路径。 */ sendMessagePath: { type: String, default: '' },
     /** 客服消息卡片图片。 */ sendMessageImg: { type: String, default: '' },
     /** 是否显示客服消息卡片。 */ showMessageCard: { type: Boolean, default: false },
-    /** 按下时的背景色。 */ hoverBgColor: { type: String, default: '' },
     /** 水波纹背景色。 */ rippleBgColor: { type: String, default: '' },
     /** 是否开启水波纹。 */ ripple: { type: Boolean, default: false },
     /** 自定义按下类名。 */ hoverClass: { type: String, default: '' },
@@ -61,10 +62,12 @@ export interface ButtonProps {
     /** 根节点自定义样式。 */ customStyle?: string | Record<string, unknown>;
     /** 根节点自定义类名。 */ customClass?: string;
     /** 按钮文本。 */ text?: string;
+    /** 内置图标名。 */ icon?: string;
     /** 是否使用半像素细边框。 */ hairLine?: boolean;
     /** 按钮主题。 */ type?: ButtonType;
     /** 按钮尺寸。 */ size?: ButtonSize;
     /** 按钮形状。 */ shape?: ButtonShape;
+    /** 是否为块级按钮。 */ block?: boolean;
     /** 是否为镂空按钮。 */ plain?: boolean;
     /** 是否禁用。 */ disabled?: boolean;
     /** 是否显示原生加载状态。 */ loading?: boolean;
@@ -79,7 +82,6 @@ export interface ButtonProps {
     /** 客服消息卡片路径。 */ sendMessagePath?: string;
     /** 客服消息卡片图片。 */ sendMessageImg?: string;
     /** 是否显示客服消息卡片。 */ showMessageCard?: boolean;
-    /** 按下时的背景色。 */ hoverBgColor?: string;
     /** 水波纹背景色。 */ rippleBgColor?: string;
     /** 是否开启水波纹。 */ ripple?: boolean;
     /** 自定义按下类名。 */ hoverClass?: string;
