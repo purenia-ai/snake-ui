@@ -1,6 +1,24 @@
-# Snake UI
+<p align="center">
+    <img src="docs/public/snake-mark-light.svg#gh-light-mode-only" width="110" alt="Snake UI" />
+    <img src="docs/public/snake-mark-dark.svg#gh-dark-mode-only" width="110" alt="Snake UI" />
+</p>
+<h3 align="center">Snake UI</h3>
+<p align="center">面向 uni-app 商城与 CMS 场景的 Vue 3 组件库，支持 H5、微信小程序和 App</p>
 
-面向 uni-app 商城与 CMS 场景的 Vue 3 组件库，支持 H5、微信小程序和 App。基础组件和运行时工具均由本项目提供。
+<div align="center">
+
+[![npm version](https://img.shields.io/npm/v/@puresnake/snake-ui?style=flat-square)](https://www.npmjs.com/package/@puresnake/snake-ui)
+[![npm downloads](https://img.shields.io/npm/dm/@puresnake/snake-ui?style=flat-square)](https://www.npmjs.com/package/@puresnake/snake-ui)
+[![license](https://img.shields.io/github/license/purenia-ai/snake-ui?style=flat-square)](./LICENSE)
+[![docs](https://img.shields.io/badge/docs-m.puresnake.com%2Fsnake--ui-06d290?style=flat-square)](https://m.puresnake.com/snake-ui/)
+
+</div>
+
+<p align="center">
+    <a href="https://m.puresnake.com/snake-ui/"><strong>📖 官方文档</strong></a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="https://m.puresnake.com/snake-ui/h5/"><strong>📱 在线演示</strong></a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="./src/uni_modules/snake-ui/changelog.md">🗓 更新日志</a>
+</p>
+
+---
 
 ## 特性
 
@@ -239,7 +257,10 @@ pnpm docs:build:preview
 
 ## 文档
 
-文档目录位于 `docs/`，每个组件页面都有独立的 API 说明和手机实时预览。CMS 页面装修能力拥有独立导航与协议文档，区块统一由 `snake-cms` 渲染。
+- 官方文档（线上）：[https://m.puresnake.com/snake-ui/](https://m.puresnake.com/snake-ui/)
+- 在线演示（uni-app H5）：[https://m.puresnake.com/snake-ui/h5/](https://m.puresnake.com/snake-ui/h5/)
+
+文档源码位于 `docs/`，每个组件页面都有独立的 API 说明和手机实时预览。CMS 页面装修能力拥有独立导航与协议文档，区块统一由 `snake-cms` 渲染。
 
 ## 平台说明
 
