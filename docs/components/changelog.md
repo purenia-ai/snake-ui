@@ -1,7 +1,5 @@
 # 更新日志
 
-本文件是 `@puresnake/snake-ui` 的唯一更新日志来源，遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 风格：条目按「✨ 新增 / ⚙️ 变更 / 🐛 修复 / ✏️ 文档」分类并附提交链接，版本标题链接到该版本的代码比对，日期为实际发布日，版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。文档站的更新日志页面由 `pnpm changelog:sync` 从本文件单向同步生成。
-
 ## [0.0.4](https://github.com/purenia-ai/snake-ui/compare/v0.0.3...v0.0.4)（2026-10-30）
 
 ### ✨ 新增 | Features
