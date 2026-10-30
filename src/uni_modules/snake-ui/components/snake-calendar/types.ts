@@ -19,6 +19,8 @@ export interface CalendarLunar {
     month: number;
     /** 农历年。 */
     year: number;
+    /** 节气名，仅节气日有值（用于清明等节气节日判定）。 */
+    term?: string;
 }
 /** CalendarChangeDate 单选模式 change 事件载荷。 */
 export interface CalendarChangeDate {

@@ -7,15 +7,22 @@
 - 新增公开子路径 `@puresnake/snake-ui/qrcode`：导出二维码矩阵生成器 `generateQRCode` / `QRErrorCorrectLevel`，供海报合成等离屏 canvas 场景直接取矩阵数据。`<snake-qr-code>` 组件为屏上渲染，矩阵需求此前无法从包外获取（[c126cbb](https://github.com/purenia-ai/snake-ui/commit/c126cbb)）
 - 索引列表（`snake-index-list` / `snake-index-list-panel`）窗口尺寸变化（旋转屏、分屏）后自动重测锚点几何信息；开发期校验 `indexList` 与实际挂载锚点的匹配，未匹配索引输出告警，不再静默失败
 - `snake-button` 新增 `icon`（内置图标，颜色与字号跟随按钮文字）与 `block`（块级按钮占满整行）属性
+- 日历内置节日扩充：新增春节、元宵、端午、中秋、重阳五个农历节日（由 `solar2lunar` 逐年换算，无需维护公历日期）与清明（按节气字段判定，公历落点逐年浮动）
+- `snake-popup` 新增 `root-portal` 属性：整棵弹层传送到页面根节点渲染，脱离祖先的 `transform` / `overflow` / 层叠上下文，解决弹层在 scroll-view、轮播等容器内被裁剪的问题；同时补齐 `before-enter` / `enter` / `before-leave` / `leave` 动画生命周期事件（底层组件本已发出，此前未透传）
 
 ### 🐛 修复 | Bug Fixes
 
 - 修复骨架屏占位色不适配暗色模式的问题：`--snake-skeleton-color` / `--snake-skeleton-highlight` 未在任何主题层定义，组件长期落在浅灰 fallback 上，暗色背景中呈现刺眼浅灰块；默认值改为中性灰半透明叠加，明暗底色自适应，业务覆盖变量仍生效
+- 修复日历 `is-page` 内嵌模式整体不渲染的问题：此前 `modelValue` 默认 `false` 且内嵌用法不绑定 v-model，内容被弹层 `v-if` 掉；现在内嵌模式常显，并由 snake-popup 新增的 `embedded` 模式让根与面板回到文档流，不再固定全屏、不被 `max-height` 裁剪
+- 修复日历「今天」标记被 `minDate` / `maxDate` 钳制污染：今天不在可选范围内时，`isToday` 回调与今日标记错位到边界日期；现在以真实日期计算
+- 修复日历 `change` 事件载荷 `week` 硬编码中文「星期X」，英文环境下仍返回中文；现在中文「星期X」、英文返回缩写
 - `exports` 补充 `./components/snake-cms/types` 显式入口：修复业务侧 `import type ... from '@puresnake/snake-ui/components/snake-cms/types'` 在 TypeScript bundler 解析下报 TS2307 的问题。TypeScript 对 `exports` 目标不做扩展名探测，也不支持中间通配（`*/types`），组件内部模块必须逐个显式声明（[c126cbb](https://github.com/purenia-ai/snake-ui/commit/c126cbb)）
 - 修复 `snake-button` 多处状态死角：`type="info"` 此前完全没有样式（渲染为无底色按钮），修复后与默认按钮同为中性配色；默认类型禁用态白字白底文字不可见；镂空（plain）禁用态与可用态无法区分；镂空边框误用 `-disabled` 褪色令牌而非主题主色；镂空按压态会反转为实心深色底。顺带移除写死的 `id="snake-wave-btn"`（多按钮同页 id 重复且无引用）与从未生效的 `hoverBgColor` 属性
 
 ### ⚙️ 变更 | Changes
 
+- 日历内置节日表修订：移除情人节、愚人节、双十一、圣诞节等非法定的移植遗留条目，保留中国法定与正式节日（元旦、妇女节、植树节、劳动节、青年节、儿童节、建党节、建军节、教师节、国庆节）
+- 日历底部确定按钮改为占满整行（对齐 wot-design 的日历弹窗样式）
 - `snake-button` 加载态由「原生 loading + 白色蒙层」改为内置 `snake-loading` 指示器：颜色继承按钮文字色，各主题与镂空态下视觉一致；过渡属性由 `all` 收敛为颜色与透明度
 
 - 品牌浅色 token 对齐规范：`--snake-color-primary-light`（含 runtime `lightPalette.primaryLight` 与 `-rgb` 变量）由遗留的 `#eeffe0` 修正为主色 10% 透明度 `#06D2901A`；同步修正 snake-button 蓝色 fallback（`#ecf5ff`）、snake-toast / snake-index-list / snake-index-list-panel / filter-sorts 的 `rgba(6,210,144,.1)` fallback 写法，以及文档站主题色板展示数据

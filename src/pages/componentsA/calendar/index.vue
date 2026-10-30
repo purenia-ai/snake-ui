@@ -15,7 +15,8 @@
                     :festivals="Boolean(state.cShowFestival) ? demoFestivals : {}"
                     :min-date="String(state.cMinDate)"
                     :max-date="String(state.cMaxDate)"
-                    :active-color="String(state.cActiveColor)"
+                    :active-bg-color="String(state.cActiveColor)"
+                    :range-color="String(state.cActiveColor)"
                     :readonly="Boolean(state.cReadonly)"
                     :closeable="Boolean(state.cCloseable)"
                     :mask-close-able="Boolean(state.cMaskClose)"
@@ -23,8 +24,14 @@
                     @change="onCalendarChange"
                     @close="calendarShow = false"
                 />
-                <text class="demo-variant-title">{{ text('页面内联日历') }}</text>
+                <view class="demo-calendar-inline-toggle">
+                    <text class="demo-variant-title">{{ text('嵌入页面的日历') }}</text>
+                    <snake-button size="small" plain @click="inlineVisible = !inlineVisible">
+                        {{ inlineVisible ? text('收起日历') : text('展开日历') }}
+                    </snake-button>
+                </view>
                 <snake-calendar
+                    v-if="inlineVisible"
                     is-page
                     :show-lunar="true"
                     :show-festival="Boolean(state.cShowFestival)"
@@ -53,6 +60,7 @@ import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
 const calendarShow = ref(false);
+const inlineVisible = ref(false);
 const lastResult = ref('—');
 const demoFestivals = computed(() => {
     const now = new Date();
@@ -128,5 +136,10 @@ function onCalendarChange(value: { result?: string; startDate?: string; endDate?
 .demo-variant-sub {
     color: var(--snake-color-text-muted);
     font-size: 24rpx;
+}
+.demo-calendar-inline-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 </style>

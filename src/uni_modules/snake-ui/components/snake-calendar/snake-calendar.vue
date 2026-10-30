@@ -3,12 +3,13 @@
         v-model="popupValue"
         mode="bottom"
         :overlay="!isPage"
+        :embedded="isPage"
         :close-on-click-overlay="maskCloseAble"
         :safe-area-inset-bottom="safeAreaInsetBottom"
         :z-index="layerZIndex"
         :round="borderRadius"
         :closeable="closeable"
-        :custom-style="popupCustomStyle"
+        :custom-style="customStyle"
         @close="onPopupClose"
     >
         <view class="snake-calendar" :class="[customClass, { 'snake-calendar--page': isPage }]" :style="[customStyle]">
@@ -189,6 +190,7 @@
                         :disabled="btnDisable"
                         shape="circle"
                         size="default"
+                        block
                         @click="btnFix(false)"
                     >
                         {{ t('confirmText') }}
@@ -225,7 +227,7 @@ defineOptions({ name: 'Calendar', options: { virtualHost: true, styleIsolation: 
 const props = defineProps(calendarProps);
 const emit = defineEmits<CalendarEmits>();
 const slots = useSlots();
-const { t } = useLocale('calendar');
+const { t, currentLocale } = useLocale('calendar');
 
 // 组件内部状态
 // 星期几,值为0-6
@@ -253,42 +255,40 @@ const min = ref<{ year: number; month: number; day: number } | null>(null);
 const max = ref<{ year: number; month: number; day: number } | null>(null);
 const weekDayZh = ref([t('sun'), t('mon'), t('tue'), t('wed'), t('thu'), t('fri'), t('sat')]);
 
-// 内置中国传统节日（公历日期，格式：MM-DD）
+// 内置公历节日（格式：MM-DD），只收录中国法定与正式节日
 const builtInFestivals: Record<string, string> = {
     '01-01': '元旦',
-    '02-14': '情人节',
     '03-08': '妇女节',
     '03-12': '植树节',
-    '04-01': '愚人节',
     '05-01': '劳动节',
     '05-04': '青年节',
     '06-01': '儿童节',
     '07-01': '建党节',
     '08-01': '建军节',
     '09-10': '教师节',
-    '10-01': '国庆节',
-    '11-11': '光棍节',
-    '12-25': '圣诞节'
+    '10-01': '国庆节'
+};
+
+// 内置农历节日（格式：农历月-日），由 solar2lunar 换算，无需逐年维护公历日期
+const builtInLunarFestivals: Record<string, string> = {
+    '1-1': '春节',
+    '1-15': '元宵节',
+    '5-5': '端午节',
+    '8-15': '中秋节',
+    '9-9': '重阳节'
 };
 
 const dataChange = computed(() => `${props.mode}-${props.minDate}-${props.maxDate}`);
-const lunarChange = computed(() => props.showLunar);
+const lunarChange = computed(() => `${props.showLunar}-${props.showFestival}`);
 const defaultDateChange = computed(
     () => `${props.defaultDate}-${props.startDate}-${props.endDate}-${props.defaultSelectToday}`
 );
 // 用户有传递层级值时优先使用
 const layerZIndex = computed(() => Number(props.zIndex) || zIndex.popup);
 const popupValue = computed({
-    get: () => props.modelValue,
+    // 页面内嵌模式常显：不受 v-model 控制，避免未绑定 modelValue 时内容不渲染
+    get: () => props.isPage || props.modelValue,
     set: (val: boolean) => emit('update:modelValue', val)
-});
-// 页面模式下通过去掉遮罩与固定定位实现内联展示
-const popupCustomStyle = computed(() => {
-    if (!props.isPage) return props.customStyle;
-    const staticPosition = { position: 'static' } as const;
-    return Array.isArray(props.customStyle)
-        ? [staticPosition, ...props.customStyle]
-        : [staticPosition, props.customStyle];
 });
 
 const btnDisable = computed(() => {
@@ -473,8 +473,17 @@ function getFestival(dayNum: number) {
     if (monthDay in props.festivals) {
         return props.festivals[monthDay];
     }
-    if (props.showFestival && builtInFestivals[monthDay]) {
-        return builtInFestivals[monthDay];
+    if (props.showFestival) {
+        if (builtInFestivals[monthDay]) {
+            return builtInFestivals[monthDay];
+        }
+        const lunar = lunarArr.value[dayNum - 1];
+        if (lunar) {
+            // 清明是唯一放假的节气，公历日期逐年浮动，按节气判定
+            if (lunar.term === '清明') return '清明节';
+            const lunarFestival = builtInLunarFestivals[`${lunar.month}-${lunar.day}`];
+            if (lunarFestival) return lunarFestival;
+        }
     }
     return '';
 }
@@ -490,7 +499,8 @@ function getHolidayWorkdayColor(dayNum: number, defaultColor: string) {
 
 /** 初始化日历数据。 */
 function init() {
-    let now = new Date();
+    const realNow = new Date();
+    let now = realNow;
     const minDateObj = new Date(String(props.minDate));
     let maxDateObj = new Date(String(props.maxDate || ''));
     if (Number.isNaN(maxDateObj.getTime())) maxDateObj = new Date();
@@ -499,7 +509,8 @@ function init() {
     year.value = now.getFullYear();
     month.value = now.getMonth() + 1;
     day.value = now.getDate();
-    today.value = `${now.getFullYear()}-${formatNum(month.value)}-${formatNum(day.value)}`;
+    // 「今天」必须是真实日期，不能随 min/max 范围钳制漂移
+    today.value = `${realNow.getFullYear()}-${formatNum(realNow.getMonth() + 1)}-${formatNum(realNow.getDate())}`;
     min.value = initDate(String(props.minDate));
     max.value = initDate(String(props.maxDate) || today.value);
 
@@ -666,7 +677,7 @@ function changeData() {
     daysArr.value = generateArray(1, days.value);
     weekday.value = getWeekday(year.value, month.value);
     weekdayArr.value = generateArray(1, weekday.value);
-    if (props.showLunar) {
+    if (props.showLunar || props.showFestival) {
         lunarArr.value = [];
         daysArr.value.forEach(d => {
             lunarArr.value.push(getLunar(year.value, month.value, d));
@@ -687,6 +698,8 @@ function getLunar(yearNum: number, monthNum: number, dayNum: number): CalendarLu
         nWeek: number;
         lMonth: number;
         lYear: number;
+        isTerm: boolean;
+        Term: string;
     };
     return {
         dayCn: val.IDayCn,
@@ -695,7 +708,8 @@ function getLunar(yearNum: number, monthNum: number, dayNum: number): CalendarLu
         day: val.lDay,
         week: val.nWeek,
         month: val.lMonth,
-        year: val.lYear
+        year: val.lYear,
+        term: val.isTerm ? val.Term || '' : ''
     };
 }
 
@@ -758,7 +772,8 @@ function onPopupClose() {
 function getWeekText(date: string) {
     const d = new Date(`${date.replace(/-/g, '/')} 00:00:00`);
     const week = d.getDay();
-    return `星期${['日', '一', '二', '三', '四', '五', '六'][week]}`;
+    const weekNames = [t('sun'), t('mon'), t('tue'), t('wed'), t('thu'), t('fri'), t('sat')];
+    return currentLocale.value === 'zh-CN' ? `星期${weekNames[week]}` : weekNames[week];
 }
 
 /** 确定按钮事件。 */
