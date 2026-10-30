@@ -3,7 +3,7 @@
     <img src="docs/public/snake-mark-dark.svg#gh-dark-mode-only" width="110" alt="Snake UI" />
 </p>
 <h3 align="center">Snake UI</h3>
-<p align="center">面向 uni-app 商城与 CMS 场景的 Vue 3 组件库，支持 H5、微信小程序和 App</p>
+<p align="center">面向 uni-app 商城与 CMS 场景的 Vue 3 组件库，支持 H5、微信小程序、支付宝小程序和 App</p>
 
 <div align="center">
 
@@ -22,7 +22,7 @@
 
 ## 特性
 
-- Vue 3 + uni-app，支持 H5、微信小程序、App
+- Vue 3 + uni-app，支持 H5、微信小程序、支付宝小程序、App
 - 45 个公开基础、表单、数据、反馈、布局与导航组件
 - 14 个配置驱动的 CMS 页面区块
 - 支持 npm / `uni_modules` 使用方式

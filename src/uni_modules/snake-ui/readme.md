@@ -1,6 +1,6 @@
 # Snake UI
 
-Snake UI 是面向 uni-app 商城与 CMS 场景的 Vue 3 组件库，支持 H5、微信小程序和 App。
+Snake UI 是面向 uni-app 商城与 CMS 场景的 Vue 3 组件库，支持 H5、微信小程序、支付宝小程序和 App。
 
 - 官方文档：[https://m.puresnake.com/snake-ui/](https://m.puresnake.com/snake-ui/)
 - 在线演示：[https://m.puresnake.com/snake-ui/h5/](https://m.puresnake.com/snake-ui/h5/)
