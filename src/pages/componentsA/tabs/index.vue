@@ -8,6 +8,10 @@
                     :is-scroll="Boolean(state.tabsScrollable)"
                     :active-color="String(state.tabsColor)"
                     :font-size="Number(state.tabsSize)"
+                    :bar-width="Number(state.tabsBarWidth)"
+                    :gutter="Number(state.tabsGutter)"
+                    :bg-color="String(state.tabsBgColor)"
+                    :show-bar="Boolean(state.tabsShowBar)"
                     :is-dot="Boolean(state.tabsDot)"
                     @change="current = $event"
                 />
@@ -53,6 +57,29 @@ const controls: DemoControl[] = [
         ]
     },
     { key: 'tabsSize', label: '文字尺寸', type: 'slider', defaultValue: 30, min: 24, max: 36, step: 2, unit: 'rpx' },
+    {
+        key: 'tabsBarWidth',
+        label: '滑块宽度',
+        type: 'slider',
+        defaultValue: 40,
+        min: 20,
+        max: 80,
+        step: 4,
+        unit: 'rpx'
+    },
+    { key: 'tabsGutter', label: '标签间距', type: 'slider', defaultValue: 40, min: 20, max: 80, step: 4, unit: 'rpx' },
+    {
+        key: 'tabsBgColor',
+        label: '背景颜色',
+        type: 'select',
+        defaultValue: '#ffffff',
+        options: [
+            { label: '白色', value: '#ffffff' },
+            { label: '浅灰', value: '#f1f1f1' },
+            { label: '薄荷', value: '#eafff6' }
+        ]
+    },
+    { key: 'tabsShowBar', label: '显示滑块', type: 'switch', defaultValue: true },
     { key: 'tabsDot', label: '使用圆点徽标', type: 'switch', defaultValue: false }
 ];
 const state = reactive<Record<string, DemoValue>>(

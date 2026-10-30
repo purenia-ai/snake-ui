@@ -8,6 +8,8 @@
                     :step="Number(state.sliderStep)"
                     :show-value="Boolean(state.sliderShowValue)"
                     :disabled="Boolean(state.sliderDisabled)"
+                    :active-color="String(state.sliderActiveColor)"
+                    :inactive-color="String(state.sliderInactiveColor)"
                     show-edge-value
                 />
                 <text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ value }}</text>
@@ -38,6 +40,28 @@ const rangeValue = ref(400);
 const controls: DemoControl[] = [
     { key: 'sliderStep', label: '步长', type: 'slider', defaultValue: 5, min: 1, max: 20, step: 1 },
     { key: 'sliderShowValue', label: '显示数值', type: 'switch', defaultValue: true },
+    {
+        key: 'sliderActiveColor',
+        label: '轨道激活色',
+        type: 'select',
+        defaultValue: '#06D290',
+        options: [
+            { label: '品牌绿', value: '#06D290' },
+            { label: '蓝色', value: '#2563eb' },
+            { label: '橙色', value: '#FF6A0C' }
+        ]
+    },
+    {
+        key: 'sliderInactiveColor',
+        label: '轨道底色',
+        type: 'select',
+        defaultValue: '#e4e7ed',
+        options: [
+            { label: '默认灰', value: '#e4e7ed' },
+            { label: '浅绿', value: '#d6f5e9' },
+            { label: '浅蓝', value: '#dbeafe' }
+        ]
+    },
     { key: 'sliderDisabled', label: '禁用状态', type: 'switch', defaultValue: false }
 ];
 const state = reactive<Record<string, DemoValue>>(

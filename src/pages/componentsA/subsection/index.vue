@@ -9,6 +9,8 @@
                     mode="button"
                     :bold="Boolean(state.subsectionBold)"
                     :animation="Boolean(state.subsectionAnimation)"
+                    :active-color="String(state.subActiveColor)"
+                    :bg-color="String(state.subBgColor)"
                     @change="state.subsectionCurrent = $event"
                 />
                 <text class="demo-variant-title">{{ text('分段模式') }}</text>
@@ -18,6 +20,8 @@
                     mode="subsection"
                     :bold="Boolean(state.subsectionBold)"
                     :animation="Boolean(state.subsectionAnimation)"
+                    :active-color="String(state.subActiveColor)"
+                    :bg-color="String(state.subBgColor)"
                     @change="state.subsectionCurrent = $event"
                 />
             </view>
@@ -53,7 +57,29 @@ const controls: DemoControl[] = [
         ]
     },
     { key: 'subsectionBold', label: '激活项加粗', type: 'switch', defaultValue: true },
-    { key: 'subsectionAnimation', label: '滑块动画', type: 'switch', defaultValue: true }
+    { key: 'subsectionAnimation', label: '滑块动画', type: 'switch', defaultValue: true },
+    {
+        key: 'subActiveColor',
+        label: '激活颜色',
+        type: 'select',
+        defaultValue: '#06D290',
+        options: [
+            { label: '品牌绿', value: '#06D290' },
+            { label: '蓝色', value: '#2563eb' },
+            { label: '橙色', value: '#FF6A0C' }
+        ]
+    },
+    {
+        key: 'subBgColor',
+        label: '背景颜色',
+        type: 'select',
+        defaultValue: '#ffffff',
+        options: [
+            { label: '白色', value: '#ffffff' },
+            { label: '浅灰', value: '#f1f1f1' },
+            { label: '薄荷', value: '#eafff6' }
+        ]
+    }
 ];
 const state = reactive<Record<string, DemoValue>>(
     Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))

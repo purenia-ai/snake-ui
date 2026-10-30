@@ -7,6 +7,10 @@
                     :status="String(state.loadStatus)"
                     :icon-type="String(state.loadIcon)"
                     :is-dot="Boolean(state.loadDot)"
+                    :nomore-text="String(state.loadText)"
+                    :color="String(state.loadColor)"
+                    :font-size="Number(state.loadFontSize)"
+                    :bg-color="String(state.loadBgColor)"
                 />
                 <text class="demo-variant-title">{{ isEnglish ? 'All states' : '全部状态' }}</text>
                 <snake-loadmore status="loadmore" />
@@ -52,7 +56,40 @@ const controls: DemoControl[] = [
             { label: '花朵', value: 'flower' }
         ]
     },
-    { key: 'loadDot', label: '点状结束线', type: 'switch', defaultValue: false }
+    { key: 'loadDot', label: '点状结束线', type: 'switch', defaultValue: false },
+    { key: 'loadText', label: '没有更多文案', type: 'input', defaultValue: '没有更多了' },
+    {
+        key: 'loadColor',
+        label: '文字颜色',
+        type: 'select',
+        defaultValue: '#606266',
+        options: [
+            { label: '常规灰', value: '#606266' },
+            { label: '品牌绿', value: '#06D290' },
+            { label: '橙色', value: '#FF6A0C' }
+        ]
+    },
+    {
+        key: 'loadFontSize',
+        label: '文字尺寸',
+        type: 'slider',
+        defaultValue: 24,
+        min: 20,
+        max: 32,
+        step: 2,
+        unit: 'rpx'
+    },
+    {
+        key: 'loadBgColor',
+        label: '背景颜色',
+        type: 'select',
+        defaultValue: 'transparent',
+        options: [
+            { label: '透明', value: 'transparent' },
+            { label: '白色', value: '#ffffff' },
+            { label: '薄荷', value: '#eafff6' }
+        ]
+    }
 ];
 const state = reactive<Record<string, DemoValue>>(
     Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))

@@ -10,9 +10,27 @@
                     :wrap="Boolean(state.choiceWrap)"
                     :width="state.choiceWidth === 'auto' ? 'auto' : Number(state.choiceWidth)"
                 >
-                    <snake-radio name="sweet">{{ isEnglish ? 'Sweet' : '鲜甜' }}</snake-radio>
-                    <snake-radio name="spicy">{{ isEnglish ? 'Spicy' : '香辣' }}</snake-radio>
-                    <snake-radio name="mild">{{ isEnglish ? 'Mild' : '清淡' }}</snake-radio>
+                    <snake-radio
+                        name="sweet"
+                        :shape="String(state.choiceShape)"
+                        :active-color="String(state.choiceActiveColor)"
+                    >
+                        {{ isEnglish ? 'Sweet' : '鲜甜' }}
+                    </snake-radio>
+                    <snake-radio
+                        name="spicy"
+                        :shape="String(state.choiceShape)"
+                        :active-color="String(state.choiceActiveColor)"
+                    >
+                        {{ isEnglish ? 'Spicy' : '香辣' }}
+                    </snake-radio>
+                    <snake-radio
+                        name="mild"
+                        :shape="String(state.choiceShape)"
+                        :active-color="String(state.choiceActiveColor)"
+                    >
+                        {{ isEnglish ? 'Mild' : '清淡' }}
+                    </snake-radio>
                 </snake-radio-group>
                 <text>{{ isEnglish ? 'Selected: ' : '已选：' }}{{ selectedLabel }}</text>
             </view>
@@ -60,6 +78,27 @@ const controls: DemoControl[] = [
         options: [
             { label: 'auto', value: 'auto' },
             { label: '240rpx', value: 240 }
+        ]
+    },
+    {
+        key: 'choiceShape',
+        label: '图标形状',
+        type: 'select',
+        defaultValue: 'circle',
+        options: [
+            { label: '圆形', value: 'circle' },
+            { label: '方形', value: 'square' }
+        ]
+    },
+    {
+        key: 'choiceActiveColor',
+        label: '选中颜色',
+        type: 'select',
+        defaultValue: '#06D290',
+        options: [
+            { label: '品牌绿', value: '#06D290' },
+            { label: '蓝色', value: '#2563eb' },
+            { label: '橙色', value: '#FF6A0C' }
         ]
     }
 ];

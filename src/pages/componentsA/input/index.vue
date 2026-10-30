@@ -6,6 +6,10 @@
                 <snake-input
                     v-model="username"
                     border="surround"
+                    :type="String(state.inputType)"
+                    :shape="String(state.inputShape)"
+                    :size="String(state.inputSize)"
+                    :maxlength="Number(state.inputMaxlength)"
                     prefix-icon="search"
                     :clearable="Boolean(state.inputClearable)"
                     :disabled="Boolean(state.inputDisabled)"
@@ -50,6 +54,49 @@ const username = ref('');
 const password = ref('');
 const code = ref('');
 const controls: DemoControl[] = [
+    {
+        key: 'inputType',
+        label: '输入类型',
+        type: 'select',
+        defaultValue: 'text',
+        options: [
+            { label: '文本', value: 'text' },
+            { label: '数字', value: 'number' },
+            { label: '小数键盘', value: 'digit' },
+            { label: '身份证', value: 'idcard' }
+        ]
+    },
+    {
+        key: 'inputShape',
+        label: '圆角风格',
+        type: 'select',
+        defaultValue: 'square',
+        options: [
+            { label: '方角', value: 'square' },
+            { label: '胶囊', value: 'circle' }
+        ]
+    },
+    {
+        key: 'inputSize',
+        label: '组件尺寸',
+        type: 'select',
+        defaultValue: 'default',
+        options: [
+            { label: 'small', value: 'small' },
+            { label: 'default', value: 'default' },
+            { label: 'large', value: 'large' }
+        ]
+    },
+    {
+        key: 'inputMaxlength',
+        label: '最大字数',
+        type: 'slider',
+        defaultValue: 20,
+        min: 6,
+        max: 40,
+        step: 2,
+        unit: '字'
+    },
     { key: 'inputClearable', label: '允许清空', type: 'switch', defaultValue: true },
     { key: 'inputDisabled', label: '禁用状态', type: 'switch', defaultValue: false },
     { key: 'inputPlaceholder', label: '占位文字', type: 'input', defaultValue: '' }

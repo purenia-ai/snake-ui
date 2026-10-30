@@ -3,7 +3,13 @@
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-control-stack demo-checkbox-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Standalone checkbox' : '独立复选框' }}</text>
-                <snake-checkbox v-model="value" :disabled="Boolean(state.choiceDisabled)">
+                <snake-checkbox
+                    v-model="value"
+                    :disabled="Boolean(state.choiceDisabled)"
+                    :shape="String(state.choiceShape)"
+                    :active-color="String(state.choiceActiveColor)"
+                    :label-disabled="Boolean(state.choiceLabelDisabled)"
+                >
                     {{ isEnglish ? 'Accept the user agreement' : '同意用户协议' }}
                 </snake-checkbox>
                 <text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ value }}</text>
@@ -15,9 +21,27 @@
                     :wrap="Boolean(state.choiceWrap)"
                     :max="2"
                 >
-                    <snake-checkbox name="apple">{{ isEnglish ? 'Apple' : '苹果' }}</snake-checkbox>
-                    <snake-checkbox name="pear">{{ isEnglish ? 'Pear' : '雪梨' }}</snake-checkbox>
-                    <snake-checkbox name="lemon">{{ isEnglish ? 'Lemon' : '柠檬' }}</snake-checkbox>
+                    <snake-checkbox
+                        name="apple"
+                        :shape="String(state.choiceShape)"
+                        :active-color="String(state.choiceActiveColor)"
+                    >
+                        {{ isEnglish ? 'Apple' : '苹果' }}
+                    </snake-checkbox>
+                    <snake-checkbox
+                        name="pear"
+                        :shape="String(state.choiceShape)"
+                        :active-color="String(state.choiceActiveColor)"
+                    >
+                        {{ isEnglish ? 'Pear' : '雪梨' }}
+                    </snake-checkbox>
+                    <snake-checkbox
+                        name="lemon"
+                        :shape="String(state.choiceShape)"
+                        :active-color="String(state.choiceActiveColor)"
+                    >
+                        {{ isEnglish ? 'Lemon' : '柠檬' }}
+                    </snake-checkbox>
                 </snake-checkbox-group>
                 <text>
                     {{ isEnglish ? 'Selected: ' : '已选：' }}{{ selectedFruits || (isEnglish ? 'None' : '无') }}
@@ -59,7 +83,29 @@ const controls: DemoControl[] = [
             { label: 'large', value: 'large' }
         ]
     },
-    { key: 'choiceWrap', label: '每个换行', type: 'switch', defaultValue: false }
+    { key: 'choiceWrap', label: '每个换行', type: 'switch', defaultValue: false },
+    {
+        key: 'choiceShape',
+        label: '图标形状',
+        type: 'select',
+        defaultValue: 'circle',
+        options: [
+            { label: '圆形', value: 'circle' },
+            { label: '方形', value: 'square' }
+        ]
+    },
+    {
+        key: 'choiceActiveColor',
+        label: '选中颜色',
+        type: 'select',
+        defaultValue: '#06D290',
+        options: [
+            { label: '品牌绿', value: '#06D290' },
+            { label: '蓝色', value: '#2563eb' },
+            { label: '橙色', value: '#FF6A0C' }
+        ]
+    },
+    { key: 'choiceLabelDisabled', label: '禁用文本点击', type: 'switch', defaultValue: false }
 ];
 const state = reactive<Record<string, DemoValue>>({
     choiceDisabled: false,

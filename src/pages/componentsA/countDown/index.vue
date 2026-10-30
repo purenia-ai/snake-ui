@@ -5,6 +5,7 @@
                 <snake-count-down
                     :key="countdownKey"
                     :timestamp="durationSeconds"
+                    :autoplay="Boolean(state.cAutoPlay)"
                     :separator="String(state.cSeparator)"
                     :show-days="Boolean(state.cShowDays)"
                     :show-hours="Boolean(state.cShowHours)"
@@ -49,6 +50,7 @@ const finished = ref(false);
 const countdownKey = ref(0);
 const controls: DemoControl[] = [
     { key: 'cTimestamp', label: '剩余秒数', type: 'input', defaultValue: '86461', placeholder: 'seconds' },
+    { key: 'cAutoPlay', label: '自动开始', type: 'switch', defaultValue: true },
     {
         key: 'cSeparator',
         label: '分隔符',

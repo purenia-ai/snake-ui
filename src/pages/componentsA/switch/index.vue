@@ -5,8 +5,11 @@
                 <text class="demo-variant-title">{{ isEnglish ? 'Switch states' : '开关状态' }}</text>
                 <snake-switch
                     v-model="value"
+                    :size="String(state.swSize)"
+                    :active-color="String(state.swActiveColor)"
                     :loading="Boolean(state.switchLoading)"
                     :disabled="Boolean(state.switchDisabled)"
+                    :vibrate-short="Boolean(state.swVibrate)"
                 />
                 <text>{{ isEnglish ? 'Current value: ' : '当前值：' }}{{ value }}</text>
                 <text class="demo-variant-title">{{
@@ -16,6 +19,8 @@
                     v-model="customValue"
                     :active-value="100"
                     :inactive-value="0"
+                    :size="String(state.swSize)"
+                    :active-color="String(state.swActiveColor)"
                     :loading="Boolean(state.switchLoading)"
                     :disabled="Boolean(state.switchDisabled)"
                 />
@@ -63,6 +68,29 @@ const isEnglish = computed(() => localeName.value === 'en-US');
 const value = ref(true);
 const customValue = ref(100);
 const controls: DemoControl[] = [
+    {
+        key: 'swSize',
+        label: '组件尺寸',
+        type: 'select',
+        defaultValue: 'default',
+        options: [
+            { label: 'small', value: 'small' },
+            { label: 'default', value: 'default' },
+            { label: 'large', value: 'large' }
+        ]
+    },
+    {
+        key: 'swActiveColor',
+        label: '开启颜色',
+        type: 'select',
+        defaultValue: '#06D290',
+        options: [
+            { label: '品牌绿', value: '#06D290' },
+            { label: '蓝色', value: '#2563eb' },
+            { label: '橙色', value: '#FF6A0C' }
+        ]
+    },
+    { key: 'swVibrate', label: '切换震动', type: 'switch', defaultValue: false },
     { key: 'switchLoading', label: '加载状态', type: 'switch', defaultValue: false },
     { key: 'switchDisabled', label: '禁用状态', type: 'switch', defaultValue: false }
 ];

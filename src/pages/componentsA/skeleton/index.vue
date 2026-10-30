@@ -2,7 +2,14 @@
     <DemoPage :title="title" :desc="text('在首次加载时预显示接近真实内容的页面结构。')">
         <DemoSection variant="preview" :title="text('快速模式')">
             <view class="demo-skeleton-showcase">
-                <snake-skeleton :loading="Boolean(state.loading)" :animated="Boolean(state.animated)" avatar :rows="3">
+                <snake-skeleton
+                    :loading="Boolean(state.loading)"
+                    :animated="Boolean(state.animated)"
+                    :title="Boolean(state.skTitle)"
+                    :rows="Number(state.skRows)"
+                    :avatar="Boolean(state.skAvatar)"
+                    :avatar-shape="String(state.skAvatarShape)"
+                >
                     <view class="demo-skeleton-content">{{ text('数据加载完成，展示真实内容。') }}</view>
                 </snake-skeleton>
             </view>
@@ -58,6 +65,19 @@ const { localeName, text } = useDemoLocale();
 const controls: DemoControl[] = [
     { key: 'loading', label: '显示骨架', type: 'switch', defaultValue: true },
     { key: 'animated', label: '流光动画', type: 'switch', defaultValue: true },
+    { key: 'skTitle', label: '标题占位', type: 'switch', defaultValue: true },
+    { key: 'skRows', label: '段落行数', type: 'slider', defaultValue: 3, min: 1, max: 6, step: 1, unit: '行' },
+    { key: 'skAvatar', label: '头像占位', type: 'switch', defaultValue: true },
+    {
+        key: 'skAvatarShape',
+        label: '头像形状',
+        type: 'select',
+        defaultValue: 'circle',
+        options: [
+            { label: '圆形', value: 'circle' },
+            { label: '方形', value: 'square' }
+        ]
+    },
     {
         key: 'variant',
         label: '占位形态',
