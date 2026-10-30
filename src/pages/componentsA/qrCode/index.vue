@@ -61,6 +61,7 @@
 
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
+import demoLogo from '@/static/logo.png';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
@@ -70,7 +71,6 @@ import type { QrCodeExpose } from '../../../uni_modules/snake-ui';
 
 const { localeName, text } = useDemoLocale();
 const qrCodeRef = ref<QrCodeExpose>();
-const demoLogo = 'https://cdn.puresnake.com/joker/static/default-profile.png';
 
 /** 配色预设：全部为深色模块 + 浅色底，保证任意配色都可稳定扫描。 */
 const presets = [
