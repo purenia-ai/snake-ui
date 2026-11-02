@@ -17,7 +17,7 @@ export interface DropMenuProps {
     height?: UnitValue;
     /** 是否显示底部边框。 */
     borderBottom?: boolean;
-    /** 标题文字尺寸，数值按 rpx 处理。 */
+    /** 标题文字尺寸，数值按 px（375 稿）处理。 */
     titleSize?: UnitValue;
     /** menu icon 配置。 */
     menuIcon?: string;

@@ -26,7 +26,7 @@ withDefaults(defineProps<{ title?: string; description?: string; bare?: boolean;
 
 .demo-section {
     overflow: hidden;
-    margin-bottom: 28rpx;
+    margin-bottom: 14px;
     background: var(--snake-color-surface);
 }
 
@@ -35,35 +35,35 @@ withDefaults(defineProps<{ title?: string; description?: string; bare?: boolean;
 }
 
 .demo-section__head {
-    padding: 24rpx 24rpx 20rpx;
+    padding: 12px 12px 10px;
     text-align: center;
 }
 
 .demo-section__title {
     color: var(--snake-color-text);
-    font-size: 30rpx;
+    font-size: 15px;
     font-weight: 600;
 }
 .demo-section__description {
     display: block;
-    margin-top: 6rpx;
+    margin-top: 3px;
     color: var(--snake-color-text-muted);
-    font-size: 22rpx;
+    font-size: 11px;
 }
 
 .demo-section__wrap {
-    padding: 32rpx 28rpx;
+    padding: 16px 14px;
     background: var(--snake-color-surface);
 }
 
 .demo-section--default,
 .demo-section--preview {
-    border: 1rpx dashed var(--snake-color-divider);
-    border-radius: 10rpx;
+    border: 1px dashed var(--snake-color-divider);
+    border-radius: 5px;
 }
 
 .demo-section--preview .demo-section__head {
-    border-bottom: 1rpx dashed var(--snake-color-divider);
+    border-bottom: 1px dashed var(--snake-color-divider);
 }
 
 .demo-section--controls {
@@ -71,12 +71,12 @@ withDefaults(defineProps<{ title?: string; description?: string; bare?: boolean;
 }
 
 .demo-section--controls .demo-section__head {
-    padding-top: 16rpx;
-    border-bottom: 1rpx solid var(--snake-color-divider);
+    padding-top: 8px;
+    border-bottom: 1px solid var(--snake-color-divider);
 }
 
 .demo-section--controls .demo-section__wrap {
-    padding: 0 8rpx;
+    padding: 0 4px;
     background: transparent;
 }
 </style>

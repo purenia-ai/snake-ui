@@ -22,7 +22,7 @@
                             v-if="Number(badgeCount(item)) !== 0"
                             class="snake-tabs__badge"
                             :class="{ 'snake-tabs__badge--dot': isDot }"
-                            :style="{ top: `${offset[0]}rpx`, right: `${offset[1]}rpx` }"
+                            :style="{ top: $snake.addUnit(offset[0]), right: $snake.addUnit(offset[1]) }"
                         >
                             {{ badgeText(item) }}
                         </view>
@@ -62,14 +62,14 @@ const props = withDefaults(defineProps<TabsProps>(), {
     isScroll: true,
     list: () => [],
     current: 0,
-    height: 80,
-    fontSize: 30,
+    height: 40,
+    fontSize: 15,
     duration: 0.5,
     activeColor: 'var(--snake-color-primary, #06D290)',
     inactiveColor: 'var(--snake-color-text, #303133)',
-    barWidth: 40,
-    barHeight: 6,
-    gutter: 30,
+    barWidth: 20,
+    barHeight: 3,
+    gutter: 15,
     bgColor: '#fff',
     name: 'name',
     count: 'count',
@@ -98,11 +98,11 @@ let firstMoveTimer: ReturnType<typeof setTimeout> | undefined;
 const rootStyle = computed(() => [{ background: props.bgColor }, props.customStyle]);
 const tabBarStyle = computed(() => [
     {
-        width: addUnit(props.barWidth, 'rpx'),
+        width: addUnit(props.barWidth),
         transform: `translate(${scrollBarLeft.value}px, -100%)`,
         transitionDuration: `${barFirstTimeMove.value ? 0 : props.duration}s`,
         backgroundColor: props.activeColor,
-        height: addUnit(props.barHeight, 'rpx'),
+        height: addUnit(props.barHeight),
         opacity: barFirstTimeMove.value ? 0 : 1,
         borderRadius: `${Number(props.barHeight) / 2}px`
     },
@@ -125,11 +125,11 @@ function badgeText(item: TabItem) {
 
 function tabItemStyle(index: number) {
     const style: Record<string, string> = {
-        height: addUnit(props.height, 'rpx'),
-        lineHeight: addUnit(props.height, 'rpx'),
-        fontSize: addUnit(props.fontSize, 'rpx'),
+        height: addUnit(props.height),
+        lineHeight: addUnit(props.height),
+        fontSize: addUnit(props.fontSize),
         transitionDuration: `${props.duration}s`,
-        padding: props.isScroll ? `0 ${addUnit(props.gutter, 'rpx')}` : '',
+        padding: props.isScroll ? `0 ${addUnit(props.gutter)}` : '',
         flex: props.isScroll ? 'auto' : '1',
         width: addUnit(props.itemWidth),
         color: index === Number(currentIndex.value) ? props.activeColor : props.inactiveColor
@@ -182,7 +182,7 @@ function scrollByIndex() {
     const nextScrollLeft = offsetLeft - (componentWidth.value - tabWidth) / 2;
     scrollLeft.value = nextScrollLeft < 0 ? 0 : nextScrollLeft;
     const left = (Number(tabInfo.left) || 0) + tabWidth / 2 - parentLeft.value;
-    scrollBarLeft.value = left - uni.upx2px(Number(props.barWidth)) / 2;
+    scrollBarLeft.value = left - Number(props.barWidth) / 2;
     if (!barFirstTimeMove.value) return;
     if (firstMoveTimer) clearTimeout(firstMoveTimer);
     firstMoveTimer = setTimeout(() => {
@@ -267,23 +267,23 @@ defineExpose({ init, clickTab, scrollByIndex });
     position: absolute;
     z-index: 9;
     display: inline-flex;
-    min-width: 28rpx;
-    height: 28rpx;
+    min-width: 14px;
+    height: 14px;
     align-items: center;
     justify-content: center;
-    padding: 0 7rpx;
-    border-radius: 100rpx;
+    padding: 0 3.5px;
+    border-radius: 50px;
     color: #fff;
     background: var(--snake-color-error, #fa3534);
-    font-size: 18rpx;
-    line-height: 28rpx;
+    font-size: 9px;
+    line-height: 14px;
     transform: scale(0.8);
     transform-origin: center;
 }
 .snake-tabs__badge--dot {
-    width: 16rpx;
-    min-width: 16rpx;
-    height: 16rpx;
+    width: 8px;
+    min-width: 8px;
+    height: 8px;
     padding: 0;
 }
 ::-webkit-scrollbar {

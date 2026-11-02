@@ -114,30 +114,30 @@ const selectedIcon = ref('search');
 .demo-icons {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    border: 1rpx solid var(--snake-color-divider);
-    border-radius: 12rpx;
+    border: 1px solid var(--snake-color-divider);
+    border-radius: 6px;
     background: var(--snake-color-divider);
-    gap: 1rpx;
+    gap: 1px;
 }
 .demo-icon-showcase {
     display: flex;
     flex-direction: column;
-    gap: 28rpx;
+    gap: 14px;
 }
 .demo-icon-preview {
     display: flex;
-    min-height: 176rpx;
+    min-height: 88px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 20rpx;
-    border: 1rpx solid var(--snake-color-divider);
-    border-radius: 12rpx;
+    gap: 10px;
+    border: 1px solid var(--snake-color-divider);
+    border-radius: 6px;
     background: var(--snake-color-surface);
 }
 .demo-icon-preview__name {
     color: var(--snake-color-text-secondary);
-    font-size: 24rpx;
+    font-size: 12px;
     line-height: 1.4;
 }
 .demo-icon-heading {
@@ -145,23 +145,23 @@ const selectedIcon = ref('search');
     align-items: center;
     justify-content: space-between;
     color: var(--snake-color-text);
-    font-size: 28rpx;
+    font-size: 14px;
     font-weight: 600;
 }
 .demo-icon-heading__count {
     color: var(--snake-color-text-secondary);
-    font-size: 24rpx;
+    font-size: 12px;
     font-weight: 400;
 }
 .demo-icon-item {
     display: flex;
     min-width: 0;
-    min-height: 144rpx;
+    min-height: 72px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 18rpx;
-    padding: 20rpx 10rpx;
+    gap: 9px;
+    padding: 10px 5px;
     background: var(--snake-color-surface);
     color: var(--snake-color-text-secondary);
     transition:
@@ -176,14 +176,14 @@ const selectedIcon = ref('search');
     background: var(--snake-color-surface-muted);
 }
 .demo-icon-item:focus-visible {
-    outline: 2rpx solid var(--snake-color-primary);
-    outline-offset: -2rpx;
+    outline: 1px solid var(--snake-color-primary);
+    outline-offset: -1px;
 }
 .demo-icon-item__name {
     display: block;
     width: 100%;
     color: inherit;
-    font-size: 20rpx;
+    font-size: 10px;
     line-height: 1.3;
     text-align: center;
     overflow-wrap: anywhere;

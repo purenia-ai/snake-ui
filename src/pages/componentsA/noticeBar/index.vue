@@ -194,17 +194,17 @@ function handleActionClose() {
 .demo-stack {
     display: flex;
     flex-direction: column;
-    gap: 24rpx;
+    gap: 12px;
 }
 .demo-notice-bar__heading {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    gap: 16rpx;
+    gap: 8px;
 }
 .demo-variant-title {
     color: var(--snake-color-text);
-    font-size: 28rpx;
+    font-size: 14px;
     font-weight: 600;
     line-height: 1.4;
 }
@@ -212,7 +212,7 @@ function handleActionClose() {
     flex: 1;
     overflow: hidden;
     color: var(--snake-color-text-muted, #909399);
-    font-size: 24rpx;
+    font-size: 12px;
     line-height: 1.4;
     text-align: right;
     text-overflow: ellipsis;

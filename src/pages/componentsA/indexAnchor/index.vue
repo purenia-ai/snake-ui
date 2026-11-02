@@ -50,16 +50,16 @@ function updateValue(key: string, value: DemoValue) {
 
 <style scoped>
 .demo-index {
-    height: 620rpx;
+    height: 310px;
 }
 .demo-index-row {
     display: flex;
-    min-height: 96rpx;
+    min-height: 48px;
     align-items: center;
-    padding: 0 24rpx;
-    border-bottom: 1rpx solid var(--snake-color-divider);
+    padding: 0 12px;
+    border-bottom: 1px solid var(--snake-color-divider);
     color: var(--snake-color-text-secondary);
     background: var(--snake-color-surface);
-    font-size: 28rpx;
+    font-size: 14px;
 }
 </style>

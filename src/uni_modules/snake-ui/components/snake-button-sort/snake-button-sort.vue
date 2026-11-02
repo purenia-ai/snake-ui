@@ -16,16 +16,20 @@
  */
 
 import { computed, ref } from 'vue';
+import { addUnit } from '../../libs/function/unit';
 import type { ButtonSortEmits, ButtonSortProps, ButtonSortValue } from './types';
 
 defineOptions({ name: 'snake-button-sort', options: { virtualHost: true, styleIsolation: 'shared' } });
 
-const props = withDefaults(defineProps<ButtonSortProps>(), { title: '', titleColor: '' });
+const props = withDefaults(defineProps<ButtonSortProps>(), { title: '', titleColor: '', fontSize: 13 });
 const emit = defineEmits<ButtonSortEmits>();
 const value = ref<ButtonSortValue>('');
 
 // 标题颜色默认走 scoped 里的主题文字色，仅当传入 titleColor 时覆盖。
-const labelStyle = computed(() => (props.titleColor ? { color: props.titleColor } : undefined));
+const labelStyle = computed(() => ({
+    ...(props.titleColor ? { color: props.titleColor } : {}),
+    fontSize: addUnit(props.fontSize)
+}));
 
 function toggle() {
     value.value = value.value === '' ? 'asc' : value.value === 'asc' ? 'desc' : '';
@@ -39,10 +43,10 @@ function toggle() {
     flex: 1;
     align-items: center;
     justify-content: center;
-    gap: 6rpx;
+    gap: 3px;
     min-width: 0;
     padding: 0;
-    font-size: 26rpx;
+    font-size: 13px;
     line-height: 1;
     color: var(--snake-color-text, #26273a);
 }
@@ -53,14 +57,14 @@ function toggle() {
 .snake-sort__arrow-down {
     width: 0;
     height: 0;
-    border: 10rpx solid transparent;
-    border-radius: 2rpx;
+    border: 5px solid transparent;
+    border-radius: 1px;
 }
 .snake-sort__arrow-up {
     border-bottom-color: var(--snake-color-text-muted, #888891);
 }
 .snake-sort__arrow-down {
-    margin-top: 4rpx;
+    margin-top: 2px;
     border-top-color: var(--snake-color-text-muted, #888891);
 }
 .snake-sort__arrow-up.is-active {

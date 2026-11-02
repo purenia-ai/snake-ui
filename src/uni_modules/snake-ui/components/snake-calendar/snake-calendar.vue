@@ -846,12 +846,12 @@ function btnFix(show: boolean) {
 }
 .snake-calendar--page {
     background-color: var(--snake-color-surface, #fff);
-    border-radius: 16rpx;
+    border-radius: 8px;
 }
 .snake-calendar__header {
     box-sizing: border-box;
     width: 100%;
-    font-size: 30rpx;
+    font-size: 15px;
     background-color: var(--snake-color-surface, #fff);
     color: var(--snake-color-text, #303133);
 }
@@ -859,24 +859,24 @@ function btnFix(show: boolean) {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 30rpx;
-    padding: 0 60rpx;
+    margin-top: 15px;
+    padding: 0 30px;
 }
 .snake-calendar__action {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 40rpx 0;
+    padding: 20px 0;
 }
 .snake-calendar__action__icon {
-    margin: 0 16rpx;
+    margin: 0 8px;
 }
 .snake-calendar__action__text {
-    padding: 0 16rpx;
+    padding: 0 8px;
     color: var(--snake-color-text, #303133);
-    font-size: 32rpx;
+    font-size: 16px;
     font-weight: bold;
-    line-height: 32rpx;
+    line-height: 16px;
 }
 .snake-calendar__week-day {
     display: flex;
@@ -899,12 +899,12 @@ function btnFix(show: boolean) {
     background-color: var(--snake-color-surface, #fff);
 }
 .snake-calendar__content--end-date {
-    border-top-right-radius: 8rpx;
-    border-bottom-right-radius: 8rpx;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
 }
 .snake-calendar__content--start-date {
-    border-top-left-radius: 8rpx;
-    border-bottom-left-radius: 8rpx;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
 }
 .snake-calendar__content--checked .snake-calendar__content__item__inner,
 .snake-calendar__content--today-checked .snake-calendar__content__item__inner,
@@ -912,8 +912,8 @@ function btnFix(show: boolean) {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 80rpx;
-    height: 80rpx;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
 }
 .snake-calendar__content__item {
@@ -934,8 +934,8 @@ function btnFix(show: boolean) {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 84rpx;
-    font-size: 32rpx;
+    height: 42px;
+    font-size: 16px;
 }
 .snake-calendar__content__item__inner--today-checked {
     display: flex;
@@ -943,21 +943,21 @@ function btnFix(show: boolean) {
     justify-content: center;
 }
 .snake-calendar__content__item__day {
-    font-size: 32rpx;
+    font-size: 16px;
     line-height: 1;
 }
 .snake-calendar__content__item__lunar {
-    margin-top: 2rpx;
-    font-size: 22rpx;
+    margin-top: 1px;
+    font-size: 11px;
     line-height: 1;
     transform: scale(0.85);
 }
 .snake-calendar__content__item__mark {
     position: absolute;
-    top: 8rpx;
-    right: 8rpx;
+    top: 4px;
+    right: 4px;
     z-index: 1;
-    font-size: 24rpx;
+    font-size: 12px;
     line-height: 1;
     transform: scale(0.75);
 }
@@ -968,14 +968,14 @@ function btnFix(show: boolean) {
     color: var(--snake-color-primary, #06d290);
 }
 .snake-calendar__content__item__festival {
-    font-size: 22rpx;
+    font-size: 11px;
     line-height: 1;
     color: var(--snake-color-primary, #06d290);
     transform: scale(0.85);
 }
 .snake-calendar__content__item__placeholder {
-    min-height: 22rpx;
-    margin-top: 2rpx;
+    min-height: 11px;
+    margin-top: 1px;
     opacity: 0;
 }
 .snake-calendar__content__item__checkmark {
@@ -1002,13 +1002,13 @@ function btnFix(show: boolean) {
     align-items: center;
     justify-content: center;
     width: 100%;
-    padding: 0 40rpx 30rpx;
-    font-size: 24rpx;
+    padding: 0 20px 15px;
+    font-size: 12px;
     color: var(--snake-color-text-muted, #909399);
     background-color: var(--snake-color-surface, #fff);
 }
 .snake-calendar__bottom__choose {
-    height: 50rpx;
+    height: 25px;
 }
 .snake-calendar__bottom__btn {
     width: 100%;

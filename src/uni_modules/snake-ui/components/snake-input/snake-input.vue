@@ -71,7 +71,7 @@ const props = withDefaults(defineProps<InputProps>(), {
     disabled: false,
     readonly: false,
     disabledColor: 'var(--snake-color-disabled-bg,#f5f7fa)',
-    fontSize: 28,
+    fontSize: 14,
     inputAlign: 'left',
     formatTrigger: 'input',
     trim: false,
@@ -117,7 +117,7 @@ const rootStyle = computed(() => [
 ]);
 const inputStyle = computed(() => ({
     color: props.color,
-    fontSize: addUnit(props.fontSize, 'rpx'),
+    fontSize: addUnit(props.fontSize),
     textAlign: props.inputAlign
 }));
 function format(value: string, trigger: 'input' | 'blur') {
@@ -177,31 +177,31 @@ function confirm(event: any) {
     box-sizing: border-box;
     width: 100%;
     align-items: center;
-    gap: 12rpx;
+    gap: 6px;
     transition:
         border-color 0.2s,
         background-color 0.2s;
 }
 .snake-input--surround {
-    min-height: 80rpx;
-    padding: 0 22rpx;
+    min-height: 40px;
+    padding: 0 11px;
     border: 1px solid var(--snake-color-divider, #dcdfe6);
 }
 .snake-input--bottom {
-    min-height: 76rpx;
+    min-height: 38px;
     border-bottom: 1px solid var(--snake-color-divider, #dcdfe6);
 }
 .snake-input--circle {
     border-radius: 999px;
 }
 .snake-input--square {
-    border-radius: var(--snake-radius-md, 12rpx);
+    border-radius: var(--snake-radius-md, 6px);
 }
 .snake-input--small {
-    min-height: 64rpx;
+    min-height: 32px;
 }
 .snake-input--large {
-    min-height: 92rpx;
+    min-height: 46px;
 }
 .snake-input.is-focused {
     border-color: var(--snake-color-primary, #06d290);

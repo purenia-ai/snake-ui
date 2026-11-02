@@ -204,7 +204,7 @@ function wrapperStyle(): CSSProperties {
     if (!props.sticky) return {};
     return {
         position: 'sticky',
-        top: addUnit(props.offsetTop, 'rpx'),
+        top: addUnit(props.offsetTop),
         zIndex: props.zIndex
     };
 }
@@ -250,7 +250,7 @@ defineExpose({ scrollTo, update });
 .snake-index-list-panel {
     position: relative;
     height: 100%;
-    min-height: 400rpx;
+    min-height: 200px;
 }
 .snake-index-list-panel__content {
     height: 100%;
@@ -258,10 +258,10 @@ defineExpose({ scrollTo, update });
 .snake-index-list-panel__rail {
     position: absolute;
     top: 50%;
-    right: 10rpx;
+    right: 5px;
     display: flex;
     flex-direction: column;
-    padding: 8rpx 0;
+    padding: 4px 0;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.86);
     transform: translateY(-50%);
@@ -269,13 +269,13 @@ defineExpose({ scrollTo, update });
 }
 .snake-index-list-panel__key {
     display: flex;
-    min-width: 44rpx;
-    min-height: 34rpx;
+    min-width: 22px;
+    min-height: 17px;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    font-size: 20rpx;
-    line-height: 34rpx;
+    font-size: 10px;
+    line-height: 17px;
 }
 .snake-index-list-panel__key.is-active {
     font-weight: 700;
@@ -286,13 +286,13 @@ defineExpose({ scrollTo, update });
     top: 50%;
     left: 50%;
     display: none;
-    width: 96rpx;
-    height: 96rpx;
+    width: 48px;
+    height: 48px;
     align-items: center;
     justify-content: center;
-    border-radius: 16rpx;
+    border-radius: 8px;
     color: #fff;
-    font-size: 42rpx;
+    font-size: 21px;
     background: rgba(0, 0, 0, 0.58);
     transform: translate(-50%, -50%);
 }

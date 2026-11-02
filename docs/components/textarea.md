@@ -27,7 +27,7 @@ preview: /pages/componentsA/textarea/index
 | 参数                                                   | 说明                   | 类型                   | 默认值                      |
 | ------------------------------------------------------ | ---------------------- | ---------------------- | --------------------------- |
 | `modelValue` / `placeholder` / `maxlength`             | 值、占位和最大长度     | `string \| number`     | `''` / `请输入内容` / `140` |
-| `height` / `autoHeight` / `fixed`                      | 高度、自适应和固定区域 | `UnitValue \| boolean` | `120` / `false`             |
+| `height` / `autoHeight` / `fixed`                      | 高度、自适应和固定区域 | `UnitValue \| boolean` | `60` / `false`              |
 | `count`                                                | 显示字数统计           | `boolean`              | `false`                     |
 | `disabled` / `readonly`                                | 禁用和只读             | `boolean`              | `false`                     |
 | `border` / `size` / `fontSize`                         | 边框、尺寸和字号       | `string \| UnitValue`  | `surround`                  |

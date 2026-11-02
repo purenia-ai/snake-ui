@@ -110,7 +110,7 @@ export default {
 }
 
 .tab-view {
-    width: 140rpx;
+    width: 70px;
     height: 100%;
 }
 
@@ -119,9 +119,9 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 140rpx;
-    height: 110rpx;
-    font-size: 26rpx;
+    width: 70px;
+    height: 55px;
+    font-size: 13px;
     font-weight: 400;
     line-height: 1;
     color: var(--snake-color-text-secondary, #444);
@@ -130,7 +130,7 @@ export default {
 
 .tab-item-active {
     position: relative;
-    font-size: 30rpx;
+    font-size: 15px;
     font-weight: 600;
     color: var(--snake-color-text, #000);
     background: var(--snake-color-surface, #fff);
@@ -138,9 +138,9 @@ export default {
 
 .tab-item-active::before {
     position: absolute;
-    top: 39rpx;
+    top: 19.5px;
     left: 0;
-    height: 32rpx;
+    height: 16px;
     content: '';
     border-left: 4px solid var(--snake-color-primary, #06d290);
 }

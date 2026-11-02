@@ -68,37 +68,37 @@ function selectOption(control: DemoControl, index: number) {
     margin: 0;
 }
 .demo-control {
-    padding: 30rpx 8rpx;
-    border-bottom: 1rpx solid var(--snake-color-divider);
+    padding: 15px 4px;
+    border-bottom: 1px solid var(--snake-color-divider);
 }
 .demo-control:last-child {
     border-bottom: 0;
 }
 .demo-control__head {
     display: flex;
-    min-height: 48rpx;
+    min-height: 24px;
     align-items: center;
     justify-content: space-between;
-    gap: 24rpx;
+    gap: 12px;
 }
 .demo-control__label {
     color: var(--snake-color-text);
-    font-size: 28rpx;
+    font-size: 14px;
     font-weight: 500;
     line-height: 1.2;
 }
 .demo-control__value {
     color: var(--snake-demo-accent-text);
-    font-size: 24rpx;
+    font-size: 12px;
     font-weight: 600;
 }
 .demo-control__options {
-    margin-top: 20rpx;
+    margin-top: 10px;
 }
 .demo-control__slider {
-    margin-top: 20rpx;
+    margin-top: 10px;
 }
 .demo-control__input {
-    margin-top: 20rpx;
+    margin-top: 10px;
 }
 </style>

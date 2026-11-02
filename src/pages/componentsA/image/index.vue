@@ -182,33 +182,33 @@ function updateValue(key: string, value: DemoValue) {
 .image-lab {
     display: flex;
     flex-direction: column;
-    gap: 28rpx;
+    gap: 14px;
 }
 .image-lab__stage {
     display: flex;
-    min-height: 360rpx;
+    min-height: 180px;
     align-items: center;
     justify-content: center;
-    padding: 32rpx;
-    border-radius: 24rpx;
+    padding: 16px;
+    border-radius: 12px;
     background: linear-gradient(135deg, var(--snake-color-surface-muted), var(--snake-color-surface));
 }
 .image-lab__meta {
     display: flex;
     align-items: center;
-    gap: 16rpx;
+    gap: 8px;
 }
 .image-lab__status {
     display: inline-flex;
     flex-shrink: 0;
     align-items: center;
-    gap: 10rpx;
+    gap: 5px;
     color: var(--snake-color-text-muted);
-    font-size: 24rpx;
+    font-size: 12px;
 }
 .image-lab__status-dot {
-    width: 12rpx;
-    height: 12rpx;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     background: currentcolor;
 }
@@ -224,15 +224,15 @@ function updateValue(key: string, value: DemoValue) {
 .image-lab__hint {
     flex: 1;
     color: var(--snake-color-text-muted);
-    font-size: 24rpx;
+    font-size: 12px;
     line-height: 1.4;
 }
 .image-lab__retry {
     margin: 0;
-    padding: 0 20rpx;
+    padding: 0 10px;
     color: var(--snake-color-primary);
-    font-size: 24rpx;
-    line-height: 52rpx;
+    font-size: 12px;
+    line-height: 26px;
     background: transparent;
 }
 .image-lab__retry::after {
@@ -242,8 +242,8 @@ function updateValue(key: string, value: DemoValue) {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12rpx;
-    font-size: 24rpx;
+    gap: 6px;
+    font-size: 12px;
 }
 .image-lab__slot--loading {
     color: var(--snake-color-primary);
@@ -254,9 +254,9 @@ function updateValue(key: string, value: DemoValue) {
 .image-notes {
     display: flex;
     flex-direction: column;
-    gap: 14rpx;
+    gap: 7px;
     color: var(--snake-color-text-muted);
-    font-size: 26rpx;
+    font-size: 13px;
     line-height: 1.65;
 }
 </style>

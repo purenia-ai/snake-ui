@@ -5,7 +5,7 @@
             :class="[elId, customClass]"
             :style="[
                 {
-                    height: isLongContent && !showMore ? `${showHeight}rpx` : 'auto',
+                    height: isLongContent && !showMore ? $snake.addUnit(showHeight) : 'auto',
                     textIndent: textIndent
                 },
                 customStyle
@@ -23,7 +23,7 @@
             <text
                 class="snake-read-more__toggle__btn"
                 :style="{
-                    fontSize: `${fontSize}rpx`,
+                    fontSize: $snake.addUnit(fontSize),
                     color: color
                 }"
             >
@@ -91,7 +91,7 @@ async function init() {
     if (!elId.value) return;
     const rect = await getRect(`.${elId.value}`, instance);
     if (version !== measureVersion) return;
-    isLongContent.value = rect.height > uni.upx2px(Number(props.showHeight));
+    isLongContent.value = rect.height > Number(props.showHeight);
     if (!isLongContent.value) showMore.value = false;
 }
 
@@ -110,7 +110,7 @@ function toggleReadMore() {
 <style scoped>
 .snake-read-more__content {
     overflow: hidden;
-    font-size: 30rpx;
+    font-size: 15px;
     color: var(--snake-color-text-secondary, #606266);
     line-height: 1.8;
     text-align: left;
@@ -121,11 +121,11 @@ function toggleReadMore() {
     align-items: center;
     justify-content: center;
     width: 100%;
-    padding-bottom: 26rpx;
+    padding-bottom: 13px;
 }
 .snake-read-more__toggle--open {
     padding-top: 0;
-    margin-top: 20rpx;
+    margin-top: 10px;
     background: none;
 }
 .snake-read-more__toggle__btn {
@@ -135,6 +135,6 @@ function toggleReadMore() {
     line-height: 1;
 }
 .snake-read-more__toggle__btn__icon {
-    margin-left: 14rpx;
+    margin-left: 7px;
 }
 </style>

@@ -28,7 +28,7 @@ const handleImageClick = async () => {
 <style scoped>
 .cms-v2-popup {
     position: relative;
-    width: 560rpx;
+    width: 280px;
     max-width: 100%;
 }
 .cms-v2-popup__image {
@@ -37,10 +37,10 @@ const handleImageClick = async () => {
 }
 .cms-v2-popup__close {
     position: absolute;
-    top: -70rpx;
+    top: -35px;
     right: 0;
     color: #fff;
-    font-size: 60rpx;
-    line-height: 60rpx;
+    font-size: 30px;
+    line-height: 30px;
 }
 </style>

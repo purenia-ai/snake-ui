@@ -3,9 +3,9 @@
         class="snake-link"
         :style="{
             color: color,
-            fontSize: `${fontSize}rpx`,
+            fontSize: $snake.addUnit(fontSize),
             borderBottom: underLine ? `1px solid ${lineColor || color}` : 'none',
-            paddingBottom: underLine ? '0rpx' : '0'
+            paddingBottom: underLine ? '0px' : '0'
         }"
         @click.stop="openLink"
     >

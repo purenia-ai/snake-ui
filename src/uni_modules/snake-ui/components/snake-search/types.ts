@@ -38,8 +38,8 @@ export const searchProps = {
     borderColor: { type: String, default: 'none' },
     /** 双向绑定的输入值。 */
     modelValue: { type: String, default: '' },
-    /** 搜索框高度，数值按 rpx 处理。 */
-    height: { type: [Number, String] as PropType<number | string>, default: 64 },
+    /** 搜索框高度，数值按 px（375 稿）处理。 */
+    height: { type: [Number, String] as PropType<number | string>, default: 32 },
     /** 输入框的样式，可以定义文字颜色、大小等，对象形式。 */
     inputStyle: { type: [Object, Array] as PropType<StyleValue>, default: () => ({}) },
     /** 输入框最大能输入的长度，-1 为不限制长度。 */

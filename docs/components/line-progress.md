@@ -37,17 +37,17 @@ preview: /pages/componentsA/lineProgress/index
 
 ### Props
 
-| 参数            | 说明                              | 类型                                             | 默认值                  |
-| --------------- | --------------------------------- | ------------------------------------------------ | ----------------------- |
-| `percent`       | 进度百分比，数值 0-100            | `number \| string`                               | `0`                     |
-| `round`         | 两端是否显示半圆形                | `boolean`                                        | `true`                  |
-| `type`          | 主题预设，设置后 activeColor 失效 | `primary \| success \| warning \| error \| info` | `''`                    |
-| `activeColor`   | 激活部分的颜色                    | `string`                                         | `--snake-color-success` |
-| `inactiveColor` | 进度条的底色                      | `string`                                         | `--snake-color-divider` |
-| `showPercent`   | 是否在进度条内部显示百分比        | `boolean`                                        | `true`                  |
-| `height`        | 进度条高度，数值按 rpx 处理       | `number \| string`                               | `28`                    |
-| `striped`       | 是否显示激活部分的条纹            | `boolean`                                        | `false`                 |
-| `stripedActive` | 条纹是否具有动态效果              | `boolean`                                        | `false`                 |
+| 参数            | 说明                                | 类型                                             | 默认值                  |
+| --------------- | ----------------------------------- | ------------------------------------------------ | ----------------------- |
+| `percent`       | 进度百分比，数值 0-100              | `number \| string`                               | `0`                     |
+| `round`         | 两端是否显示半圆形                  | `boolean`                                        | `true`                  |
+| `type`          | 主题预设，设置后 activeColor 失效   | `primary \| success \| warning \| error \| info` | `''`                    |
+| `activeColor`   | 激活部分的颜色                      | `string`                                         | `--snake-color-success` |
+| `inactiveColor` | 进度条的底色                        | `string`                                         | `--snake-color-divider` |
+| `showPercent`   | 是否在进度条内部显示百分比          | `boolean`                                        | `true`                  |
+| `height`        | 进度条高度，数值按 px（375 稿）处理 | `number \| string`                               | `28`                    |
+| `striped`       | 是否显示激活部分的条纹              | `boolean`                                        | `false`                 |
+| `stripedActive` | 条纹是否具有动态效果                | `boolean`                                        | `false`                 |
 
 ### Slots
 

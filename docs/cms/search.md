@@ -28,7 +28,7 @@
 | `rightImage`                                                | `SearchImage`        | 见示例     | 框内右侧图片、链接与尺寸 |
 | `icons`                                                     | `SearchIcon[]`       | `[]`       | 框外图标，最多 2 个      |
 | `style.position`                                            | `0 \| 1`             | `0`        | 普通或滚动吸顶           |
-| `style.height/pageMargin/borderRadius/borderSize`           | `number`             | `60/0/0/1` | rpx 尺寸                 |
+| `style.height/pageMargin/borderRadius/borderSize`           | `number`             | `60/0/0/1` | px 尺寸（375 稿）        |
 | `style.backgroundColor/borderBgColor/textColor/borderColor` | `string`             | 见示例     | 颜色                     |
 | `style.showBorder`                                          | `boolean`            | `true`     | 显示边框                 |
 

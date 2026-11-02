@@ -7,9 +7,9 @@
 ```ts
 import { addUnit } from '@puresnake/snake-ui';
 
-addUnit(24); // 24rpx
+addUnit(24); // 12px
 addUnit('1rem'); // 1rem
-addUnit('12 24px'); // 12rpx 24px
+addUnit('12 24px'); // 6px 24px
 ```
 
 ## 样式转换
@@ -29,7 +29,7 @@ toStyle({ backgroundColor: '#fff' }, 'color:#222');
 
 | 方法                                 | 行为                                                   |
 | ------------------------------------ | ------------------------------------------------------ |
-| `addUnit(value = 0, unit = 'rpx')`   | 给裸数字追加单位，含多值简写；空值返回 `0rpx`          |
+| `addUnit(value = 0, unit = 'rpx')`   | 给裸数字追加单位，含多值简写；空值返回 `0px`           |
 | `kebabCase(name)`                    | 将驼峰、空格或下划线写法转换为 CSS 短横线写法          |
 | `addStyle(style, target = 'object')` | 将声明串转为样式对象；`target = 'string'` 时返回字符串 |
 | `toStyle(...styles)`                 | 合并样式对象或声明串，返回 CSS 声明串                  |

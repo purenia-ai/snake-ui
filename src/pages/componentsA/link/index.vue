@@ -97,16 +97,16 @@ function onLinkClick(href: string) {
 .demo-stack {
     display: flex;
     flex-direction: column;
-    gap: 24rpx;
+    gap: 12px;
 }
 .demo-variant-title {
     color: var(--snake-color-text);
-    font-size: 28rpx;
+    font-size: 14px;
     font-weight: 600;
     line-height: 1.4;
 }
 .demo-variant-sub {
     color: var(--snake-color-text-muted);
-    font-size: 24rpx;
+    font-size: 12px;
 }
 </style>

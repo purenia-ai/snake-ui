@@ -27,7 +27,7 @@ export interface SubsectionProps {
     activeColor?: string;
     /** 未激活状态颜色。 */
     inactiveColor?: string;
-    /** 文字尺寸，数值按 rpx 处理。 */
+    /** 文字尺寸，数值按 px（375 稿）处理。 */
     fontSize?: UnitValue;
     /** 组件高度。 */
     height?: UnitValue;

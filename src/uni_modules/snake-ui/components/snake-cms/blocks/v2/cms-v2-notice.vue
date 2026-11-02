@@ -20,20 +20,20 @@
 <script setup lang="ts">
 /** @component CmsV2Notice @description CMS v2 公告内部渲染器。 @see /cms/overview */
 import { computed } from 'vue';
-import { openV2Link, rpx, type V2BlockProps } from './shared';
+import { openV2Link, px, type V2BlockProps } from './shared';
 const props = defineProps<V2BlockProps>();
 const items = computed(() => (Array.isArray(props.data.textList) ? props.data.textList : []));
 const rootStyle = computed(() => ({
-    height: rpx(props.data.style?.height, 72),
-    margin: `0 ${rpx(props.data.style?.pageMargin, 10)}`,
+    height: px(props.data.style?.height, 36),
+    margin: `0 ${px(props.data.style?.pageMargin, 5)}`,
     color: props.data.style?.textColor || '#2d57e7',
     backgroundColor: props.data.style?.backgroundColor || '#eaf1ff'
 }));
 const marqueeStyle = computed(() => ({
     animationDuration: `${Math.max(8, String(props.data.noticeText || '').length * 0.35)}s`,
-    lineHeight: rpx(props.data.style?.height, 72)
+    lineHeight: px(props.data.style?.height, 36)
 }));
-const textStyle = computed(() => ({ lineHeight: rpx(props.data.style?.height, 72) }));
+const textStyle = computed(() => ({ lineHeight: px(props.data.style?.height, 36) }));
 const handleClick = () =>
     props.data.direction === 'column' ? undefined : openV2Link(props.data.link, props.linkService, props.pageInfo);
 </script>
@@ -43,10 +43,10 @@ const handleClick = () =>
     box-sizing: border-box;
     align-items: center;
     overflow: hidden;
-    padding: 0 20rpx;
+    padding: 0 10px;
 }
 .cms-v2-notice__icon {
-    margin-right: 12rpx;
+    margin-right: 6px;
 }
 .cms-v2-notice__swiper,
 .cms-v2-notice__row {

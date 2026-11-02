@@ -34,7 +34,7 @@ export const cellItemProps = {
     center: { type: Boolean, default: false },
     /** 是否显示左侧表示必填的星号。 */
     required: { type: Boolean, default: false },
-    /** 标题的宽度，数值按 rpx 处理。 */
+    /** 标题的宽度，数值按 px（375 稿）处理。 */
     titleWidth: { type: [Number, String] as PropType<number | string>, default: '' },
     /** 右侧箭头方向。 */
     arrowDirection: { type: String as PropType<CellItemArrowDirection>, default: 'right' },
@@ -50,8 +50,8 @@ export const cellItemProps = {
     index: { type: [String, Number] as PropType<CellItemIndex>, default: '' },
     /** 是否使用 label 插槽。 */
     useLabelSlot: { type: Boolean, default: false },
-    /** 左侧图标的大小，数值按 rpx 处理，只对传入 icon 字段时有效。 */
-    iconSize: { type: [Number, String] as PropType<number | string>, default: 34 },
+    /** 左侧图标的大小，数值按 px（375 稿）处理，只对传入 icon 字段时有效。 */
+    iconSize: { type: [Number, String] as PropType<number | string>, default: 17 },
     /** 左侧图标的样式，对象形式。 */
     iconStyle: { type: [Object, Array] as PropType<StyleValue>, default: () => ({}) }
 } as const;

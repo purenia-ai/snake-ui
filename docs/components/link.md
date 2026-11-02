@@ -28,16 +28,16 @@ preview: /pages/componentsA/link/index
 
 ### Props
 
-| 参数           | 说明                         | 类型               | 默认值                  |
-| -------------- | ---------------------------- | ------------------ | ----------------------- |
-| `text`         | 超链接文字                   | `string \| number` | `''`                    |
-| `color`        | 文字颜色                     | `string`           | `--snake-color-primary` |
-| `fontSize`     | 字体大小，数值按 rpx 处理    | `string \| number` | `28`                    |
-| `underLine`    | 是否显示下划线               | `boolean`          | `false`                 |
-| `href`         | 要跳转的链接                 | `string`           | `''`                    |
-| `mpTips`       | 小程序复制到粘贴板后的提示语 | `string`           | 语言包默认值            |
-| `lineColor`    | 下划线颜色，默认同文字颜色   | `string`           | `''`                    |
-| `defaultClick` | 是否默认点击跳转             | `boolean`          | `true`                  |
+| 参数           | 说明                              | 类型               | 默认值                  |
+| -------------- | --------------------------------- | ------------------ | ----------------------- |
+| `text`         | 超链接文字                        | `string \| number` | `''`                    |
+| `color`        | 文字颜色                          | `string`           | `--snake-color-primary` |
+| `fontSize`     | 字体大小，数值按 px（375 稿）处理 | `string \| number` | `14`                    |
+| `underLine`    | 是否显示下划线                    | `boolean`          | `false`                 |
+| `href`         | 要跳转的链接                      | `string`           | `''`                    |
+| `mpTips`       | 小程序复制到粘贴板后的提示语      | `string`           | 语言包默认值            |
+| `lineColor`    | 下划线颜色，默认同文字颜色        | `string`           | `''`                    |
+| `defaultClick` | 是否默认点击跳转                  | `boolean`          | `true`                  |
 
 ### Events
 

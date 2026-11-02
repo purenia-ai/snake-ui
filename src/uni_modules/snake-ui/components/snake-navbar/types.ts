@@ -21,7 +21,7 @@ export interface NavbarProps {
     titleWidth?: UnitValue;
     /** title color 配置。 */
     titleColor?: string;
-    /** 标题文字尺寸，数值按 rpx 处理。 */
+    /** 标题文字尺寸，数值按 px（375 稿）处理。 */
     titleSize?: UnitValue;
     /** title bold 配置。 */
     titleBold?: boolean;

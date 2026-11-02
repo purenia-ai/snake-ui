@@ -16,7 +16,7 @@ preview: /pages/componentsA/line/index
 
 ```vue
 <snake-line />
-<snake-line color="#06D290" margin="20rpx 0" />
+<snake-line color="#06D290" margin="10px 0" />
 ```
 
 ## 方向与线型
@@ -35,15 +35,15 @@ preview: /pages/componentsA/line/index
 
 ### Props
 
-| 参数                          | 说明                                   | 类型                        | 默认值                 |
-| ----------------------------- | -------------------------------------- | --------------------------- | ---------------------- |
-| `color`                       | 线条颜色                               | `string`                    | `--snake-color-border` |
-| `length`                      | 长度，竖向表现为高度，可为百分比或 rpx | `string`                    | `100%`                 |
-| `direction`                   | 线条方向                               | `row \| col`                | `row`                  |
-| `hairLine`                    | 是否显示半像素细线条                   | `boolean`                   | `true`                 |
-| `margin`                      | 与上下左右元素的间距                   | `string`                    | `0`                    |
-| `borderStyle`                 | 线条类型                               | `solid \| dashed \| dotted` | `solid`                |
-| `customClass` / `customStyle` | 自定义类名和样式                       | `string \| object \| array` | `''`                   |
+| 参数                          | 说明                                         | 类型                        | 默认值                 |
+| ----------------------------- | -------------------------------------------- | --------------------------- | ---------------------- |
+| `color`                       | 线条颜色                                     | `string`                    | `--snake-color-border` |
+| `length`                      | 长度，竖向表现为高度，可为百分比或带单位的值 | `string`                    | `100%`                 |
+| `direction`                   | 线条方向                                     | `row \| col`                | `row`                  |
+| `hairLine`                    | 是否显示半像素细线条                         | `boolean`                   | `true`                 |
+| `margin`                      | 与上下左右元素的间距                         | `string`                    | `0`                    |
+| `borderStyle`                 | 线条类型                                     | `solid \| dashed \| dotted` | `solid`                |
+| `customClass` / `customStyle` | 自定义类名和样式                             | `string \| object \| array` | `''`                   |
 
 ## 主题变量
 

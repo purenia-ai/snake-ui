@@ -173,36 +173,36 @@ onBeforeUnmount(() => {
     .coupon-popup {
         box-sizing: border-box;
         width: 100%;
-        height: 572rpx;
+        height: 286px;
         background-color: var(--snake-color-surface, #fff);
 
         &--center {
-            width: 540rpx;
-            height: 740rpx;
+            width: 270px;
+            height: 370px;
             background: var(--snake-color-surface, #fff);
 
             .coupon-img {
-                height: 740rpx !important;
+                height: 370px !important;
             }
         }
 
         .coupon-img {
             display: block;
             width: 100%;
-            height: 524rpx;
+            height: 262px;
         }
     }
 
     .close {
         display: flex;
         justify-content: flex-end;
-        padding-top: 16rpx;
-        padding-right: 16rpx;
+        padding-top: 8px;
+        padding-right: 8px;
 
         &--center {
             display: flex;
             justify-content: center;
-            margin-top: 70rpx;
+            margin-top: 35px;
         }
     }
 }

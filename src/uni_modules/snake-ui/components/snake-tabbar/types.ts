@@ -78,7 +78,7 @@ export interface TabbarProps {
     textSize?: string | number;
     /** 图标和文字间距。 */
     gap?: string | number;
-    /** 导航栏高度，单位 rpx。 */
+    /** 导航栏高度，单位 px（375 稿）。 */
     height?: string | number;
     /** 层级。 */
     zIndex?: number;

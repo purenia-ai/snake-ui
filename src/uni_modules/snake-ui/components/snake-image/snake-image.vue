@@ -211,13 +211,13 @@ defineExpose<ImageExpose>({ reload });
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 120rpx;
+    min-height: 60px;
     color: var(--snake-image-status-color, var(--snake-color-text-muted, #909399));
     background-color: var(--snake-image-status-bg, transparent);
 }
 .snake-image__status--error {
     flex-direction: column;
-    font-size: 24rpx;
+    font-size: 12px;
     color: var(--snake-image-error-color, var(--snake-color-text-muted, #909399));
 }
 .snake-image__status-image {
@@ -225,6 +225,6 @@ defineExpose<ImageExpose>({ reload });
     height: 100%;
 }
 .snake-image__error-text {
-    margin-top: 10rpx;
+    margin-top: 5px;
 }
 </style>

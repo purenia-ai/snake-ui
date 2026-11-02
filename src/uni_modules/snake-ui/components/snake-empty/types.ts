@@ -29,7 +29,7 @@ export interface EmptyProps {
     icon?: string;
     /** 图标颜色。 */
     iconColor?: string;
-    /** 图标尺寸，数值按 rpx 处理。 */
+    /** 图标尺寸，数值按 px（375 稿）处理。 */
     iconSize?: UnitValue;
     /** 展示文本。 */
     text?: string;
@@ -37,7 +37,7 @@ export interface EmptyProps {
     color?: string;
     /** 文字颜色。 */
     textColor?: string;
-    /** 文字尺寸，数值按 rpx 处理。 */
+    /** 文字尺寸，数值按 px（375 稿）处理。 */
     fontSize?: UnitValue;
     /** 组件顶部外边距。 */
     marginTop?: UnitValue;

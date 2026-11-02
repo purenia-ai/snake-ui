@@ -48,7 +48,7 @@
                 :bg-color="data.style.backgroundColor"
                 :show-tabs="data.bars.tabs.enabled && !!tabs.length"
                 :sort="data.query.sort"
-                :custom-style="{ padding: '0 20rpx' }"
+                :custom-style="{ padding: '0 10px' }"
                 @change="$emit('filter-change', $event)"
             />
         </snake-sticky>
@@ -121,7 +121,7 @@ const rootStyle = computed(() => ({ backgroundColor: props.data.style?.backgroun
 }
 .cms-v2-goods__tab {
     display: inline-block;
-    padding: 20rpx 28rpx;
+    padding: 10px 14px;
     color: #606266;
 }
 .cms-v2-goods__tab--active {
@@ -134,17 +134,17 @@ const rootStyle = computed(() => ({ backgroundColor: props.data.style?.backgroun
 }
 .cms-v2-goods__filters-inner {
     display: inline-flex;
-    gap: 16rpx;
+    gap: 8px;
     min-width: 100%;
-    padding: 16rpx 20rpx;
+    padding: 8px 10px;
     box-sizing: border-box;
 }
 .cms-v2-goods__filter-chip {
     flex: 0 0 auto;
-    padding: 10rpx 24rpx;
-    border-radius: 999rpx;
+    padding: 5px 12px;
+    border-radius: 499.5px;
     background: rgba(0, 0, 0, 0.05);
-    font-size: 24rpx;
-    line-height: 32rpx;
+    font-size: 12px;
+    line-height: 16px;
 }
 </style>

@@ -65,18 +65,18 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 <style scoped>
 .demo-follow {
-    padding: 24rpx;
-    border-radius: 16rpx;
+    padding: 12px;
+    border-radius: 8px;
     background: var(--snake-color-surface-muted);
 }
 .demo-follow--strong {
-    border: 2rpx solid var(--snake-color-primary);
+    border: 1px solid var(--snake-color-primary);
     background: var(--snake-color-primary-light);
 }
 .follow-placeholder {
     display: block;
     color: var(--snake-color-text-secondary);
-    font-size: 26rpx;
+    font-size: 13px;
     line-height: 1.5;
 }
 </style>

@@ -168,14 +168,14 @@ function switchTab(key: string | number) {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    min-width: 96rpx;
+    min-width: 48px;
     height: 100%;
 }
 
 .demo-nav__locale {
-    min-width: 58rpx;
+    min-width: 29px;
     color: #fff;
-    font-size: 24rpx;
+    font-size: 12px;
     font-weight: 650;
 }
 
@@ -183,10 +183,10 @@ function switchTab(key: string | number) {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 72rpx;
-    height: 64rpx;
-    padding: 0 12rpx;
-    border-radius: 12rpx;
+    min-width: 36px;
+    height: 32px;
+    padding: 0 6px;
+    border-radius: 6px;
     transition: background-color 0.2s ease;
 }
 
@@ -196,42 +196,42 @@ function switchTab(key: string | number) {
 
 .demo-nav__home {
     color: #fff;
-    font-size: 26rpx;
+    font-size: 13px;
     font-weight: 500;
 }
 
 .demo-page-header {
     max-width: 760px;
     margin: 0 auto;
-    padding: 32rpx 32rpx 10rpx;
+    padding: 16px 16px 5px;
 }
 
 .demo-page-header__category {
     display: block;
-    margin-bottom: 10rpx;
+    margin-bottom: 5px;
     color: var(--snake-color-text-muted);
-    font-size: 24rpx;
+    font-size: 12px;
     line-height: 1.4;
 }
 
 .demo-page-header__title {
     display: block;
     color: var(--snake-color-text);
-    font-size: 38rpx;
+    font-size: 19px;
     font-weight: 700;
     line-height: 1.35;
 }
 
 .demo-page-header__desc {
-    margin-top: 10rpx;
+    margin-top: 5px;
     color: var(--snake-color-text-muted);
-    font-size: 26rpx;
+    font-size: 13px;
     line-height: 1.7;
 }
 
 .demo-body {
     max-width: 760px;
     margin: 0 auto;
-    padding: 22rpx 24rpx 56rpx;
+    padding: 11px 12px 28px;
 }
 </style>

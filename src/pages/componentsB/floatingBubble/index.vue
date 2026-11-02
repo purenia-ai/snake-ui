@@ -73,9 +73,9 @@ function updateValue(key: string, value: DemoValue) {
 .bubble-actions {
     display: flex;
     align-items: center;
-    gap: 20rpx;
-    padding: 24rpx;
+    gap: 10px;
+    padding: 12px;
     color: var(--snake-color-text-secondary);
-    font-size: 24rpx;
+    font-size: 12px;
 }
 </style>

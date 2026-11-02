@@ -195,7 +195,7 @@ onBeforeUnmount(clearFallback);
 @keyframes snake-up-in {
     from {
         opacity: 0;
-        transform: translate3d(0, 40rpx, 0);
+        transform: translate3d(0, 20px, 0);
     }
     to {
         opacity: 1;
@@ -209,13 +209,13 @@ onBeforeUnmount(clearFallback);
     }
     to {
         opacity: 0;
-        transform: translate3d(0, 40rpx, 0);
+        transform: translate3d(0, 20px, 0);
     }
 }
 @keyframes snake-down-in {
     from {
         opacity: 0;
-        transform: translate3d(0, -40rpx, 0);
+        transform: translate3d(0, -20px, 0);
     }
     to {
         opacity: 1;
@@ -229,13 +229,13 @@ onBeforeUnmount(clearFallback);
     }
     to {
         opacity: 0;
-        transform: translate3d(0, -40rpx, 0);
+        transform: translate3d(0, -20px, 0);
     }
 }
 @keyframes snake-left-in {
     from {
         opacity: 0;
-        transform: translate3d(40rpx, 0, 0);
+        transform: translate3d(20px, 0, 0);
     }
     to {
         opacity: 1;
@@ -249,13 +249,13 @@ onBeforeUnmount(clearFallback);
     }
     to {
         opacity: 0;
-        transform: translate3d(40rpx, 0, 0);
+        transform: translate3d(20px, 0, 0);
     }
 }
 @keyframes snake-right-in {
     from {
         opacity: 0;
-        transform: translate3d(-40rpx, 0, 0);
+        transform: translate3d(-20px, 0, 0);
     }
     to {
         opacity: 1;
@@ -269,7 +269,7 @@ onBeforeUnmount(clearFallback);
     }
     to {
         opacity: 0;
-        transform: translate3d(-40rpx, 0, 0);
+        transform: translate3d(-20px, 0, 0);
     }
 }
 @keyframes snake-zoom-in {

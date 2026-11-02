@@ -183,7 +183,7 @@ test('component demos use one restrained shared presentation system', async () =
     assert.doesNotMatch(page, /backgroundImage:\s*'linear-gradient\(90deg, var\(--snake-color-primary-dark\), var\(--snake-color-primary-disabled\)\)'/);
     assert.doesNotMatch(page, /background-image:\s*\$snake-page-tint/);
     assert.match(section, /DemoSectionVariant = 'default' \| 'preview' \| 'controls'/);
-    assert.match(section, /demo-section--preview[^}]*border-bottom:\s*1rpx dashed/s);
+    assert.match(section, /demo-section--preview[^}]*border-bottom:\s*1px dashed/s);
     assert.match(panel, /<snake-subsection/);
     assert.match(panel, /:current="selectedIndex\(control\)"/);
     assert.match(panel, /@change="selectOption\(control, \$event\)"/);

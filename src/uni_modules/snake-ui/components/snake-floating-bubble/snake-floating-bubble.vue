@@ -30,7 +30,7 @@ defineOptions({ name: 'FloatingBubble', options: { virtualHost: true, styleIsola
 const props = withDefaults(defineProps<FloatingBubbleProps>(), {
     datas: () => ({}),
     scrollTop: 0,
-    bottom: '80rpx',
+    bottom: '40px',
     background: 'transparent',
     zIndex: 6
 });
@@ -63,7 +63,9 @@ const rootStyle = computed(() => {
 });
 
 const wrapStyle = computed(() =>
-    hasSlot.value ? {} : { width: `${props.datas?.width ?? 96}rpx`, height: `${props.datas?.height ?? 96}rpx` }
+    hasSlot.value
+        ? {}
+        : { width: uni.$snake.from750(props.datas?.width ?? 96), height: uni.$snake.from750(props.datas?.height ?? 96) }
 );
 
 watch(() => props.scrollTop, declick);
@@ -129,12 +131,12 @@ defineExpose({ reopen });
     right: 0;
     bottom: 20%;
     z-index: 6;
-    padding-bottom: 0rpx;
+    padding-bottom: 0px;
     padding-bottom: constant(safe-area-inset-bottom);
     padding-bottom: env(safe-area-inset-bottom);
 
     &--slot {
-        right: 28rpx;
+        right: 14px;
     }
 
     &__wrap {

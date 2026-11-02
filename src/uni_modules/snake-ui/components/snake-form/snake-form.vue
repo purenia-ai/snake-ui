@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<FormProps>(), {
     errorType: () => ['message', 'toast'],
     borderBottom: true,
     labelPosition: 'left',
-    labelWidth: 90,
+    labelWidth: 45,
     labelAlign: 'left',
     labelStyle: () => ({}),
     size: 'default',

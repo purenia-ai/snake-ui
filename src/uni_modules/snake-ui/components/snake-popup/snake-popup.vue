@@ -106,7 +106,7 @@ const props = withDefaults(defineProps<PopupProps>(), {
     closeable: false,
     closeIcon: 'close',
     closeIconColor: 'var(--snake-color-text-muted, #909399)',
-    closeIconSize: 20,
+    closeIconSize: 10,
     closeIconPos: 'top-right',
     closeOnClickOverlay: true,
     overlay: true,
@@ -146,7 +146,7 @@ const transitionName = computed(() => {
 });
 const radius = computed(() => {
     if (props.round === false) return '0';
-    const value = props.round === true ? 'var(--snake-radius-large, 20rpx)' : addUnit(props.round, 'rpx');
+    const value = props.round === true ? 'var(--snake-radius-large, 10px)' : addUnit(props.round);
     // 四边弹层只圆远离屏幕边缘的一侧，否则贴着屏幕边的角会被圆掉露出页面背景
     switch (props.mode) {
         case 'top':
@@ -249,7 +249,7 @@ defineExpose({ open, close });
 .snake-popup__panel--center.snake-transition--zoom-in-leave {
     animation-name: snake-popup-center-zoom-out;
 }
-/* 四边弹层整块滑入滑出：transition 通用滑入只有 40rpx 位移 + 淡入，这里覆盖为 100% 平移 */
+/* 四边弹层整块滑入滑出：transition 通用滑入只有 20px 位移 + 淡入，这里覆盖为 100% 平移 */
 .snake-popup__panel--bottom.snake-transition--slide-up-enter {
     animation-name: snake-popup-slide-up-in;
 }
@@ -298,7 +298,7 @@ defineExpose({ open, close });
     position: absolute;
     z-index: 1;
     display: flex;
-    padding: 20rpx;
+    padding: 10px;
 }
 .snake-popup__close--top-left {
     top: 0;

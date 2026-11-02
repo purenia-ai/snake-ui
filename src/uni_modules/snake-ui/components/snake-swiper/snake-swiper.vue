@@ -16,9 +16,9 @@
                 <view
                     class="snake-swiper__content"
                     :style="{
-                        borderRadius: addUnit(actualRadius, 'rpx'),
+                        borderRadius: addUnit(actualRadius),
                         transform: effect3d && index !== active ? 'scaleY(0.9)' : 'scaleY(1)',
-                        margin: effect3d && index !== active ? '0 20rpx' : 0
+                        margin: effect3d && index !== active ? '0 10px' : 0
                     }"
                     @click.stop.prevent="emit('click', index)"
                 >
@@ -65,7 +65,7 @@ defineOptions({ name: 'Swiper', options: { virtualHost: true, styleIsolation: 's
 const props = withDefaults(defineProps<SwiperProps>(), {
     list: () => [],
     current: 0,
-    height: 250,
+    height: 125,
     autoplay: true,
     interval: 3000,
     duration: 500,
@@ -76,11 +76,11 @@ const props = withDefaults(defineProps<SwiperProps>(), {
     indicatorColor: 'rgba(0,0,0,.3)',
     indicatorActiveColor: 'rgba(255,255,255,.8)',
     name: 'image',
-    radius: 8,
+    radius: 4,
     previousMargin: '0px',
     nextMargin: '0px',
     effect3d: false,
-    effect3dPreviousMargin: 50,
+    effect3dPreviousMargin: 25,
     imgMode: 'aspectFill',
     showTitle: false,
     bgColor: 'var(--snake-color-bg, #f7f8fa)',
@@ -104,8 +104,8 @@ watch(
 const actualRadius = computed(() => props.borderRadius ?? props.radius);
 const rootStyle = computed(() => [
     {
-        height: addUnit(props.height, 'rpx'),
-        borderRadius: addUnit(actualRadius.value, 'rpx'),
+        height: addUnit(props.height),
+        borderRadius: addUnit(actualRadius.value),
         backgroundColor: props.bgColor
     },
     props.customStyle
@@ -114,11 +114,11 @@ const source = (item: SwiperItem) =>
     typeof item === 'string' ? item : String(item?.[props.name] ?? item?.image ?? item?.src ?? item?.url ?? '');
 const itemTitle = (item: SwiperItem) => (typeof item === 'string' ? '' : String(item?.title ?? item?.text ?? ''));
 const showIndicator = computed(() => props.indicator !== false);
-const margin = computed(() => (props.effect3d ? addUnit(props.effect3dPreviousMargin, 'rpx') : props.previousMargin));
+const margin = computed(() => (props.effect3d ? addUnit(props.effect3dPreviousMargin) : props.previousMargin));
 const indicatorClass = computed(() => `snake-swiper__indicator--${props.indicatorPos}`);
 const titlePaddingBottom = computed(() => {
-    if (props.mode === 'none') return '12rpx';
-    return props.indicatorPos.startsWith('bottom') ? (props.mode === 'number' ? '60rpx' : '40rpx') : '12rpx';
+    if (props.mode === 'none') return '6px';
+    return props.indicatorPos.startsWith('bottom') ? (props.mode === 'number' ? '30px' : '20px') : '6px';
 });
 function change(event: any) {
     active.value = Number(event.detail?.current) || 0;
@@ -162,9 +162,9 @@ function finish(event: any) {
     left: 0;
     box-sizing: border-box;
     width: 100%;
-    padding: 12rpx 24rpx;
+    padding: 6px 12px;
     color: rgba(255, 255, 255, 0.9);
-    font-size: 28rpx;
+    font-size: 14px;
     background-color: rgba(0, 0, 0, 0.3);
 }
 .snake-swiper__indicator {
@@ -173,57 +173,57 @@ function finish(event: any) {
     display: flex;
     box-sizing: border-box;
     width: 100%;
-    padding: 0 24rpx;
+    padding: 0 12px;
 }
 .snake-swiper__indicator--topLeft {
-    top: 12rpx;
+    top: 6px;
 }
 .snake-swiper__indicator--topCenter {
-    top: 12rpx;
+    top: 6px;
     justify-content: center;
 }
 .snake-swiper__indicator--topRight {
-    top: 12rpx;
+    top: 6px;
     justify-content: flex-end;
 }
 .snake-swiper__indicator--bottomLeft {
-    bottom: 12rpx;
+    bottom: 6px;
 }
 .snake-swiper__indicator--bottomCenter {
-    bottom: 12rpx;
+    bottom: 6px;
     justify-content: center;
 }
 .snake-swiper__indicator--bottomRight {
-    bottom: 12rpx;
+    bottom: 6px;
     justify-content: flex-end;
 }
 .snake-swiper__dots {
     display: flex;
     align-items: center;
-    gap: 10rpx;
+    gap: 5px;
 }
 .snake-swiper__dot {
-    width: 12rpx;
-    height: 12rpx;
+    width: 6px;
+    height: 6px;
     border-radius: 999px;
     transition:
         width 0.2s ease,
         background-color 0.2s ease;
 }
 .snake-swiper__dots.is-round .snake-swiper__dot.is-active {
-    width: 34rpx;
+    width: 17px;
 }
 .snake-swiper__dots.is-rect .snake-swiper__dot,
 .snake-swiper__dots.is-line .snake-swiper__dot {
-    width: 26rpx;
-    height: 8rpx;
+    width: 13px;
+    height: 4px;
     border-radius: 0;
 }
 .snake-swiper__number {
-    padding: 6rpx 16rpx;
+    padding: 3px 8px;
     border-radius: 999px;
     color: rgba(255, 255, 255, 0.8);
-    font-size: 26rpx;
+    font-size: 13px;
     background: rgba(0, 0, 0, 0.3);
 }
 </style>

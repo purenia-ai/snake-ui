@@ -68,8 +68,8 @@ function selectActivity(item: { id: string }) {
 <style scoped>
 .demo-selection {
     display: block;
-    padding: 12rpx 20rpx;
+    padding: 6px 10px;
     color: var(--snake-color-text-secondary);
-    font-size: 22rpx;
+    font-size: 11px;
 }
 </style>

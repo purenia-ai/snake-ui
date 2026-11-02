@@ -3,7 +3,7 @@ import type { StyleValue } from '../../types/global';
 
 /** Sticky 组件的公开属性。 */
 export interface StickyProps {
-    /** 吸顶或定位的顶部偏移量，数值按 rpx 处理，带 px 后缀时按 px 处理。 */
+    /** 吸顶或定位的顶部偏移量，数值按 px（375 稿）处理，带 px 后缀时按 px 处理。 */
     offsetTop?: UnitValue;
     /** 自定义导航栏高度，单位 px。 */
     customNavHeight?: UnitValue;

@@ -2,7 +2,7 @@
     <view class="snake-drop-item">
         <view
             class="snake-drop-item__trigger"
-            :style="{ color, fontSize: addUnit(menu?.titleSize.value || 28, 'rpx') }"
+            :style="{ color, fontSize: addUnit(menu?.titleSize.value || 14) }"
             @click="toggle"
         >
             <text class="snake-drop-item__title">{{ displayTitle }}</text>
@@ -86,11 +86,11 @@ const panelStyle = computed(() => [
         left: 0,
         right: 0,
         zIndex: (menu?.zIndex.value || zIndex.dropdown) + 1,
-        maxHeight: props.height === 'auto' ? '70vh' : addUnit(props.height, 'rpx'),
+        maxHeight: props.height === 'auto' ? '70vh' : addUnit(props.height),
         boxSizing: 'border-box',
         overflow: 'hidden',
         background: 'var(--snake-color-surface, #fff)',
-        boxShadow: '0 18rpx 48rpx var(--snake-color-shadow, rgba(15, 30, 24, 0.12))'
+        boxShadow: '0 9px 24px var(--snake-color-shadow, rgba(15, 30, 24, 0.12))'
     } as CSSProperties,
     props.customStyle
 ]);
@@ -137,10 +137,10 @@ onBeforeUnmount(() => menu?.unregister(itemId));
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8rpx;
+    gap: 4px;
     width: 100%;
     height: 100%;
-    padding: 0 12rpx;
+    padding: 0 6px;
     line-height: 1;
 }
 .snake-drop-item__title {
@@ -165,10 +165,10 @@ onBeforeUnmount(() => menu?.unregister(itemId));
 }
 .snake-drop-item__option {
     display: flex;
-    min-height: 88rpx;
+    min-height: 44px;
     align-items: center;
     justify-content: space-between;
-    padding: 0 32rpx;
+    padding: 0 16px;
     border-bottom: 1px solid var(--snake-color-divider, #e4e7ed);
     color: var(--snake-color-text-secondary, #606266);
 }

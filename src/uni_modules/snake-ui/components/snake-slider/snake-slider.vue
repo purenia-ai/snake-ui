@@ -4,7 +4,7 @@
         <view class="snake-slider__main">
             <view
                 class="snake-slider__track"
-                :style="{ height: addUnit(height, 'rpx'), backgroundColor: inactiveColor }"
+                :style="{ height: addUnit(height), backgroundColor: inactiveColor }"
                 role="slider"
                 :aria-valuemin="minValue"
                 :aria-valuemax="maxValue"
@@ -55,8 +55,8 @@ const props = withDefaults(defineProps<SliderProps>(), {
     min: 0,
     max: 100,
     step: 1,
-    height: 6,
-    blockWidth: 30,
+    height: 3,
+    blockWidth: 15,
     activeColor: 'var(--snake-color-primary,#06D290)',
     inactiveColor: 'var(--snake-color-divider,#e4e7ed)',
     blockColor: '#fff',
@@ -103,15 +103,15 @@ const percent = computed(() =>
     maxValue.value === minValue.value ? 0 : ((current.value - minValue.value) / (maxValue.value - minValue.value)) * 100
 );
 const rootStyle = computed(() => [
-    { padding: `${addUnit((Number.parseFloat(String(props.blockWidth)) || 30) / 2, 'rpx')} 0` },
+    { padding: `${addUnit((Number.parseFloat(String(props.blockWidth)) || 15) / 2)} 0` },
     props.customStyle
 ]);
 const activeStyle = computed(() => ({ width: `${percent.value}%`, backgroundColor: props.activeColor }));
 const blockStyleValue = computed(() => [
     {
         left: `${percent.value}%`,
-        width: addUnit(props.blockWidth, 'rpx'),
-        height: addUnit(props.blockWidth, 'rpx'),
+        width: addUnit(props.blockWidth),
+        height: addUnit(props.blockWidth),
         backgroundColor: props.blockColor
     },
     props.blockStyle
@@ -191,7 +191,7 @@ defineExpose<SliderExpose>({ update });
     display: flex;
     width: 100%;
     align-items: center;
-    gap: 18rpx;
+    gap: 9px;
 }
 .snake-slider.is-disabled {
     opacity: 0.45;
@@ -199,7 +199,7 @@ defineExpose<SliderExpose>({ update });
 .snake-slider__main {
     flex: 1;
     min-width: 0;
-    padding: 28rpx 0;
+    padding: 14px 0;
 }
 .snake-slider__track {
     position: relative;
@@ -207,7 +207,7 @@ defineExpose<SliderExpose>({ update });
 }
 .snake-slider__track:focus-visible {
     outline: 2px solid var(--snake-color-primary, #06d290);
-    outline-offset: 8rpx;
+    outline-offset: 4px;
 }
 .snake-slider__active {
     position: absolute;
@@ -223,27 +223,27 @@ defineExpose<SliderExpose>({ update });
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    box-shadow: 0 2rpx 12rpx rgba(15, 30, 24, 0.2);
+    box-shadow: 0 1px 6px rgba(15, 30, 24, 0.2);
     transform: translate(-50%, -50%);
 }
 .snake-slider__value {
     position: absolute;
-    padding: 4rpx 10rpx;
-    border-radius: 8rpx;
+    padding: 2px 5px;
+    border-radius: 4px;
     color: #fff;
-    font-size: 20rpx;
+    font-size: 10px;
     line-height: 1.2;
     background: rgba(15, 30, 24, 0.76);
     transform: translateX(-50%);
 }
 .snake-slider__value.is-top {
-    bottom: 22rpx;
+    bottom: 11px;
 }
 .snake-slider__value.is-bottom {
-    top: 22rpx;
+    top: 11px;
 }
 .snake-slider__edge {
     color: var(--snake-color-text-muted, #909399);
-    font-size: 24rpx;
+    font-size: 12px;
 }
 </style>

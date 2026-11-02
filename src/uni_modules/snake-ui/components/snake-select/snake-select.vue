@@ -304,7 +304,7 @@ function is2DList(list: SelectItem[] | SelectItem[][]): list is SelectItem[][] {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 80rpx;
+    height: 40px;
 }
 .snake-select__header::after {
     content: '';
@@ -312,15 +312,15 @@ function is2DList(list: SelectItem[] | SelectItem[][]): list is SelectItem[][] {
     right: 0;
     bottom: 0;
     left: 0;
-    border-bottom: 1rpx solid var(--snake-color-border, #e4e7ed);
+    border-bottom: 1px solid var(--snake-color-border, #e4e7ed);
     transform: scaleY(0.5);
 }
 .snake-select__header__title {
     color: var(--snake-color-text-secondary, #606266);
 }
 .snake-select__header__btn {
-    min-width: 150rpx;
-    padding: 20rpx 30rpx;
+    min-width: 75px;
+    padding: 10px 15px;
 }
 .snake-select__btn--hover {
     opacity: 0.6;
@@ -328,7 +328,7 @@ function is2DList(list: SelectItem[] | SelectItem[][]): list is SelectItem[][] {
 .snake-select__body {
     overflow: hidden;
     width: 100%;
-    height: 500rpx;
+    height: 250px;
     background-color: var(--snake-color-surface, #fff);
 }
 .snake-select__body__picker-view {
@@ -339,8 +339,8 @@ function is2DList(list: SelectItem[] | SelectItem[][]): list is SelectItem[][] {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 8rpx;
-    font-size: 32rpx;
+    padding: 0 4px;
+    font-size: 16px;
     color: var(--snake-color-text, #303133);
 }
 .snake-select__ellipsis {

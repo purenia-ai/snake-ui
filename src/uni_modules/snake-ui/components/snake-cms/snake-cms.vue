@@ -11,7 +11,10 @@
             <snake-images v-else-if="item.component === 'images'" :datas="item.setStyle" />
             <snake-picture-ads v-else-if="item.component === 'pictureads'" :datas="item.setStyle" />
             <snake-magic-cube v-else-if="item.component === 'magiccube'" :datas="item.setStyle" />
-            <snake-videos v-else-if="item.component === 'videos'" :datas="item.setStyle" />
+            <snake-videos
+                v-else-if="item.component === 'videos' || item.component === 'videoss'"
+                :datas="item.setStyle"
+            />
             <snake-notice v-else-if="item.component === 'notice'" :datas="item.setStyle" />
             <snake-jump-applet
                 v-else-if="item.component === 'jumpApplet'"
@@ -55,7 +58,7 @@
                         name="label"
                         :list="item.setStyle.tabslist"
                         :current="tabsCurrent"
-                        font-size="26rpx"
+                        :font-size="$snake.from750(26)"
                         active-color="var(--snake-color-text, #303133)"
                         inactive-color="var(--snake-color-text-secondary, #606266)"
                         :active-item-style="activeTabStyle"
@@ -70,7 +73,9 @@
                         :bg-color="item.setStyle.backgroundColor"
                         :show-tabs="item.setStyle.tabShow && !!item.setStyle.tabslist?.length"
                         :sort="item.setStyle.filterParams?.sort"
-                        :custom-style="{ padding: '0 20rpx' }"
+                        :font-size="$snake.from750(26)"
+                        :title-size="$snake.from750(28)"
+                        :custom-style="{ padding: `0 ${$snake.from750(20)}` }"
                         @change="confirmFilter"
                     />
                 </snake-sticky>
@@ -89,7 +94,8 @@
                 <snake-loadmore
                     v-if="goodsList.length"
                     margin-bottom="0"
-                    custom-style="padding-bottom: 20rpx"
+                    :font-size="$snake.from750(28)"
+                    :custom-style="`padding-bottom: ${$snake.from750(20)}`"
                     :status="goodsLoadingStatus"
                     :bg-color="item.setStyle.backgroundColor"
                 />
@@ -99,7 +105,7 @@
                     :text="item.setStyle.emptyText"
                     :text-color="item.setStyle.emptyColor"
                     :custom-style="{
-                        padding: '60px 0 300px',
+                        padding: `${$snake.from750(120)} 0 ${$snake.from750(600)}`,
                         backgroundColor: item.setStyle.backgroundColor
                     }"
                 />
@@ -203,13 +209,14 @@
         <snake-floating-bubble
             v-if="goodsList.length && options.assets?.backToTop"
             :scroll-top="scrollTop"
-            bottom="310rpx"
+            :bottom="$snake.from750(310)"
             background="transparent"
         >
             <image
                 v-show="scrollTop > 500"
                 :src="options.assets.backToTop"
                 class="snake-cms__to-top"
+                :style="{ width: $snake.from750(80), height: $snake.from750(80) }"
                 @click="handleToTop"
             />
         </snake-floating-bubble>
@@ -257,6 +264,7 @@ import CmsV2Richtext from './blocks/v2/cms-v2-richtext.vue';
 import CmsV2Search from './blocks/v2/cms-v2-search.vue';
 import CmsV2Video from './blocks/v2/cms-v2-video.vue';
 import { searchStickyEnabled } from './blocks/v2/shared';
+import { from750 } from '../../libs/function/unit';
 import { normalizeCmsComponents, reportCmsDiagnostic, resolveCmsOptions, useCmsCommerce } from '../../libs/cms';
 import { CmsError } from './types';
 import type { CmsDiagnostic, CmsLinkService, CmsOptions, CmsPageInfo, CmsStateChange } from './types';
@@ -316,12 +324,12 @@ const components = computed(() => normalized.value.components);
 const commerceComponent = computed(() =>
     components.value.find(item => item.component === 'goodslist' || item.component === 'v2.goodslist')
 );
-const activeTabStyle = { color: 'var(--snake-color-text, #303133)', fontWeight: 600, fontSize: '32rpx' };
+const activeTabStyle = { color: 'var(--snake-color-text, #303133)', fontWeight: 600, fontSize: from750(32) };
 const activeBarStyle = {
-    width: '25px',
-    height: '8rpx',
+    width: from750(50),
+    height: from750(8),
     backgroundColor: 'var(--snake-color-primary, #06D290)',
-    borderRadius: '2rpx'
+    borderRadius: from750(2)
 };
 
 function resolveStickyDisabled(value: unknown): boolean {
@@ -400,10 +408,5 @@ defineExpose({ init, loadMore, retry, refreshQuotePay, auctionSetParams });
 .snake-cms {
     position: relative;
     background-color: transparent;
-}
-
-.snake-cms__to-top {
-    width: 80rpx;
-    height: 80rpx;
 }
 </style>

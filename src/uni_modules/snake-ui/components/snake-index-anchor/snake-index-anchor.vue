@@ -72,11 +72,11 @@ function measure() {
     display: flex;
     box-sizing: border-box;
     width: 100%;
-    min-height: 64rpx;
+    min-height: 32px;
     align-items: center;
-    padding: 0 20rpx;
+    padding: 0 10px;
     color: var(--snake-color-text, #303133);
-    font-size: 24rpx;
+    font-size: 12px;
     font-weight: 600;
     background: var(--snake-color-background, #f5f6f8);
 }

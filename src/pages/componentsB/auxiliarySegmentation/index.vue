@@ -44,9 +44,9 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 <style scoped>
 .segment-context {
-    padding: 20rpx 24rpx;
+    padding: 10px 12px;
     color: var(--snake-color-text-secondary);
     background: var(--snake-color-bg);
-    font-size: 26rpx;
+    font-size: 13px;
 }
 </style>

@@ -17,7 +17,7 @@
                 :style="{
                     width: labelWidth,
                     flex: `0 0 ${labelWidth}`,
-                    marginBottom: elLabelPosition === 'left' ? 0 : '10rpx'
+                    marginBottom: elLabelPosition === 'left' ? 0 : '5px'
                 }"
             >
                 <view
@@ -76,9 +76,9 @@
             v-if="validateState === 'error' && showError('message')"
             class="snake-form-item__message"
             :style="{
-                paddingLeft: elLabelPosition === 'left' && label ? addUnit(elLabelWidth, 'rpx') : '0',
-                fontSize: addUnit(currentSizeConfig.messageSize, 'rpx'),
-                lineHeight: addUnit(currentSizeConfig.messageSize, 'rpx')
+                paddingLeft: elLabelPosition === 'left' && label ? addUnit(elLabelWidth) : '0',
+                fontSize: addUnit(currentSizeConfig.messageSize),
+                lineHeight: addUnit(currentSizeConfig.messageSize)
             }"
         >
             {{ validateMessage }}
@@ -134,9 +134,9 @@ const validateMessage = ref('');
 let validationVersion = 0;
 
 const sizeConfig = {
-    small: { fontSize: 24, iconSize: 28, messageSize: 20 },
-    default: { fontSize: 28, iconSize: 32, messageSize: 24 },
-    large: { fontSize: 32, iconSize: 36, messageSize: 28 }
+    small: { fontSize: 12, iconSize: 14, messageSize: 10 },
+    default: { fontSize: 14, iconSize: 16, messageSize: 12 },
+    large: { fontSize: 16, iconSize: 18, messageSize: 14 }
 } as const;
 
 const actualSize = computed(() => {
@@ -148,7 +148,7 @@ const presetSize = computed(() =>
 );
 const currentSizeConfig = computed(() => sizeConfig[presetSize.value]);
 const actualFontSize = computed(() =>
-    addUnit(actualSize.value in sizeConfig ? currentSizeConfig.value.fontSize : actualSize.value, 'rpx')
+    addUnit(actualSize.value in sizeConfig ? currentSizeConfig.value.fontSize : actualSize.value)
 );
 const currentIconSize = computed(() => currentSizeConfig.value.iconSize);
 const errorType = computed(() => form?.errorType.value || ['message']);
@@ -158,7 +158,7 @@ const errorVisible = computed(() => validateState.value === 'error' && showError
 
 const elLabelWidth = computed(() => {
     if (props.labelWidth !== '' && props.labelWidth !== 0) return props.labelWidth;
-    return form?.labelWidth.value || 90;
+    return form?.labelWidth.value || 45;
 });
 const elLabelStyle = computed(() =>
     Object.keys(props.labelStyle).length ? props.labelStyle : form?.labelStyle.value || {}
@@ -172,7 +172,7 @@ const labelWidth = computed(() =>
     elLabelPosition.value === 'left'
         ? (props.label === 'true' || props.label === '') && !slots.label
             ? 'auto'
-            : addUnit(elLabelWidth.value, 'rpx')
+            : addUnit(elLabelWidth.value)
         : '100%'
 );
 
@@ -264,9 +264,9 @@ defineExpose({ validation, resetField, onFormBlur, onFormChange });
     display: flex;
     box-sizing: border-box;
     flex-direction: column;
-    padding: 20rpx 0;
+    padding: 10px 0;
     color: var(--snake-color-text, #303133);
-    font-size: 28rpx;
+    font-size: 14px;
 }
 .snake-form-item--border-bottom {
     border-bottom: 1px solid var(--snake-color-divider, #e4e7ed);
@@ -305,27 +305,27 @@ defineExpose({ validation, resetField, onFormBlur, onFormChange });
 }
 .snake-form-item__left-content {
     position: relative;
-    padding-right: 10rpx;
+    padding-right: 5px;
 }
 .snake-form-item__required {
     position: absolute;
-    left: -16rpx;
-    padding-top: 6rpx;
+    left: -8px;
+    padding-top: 3px;
     color: var(--snake-color-error, #fa3534);
     vertical-align: middle;
 }
 .snake-form-item__left-icon {
     display: flex;
     align-items: center;
-    margin-right: 8rpx;
+    margin-right: 4px;
 }
 .snake-form-item__right-icon {
-    margin-left: 10rpx;
+    margin-left: 5px;
     color: var(--snake-color-text-light, #c0c4cc);
-    font-size: 30rpx;
+    font-size: 15px;
 }
 .snake-form-item__message {
-    margin-top: 12rpx;
+    margin-top: 6px;
     color: var(--snake-color-error, #fa3534);
 }
 </style>

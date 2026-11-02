@@ -1,19 +1,19 @@
 <template>
     <view class="pictureads" :style="{ backgroundColor: datas.backgroundColor }">
-        <view v-if="!imageList.length" :style="{ height: $snake.addUnit(datas.height * 2, 'rpx') }" class="upload">
+        <view v-if="!imageList.length" :style="{ height: $snake.from375(datas.height) }" class="upload">
             暂无图片
         </view>
         <!-- 一行一个 -->
         <view
             v-if="imageList.length && datas.swiperType === 0"
             class="swiperType0"
-            :style="{ padding: `0 ${datas.pageMargin}rpx` }"
+            :style="{ padding: `0 ${$snake.from750(datas.pageMargin)}` }"
         >
             <view
                 v-for="(item, index) in imageList"
                 :key="index"
                 class="imgLis"
-                :style="{ 'margin-bottom': datas.imageMargin + 'rpx', height: $snake.addUnit(datas.height * 2, 'rpx') }"
+                :style="{ 'margin-bottom': $snake.from750(datas.imageMargin), height: $snake.from375(datas.height) }"
                 @click="uni.$snake.navTo(item.url)"
             >
                 <!-- 图片 -->
@@ -21,7 +21,7 @@
                     class="image"
                     show-menu-by-longpress
                     :src="item.src"
-                    :style="{ borderRadius: datas.borderRadius + 'rpx' }"
+                    :style="{ borderRadius: $snake.from750(datas.borderRadius) }"
                 />
                 <!-- 标题 -->
                 <text v-if="item.text" class="title">{{ item.text }}</text>
@@ -30,16 +30,16 @@
         <!-- 轮播组件 -->
         <view
             v-if="imageList.length && (datas.swiperType === 1 || datas.swiperType === 2)"
-            :style="{ padding: `0 ${datas.pageMargin}rpx` }"
+            :style="{ padding: `0 ${$snake.from750(datas.pageMargin)}` }"
         >
             <snake-swiper
                 :list="imageList"
                 :previous-margin="swiperMargin"
                 :next-margin="swiperMargin"
                 circular
-                :height="datas.height * 2"
+                :height="$snake.from375(datas.height)"
                 :autoplay="imageList.length > 0"
-                :radius="datas.borderRadius"
+                :radius="$snake.from750(datas.borderRadius)"
                 name="src"
                 :show-title="true"
                 :loading="loading"
@@ -115,10 +115,10 @@ export default {
         swiperMargin() {
             let margin = '';
             // #ifdef MP-ALIPAY
-            margin = this.datas.swiperType === 2 ? '30rpx' : '';
+            margin = this.datas.swiperType === 2 ? '15px' : '';
             // #endif
             // #ifndef MP-ALIPAY
-            margin = this.datas.swiperType === 2 ? '60rpx' : '';
+            margin = this.datas.swiperType === 2 ? '30px' : '';
             // #endif
             return margin;
         }
@@ -167,7 +167,7 @@ export default {
         /* 图片列表 */
         .imgLis {
             position: relative;
-            // width: 750rpx;
+            // width: 375px;
             width: 100%;
             overflow: hidden;
 
@@ -182,8 +182,8 @@ export default {
                 bottom: 0;
                 left: 0;
                 width: 100%;
-                height: 72rpx;
-                line-height: 72rpx;
+                height: 36px;
+                line-height: 36px;
                 color: #fff;
                 text-align: center;
                 background-color: rgba(51, 51, 51, 0.8);
@@ -235,7 +235,7 @@ export default {
             align-items: center;
             -webkit-justify-content: center;
             justify-content: center;
-            height: 460rpx !important;
+            height: 230px !important;
             overflow: hidden;
             font-size: 18px;
             text-align: center;
@@ -249,7 +249,7 @@ export default {
         }
 
         .swiper-slide-active {
-            height: 400rpx !important;
+            height: 200px !important;
         }
     }
 }
@@ -265,8 +265,8 @@ export default {
     justify-content: center;
 
     .dot-item {
-        width: 30rpx;
-        height: 4rpx;
+        width: 15px;
+        height: 2px;
         margin: 0;
         background-color: rgba(0, 0, 0, 0.4);
     }
@@ -274,7 +274,7 @@ export default {
 
 // 页码 样式二
 .pagination {
-    font-size: 28rpx;
+    font-size: 14px;
 }
 
 // 样式三

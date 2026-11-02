@@ -37,25 +37,29 @@ export function v2CouponLegacyData(data: V2Record): V2Record {
     };
 }
 
-export function rpx(value: unknown, fallback = 0): string {
+/**
+ * v2 尺寸数字按 375 设计稿 px 语义直出（0.0.6 起 v2 契约为原生 px，
+ * 编辑器 v2 schema 与本端口径一致）。
+ */
+export function px(value: unknown, fallback = 0): string {
     const number = Number(value);
-    return `${Number.isFinite(number) ? number : fallback}rpx`;
+    return `${Number.isFinite(number) ? number : fallback}px`;
 }
 
 export function blockStyle(style: V2Record = {}): CSSProperties {
     return {
         boxSizing: 'border-box',
-        height: style.heightMode === 'fixed' ? rpx(style.height) : undefined,
-        marginLeft: rpx(style.pageMargin),
-        marginRight: rpx(style.pageMargin),
-        borderRadius: rpx(style.imageRadius ?? style.radius),
+        height: style.heightMode === 'fixed' ? px(style.height) : undefined,
+        marginLeft: px(style.pageMargin),
+        marginRight: px(style.pageMargin),
+        borderRadius: px(style.imageRadius ?? style.radius),
         backgroundColor: style.backgroundColor || undefined,
         overflow: 'hidden'
     };
 }
 
-export function mediaHeightStyle(style: V2Record = {}, fallback = 360): CSSProperties {
-    return { height: style.heightMode === 'fixed' ? rpx(style.height, 200) : rpx(fallback) };
+export function mediaHeightStyle(style: V2Record = {}, fallback = 180): CSSProperties {
+    return { height: style.heightMode === 'fixed' ? px(style.height, 100) : px(fallback) };
 }
 
 export async function openV2Link(

@@ -14,8 +14,8 @@ export const lineProgressProps = {
     percent: { type: [Number, String] as PropType<number | string>, default: 0 },
     /** 是否在进度条内部显示百分比的值。 */
     showPercent: { type: Boolean, default: true },
-    /** 进度条的高度，数值按 rpx 处理。 */
-    height: { type: [Number, String] as PropType<number | string>, default: 28 },
+    /** 进度条的高度，数值按 px（375 稿）处理。 */
+    height: { type: [Number, String] as PropType<number | string>, default: 14 },
     /** 是否显示激活部分的条纹。 */
     striped: { type: Boolean, default: false },
     /** 条纹是否具有动态效果。 */

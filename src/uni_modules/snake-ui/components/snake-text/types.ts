@@ -44,8 +44,8 @@ export const textProps = {
     lines: { type: [String, Number] as PropType<string | number>, default: '' },
     /** 文本颜色。 */
     color: { type: String, default: 'var(--snake-color-text, #303133)' },
-    /** 字体大小。 */
-    size: { type: [String, Number] as PropType<string | number>, default: 28 },
+    /** 字体大小，数值按 px（375 稿）处理。 */
+    size: { type: [String, Number] as PropType<string | number>, default: 14 },
     /** 图标样式。 */
     iconStyle: { type: [Object, Array, String] as PropType<StyleValue>, default: () => ({ fontSize: '15px' }) },
     /** 文字样式。 */

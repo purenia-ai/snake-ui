@@ -15,7 +15,7 @@ test('feedback components expose complete states and interactions', async () => 
     for (const name of ['iconType', 'isDot', 'height', 'loadmore']) assert.match(loadmore, new RegExp(name));
     assert.equal((loadmoreSource.match(/<SnakeLine/g) || []).length, 2);
     assert.match(loadmoreSource, /<Loading[\s\S]*size="34"/);
-    assert.match(loadmoreSource, /height: props\.height === 'auto' \? 'auto' : addUnit\(props\.height, 'rpx'\)/);
+    assert.match(loadmoreSource, /height: props\.height === 'auto' \? 'auto' : addUnit\(props\.height\)/);
     for (const name of ['autoplay', 'moreIcon', 'closeIcon', 'playState', 'isCircular']) assert.match(notice, new RegExp(`${name}\\?`));
 });
 
@@ -37,7 +37,7 @@ test('notice bar keeps uView playback semantics with Snake visibility controls',
     assert.match(source, /const hasMarqueeDimensions = computed\(\(\) => marqueeWidth\.value > 0 && contentWidth\.value > 0\)/);
     assert.match(source, /query\.select\('\.snake-notice-bar__marquee-measure'\)\.boundingClientRect\(\)/);
     assert.match(source, /contentWidth\.value = Number\(measureText\?\.width\) \|\| Number\(content\?\.width\) \|\| 0/);
-    assert.match(source, /volumeSize: 34/);
+    assert.match(source, /volumeSize: 17/);
     assert.match(source, /paddingLeft: !props\.isCircular && canScroll\.value \? `\$\{marqueeWidth\.value\}px` : undefined/);
     assert.match(source, /'is-playing': playing && \(isCircular \? hasMarqueeDimensions : canScroll\)/);
     assert.match(source, /transform: translateX\(var\(--snake-notice-marquee-width\)\)/);
@@ -55,12 +55,12 @@ test('tabs and swiper expose navigation and indicator contracts', async () => {
     for (const name of ['barWidth', 'barHeight', 'gutter', 'isDot', 'showBar', 'itemWidth']) assert.match(tabs, new RegExp(`${name}\\?`));
     assert.match(tabs, /hidden\?/);
     assert.doesNotMatch(tabs, /disabled\?/);
-    assert.match(tabsSource, /height:\s*80,[\s\S]*fontSize:\s*30/);
-    assert.match(tabsSource, /barWidth:\s*40,[\s\S]*barHeight:\s*6,[\s\S]*gutter:\s*30/);
+    assert.match(tabsSource, /height:\s*40,[\s\S]*fontSize:\s*15/);
+    assert.match(tabsSource, /barWidth:\s*20,[\s\S]*barHeight:\s*3,[\s\S]*gutter:\s*15/);
     assert.match(tabsSource, /createSelectorQuery\(\)\.in\(instance\?\.proxy/);
     assert.match(tabsSource, /const scrollLeft = ref\(0\)/);
     assert.match(tabsSource, /offsetLeft - \(componentWidth\.value - tabWidth\) \/ 2/);
-    assert.match(tabsSource, /left - uni\.upx2px\(Number\(props\.barWidth\)\) \/ 2/);
+    assert.match(tabsSource, /left - Number\(props\.barWidth\) \/ 2/);
     assert.match(tabsSource, /defineExpose\(\{ init, clickTab, scrollByIndex \}\)/);
     assert.doesNotMatch(tabsSource, /scroll-into-view/);
     assert.match(tabsSource, /'snake-tabs__scroll-flex': !isScroll/);
@@ -192,8 +192,8 @@ test('auction actions and active activity retain the legacy blue accent', async 
         read('components/snake-goods-list/snake-goods-list.vue')
     ]);
     assert.match(goods, /style\.backgroundColor = '#2d57e7'/);
-    assert.match(goods, /\.auction__btn[\s\S]*color: #2d57e7;[\s\S]*border: 2rpx solid #2d57e7;/);
-    assert.match(activities, /activity-list__item--active[\s\S]*border: 4rpx solid #2d57e7;/);
+    assert.match(goods, /\.auction__btn[\s\S]*color: #2d57e7;[\s\S]*border: 1px solid #2d57e7;/);
+    assert.match(activities, /activity-list__item--active[\s\S]*border: 2px solid #2d57e7;/);
 });
 
 test('commerce filter panel gives percentage-height content a definite containing height', async () => {
@@ -222,7 +222,7 @@ test('CMS sticky keeps legacy enable semantics and explicit navigation offset', 
     assert.match(cms, /:disabled="resolveStickyDisabled\(item\.setStyle\.stickyDisabled\)"/);
     assert.match(cms, /function resolveStickyDisabled/);
     assert.match(cms, /:custom-nav-height="stickyCustomNavHeight"/);
-    assert.match(sticky, /uni\.upx2px\(number\)/);
+    assert.match(sticky, /offsetTopPx[\s\S]*?return number;/);
     assert.match(sticky, /unitNumber\(props\.customNavHeight\)/);
 });
 

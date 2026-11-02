@@ -47,12 +47,12 @@ const props = withDefaults(defineProps<SkeletonProps>(), {
     animated: true,
     title: true,
     titleWidth: '40%',
-    titleHeight: 18,
+    titleHeight: 9,
     rows: 3,
     rowsWidth: '100%',
-    rowsHeight: 16,
+    rowsHeight: 8,
     avatar: false,
-    avatarSize: 32,
+    avatarSize: 16,
     avatarShape: 'circle',
     customStyle: ''
 });
@@ -70,7 +70,7 @@ const rowItems = computed(() => {
     const count = Math.max(0, Math.floor(Number(props.rows) || 0));
     return Array.from({ length: count }, (_, index) => ({
         width: resolveRowValue(props.rowsWidth, index, count, '100%', true),
-        height: resolveRowValue(props.rowsHeight, index, count, 16, false),
+        height: resolveRowValue(props.rowsHeight, index, count, 8, false),
         marginTop: props.title || index > 0 ? (index === 0 ? '20px' : '12px') : '0px'
     }));
 });

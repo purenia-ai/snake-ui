@@ -19,7 +19,7 @@ test('skeleton rows shorten the final width and keep a safe height fallback', as
     const source = await readFile(new URL('snake-skeleton/snake-skeleton.vue', root), 'utf8');
 
     assert.match(source, /resolveRowValue\(props\.rowsWidth, index, count, '100%', true\)/);
-    assert.match(source, /resolveRowValue\(props\.rowsHeight, index, count, 16, false\)/);
+    assert.match(source, /resolveRowValue\(props\.rowsHeight, index, count, 8, false\)/);
     assert.match(source, /index === count - 1 \? '70%' : fallback/);
 });
 

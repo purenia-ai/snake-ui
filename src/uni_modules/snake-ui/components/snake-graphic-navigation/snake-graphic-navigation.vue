@@ -7,13 +7,13 @@
                     class="navigationList__item"
                     v-for="(item, index) in imageList"
                     :key="index"
-                    :style="{ padding: ` 0 ${datas.imgMargin}rpx`, width: 100 / imageList.length + '%' }"
+                    :style="{ padding: ` 0 ${from750(datas.imgMargin)}`, width: 100 / imageList.length + '%' }"
                     @click="handleClick(item, index)"
                 >
                     <image
                         class="image-warp"
                         :src="item.src"
-                        :style="{ borderRadius: pxToRpx(datas.borderRadius) }"
+                        :style="{ borderRadius: addUnit(datas.borderRadius, 'px') }"
                         mode="widthFix"
                         v-if="datas.navigationType === 0"
                     ></image>
@@ -62,7 +62,7 @@
  * @description 使用图片与文字组成入口导航，并根据小程序审核状态过滤特定入口。
  */
 
-import { pxToRpx } from '../../libs/function/unit';
+import { addUnit, from750 } from '../../libs/function/unit';
 
 export default {
     name: 'snake-graphic-navigation',
@@ -73,7 +73,8 @@ export default {
         return {};
     },
     methods: {
-        pxToRpx,
+        addUnit,
+        from750,
         handleClick(item, index) {
             this.$emit('click', { item, index });
             if (item.url) uni.$snake.navTo(item.url);
@@ -87,7 +88,7 @@ export default {
         textStyle() {
             const style = {};
             style.color = this.datas.textColor;
-            style.fontSize = pxToRpx(this.datas.textSize);
+            style.fontSize = addUnit(this.datas.textSize, 'px');
             style.lineHeight = `${this.datas.textHeight}px`;
             return style;
         },

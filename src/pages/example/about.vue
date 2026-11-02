@@ -96,43 +96,43 @@ function openExternal(url: string) {
 .brand-card,
 .section,
 .about-stats {
-    margin: 4rpx 8rpx 24rpx;
-    padding: 28rpx;
+    margin: 2px 4px 12px;
+    padding: 14px;
     border: 1px solid var(--snake-color-divider);
-    border-radius: 16rpx;
+    border-radius: 8px;
     background: var(--snake-color-surface);
 }
 .about-stats {
     display: flex;
     justify-content: space-between;
-    padding: 24rpx 12rpx;
+    padding: 12px 6px;
     text-align: center;
 }
 .about-stats > view {
     display: flex;
     flex: 1;
     flex-direction: column;
-    gap: 6rpx;
+    gap: 3px;
 }
 .about-stats__value {
     color: var(--snake-color-primary-deep);
-    font-size: 34rpx;
+    font-size: 17px;
     font-weight: 750;
 }
 .about-stats__label {
     color: var(--snake-color-text-muted);
-    font-size: 22rpx;
+    font-size: 11px;
 }
 
 .brand-card {
     display: flex;
     align-items: center;
-    gap: 24rpx;
+    gap: 12px;
 }
 
 .brand-card__logo {
-    width: 104rpx;
-    height: 104rpx;
+    width: 52px;
+    height: 52px;
     flex: none;
 }
 
@@ -143,36 +143,36 @@ function openExternal(url: string) {
     display: block;
 }
 .link-button {
-    margin-top: 14rpx;
+    margin-top: 7px;
 }
 
 .brand-card__name {
     color: var(--snake-color-text);
-    font-size: 38rpx;
+    font-size: 19px;
     font-weight: 720;
 }
 
 .brand-card__version,
 .docs-url {
-    margin-top: 8rpx;
+    margin-top: 4px;
     color: var(--snake-color-text-muted);
-    font-size: 24rpx;
+    font-size: 12px;
 }
 
 .section__title {
-    margin-bottom: 20rpx;
+    margin-bottom: 10px;
     color: var(--snake-color-text);
-    font-size: 30rpx;
+    font-size: 15px;
     font-weight: 650;
 }
 
 .capability {
     display: flex;
-    margin: 16rpx 0;
+    margin: 8px 0;
     align-items: center;
-    gap: 14rpx;
+    gap: 7px;
     color: var(--snake-color-text-secondary);
-    font-size: 26rpx;
+    font-size: 13px;
 }
 
 .capability snake-icon {
@@ -180,7 +180,7 @@ function openExternal(url: string) {
 }
 
 .docs-url {
-    margin-bottom: 22rpx;
+    margin-bottom: 11px;
     overflow-wrap: anywhere;
 }
 </style>

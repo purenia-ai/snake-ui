@@ -45,11 +45,11 @@
                                     :offset="10"
                                     custom-class="filter-page__tooltip-wrap"
                                     custom-style="--snake-tooltip-background: #eafff5"
-                                    content-style="width: calc(100vw - 238rpx); padding: 14rpx"
+                                    content-style="width: calc(100vw - 119px); padding: 7px"
                                 >
                                     <snake-icon
                                         name="question-circle"
-                                        size="26rpx"
+                                        size="13px"
                                         custom-class="filter-page__tooltip-icon"
                                     ></snake-icon>
                                     <template #content>
@@ -111,7 +111,7 @@
                                 <snake-index-anchor
                                     :index="indexList[index]"
                                     :text="indexList[index]"
-                                    :customStyle="{ height: '44rpx', padding: '0 10px' }"
+                                    :customStyle="{ height: '22px', padding: '0 10px' }"
                                 ></snake-index-anchor>
 
                                 <template v-for="(cell, cellIndex) in item" :key="cellIndex">
@@ -129,7 +129,7 @@
                                         <snake-icon
                                             v-if="filterParams.brandFilter.includes(cell)"
                                             name="checkmark"
-                                            size="28rpx"
+                                            size="14px"
                                             color="var(--snake-color-primary, #06d290)"
                                             custom-class="filter-page__brand-check"
                                         ></snake-icon>
@@ -150,13 +150,13 @@
                 <snake-icon
                     v-if="isDefaultSave"
                     name="checkbox-mark"
-                    size="28rpx"
+                    size="14px"
                     color="var(--snake-color-primary, #06d290)"
                 ></snake-icon>
                 <snake-icon
                     v-else
                     name="circle"
-                    size="28rpx"
+                    size="14px"
                     color="var(--snake-color-text-muted, #acacb7)"
                 ></snake-icon>
                 <text class="filter-page__save-text">保存为默认筛选</text>
@@ -167,14 +167,14 @@
                     type="primary"
                     color="var(--snake-color-primary, #06D290)"
                     plain
-                    customStyle="width: 168rpx; height: 76rpx;"
+                    customStyle="width: 84px; height: 38px;"
                     @click="resetFilter"
                 >
                     重置
                 </snake-button>
                 <snake-button
                     type="primary"
-                    customStyle="width: 228rpx; height: 76rpx; margin-left: 20rpx;"
+                    customStyle="width: 114px; height: 38px; margin-left: 10px;"
                     @click="confirmFilter"
                 >
                     确定
@@ -486,26 +486,26 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 40rpx;
-    margin-top: 10rpx;
-    padding-left: 10rpx;
+    height: 20px;
+    margin-top: 5px;
+    padding-left: 5px;
     background-color: var(--snake-color-surface, #fff);
 }
 
 .filter-page__brand-name {
-    font-size: 24rpx;
+    font-size: 12px;
 }
 
 .filter-page__brand-check {
-    padding-right: 96rpx;
+    padding-right: 48px;
 }
 
 .filter-page__spacer-sm {
-    height: 20rpx;
+    height: 10px;
 }
 
 .filter-page__spacer-lg {
-    height: 120rpx;
+    height: 60px;
 }
 
 /* 底部保存区 */
@@ -515,22 +515,22 @@ export default {
 }
 
 .filter-page__save-text {
-    margin-left: 10rpx;
-    font-size: 24rpx;
+    margin-left: 5px;
+    font-size: 12px;
 }
 
 /* 工具提示 */
 .filter-page__tooltip-icon {
-    margin-left: 10rpx;
+    margin-left: 5px;
 }
 
 /* 保持旧筛选提示框的水平位置，避免固定宽度从图标处向右溢出屏幕。 */
 ::v-deep .filter-page__tooltip-wrap .snake-tooltip__panel--bottom-start {
-    transform: translateX(-100rpx);
+    transform: translateX(-50px);
 }
 
 ::v-deep .filter-page__tooltip-wrap .snake-tooltip__panel--bottom-start .snake-tooltip__arrow {
-    left: 112rpx;
+    left: 56px;
 }
 
 .filter-page__ellipsis {
@@ -565,11 +565,11 @@ export default {
     flex-direction: row;
     height: 100%;
     min-height: 0;
-    font-size: 28rpx;
+    font-size: 14px;
 
     .left {
         box-sizing: border-box;
-        width: 188rpx;
+        width: 94px;
         line-height: normal;
         background: var(--snake-color-background, #f6f6f6);
 
@@ -577,9 +577,9 @@ export default {
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 80rpx;
+            height: 40px;
             font-family: PingFangSC-Regular;
-            font-size: 26rpx;
+            font-size: 13px;
             font-weight: 400;
             color: var(--snake-color-text-secondary, #909399);
 
@@ -597,15 +597,15 @@ export default {
         height: 100%;
         min-height: 0;
         width: 0;
-        padding-left: 20rpx;
+        padding-left: 10px;
         background-color: var(--snake-color-surface, #fff);
 
         .title {
             display: flex;
             align-items: center;
-            padding: 20rpx 0;
+            padding: 10px 0;
             font-family: PingFangSC-Medium;
-            font-size: 26rpx;
+            font-size: 13px;
             font-weight: 500;
             line-height: normal;
             color: var(--snake-color-text, #26273a);
@@ -621,18 +621,18 @@ export default {
 
             .tabs-item {
                 box-sizing: border-box;
-                width: 166rpx;
-                height: 60rpx;
-                margin-right: 10rpx;
-                margin-bottom: 10rpx;
+                width: 83px;
+                height: 30px;
+                margin-right: 5px;
+                margin-bottom: 5px;
                 font-family: PingFangSC-Regular;
-                font-size: 24rpx;
+                font-size: 12px;
                 font-weight: 400;
-                line-height: 60rpx;
+                line-height: 30px;
                 text-align: center;
                 background: var(--snake-color-surface-muted, #f6f6f6);
                 border: 1px solid var(--snake-color-border, #f6f6f6);
-                border-radius: 2rpx;
+                border-radius: 1px;
             }
 
             .tabs-item--active {
@@ -659,8 +659,8 @@ export default {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    height: 116rpx;
-    padding: 0 22rpx;
+    height: 58px;
+    padding: 0 11px;
     background: var(--snake-color-surface, #fff);
     box-shadow: 0 -4px 12px 0 var(--snake-color-shadow, #00000008);
 
@@ -673,22 +673,22 @@ export default {
 .price-input-box {
     display: flex;
     align-items: center;
-    margin-bottom: 20rpx;
+    margin-bottom: 10px;
 
     .price-input-item {
         box-sizing: border-box;
-        width: 229rpx;
-        height: 60rpx;
-        font-size: 26rpx;
+        width: 114.5px;
+        height: 30px;
+        font-size: 13px;
         color: var(--snake-color-text-muted, #acacb7);
         text-align: center;
         background-color: var(--snake-color-surface-muted, #f6f6f6);
-        border-radius: 2rpx;
+        border-radius: 1px;
     }
     .line {
-        width: 24rpx;
-        height: 4rpx;
-        margin: 0 20rpx;
+        width: 12px;
+        height: 2px;
+        margin: 0 10px;
         background-color: #000;
     }
 }

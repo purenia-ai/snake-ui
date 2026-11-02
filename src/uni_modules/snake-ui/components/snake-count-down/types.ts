@@ -13,17 +13,17 @@ export const countDownProps = {
     autoplay: { type: Boolean, default: true },
     /** 分隔符形态，colon 为英文冒号，zh 为中文单位。 */
     separator: { type: String as PropType<'colon' | 'zh'>, default: 'colon' },
-    /** 分隔符大小，单位 rpx。 */
-    separatorSize: { type: [Number, String] as PropType<number | string>, default: 30 },
+    /** 分隔符大小，单位 px（375 稿）。 */
+    separatorSize: { type: [Number, String] as PropType<number | string>, default: 15 },
     /** 分隔符颜色。 */
     separatorColor: { type: String, default: 'var(--snake-color-text, #22292f)' },
     /** 倒计时数字颜色。 */
     color: { type: String, default: 'var(--snake-color-text, #22292f)' },
-    /** 倒计时数字大小，单位 rpx。 */
-    fontSize: { type: [Number, String] as PropType<number | string>, default: 30 },
+    /** 倒计时数字大小，单位 px（375 稿）。 */
+    fontSize: { type: [Number, String] as PropType<number | string>, default: 15 },
     /** 倒计时数字背景颜色。 */
     bgColor: { type: String, default: 'var(--snake-color-surface, #fff)' },
-    /** 数字块高度（宽度同值），单位 rpx。 */
+    /** 数字块高度（宽度同值），单位 px（375 稿）。 */
     height: { type: [Number, String] as PropType<number | string>, default: 'auto' },
     /** 是否显示数字边框。 */
     showBorder: { type: Boolean, default: false },
@@ -56,17 +56,17 @@ export interface CountDownProps {
     autoplay?: boolean;
     /** 分隔符形态，colon 为英文冒号，zh 为中文单位。 */
     separator?: 'colon' | 'zh';
-    /** 分隔符大小，单位 rpx。 */
+    /** 分隔符大小，单位 px（375 稿）。 */
     separatorSize?: number | string;
     /** 分隔符颜色。 */
     separatorColor?: string;
     /** 倒计时数字颜色。 */
     color?: string;
-    /** 倒计时数字大小，单位 rpx。 */
+    /** 倒计时数字大小，单位 px（375 稿）。 */
     fontSize?: number | string;
     /** 倒计时数字背景颜色。 */
     bgColor?: string;
-    /** 数字块高度（宽度同值），单位 rpx。 */
+    /** 数字块高度（宽度同值），单位 px（375 稿）。 */
     height?: number | string;
     /** 是否显示数字边框。 */
     showBorder?: boolean;

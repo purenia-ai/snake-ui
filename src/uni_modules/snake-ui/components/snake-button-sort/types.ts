@@ -7,6 +7,8 @@ export interface ButtonSortProps {
     title?: string;
     /** 标题颜色。 */
     titleColor?: string;
+    /** 标题字号，数值按 px（375 稿）处理。 */
+    fontSize?: import('../../libs/function/unit').UnitValue;
 }
 
 /** ButtonSortChange 事件详情。 */

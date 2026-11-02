@@ -60,9 +60,9 @@ export interface ModalPayload {
     confirmColor?: string;
     /** 取消文字颜色。 */
     cancelColor?: string;
-    /** 弹窗圆角值，单位 rpx。 */
+    /** 弹窗圆角值，单位 px（375 稿）。 */
     borderRadius?: number | string;
-    /** 弹窗宽度，单位 rpx。 */
+    /** 弹窗宽度，单位 px（375 稿）。 */
     width?: number | string;
     /** 层级 z-index。 */
     zIndex?: number | string;

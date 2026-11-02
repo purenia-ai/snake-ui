@@ -102,17 +102,17 @@ const rules = {
 
 ### Form Props
 
-| 参数            | 说明                     | 类型                        | 默认值                 |
-| --------------- | ------------------------ | --------------------------- | ---------------------- |
-| `model`         | 表单数据对象             | `object`                    | `{}`                   |
-| `rules`         | 校验规则                 | `FormRules`                 | `{}`                   |
-| `errorType`     | 错误提示方式             | `FormErrorType[]`           | `['message', 'toast']` |
-| `borderBottom`  | 表单项默认显示底边       | `boolean`                   | `true`                 |
-| `labelPosition` | 标签位置                 | `left \| top`               | `left`                 |
-| `labelWidth`    | 标签宽度，数字单位为 rpx | `string \| number`          | `90`                   |
-| `labelAlign`    | 标签对齐                 | `left \| center \| right`   | `left`                 |
-| `labelStyle`    | 标签样式                 | `object`                    | `{}`                   |
-| `size`          | 表单尺寸                 | `small \| default \| large` | `default`              |
+| 参数            | 说明                              | 类型                        | 默认值                 |
+| --------------- | --------------------------------- | --------------------------- | ---------------------- |
+| `model`         | 表单数据对象                      | `object`                    | `{}`                   |
+| `rules`         | 校验规则                          | `FormRules`                 | `{}`                   |
+| `errorType`     | 错误提示方式                      | `FormErrorType[]`           | `['message', 'toast']` |
+| `borderBottom`  | 表单项默认显示底边                | `boolean`                   | `true`                 |
+| `labelPosition` | 标签位置                          | `left \| top`               | `left`                 |
+| `labelWidth`    | 标签宽度，数字单位为 px（375 稿） | `string \| number`          | `45`                   |
+| `labelAlign`    | 标签对齐                          | `left \| center \| right`   | `left`                 |
+| `labelStyle`    | 标签样式                          | `object`                    | `{}`                   |
+| `size`          | 表单尺寸                          | `small \| default \| large` | `default`              |
 
 ### Form Expose
 

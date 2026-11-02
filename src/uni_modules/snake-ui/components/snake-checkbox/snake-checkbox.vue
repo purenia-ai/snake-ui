@@ -57,9 +57,9 @@ const isChecked = computed(() => {
 
 // 根据 size 定义不同的配置
 const sizeConfig = {
-    small: { size: 28, fontSize: 24, iconSize: 16 },
-    default: { size: 34, fontSize: 28, iconSize: 20 },
-    large: { size: 40, fontSize: 32, iconSize: 24 }
+    small: { size: 14, fontSize: 12, iconSize: 8 },
+    default: { size: 17, fontSize: 14, iconSize: 10 },
+    large: { size: 20, fontSize: 16, iconSize: 12 }
 };
 
 // 获取实际使用的 size 值（优先级：props.size > snake-checkbox-group.size > snake-form.size）
@@ -91,10 +91,10 @@ const isLabelDisabled = computed(() => {
     return props.labelDisabled !== '' ? props.labelDisabled : (checkboxGroup.value?.props.labelDisabled ?? false);
 });
 
-// 组件尺寸，对应 size 的值，默认值为 34rpx
+// 组件尺寸，对应 size 的值，默认值为 17px
 const checkboxSize = computed(() => currentSizeConfig.value.size);
 
-// 组件的勾选图标的尺寸，默认 20rpx
+// 组件的勾选图标的尺寸，默认 10px
 const checkboxIconSize = computed(() => {
     if (props.iconSize) return props.iconSize;
     if (checkboxGroup.value?.props.iconSize) return checkboxGroup.value.props.iconSize;
@@ -102,10 +102,10 @@ const checkboxIconSize = computed(() => {
     return 20;
 });
 
-// label 字体大小，默认 28rpx
+// label 字体大小，默认 14px
 const labelFontSize = computed(() => {
-    if (isInSizeConfig.value) return addUnit(currentSizeConfig.value.fontSize, 'rpx');
-    return props.labelSize ? addUnit(props.labelSize, 'rpx') : '';
+    if (isInSizeConfig.value) return addUnit(currentSizeConfig.value.fontSize);
+    return props.labelSize ? addUnit(props.labelSize) : '';
 });
 
 // 组件选中激活时的颜色
@@ -127,8 +127,8 @@ const iconStyle = computed(() => {
         style.borderColor = elActiveColor.value;
         style.backgroundColor = elActiveColor.value;
     }
-    style.width = addUnit(checkboxSize.value, 'rpx');
-    style.height = addUnit(checkboxSize.value, 'rpx');
+    style.width = addUnit(checkboxSize.value);
+    style.height = addUnit(checkboxSize.value);
     return style;
 });
 
@@ -223,8 +223,8 @@ defineExpose({
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    width: 42rpx;
-    height: 42rpx;
+    width: 21px;
+    height: 21px;
     color: transparent;
     text-align: center;
     transition-property: color, border-color, background-color;
@@ -240,7 +240,7 @@ defineExpose({
     border-radius: 100%;
 }
 .snake-checkbox__icon-wrap--square {
-    border-radius: 6rpx;
+    border-radius: 3px;
 }
 .snake-checkbox__icon-wrap--checked {
     color: #fff;
@@ -256,9 +256,9 @@ defineExpose({
 }
 .snake-checkbox__label {
     word-wrap: break-word;
-    margin-left: 10rpx;
-    margin-right: 24rpx;
+    margin-left: 5px;
+    margin-right: 12px;
     color: var(--snake-color-text, #303133);
-    font-size: 30rpx;
+    font-size: 15px;
 }
 </style>

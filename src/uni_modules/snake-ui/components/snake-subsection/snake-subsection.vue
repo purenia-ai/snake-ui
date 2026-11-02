@@ -45,8 +45,8 @@ const props = withDefaults(defineProps<SubsectionProps>(), {
     mode: 'button',
     activeColor: 'var(--snake-color-primary, #06d290)',
     inactiveColor: 'var(--snake-color-text-secondary, #606266)',
-    fontSize: 28,
-    height: 70,
+    fontSize: 14,
+    height: 35,
     animation: true,
     bold: true,
     bgColor: 'var(--snake-color-surface-muted, #f4f6f5)',
@@ -64,8 +64,8 @@ const activeIndex = computed(() => {
 
 const rootStyle = computed(() => [
     {
-        height: addUnit(props.height, 'rpx'),
-        padding: props.mode === 'button' ? '6rpx' : '0',
+        height: addUnit(props.height),
+        padding: props.mode === 'button' ? '3px' : '0',
         borderColor: props.mode === 'subsection' ? props.activeColor : 'transparent',
         backgroundColor: props.mode === 'button' ? props.bgColor : 'transparent'
     },
@@ -75,21 +75,21 @@ const rootStyle = computed(() => [
 const sliderStyle = computed(() => {
     const count = Math.max(props.list.length, 1);
     return {
-        left: props.mode === 'button' ? '6rpx' : '0',
-        width: props.mode === 'button' ? `calc((100% - 12rpx) / ${count})` : `${100 / count}%`,
-        top: props.mode === 'button' ? '6rpx' : '0',
-        bottom: props.mode === 'button' ? '6rpx' : '0',
+        left: props.mode === 'button' ? '3px' : '0',
+        width: props.mode === 'button' ? `calc((100% - 6px) / ${count})` : `${100 / count}%`,
+        top: props.mode === 'button' ? '3px' : '0',
+        bottom: props.mode === 'button' ? '3px' : '0',
         backgroundColor: props.mode === 'button' ? props.buttonColor : props.activeColor,
-        borderRadius: props.mode === 'button' ? '8rpx' : sliderRadius.value,
+        borderRadius: props.mode === 'button' ? '4px' : sliderRadius.value,
         transform: `translateX(${activeIndex.value * 100}%)`,
         transitionDuration: props.animation ? '0.3s' : '0s'
     };
 });
 
 const sliderRadius = computed(() => {
-    if (props.list.length <= 1) return '8rpx';
-    if (activeIndex.value === 0) return '8rpx 0 0 8rpx';
-    if (activeIndex.value === props.list.length - 1) return '0 8rpx 8rpx 0';
+    if (props.list.length <= 1) return '4px';
+    if (activeIndex.value === 0) return '4px 0 0 4px';
+    if (activeIndex.value === props.list.length - 1) return '0 4px 4px 0';
     return '0';
 });
 
@@ -111,7 +111,7 @@ function itemStyle(option: SubsectionOption, index: number) {
                   ? props.activeColor
                   : props.inactiveColor,
         borderColor: props.mode === 'subsection' ? props.activeColor : 'transparent',
-        fontSize: addUnit(props.fontSize, 'rpx'),
+        fontSize: addUnit(props.fontSize),
         fontWeight: selected && props.bold ? '600' : '400',
         opacity: isDisabled(option) ? 0.45 : 1
     };
@@ -143,8 +143,8 @@ function selectAdjacent(index: number, direction: -1 | 1) {
     width: 100%;
     align-items: stretch;
     overflow: hidden;
-    border: 1rpx solid transparent;
-    border-radius: 10rpx;
+    border: 1px solid transparent;
+    border-radius: 5px;
 }
 
 .snake-subsection__slider {
@@ -163,8 +163,8 @@ function selectAdjacent(index: number, direction: -1 | 1) {
     min-width: 0;
     align-items: center;
     justify-content: center;
-    padding: 0 8rpx;
-    border-right: 1rpx solid transparent;
+    padding: 0 4px;
+    border-right: 1px solid transparent;
     line-height: 1.2;
     text-align: center;
     transition:

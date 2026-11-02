@@ -3,19 +3,24 @@
     <view :style="{ height: height }">
         <view :class="{ 'search-fixed': datas.position === 1 }">
             <!-- 搜索 -->
-            <view class="search" :style="{ background: datas.backgroundColor, padding: `0 ${datas.pageMargin}rpx` }">
+            <view
+                class="search"
+                :style="{ background: datas.backgroundColor, padding: `0 ${$snake.from750(datas.pageMargin)}` }"
+            >
                 <!-- 搜索框 -->
                 <view
                     class="center"
                     :style="{
-                        height: datas.heights + 'rpx',
+                        height: $snake.from750(datas.heights),
                         background: datas.borderBgColor,
-                        borderRadius: datas.borderRadius + 'rpx',
-                        border: datas.showBorder ? `${datas.borderSize}rpx solid ${datas.borderColor}` : 'none'
+                        borderRadius: $snake.from750(datas.borderRadius),
+                        border: datas.showBorder
+                            ? `${$snake.from750(datas.borderSize)} solid ${datas.borderColor}`
+                            : 'none'
                     }"
                 >
                     <view class="search-left">
-                        <snake-icon name="search" size="44rpx" :color="datas.textColor"></snake-icon>
+                        <snake-icon name="search" size="22px" :color="datas.textColor"></snake-icon>
                         <!-- 占位符 -->
                         <view v-if="!datas.textList.length" class="input-search" @click="toPage(datas.url)">
                             <input
@@ -38,23 +43,23 @@
                                 :bgColor="datas.borderBgColor"
                                 :color="datas.textColor"
                                 :duration="3000"
-                                :customStyle="{ padding: '9rpx 12rpx' }"
+                                :customStyle="{ padding: '4.5px 6px' }"
                                 @click="hotordsClick"
                             ></snake-notice-bar>
                         </view>
                     </view>
                     <view
                         class="search-right"
-                        :style="{ paddingRight: datas.rightImage.marginRight + 'rpx' }"
+                        :style="{ paddingRight: $snake.from750(datas.rightImage.marginRight) }"
                         v-if="datas.rightImage.show"
                     >
                         <image
                             class="search-right-image"
                             :src="datas.rightImage.src"
                             :style="{
-                                borderRadius: datas.rightImage.borderRadius + 'rpx',
-                                width: datas.rightImage.width + 'rpx',
-                                height: datas.rightImage.height + 'rpx'
+                                borderRadius: $snake.from750(datas.rightImage.borderRadius),
+                                width: $snake.from750(datas.rightImage.width),
+                                height: $snake.from750(datas.rightImage.height)
                             }"
                         />
                     </view>
@@ -71,7 +76,7 @@
                         <image
                             class="right-image"
                             :src="item.src"
-                            :style="{ width: item.width + 'rpx', height: item.height + 'rpx' }"
+                            :style="{ width: $snake.from750(item.width), height: $snake.from750(item.height) }"
                         />
                     </view>
                 </template>
@@ -176,9 +181,9 @@ export default {
         align-items: center;
         justify-content: space-between;
         width: 100%;
-        padding-left: 20rpx;
+        padding-left: 10px;
         overflow: hidden;
-        font-size: 24rpx;
+        font-size: 12px;
 
         .search-left {
             display: flex;
@@ -187,23 +192,23 @@ export default {
 
             text:nth-child(2) {
                 width: 100%;
-                padding-left: 5rpx;
+                padding-left: 2.5px;
                 overflow: hidden; //超出的文本隐藏
                 text-overflow: ellipsis; //用省略号显示
-                font-size: 24rpx;
+                font-size: 12px;
                 white-space: nowrap; //不换行
             }
 
             .input-search {
                 width: 100%;
-                padding-left: 10rpx;
+                padding-left: 5px;
 
                 .input {
                     width: 100%;
-                    font-size: 24rpx;
+                    font-size: 12px;
                 }
                 .text {
-                    font-size: 26rpx;
+                    font-size: 13px;
                 }
             }
         }

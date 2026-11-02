@@ -51,7 +51,7 @@ const props = withDefaults(defineProps<TooltipProps>(), {
     modelValue: false,
     content: '',
     placement: 'bottom',
-    offset: 8,
+    offset: 4,
     visibleArrow: true,
     disabled: false,
     closeable: false,
@@ -92,7 +92,7 @@ async function updatePosition() {
         getRect('.snake-tooltip__panel', instance)
     ]);
     if (request !== positionRequest || !visible.value || !target.width || !panel.width || !panel.height) return;
-    const arrowSize = typeof uni.upx2px === 'function' ? uni.upx2px(16) : 8;
+    const arrowSize = 8;
     arrowPosition.value = getTooltipArrowPosition(props.placement, target, panel, arrowSize);
 }
 
@@ -177,44 +177,44 @@ defineExpose<TooltipExpose>({ open, close, toggle, updatePosition });
 .snake-tooltip__panel {
     position: absolute;
     box-sizing: border-box;
-    max-width: calc(100vw - 48rpx);
+    max-width: calc(100vw - 24px);
     color: var(--snake-tooltip-color, var(--snake-color-text, #26273a));
     background: var(--snake-tooltip-background, var(--snake-color-surface, #fff));
-    border-radius: var(--snake-tooltip-radius, 8rpx);
-    box-shadow: var(--snake-tooltip-shadow, 0 8rpx 24rpx rgba(0, 0, 0, 0.12));
+    border-radius: var(--snake-tooltip-radius, 4px);
+    box-shadow: var(--snake-tooltip-shadow, 0 4px 12px rgba(0, 0, 0, 0.12));
 }
 
 .snake-tooltip__content {
     box-sizing: border-box;
-    padding: var(--snake-tooltip-padding, 16rpx 20rpx);
-    font-size: var(--snake-tooltip-font-size, 24rpx);
+    padding: var(--snake-tooltip-padding, 8px 10px);
+    font-size: var(--snake-tooltip-font-size, 12px);
     line-height: 1.5;
 }
 
 .snake-tooltip__content--closeable {
-    padding-right: 52rpx;
+    padding-right: 26px;
 }
 
 .snake-tooltip__arrow {
     position: absolute;
-    width: 16rpx;
-    height: 16rpx;
+    width: 8px;
+    height: 8px;
     background: inherit;
     transform: rotate(45deg);
 }
 
 .snake-tooltip__close {
     position: absolute;
-    top: 4rpx;
-    right: 8rpx;
+    top: 2px;
+    right: 4px;
     display: flex;
-    width: 40rpx;
-    height: 40rpx;
+    width: 20px;
+    height: 20px;
     align-items: center;
     justify-content: center;
     margin: 0;
     padding: 0;
-    font-size: 30rpx;
+    font-size: 15px;
     line-height: 1;
     color: inherit;
     background: transparent;
@@ -284,56 +284,56 @@ defineExpose<TooltipExpose>({ open, close, toggle, updatePosition });
 .snake-tooltip__panel--top .snake-tooltip__arrow,
 .snake-tooltip__panel--top-start .snake-tooltip__arrow,
 .snake-tooltip__panel--top-end .snake-tooltip__arrow {
-    bottom: -8rpx;
+    bottom: -4px;
 }
 
 .snake-tooltip__panel--bottom .snake-tooltip__arrow,
 .snake-tooltip__panel--bottom-start .snake-tooltip__arrow,
 .snake-tooltip__panel--bottom-end .snake-tooltip__arrow {
-    top: -8rpx;
+    top: -4px;
 }
 
 .snake-tooltip__panel--left .snake-tooltip__arrow,
 .snake-tooltip__panel--left-start .snake-tooltip__arrow,
 .snake-tooltip__panel--left-end .snake-tooltip__arrow {
-    right: -8rpx;
+    right: -4px;
 }
 
 .snake-tooltip__panel--right .snake-tooltip__arrow,
 .snake-tooltip__panel--right-start .snake-tooltip__arrow,
 .snake-tooltip__panel--right-end .snake-tooltip__arrow {
-    left: -8rpx;
+    left: -4px;
 }
 
 .snake-tooltip__panel--top .snake-tooltip__arrow,
 .snake-tooltip__panel--bottom .snake-tooltip__arrow {
-    left: var(--snake-tooltip-arrow-x, calc(50% - 8rpx));
+    left: var(--snake-tooltip-arrow-x, calc(50% - 4px));
 }
 
 .snake-tooltip__panel--left .snake-tooltip__arrow,
 .snake-tooltip__panel--right .snake-tooltip__arrow {
-    top: var(--snake-tooltip-arrow-y, calc(50% - 8rpx));
+    top: var(--snake-tooltip-arrow-y, calc(50% - 4px));
 }
 
 .snake-tooltip__panel--top-start .snake-tooltip__arrow,
 .snake-tooltip__panel--bottom-start .snake-tooltip__arrow {
-    left: var(--snake-tooltip-arrow-x, 20rpx);
+    left: var(--snake-tooltip-arrow-x, 10px);
 }
 
 .snake-tooltip__panel--top-end .snake-tooltip__arrow,
 .snake-tooltip__panel--bottom-end .snake-tooltip__arrow {
     left: var(--snake-tooltip-arrow-x, auto);
-    right: var(--snake-tooltip-arrow-right, 20rpx);
+    right: var(--snake-tooltip-arrow-right, 10px);
 }
 
 .snake-tooltip__panel--left-start .snake-tooltip__arrow,
 .snake-tooltip__panel--right-start .snake-tooltip__arrow {
-    top: var(--snake-tooltip-arrow-y, 16rpx);
+    top: var(--snake-tooltip-arrow-y, 8px);
 }
 
 .snake-tooltip__panel--left-end .snake-tooltip__arrow,
 .snake-tooltip__panel--right-end .snake-tooltip__arrow {
     top: var(--snake-tooltip-arrow-y, auto);
-    bottom: var(--snake-tooltip-arrow-bottom, 16rpx);
+    bottom: var(--snake-tooltip-arrow-bottom, 8px);
 }
 </style>

@@ -43,7 +43,7 @@ export interface InputProps {
     readonly?: boolean;
     /** disabled color 配置。 */
     disabledColor?: string;
-    /** 文字尺寸，数值按 rpx 处理。 */
+    /** 文字尺寸，数值按 px（375 稿）处理。 */
     fontSize?: UnitValue;
     /** input align 配置。 */
     inputAlign?: 'left' | 'center' | 'right';

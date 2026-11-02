@@ -1,3 +1,4 @@
+import type { UnitValue } from '../../libs/function/unit';
 import type { StyleValue } from '../../types/global';
 
 /** Filter 可选项。 */
@@ -48,6 +49,10 @@ export interface FilterSortsProps<Filters extends FilterSortsData = FilterSortsD
     goodsListLength?: number;
     /** 根节点自定义样式。 */
     customStyle?: StyleValue;
+    /** 工具栏文字字号（快捷排序项、价格排序按钮），数值按 px（375 稿）处理。 */
+    fontSize?: UnitValue;
+    /** 筛选入口字号，透传给 snake-drop-menu 的 title-size，数值按 px（375 稿）处理。 */
+    titleSize?: UnitValue;
 }
 
 /** FilterSorts 组件的事件契约。 */

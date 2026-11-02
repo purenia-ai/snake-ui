@@ -34,13 +34,13 @@ export interface LoadmoreProps {
     isDot?: boolean;
     /** 内容颜色。 */
     color?: string;
-    /** 文字尺寸，数值按 rpx 处理。 */
+    /** 文字尺寸，数值按 px（375 稿）处理。 */
     fontSize?: UnitValue;
     /** 组件顶部外边距。 */
     marginTop?: UnitValue;
     /** 组件底部外边距。 */
     marginBottom?: UnitValue;
-    /** 组件高度；数值按 rpx 处理，默认自适应内容。 */
+    /** 组件高度；数值按 px（375 稿）处理，默认自适应内容。 */
     height?: UnitValue;
     /** 根节点自定义类名。 */
     customClass?: string;

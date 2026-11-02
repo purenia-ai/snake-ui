@@ -103,17 +103,17 @@ defineExpose<NoNetworkExpose>({ retry });
     margin-top: -15%;
 }
 .snake-no-network__tips {
-    padding: 30rpx 0;
-    font-size: 28rpx;
+    padding: 15px 0;
+    font-size: 14px;
     color: var(--snake-color-text-muted, #909399);
 }
 .snake-no-network__icon {
-    width: 300rpx;
+    width: 150px;
 }
 .snake-no-network__retry {
-    margin-top: 30rpx;
-    padding: 6rpx 30rpx;
-    font-size: 28rpx;
+    margin-top: 15px;
+    padding: 3px 15px;
+    font-size: 14px;
     color: var(--snake-color-text-muted, #909399);
     border: 1px solid var(--snake-color-text-muted, #909399);
     border-radius: 3px;

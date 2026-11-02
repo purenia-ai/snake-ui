@@ -52,7 +52,7 @@ test('primary pages share the custom themed tabbar', async () => {
     assert.match(tabbar, /beforeSwitch\(index\)/);
     assert.match(tabbar, /uni\.switchTab\(\{ url: item\.pagePath \}\)/);
     assert.match(tabbar, /style\.flex = `0 0 \$\{width\}`/);
-    assert.match(tabbar, /props\.midButton \? '60rpx' : '1px'/);
+    assert.match(tabbar, /props\.midButton \? '30px' : '1px'/);
     assert.match(shell, /uni\.switchTab/);
     assert.match(tabbar, /safe-area-inset-bottom/);
     assert.match(tabbar, /var\(--snake-color-primary/);

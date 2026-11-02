@@ -40,7 +40,7 @@ const props = withDefaults(defineProps<LoadmoreProps>(), {
     iconColor: 'var(--snake-color-text-light, #c0c4cc)',
     isDot: false,
     color: 'var(--snake-color-text-secondary, #606266)',
-    fontSize: 28,
+    fontSize: 14,
     marginTop: 0,
     marginBottom: 0,
     height: 'auto',
@@ -61,10 +61,10 @@ const rootStyle = computed(() => [
     {
         backgroundColor: props.bgColor,
         color: props.color,
-        fontSize: addUnit(props.fontSize, 'rpx'),
-        marginTop: addUnit(props.marginTop, 'rpx'),
-        marginBottom: addUnit(props.marginBottom, 'rpx'),
-        height: props.height === 'auto' ? 'auto' : addUnit(props.height, 'rpx')
+        fontSize: addUnit(props.fontSize),
+        marginTop: addUnit(props.marginTop),
+        marginBottom: addUnit(props.marginBottom),
+        height: props.height === 'auto' ? 'auto' : addUnit(props.height)
     },
     props.customStyle
 ]);
@@ -79,9 +79,9 @@ function click() {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 80rpx;
-    gap: 12rpx;
-    padding: 12rpx 24rpx;
+    min-height: 40px;
+    gap: 6px;
+    padding: 6px 12px;
     line-height: 1.5;
 }
 .snake-loadmore__line {
@@ -93,8 +93,8 @@ function click() {
     flex: 0 0 auto;
     align-items: center;
     justify-content: center;
-    gap: 12rpx;
-    padding: 0 12rpx;
+    gap: 6px;
+    padding: 0 6px;
 }
 .snake-loadmore__text {
     color: inherit;

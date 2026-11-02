@@ -25,7 +25,7 @@
                     transform: translate(-50%, -50%);
                 "
             >
-                <snake-icon name="play-right-fill" size="70rpx" color="#fff"></snake-icon>
+                <snake-icon name="play-right-fill" size="35px" color="#fff"></snake-icon>
             </view>
         </view>
         <view v-else class="snake-videos__empty">{{ datas.emptyText || '暂无视频' }}</view>
@@ -48,7 +48,7 @@
                     @keydown.enter.prevent="close"
                     @keydown.space.prevent="close"
                 >
-                    <snake-icon name="close" color="#909399" size="30rpx" bold></snake-icon>
+                    <snake-icon name="close" color="#909399" size="15px" bold></snake-icon>
                 </view>
                 <video
                     class="videos"
@@ -98,7 +98,7 @@ function close() {
 }
 .snake-videos__empty {
     display: flex;
-    min-height: 240rpx;
+    min-height: 120px;
     align-items: center;
     justify-content: center;
     color: var(--snake-color-text-secondary, #909399);
@@ -116,7 +116,7 @@ function close() {
 
 .snake-videos__close {
     position: absolute;
-    top: 60rpx;
-    right: 50rpx;
+    top: 30px;
+    right: 25px;
 }
 </style>

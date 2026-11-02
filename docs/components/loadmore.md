@@ -31,20 +31,20 @@ preview: /pages/componentsA/loadmore/index
 
 ### Props
 
-| 参数                             | 说明                       | 类型                        | 默认值        |
-| -------------------------------- | -------------------------- | --------------------------- | ------------- |
-| `status`                         | loadmore/loading/nomore    | `string`                    | `loadmore`    |
-| `loadText`                       | 待加载文案或三态文案对象   | `string \| object`          | `加载更多`    |
-| `loadingText`                    | 加载中文案                 | `string`                    | `正在加载...` |
-| `nomoreText`                     | 无更多文案                 | `string`                    | `没有更多了`  |
-| `icon`                           | 加载中是否显示动画         | `boolean`                   | `true`        |
-| `iconType`                       | circle/flower/spinner      | `string`                    | `circle`      |
-| `iconColor`                      | 动画颜色                   | `string`                    | 主题色        |
-| `isDot`                          | 无更多状态是否显示点状分隔 | `boolean`                   | `false`       |
-| `color` / `fontSize` / `bgColor` | 文字颜色、字号和背景       | `string \| number`          | 主题默认值    |
-| `marginTop` / `marginBottom`     | 上下外边距                 | `string \| number`          | `0`           |
-| `height`                         | 组件高度，数值按 rpx 处理  | `string \| number`          | `auto`        |
-| `customClass` / `customStyle`    | 自定义类名和样式           | `string \| object \| array` | `''`          |
+| 参数                             | 说明                              | 类型                        | 默认值        |
+| -------------------------------- | --------------------------------- | --------------------------- | ------------- |
+| `status`                         | loadmore/loading/nomore           | `string`                    | `loadmore`    |
+| `loadText`                       | 待加载文案或三态文案对象          | `string \| object`          | `加载更多`    |
+| `loadingText`                    | 加载中文案                        | `string`                    | `正在加载...` |
+| `nomoreText`                     | 无更多文案                        | `string`                    | `没有更多了`  |
+| `icon`                           | 加载中是否显示动画                | `boolean`                   | `true`        |
+| `iconType`                       | circle/flower/spinner             | `string`                    | `circle`      |
+| `iconColor`                      | 动画颜色                          | `string`                    | 主题色        |
+| `isDot`                          | 无更多状态是否显示点状分隔        | `boolean`                   | `false`       |
+| `color` / `fontSize` / `bgColor` | 文字颜色、字号和背景              | `string \| number`          | 主题默认值    |
+| `marginTop` / `marginBottom`     | 上下外边距                        | `string \| number`          | `0`           |
+| `height`                         | 组件高度，数值按 px（375 稿）处理 | `string \| number`          | `auto`        |
+| `customClass` / `customStyle`    | 自定义类名和样式                  | `string \| object \| array` | `''`          |
 
 ### Events
 

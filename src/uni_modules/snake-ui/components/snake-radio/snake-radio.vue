@@ -63,9 +63,9 @@ const parentData = computed(() => {
 
 // 根据 size 定义不同的配置
 const sizeConfig = {
-    small: { size: 28, fontSize: 24, iconSize: 16 },
-    default: { size: 34, fontSize: 28, iconSize: 20 },
-    large: { size: 40, fontSize: 32, iconSize: 24 }
+    small: { size: 14, fontSize: 12, iconSize: 8 },
+    default: { size: 17, fontSize: 14, iconSize: 10 },
+    large: { size: 20, fontSize: 16, iconSize: 12 }
 };
 
 // 获取实际使用的 size 值（优先级：props.size > snake-radio-group.size > snake-form.size）
@@ -101,7 +101,7 @@ const elLabelDisabled = computed(() =>
           : false
 );
 
-// 组件尺寸，对应 size 的值，默认值为 34rpx
+// 组件尺寸，对应 size 的值，默认值为 17px
 const elSize = computed(() => currentSizeConfig.value.size);
 
 // 组件的勾选图标的尺寸，默认 20
@@ -114,8 +114,8 @@ const elIconSize = computed(() => {
 
 // label 字体大小，默认 28
 const labelFontSize = computed(() => {
-    if (isInSizeConfig.value) return addUnit(currentSizeConfig.value.fontSize, 'rpx');
-    return props.labelSize ? addUnit(props.labelSize, 'rpx') : '';
+    if (isInSizeConfig.value) return addUnit(currentSizeConfig.value.fontSize);
+    return props.labelSize ? addUnit(props.labelSize) : '';
 });
 
 // 组件选中激活时的颜色
@@ -139,8 +139,8 @@ const iconStyle = computed(() => {
         style.borderColor = elActiveColor.value;
         style.backgroundColor = elActiveColor.value;
     }
-    style.width = addUnit(elSize.value, 'rpx');
-    style.height = addUnit(elSize.value, 'rpx');
+    style.width = addUnit(elSize.value);
+    style.height = addUnit(elSize.value);
     return style;
 });
 
@@ -159,14 +159,14 @@ const iconClass = computed(() => {
 const radioStyle = computed(() => {
     const style: Record<string, string> = {};
     if (parentData.value.width) {
-        style.width = addUnit(parentData.value.width, 'rpx');
+        style.width = addUnit(parentData.value.width);
         // #ifdef MP
         // 各家小程序因为它们特殊的编译结构，使用 float 布局
         style.float = 'left';
         // #endif
         // #ifndef MP
         // H5 和 APP 使用 flex 布局
-        style.flex = `0 0 ${addUnit(parentData.value.width, 'rpx')}`;
+        style.flex = `0 0 ${addUnit(parentData.value.width)}`;
         // #endif
     }
     if (parentData.value.wrap) {
@@ -230,8 +230,8 @@ function setRadioCheckedStatus() {
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    width: 42rpx;
-    height: 42rpx;
+    width: 21px;
+    height: 21px;
     color: transparent;
     text-align: center;
     transition-property: color, border-color, background-color;
@@ -263,9 +263,9 @@ function setRadioCheckedStatus() {
 }
 .snake-radio__label {
     word-wrap: break-word;
-    margin-left: 10rpx;
-    margin-right: 24rpx;
+    margin-left: 5px;
+    margin-right: 12px;
     color: var(--snake-color-text, #303133);
-    font-size: 30rpx;
+    font-size: 15px;
 }
 </style>

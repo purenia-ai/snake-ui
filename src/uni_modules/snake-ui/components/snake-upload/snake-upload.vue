@@ -1466,13 +1466,13 @@ defineExpose({
 
 // ==================== Grid 模式样式 ====================
 .snake-upload-grid__item {
-    width: 200rpx;
-    height: 200rpx;
+    width: 100px;
+    height: 100px;
     overflow: hidden;
-    margin: 10rpx;
+    margin: 5px;
     background: var(--snake-color-disabled-bg, #f1f1f1);
     position: relative;
-    border-radius: 10rpx;
+    border-radius: 5px;
     /* #ifndef APP-NVUE */
     display: flex;
     /* #endif */
@@ -1487,12 +1487,12 @@ defineExpose({
 .snake-upload-grid__add {
     flex-direction: column;
     color: var(--snake-color-text-secondary, #606266);
-    font-size: 26rpx;
+    font-size: 13px;
 }
 
 .snake-upload-grid__add-text {
-    margin-top: 20rpx;
-    line-height: 40rpx;
+    margin-top: 10px;
+    line-height: 20px;
 }
 
 .snake-upload-grid__add--hover {
@@ -1503,7 +1503,7 @@ defineExpose({
     display: block;
     width: 100%;
     height: 100%;
-    border-radius: 10rpx;
+    border-radius: 5px;
 }
 
 .snake-upload-grid__image--circle {
@@ -1515,27 +1515,27 @@ defineExpose({
 }
 
 .snake-upload-grid__item--circle .snake-upload-grid__delete {
-    top: 20rpx;
-    right: 30rpx;
-    width: 36rpx;
-    height: 36rpx;
+    top: 10px;
+    right: 15px;
+    width: 18px;
+    height: 18px;
 }
 
 .snake-upload-grid__item--circle .snake-upload-grid__progress {
-    bottom: 16rpx;
-    left: 16rpx;
-    right: 16rpx;
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
 }
 
 .snake-upload-grid__delete {
     position: absolute;
-    top: 10rpx;
-    right: 10rpx;
+    top: 5px;
+    right: 5px;
     z-index: 10;
     background-color: var(--snake-color-error, #fa3534);
-    border-radius: 100rpx;
-    width: 44rpx;
-    height: 44rpx;
+    border-radius: 50px;
+    width: 22px;
+    height: 22px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1543,9 +1543,9 @@ defineExpose({
 
 .snake-upload-grid__progress {
     position: absolute;
-    bottom: 10rpx;
-    left: 8rpx;
-    right: 8rpx;
+    bottom: 5px;
+    left: 4px;
+    right: 4px;
     z-index: 9;
     width: auto;
 }
@@ -1553,7 +1553,7 @@ defineExpose({
 .snake-upload-grid__error {
     color: var(--snake-color-white, #fff);
     background-color: var(--snake-color-error, #fa3534);
-    font-size: 20rpx;
+    font-size: 10px;
     padding: 4px 0;
     text-align: center;
     position: absolute;
@@ -1572,19 +1572,19 @@ defineExpose({
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 16rpx;
+    padding: 8px;
     box-sizing: border-box;
     position: relative;
 }
 
 .snake-upload-grid__file-icon {
-    width: 80rpx;
-    height: 80rpx;
-    border-radius: 16rpx;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 12rpx;
+    margin-bottom: 6px;
 }
 
 .snake-upload-grid__file-play {
@@ -1592,7 +1592,7 @@ defineExpose({
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    margin-top: -20rpx;
+    margin-top: -10px;
     opacity: 0.9;
 }
 
@@ -1604,7 +1604,7 @@ defineExpose({
 }
 
 .snake-upload-grid__file-name {
-    font-size: 22rpx;
+    font-size: 11px;
     line-height: 1.4;
     text-align: center;
     max-width: 100%;
@@ -1614,9 +1614,9 @@ defineExpose({
 }
 
 .snake-upload-grid__file-size {
-    font-size: 20rpx;
+    font-size: 10px;
     color: var(--snake-color-text-muted, #909399);
-    margin-top: 4rpx;
+    margin-top: 2px;
 }
 
 // ==================== 列表模式样式 ====================
@@ -1636,11 +1636,11 @@ defineExpose({
 .snake-upload-list__item {
     display: flex;
     align-items: center;
-    padding: 20rpx;
+    padding: 10px;
     background: var(--snake-color-surface, #fff);
-    border-radius: 12rpx;
-    margin-bottom: 16rpx;
-    border: 1rpx solid var(--snake-color-border, #dcdfe6);
+    border-radius: 6px;
+    margin-bottom: 8px;
+    border: 1px solid var(--snake-color-border, #dcdfe6);
     position: relative;
 }
 
@@ -1666,13 +1666,13 @@ defineExpose({
 // 左侧：缩略图/图标
 .snake-upload-list__left {
     flex-shrink: 0;
-    margin-right: 20rpx;
+    margin-right: 10px;
 }
 
 .snake-upload-list__thumb {
-    width: 80rpx;
-    height: 80rpx;
-    border-radius: 8rpx;
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
     background: var(--snake-color-disabled-bg, #f1f1f1);
 }
 
@@ -1681,9 +1681,9 @@ defineExpose({
 }
 
 .snake-upload-list__icon {
-    width: 80rpx;
-    height: 80rpx;
-    border-radius: 8rpx;
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1703,7 +1703,7 @@ defineExpose({
 }
 
 .snake-upload-list__name {
-    font-size: 28rpx;
+    font-size: 14px;
     color: var(--snake-color-text-secondary, #606266);
     line-height: 1.4;
     overflow: hidden;
@@ -1717,14 +1717,14 @@ defineExpose({
 }
 
 .snake-upload-list__size {
-    font-size: 24rpx;
+    font-size: 12px;
     color: var(--snake-color-text-muted, #909399);
-    margin-top: 8rpx;
+    margin-top: 4px;
     text-align: left;
 }
 
 .snake-upload-list__progress {
-    margin-top: 12rpx;
+    margin-top: 6px;
     width: 100%;
 }
 
@@ -1732,9 +1732,9 @@ defineExpose({
 .snake-upload-list__retry {
     display: flex;
     align-items: center;
-    margin-top: 8rpx;
-    padding: 8rpx 16rpx;
-    border-radius: 8rpx;
+    margin-top: 4px;
+    padding: 4px 8px;
+    border-radius: 4px;
     align-self: flex-start;
     position: relative;
 }
@@ -1754,19 +1754,19 @@ defineExpose({
 }
 
 .snake-upload-list__retry-text {
-    font-size: 24rpx;
+    font-size: 12px;
     color: var(--snake-color-error, #fa3534);
-    margin-left: 8rpx;
+    margin-left: 4px;
 }
 
 // 右侧：删除按钮
 .snake-upload-list__right {
     flex-shrink: 0;
-    margin-left: 20rpx;
+    margin-left: 10px;
     background-color: var(--snake-color-error, #fa3534);
-    border-radius: 100rpx;
-    width: 44rpx;
-    height: 44rpx;
+    border-radius: 50px;
+    width: 22px;
+    height: 22px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1774,17 +1774,17 @@ defineExpose({
 
 // 列表模式添加按钮
 .snake-upload-list__add {
-    margin-top: 16rpx;
+    margin-top: 8px;
 }
 
 .snake-upload-list__add-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 24rpx;
+    padding: 12px;
     background: var(--snake-color-surface, #fff);
-    border: 2rpx dashed var(--snake-color-border, #dcdfe6);
-    border-radius: 12rpx;
+    border: 1px dashed var(--snake-color-border, #dcdfe6);
+    border-radius: 6px;
     transition: all 0.3s;
 }
 
@@ -1794,8 +1794,8 @@ defineExpose({
 }
 
 .snake-upload-list__add-text {
-    margin-left: 16rpx;
-    font-size: 28rpx;
+    margin-left: 8px;
+    font-size: 14px;
     color: var(--snake-color-primary, #06d290);
 }
 </style>

@@ -13,6 +13,7 @@
                     :class="{
                         'filter-sorts__item--active': filterParams['sort'] === item.value
                     }"
+                    :style="{ fontSize: addUnit(fontSize) }"
                     role="button"
                     tabindex="0"
                     :aria-pressed="filterParams['sort'] === item.value"
@@ -25,10 +26,15 @@
                 <snake-button-sort
                     v-if="item.type === 'sort'"
                     :title="item.name"
+                    :font-size="fontSize"
                     @change="(e: any) => sortSelectHandle('price', e.value)"
                 ></snake-button-sort>
             </template>
-            <snake-drop-menu ref="dropMenuRef" custom-style="flex: 1; min-width: 0; background: transparent;">
+            <snake-drop-menu
+                ref="dropMenuRef"
+                :title-size="titleSize"
+                custom-style="flex: 1; min-width: 0; background: transparent;"
+            >
                 <snake-drop-menu-item
                     title="筛选"
                     custom-style="height: 70vh"
@@ -53,6 +59,7 @@
  */
 
 import { getCurrentInstance, onMounted, ref } from 'vue';
+import { addUnit } from '../../libs/function/unit';
 import filterPage from './filter-page.vue';
 import type { FilterSortsEmits, FilterSortsProps } from './types';
 
@@ -72,6 +79,8 @@ const props = withDefaults(defineProps<FilterSortsProps>(), {
     sort: '',
     showTabs: true,
     goodsListLength: 0,
+    fontSize: 13,
+    titleSize: 14,
     customStyle: () => ({})
 });
 
@@ -175,7 +184,7 @@ onMounted(async () => {
     flex: 1;
     align-items: center;
     justify-content: center;
-    font-size: 26rpx;
+    font-size: 13px;
 }
 
 .filter-sorts__item--active {

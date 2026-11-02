@@ -64,20 +64,20 @@ const mediaStyle = computed(() => mediaHeightStyle(props.data.style));
 }
 .cms-v2-carousel__fraction {
     position: absolute;
-    right: 20rpx;
-    bottom: 16rpx;
-    padding: 4rpx 12rpx;
+    right: 10px;
+    bottom: 8px;
+    padding: 2px 6px;
     color: #fff;
-    font-size: 22rpx;
+    font-size: 11px;
     background: rgba(0, 0, 0, 0.45);
-    border-radius: 20rpx;
+    border-radius: 10px;
 }
 .cms-v2-carousel__progress {
     position: absolute;
     right: 0;
     bottom: 0;
     left: 0;
-    height: 6rpx;
+    height: 3px;
     overflow: hidden;
     background-color: #eee;
 }

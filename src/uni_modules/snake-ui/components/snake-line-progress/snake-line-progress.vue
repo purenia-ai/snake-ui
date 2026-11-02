@@ -1,7 +1,7 @@
 <template>
     <view
         class="snake-line-progress"
-        :style="{ borderRadius: round ? '100rpx' : '0', height: `${height}rpx`, backgroundColor: inactiveColor }"
+        :style="{ borderRadius: round ? '50px' : '0', height: $snake.addUnit(height), backgroundColor: inactiveColor }"
     >
         <view
             :class="[
@@ -47,7 +47,7 @@ const progressStyle = computed(() => {
     overflow: hidden;
     align-items: center;
     width: 100%;
-    border-radius: 100rpx;
+    border-radius: 50px;
 }
 .snake-line-progress__active {
     display: flex;
@@ -55,7 +55,7 @@ const progressStyle = computed(() => {
     height: 100%;
     align-items: center;
     justify-content: space-around;
-    font-size: 20rpx;
+    font-size: 10px;
     color: var(--snake-color-white, #fff);
     transition: all 0.4s ease;
 }
@@ -91,7 +91,7 @@ const progressStyle = computed(() => {
     animation: snake-line-progress-stripes 2s linear infinite;
 }
 .snake-line-progress__percent {
-    padding: 0 10rpx;
+    padding: 0 5px;
     color: var(--snake-color-text-light, #c0c4cc);
 }
 @keyframes snake-line-progress-stripes {

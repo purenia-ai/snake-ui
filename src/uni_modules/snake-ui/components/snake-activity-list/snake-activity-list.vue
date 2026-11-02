@@ -44,7 +44,7 @@
                                     <view class="activity-list__time-icon">
                                         <snake-icon
                                             name="clock"
-                                            size="20rpx"
+                                            size="10px"
                                             color="var(--snake-color-white, #ffffff)"
                                         ></snake-icon>
                                     </view>
@@ -113,8 +113,8 @@ export default {
             return item => {
                 const style = {};
                 if (this.current === item.id) {
-                    style.top = '0rpx';
-                    style.left = '0rpx';
+                    style.top = '0px';
+                    style.left = '0px';
                 }
                 return style;
             };
@@ -194,7 +194,7 @@ export default {
         display: flex;
         align-items: flex-start;
         width: 100%;
-        padding: 10rpx 20rpx;
+        padding: 5px 10px;
         // box-sizing: border-box;
     }
 
@@ -204,12 +204,12 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 180rpx;
-        min-width: 180rpx;
-        height: 180rpx;
+        width: 90px;
+        min-width: 90px;
+        height: 90px;
         overflow: hidden;
         cursor: pointer;
-        border-radius: 4rpx;
+        border-radius: 2px;
         transform: translateZ(0); // 启用硬件加速
         transition:
             transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
@@ -219,25 +219,25 @@ export default {
 
         /* 相邻项间距 */
         + .activity-list__item {
-            margin-left: 20rpx;
+            margin-left: 10px;
         }
 
         /* 点击动画效果 */
         &--clicking {
             transform: scale(0.95);
             // filter: brightness(0.92);
-            // box-shadow: 0 1rpx 4rpx rgba(0, 0, 0, 0.12);
+            // box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
         }
 
         /* 激活状态样式 */
         &--active {
-            width: 195rpx;
-            min-width: 195rpx;
-            height: 195rpx;
-            border: 4rpx solid #2d57e7;
-            border-radius: 4rpx;
-            // box-shadow: 0 6rpx 16rpx rgba(45, 87, 231, 0.3);
-            transform: translateY(-4rpx);
+            width: 97.5px;
+            min-width: 97.5px;
+            height: 97.5px;
+            border: 2px solid #2d57e7;
+            border-radius: 2px;
+            // box-shadow: 0 3px 8px rgba(45, 87, 231, 0.3);
+            transform: translateY(-2px);
         }
     }
 
@@ -258,7 +258,7 @@ export default {
 
     /* 激活时图片效果 */
     &__item--active &__image {
-        box-shadow: inset 0 0 0 1rpx rgba(255, 255, 255, 0.3);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
     }
 
     /* 倒计时容器 */
@@ -276,38 +276,38 @@ export default {
         display: flex;
         align-items: center;
         width: 100%;
-        height: 36rpx;
-        padding-right: 20rpx;
-        padding-left: 10rpx;
+        height: 18px;
+        padding-right: 10px;
+        padding-left: 5px;
         font-family: 'DIN-Schrift';
-        font-size: 20rpx;
-        line-height: 36rpx;
+        font-size: 10px;
+        line-height: 18px;
         color: var(--snake-color-white, #ffffff);
         background: var(--snake-color-text-secondary, #707184);
-        border-radius: 0rpx 0 4rpx 0;
+        border-radius: 0px 0 2px 0;
         transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     /* 倒计时文本 */
     &__countdown {
         min-width: 100%;
-        height: 36rpx;
+        height: 18px;
     }
 
     /* 倒计时图标 */
     &__time-icon {
-        margin-right: 4rpx;
+        margin-right: 2px;
     }
 
     /* 标题容器 */
     &__title {
         position: absolute;
-        top: 44rpx;
-        left: 12rpx;
+        top: 22px;
+        left: 6px;
         display: flex;
         flex-direction: column;
         font-family: PingFangSC-Semibold;
-        font-size: 26rpx;
+        font-size: 13px;
         color: var(--snake-color-text, #333);
         transition:
             transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
@@ -318,29 +318,29 @@ export default {
     /* 主标题 */
     &__title-main {
         font-family: PingFangSC-Semibold;
-        font-size: 26rpx;
+        font-size: 13px;
         font-weight: 600;
         color: var(--snake-color-text, #333333);
     }
 
     /* 副标题 */
     &__title-sub {
-        margin-top: 4rpx;
+        margin-top: 2px;
         font-family: PingFangSC-Light;
-        font-size: 20rpx;
+        font-size: 10px;
         font-weight: 300;
         color: var(--snake-color-text-secondary, #666666);
     }
 
     /* 激活状态标题样式 */
     &__item--active &__title {
-        top: 48rpx;
-        left: 16rpx;
+        top: 24px;
+        left: 8px;
     }
 
     &__title-time {
-        margin-top: 4rpx;
-        font-size: 20rpx;
+        margin-top: 2px;
+        font-size: 10px;
         color: var(--snake-color-text-muted, #888891);
     }
 

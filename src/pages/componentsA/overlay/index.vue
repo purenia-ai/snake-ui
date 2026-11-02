@@ -45,13 +45,13 @@ function updateValue(key: string, value: DemoValue) {
 
 <style scoped>
 .demo-trigger {
-    padding: 48rpx 24rpx;
+    padding: 24px 12px;
 }
 .demo-variant-title {
     display: block;
-    margin-bottom: 24rpx;
+    margin-bottom: 12px;
     color: var(--snake-color-text);
-    font-size: 28rpx;
+    font-size: 14px;
     font-weight: 600;
 }
 .demo-overlay-tip {

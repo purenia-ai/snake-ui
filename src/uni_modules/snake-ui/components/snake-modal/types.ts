@@ -15,8 +15,8 @@ export const modalProps = {
     zIndex: { type: [Number, String] as PropType<number | string>, default: '' },
     /** 标题。 */
     title: { type: String, default: '' },
-    /** 弹窗宽度，单位 rpx。 */
-    width: { type: [Number, String] as PropType<number | string>, default: 600 },
+    /** 弹窗宽度，单位 px（375 稿）。 */
+    width: { type: [Number, String] as PropType<number | string>, default: 300 },
     /** 弹窗内容。 */
     content: { type: String, default: '' },
     /** 是否显示标题。 */
@@ -33,8 +33,8 @@ export const modalProps = {
     confirmColor: { type: String, default: 'var(--snake-color-primary, #06D290)' },
     /** 取消文字颜色。 */
     cancelColor: { type: String, default: 'var(--snake-color-text-secondary, #909399)' },
-    /** 弹窗圆角值，单位 rpx。 */
-    borderRadius: { type: [Number, String] as PropType<number | string>, default: 16 },
+    /** 弹窗圆角值，单位 px（375 稿）。 */
+    borderRadius: { type: [Number, String] as PropType<number | string>, default: 8 },
     /** 标题样式。 */
     titleStyle: { type: Object as PropType<Record<string, any>>, default: () => ({}) },
     /** 内容样式。 */

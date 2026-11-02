@@ -110,13 +110,13 @@ function onChange(seconds: number) {
 
 <style scoped lang="scss">
 .demo-countdown-showcase {
-    gap: 24rpx;
+    gap: 12px;
 
     &__meta {
         display: flex;
         align-items: center;
-        gap: 24rpx;
-        font-size: 24rpx;
+        gap: 12px;
+        font-size: 12px;
         color: var(--snake-color-text-muted, #8a8b99);
     }
 }

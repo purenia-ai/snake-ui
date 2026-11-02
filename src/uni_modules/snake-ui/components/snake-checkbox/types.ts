@@ -22,9 +22,9 @@ export const checkboxProps = {
     labelDisabled: { type: [String, Boolean] as PropType<string | boolean>, default: '' },
     /** 选中状态下的颜色，设置后将覆盖父级 activeColor。 */
     activeColor: { type: String, default: '' },
-    /** 勾选图标的大小，单位 rpx。 */
+    /** 勾选图标的大小，单位 px（375 稿）。 */
     iconSize: { type: [String, Number] as PropType<UnitValue>, default: '' },
-    /** 标签文字大小，单位 rpx。 */
+    /** 标签文字大小，单位 px（375 稿）。 */
     labelSize: { type: [String, Number] as PropType<UnitValue>, default: '' },
     /** 组件整体大小，small/default/large 或自定义数值。 */
     size: { type: [String, Number] as PropType<string | number>, default: '' }
@@ -53,9 +53,9 @@ export interface CheckboxProps {
     labelDisabled?: string | boolean;
     /** 选中状态下的颜色，设置后将覆盖父级 activeColor。 */
     activeColor?: string;
-    /** 勾选图标的大小，单位 rpx。 */
+    /** 勾选图标的大小，单位 px（375 稿）。 */
     iconSize?: UnitValue;
-    /** 标签文字大小，单位 rpx。 */
+    /** 标签文字大小，单位 px（375 稿）。 */
     labelSize?: UnitValue;
     /** 组件整体大小，small/default/large 或自定义数值。 */
     size?: string | number;

@@ -65,18 +65,18 @@ const open = (path: string) => uni.navigateTo({ url: path });
 <style lang="scss" scoped>
 .showcase-links {
     display: grid;
-    gap: 12rpx;
+    gap: 6px;
 }
 .showcase-link {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 22rpx 24rpx;
+    padding: 11px 12px;
     border: 1px solid var(--snake-color-divider);
-    border-radius: 14rpx;
+    border-radius: 7px;
     color: var(--snake-color-text);
     background: var(--snake-color-surface);
-    font-size: 26rpx;
+    font-size: 13px;
 }
 .showcase-link--hover {
     border-color: var(--snake-color-primary);

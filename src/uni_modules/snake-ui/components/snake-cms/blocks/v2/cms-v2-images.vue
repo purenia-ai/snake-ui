@@ -16,17 +16,17 @@
 <script setup lang="ts">
 /** @component CmsV2Images @description CMS v2 单列与网格图片内部渲染器。 @see /cms/overview */
 import { computed } from 'vue';
-import { blockStyle, openV2Link, rpx, type V2BlockProps } from './shared';
+import { blockStyle, openV2Link, px, type V2BlockProps } from './shared';
 const props = defineProps<V2BlockProps>();
 const items = computed(() => (Array.isArray(props.data.items) ? props.data.items : []));
 const rootStyle = computed(() => blockStyle(props.data.style));
 const imageMode = computed(() => (props.data.style?.heightMode === 'fixed' ? 'aspectFill' : 'widthFix'));
 const imageStyle = computed(() =>
-    props.data.style?.heightMode === 'fixed' ? { height: rpx(props.data.style?.height, 360) } : undefined
+    props.data.style?.heightMode === 'fixed' ? { height: px(props.data.style?.height, 180) } : undefined
 );
 const gridStyle = computed(() => ({
     gridTemplateColumns: `repeat(${props.data.layout?.mode === 'grid' ? Math.min(4, Math.max(1, Number(props.data.layout?.columns) || 2)) : 1}, minmax(0, 1fr))`,
-    gap: rpx(props.data.style?.gap)
+    gap: px(props.data.style?.gap)
 }));
 </script>
 <style scoped>

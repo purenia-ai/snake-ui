@@ -28,7 +28,7 @@ export interface CheckboxGroupProps {
     width?: string;
     /** 是否每个 checkbox 都换行。 */
     wrap?: boolean;
-    /** 勾选图标的大小，单位 rpx。 */
+    /** 勾选图标的大小，单位 px（375 稿）。 */
     iconSize?: UnitValue;
 }
 

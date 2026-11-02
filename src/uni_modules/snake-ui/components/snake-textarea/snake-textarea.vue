@@ -19,7 +19,7 @@
             :hold-keyboard="holdKeyboard"
             :cursor-spacing="cursorSpacing"
             :show-confirm-bar="showConfirmBar"
-            :style="{ color, fontSize: addUnit(fontSize, 'rpx') }"
+            :style="{ color, fontSize: addUnit(fontSize) }"
             @input="onInput"
             @focus="
                 focused = true;
@@ -54,7 +54,7 @@ const props = withDefaults(defineProps<TextareaProps>(), {
     placeholder: '请输入内容',
     placeholderStyle: '',
     maxlength: 140,
-    height: 120,
+    height: 60,
     autoHeight: false,
     fixed: false,
     count: false,
@@ -63,7 +63,7 @@ const props = withDefaults(defineProps<TextareaProps>(), {
     border: 'surround',
     color: 'var(--snake-color-text,#303133)',
     placeholderColor: 'var(--snake-color-text-light,#c0c4cc)',
-    fontSize: 28,
+    fontSize: 14,
     focus: false,
     cursor: -1,
     selectionStart: -1,
@@ -95,10 +95,7 @@ const rootClass = computed(() => [
     `snake-textarea--${size.value}`,
     { 'is-focused': focused.value, 'is-error': Boolean(formItem?.errorVisible.value), 'is-disabled': props.disabled }
 ]);
-const rootStyle = computed(() => [
-    { height: props.autoHeight ? 'auto' : addUnit(props.height, 'rpx') },
-    props.customStyle
-]);
+const rootStyle = computed(() => [{ height: props.autoHeight ? 'auto' : addUnit(props.height) }, props.customStyle]);
 function update(value: string) {
     innerValue.value = value;
     emit('update:modelValue', value);
@@ -133,9 +130,9 @@ function onBlur(event: any) {
     position: relative;
     box-sizing: border-box;
     width: 100%;
-    min-height: 160rpx;
-    padding: 20rpx 22rpx 42rpx;
-    border-radius: var(--snake-radius-md, 12rpx);
+    min-height: 80px;
+    padding: 10px 11px 21px;
+    border-radius: var(--snake-radius-md, 6px);
     transition: border-color 0.2s;
 }
 .snake-textarea--surround {
@@ -158,14 +155,14 @@ function onBlur(event: any) {
 .snake-textarea__native {
     width: 100%;
     height: 100%;
-    min-height: 120rpx;
+    min-height: 60px;
     line-height: 1.55;
 }
 .snake-textarea__count {
     position: absolute;
-    right: 18rpx;
-    bottom: 12rpx;
+    right: 9px;
+    bottom: 6px;
     color: var(--snake-color-text-muted, #909399);
-    font-size: 22rpx;
+    font-size: 11px;
 }
 </style>

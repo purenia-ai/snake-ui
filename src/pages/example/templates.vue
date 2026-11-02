@@ -99,23 +99,23 @@ const openTemplate = (path: string) => uni.navigateTo({ url: path });
 @import '../../common/demo.scss';
 .template-switcher {
     display: flex;
-    gap: 12rpx;
+    gap: 6px;
     overflow-x: auto;
-    margin-bottom: 22rpx;
-    padding-bottom: 4rpx;
+    margin-bottom: 11px;
+    padding-bottom: 2px;
 }
 .template-tab {
     display: flex;
     flex: none;
     margin: 0;
-    padding: 18rpx 22rpx;
+    padding: 9px 11px;
     align-items: center;
-    gap: 10rpx;
+    gap: 5px;
     border: 1px solid var(--snake-color-divider);
-    border-radius: 999rpx;
+    border-radius: 499.5px;
     color: var(--snake-color-text-secondary);
     background: var(--snake-color-surface);
-    font-size: 24rpx;
+    font-size: 12px;
     line-height: 1.3;
 }
 .template-tab::after {
@@ -130,11 +130,11 @@ const openTemplate = (path: string) => uni.navigateTo({ url: path });
 .template-preview {
     overflow: hidden;
     border: 1px solid var(--snake-color-divider);
-    border-radius: 22rpx;
+    border-radius: 11px;
     background: var(--snake-color-surface-muted);
 }
 .template-preview__top {
-    padding: 32rpx;
+    padding: 16px;
     color: #effff8;
     background: linear-gradient(135deg, var(--snake-color-primary-deeper), var(--snake-color-primary-deep));
 }
@@ -145,38 +145,38 @@ const openTemplate = (path: string) => uni.navigateTo({ url: path });
 }
 .template-preview__eyebrow {
     color: rgba(239, 255, 248, 0.7);
-    font-size: 20rpx;
-    letter-spacing: 2rpx;
+    font-size: 10px;
+    letter-spacing: 1px;
     text-transform: uppercase;
 }
 .template-preview__title {
-    margin-top: 10rpx;
-    font-size: 38rpx;
+    margin-top: 5px;
+    font-size: 19px;
     font-weight: 750;
 }
 .template-preview__desc {
-    margin-top: 8rpx;
+    margin-top: 4px;
     color: rgba(239, 255, 248, 0.78);
-    font-size: 24rpx;
+    font-size: 12px;
     line-height: 1.5;
 }
 .template-preview__actions {
-    padding: 20rpx;
+    padding: 10px;
 }
 .component-links {
     display: grid;
-    gap: 10rpx;
+    gap: 5px;
 }
 .component-link {
     display: flex;
-    padding: 22rpx 24rpx;
+    padding: 11px 12px;
     align-items: center;
     justify-content: space-between;
     border: 1px solid var(--snake-color-divider);
-    border-radius: 14rpx;
+    border-radius: 7px;
     color: var(--snake-color-text);
     background: var(--snake-color-surface);
-    font-size: 26rpx;
+    font-size: 13px;
 }
 .component-link--hover {
     border-color: var(--snake-color-primary);

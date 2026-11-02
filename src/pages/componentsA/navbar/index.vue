@@ -56,12 +56,12 @@ function updateValue(key: string, value: DemoValue) {
 
 <style scoped>
 .demo-navbar-preview {
-    border: 1rpx solid var(--snake-color-divider);
-    border-radius: 10rpx;
+    border: 1px solid var(--snake-color-divider);
+    border-radius: 5px;
 }
 .demo-navbar-preview__action {
-    padding: 0 24rpx;
+    padding: 0 12px;
     color: var(--snake-demo-accent-text);
-    font-size: 26rpx;
+    font-size: 13px;
 }
 </style>

@@ -29,8 +29,8 @@ preview: /pages/componentsA/skeleton/index
 ```vue
 <snake-skeleton :loading="loading">
   <template #template>
-    <snake-skeleton-item variant="image" height="300rpx" />
-    <snake-skeleton-item width="60%" custom-style="margin-top: 20rpx" />
+    <snake-skeleton-item variant="image" height="150px" />
+    <snake-skeleton-item width="60%" custom-style="margin-top: 10px" />
   </template>
   <view>真实内容</view>
 </snake-skeleton>
@@ -60,12 +60,12 @@ preview: /pages/componentsA/skeleton/index
 | `animated`    | 是否启用流光动画         | `boolean`                   | `true`   |
 | `title`       | 是否显示默认标题占位     | `boolean`                   | `true`   |
 | `titleWidth`  | 默认标题宽度             | `string \| number`          | `40%`    |
-| `titleHeight` | 默认标题高度             | `string \| number`          | `18`     |
+| `titleHeight` | 默认标题高度             | `string \| number`          | `9`      |
 | `rows`        | 默认段落行数             | `number`                    | `3`      |
 | `rowsWidth`   | 默认段落宽度，可逐行配置 | `string \| number \| Array` | `100%`   |
-| `rowsHeight`  | 默认段落高度，可逐行配置 | `string \| number \| Array` | `16`     |
+| `rowsHeight`  | 默认段落高度，可逐行配置 | `string \| number \| Array` | `8`      |
 | `avatar`      | 是否显示默认头像占位     | `boolean`                   | `false`  |
-| `avatarSize`  | 默认头像尺寸             | `string \| number`          | `32`     |
+| `avatarSize`  | 默认头像尺寸             | `string \| number`          | `16`     |
 | `avatarShape` | 默认头像形状             | `circle \| square`          | `circle` |
 | `customStyle` | 根节点样式               | `string \| object \| array` | `''`     |
 
@@ -80,14 +80,14 @@ preview: /pages/componentsA/skeleton/index
 
 #### Props
 
-| 参数          | 说明                                  | 类型                              | 默认值 |
-| ------------- | ------------------------------------- | --------------------------------- | ------ |
-| `variant`     | 占位形态                              | `text \| rect \| circle \| image` | `text` |
-| `width`       | 宽度，裸数字按 rpx；默认值显式使用 px | `string \| number`                | 按形态 |
-| `height`      | 高度，裸数字按 rpx；默认值显式使用 px | `string \| number`                | 按形态 |
-| `radius`      | 圆角，裸数字按 rpx；默认值显式使用 px | `string \| number`                | 按形态 |
-| `animated`    | 动画开关，默认继承骨架容器            | `boolean`                         | `true` |
-| `customStyle` | 根节点样式                            | `string \| object \| array`       | `''`   |
+| 参数          | 说明                                           | 类型                              | 默认值 |
+| ------------- | ---------------------------------------------- | --------------------------------- | ------ |
+| `variant`     | 占位形态                                       | `text \| rect \| circle \| image` | `text` |
+| `width`       | 宽度，裸数字按 px（375 稿）；默认值显式使用 px | `string \| number`                | 按形态 |
+| `height`      | 高度，裸数字按 px（375 稿）；默认值显式使用 px | `string \| number`                | 按形态 |
+| `radius`      | 圆角，裸数字按 px（375 稿）；默认值显式使用 px | `string \| number`                | 按形态 |
+| `animated`    | 动画开关，默认继承骨架容器                     | `boolean`                         | `true` |
+| `customStyle` | 根节点样式                                     | `string \| object \| array`       | `''`   |
 
 ## 主题变量
 

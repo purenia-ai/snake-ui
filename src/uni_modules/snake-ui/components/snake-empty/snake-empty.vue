@@ -31,11 +31,11 @@ const props = withDefaults(defineProps<EmptyProps>(), {
     src: '',
     icon: '',
     iconColor: 'var(--snake-color-text-light, #c0c4cc)',
-    iconSize: 120,
+    iconSize: 80,
     text: '',
     color: '',
     textColor: 'var(--snake-color-text-muted, #909399)',
-    fontSize: 26,
+    fontSize: 14,
     marginTop: 0,
     customClass: '',
     customStyle: ''
@@ -74,9 +74,9 @@ const modeIcons: Record<string, string> = {
     car: 'empty-car'
 };
 const iconName = computed(() => source.value || modeIcons[props.mode] || 'image');
-const rootStyle = computed(() => [{ marginTop: addUnit(props.marginTop, 'rpx') }, props.customStyle]);
-const imageStyle = computed(() => ({ width: addUnit(props.iconSize, 'rpx'), height: addUnit(props.iconSize, 'rpx') }));
-const textStyle = computed(() => ({ color: props.color || props.textColor, fontSize: addUnit(props.fontSize, 'rpx') }));
+const rootStyle = computed(() => [{ marginTop: addUnit(props.marginTop) }, props.customStyle]);
+const imageStyle = computed(() => ({ width: addUnit(props.iconSize), height: addUnit(props.iconSize) }));
+const textStyle = computed(() => ({ color: props.color || props.textColor, fontSize: addUnit(props.fontSize) }));
 </script>
 
 <style scoped>
@@ -85,16 +85,16 @@ const textStyle = computed(() => ({ color: props.color || props.textColor, fontS
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 40rpx 24rpx;
+    padding: 20px 12px;
 }
 .snake-empty__image {
     display: block;
 }
 .snake-empty__text {
-    margin-top: 20rpx;
+    margin-top: 12px;
     line-height: 1.5;
 }
 .snake-empty__bottom {
-    margin-top: 28rpx;
+    margin-top: 14px;
 }
 </style>

@@ -31,7 +31,7 @@ export interface TextareaProps {
     color?: string;
     /** 占位文本颜色。 */
     placeholderColor?: string;
-    /** 文字尺寸，数值按 rpx 处理。 */
+    /** 文字尺寸，数值按 px（375 稿）处理。 */
     fontSize?: UnitValue;
     /** 是否自动获取焦点。 */
     focus?: boolean;

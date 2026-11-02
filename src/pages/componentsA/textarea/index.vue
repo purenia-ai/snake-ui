@@ -95,16 +95,16 @@ function updateValue(key: string, nextValue: DemoValue) {
 .demo-control-stack {
     display: flex;
     flex-direction: column;
-    gap: 28rpx;
-    padding: 24rpx;
+    gap: 14px;
+    padding: 12px;
 }
 .demo-variant-title {
     color: var(--snake-color-text);
-    font-size: 28rpx;
+    font-size: 14px;
     font-weight: 600;
 }
 .demo-control-stack > text {
     color: var(--snake-color-text-secondary);
-    font-size: 26rpx;
+    font-size: 13px;
 }
 </style>

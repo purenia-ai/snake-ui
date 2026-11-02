@@ -106,7 +106,7 @@ function onUploadError(_error, index) {
 | `timeout`                             | 默认上传的超时时间，单位毫秒                                | `number`                               | `60000`                       |
 | `accept`                              | 接受的文件类型 `image / video / file / media / all`         | `string`                               | `'image'`                     |
 | `mode`                                | 展示模式 `grid / list`                                      | `string`                               | `'grid'`                      |
-| `width` / `height`                    | 单个格子宽高，单位 rpx                                      | `number \| string`                     | `200`                         |
+| `width` / `height`                    | 单个格子宽高，单位 px（375 稿）                             | `number \| string`                     | `100`                         |
 | `maxCount`                            | 最大文件数量                                                | `number \| string`                     | `52`                          |
 | `maxSize`                             | 单个文件最大字节数                                          | `number \| string`                     | `Number.MAX_VALUE`            |
 | `multiple`                            | 是否开启文件多选                                            | `boolean`                              | `true`                        |

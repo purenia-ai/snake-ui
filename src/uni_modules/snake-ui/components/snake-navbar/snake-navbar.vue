@@ -55,12 +55,12 @@ const props = withDefaults(defineProps<NavbarProps>(), {
     height: 44,
     backIconColor: 'var(--snake-color-text, #303133)',
     backIconName: 'arrow-left',
-    backIconSize: 40,
+    backIconSize: 20,
     backText: '',
     backTextStyle: '',
-    titleWidth: 360,
+    titleWidth: 180,
     titleColor: 'var(--snake-color-text, #303133)',
-    titleSize: 32,
+    titleSize: 16,
     titleBold: false,
     isBack: true,
     background: 'var(--snake-color-surface, #fff)',
@@ -89,9 +89,9 @@ const rootStyle = computed(() => [
 ]);
 const innerStyle = computed(() => ({ height: navbarHeight.value + 'px' }));
 const titleStyle = computed(() => ({
-    width: addUnit(props.titleWidth, 'rpx'),
+    width: addUnit(props.titleWidth),
     color: props.titleColor,
-    fontSize: addUnit(props.titleSize, 'rpx'),
+    fontSize: addUnit(props.titleSize),
     fontWeight: props.titleBold ? '700' : '500'
 }));
 
@@ -121,7 +121,7 @@ function goBack(event: unknown) {
     left: 0;
 }
 .snake-navbar.has-border {
-    border-bottom: 1rpx solid var(--snake-color-divider, #ebeef5);
+    border-bottom: 1px solid var(--snake-color-divider, #ebeef5);
 }
 .snake-navbar__status {
     width: 100%;
@@ -150,14 +150,14 @@ function goBack(event: unknown) {
 .snake-navbar__back {
     display: flex;
     align-items: center;
-    min-width: 88rpx;
+    min-width: 44px;
     height: 100%;
-    padding: 0 20rpx;
+    padding: 0 10px;
 }
 .snake-navbar__back-text {
     overflow: hidden;
-    margin-left: 4rpx;
-    font-size: 28rpx;
+    margin-left: 2px;
+    font-size: 14px;
     line-height: 1;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -172,7 +172,7 @@ function goBack(event: unknown) {
     display: flex;
     align-items: center;
     justify-content: center;
-    max-width: calc(100% - 192rpx);
+    max-width: calc(100% - 96px);
     text-align: center;
     transform: translateX(-50%);
 }
@@ -183,7 +183,7 @@ function goBack(event: unknown) {
     white-space: nowrap;
 }
 .snake-navbar__content {
-    width: calc(100% - 192rpx);
+    width: calc(100% - 96px);
 }
 .snake-navbar__hit--hover {
     background: rgba(0, 0, 0, 0.06);

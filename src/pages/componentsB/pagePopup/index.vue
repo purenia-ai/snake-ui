@@ -55,6 +55,6 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 <style scoped>
 .popup-actions {
-    padding: 24rpx;
+    padding: 12px;
 }
 </style>

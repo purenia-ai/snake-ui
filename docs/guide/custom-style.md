@@ -4,13 +4,13 @@ Snake UI 支持从主题令牌、页面作用域样式和组件根节点三个�
 
 ## 选择定制方式
 
-| 需求 | 推荐方式 |
-| --- | --- |
-| 全应用品牌色、文字色、背景色 | 注册主题或覆盖主题色板 |
-| 页面区域随主题和暗色模式变化 | 使用 `var(--snake-color-*)` |
-| 单个组件调整间距或尺寸 | `custom-style` / `custom-class` |
-| 所有页面获得主题变量 | Config Provider + 虚拟根组件 |
-| 修改组件没有公开的内部结构 | 优先提出组件 API，而不是穿透内部样式 |
+| 需求                         | 推荐方式                             |
+| ---------------------------- | ------------------------------------ |
+| 全应用品牌色、文字色、背景色 | 注册主题或覆盖主题色板               |
+| 页面区域随主题和暗色模式变化 | 使用 `var(--snake-color-*)`          |
+| 单个组件调整间距或尺寸       | `custom-style` / `custom-class`      |
+| 所有页面获得主题变量         | Config Provider + 虚拟根组件         |
+| 修改组件没有公开的内部结构   | 优先提出组件 API，而不是穿透内部样式 |
 
 ## 引入样式入口
 
@@ -35,7 +35,7 @@ npm 安装时在 `App.vue` 引入完整样式：
     color: var(--snake-color-text);
     background: var(--snake-color-surface);
     border: 1px solid var(--snake-color-border);
-    box-shadow: 0 8rpx 24rpx var(--snake-color-shadow);
+    box-shadow: 0 4px 12px var(--snake-color-shadow);
 }
 
 .order-card__action {
@@ -57,7 +57,7 @@ npm 安装时在 `App.vue` 引入完整样式：
 .my-page {
     :deep(.my-tabs) {
         background-color: #f7f8fa;
-        border-radius: 12rpx;
+        border-radius: 6px;
     }
 }
 ```

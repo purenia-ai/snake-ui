@@ -34,7 +34,7 @@ export interface NoticeBarProps {
     bgColor?: string;
     /** 内容颜色。 */
     color?: string;
-    /** 文字尺寸，数值按 rpx 处理。 */
+    /** 文字尺寸，数值按 px（375 稿）处理。 */
     fontSize?: UnitValue;
     /** 动画持续时间。 */
     duration?: number;

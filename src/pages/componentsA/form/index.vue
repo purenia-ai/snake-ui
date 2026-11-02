@@ -365,20 +365,20 @@ function resetForm() {
 .demo-form {
     display: flex;
     flex-direction: column;
-    gap: 20rpx;
-    padding: 24rpx;
+    gap: 10px;
+    padding: 12px;
 }
 .demo-variant-title {
     color: var(--snake-color-text);
-    font-size: 28rpx;
+    font-size: 14px;
     font-weight: 600;
 }
 .demo-form__group + .demo-form__group {
-    margin-top: 20rpx;
+    margin-top: 10px;
 }
 .demo-form__group-title {
     color: var(--snake-color-text);
-    font-size: 26rpx;
+    font-size: 13px;
     font-weight: 600;
 }
 .demo-form__group-head {
@@ -389,24 +389,24 @@ function resetForm() {
 .demo-form__group-tip,
 .demo-form__control-tip {
     color: var(--snake-color-text-muted);
-    font-size: 22rpx;
+    font-size: 11px;
 }
 .demo-form__contact-actions,
 .demo-form__actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 20rpx;
+    gap: 10px;
 }
 .demo-form__contact-actions,
 .demo-form__actions {
-    padding-top: 12rpx;
+    padding-top: 6px;
 }
 .demo-form__message {
     color: var(--snake-color-text-secondary);
-    font-size: 26rpx;
+    font-size: 13px;
 }
 .demo-form__control-tip {
     display: block;
-    padding: 20rpx 24rpx 0;
+    padding: 10px 12px 0;
 }
 </style>

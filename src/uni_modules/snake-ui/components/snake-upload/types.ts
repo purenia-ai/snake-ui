@@ -67,7 +67,10 @@ export interface UploadRequestResult extends Record<string, unknown> {
 }
 
 /** 自定义上传函数，可用于 OSS、腾讯云、七牛或业务上传接口。 */
-export type UploadRequest = (file: UploadFileItem, context: UploadRequestContext) => Promise<UploadRequestResult | string>;
+export type UploadRequest = (
+    file: UploadFileItem,
+    context: UploadRequestContext
+) => Promise<UploadRequestResult | string>;
 
 /** Upload 回调中用于区分组件实例的索引。 */
 export type UploadIndex = string | number;
@@ -170,8 +173,8 @@ export type UploadEmits = {
 export const uploadProps = {
     customStyle: { type: [String, Object] as PropType<StyleValue>, default: '' },
     customClass: { type: String, default: '' },
-    width: { type: [Number, String], default: 200 },
-    height: { type: [Number, String], default: 200 },
+    width: { type: [Number, String], default: 100 },
+    height: { type: [Number, String], default: 100 },
     maxCount: { type: [Number, String], default: 52 },
     deletable: { type: Boolean, default: true },
     mode: { type: String as PropType<'grid' | 'list'>, default: 'grid' },

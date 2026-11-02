@@ -15,7 +15,7 @@
                 v-if="tmpConfig.loading"
                 type="circular"
                 color="currentColor"
-                custom-style="margin-right: 16rpx;"
+                custom-style="margin-right: 8px;"
             ></snake-loading>
             <!-- 其它类型仍然使用图标 -->
             <snake-icon
@@ -23,7 +23,7 @@
                 :name="iconName"
                 :size="20"
                 color="currentColor"
-                custom-style="margin-right: 10rpx;"
+                custom-style="margin-right: 5px;"
             ></snake-icon>
         </view>
         <text class="snake-toast__text">{{ tmpConfig.title }}</text>
@@ -248,12 +248,12 @@ defineExpose<ToastExpose>({
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 30rpx 40rpx;
-    font-size: 28rpx;
+    padding: 15px 20px;
+    font-size: 14px;
     text-align: center;
     color: var(--snake-color-white, #ffffff);
     background: var(--snake-color-text, #303133);
-    border-radius: 8rpx;
+    border-radius: 4px;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s;

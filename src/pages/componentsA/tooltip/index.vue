@@ -201,17 +201,17 @@ function updateValue(key: string, value: DemoValue) {
 @import '../../../common/demo.scss';
 
 .tooltip-demo {
-    margin-bottom: 28rpx;
-    border: 1rpx dashed var(--snake-color-divider);
-    border-radius: 10rpx;
+    margin-bottom: 14px;
+    border: 1px dashed var(--snake-color-divider);
+    border-radius: 5px;
     background: var(--snake-color-surface);
 }
 
 .tooltip-demo__heading {
     display: block;
-    padding: 24rpx 24rpx 12rpx;
+    padding: 12px 12px 6px;
     color: var(--snake-color-text);
-    font-size: 30rpx;
+    font-size: 15px;
     font-weight: 600;
     text-align: center;
 }
@@ -219,15 +219,15 @@ function updateValue(key: string, value: DemoValue) {
 .tooltip-demo__description,
 .tooltip-demo__hint {
     display: block;
-    padding: 0 24rpx 24rpx;
+    padding: 0 12px 12px;
     color: var(--snake-color-text-muted);
-    font-size: 23rpx;
+    font-size: 11.5px;
     line-height: 1.5;
     text-align: center;
 }
 
 .tooltip-demo__directions {
-    padding: 32rpx 18rpx 48rpx;
+    padding: 16px 9px 24px;
 }
 
 .tooltip-demo__direction-row,
@@ -238,30 +238,30 @@ function updateValue(key: string, value: DemoValue) {
 }
 
 .tooltip-demo__direction-middle {
-    margin: 64rpx 0;
+    margin: 32px 0;
 }
 
 .tooltip-demo__direction-column {
     display: flex;
     flex-direction: column;
-    gap: 28rpx;
+    gap: 14px;
 }
 
 .tooltip-demo__trigger {
     display: inline-flex;
     box-sizing: border-box;
-    min-width: 168rpx;
-    min-height: 76rpx;
+    min-width: 84px;
+    min-height: 38px;
     margin: 0;
-    padding: 0 16rpx;
+    padding: 0 8px;
     align-items: center;
     justify-content: center;
-    gap: 8rpx;
-    border: 1rpx solid var(--snake-color-primary);
-    border-radius: 8rpx;
+    gap: 4px;
+    border: 1px solid var(--snake-color-primary);
+    border-radius: 4px;
     background: var(--snake-color-primary);
     color: #fff;
-    font-size: 26rpx;
+    font-size: 13px;
     font-weight: 500;
     line-height: 1.2;
 }
@@ -271,32 +271,32 @@ function updateValue(key: string, value: DemoValue) {
 }
 
 .tooltip-demo__trigger--primary {
-    min-height: 80rpx;
-    padding: 0 20rpx;
-    font-size: 28rpx;
+    min-height: 40px;
+    padding: 0 10px;
+    font-size: 14px;
 }
 
 .tooltip-demo__stage {
     display: flex;
-    min-height: 160rpx;
+    min-height: 80px;
     align-items: center;
     justify-content: center;
 }
 
 .tooltip-demo__controlled {
     display: flex;
-    min-height: 160rpx;
+    min-height: 80px;
     align-items: center;
     justify-content: space-around;
-    gap: 20rpx;
-    padding: 0 20rpx;
+    gap: 10px;
+    padding: 0 10px;
 }
 
 .tooltip-demo__content {
     display: flex;
-    max-width: 320rpx;
+    max-width: 160px;
     flex-direction: column;
-    gap: 8rpx;
+    gap: 4px;
     white-space: nowrap;
 }
 </style>

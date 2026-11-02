@@ -25,7 +25,7 @@ preview: /pages/componentsA/checkbox/index
 </snake-checkbox-group>
 ```
 
-布局通过 `width` 与 `wrap` 控制：`width` 指定每个 checkbox 的占宽（需带单位，如 `width="240rpx"`），`wrap` 让每个 checkbox 单独占一行。
+布局通过 `width` 与 `wrap` 控制：`width` 指定每个 checkbox 的占宽（需带单位，如 `width="120px"`），`wrap` 让每个 checkbox 单独占一行。
 
 ## 表单值与数量限制
 
@@ -57,7 +57,7 @@ preview: /pages/componentsA/checkbox/index
 | `size`                        | 整体尺寸 small/default/large | `string`               | `''`       |
 | `width`                       | 每个 checkbox 占组宽度       | `string`               | `'auto'`   |
 | `wrap`                        | 是否每个 checkbox 都换行     | `boolean`              | `false`    |
-| `iconSize`                    | 勾号大小，单位 rpx           | `UnitValue`            | `''`       |
+| `iconSize`                    | 勾号大小，单位 px（375 稿）  | `UnitValue`            | `''`       |
 | `customClass` / `customStyle` | 自定义类名和样式             | `string \| style`      | `''`       |
 
 #### Events
@@ -80,7 +80,7 @@ preview: /pages/componentsA/checkbox/index
 | `shape`                       | square/circle 形状                   | `string`           | 继承 Group   |
 | `disabled` / `labelDisabled`  | 禁用 / 禁止点击标签选中              | `boolean`          | `false`      |
 | `activeColor`                 | 选中颜色，设置后覆盖父级 activeColor | `string`           | 主题色       |
-| `iconSize` / `labelSize`      | 勾号与标签字号，单位 rpx             | `UnitValue`        | 按 size 预设 |
+| `iconSize` / `labelSize`      | 勾号与标签字号，单位 px（375 稿）    | `UnitValue`        | 按 size 预设 |
 | `size`                        | 整体尺寸 small/default/large         | `string`           | 继承 Group   |
 | `customClass` / `customStyle` | 自定义类名和样式                     | `string \| style`  | `''`         |
 

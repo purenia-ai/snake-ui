@@ -117,19 +117,19 @@ function tryAgain() {
 .demo-stack {
     display: flex;
     flex-direction: column;
-    gap: 24rpx;
+    gap: 12px;
 }
 .demo-variant-title {
     color: var(--snake-color-text);
-    font-size: 28rpx;
+    font-size: 14px;
     font-weight: 600;
     line-height: 1.4;
 }
 .demo-empty-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16rpx;
-    border-radius: 16rpx;
+    gap: 8px;
+    border-radius: 8px;
     background: var(--snake-color-surface-muted);
 }
 </style>

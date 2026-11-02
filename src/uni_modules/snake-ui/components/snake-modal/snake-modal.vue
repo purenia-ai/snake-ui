@@ -206,11 +206,11 @@ const uZIndex = computed(() => Number(effectiveConfig.value.zIndex || zIndex.pop
 // 弹窗自定义样式（宽度 / 圆角 / 键盘避让）
 const popupStyle = computed(() => {
     const style: Record<string, string> = {
-        width: addUnit(effectiveConfig.value.width, 'rpx'),
-        borderRadius: addUnit(effectiveConfig.value.borderRadius, 'rpx')
+        width: addUnit(effectiveConfig.value.width),
+        borderRadius: addUnit(effectiveConfig.value.borderRadius)
     };
     if (effectiveConfig.value.negativeTop) {
-        style.marginTop = `-${addUnit(effectiveConfig.value.negativeTop, 'rpx')}`;
+        style.marginTop = `-${addUnit(effectiveConfig.value.negativeTop)}`;
     }
     return style;
 });
@@ -382,7 +382,7 @@ defineExpose({
 .snake-modal {
     height: auto;
     overflow: hidden;
-    font-size: 32rpx;
+    font-size: 16px;
     background-color: var(--snake-color-surface, #fff);
 
     &__btn--hover {
@@ -396,7 +396,7 @@ defineExpose({
     }
 
     &__title {
-        padding-top: 48rpx;
+        padding-top: 24px;
         font-weight: 500;
         text-align: center;
         color: var(--snake-color-text, #303133);
@@ -404,8 +404,8 @@ defineExpose({
 
     &__content {
         &__message {
-            padding: 48rpx;
-            font-size: 30rpx;
+            padding: 24px;
+            font-size: 15px;
             text-align: center;
             color: var(--snake-color-text-secondary, #909399);
         }
@@ -413,20 +413,20 @@ defineExpose({
 
     &__footer {
         display: flex;
-        border-top: 1rpx solid var(--snake-color-border, #f6f6f6);
+        border-top: 1px solid var(--snake-color-border, #f6f6f6);
 
         &__button {
             flex: 1;
-            height: 100rpx;
-            line-height: 100rpx;
-            font-size: 32rpx;
+            height: 50px;
+            line-height: 50px;
+            font-size: 16px;
             box-sizing: border-box;
             cursor: pointer;
             text-align: center;
-            border-radius: 4rpx;
+            border-radius: 2px;
 
             &--border-left {
-                border-left: 1rpx solid var(--snake-color-border, #f6f6f6);
+                border-left: 1px solid var(--snake-color-border, #f6f6f6);
             }
         }
     }

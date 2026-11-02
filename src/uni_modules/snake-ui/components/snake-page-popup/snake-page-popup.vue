@@ -2,7 +2,7 @@
     <view class="page-popup">
         <snake-popup
             v-model="show"
-            border-radius="10rpx"
+            border-radius="5px"
             :mode="datas.popupMode"
             :bg-color="datas.popupMode === 'bottom' ? 'var(--snake-color-surface, #fff)' : 'transparent'"
         >
@@ -110,34 +110,34 @@ function handleToPage() {
     .page-popup-popup {
         box-sizing: border-box;
         width: 100%;
-        height: 572rpx;
+        height: 286px;
 
         &--center {
-            width: 540rpx;
-            height: 740rpx;
+            width: 270px;
+            height: 370px;
 
             .page-popup-img {
-                height: 740rpx !important;
+                height: 370px !important;
             }
         }
 
         .page-popup-img {
             display: block;
             width: 100%;
-            height: 524rpx;
-            border-radius: 6rpx;
+            height: 262px;
+            border-radius: 3px;
         }
     }
 
     .close {
         display: flex;
         justify-content: flex-end;
-        padding-top: 16rpx;
-        padding-right: 16rpx;
+        padding-top: 8px;
+        padding-right: 8px;
 
         &--center {
             position: absolute;
-            bottom: -100rpx;
+            bottom: -50px;
             left: 50%;
             transform: translateX(-50%);
         }

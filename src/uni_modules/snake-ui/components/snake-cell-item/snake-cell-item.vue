@@ -21,7 +21,7 @@
         <view v-else class="snake-cell-item__icon-slot">
             <slot name="icon" />
         </view>
-        <view class="snake-cell-item__title" :style="[{ width: titleWidth ? `${titleWidth}rpx` : 'auto' }, titleStyle]">
+        <view class="snake-cell-item__title" :style="[{ width: titleWidth ? `${titleWidth}px` : 'auto' }, titleStyle]">
             <template v-if="title !== ''">{{ title }}</template>
             <slot v-else name="title" />
             <view v-if="label || slots.label" class="snake-cell-item__label" :style="[labelStyle]">
@@ -78,14 +78,14 @@ function onClick() {
     display: flex;
     align-items: center;
     width: 100%;
-    padding: 26rpx 32rpx;
-    font-size: 28rpx;
-    line-height: 54rpx;
+    padding: 13px 16px;
+    font-size: 14px;
+    line-height: 27px;
     color: var(--snake-color-text-secondary, #606266);
     text-align: left;
 }
 .snake-cell-item__title {
-    font-size: 28rpx;
+    font-size: 14px;
 }
 .snake-cell-item__left-icon-wrap,
 .snake-cell-item__right-icon-wrap,
@@ -93,17 +93,17 @@ function onClick() {
 .snake-cell-item__right {
     display: flex;
     align-items: center;
-    height: 48rpx;
+    height: 24px;
 }
 .snake-cell-item__left-icon-wrap,
 .snake-cell-item__icon-slot {
-    margin-right: 10rpx;
-    font-size: 32rpx;
+    margin-right: 5px;
+    font-size: 16px;
 }
 .snake-cell-item__right-icon-wrap {
-    margin-left: 10rpx;
+    margin-left: 5px;
     color: var(--snake-color-text-muted, #909399);
-    font-size: 28rpx;
+    font-size: 14px;
 }
 .snake-cell-item__right {
     line-height: 1;
@@ -125,15 +125,15 @@ function onClick() {
     top: 0;
 }
 .snake-cell-item__label {
-    margin-top: 6rpx;
-    font-size: 26rpx;
-    line-height: 36rpx;
+    margin-top: 3px;
+    font-size: 13px;
+    line-height: 18px;
     color: var(--snake-color-text-muted, #909399);
     word-wrap: break-word;
 }
 .snake-cell-item__value {
     overflow: hidden;
-    font-size: 26rpx;
+    font-size: 13px;
     color: var(--snake-color-text-muted, #909399);
     text-align: right;
     vertical-align: middle;
@@ -149,7 +149,7 @@ function onClick() {
     content: '*';
     position: absolute;
     left: 8px;
-    margin-top: 4rpx;
+    margin-top: 2px;
     font-size: 14px;
     color: var(--snake-color-error, #fa3534);
 }

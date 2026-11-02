@@ -48,9 +48,9 @@ function updateValue(key: string, value: DemoValue) {
 </script>
 <style scoped>
 .custom-card {
-    margin: 0 24rpx;
-    padding: 48rpx 28rpx;
-    border-radius: 20rpx;
+    margin: 0 12px;
+    padding: 24px 14px;
+    border-radius: 10px;
     color: #eafff4;
     background: linear-gradient(135deg, var(--snake-color-primary-deeper), var(--snake-color-primary-deep));
     font-weight: 700;

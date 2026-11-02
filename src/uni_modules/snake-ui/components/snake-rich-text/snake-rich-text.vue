@@ -18,7 +18,7 @@ withDefaults(defineProps<RichTextProps>(), { datas: () => ({}) });
 
 <style lang="scss" scoped>
 .richtext {
-    padding: 0 20rpx;
+    padding: 0 10px;
     white-space: break-word !important;
 }
 </style>

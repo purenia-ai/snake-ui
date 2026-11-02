@@ -82,9 +82,9 @@ function updateValue(key: string, value: DemoValue) {
 <style scoped>
 .demo-hint {
     display: block;
-    margin: 16rpx;
+    margin: 8px;
     color: var(--snake-color-text-muted);
-    font-size: 22rpx;
+    font-size: 11px;
     line-height: 1.5;
 }
 </style>

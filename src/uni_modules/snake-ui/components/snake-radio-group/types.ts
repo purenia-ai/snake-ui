@@ -20,7 +20,7 @@ export interface RadioGroupProps {
     labelDisabled?: boolean;
     /** 组件形状，square 为方形，circle 为圆形。 */
     shape?: 'square' | 'circle';
-    /** 勾选图标的大小，单位 rpx。 */
+    /** 勾选图标的大小，单位 px（375 稿）。 */
     iconSize?: UnitValue;
     /** 每个 radio 占 snake-radio-group 的宽度，需带单位。 */
     width?: UnitValue;

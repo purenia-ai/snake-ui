@@ -3,7 +3,7 @@
         <view
             class="images-wrap"
             :style="{
-                padding: addUnit(imgsData.paddingLR, 'rpx')
+                padding: from750(imgsData.paddingLR)
             }"
             :role="imgsData.url ? 'link' : 'img'"
             :tabindex="imgsData.url ? 0 : -1"
@@ -14,7 +14,7 @@
             <image
                 class="image"
                 :src="imgsData.src"
-                :style="{ height: !imgsData.height ? '100%' : addUnit(imgsData.height, 'rpx') }"
+                :style="{ height: !imgsData.height ? '100%' : from750(imgsData.height) }"
                 :aria-label="imgsData.alt || undefined"
                 :mode="imgMode"
             ></image>
@@ -29,7 +29,7 @@
  */
 
 import { computed } from 'vue';
-import { addUnit } from '../../libs/function/unit';
+import { from750 } from '../../libs/function/unit';
 import { navTo } from '../../libs/function/route';
 import type { ImagesProps } from './types';
 

@@ -7,9 +7,9 @@
             :mode="datas.direction === 'row' ? 'horizontal' : 'vertical'"
             :color="datas.textColor"
             :custom-style="{
-                height: (datas.height || 72) + 'rpx',
-                lineHeight: (datas.height || 72) + 'rpx',
-                padding: `0 ${datas.pageMargin}rpx`
+                height: $snake.from750(datas.height || 72),
+                lineHeight: $snake.from750(datas.height || 72),
+                padding: `0 ${$snake.from750(datas.pageMargin)}`
             }"
             @click="handleNotice"
         />

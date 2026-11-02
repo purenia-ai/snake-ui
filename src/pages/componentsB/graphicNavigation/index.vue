@@ -70,8 +70,8 @@ function handleNavClick({ index }: { index: number }) {
 <style scoped>
 .navigation-feedback {
     display: block;
-    margin: 16rpx 24rpx 0;
+    margin: 8px 12px 0;
     color: var(--snake-color-text-secondary);
-    font-size: 24rpx;
+    font-size: 12px;
 }
 </style>

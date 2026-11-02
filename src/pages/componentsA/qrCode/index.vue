@@ -149,18 +149,18 @@ function exportQr() {
 .qr-demo__box {
     display: flex;
     flex-direction: column;
-    gap: 24rpx;
+    gap: 12px;
     align-items: center;
-    padding: 32rpx 24rpx;
-    border-radius: 16rpx;
+    padding: 16px 12px;
+    border-radius: 8px;
     background: var(--snake-color-surface-muted);
 }
 
 .qr-demo__plate {
-    padding: 20rpx;
-    border-radius: 16rpx;
+    padding: 10px;
+    border-radius: 8px;
     background: #ffffff;
-    box-shadow: 0 6rpx 20rpx rgba(38, 39, 58, 0.08);
+    box-shadow: 0 3px 10px rgba(38, 39, 58, 0.08);
 }
 
 .qr-demo__plate--hover {
@@ -170,19 +170,19 @@ function exportQr() {
 .qr-demo__url {
     max-width: 80%;
     overflow: hidden;
-    padding: 8rpx 22rpx;
-    border-radius: 999rpx;
+    padding: 4px 11px;
+    border-radius: 499.5px;
     background: var(--snake-color-surface);
     color: var(--snake-color-text-secondary);
     font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-    font-size: 20rpx;
+    font-size: 10px;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .qr-demo__actions {
     display: flex;
-    gap: 20rpx;
+    gap: 10px;
 }
 
 /* 配色预设：横滑小卡，选中态仅描边提示 */
@@ -195,37 +195,37 @@ function exportQr() {
     display: inline-flex;
     flex-direction: column;
     align-items: center;
-    width: 200rpx;
-    padding: 22rpx 16rpx 18rpx;
-    border: 2rpx solid transparent;
-    border-radius: 16rpx;
+    width: 100px;
+    padding: 11px 8px 9px;
+    border: 1px solid transparent;
+    border-radius: 8px;
 
     &.is-active {
         border-color: rgba(var(--snake-color-primary-rgb), 0.9);
     }
 
     & + & {
-        margin-left: 20rpx;
+        margin-left: 10px;
     }
 }
 
 .qr-preset__name {
-    margin-top: 12rpx;
+    margin-top: 6px;
     color: var(--snake-color-text);
-    font-size: 24rpx;
+    font-size: 12px;
     font-weight: 600;
 }
 
 .qr-preset__dots {
     display: flex;
-    gap: 8rpx;
-    margin-top: 8rpx;
+    gap: 4px;
+    margin-top: 4px;
 }
 
 .qr-preset__dot {
-    width: 14rpx;
-    height: 14rpx;
-    border: 1rpx solid rgba(38, 39, 58, 0.15);
+    width: 7px;
+    height: 7px;
+    border: 1px solid rgba(38, 39, 58, 0.15);
     border-radius: 50%;
 
     &--light {
@@ -234,9 +234,9 @@ function exportQr() {
 }
 
 .qr-presets__hint {
-    margin-top: 18rpx;
+    margin-top: 9px;
     color: var(--snake-color-text-muted);
-    font-size: 20rpx;
+    font-size: 10px;
     text-align: center;
 }
 </style>

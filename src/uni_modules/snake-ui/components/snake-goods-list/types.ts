@@ -40,7 +40,7 @@ export interface GoodsListProps<Item extends GoodsListItem = GoodsListItem> {
     assets?: Record<string, string>;
     /** 商品排列方式。 */
     layout?: 'grid' | 'swipe';
-    /** 商品卡片圆角，单位 rpx。 */
+    /** 商品卡片圆角，单位 px（375 稿）。 */
     cardRadius?: number;
     /** 是否显示营销标签。 */
     showTag?: boolean;

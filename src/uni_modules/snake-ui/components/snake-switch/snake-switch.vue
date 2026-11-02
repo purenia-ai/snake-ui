@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<SwitchProps>(), {
     disabled: false,
     activeColor: 'var(--snake-color-primary,#06D290)',
     inactiveColor: 'var(--snake-color-border,#dcdfe6)',
-    space: 2,
+    space: 1,
     vibrateShort: false,
     customClass: '',
     customStyle: ''
@@ -46,21 +46,21 @@ const emit = defineEmits<SwitchEmits>();
 const formItem = inject(formItemKey, null);
 const checked = computed(() => Object.is(props.modelValue, props.activeValue));
 const resolvedSize = computed(() => {
-    const size = props.size || formItem?.size.value || 50;
-    return size === 'small' ? 40 : size === 'large' ? 60 : size === 'default' ? 50 : size;
+    const size = props.size || formItem?.size.value || 25;
+    return size === 'small' ? 20 : size === 'large' ? 30 : size === 'default' ? 25 : size;
 });
 const numericSize = computed(() => Number.parseFloat(String(resolvedSize.value)) || 50);
 const numericSpace = computed(() => Number.parseFloat(String(props.space)) || 0);
 const trackStyle = computed(() => ({
-    width: addUnit(numericSize.value * 1.8, 'rpx'),
-    height: addUnit(resolvedSize.value, 'rpx'),
-    padding: addUnit(props.space, 'rpx'),
+    width: addUnit(numericSize.value * 1.8),
+    height: addUnit(resolvedSize.value),
+    padding: addUnit(props.space),
     backgroundColor: checked.value ? props.activeColor : props.inactiveColor
 }));
 const thumbStyle = computed(() => ({
-    width: addUnit(numericSize.value - numericSpace.value * 2, 'rpx'),
-    height: addUnit(numericSize.value - numericSpace.value * 2, 'rpx'),
-    transform: checked.value ? `translateX(${addUnit(numericSize.value * 0.8, 'rpx')})` : 'translateX(0)'
+    width: addUnit(numericSize.value - numericSpace.value * 2),
+    height: addUnit(numericSize.value - numericSpace.value * 2),
+    transform: checked.value ? `translateX(${addUnit(numericSize.value * 0.8)})` : 'translateX(0)'
 }));
 function toggle(event: unknown) {
     emit('click', event);
@@ -86,7 +86,7 @@ function toggle(event: unknown) {
 }
 .snake-switch:focus-visible {
     outline: 2px solid var(--snake-color-primary, #06d290);
-    outline-offset: 4rpx;
+    outline-offset: 2px;
 }
 .snake-switch__thumb {
     display: flex;
@@ -94,7 +94,7 @@ function toggle(event: unknown) {
     justify-content: center;
     border-radius: 50%;
     background: #fff;
-    box-shadow: 0 2rpx 8rpx rgba(15, 30, 24, 0.18);
+    box-shadow: 0 1px 4px rgba(15, 30, 24, 0.18);
     transition: transform 0.2s;
 }
 </style>

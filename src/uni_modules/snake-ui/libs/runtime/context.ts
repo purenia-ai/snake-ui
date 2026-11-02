@@ -3,9 +3,14 @@ import type { RuntimeOptions } from './types';
 
 /**
  * 运行时上下文只保存宿主应用注入的可选能力。
- * 它是模块级状态，供非 Vue 组件场景读取；Vue 组件同时可通过 runtimeOptionsKey 注入。
+ * 状态挂在 globalThis 上做跨模块实例单例：dev 场景下宿主可能同时加载两份模块图
+ * （插件经 npm 包入口被 vite 预打包成一份；easycom 组件按文件路径以源码形态加载另一份），
+ * 模块级 const 会让两份图各持一份状态，插件注入的能力对组件不可见。
  */
-const runtime: RuntimeOptions = {};
+const RUNTIME_STATE_KEY = '__SNAKE_UI_RUNTIME__';
+const carrier = (typeof globalThis !== 'undefined' ? globalThis : {}) as Record<string, unknown>;
+if (!carrier[RUNTIME_STATE_KEY]) carrier[RUNTIME_STATE_KEY] = {};
+const runtime: RuntimeOptions = carrier[RUNTIME_STATE_KEY] as RuntimeOptions;
 
 /** 提供给 Vue 组件树的只读运行时上下文 key。 */
 export const runtimeOptionsKey: InjectionKey<Readonly<RuntimeOptions>> = Symbol('snake-ui-options');

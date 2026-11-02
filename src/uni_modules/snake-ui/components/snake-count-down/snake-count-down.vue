@@ -8,54 +8,54 @@
         <view
             class="snake-countdown__colon"
             :style="{
-                fontSize: separatorSize + 'rpx',
+                fontSize: $snake.addUnit(separatorSize),
                 color: separatorColor,
-                paddingBottom: separator === 'colon' ? '4rpx' : 0
+                paddingBottom: separator === 'colon' ? '2px' : 0
             }"
             v-if="showDays && (!hideZeroDay || d !== '00')"
         >
             {{ separator === 'colon' && showHours ? ':' : t('day') }}
         </view>
         <view class="snake-countdown__item" :style="itemStyle" v-if="showHours">
-            <view class="snake-countdown__time" :style="{ fontSize: fontSize + 'rpx', color: color }">
+            <view class="snake-countdown__time" :style="{ fontSize: $snake.addUnit(fontSize), color: color }">
                 {{ h }}
             </view>
         </view>
         <view
             class="snake-countdown__colon"
             :style="{
-                fontSize: separatorSize + 'rpx',
+                fontSize: $snake.addUnit(separatorSize),
                 color: separatorColor,
-                paddingBottom: separator === 'colon' ? '4rpx' : 0
+                paddingBottom: separator === 'colon' ? '2px' : 0
             }"
             v-if="showHours"
         >
             {{ separator === 'colon' && showMinutes ? ':' : t('hour') }}
         </view>
         <view class="snake-countdown__item" :style="itemStyle" v-if="showMinutes">
-            <view class="snake-countdown__time" :style="{ fontSize: fontSize + 'rpx', color: color }">
+            <view class="snake-countdown__time" :style="{ fontSize: $snake.addUnit(fontSize), color: color }">
                 {{ i }}
             </view>
         </view>
         <view
             class="snake-countdown__colon"
             :style="{
-                fontSize: separatorSize + 'rpx',
+                fontSize: $snake.addUnit(separatorSize),
                 color: separatorColor,
-                paddingBottom: separator === 'colon' ? '4rpx' : 0
+                paddingBottom: separator === 'colon' ? '2px' : 0
             }"
             v-if="showMinutes"
         >
             {{ separator === 'colon' && showSeconds ? ':' : t('minute') }}
         </view>
         <view class="snake-countdown__item" :style="itemStyle" v-if="showSeconds">
-            <view class="snake-countdown__time" :style="{ fontSize: fontSize + 'rpx', color: color }">
+            <view class="snake-countdown__time" :style="{ fontSize: $snake.addUnit(fontSize), color: color }">
                 {{ s }}
             </view>
         </view>
         <view
             class="snake-countdown__colon"
-            :style="{ fontSize: separatorSize + 'rpx', color: separatorColor, paddingBottom: 0 }"
+            :style="{ fontSize: $snake.addUnit(separatorSize), color: separatorColor, paddingBottom: 0 }"
             v-if="showSeconds && separator === 'zh'"
         >
             {{ t('second') }}
@@ -92,8 +92,8 @@ const seconds = ref(0);
 const itemStyle = computed(() => {
     const style: Record<string, string> = {};
     if (props.height) {
-        style.height = props.height + 'rpx';
-        style.width = props.height + 'rpx';
+        style.height = uni.$snake.addUnit(props.height);
+        style.width = uni.$snake.addUnit(props.height);
     }
     if (props.showBorder) {
         style.borderStyle = 'solid';
@@ -109,7 +109,7 @@ const itemStyle = computed(() => {
 /** 数字文字的样式。 */
 const letterStyle = computed(() => {
     const style: Record<string, string> = {};
-    if (props.fontSize) style.fontSize = props.fontSize + 'rpx';
+    if (props.fontSize) style.fontSize = uni.$snake.addUnit(props.fontSize);
     if (props.color) style.color = props.color;
     return style;
 });
@@ -210,8 +210,8 @@ defineExpose<CountDownExpose>({
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rpx;
-    border-radius: 6rpx;
+    padding: 1px;
+    border-radius: 3px;
     white-space: nowrap;
     transform: translateZ(0);
 }
@@ -224,8 +224,8 @@ defineExpose<CountDownExpose>({
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 5rpx;
-    padding-bottom: 4rpx;
+    padding: 0 2.5px;
+    padding-bottom: 2px;
     line-height: 1;
 }
 </style>

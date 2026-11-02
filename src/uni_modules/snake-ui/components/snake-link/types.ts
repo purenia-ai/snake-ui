@@ -6,8 +6,8 @@ export const linkProps = {
     text: { type: [String, Number] as PropType<string | number>, default: '' },
     /** 文字颜色。 */
     color: { type: String, default: 'var(--snake-color-primary, #06D290)' },
-    /** 字体大小，数值按 rpx 处理。 */
-    fontSize: { type: [String, Number] as PropType<string | number>, default: 28 },
+    /** 字体大小，数值按 px（375 稿）处理。 */
+    fontSize: { type: [String, Number] as PropType<string | number>, default: 14 },
     /** 是否显示下划线。 */
     underLine: { type: Boolean, default: false },
     /** 要跳转的链接。 */

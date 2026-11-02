@@ -15,7 +15,7 @@
         role="navigation"
         @touchmove.stop.prevent="() => {}"
     >
-        <view class="snake-tabbar__inner" :style="{ height: addUnit(height, 'rpx') }">
+        <view class="snake-tabbar__inner" :style="{ height: addUnit(height) }">
             <view
                 v-for="(item, index) in tabItems"
                 :key="String(itemKey(item, index))"
@@ -33,7 +33,7 @@
                 :aria-current="isActive(item, index) ? 'page' : undefined"
                 @tap.stop="clickItem(item, index)"
             >
-                <view class="snake-tabbar__icon-wrap" :style="{ gap: addUnit(item.gap ?? gap, 'rpx') }">
+                <view class="snake-tabbar__icon-wrap" :style="{ gap: addUnit(item.gap ?? gap) }">
                     <SnakeIcon
                         v-if="iconName(item, index)"
                         :name="iconName(item, index)"
@@ -49,7 +49,7 @@
                         {{ item.isDot ? '' : (item.badge ?? item.count) }}
                     </text>
                 </view>
-                <text class="snake-tabbar__label" :style="{ fontSize: addUnit(itemTextSize(item), 'rpx') }">
+                <text class="snake-tabbar__label" :style="{ fontSize: addUnit(itemTextSize(item)) }">
                     {{ item.text }}
                 </text>
             </view>
@@ -89,11 +89,11 @@ const props = withDefaults(defineProps<TabbarProps>(), {
     borderTop: true,
     hideTabBar: true,
     midButton: false,
-    iconSize: 40,
-    midButtonSize: 100,
-    textSize: 22,
-    gap: 5,
-    height: 104,
+    iconSize: 20,
+    midButtonSize: 50,
+    textSize: 11,
+    gap: 2.5,
+    height: 52,
     zIndex: 120
 });
 
@@ -122,10 +122,10 @@ const rootStyle = computed(() => [
 const spacerStyle = computed(() => {
     if (!props.fixed) return { height: '0' };
 
-    // 凸起按钮会越过栏顶；占位同步增加 60rpx，防止页面末尾内容被遮住。
-    const midButtonHeight = props.midButton ? '60rpx' : '1px';
+    // 凸起按钮会越过栏顶；占位同步增加 30px，防止页面末尾内容被遮住。
+    const midButtonHeight = props.midButton ? '30px' : '1px';
     const safeAreaHeight = props.safeAreaInsetBottom ? ' + env(safe-area-inset-bottom)' : '';
-    return { height: `calc(${addUnit(props.height, 'rpx')} + ${midButtonHeight}${safeAreaHeight})` };
+    return { height: `calc(${addUnit(props.height)} + ${midButtonHeight}${safeAreaHeight})` };
 });
 
 onMounted(() => {
@@ -170,7 +170,7 @@ function itemKey(item: TabbarItem, index: number) {
 function itemStyle(item: TabbarItem): Record<string, string> {
     const style: Record<string, string> = {};
     if (item.width !== undefined && item.width !== null && item.width !== '') {
-        const width = addUnit(item.width, 'rpx');
+        const width = addUnit(item.width);
         style.flex = `0 0 ${width}`;
         style.width = width;
     } else if (hasCustomWidth.value) {
@@ -186,7 +186,7 @@ function itemStyle(item: TabbarItem): Record<string, string> {
         // 图标绝对定位后不再参与文档流，额外顶部内边距为标签留出空间。
         const size =
             Number.parseFloat(String(itemIconSize(item))) || Number.parseFloat(String(props.midButtonSize)) || 100;
-        style.paddingTop = addUnit(size / 2 + 8, 'rpx');
+        style.paddingTop = addUnit(size / 2 + 4);
         style.boxSizing = 'border-box';
     }
     return style;
@@ -218,7 +218,7 @@ async function clickItem(item: TabbarItem, index: number) {
     width: 100%;
 }
 .snake-tabbar {
-    box-shadow: 0 -6rpx 24rpx rgba(6, 39, 28, 0.07);
+    box-shadow: 0 -3px 12px rgba(6, 39, 28, 0.07);
     color: var(--snake-tabbar-inactive);
 }
 .snake-tabbar--border {
@@ -246,7 +246,7 @@ async function clickItem(item: TabbarItem, index: number) {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 5rpx;
+    gap: 2.5px;
     color: var(--snake-tabbar-inactive);
     transition:
         background-color 0.2s,
@@ -264,9 +264,9 @@ async function clickItem(item: TabbarItem, index: number) {
 }
 .snake-tabbar__item--mid .snake-tabbar__icon-wrap {
     position: absolute;
-    top: -55rpx;
-    width: 100rpx;
-    height: 100rpx;
+    top: -27.5px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     background: var(--snake-color-surface);
     box-shadow: 0 0 0 1px var(--snake-color-divider);
@@ -277,25 +277,25 @@ async function clickItem(item: TabbarItem, index: number) {
 .snake-tabbar__icon-wrap {
     position: relative;
     display: flex;
-    height: 42rpx;
+    height: 21px;
     align-items: center;
     justify-content: center;
 }
 .snake-tabbar__badge {
     position: absolute;
-    top: -8rpx;
-    right: -24rpx;
-    min-width: 24rpx;
-    padding: 2rpx 6rpx;
-    border-radius: 999rpx;
+    top: -4px;
+    right: -12px;
+    min-width: 12px;
+    padding: 1px 3px;
+    border-radius: 499.5px;
     color: #fff;
     background: var(--snake-color-error, #f56c6c);
-    font-size: 16rpx;
-    line-height: 20rpx;
+    font-size: 8px;
+    line-height: 10px;
     text-align: center;
 }
 .snake-tabbar__label {
-    font-size: 22rpx;
+    font-size: 11px;
     line-height: 1.2;
 }
 @media (prefers-reduced-motion: reduce) {

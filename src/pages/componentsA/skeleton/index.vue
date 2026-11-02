@@ -115,32 +115,32 @@ function updateValue(key: string, value: DemoValue) {
 .demo-skeleton-showcase,
 .demo-card,
 .demo-skeleton-item-showcase {
-    padding: 24rpx;
-    border: 1rpx solid var(--snake-color-divider);
-    border-radius: 16rpx;
+    padding: 12px;
+    border: 1px solid var(--snake-color-divider);
+    border-radius: 8px;
     background: var(--snake-color-surface);
 }
 .demo-skeleton-item-showcase {
     display: flex;
     flex-direction: column;
-    gap: 24rpx;
+    gap: 12px;
 }
 .demo-skeleton-content,
 .demo-card--loaded {
     color: var(--snake-color-text-secondary);
-    font-size: 28rpx;
+    font-size: 14px;
 }
 .demo-card-grid {
     display: flex;
-    gap: 20rpx;
+    gap: 10px;
 }
 .demo-card {
     box-sizing: border-box;
-    width: calc((100% - 20rpx) / 2);
+    width: calc((100% - 10px) / 2);
 }
 .demo-card--loaded {
     display: flex;
-    min-height: 240rpx;
+    min-height: 120px;
     align-items: center;
     justify-content: center;
 }

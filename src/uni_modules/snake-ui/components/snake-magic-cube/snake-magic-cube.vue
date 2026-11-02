@@ -2,8 +2,8 @@
     <view
         class="magiccube"
         :style="{
-            'padding-left': datas.pageMargin + 'rpx',
-            'padding-right': datas.pageMargin + 'rpx',
+            'padding-left': $snake.from750(datas.pageMargin),
+            'padding-right': $snake.from750(datas.pageMargin),
             background: datas.bgColor
         }"
         v-if="datas.imageTypeObj"
@@ -23,7 +23,7 @@
                         datas.imageTypeObj[datas.rubiksCubeType][index] &&
                         datas.imageTypeObj[datas.rubiksCubeType][index].length
                     "
-                    :style="{ width: '100%', padding: `0 ${datas.imgMargin}rpx` }"
+                    :style="{ width: '100%', padding: `0 ${$snake.from750(datas.imgMargin)}` }"
                 >
                     <pictureads
                         :datas="{
@@ -47,7 +47,7 @@
                         datas.imageTypeObj[datas.rubiksCubeType][index] &&
                         datas.imageTypeObj[datas.rubiksCubeType][index].length
                     "
-                    :style="{ width: '100%', padding: `0 ${datas.imgMargin}rpx` }"
+                    :style="{ width: '100%', padding: `0 ${$snake.from750(datas.imgMargin)}` }"
                 >
                     <pictureads
                         :datas="{
@@ -71,7 +71,7 @@
                         datas.imageTypeObj[datas.rubiksCubeType][0] &&
                         datas.imageTypeObj[datas.rubiksCubeType][0].length
                     "
-                    :style="{ width: '100%', paddingRight: `${datas.imgMargin}rpx` }"
+                    :style="{ width: '100%', paddingRight: `${$snake.from750(datas.imgMargin)}` }"
                 >
                     <pictureads
                         :datas="{
@@ -116,7 +116,10 @@
                         datas.imageTypeObj[datas.rubiksCubeType][0] &&
                         datas.imageTypeObj[datas.rubiksCubeType][0].length
                     "
-                    :style="{ width: '100%', padding: `0 ${datas.imgMargin}rpx ${datas.imgMargin}rpx` }"
+                    :style="{
+                        width: '100%',
+                        padding: `0 ${$snake.from750(datas.imgMargin)} ${$snake.from750(datas.imgMargin)}`
+                    }"
                 >
                     <pictureads
                         :datas="{
@@ -137,7 +140,10 @@
                             datas.imageTypeObj[datas.rubiksCubeType][index + 1] &&
                             datas.imageTypeObj[datas.rubiksCubeType][index + 1].length
                         "
-                        :style="{ width: '100%', padding: `${datas.imgMargin}rpx ${datas.imgMargin}rpx 0` }"
+                        :style="{
+                            width: '100%',
+                            padding: `${$snake.from750(datas.imgMargin)} ${$snake.from750(datas.imgMargin)} 0`
+                        }"
                     >
                         <pictureads
                             :datas="{
@@ -163,7 +169,7 @@
                         datas.imageTypeObj[datas.rubiksCubeType][0] &&
                         datas.imageTypeObj[datas.rubiksCubeType][0].length
                     "
-                    :style="{ width: '100%', paddingRight: `${datas.imgMargin}rpx` }"
+                    :style="{ width: '100%', paddingRight: `${$snake.from750(datas.imgMargin)}` }"
                 >
                     <pictureads
                         :datas="{
@@ -213,8 +219,8 @@
                             "
                             :style="{
                                 width: '100%',
-                                paddingTop: datas.imgMargin + 'rpx',
-                                paddingRight: index == 0 ? datas.imgMargin + 'rpx' : 0
+                                paddingTop: $snake.from750(datas.imgMargin),
+                                paddingRight: index == 0 ? $snake.from750(datas.imgMargin) : 0
                             }"
                         >
                             <pictureads
@@ -239,7 +245,7 @@
                     class="hw imgone"
                     v-for="(item, index) in 2"
                     :key="index"
-                    :style="{ height: datas.heights / 2 + 'rpx' }"
+                    :style="{ height: $snake.from375(datas.heights / 2) }"
                 >
                     <view
                         v-if="
@@ -247,7 +253,7 @@
                             datas.imageTypeObj[datas.rubiksCubeType][index + 1] &&
                             datas.imageTypeObj[datas.rubiksCubeType][index + 1].length
                         "
-                        :style="{ width: '100%', padding: `0 ${datas.imgMargin}rpx` }"
+                        :style="{ width: '100%', padding: `0 ${$snake.from750(datas.imgMargin)}` }"
                     >
                         <pictureads
                             :datas="{
@@ -269,7 +275,7 @@
                         datas.imageTypeObj[datas.rubiksCubeType][0] &&
                         datas.imageTypeObj[datas.rubiksCubeType][0].length
                     "
-                    :style="{ width: '100%', padding: `0 ${datas.imgMargin}rpx` }"
+                    :style="{ width: '100%', padding: `0 ${$snake.from750(datas.imgMargin)}` }"
                 >
                     <pictureads
                         :datas="{
@@ -323,8 +329,8 @@
                             "
                             :style="{
                                 width: '100%',
-                                paddingTop: datas.imgMargin + 'rpx',
-                                paddingRight: index == 0 ? datas.imgMargin + 'rpx' : 0
+                                paddingTop: $snake.from750(datas.imgMargin),
+                                paddingRight: index == 0 ? $snake.from750(datas.imgMargin) : 0
                             }"
                         >
                             <pictureads
@@ -348,7 +354,7 @@
                         datas.imageTypeObj[datas.rubiksCubeType][0] &&
                         datas.imageTypeObj[datas.rubiksCubeType][0].length
                     "
-                    :style="{ width: '100%', paddingLeft: `${datas.imgMargin}rpx` }"
+                    :style="{ width: '100%', paddingLeft: `${$snake.from750(datas.imgMargin)}` }"
                 >
                     <pictureads
                         :datas="{
@@ -372,7 +378,7 @@
  */
 
 import PictureAds from '../snake-picture-ads/snake-picture-ads.vue';
-import { pxToRpx } from '../../libs/function/unit';
+import { from375 } from '../../libs/function/unit';
 
 export default {
     name: 'snake-magic-cube',
@@ -433,7 +439,7 @@ export default {
         },
         heightStyle() {
             const style = {};
-            style.height = pxToRpx(this.datas.heights);
+            style.height = from375(this.datas.heights);
             return style;
         }
     },

@@ -76,8 +76,8 @@ function linkTap() {
 <style scoped>
 .parse-feedback {
     display: block;
-    margin: 16rpx;
+    margin: 8px;
     color: var(--snake-color-primary-deep);
-    font-size: 24rpx;
+    font-size: 12px;
 }
 </style>

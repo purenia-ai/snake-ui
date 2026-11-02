@@ -229,44 +229,44 @@ function formatFileSize(bytes?: number) {
     background: var(--snake-color-background, #f6f6f6);
 }
 .upload-demo {
-    margin: 0 -24rpx;
+    margin: 0 -12px;
 }
 .u-demo-wrap {
-    margin-bottom: 20rpx;
-    padding: 34rpx 32rpx 38rpx;
+    margin-bottom: 10px;
+    padding: 17px 16px 19px;
     background: var(--snake-color-surface, #fff);
 }
 .u-demo-wrap:last-child {
     margin-bottom: 0;
 }
 .u-demo-title {
-    margin-bottom: 28rpx;
+    margin-bottom: 14px;
     color: var(--snake-color-text, #303133);
-    font-size: 28rpx;
+    font-size: 14px;
     font-weight: 600;
     line-height: 1.4;
 }
 .u-demo-area {
-    min-height: 80rpx;
+    min-height: 40px;
 }
 .upload-actions {
     display: flex;
-    gap: 16rpx;
-    margin-top: 20rpx;
+    gap: 8px;
+    margin-top: 10px;
 }
 .upload-actions > :deep(*) {
     flex: 1;
 }
 .custom-upload-button {
     display: flex;
-    width: 100rpx;
-    height: 100rpx;
+    width: 50px;
+    height: 50px;
     box-sizing: border-box;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: 1rpx solid var(--snake-color-border);
-    border-radius: 10rpx;
+    border: 1px solid var(--snake-color-border);
+    border-radius: 5px;
     background: var(--snake-color-disabled-bg, #f4f5f6);
 }
 .custom-upload-button--hover,
@@ -274,40 +274,40 @@ function formatFileSize(bytes?: number) {
     opacity: 0.72;
 }
 .custom-upload-button__text {
-    margin-top: 14rpx;
+    margin-top: 7px;
     color: var(--snake-color-text-secondary);
-    font-size: 24rpx;
+    font-size: 12px;
 }
 .custom-file-list {
     display: flex;
     width: 100%;
     flex-direction: column;
-    gap: 16rpx;
-    margin-bottom: 20rpx;
+    gap: 8px;
+    margin-bottom: 10px;
 }
 .custom-file {
     display: flex;
     min-width: 0;
     align-items: center;
-    padding: 22rpx;
-    border: 1rpx solid var(--snake-color-border);
-    border-radius: 8rpx;
+    padding: 11px;
+    border: 1px solid var(--snake-color-border);
+    border-radius: 4px;
     background: var(--snake-color-surface);
 }
 .custom-file__icon {
     display: flex;
-    width: 64rpx;
-    height: 64rpx;
-    flex: 0 0 64rpx;
+    width: 32px;
+    height: 32px;
+    flex: 0 0 32px;
     align-items: center;
     justify-content: center;
-    border-radius: 10rpx;
+    border-radius: 5px;
     background: var(--snake-color-disabled-bg, #f4f5f6);
 }
 .custom-file__content {
     min-width: 0;
     flex: 1;
-    margin-left: 18rpx;
+    margin-left: 9px;
 }
 .custom-file__name,
 .custom-file__meta {
@@ -316,18 +316,18 @@ function formatFileSize(bytes?: number) {
 .custom-file__name {
     overflow: hidden;
     color: var(--snake-color-text);
-    font-size: 26rpx;
+    font-size: 13px;
     line-height: 1.5;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 .custom-file__meta {
-    margin-top: 4rpx;
+    margin-top: 2px;
     color: var(--snake-color-text-muted);
-    font-size: 22rpx;
+    font-size: 11px;
 }
 .custom-file__progress {
-    margin-top: 10rpx;
+    margin-top: 5px;
 }
 .custom-file__status,
 .custom-file__delete {
@@ -335,22 +335,22 @@ function formatFileSize(bytes?: number) {
     flex: 0 0 auto;
     align-items: center;
     justify-content: center;
-    margin-left: 18rpx;
+    margin-left: 9px;
 }
 .custom-file__delete {
-    padding: 8rpx;
+    padding: 4px;
 }
 .custom-file-add {
     display: inline-flex;
-    min-height: 72rpx;
+    min-height: 36px;
     align-items: center;
     justify-content: center;
-    padding: 0 26rpx;
-    border: 1rpx solid var(--snake-color-border);
-    border-radius: 10rpx;
+    padding: 0 13px;
+    border: 1px solid var(--snake-color-border);
+    border-radius: 5px;
     color: var(--snake-color-primary);
     background: var(--snake-color-surface);
-    font-size: 25rpx;
-    gap: 10rpx;
+    font-size: 12.5px;
+    gap: 5px;
 }
 </style>

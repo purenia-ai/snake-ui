@@ -111,34 +111,34 @@ function updateValue(key: string, nextValue: DemoValue) {
 .demo-control-stack {
     display: flex;
     flex-direction: column;
-    gap: 28rpx;
-    padding: 24rpx;
+    gap: 14px;
+    padding: 12px;
 }
 .demo-variant-title {
     color: var(--snake-color-text);
-    font-size: 28rpx;
+    font-size: 14px;
     font-weight: 600;
 }
 .demo-control-stack > text {
     color: var(--snake-color-text-secondary);
-    font-size: 26rpx;
+    font-size: 13px;
 }
 .demo-switch-gallery {
     display: flex;
     flex-wrap: wrap;
-    gap: 32rpx 40rpx;
-    padding: 32rpx 24rpx;
-    border-radius: 16rpx;
+    gap: 16px 20px;
+    padding: 16px 12px;
+    border-radius: 8px;
     background: var(--snake-color-surface-muted);
 }
 .demo-switch-item {
     display: flex;
     flex-direction: column;
-    gap: 14rpx;
+    gap: 7px;
     align-items: center;
 }
 .demo-switch-item > text {
     color: var(--snake-color-text-muted);
-    font-size: 22rpx;
+    font-size: 11px;
 }
 </style>

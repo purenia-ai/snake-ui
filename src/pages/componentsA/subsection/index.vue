@@ -105,11 +105,11 @@ function updateValue(key: string, value: DemoValue) {
 .demo-stack {
     display: flex;
     flex-direction: column;
-    gap: 24rpx;
+    gap: 12px;
 }
 .demo-variant-title {
     color: var(--snake-color-text);
-    font-size: 28rpx;
+    font-size: 14px;
     font-weight: 600;
     line-height: 1.4;
 }

@@ -61,9 +61,9 @@ const beforeToggle = ({ resolve }) => resolve(userHasPermission);
 | `closeOnClickMask`                        | 点击遮罩关闭         | `boolean`                   | `true`               |
 | `closeOnClickSelf`                        | 再次点击当前标题关闭 | `boolean`                   | `true`               |
 | `duration`                                | 面板动画时长，ms     | `number`                    | `300`                |
-| `height`                                  | 菜单栏高度           | `string \| number`          | `40`                 |
+| `height`                                  | 菜单栏高度           | `string \| number`          | `20`                 |
 | `borderBottom`                            | 是否显示底边         | `boolean`                   | `false`              |
-| `titleSize` / `menuIcon` / `menuIconSize` | 标题字号、图标和尺寸 | `string \| number`          | `28` / `down` / `18` |
+| `titleSize` / `menuIcon` / `menuIconSize` | 标题字号、图标和尺寸 | `string \| number`          | `14` / `down` / `18` |
 | `zIndex`                                  | 菜单和弹层层级基准   | `number`                    | `985`                |
 | `customClass` / `customStyle`             | 自定义类名和样式     | `string \| object \| array` | `''`                 |
 

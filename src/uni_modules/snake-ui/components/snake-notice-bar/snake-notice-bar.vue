@@ -76,19 +76,19 @@ const props = withDefaults(defineProps<NoticeBarProps>(), {
     show: undefined,
     autoplay: true,
     volumeIcon: false,
-    volumeSize: 34,
+    volumeSize: 17,
     moreIcon: false,
     closeIcon: false,
     bgColor: '',
     color: '',
-    fontSize: 28,
+    fontSize: 14,
     duration: 3000,
-    speed: 80,
+    speed: 40,
     isCircular: true,
     playState: 'play',
     disableTouch: true,
     borderRadius: 0,
-    padding: '18rpx 24rpx',
+    padding: '9px 12px',
     noListHidden: true,
     customClass: '',
     customStyle: ''
@@ -120,8 +120,7 @@ const marqueeText = computed(() => (props.isCircular ? items.value.join('    ') 
 const canScroll = computed(() => marqueeWidth.value > 0 && contentWidth.value > marqueeWidth.value);
 const hasMarqueeDimensions = computed(() => marqueeWidth.value > 0 && contentWidth.value > 0);
 const speedInPixels = computed(() => {
-    const speed = Math.max(1, Number(props.speed) || 1);
-    return typeof uni === 'undefined' ? speed / 2 : Math.max(1, uni.upx2px(speed));
+    return Math.max(1, Number(props.speed) || 1);
 });
 const marqueeDuration = computed(() => {
     const distance = marqueeWidth.value + contentWidth.value;
@@ -137,8 +136,8 @@ const rootStyle = computed(() => [
     {
         color: themeColor.value,
         backgroundColor: themeBg.value,
-        fontSize: addUnit(props.fontSize, 'rpx'),
-        borderRadius: addUnit(props.borderRadius, 'rpx'),
+        fontSize: addUnit(props.fontSize),
+        borderRadius: addUnit(props.borderRadius),
         padding: props.padding
     },
     props.customStyle
@@ -271,15 +270,15 @@ defineExpose({ reset });
 }
 .snake-notice-bar__leading {
     flex: none;
-    margin-right: 12rpx;
+    margin-right: 6px;
 }
 .snake-notice-bar__trailing {
     flex: none;
-    margin-left: 12rpx;
+    margin-left: 6px;
 }
 .snake-notice-bar__swiper {
     flex: 1;
-    height: 42rpx;
+    height: 21px;
 }
 .snake-notice-bar__item {
     display: flex;

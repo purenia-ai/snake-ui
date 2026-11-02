@@ -72,24 +72,24 @@ function updateValue(key: string, value: DemoValue) {
 
 <style scoped>
 .demo-trigger {
-    padding: 48rpx 24rpx;
+    padding: 24px 12px;
 }
 .demo-variant-title {
     display: block;
-    margin-bottom: 24rpx;
+    margin-bottom: 12px;
     color: var(--snake-color-text);
-    font-size: 28rpx;
+    font-size: 14px;
     font-weight: 600;
 }
 .demo-popup {
-    padding: 40rpx 32rpx calc(40rpx + env(safe-area-inset-bottom));
+    padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
     color: var(--snake-color-text-secondary);
 }
 .demo-popup__title {
     display: block;
-    margin-bottom: 16rpx;
+    margin-bottom: 8px;
     color: var(--snake-color-text);
-    font-size: 34rpx;
+    font-size: 17px;
     font-weight: 700;
 }
 </style>

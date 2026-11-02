@@ -163,7 +163,7 @@ function getAuthorize(event: unknown) {
     align-items: center;
     justify-content: center;
     overflow: visible;
-    padding: 0 40rpx;
+    padding: 0 20px;
     border: 0;
     line-height: 1;
     cursor: pointer;
@@ -178,10 +178,10 @@ function getAuthorize(event: unknown) {
     width: 100%;
 }
 .snake-button__icon:not(.snake-button__icon--standalone) {
-    margin-right: 8rpx;
+    margin-right: 4px;
 }
 .snake-button__loading:not(.snake-button__loading--standalone) {
-    margin-right: 10rpx;
+    margin-right: 5px;
 }
 .snake-button--bold-border {
     border: 1px solid var(--snake-color-white, #fff);
@@ -310,7 +310,7 @@ function getAuthorize(event: unknown) {
 }
 .snake-round-circle,
 .snake-round-circle::after {
-    border-radius: 100rpx;
+    border-radius: 50px;
 }
 .snake-default-hover {
     color: var(--snake-color-primary-dark, #2ebd7c) !important;
@@ -322,39 +322,39 @@ function getAuthorize(event: unknown) {
     background: var(--snake-color-primary-dark, #2ebd7c) !important;
 }
 .snake-size-large {
-    height: 100rpx;
-    font-size: 36rpx;
-    line-height: 100rpx;
+    height: 50px;
+    font-size: 18px;
+    line-height: 50px;
 }
 .snake-size-default {
-    height: 80rpx;
-    font-size: 30rpx;
-    line-height: 80rpx;
+    height: 40px;
+    font-size: 15px;
+    line-height: 40px;
 }
 .snake-size-medium {
     display: inline-flex;
     width: auto;
-    height: 70rpx;
-    padding: 0 80rpx;
-    font-size: 26rpx;
-    line-height: 70rpx;
+    height: 35px;
+    padding: 0 40px;
+    font-size: 13px;
+    line-height: 35px;
 }
 .snake-size-small {
     display: inline-flex;
     width: auto;
-    height: 60rpx;
-    padding: 0 30rpx;
-    font-size: 24rpx;
-    line-height: 60rpx;
+    height: 30px;
+    padding: 0 15px;
+    font-size: 12px;
+    line-height: 30px;
 }
 .snake-size-mini {
     display: inline-flex;
     width: auto;
-    height: 50rpx;
-    padding: 0 20rpx;
+    height: 25px;
+    padding: 0 10px;
     padding-top: 1px;
-    font-size: 22rpx;
-    line-height: 50rpx;
+    font-size: 11px;
+    line-height: 25px;
 }
 /* 镂空按钮按压态：保持浅色底，仅加深文字与边框，不反转为实心。 */
 .snake-primary-plain-hover {

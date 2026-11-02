@@ -43,8 +43,8 @@ function updateValue(key: string, value: DemoValue) {
 
 <style scoped>
 .demo-tab-content {
-    padding: 64rpx 24rpx;
-    border-radius: 16rpx;
+    padding: 32px 12px;
+    border-radius: 8px;
     background: var(--snake-color-surface-muted);
     color: var(--snake-demo-accent-text);
     text-align: center;

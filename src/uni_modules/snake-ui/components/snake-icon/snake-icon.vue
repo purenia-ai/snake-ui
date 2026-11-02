@@ -79,9 +79,9 @@ const iconClass = computed(() => {
 
 const iconStyle = computed(() => {
     const style: Record<string, string> = {
-        fontSize: props.size === 'inherit' ? 'inherit' : addUnit(props.size, 'rpx'),
+        fontSize: props.size === 'inherit' ? 'inherit' : addUnit(props.size),
         fontWeight: props.bold ? 'bold' : 'normal',
-        top: addUnit(props.top, 'rpx')
+        top: addUnit(props.top)
     };
 
     if (props.showDecimalIcon && props.inactiveColor && !themeTypes.includes(props.inactiveColor)) {
@@ -96,15 +96,15 @@ const iconStyle = computed(() => {
 const isImg = computed(() => props.name.includes('/'));
 
 const imgStyle = computed(() => ({
-    width: props.width ? addUnit(props.width, 'rpx') : addUnit(props.size, 'rpx'),
-    height: props.height ? addUnit(props.height, 'rpx') : addUnit(props.size, 'rpx')
+    width: props.width ? addUnit(props.width) : addUnit(props.size),
+    height: props.height ? addUnit(props.height) : addUnit(props.size)
 }));
 
 const decimalIconStyle = computed(() => {
     const style: Record<string, string> = {
-        fontSize: props.size === 'inherit' ? 'inherit' : addUnit(props.size, 'rpx'),
+        fontSize: props.size === 'inherit' ? 'inherit' : addUnit(props.size),
         fontWeight: props.bold ? 'bold' : 'normal',
-        top: addUnit(props.top, 'rpx'),
+        top: addUnit(props.top),
         width: `${props.percent}%`
     };
 
@@ -133,11 +133,11 @@ const decimalIconClass = computed(() => {
 
 const labelStyle = computed(() => ({
     color: props.labelColor,
-    fontSize: addUnit(props.labelSize, 'rpx'),
-    marginLeft: props.labelPos === 'right' ? addUnit(props.space || props.marginLeft, 'rpx') : 0,
-    marginTop: props.labelPos === 'bottom' ? addUnit(props.space || props.marginTop, 'rpx') : 0,
-    marginRight: props.labelPos === 'left' ? addUnit(props.space || props.marginRight, 'rpx') : 0,
-    marginBottom: props.labelPos === 'top' ? addUnit(props.space || props.marginBottom, 'rpx') : 0
+    fontSize: addUnit(props.labelSize),
+    marginLeft: props.labelPos === 'right' ? addUnit(props.space || props.marginLeft) : 0,
+    marginTop: props.labelPos === 'bottom' ? addUnit(props.space || props.marginTop) : 0,
+    marginRight: props.labelPos === 'left' ? addUnit(props.space || props.marginRight) : 0,
+    marginBottom: props.labelPos === 'top' ? addUnit(props.space || props.marginBottom) : 0
 }));
 
 function onClick(event: unknown) {

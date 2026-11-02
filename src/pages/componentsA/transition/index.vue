@@ -96,44 +96,44 @@ function updateValue(key: string, value: DemoValue) {
 .demo-stack {
     display: flex;
     flex-direction: column;
-    gap: 24rpx;
+    gap: 12px;
 }
 .demo-variant-title {
     color: var(--snake-color-text);
-    font-size: 28rpx;
+    font-size: 14px;
     font-weight: 600;
     line-height: 1.4;
 }
 .demo-feedback-row {
     display: flex;
-    min-height: 120rpx;
+    min-height: 60px;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 48rpx;
-    padding: 24rpx;
-    border-radius: 16rpx;
+    gap: 24px;
+    padding: 12px;
+    border-radius: 8px;
     background: var(--snake-color-surface-muted);
 }
 .demo-transition-chip {
-    padding: 20rpx 28rpx;
-    border-radius: 12rpx;
+    padding: 10px 14px;
+    border-radius: 6px;
     background: var(--snake-color-primary-light);
     color: var(--snake-demo-accent-text);
 }
 .demo-transition-preset {
     display: flex;
-    min-width: 120rpx;
+    min-width: 60px;
     flex-direction: column;
     align-items: center;
-    gap: 16rpx;
+    gap: 8px;
 }
 .demo-transition-card {
     display: flex;
-    min-height: 220rpx;
+    min-height: 110px;
     align-items: center;
     justify-content: center;
-    border-radius: 20rpx;
+    border-radius: 10px;
     color: #fff;
     background: linear-gradient(135deg, var(--snake-color-primary-deep), var(--snake-color-primary-deeper));
 }

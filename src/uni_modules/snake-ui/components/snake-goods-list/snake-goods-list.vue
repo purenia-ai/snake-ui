@@ -38,10 +38,10 @@
                         </template>
 
                         <!-- 验货标签 -->
-                        <view style="position: absolute; top: 20rpx; left: 20rpx" v-if="item.saleType === 'send'">
+                        <view style="position: absolute; top: 10px; left: 10px" v-if="item.saleType === 'send'">
                             <image
                                 v-if="assets.goodsInspection"
-                                style="width: 80rpx; height: 24rpx"
+                                style="width: 40px; height: 12px"
                                 :src="assets.goodsInspection"
                                 mode="widthFix"
                             />
@@ -108,11 +108,11 @@
                                 </view>
 
                                 <view class="size" v-if="item.size">
-                                    <view class="line-clamp-1" style="max-width: 100rpx">{{ item.size }}</view>
+                                    <view class="line-clamp-1" style="max-width: 50px">{{ item.size }}</view>
                                     <view
                                         v-if="item.gradeName || item.grade"
                                         class="line-clamp-1"
-                                        style="max-width: 90rpx"
+                                        style="max-width: 45px"
                                     >
                                         · {{ item.gradeName || item.grade }}
                                     </view>
@@ -130,8 +130,8 @@
                                 >
                                     <text
                                         style="
-                                            font-size: 20rpx;
-                                            line-height: 30rpx;
+                                            font-size: 10px;
+                                            line-height: 15px;
                                             color: transparent;
                                             background: linear-gradient(90deg, #dabda8 0%, #eedacc 100%);
                                             -webkit-background-clip: text;
@@ -154,7 +154,7 @@
                                 <view
                                     v-if="item.packTag === true"
                                     class="item-tags"
-                                    style="color: #2d57e7; background: #eaf1ff; border: 2rpx solid #2d57e7"
+                                    style="color: #2d57e7; background: #eaf1ff; border: 1px solid #2d57e7"
                                 >
                                     支持打包
                                 </view>
@@ -165,7 +165,7 @@
                                         isEndTime(item)
                                     "
                                     class="item-tags"
-                                    style="color: #7a3bff; background: #f3eaff; border: 2rpx solid #f3eaff"
+                                    style="color: #7a3bff; background: #f3eaff; border: 1px solid #f3eaff"
                                 >
                                     捡漏
                                 </view>
@@ -173,11 +173,11 @@
                         </template>
                         <!--  拍卖 -->
                         <template v-if="listType === 'auction'">
-                            <view class="goods-tag" style="padding-bottom: 10rpx">
+                            <view class="goods-tag" style="padding-bottom: 5px">
                                 <view
                                     v-if="item.activityInfo && item.activityInfo.endTime && isEndTime(item)"
                                     class="item-tags"
-                                    style="color: #7a3bff; background: #f3eaff; border: 2rpx solid #f3eaff"
+                                    style="color: #7a3bff; background: #f3eaff; border: 1px solid #f3eaff"
                                 >
                                     捡漏
                                 </view>
@@ -252,10 +252,10 @@
                     </template>
 
                     <!-- 验货标签 -->
-                    <view style="position: absolute; top: 20rpx; left: 20rpx" v-if="item.saleType === 'send'">
+                    <view style="position: absolute; top: 10px; left: 10px" v-if="item.saleType === 'send'">
                         <image
                             v-if="assets.goodsInspection"
-                            style="width: 80rpx; height: 24rpx"
+                            style="width: 40px; height: 12px"
                             :src="assets.goodsInspection"
                             mode="widthFix"
                         />
@@ -312,8 +312,8 @@
                             </view>
 
                             <view class="size" v-if="item.size">
-                                <view class="line-clamp-1" style="max-width: 100rpx">{{ item.size }}</view>
-                                <view v-if="item.gradeName || item.grade" class="line-clamp-1" style="max-width: 90rpx">
+                                <view class="line-clamp-1" style="max-width: 50px">{{ item.size }}</view>
+                                <view v-if="item.gradeName || item.grade" class="line-clamp-1" style="max-width: 45px">
                                     · {{ item.gradeName || item.grade }}
                                 </view>
                             </view>
@@ -326,8 +326,8 @@
                             <view v-if="item.jokerDiscount" class="item-tags" style="background: #26273a; border: none">
                                 <text
                                     style="
-                                        font-size: 20rpx;
-                                        line-height: 30rpx;
+                                        font-size: 10px;
+                                        line-height: 15px;
                                         color: transparent;
                                         background: linear-gradient(90deg, #dabda8 0%, #eedacc 100%);
                                         -webkit-background-clip: text;
@@ -348,7 +348,7 @@
                             <view
                                 v-if="item.packTag === true"
                                 class="item-tags"
-                                style="color: #2d57e7; background: #eaf1ff; border: 2rpx solid #2d57e7"
+                                style="color: #2d57e7; background: #eaf1ff; border: 1px solid #2d57e7"
                             >
                                 支持打包
                             </view>
@@ -357,7 +357,7 @@
                                     item.activityInfo && item.activityInfo.activityType === 'auction' && isEndTime(item)
                                 "
                                 class="item-tags"
-                                style="color: #7a3bff; background: #f3eaff; border: 2rpx solid #f3eaff"
+                                style="color: #7a3bff; background: #f3eaff; border: 1px solid #f3eaff"
                             >
                                 捡漏
                             </view>
@@ -365,11 +365,11 @@
                     </template>
                     <!--  拍卖 -->
                     <template v-if="listType === 'auction'">
-                        <view class="goods-tag" style="padding-bottom: 10rpx">
+                        <view class="goods-tag" style="padding-bottom: 5px">
                             <view
                                 v-if="item.activityInfo && item.activityInfo.endTime && isEndTime(item)"
                                 class="item-tags"
-                                style="color: #7a3bff; background: #f3eaff; border: 2rpx solid #f3eaff"
+                                style="color: #7a3bff; background: #f3eaff; border: 1px solid #f3eaff"
                             >
                                 捡漏
                             </view>
@@ -469,20 +469,25 @@ export default {
     },
     computed: {
         listStyle() {
-            return { padding: `15rpx ${this.pageMargin + this.imageMargin}rpx 0`, backgroundColor: this.bgColor };
+            return {
+                padding: `7.5px ${uni.$snake.from750(this.pageMargin + this.imageMargin)} 0`,
+                backgroundColor: this.bgColor
+            };
         },
         itemStyle() {
             const style = {
                 width:
                     this.layout === 'swipe'
-                        ? '300rpx'
-                        : `calc(${100 / (this.commodityType + 2)}% - ${this.imageMargin}rpx)`,
-                borderRadius: `${this.cardRadius}rpx`
+                        ? '150px'
+                        : `calc(${100 / (this.commodityType + 2)}% - ${uni.$snake.from750(this.imageMargin)})`,
+                borderRadius: uni.$snake.from750(this.cardRadius)
             };
             return style;
         },
         imageStyle() {
-            return { borderRadius: `${this.cardRadius}rpx ${this.cardRadius}rpx 0 0` };
+            return {
+                borderRadius: `${uni.$snake.from750(this.cardRadius)} ${uni.$snake.from750(this.cardRadius)} 0 0`
+            };
         },
         // 报价按钮背景颜色
         btnBgStyle() {
@@ -550,7 +555,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    padding: 20rpx 20rpx 0;
+    padding: 10px 10px 0;
 }
 .goods-list-scroll {
     width: 100%;
@@ -559,21 +564,21 @@ export default {
 .goods-list--swipe {
     display: inline-flex;
     flex-wrap: nowrap;
-    gap: 10rpx;
+    gap: 5px;
     min-width: 100%;
     box-sizing: border-box;
 }
 .goods-list--swipe .item {
     display: inline-block;
-    flex: 0 0 300rpx;
+    flex: 0 0 150px;
     white-space: normal;
 }
 
 .item {
-    margin-bottom: 20rpx;
-    // width: calc(50% - 10rpx);
+    margin-bottom: 10px;
+    // width: calc(50% - 5px);
     background: var(--snake-color-surface, #fff);
-    border-radius: 10rpx;
+    border-radius: 5px;
 }
 
 .card-img {
@@ -582,9 +587,9 @@ export default {
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 345rpx;
+    height: 172.5px;
     overflow: hidden;
-    border-radius: 10rpx 10rpx 0 0;
+    border-radius: 5px 5px 0 0;
 }
 
 // 已售出蒙层
@@ -600,8 +605,8 @@ export default {
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 155rpx;
-        height: 155rpx;
+        width: 77.5px;
+        height: 77.5px;
         transform: translate(-50%, -50%);
     }
 }
@@ -614,39 +619,39 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 362rpx;
-    height: 44rpx;
+    width: 181px;
+    height: 22px;
     font-family: PingFangSC-Regular;
-    font-size: 24rpx;
+    font-size: 12px;
     background: rgba(62, 62, 66, 0.7);
 }
 
 // 标签
 .auction-tag {
     position: absolute;
-    top: 4rpx;
-    right: 16rpx;
+    top: 2px;
+    right: 8px;
 
     .image-warp {
         position: relative;
 
         .new-image {
-            width: 158rpx;
-            height: 50rpx;
+            width: 79px;
+            height: 25px;
         }
 
         .hot-image {
-            width: 176rpx;
-            height: 50rpx;
+            width: 88px;
+            height: 25px;
         }
 
         .tag-text {
             position: absolute;
-            top: 16rpx;
-            left: 60rpx;
+            top: 8px;
+            left: 30px;
             overflow: hidden;
             font-family: PingFangSC-Regular;
-            font-size: 20rpx;
+            font-size: 10px;
             font-weight: 400;
             color: #ffffff;
             white-space: nowrap;
@@ -661,10 +666,10 @@ export default {
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 44rpx;
+    height: 22px;
     font-family: PingFangSC-Regular;
-    font-size: 20rpx;
-    line-height: 44rpx;
+    font-size: 10px;
+    line-height: 22px;
     color: var(--snake-color-text-muted, #888891);
 
     .price {
@@ -672,7 +677,7 @@ export default {
     }
 
     .text {
-        margin-left: 6rpx;
+        margin-left: 3px;
     }
 }
 
@@ -680,15 +685,15 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 12rpx 20rpx 21rpx;
+    padding: 6px 10px 10.5px;
 }
 
 .goods-name {
-    height: 64rpx;
+    height: 32px;
     font-family: PingFangSC-Regular;
-    font-size: 24rpx;
+    font-size: 12px;
     font-weight: 400;
-    line-height: 32rpx;
+    line-height: 16px;
     color: var(--snake-color-text, #0f1113);
 }
 
@@ -696,17 +701,17 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-top: 26rpx;
+    padding-top: 13px;
     color: var(--snake-color-text, #1f1f27);
 
     .price {
         font-family: DIN-Bold;
-        font-size: 38rpx;
+        font-size: 19px;
         font-weight: bold;
         color: var(--snake-color-text, #26273a);
 
         &::before {
-            font-size: 28rpx;
+            font-size: 14px;
             content: '¥';
         }
     }
@@ -717,7 +722,7 @@ export default {
         align-items: center;
         justify-content: flex-end;
         font-family: PingFangSC-Regular;
-        font-size: 20rpx;
+        font-size: 10px;
         font-weight: 400;
         color: var(--snake-color-text-secondary, #646471);
     }
@@ -728,26 +733,26 @@ export default {
 
         .price {
             font-family: Arial-BoldMT;
-            font-size: 36rpx;
+            font-size: 18px;
             font-weight: bold;
             color: var(--snake-color-text, #1f1f27);
 
             &::before {
-                font-size: 24rpx;
+                font-size: 12px;
                 content: '¥';
             }
         }
 
         .text {
-            margin-left: 2rpx;
+            margin-left: 1px;
             font-family: PingFangSC-Light;
-            font-size: 22rpx;
+            font-size: 11px;
             font-weight: 300;
             color: var(--snake-color-text-secondary, #646471);
         }
 
         .offer__price {
-            font-size: 24rpx;
+            font-size: 12px;
             font-weight: 400;
             color: var(--snake-color-text-secondary, #646471);
         }
@@ -758,35 +763,35 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 128rpx;
-    height: 44rpx;
+    width: 64px;
+    height: 22px;
     font-family: PingFangSC-Medium;
-    font-size: 26rpx;
+    font-size: 13px;
     font-weight: 500;
     color: #2d57e7;
     text-align: center;
-    // line-height: 44rpx;
-    border: 2rpx solid #2d57e7;
-    border-radius: 2rpx;
+    // line-height: 22px;
+    border: 1px solid #2d57e7;
+    border-radius: 1px;
 }
 
 .goods-tag {
     display: flex;
     align-items: center;
-    margin-top: 8rpx;
+    margin-top: 4px;
 
     .item-tags {
         display: flex;
         align-items: center;
-        height: 32rpx;
-        padding: 0 8rpx;
-        margin-right: 8rpx;
-        font-size: 20rpx;
+        height: 16px;
+        padding: 0 4px;
+        margin-right: 4px;
+        font-size: 10px;
         color: var(--snake-color-error, #fd5b5b);
         white-space: nowrap;
         background: transparent;
-        border: 2rpx solid var(--snake-color-error, #fd5b5b);
-        border-radius: 2rpx;
+        border: 1px solid var(--snake-color-error, #fd5b5b);
+        border-radius: 1px;
     }
 }
 </style>

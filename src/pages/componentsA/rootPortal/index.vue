@@ -111,30 +111,30 @@ function updateValue(key: string, value: DemoValue) {
 .demo-stack {
     display: flex;
     flex-direction: column;
-    gap: 24rpx;
+    gap: 12px;
 }
 .demo-variant-title {
     color: var(--snake-color-text);
-    font-size: 28rpx;
+    font-size: 14px;
     font-weight: 600;
     line-height: 1.4;
 }
 .demo-portal-cage {
     display: flex;
-    min-height: 360rpx;
+    min-height: 180px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 20rpx;
-    padding: 32rpx;
+    gap: 10px;
+    padding: 16px;
     overflow: hidden;
-    border: 2rpx dashed var(--snake-color-border);
-    border-radius: 16rpx;
+    border: 1px dashed var(--snake-color-border);
+    border-radius: 8px;
     background: var(--snake-color-surface-muted);
 }
 .demo-portal-tip {
     color: var(--snake-color-text);
-    font-size: 26rpx;
+    font-size: 13px;
     line-height: 1.5;
     text-align: center;
 }
@@ -142,17 +142,17 @@ function updateValue(key: string, value: DemoValue) {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16rpx;
-    padding: 40rpx 32rpx;
+    gap: 8px;
+    padding: 20px 16px;
 }
 .demo-portal-title {
     color: var(--snake-color-text);
-    font-size: 30rpx;
+    font-size: 15px;
     font-weight: 600;
 }
 .demo-portal-text {
     color: var(--snake-color-text);
-    font-size: 26rpx;
+    font-size: 13px;
     line-height: 1.5;
     text-align: center;
 }

@@ -8,7 +8,7 @@ description: 用 5 分钟在 uni-app Vue 3 项目中安装、配置并运行第�
 
 ## 开始前确认
 
-准备一个可正常运行的 uni-app Vue 3 项目，并确认项目支持 SCSS 与 `rpx`。完整版本要求和平台差异见[运行环境与能力边界](/guide/compatibility)。
+准备一个可正常运行的 uni-app Vue 3 项目，并确认项目支持 SCSS 与 px（375 稿）。完整版本要求和平台差异见[运行环境与能力边界](/guide/compatibility)。
 
 ## 1. 安装 Snake UI
 
@@ -91,12 +91,12 @@ function handleClick() {
 
 <style lang="scss" scoped>
 .page {
-    padding: 32rpx;
+    padding: 16px;
 }
 
 .title {
     display: block;
-    margin-bottom: 24rpx;
+    margin-bottom: 12px;
 }
 </style>
 ```

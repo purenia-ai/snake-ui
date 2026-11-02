@@ -54,7 +54,7 @@ Popup 适合承载需要暂时打断页面的补充内容。简单反馈优先�
 | `safeAreaInsetBottom` / `safeAreaInsetTop`    | 安全区                                                   | `boolean` | `false`                     |
 | `customClass` / `customStyle`                 | 面板类名和样式                                           | 多类型    | `''`                        |
 
-`round` 为数字或字符串时按 rpx 处理，`true` 使用主题大圆角令牌。center 模式四角全圆；四边模式只圆远离屏幕边缘的一侧。四边弹层进出场为整块滑入或滑出。
+`round` 为数字或字符串时按 px（375 稿）处理，`true` 使用主题大圆角令牌。center 模式四角全圆；四边模式只圆远离屏幕边缘的一侧。四边弹层进出场为整块滑入或滑出。
 
 ### Events
 

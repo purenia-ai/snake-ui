@@ -86,7 +86,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .jumpApplet {
-    margin: 10rpx 40rpx;
+    margin: 5px 20px;
 }
 
 .jumpAppletBtn {

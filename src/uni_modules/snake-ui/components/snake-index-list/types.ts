@@ -106,10 +106,9 @@ export function indexFromTouch(clientY: number, railTop: number, railHeight: num
     return Math.max(0, Math.min(length - 1, Math.floor(((clientY - railTop) / railHeight) * length)));
 }
 
-/** offsetTop 值转 px 数值：rpx / 裸数字按 rpx 换算。 */
+/** offsetTop 值转 px 数值：裸数字按 px（375 稿）处理。 */
 export function offsetTopPx(value: string | number | null | undefined): number {
     const number = Number.parseFloat(String(value ?? 0));
     if (!Number.isFinite(number)) return 0;
-    if (typeof value === 'string' && value.trim().endsWith('px')) return number;
-    return typeof uni !== 'undefined' && typeof uni.upx2px === 'function' ? uni.upx2px(number) : number;
+    return number;
 }

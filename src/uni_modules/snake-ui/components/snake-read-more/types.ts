@@ -7,8 +7,8 @@ export const readMoreProps = {
     customStyle: { type: [String, Object, Array] as PropType<StyleValue>, default: '' },
     /** 根节点自定义类名。 */
     customClass: { type: String, default: '' },
-    /** 默认的显示占位高度，数值按 rpx 处理，内容超出才显示展开按钮。 */
-    showHeight: { type: [Number, String] as PropType<number | string>, default: 400 },
+    /** 默认的显示占位高度，数值按 px（375 稿）处理，内容超出才显示展开按钮。 */
+    showHeight: { type: [Number, String] as PropType<number | string>, default: 200 },
     /** 展开后是否显示收起按钮。 */
     toggle: { type: Boolean, default: false },
     /** 收起状态的提示文字。 */
@@ -17,16 +17,16 @@ export const readMoreProps = {
     openText: { type: String, default: '' },
     /** 提示文字的颜色。 */
     color: { type: String, default: 'var(--snake-color-primary, #06D290)' },
-    /** 提示文字的大小，数值按 rpx 处理。 */
-    fontSize: { type: [Number, String] as PropType<number | string>, default: 28 },
+    /** 提示文字的大小，数值按 px（375 稿）处理。 */
+    fontSize: { type: [Number, String] as PropType<number | string>, default: 14 },
     /** 收起时覆盖在内容底部的阴影样式，对象形式。 */
     shadowStyle: {
         type: [Object, Array] as PropType<StyleValue>,
         default: () => ({
             backgroundImage:
                 'linear-gradient(-180deg, rgba(255, 255, 255, 0) 0%, var(--snake-color-surface, #fff) 80%)',
-            paddingTop: '300rpx',
-            marginTop: '-300rpx'
+            paddingTop: '150px',
+            marginTop: '-150px'
         })
     },
     /** 段落首行缩进的字符个数。 */

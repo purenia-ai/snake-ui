@@ -63,29 +63,29 @@ function updateValue(key: string, value: DemoValue) {
 }
 .demo-variant-title {
     display: block;
-    padding: 24rpx 24rpx 0;
+    padding: 12px 12px 0;
     color: var(--snake-color-text);
-    font-size: 28rpx;
+    font-size: 14px;
     font-weight: 600;
 }
 .demo-scroll-hero {
     display: flex;
-    height: 360rpx;
+    height: 180px;
     align-items: center;
     justify-content: center;
     color: var(--snake-color-text-secondary);
 }
 .demo-sticky {
-    padding: 24rpx;
+    padding: 12px;
     color: #fff;
     text-align: center;
 }
 .demo-row {
-    margin: 20rpx 24rpx;
-    padding: 32rpx;
-    border: 1rpx solid var(--snake-color-divider);
-    border-radius: 14rpx;
+    margin: 10px 12px;
+    padding: 16px;
+    border: 1px solid var(--snake-color-divider);
+    border-radius: 7px;
     background: var(--snake-color-surface);
-    box-shadow: 0 6rpx 18rpx rgba(16, 84, 56, 0.04);
+    box-shadow: 0 3px 9px rgba(16, 84, 56, 0.04);
 }
 </style>

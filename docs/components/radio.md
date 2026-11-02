@@ -22,7 +22,7 @@ preview: /pages/componentsA/radio/index
 </snake-radio-group>
 ```
 
-布局通过 `width` 与 `wrap` 控制：`width` 指定每个 radio 的占宽（如 `width="240rpx"`），`wrap` 让每个 radio 单独占一行。
+布局通过 `width` 与 `wrap` 控制：`width` 指定每个 radio 的占宽（如 `width="120px"`），`wrap` 让每个 radio 单独占一行。
 
 ## 初始值与禁用项
 
@@ -49,7 +49,7 @@ preview: /pages/componentsA/radio/index
 | `size`                        | 整体尺寸 small/default/large | `string`           | `''`       |
 | `labelDisabled`               | 是否禁止点击标签选中         | `boolean`          | `false`    |
 | `shape`                       | circle/square 形状           | `string`           | `'circle'` |
-| `iconSize`                    | 勾号大小，单位 rpx           | `UnitValue`        | `''`       |
+| `iconSize`                    | 勾号大小，单位 px（375 稿）  | `UnitValue`        | `''`       |
 | `width`                       | 每个 radio 占组宽度          | `UnitValue`        | `'auto'`   |
 | `wrap`                        | 是否每个 radio 都换行        | `boolean`          | `false`    |
 | `customClass` / `customStyle` | 自定义类名和样式             | `string \| style`  | `''`       |
@@ -73,7 +73,7 @@ preview: /pages/componentsA/radio/index
 | `shape`                       | circle/square 形状                   | `string`           | 继承 Group   |
 | `disabled` / `labelDisabled`  | 禁用 / 禁止点击标签选中              | `boolean`          | `false`      |
 | `activeColor`                 | 选中颜色，设置后覆盖父级 activeColor | `string`           | 主题色       |
-| `iconSize` / `labelSize`      | 勾号与标签字号，单位 rpx             | `UnitValue`        | 按 size 预设 |
+| `iconSize` / `labelSize`      | 勾号与标签字号，单位 px（375 稿）    | `UnitValue`        | 按 size 预设 |
 | `size`                        | 整体尺寸 small/default/large         | `string`           | 继承 Group   |
 | `customClass` / `customStyle` | 自定义类名和样式                     | `string \| style`  | `''`         |
 

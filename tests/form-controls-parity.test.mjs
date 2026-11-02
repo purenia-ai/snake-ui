@@ -77,7 +77,7 @@ test('form exposes validation and field lifecycle APIs', async () => {
     assert.match(types, /validate\(callback\?: FormCallback\): Promise<boolean>/);
     assert.doesNotMatch(types + source, /clearValidate/);
     assert.match(source, /errorType: \(\) => \['message', 'toast'\]/);
-    assert.match(source, /labelWidth: 90/);
+    assert.match(source, /labelWidth: 45/);
 });
 
 test('form demo covers rules, nested contacts, and exposed form actions', async () => {
@@ -117,9 +117,9 @@ test('form item matches uView Pro layout, size, slots, and field protocol', asyn
     // form ↔ form-item 单通道：类型化 formKey 注入，不再走组件名爬链
     assert.match(source, /inject\(formKey, null\)/);
     assert.doesNotMatch(source, /useCompRelation|useChildren\(|useParent\(/);
-    assert.match(source, /small: \{ fontSize: 24, iconSize: 28, messageSize: 20 \}/);
-    assert.match(source, /default: \{ fontSize: 28, iconSize: 32, messageSize: 24 \}/);
-    assert.match(source, /large: \{ fontSize: 32, iconSize: 36, messageSize: 28 \}/);
+    assert.match(source, /small: \{ fontSize: 12, iconSize: 14, messageSize: 10 \}/);
+    assert.match(source, /default: \{ fontSize: 14, iconSize: 16, messageSize: 12 \}/);
+    assert.match(source, /large: \{ fontSize: 16, iconSize: 18, messageSize: 14 \}/);
     for (const name of ['leftIconPrefix', 'rightIconPrefix', 'leftIconStyle', 'rightIconStyle']) assert.match(types, new RegExp(name));
     for (const slot of ['leftIcon', 'rightIcon', 'right']) assert.match(source, new RegExp(`name="${slot}"`));
     for (const method of ['validation', 'resetField', 'onFormBlur', 'onFormChange']) assert.match(types + source, new RegExp(method));
@@ -182,7 +182,7 @@ test('textarea protects IME composition and interactive controls support keyboar
     }
 });
 
-test('form controls keep readable rpx size defaults', async () => {
+test('form controls keep readable px size defaults', async () => {
     const [checkbox, checkboxGroup, radio, radioGroup, toggle, slider] = await Promise.all([
         read('components/snake-checkbox/snake-checkbox.vue'),
         read('components/snake-checkbox-group/snake-checkbox-group.vue'),
@@ -192,18 +192,18 @@ test('form controls keep readable rpx size defaults', async () => {
         read('components/snake-slider/snake-slider.vue')
     ]);
     // checkbox 对齐 uView Pro 的 sizeConfig 预设：盒子 34 / 字号 28 / 勾号 20
-    assert.match(checkbox, /small: \{ size: 28, fontSize: 24, iconSize: 16 \}/);
-    assert.match(checkbox, /default: \{ size: 34, fontSize: 28, iconSize: 20 \}/);
-    assert.match(checkbox, /large: \{ size: 40, fontSize: 32, iconSize: 24 \}/);
+    assert.match(checkbox, /small: \{ size: 14, fontSize: 12, iconSize: 8 \}/);
+    assert.match(checkbox, /default: \{ size: 17, fontSize: 14, iconSize: 10 \}/);
+    assert.match(checkbox, /large: \{ size: 20, fontSize: 16, iconSize: 12 \}/);
     assert.match(checkboxGroup, /max: 999/);
     // radio 对齐 uView Pro 的 sizeConfig 预设：盒子 34 / 字号 28 / 勾号 20
-    assert.match(radio, /small: \{ size: 28, fontSize: 24, iconSize: 16 \}/);
-    assert.match(radio, /default: \{ size: 34, fontSize: 28, iconSize: 20 \}/);
-    assert.match(radio, /large: \{ size: 40, fontSize: 32, iconSize: 24 \}/);
+    assert.match(radio, /small: \{ size: 14, fontSize: 12, iconSize: 8 \}/);
+    assert.match(radio, /default: \{ size: 17, fontSize: 14, iconSize: 10 \}/);
+    assert.match(radio, /large: \{ size: 20, fontSize: 16, iconSize: 12 \}/);
     assert.match(radioGroup, /width: 'auto'/);
-    assert.match(toggle, /size === 'small' \? 40 : size === 'large' \? 60 : size === 'default' \? 50/);
-    assert.match(slider, /height: 6,/);
-    assert.match(slider, /blockWidth: 30,/);
+    assert.match(toggle, /size === 'small' \? 20 : size === 'large' \? 30 : size === 'default' \? 25/);
+    assert.match(slider, /height: 3,/);
+    assert.match(slider, /blockWidth: 15,/);
 });
 
 test('form ports async-validator while controls remain independent from uView', async () => {

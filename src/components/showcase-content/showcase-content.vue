@@ -256,25 +256,25 @@ function resetCoupon() {
 .showcase {
     overflow: hidden;
     border: 1px solid var(--snake-color-divider);
-    border-radius: 24rpx;
+    border-radius: 12px;
     background: var(--snake-color-surface);
 }
 .showcase__hero {
     position: relative;
     overflow: hidden;
-    padding: 50rpx 36rpx 54rpx;
+    padding: 25px 18px 27px;
     color: #effff8;
     background: linear-gradient(120deg, var(--snake-color-primary-deeper), var(--snake-color-primary-deep));
 }
 .showcase__hero::after {
     content: '';
     position: absolute;
-    width: 230rpx;
-    height: 230rpx;
-    right: -50rpx;
-    top: -70rpx;
+    width: 115px;
+    height: 115px;
+    right: -25px;
+    top: -35px;
     border: 1px solid rgba(255, 255, 255, 0.28);
-    border-radius: 32rpx;
+    border-radius: 16px;
     transform: rotate(28deg);
 }
 .showcase__eyebrow,
@@ -285,19 +285,19 @@ function resetCoupon() {
     z-index: 1;
 }
 .showcase__eyebrow {
-    font-size: 20rpx;
-    letter-spacing: 3rpx;
+    font-size: 10px;
+    letter-spacing: 1.5px;
     opacity: 0.72;
 }
 .showcase__title {
-    margin-top: 14rpx;
-    font-size: 42rpx;
+    margin-top: 7px;
+    font-size: 21px;
     font-weight: 740;
 }
 .showcase__summary {
-    max-width: 520rpx;
-    margin-top: 12rpx;
-    font-size: 24rpx;
+    max-width: 260px;
+    margin-top: 6px;
+    font-size: 12px;
     line-height: 1.55;
     opacity: 0.82;
 }
@@ -305,45 +305,45 @@ function resetCoupon() {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 26rpx 24rpx 16rpx;
+    margin: 13px 12px 8px;
     color: var(--snake-color-text);
-    font-size: 28rpx;
+    font-size: 14px;
     font-weight: 680;
 }
 .showcase__section text:last-child {
     color: var(--snake-color-text-muted);
-    font-size: 18rpx;
+    font-size: 9px;
     font-weight: 500;
-    letter-spacing: 2rpx;
+    letter-spacing: 1px;
 }
 .showcase__countdown {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12rpx;
-    margin: 22rpx 24rpx;
-    padding: 22rpx;
-    border-radius: 14rpx;
+    gap: 6px;
+    margin: 11px 12px;
+    padding: 11px;
+    border-radius: 7px;
     background: var(--snake-color-primary-light);
     color: var(--snake-color-primary-deep);
-    font-size: 23rpx;
+    font-size: 11.5px;
 }
 .showcase__feedback {
     display: block;
-    margin: 16rpx 24rpx 24rpx;
+    margin: 8px 12px 12px;
     color: var(--snake-color-primary-deep);
-    font-size: 22rpx;
+    font-size: 11px;
 }
 .showcase__reset {
-    margin: 16rpx 24rpx;
+    margin: 8px 12px;
 }
 .showcase--compact .showcase__hero {
-    padding: 34rpx 28rpx;
+    padding: 17px 14px;
 }
 .showcase--compact .showcase__title {
-    font-size: 34rpx;
+    font-size: 17px;
 }
 .showcase--compact .showcase__summary {
-    font-size: 22rpx;
+    font-size: 11px;
 }
 </style>

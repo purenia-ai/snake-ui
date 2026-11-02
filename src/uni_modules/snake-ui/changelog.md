@@ -1,5 +1,39 @@
 # 更新日志
 
+## [0.0.8](https://github.com/purenia-ai/snake-ui/compare/v0.0.7...v0.0.8)（2026-11-02）
+
+### 🐛 修复 | Bug Fixes
+
+- **v1 CMS 宽屏等比修复**：`from750` 由固定 px（375 基准）改为输出 rpx，恢复旧版随屏宽等比缩放、并遵守 `rpxCalcMaxDeviceWidth` 的行为。此前在 390+ 宽机型上（Pro Max 尤其明显，+15%）魔方等 v1 区块格子变扁、图片被裁；375 宽机型完全不受影响
+- 新增 `from375(value)`（375 稿 px 数值 → rpx 字符串）：magiccube `heights`、pictureads `height` 等旧 px 语义字段改经它渲染，盒子与图片**同步**等比缩放（旧版盒子固定而图片随宽缩放，宽屏上本就有 ~15% 溢出，此次一并修复）
+- 修复 pictureads 轮播分支残留的 `height ×2` rpx 补偿与 `radius` 口径，App 渲染与编辑器 v1 预览一致
+- **CMS 商品区 chrome 恢复宽屏等比**：tabs / 筛选工具栏 / 加载更多 / 空态留白 / 回到顶部等分发器内部尺寸原先 ÷2 成了固定 px（375 一致、宽屏偏小），改经 `from750` 恢复随屏宽等比；`snake-filter-sorts` 新增 `fontSize` / `titleSize` 属性、`snake-button-sort` 新增 `fontSize` 属性（默认 px，CMS 场景传入等比值）
+- **修复 dev 场景下 CMS 商品服务对组件不可见的问题**（H5 本地开发商品列表不渲染、接口不请求且无任何报错）：运行时上下文（`libs/runtime/context.ts`）与 CMS 全局配置（`libs/cms/config.ts`）原为模块级状态，vite 预打包的包入口（插件 `app.use` 写入侧）与 easycom 按文件路径加载的组件（读取侧）在 dev 下各持一份模块实例，状态互不可见；两处改为挂载在 `globalThis` 上的跨实例单例（生产构建本就单实例，不受影响）
+- **补齐 0.0.6 遗漏的默认值 ÷2**：`snake-text` 的 `size` 28→14（此前未换算，按 px 渲染后为旧版 2 倍大）；`snake-skeleton` 的 `titleHeight` 18→9、`rowsHeight` 16→8、`avatarSize` 32→16（含兜底值）；`snake-upload` 的 `width`/`height` 200→100（未换算）；`snake-tooltip` 的 `offset` 8→4（未换算）；`snake-loading` 的 `textSize` 7→12（旧默认 14rpx=7px 过小，统一到可读尺寸）
+- **snake-empty 默认尺寸调大**：`iconSize` 60→80、`fontSize` 13→14、图文间距 10→12px（原值沿袭 uview-pro 默认，偏小巧；对齐 wot-design-uni 系空状态的醒目度，仍是图标语言）
+- 新增守护测试：双模块实例状态互通、组件模板禁止拼接 rpx 单位字面量、pictureads swiper 绑定契约、模板裸调用 px 助手的渲染上下文可达性
+
+## [0.0.7](https://github.com/purenia-ai/snake-ui/compare/v0.0.6...v0.0.7)（2026-11-02）
+
+### 🐛 修复 | Bug Fixes
+
+- 修复 magiccube 模板直接引用 `from750` 但该函数未注册到 Options API 渲染上下文的问题：魔方容器的 `pageMargin` 内边距与部分布局的 `imgMargin` 间距在运行时静默失效并产生 Vue 告警（`Property "from750" was accessed during render`），现统一改走 `$snake.from750`；并新增守护测试，防止模板内裸调用 `from750` / `addUnit` 而未暴露给渲染上下文的写法再次引入
+
+## [0.0.6](https://github.com/purenia-ai/snake-ui/compare/v0.0.5...v0.0.6)（2026-11-02）
+
+### ⚙️ 变更 | Changes
+
+- **单位体系由 rpx（750 设计稿）整体迁移为 px（375 设计稿）**：库内全部样式换算为 px；传给组件的裸数字属性（`size` / `fontSize` / `height` 等）一律按 375 稿 px 解释，`$snake.addUnit` 默认单位由 rpx 改为 px；各尺寸类属性与尺寸预设表的默认值减半；`1rpx` 细线统一为 `1px`。**宿主迁移只需处理传给本库组件的裸数字属性（÷2）**：带 `rpx` 单位字符串的属性仍按 rpx 渲染、宿主页面自有的 rpx 样式不受任何影响
+- CMS v1 存量数据不做迁移：渲染层新增 `from750(value)`（`uni.$snake.from750`，750 稿 rpx 数字 → 375 稿 px 字符串）承接旧数据语义；magiccube `heights`、graphicnavigation `textSize` / `textHeight` / `borderRadius`、pictureads `height` 等原本即按物理 px 语义生效的字段改为直出 px
+- CMS v2 组件（`v2.*`）尺寸契约改为 375 稿原生 px（编辑器 v2 schema 同步切换），渲染 helper 由 `rpx()` 更名为 `px()`
+- `pxToRpx` 标记为 deprecated（存量可用，新代码勿用）；库内 6 处 `uni.upx2px` 调用点改为直用 px 数值
+- 文档全量更新单位口径（组件属性表、示例代码、CMS 数据契约说明）
+
+### 🐛 修复 | Bug Fixes
+
+- 修复 CMS 视频块从不渲染的问题：编辑器 manifest 的存量 key 为 `videoss`，而 C 端 `snake-cms` 只分发 `videos`，两边从未对上；现在分发同时兼容两个 key
+- 修复 magiccube 第 5 种布局（两行每列两张）高度语义与主路径不一致的问题：该分支按 `heights / 2` rpx 渲染（仅为主路径 1/4 物理高度），现统一为与主路径相同的 px 直出
+
 ## [0.0.5](https://github.com/purenia-ai/snake-ui/compare/v0.0.4...v0.0.5)（2026-10-30）
 
 ### 🐛 修复 | Bug Fixes

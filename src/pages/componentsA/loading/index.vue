@@ -109,23 +109,23 @@ function updateValue(key: string, value: DemoValue) {
 .demo-stack {
     display: flex;
     flex-direction: column;
-    gap: 24rpx;
+    gap: 12px;
 }
 .demo-variant-title {
     color: var(--snake-color-text);
-    font-size: 28rpx;
+    font-size: 14px;
     font-weight: 600;
     line-height: 1.4;
 }
 .demo-feedback-row {
     display: flex;
-    min-height: 120rpx;
+    min-height: 60px;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 48rpx;
-    padding: 24rpx;
-    border-radius: 16rpx;
+    gap: 24px;
+    padding: 12px;
+    border-radius: 8px;
     background: var(--snake-color-surface-muted);
 }
 </style>

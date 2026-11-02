@@ -838,14 +838,14 @@ export default {
             this.styleString = {
                 position: 'absolute',
                 color: '#fff',
-                padding: '0 8rpx',
-                fontSize: '24rpx',
+                padding: '0 4px',
+                fontSize: '12px',
                 borderRadius: '2px',
                 backgroundColor: this.datas.commodityTagColor || this.datastagColor
             };
             if (this.datas.commoditycornertype === 3) {
                 this.styleString.backgroundColor = '';
-                this.styleString.border = `1rpx solid ${this.datas.commodityTagColor || this.datastagColor}`;
+                this.styleString.border = `1px solid ${this.datas.commodityTagColor || this.datastagColor}`;
                 this.styleString.color = this.datas.commodityTagColor || this.datastagColor;
             }
             /* '左上',
@@ -976,11 +976,11 @@ export default {
 
                 .bg-pic {
                     width: 100%;
-                    height: 360rpx;
+                    height: 180px;
                 }
 
                 .text {
-                    padding: 12rpx 8rpx 20rpx;
+                    padding: 6px 4px 10px;
                 }
             }
 
@@ -1034,14 +1034,14 @@ export default {
                 display: flex !important;
                 flex-direction: row !important;
                 width: 100%;
-                height: 240rpx;
+                height: 120px;
                 margin-top: 0 !important;
                 margin-right: 0 !important;
                 margin-left: 0 !important;
 
                 .bg-pic {
-                    max-width: 240rpx !important;
-                    height: 240rpx !important;
+                    max-width: 120px !important;
+                    height: 120px !important;
                 }
 
                 .text {
@@ -1138,7 +1138,7 @@ export default {
             .text {
                 box-sizing: border-box;
                 width: 100%;
-                padding: 36rpx 24rpx 43rpx;
+                padding: 18px 12px 21.5px;
                 // height: 100%;
 
                 /* 商品名称 */
@@ -1148,7 +1148,7 @@ export default {
                     overflow: hidden;
                     text-overflow: ellipsis;
                     -webkit-line-clamp: 2;
-                    font-size: 22rpx;
+                    font-size: 11px;
                     color: var(--snake-color-text, #303133);
                     word-break: break-all;
                     white-space: normal;

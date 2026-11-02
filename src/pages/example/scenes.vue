@@ -67,18 +67,18 @@ const open = (path: string) => uni.navigateTo({ url: path });
 .scene-hero {
     position: relative;
     overflow: hidden;
-    margin: 0 0 26rpx;
-    padding: 38rpx 32rpx;
-    border-radius: 24rpx;
+    margin: 0 0 13px;
+    padding: 19px 16px;
+    border-radius: 12px;
     color: #effff8;
     background: linear-gradient(135deg, var(--snake-color-primary-deeper), var(--snake-color-primary-deep));
 }
 .scene-hero__glow {
     position: absolute;
-    width: 260rpx;
-    height: 260rpx;
-    right: -80rpx;
-    top: -100rpx;
+    width: 130px;
+    height: 130px;
+    right: -40px;
+    top: -50px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.14);
 }
@@ -90,33 +90,33 @@ const open = (path: string) => uni.navigateTo({ url: path });
 }
 .scene-hero__eyebrow {
     color: rgba(239, 255, 248, 0.7);
-    font-size: 20rpx;
-    letter-spacing: 4rpx;
+    font-size: 10px;
+    letter-spacing: 2px;
 }
 .scene-hero__title {
-    margin-top: 14rpx;
-    font-size: 42rpx;
+    margin-top: 7px;
+    font-size: 21px;
     font-weight: 750;
     line-height: 1.25;
 }
 .scene-hero__desc {
-    margin-top: 12rpx;
+    margin-top: 6px;
     color: rgba(239, 255, 248, 0.78);
-    font-size: 25rpx;
+    font-size: 12.5px;
     line-height: 1.6;
 }
 .scene-grid {
     display: grid;
-    gap: 14rpx;
+    gap: 7px;
 }
 .scene-card {
     display: flex;
-    min-height: 132rpx;
-    padding: 24rpx;
+    min-height: 66px;
+    padding: 12px;
     align-items: center;
-    gap: 18rpx;
+    gap: 9px;
     border: 1px solid var(--snake-color-divider);
-    border-radius: 18rpx;
+    border-radius: 9px;
     background: var(--snake-color-surface);
     transition:
         border-color 0.2s,
@@ -126,7 +126,7 @@ const open = (path: string) => uni.navigateTo({ url: path });
 .scene-card--hover {
     border-color: var(--snake-color-primary);
     background: var(--snake-color-primary-light);
-    transform: translateY(-2rpx);
+    transform: translateY(-1px);
 }
 .scene-card:focus-visible {
     border-color: var(--snake-color-primary);
@@ -134,12 +134,12 @@ const open = (path: string) => uni.navigateTo({ url: path });
 }
 .scene-card__icon {
     display: flex;
-    width: 68rpx;
-    height: 68rpx;
+    width: 34px;
+    height: 34px;
     flex: none;
     align-items: center;
     justify-content: center;
-    border-radius: 18rpx;
+    border-radius: 9px;
     color: var(--snake-color-primary);
     background: var(--snake-color-primary-light);
 }
@@ -150,31 +150,31 @@ const open = (path: string) => uni.navigateTo({ url: path });
 .scene-card__title-row {
     display: flex;
     align-items: center;
-    gap: 10rpx;
+    gap: 5px;
 }
 .scene-card__title {
     color: var(--snake-color-text);
-    font-size: 30rpx;
+    font-size: 15px;
     font-weight: 700;
 }
 .scene-card__badge {
-    padding: 2rpx 8rpx;
-    border-radius: 999rpx;
+    padding: 1px 4px;
+    border-radius: 499.5px;
     color: var(--snake-color-primary-deep);
     background: var(--snake-color-primary-light);
-    font-size: 18rpx;
+    font-size: 9px;
 }
 .scene-card__en {
     display: block;
-    margin-top: 4rpx;
+    margin-top: 2px;
     color: var(--snake-color-text-muted);
-    font-size: 20rpx;
+    font-size: 10px;
 }
 .scene-card__desc {
     display: block;
-    margin-top: 8rpx;
+    margin-top: 4px;
     color: var(--snake-color-text-secondary);
-    font-size: 24rpx;
+    font-size: 12px;
     line-height: 1.4;
 }
 @media (prefers-reduced-motion: reduce) {

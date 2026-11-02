@@ -34,10 +34,10 @@ const props = withDefaults(defineProps<LoadingProps>(), {
     show: true,
     type: 'circular',
     color: 'var(--snake-color-primary, #06D290)',
-    size: 34,
+    size: 17,
     text: '',
     textColor: 'var(--snake-color-text-muted, #909399)',
-    textSize: 14,
+    textSize: 12,
     direction: 'vertical',
     inheritColor: false,
     duration: 800,
@@ -211,10 +211,10 @@ const textStyle = computed(() => ({ color: props.textColor, fontSize: addUnit(pr
     line-height: 1.4;
 }
 .snake-loading--horizontal .snake-loading__text {
-    margin-left: 12rpx;
+    margin-left: 6px;
 }
 .snake-loading--vertical .snake-loading__text {
-    margin-top: 12rpx;
+    margin-top: 6px;
 }
 @keyframes snake-loading-rotate {
     to {

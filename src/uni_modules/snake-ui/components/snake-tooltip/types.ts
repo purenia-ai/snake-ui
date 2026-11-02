@@ -24,7 +24,7 @@ export interface TooltipProps {
     content?: string;
     /** 浮层相对于触发元素的方向。 */
     placement?: TooltipPlacement;
-    /** 浮层与触发元素之间的间距，数值按 rpx 处理。 */
+    /** 浮层与触发元素之间的间距，数值按 px（375 稿）处理。 */
     offset?: UnitValue;
     /** 是否显示指向触发元素的箭头。 */
     visibleArrow?: boolean;

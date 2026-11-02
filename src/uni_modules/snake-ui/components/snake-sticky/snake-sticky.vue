@@ -67,8 +67,7 @@ function unitNumber(value: number | string | null | undefined) {
 }
 function offsetTopPx(value: number | string | null | undefined) {
     const number = unitNumber(value);
-    if (typeof value === 'string' && value.trim().endsWith('px')) return number;
-    return typeof uni !== 'undefined' && typeof uni.upx2px === 'function' ? uni.upx2px(number) : number;
+    return number;
 }
 // 正规化 disabled，避免宿主把 "false" 字符串传进来后被当成 true。
 const isDisabled = computed(() => {

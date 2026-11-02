@@ -174,51 +174,51 @@ function copyCode() {
 .demo-button-showcase {
     display: flex;
     flex-direction: column;
-    gap: 36rpx;
+    gap: 18px;
 }
 
 .demo-button-section {
     display: flex;
     flex-direction: column;
-    gap: 20rpx;
+    gap: 10px;
 }
 
 .demo-button-section__title {
     color: var(--snake-color-text);
-    font-size: 28rpx;
+    font-size: 14px;
     font-weight: 600;
     line-height: 1.4;
 }
 
 .demo-button-code {
-    padding: 24rpx;
+    padding: 12px;
     overflow-x: auto;
-    border: 1rpx solid var(--snake-color-divider);
-    border-radius: 10rpx;
+    border: 1px solid var(--snake-color-divider);
+    border-radius: 5px;
     color: var(--snake-color-text-secondary);
     background: var(--snake-color-surface-muted);
     font-family: monospace;
-    font-size: 24rpx;
+    font-size: 12px;
     line-height: 1.7;
     white-space: nowrap;
 }
 
 .demo-button-actions {
     display: flex;
-    gap: 16rpx;
-    margin-top: 20rpx;
+    gap: 8px;
+    margin-top: 10px;
 }
 
 .demo-button-action {
-    min-height: 68rpx;
+    min-height: 34px;
     margin: 0;
-    padding: 0 24rpx;
-    border: 1rpx solid var(--snake-color-border);
-    border-radius: 10rpx;
+    padding: 0 12px;
+    border: 1px solid var(--snake-color-border);
+    border-radius: 5px;
     color: var(--snake-color-text-secondary);
     background: var(--snake-color-surface);
-    font-size: 24rpx;
-    line-height: 68rpx;
+    font-size: 12px;
+    line-height: 34px;
 }
 
 .demo-button-action::after {
@@ -232,9 +232,9 @@ function copyCode() {
 
 .demo-button-feedback {
     display: block;
-    margin-top: 14rpx;
+    margin-top: 7px;
     color: var(--snake-color-error);
-    font-size: 22rpx;
+    font-size: 11px;
     line-height: 1.5;
 }
 </style>

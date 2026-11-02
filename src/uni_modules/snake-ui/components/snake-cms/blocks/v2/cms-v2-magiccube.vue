@@ -16,7 +16,7 @@
 <script setup lang="ts">
 /** @component CmsV2Magiccube @description CMS v2 魔方布局与定时投放内部渲染器。 @see /cms/overview */
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
-import { blockStyle, openV2Link, rpx, type V2BlockProps, type V2Record } from './shared';
+import { blockStyle, openV2Link, px, type V2BlockProps, type V2Record } from './shared';
 const props = defineProps<V2BlockProps>();
 const now = ref(new Date());
 const slideIndex = ref(0);
@@ -31,7 +31,7 @@ const layouts: Record<string, { template: string; columns: string; rows: string 
     left3right1: { template: '"a a d" "b c d"', columns: '1fr 1fr 1fr', rows: '1fr 1fr' }
 };
 const cells = computed(() => (Array.isArray(props.data.cells) ? props.data.cells : []));
-const rootStyle = computed(() => ({ ...blockStyle(props.data.style), height: rpx(props.data.style?.height, 188) }));
+const rootStyle = computed(() => ({ ...blockStyle(props.data.style), height: px(props.data.style?.height, 94) }));
 const gridStyle = computed(() => {
     const layout = layouts[props.data.layout];
     return layout
@@ -39,18 +39,18 @@ const gridStyle = computed(() => {
               gridTemplateAreas: layout.template,
               gridTemplateColumns: layout.columns,
               gridTemplateRows: layout.rows,
-              gap: rpx(props.data.style?.gap)
+              gap: px(props.data.style?.gap)
           }
         : {
               gridTemplateColumns: `repeat(${Math.min(6, Math.max(1, Number(props.data.columns) || 4))}, 1fr)`,
-              gap: rpx(props.data.style?.gap)
+              gap: px(props.data.style?.gap)
           };
 });
 const cellStyle = (index: number) => ({
     ...(props.data.layout === 'row' || !layouts[props.data.layout]
         ? {}
         : { gridArea: String.fromCharCode(97 + index) }),
-    borderRadius: rpx(props.data.style?.radius),
+    borderRadius: px(props.data.style?.radius),
     overflow: 'hidden'
 });
 function activeImage(cell: V2Record): V2Record {

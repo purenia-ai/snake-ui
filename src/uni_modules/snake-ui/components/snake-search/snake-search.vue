@@ -4,9 +4,9 @@
             class="snake-search__content"
             :style="{
                 backgroundColor: bgColor,
-                borderRadius: shape === 'round' ? '100rpx' : '10rpx',
+                borderRadius: shape === 'round' ? '50px' : '5px',
                 border: borderStyle,
-                height: `${height}rpx`
+                height: $snake.addUnit(height)
             }"
         >
             <view class="snake-search__icon">
@@ -165,7 +165,7 @@ function clickHandler() {
     display: flex;
     flex: 1;
     align-items: center;
-    padding: 0 18rpx;
+    padding: 0 9px;
 }
 .snake-search__icon {
     display: flex;
@@ -173,8 +173,8 @@ function clickHandler() {
 }
 .snake-search__input {
     flex: 1;
-    margin: 0 10rpx;
-    font-size: 28rpx;
+    margin: 0 5px;
+    font-size: 14px;
     line-height: 1;
     color: var(--snake-color-text-muted, #909399);
 }
@@ -182,21 +182,21 @@ function clickHandler() {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40rpx;
+    width: 20px;
     height: 100%;
     border-radius: 50%;
 }
 .snake-search__action {
     overflow: hidden;
     width: 0;
-    font-size: 28rpx;
+    font-size: 14px;
     color: var(--snake-color-text, #303133);
     text-align: center;
     white-space: nowrap;
     transition: all 0.3s;
 }
 .snake-search__action--active {
-    width: 100rpx;
-    margin-left: 10rpx;
+    width: 50px;
+    margin-left: 5px;
 }
 </style>

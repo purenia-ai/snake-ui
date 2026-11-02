@@ -134,23 +134,23 @@ function cellClicked(index: string | number) {
 .demo-stack {
     display: flex;
     flex-direction: column;
-    gap: 24rpx;
+    gap: 12px;
 }
 .demo-variant-title {
     color: var(--snake-color-text);
-    font-size: 28rpx;
+    font-size: 14px;
     font-weight: 600;
     line-height: 1.4;
 }
 .demo-variant-sub {
     color: var(--snake-color-text-muted);
-    font-size: 24rpx;
+    font-size: 12px;
 }
 .demo-cell-tag {
-    padding: 4rpx 16rpx;
-    border: 1rpx solid var(--snake-color-primary, #06d290);
-    border-radius: 100rpx;
+    padding: 2px 8px;
+    border: 1px solid var(--snake-color-primary, #06d290);
+    border-radius: 50px;
     color: var(--snake-color-primary, #06d290);
-    font-size: 22rpx;
+    font-size: 11px;
 }
 </style>
