@@ -15,7 +15,7 @@ preview: /pages/componentsA/readMore/index
 ## 基础用法
 
 ```vue
-<snake-read-more :show-height="400">
+<snake-read-more :show-height="200">
   <rich-text :nodes="content" />
 </snake-read-more>
 ```

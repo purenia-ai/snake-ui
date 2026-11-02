@@ -31,7 +31,7 @@ preview: /pages/componentsA/countDown/index
     border-color="#06D290"
     color="#06D290"
     bg-color="rgba(6, 210, 144, 0.08)"
-    height="56"
+    height="28"
 />
 ```
 

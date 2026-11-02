@@ -11,7 +11,7 @@
                     :error-type="formErrorType"
                     :border-bottom="Boolean(state.formBorder)"
                     :label-position="state.formTopLabel ? 'top' : 'left'"
-                    label-width="150"
+                    label-width="75"
                 >
                     <view class="demo-form__group">
                         <text class="demo-form__group-title">{{ isEnglish ? 'Account details' : '账户资料' }}</text>
@@ -20,7 +20,7 @@
                             prop="name"
                             :required="Boolean(state.formRequired)"
                             left-icon="account"
-                            label-width="120"
+                            label-width="60"
                         >
                             <snake-input
                                 v-model="model.name"
@@ -58,7 +58,7 @@
                             :label="isEnglish ? 'Confirm password' : '确认密码'"
                             prop="rePassword"
                             :required="Boolean(state.formRequired)"
-                            label-width="150"
+                            label-width="75"
                         >
                             <snake-input
                                 v-model="model.rePassword"
@@ -71,7 +71,7 @@
                             prop="intro"
                             :required="Boolean(state.formRequired) && strictIntro"
                         >
-                            <snake-textarea v-model="model.intro" :maxlength="60" count height="150" />
+                            <snake-textarea v-model="model.intro" :maxlength="60" count height="75" />
                         </snake-form-item>
                     </view>
 
@@ -121,7 +121,7 @@
                             :label="`${isEnglish ? 'Contact' : '联系人'} ${index + 1}`"
                             :prop="`accounts.${index}.name`"
                             :required="Boolean(state.formRequired)"
-                            label-width="150"
+                            label-width="75"
                             right-icon="arrow-right"
                             :right-icon-style="{ color: 'var(--snake-color-text-muted)' }"
                         >

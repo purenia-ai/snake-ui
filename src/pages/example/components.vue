@@ -44,7 +44,7 @@
             <snake-sticky :custom-nav-height="navbarOffset" bg-color="var(--snake-color-surface)" :z-index="20">
                 <view class="search-sticky">
                     <view class="search-box">
-                        <snake-icon name="search" :size="38" />
+                        <snake-icon name="search" :size="19" />
                         <input
                             v-model="searchText"
                             class="search-box__input"
@@ -59,7 +59,7 @@
                             :aria-label="text('清空')"
                             @click="clearSearch"
                         >
-                            <snake-icon name="close" :size="32" />
+                            <snake-icon name="close" :size="16" />
                         </button>
                     </view>
                 </view>
@@ -83,7 +83,7 @@
             </view>
 
             <view v-if="resultCount === 0" class="overview__empty">
-                <view class="empty-icon"><snake-icon name="empty-search" :size="56" /></view>
+                <view class="empty-icon"><snake-icon name="empty-search" :size="28" /></view>
                 <text class="empty-title">{{ text('没有找到相关组件') }}</text>
                 <text class="empty-desc">{{ text('换个关键词试试') }}</text>
                 <button class="empty-reset" @click="resetFilters">{{ text('重置筛选') }}</button>
@@ -113,12 +113,12 @@
                             </view>
                             <text class="card__desc">{{ isEnglish ? item.descEn : item.desc }}</text>
                         </view>
-                        <snake-icon name="arrow-right" class="card__arrow" :size="36" />
+                        <snake-icon name="arrow-right" class="card__arrow" :size="18" />
                     </view>
                 </view>
             </view>
             <button v-if="scrollTop > 600" class="back-to-top" :aria-label="text('返回顶部')" @click="backToTop">
-                <snake-icon name="arrow-up" :size="32" />
+                <snake-icon name="arrow-up" :size="16" />
             </button>
         </view>
     </DemoPage>

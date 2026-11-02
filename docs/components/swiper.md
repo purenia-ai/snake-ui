@@ -15,7 +15,7 @@ preview: /pages/componentsA/swiper/index
 ## 基础用法
 
 ```vue
-<snake-swiper :list="['/static/a.png', '/static/b.png']" :height="360" indicator />
+<snake-swiper :list="['/static/a.png', '/static/b.png']" :height="180" indicator />
 ```
 
 ## 指示器与 3D 卡片

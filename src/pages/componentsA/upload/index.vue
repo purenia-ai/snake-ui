@@ -13,8 +13,8 @@
                         accept="image"
                         :upload-request="mockUpload"
                         :max-count="6"
-                        width="200"
-                        height="200"
+                        width="100"
+                        height="100"
                     />
                 </view>
             </view>
@@ -44,8 +44,8 @@
                         :upload-request="mockUpload"
                         :max-count="2"
                         :max-duration="60"
-                        width="200"
-                        height="200"
+                        width="100"
+                        height="100"
                         upload-text="添加视频"
                     />
                 </view>
@@ -61,8 +61,8 @@
                         :upload-request="mockUpload"
                         :auto-upload="false"
                         :max-count="3"
-                        width="200"
-                        height="200"
+                        width="100"
+                        height="100"
                     />
                     <view class="upload-actions">
                         <snake-button type="primary" :disabled="manualFiles.length === 0" @tap="startManualUpload">
@@ -84,12 +84,12 @@
                         :upload-request="mockUpload"
                         :custom-btn="true"
                         :max-count="3"
-                        width="200"
-                        height="200"
+                        width="100"
+                        height="100"
                     >
                         <template #addBtn>
                             <view class="custom-upload-button" hover-class="custom-upload-button--hover">
-                                <snake-icon name="photo" size="44" color="var(--snake-color-primary)" />
+                                <snake-icon name="photo" size="22" color="var(--snake-color-primary)" />
                                 <text class="custom-upload-button__text">选择图片</text>
                             </view>
                         </template>
@@ -114,7 +114,7 @@
                             <view class="custom-file-list">
                                 <view v-for="(item, index) in file" :key="`${item.name}-${index}`" class="custom-file">
                                     <view class="custom-file__icon">
-                                        <snake-icon name="file-text" size="34" color="var(--snake-color-primary)" />
+                                        <snake-icon name="file-text" size="17" color="var(--snake-color-primary)" />
                                     </view>
                                     <view class="custom-file__content">
                                         <text class="custom-file__name">{{ item.name || '未命名文件' }}</text>
@@ -128,28 +128,28 @@
                                             <snake-line-progress
                                                 :percent="item.progress"
                                                 :show-percent="false"
-                                                height="4"
+                                                height="2"
                                             />
                                         </view>
                                     </view>
                                     <view class="custom-file__status">
                                         <snake-icon
                                             :name="item.error ? 'close-circle' : 'checkmark-circle'"
-                                            size="32"
+                                            size="16"
                                             :color="
                                                 item.error ? 'var(--snake-color-error)' : 'var(--snake-color-success)'
                                             "
                                         />
                                     </view>
                                     <view class="custom-file__delete" @tap.stop="removeCustomFile(index)">
-                                        <snake-icon name="trash" size="30" color="var(--snake-color-text-muted)" />
+                                        <snake-icon name="trash" size="15" color="var(--snake-color-text-muted)" />
                                     </view>
                                 </view>
                             </view>
                         </template>
                         <template #addBtn>
                             <view class="custom-file-add" hover-class="custom-file-add--hover">
-                                <snake-icon name="plus" size="30" color="var(--snake-color-primary)" />
+                                <snake-icon name="plus" size="15" color="var(--snake-color-primary)" />
                                 <text>添加文件</text>
                             </view>
                         </template>

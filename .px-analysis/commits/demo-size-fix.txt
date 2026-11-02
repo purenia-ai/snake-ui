@@ -1,0 +1,16 @@
+fix(demo): 补齐示例页与文档遗留的 2 倍尺寸值
+
+d036581 迁移时只转换了示例页 style 的 rpx，模板传给组件的数值
+props 未同步 ÷2，px(375) 口径下全部按 2 倍渲染。按每个值的写入
+年代逐一核对后修正：
+
+- upload：宽高 200→100、图标 44/34/32/30 ÷2、进度条 4→2
+- form：label-width 150/120 ÷2、textarea 高度 150→75
+- empty：icon-size 72→36；tooltip：图标 30→15
+- components 示例页：图标 38/32/56/36 ÷2
+- 文档：read-more 400→200、swiper 360→180、textarea 180→90、
+  count-down 56→28
+
+tools 页与 icon/custom-icon 文档本为 px 习惯写法，qr-code size
+为显式 px 画布语义，magicCube heights 为 CMS 750 稿数据，
+均保持不变。

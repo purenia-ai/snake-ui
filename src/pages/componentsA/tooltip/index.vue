@@ -77,7 +77,7 @@
                         @change="onChange"
                     >
                         <button class="tooltip-demo__trigger tooltip-demo__trigger--primary">
-                            <snake-icon name="info-circle" :size="30" color="#fff" />
+                            <snake-icon name="info-circle" :size="15" color="#fff" />
                             <text>{{ isEnglish ? 'Tap for details' : '点击查看说明' }}</text>
                         </button>
                     </snake-tooltip>

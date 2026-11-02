@@ -17,8 +17,8 @@
                 </snake-empty>
                 <text class="demo-variant-title">{{ isEnglish ? 'Semantic states' : '语义状态' }}</text>
                 <view class="demo-empty-grid">
-                    <snake-empty mode="search" :text="isEnglish ? 'No results' : '没有搜索结果'" icon-size="72" />
-                    <snake-empty mode="wifi" :text="isEnglish ? 'Network error' : '网络连接异常'" icon-size="72" />
+                    <snake-empty mode="search" :text="isEnglish ? 'No results' : '没有搜索结果'" icon-size="36" />
+                    <snake-empty mode="wifi" :text="isEnglish ? 'Network error' : '网络连接异常'" icon-size="36" />
                 </view>
             </view>
         </DemoSection>
