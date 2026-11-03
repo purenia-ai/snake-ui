@@ -19,9 +19,9 @@
                 <template #template>
                     <view class="demo-card-grid">
                         <view v-for="index in 2" :key="index" class="demo-card">
-                            <snake-skeleton-item variant="image" height="180rpx" />
-                            <snake-skeleton-item width="78%" custom-style="margin-top: 16rpx" />
-                            <snake-skeleton-item width="48%" height="24rpx" custom-style="margin-top: 12rpx" />
+                            <snake-skeleton-item variant="image" height="90px" />
+                            <snake-skeleton-item width="78%" custom-style="margin-top: 8px" />
+                            <snake-skeleton-item width="48%" height="12px" custom-style="margin-top: 6px" />
                         </view>
                     </view>
                 </template>
@@ -36,14 +36,14 @@
             <view class="demo-skeleton-item-showcase">
                 <snake-skeleton-item
                     :variant="state.variant as any"
-                    :width="state.variant === 'circle' ? '96rpx' : state.variant === 'text' ? '70%' : '100%'"
-                    :height="state.variant === 'circle' ? '96rpx' : state.variant === 'text' ? '24rpx' : '120rpx'"
+                    :width="state.variant === 'circle' ? '48px' : state.variant === 'text' ? '70%' : '100%'"
+                    :height="state.variant === 'circle' ? '48px' : state.variant === 'text' ? '12px' : '60px'"
                     :animated="Boolean(state.animated)"
                 />
-                <snake-skeleton-item variant="circle" width="96rpx" height="96rpx" />
+                <snake-skeleton-item variant="circle" width="48px" height="48px" />
                 <snake-skeleton-item variant="text" width="70%" />
-                <snake-skeleton-item variant="rect" height="120rpx" />
-                <snake-skeleton-item variant="image" height="240rpx" radius="20rpx" />
+                <snake-skeleton-item variant="rect" height="60px" />
+                <snake-skeleton-item variant="image" height="120px" radius="10px" />
                 <snake-skeleton-item variant="text" width="55%" :animated="false" />
             </view>
         </DemoSection>

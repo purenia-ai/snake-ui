@@ -14,7 +14,7 @@
                     :input-align="String(state.sInputAlign)"
                     :placeholder="String(state.sPlaceholder || text('请输入关键字'))"
                     :action-text="isEnglish ? 'Search' : '搜索'"
-                    margin="16rpx 0"
+                    margin="8px 0"
                     @search="onSearch"
                     @custom="onCustom"
                     @clear="onClear"
@@ -26,13 +26,13 @@
                     :show-action="false"
                     :placeholder="isEnglish ? 'Custom background' : '自定义背景'"
                     bg-color="#ffffff"
-                    margin="16rpx 0"
+                    margin="8px 0"
                 />
                 <snake-search
                     shape="square"
-                    height="68"
+                    height="34"
                     :placeholder="isEnglish ? 'Square search field' : '方形搜索框'"
-                    margin="16rpx 0"
+                    margin="8px 0"
                 />
             </view>
         </DemoSection>

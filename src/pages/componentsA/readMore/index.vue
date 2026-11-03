@@ -59,11 +59,11 @@ const controls: DemoControl[] = [
         key: 'rmShowHeight',
         label: '占位高度',
         type: 'slider',
-        defaultValue: 400,
-        min: 200,
-        max: 800,
-        step: 50,
-        unit: 'rpx'
+        defaultValue: 200,
+        min: 100,
+        max: 400,
+        step: 25,
+        unit: 'px'
     },
     {
         key: 'rmColor',

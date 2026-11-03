@@ -44,11 +44,11 @@ const controls: DemoControl[] = [
         key: 'loadingTextSize',
         label: '文字尺寸',
         type: 'slider',
-        defaultValue: 28,
-        min: 20,
-        max: 36,
-        step: 2,
-        unit: 'rpx'
+        defaultValue: 14,
+        min: 10,
+        max: 18,
+        step: 1,
+        unit: 'px'
     },
     {
         key: 'loadingType',
@@ -62,7 +62,7 @@ const controls: DemoControl[] = [
             { label: '波浪', value: 'wave' }
         ]
     },
-    { key: 'loadingSize', label: '图标尺寸', type: 'slider', defaultValue: 34, min: 16, max: 48, step: 2, unit: 'rpx' },
+    { key: 'loadingSize', label: '图标尺寸', type: 'slider', defaultValue: 17, min: 8, max: 24, step: 1, unit: 'px' },
     {
         key: 'loadingColor',
         label: '图标颜色',

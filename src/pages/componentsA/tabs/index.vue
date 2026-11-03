@@ -56,18 +56,18 @@ const controls: DemoControl[] = [
             { label: '橙色', value: '#FF6A0C' }
         ]
     },
-    { key: 'tabsSize', label: '文字尺寸', type: 'slider', defaultValue: 30, min: 24, max: 36, step: 2, unit: 'rpx' },
+    { key: 'tabsSize', label: '文字尺寸', type: 'slider', defaultValue: 15, min: 12, max: 18, step: 1, unit: 'px' },
     {
         key: 'tabsBarWidth',
         label: '滑块宽度',
         type: 'slider',
-        defaultValue: 40,
-        min: 20,
-        max: 80,
-        step: 4,
-        unit: 'rpx'
+        defaultValue: 20,
+        min: 10,
+        max: 40,
+        step: 2,
+        unit: 'px'
     },
-    { key: 'tabsGutter', label: '标签间距', type: 'slider', defaultValue: 40, min: 20, max: 80, step: 4, unit: 'rpx' },
+    { key: 'tabsGutter', label: '标签间距', type: 'slider', defaultValue: 20, min: 10, max: 40, step: 2, unit: 'px' },
     {
         key: 'tabsBgColor',
         label: '背景颜色',

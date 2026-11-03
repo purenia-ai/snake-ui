@@ -40,7 +40,7 @@ const isEnglish = computed(() => localeName.value === 'en-US');
 const navbarHeight = 44 + Number(uni.getSystemInfoSync().statusBarHeight || 0);
 const controls: DemoControl[] = [
     { key: 'stickyDisabled', label: '关闭吸顶', type: 'switch', defaultValue: false },
-    { key: 'stickyOffset', label: '顶部距离', type: 'slider', defaultValue: 0, min: 0, max: 80, step: 10, unit: 'rpx' }
+    { key: 'stickyOffset', label: '顶部距离', type: 'slider', defaultValue: 0, min: 0, max: 40, step: 5, unit: 'px' }
 ];
 const state = reactive<Record<string, DemoValue>>({ stickyDisabled: false, stickyOffset: 0 });
 const localizedControls = computed(() => {

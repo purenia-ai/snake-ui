@@ -73,11 +73,11 @@ const controls: DemoControl[] = [
         key: 'loadFontSize',
         label: '文字尺寸',
         type: 'slider',
-        defaultValue: 24,
-        min: 20,
-        max: 32,
-        step: 2,
-        unit: 'rpx'
+        defaultValue: 12,
+        min: 10,
+        max: 16,
+        step: 1,
+        unit: 'px'
     },
     {
         key: 'loadBgColor',

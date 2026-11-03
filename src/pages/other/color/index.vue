@@ -30,7 +30,7 @@
         <view class="preview-card">
             <text class="preview-card__title">{{ text('遮罩与阴影') }}</text>
             <view class="overlay-demo" :style="{ backgroundColor: color.mask }"><text>Mask</text></view>
-            <view class="shadow-demo" :style="{ boxShadow: `0 8rpx 24rpx ${color.shadow}` }"><text>Shadow</text></view>
+            <view class="shadow-demo" :style="{ boxShadow: `0 4px 12px ${color.shadow}` }"><text>Shadow</text></view>
         </view>
     </DemoPage>
 </template>

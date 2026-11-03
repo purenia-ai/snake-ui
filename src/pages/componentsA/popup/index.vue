@@ -14,7 +14,7 @@
                     <view class="demo-popup">
                         <text class="demo-popup__title">Snake Popup</text>
                         <text>{{ isEnglish ? 'This is an interactive popup.' : '这是一个可交互的弹出层。' }}</text>
-                        <snake-button custom-style="margin-top: 32rpx" @click="visible = false">
+                        <snake-button custom-style="margin-top: 16px" @click="visible = false">
                             {{ isEnglish ? 'Close' : '关闭' }}
                         </snake-button>
                     </view>

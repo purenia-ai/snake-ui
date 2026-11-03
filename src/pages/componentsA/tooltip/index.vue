@@ -73,7 +73,7 @@
                         :visible-arrow="Boolean(state.visibleArrow)"
                         :closeable="Boolean(state.closeable)"
                         :disabled="Boolean(state.disabled)"
-                        :content-style="state.closeable ? 'padding-right: 48rpx' : ''"
+                        :content-style="state.closeable ? 'padding-right: 24px' : ''"
                         @change="onChange"
                     >
                         <button class="tooltip-demo__trigger tooltip-demo__trigger--primary">
@@ -98,7 +98,7 @@
                     <snake-tooltip
                         v-model="showDetail"
                         placement="bottom-start"
-                        content-style="padding-right: 48rpx"
+                        content-style="padding-right: 24px"
                         closeable
                     >
                         <button class="tooltip-demo__trigger">{{ isEnglish ? 'Delivery note' : '配送说明' }}</button>
@@ -173,11 +173,11 @@ const controls = computed<DemoControl[]>(() => [
         key: 'offset',
         label: isEnglish.value ? 'Offset' : '提示间距',
         type: 'slider',
-        defaultValue: 8,
-        min: 4,
-        max: 24,
-        step: 2,
-        unit: 'rpx'
+        defaultValue: 4,
+        min: 2,
+        max: 12,
+        step: 1,
+        unit: 'px'
     },
     { key: 'visibleArrow', label: isEnglish.value ? 'Show arrow' : '显示箭头', type: 'switch', defaultValue: true },
     { key: 'closeable', label: isEnglish.value ? 'Close button' : '关闭按钮', type: 'switch', defaultValue: false },

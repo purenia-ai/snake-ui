@@ -3,7 +3,7 @@
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack demo-select-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
-                <snake-button type="primary" :custom-style="{ width: '240rpx' }" @click="selectShow = true">
+                <snake-button type="primary" :custom-style="{ width: '120px' }" @click="selectShow = true">
                     {{ text('打开选择器') }}
                 </snake-button>
                 <text class="demo-variant-sub">{{ text('选择结果') }}：{{ lastResult }}</text>

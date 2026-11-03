@@ -109,7 +109,7 @@ const controls: DemoControl[] = [
             { label: '2 行', value: '2' }
         ]
     },
-    { key: 'tSize', label: '字体大小', type: 'slider', defaultValue: 28, min: 24, max: 48, step: 2, unit: 'rpx' },
+    { key: 'tSize', label: '字体大小', type: 'slider', defaultValue: 14, min: 12, max: 24, step: 1, unit: 'px' },
     {
         key: 'tColor',
         label: '文字颜色',

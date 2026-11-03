@@ -77,7 +77,7 @@ const controls: DemoControl[] = [
         defaultValue: 'auto',
         options: [
             { label: 'auto', value: 'auto' },
-            { label: '240rpx', value: 240 }
+            { label: '120px', value: 120 }
         ]
     },
     {

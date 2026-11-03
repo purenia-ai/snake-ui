@@ -78,13 +78,13 @@ const controls: DemoControl[] = [
         key: 'swiperHeight',
         label: '轮播高度',
         type: 'slider',
-        defaultValue: 360,
-        min: 220,
-        max: 480,
-        step: 20,
-        unit: 'rpx'
+        defaultValue: 180,
+        min: 110,
+        max: 240,
+        step: 5,
+        unit: 'px'
     },
-    { key: 'radius', label: '圆角', type: 'slider', defaultValue: 16, min: 0, max: 32, step: 4, unit: 'rpx' }
+    { key: 'radius', label: '圆角', type: 'slider', defaultValue: 8, min: 0, max: 16, step: 2, unit: 'px' }
 ];
 const state = reactive<Record<string, DemoValue>>(
     Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))

@@ -39,7 +39,7 @@ const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
 const controls: DemoControl[] = [
     { key: 'lpPercent', label: '进度值', type: 'slider', defaultValue: 40, min: 0, max: 100, step: 5, unit: '%' },
-    { key: 'lpHeight', label: '进度条高度', type: 'slider', defaultValue: 28, min: 12, max: 48, step: 2, unit: 'rpx' },
+    { key: 'lpHeight', label: '进度条高度', type: 'slider', defaultValue: 14, min: 6, max: 24, step: 1, unit: 'px' },
     {
         key: 'lpInactiveColor',
         label: '轨道底色',

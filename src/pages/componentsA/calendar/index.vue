@@ -3,7 +3,7 @@
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack demo-calendar-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
-                <snake-button type="primary" :custom-style="{ width: '240rpx' }" @click="calendarShow = true">
+                <snake-button type="primary" :custom-style="{ width: '120px' }" @click="calendarShow = true">
                     {{ text('打开日历') }}
                 </snake-button>
                 <text class="demo-variant-sub">{{ text('选择结果') }}：{{ lastResult }}</text>

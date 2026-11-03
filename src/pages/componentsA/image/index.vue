@@ -111,9 +111,9 @@ const controls: DemoControl[] = [
             { label: '圆形', value: 'circle' }
         ]
     },
-    { key: 'width', label: '宽度', type: 'slider', defaultValue: 240, min: 120, max: 320, step: 20, unit: 'rpx' },
-    { key: 'height', label: '高度', type: 'slider', defaultValue: 240, min: 120, max: 320, step: 20, unit: 'rpx' },
-    { key: 'radius', label: '圆角', type: 'slider', defaultValue: 16, min: 0, max: 48, step: 4, unit: 'rpx' },
+    { key: 'width', label: '宽度', type: 'slider', defaultValue: 120, min: 60, max: 160, step: 5, unit: 'px' },
+    { key: 'height', label: '高度', type: 'slider', defaultValue: 120, min: 60, max: 160, step: 5, unit: 'px' },
+    { key: 'radius', label: '圆角', type: 'slider', defaultValue: 8, min: 0, max: 24, step: 2, unit: 'px' },
     { key: 'fade', label: '淡入动画', type: 'switch', defaultValue: true },
     { key: 'lazyLoad', label: '视口懒加载', type: 'switch', defaultValue: false },
     { key: 'preview', label: '点击预览', type: 'switch', defaultValue: true },

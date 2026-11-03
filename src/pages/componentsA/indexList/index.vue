@@ -11,7 +11,7 @@
                         <snake-index-anchor
                             :index="group.letter"
                             :text="group.letter"
-                            custom-style="height: 64rpx; padding: 0 20rpx"
+                            custom-style="height: 32px; padding: 0 10px"
                         />
                         <view v-for="item in group.items" :key="item.en" class="demo-index-row">
                             {{ isEnglish ? item.en : item.zh }}

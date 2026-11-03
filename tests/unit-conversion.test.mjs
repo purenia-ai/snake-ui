@@ -150,3 +150,45 @@ test('library no longer uses numeric rpx values (375-draft px only)', async () =
     await walk(root);
     assert.deepEqual(offenders, []);
 });
+
+test('demo pages and shared demo components use px literals, not rpx', async () => {
+    const { readdir } = await import('node:fs/promises');
+    const { join } = await import('node:path');
+    const roots = ['src/pages', 'src/components'];
+    const offenders = [];
+    const walk = async dir => {
+        for (const entry of await readdir(dir, { withFileTypes: true })) {
+            const full = join(dir, entry.name);
+            if (entry.isDirectory()) {
+                await walk(full);
+            } else if (entry.name.endsWith('.vue')) {
+                const source = await readFile(full, 'utf8');
+                if (/\d+(?:\.\d+)?rpx/.test(source)) offenders.push(full.replaceAll('\\', '/'));
+            }
+        }
+    };
+    for (const root of roots) await walk(root);
+    assert.deepEqual(offenders, []);
+});
+
+test('native component demos (componentsA) declare slider units in px, not rpx', async () => {
+    const { readdir } = await import('node:fs/promises');
+    const { join } = await import('node:path');
+    // componentsA 演示原生组件，数值经 addUnit 按 px 解释；rpx 单位属于 componentsB 的
+    // v1 CMS 页（datas 数据经 from750 渲染为 rpx）。
+    const root = 'src/pages/componentsA';
+    const offenders = [];
+    const walk = async dir => {
+        for (const entry of await readdir(dir, { withFileTypes: true })) {
+            const full = join(dir, entry.name);
+            if (entry.isDirectory()) {
+                await walk(full);
+            } else if (entry.name.endsWith('.vue')) {
+                const source = await readFile(full, 'utf8');
+                if (source.includes("unit: 'rpx'")) offenders.push(full.replaceAll('\\', '/'));
+            }
+        }
+    };
+    await walk(root);
+    assert.deepEqual(offenders, []);
+});

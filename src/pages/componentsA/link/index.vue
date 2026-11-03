@@ -46,7 +46,7 @@ const controls: DemoControl[] = [
         placeholder: '请输入链接地址'
     },
     { key: 'lUnderLine', label: '下划线', type: 'switch', defaultValue: false },
-    { key: 'lFontSize', label: '字体大小', type: 'slider', defaultValue: 28, min: 24, max: 40, step: 2, unit: 'rpx' },
+    { key: 'lFontSize', label: '字体大小', type: 'slider', defaultValue: 14, min: 12, max: 20, step: 1, unit: 'px' },
     {
         key: 'lDefaultClick',
         label: '打开方式',
