@@ -2,8 +2,6 @@
 
 ## [0.0.9](https://github.com/purenia-ai/snake-ui/compare/v0.0.7...v0.0.9)（2026-11-03）
 
-> 0.0.8 曾发布后撤回，版本号已被 npm 回收不可复用；其全部改动并入本版本。
-
 ### ✨ Features | 新功能
 
 - **from375:** 新增 `uni.$snake.from375`，旧 px 语义字段随屏等比渲染
