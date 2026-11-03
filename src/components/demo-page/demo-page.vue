@@ -201,7 +201,7 @@ function switchTab(key: string | number) {
 }
 
 .demo-page-header {
-    max-width: 760px;
+    max-width: 420px;
     margin: 0 auto;
     padding: 16px 16px 5px;
 }
@@ -230,7 +230,7 @@ function switchTab(key: string | number) {
 }
 
 .demo-body {
-    max-width: 760px;
+    max-width: 420px;
     margin: 0 auto;
     padding: 11px 12px 28px;
 }
