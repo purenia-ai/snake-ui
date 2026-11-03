@@ -1,6 +1,8 @@
 # 更新日志
 
-## [0.0.8](https://github.com/purenia-ai/snake-ui/compare/v0.0.7...v0.0.8)（2026-11-02）
+## [0.0.9](https://github.com/purenia-ai/snake-ui/compare/v0.0.7...v0.0.9)（2026-11-03）
+
+> 0.0.8 曾发布后撤回，未对外存在过；其全部改动并入本版本。
 
 ### ✨ Features | 新功能
 
