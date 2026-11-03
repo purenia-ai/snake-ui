@@ -79,7 +79,7 @@ const controls: DemoControl[] = [
         key: 'cageScale',
         label: '容器缩放',
         type: 'slider',
-        defaultValue: 70,
+        defaultValue: 100,
         min: 50,
         max: 100,
         step: 5,

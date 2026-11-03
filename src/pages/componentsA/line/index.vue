@@ -16,7 +16,7 @@
                         :hair-line="Boolean(state.lineHair)"
                     />
                 </view>
-                <view class="demo-line-col-box">
+                <view v-if="state.lineDirection === 'row'" class="demo-line-col-box">
                     <snake-line
                         direction="col"
                         :length="String(Math.round(Number(state.lineLength) * 1.6))"
@@ -27,9 +27,9 @@
                     <text class="demo-line-col-text">{{ isEnglish ? 'Vertical' : '竖向线条' }}</text>
                 </view>
                 <text class="demo-variant-title">{{ isEnglish ? 'Line styles' : '线条类型' }}</text>
-                <snake-line margin="16rpx 0" border-style="solid" />
-                <snake-line margin="16rpx 0" border-style="dashed" />
-                <snake-line margin="16rpx 0" border-style="dotted" />
+                <snake-line border-style="solid" />
+                <snake-line border-style="dashed" />
+                <snake-line border-style="dotted" />
             </view>
         </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
@@ -120,12 +120,13 @@ function updateValue(key: string, value: DemoValue) {
     display: flex;
     min-height: 72px;
     align-items: center;
+    justify-content: center;
     width: 100%;
 }
 .demo-line-col-box {
     display: flex;
     align-items: center;
-    height: 88px;
+    height: 160px;
     gap: 12px;
 }
 .demo-line-col-text {
