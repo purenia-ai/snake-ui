@@ -34,7 +34,7 @@
                             >
                                 <snake-icon
                                     :name="getFileIcon(item).name"
-                                    size="32"
+                                    size="16"
                                     color="var(--snake-color-white, #fff)"
                                 ></snake-icon>
                             </view>
@@ -65,7 +65,7 @@
                             class="snake-upload-list__progress"
                         >
                             <snake-line-progress
-                                height="4"
+                                height="2"
                                 :show-percent="false"
                                 :percent="item.progress"
                             ></snake-line-progress>
@@ -77,7 +77,7 @@
                             :hover-stay-time="150"
                             @tap.stop="retry(index)"
                         >
-                            <snake-icon name="reload" size="24" color="var(--snake-color-error, #fa3534)"></snake-icon>
+                            <snake-icon name="reload" size="12" color="var(--snake-color-error, #fa3534)"></snake-icon>
                             <text class="snake-upload-list__retry-text">{{ t('retry') }}</text>
                         </view>
                     </view>
@@ -93,7 +93,7 @@
                     >
                         <snake-icon
                             :name="delIcon"
-                            size="20"
+                            size="10"
                             :color="delColor"
                             :custom-style="deleteIconStyle"
                         ></snake-icon>
@@ -115,7 +115,7 @@
                 >
                     <snake-icon
                         name="plus"
-                        size="32"
+                        size="16"
                         color="var(--snake-color-primary, #06D290)"
                         :custom-style="addIconStyle"
                     ></snake-icon>
@@ -147,7 +147,7 @@
                     >
                         <snake-icon
                             :name="delIcon"
-                            size="20"
+                            size="10"
                             :color="delColor"
                             :custom-style="deleteIconStyle"
                         ></snake-icon>
@@ -162,7 +162,7 @@
                                 !item.error
                             "
                             :show-percent="false"
-                            height="16"
+                            height="8"
                             :percent="item.progress"
                         ></snake-line-progress>
                     </view>
@@ -190,7 +190,7 @@
                             >
                                 <snake-icon
                                     :name="getFileIcon(item).name"
-                                    size="48"
+                                    size="24"
                                     color="var(--snake-color-white, #fff)"
                                 ></snake-icon>
                             </view>
@@ -222,7 +222,7 @@
                             >
                                 <snake-icon
                                     :name="getFileIcon(item).name"
-                                    size="48"
+                                    size="24"
                                     color="var(--snake-color-white, #fff)"
                                 ></snake-icon>
                             </view>
@@ -263,7 +263,7 @@
                     <snake-icon
                         name="plus"
                         class="snake-upload-grid__add-icon"
-                        size="40"
+                        size="20"
                         :custom-style="addIconStyle"
                     ></snake-icon>
                     <view class="snake-upload-grid__add-text">{{ uploadBtnText }}</view>

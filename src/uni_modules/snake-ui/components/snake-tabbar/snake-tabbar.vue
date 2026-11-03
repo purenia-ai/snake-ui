@@ -185,7 +185,7 @@ function itemStyle(item: TabbarItem): Record<string, string> {
     if (props.midButton && item.midButton) {
         // 图标绝对定位后不再参与文档流，额外顶部内边距为标签留出空间。
         const size =
-            Number.parseFloat(String(itemIconSize(item))) || Number.parseFloat(String(props.midButtonSize)) || 100;
+            Number.parseFloat(String(itemIconSize(item))) || Number.parseFloat(String(props.midButtonSize)) || 50;
         style.paddingTop = addUnit(size / 2 + 4);
         style.boxSizing = 'border-box';
     }

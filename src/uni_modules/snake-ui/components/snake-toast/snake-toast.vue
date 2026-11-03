@@ -21,7 +21,7 @@
             <snake-icon
                 v-else-if="tmpConfig.icon && iconName"
                 :name="iconName"
-                :size="20"
+                :size="10"
                 color="currentColor"
                 custom-style="margin-right: 5px;"
             ></snake-icon>

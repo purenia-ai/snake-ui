@@ -55,7 +55,7 @@
                         <snake-loading
                             v-if="loading"
                             type="circular"
-                            :size="20"
+                            :size="10"
                             :color="effectiveConfig.confirmColor"
                         ></snake-loading>
                         <template v-else>{{ effectiveConfig.confirmText }}</template>

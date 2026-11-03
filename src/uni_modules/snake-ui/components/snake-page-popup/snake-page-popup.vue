@@ -13,7 +13,7 @@
                         @click.stop="show = false"
                         v-if="datas.popupMode === 'bottom'"
                     >
-                        <snake-icon name="close" color="var(--snake-color-text, #26273a)" size="18"></snake-icon>
+                        <snake-icon name="close" color="var(--snake-color-text, #26273a)" size="9"></snake-icon>
                     </view>
                     <image
                         class="page-popup-img"
@@ -27,7 +27,7 @@
                     @click.stop="show = false"
                     v-if="datas.popupMode === 'center'"
                 >
-                    <snake-icon name="close-circle-fill" color="#fff" size="28"></snake-icon>
+                    <snake-icon name="close-circle-fill" color="#fff" size="14"></snake-icon>
                 </view>
             </view>
         </snake-popup>

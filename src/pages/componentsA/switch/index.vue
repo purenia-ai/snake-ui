@@ -94,7 +94,13 @@ const controls: DemoControl[] = [
     { key: 'switchLoading', label: '加载状态', type: 'switch', defaultValue: false },
     { key: 'switchDisabled', label: '禁用状态', type: 'switch', defaultValue: false }
 ];
-const state = reactive<Record<string, DemoValue>>({ switchLoading: false, switchDisabled: false });
+const state = reactive<Record<string, DemoValue>>({
+    swSize: 'default',
+    swActiveColor: '#06D290',
+    swVibrate: false,
+    switchLoading: false,
+    switchDisabled: false
+});
 const localizedControls = computed(() => {
     const _locale = localeName.value;
     return controls.map(control => ({ ...control, label: demoText(control.label) }));

@@ -94,7 +94,7 @@
                     >
                         <!-- 今日已打卡时显示对勾，否则显示日期 -->
                         <view v-if="isTodayChecked(index + 1)" class="snake-calendar__content__item__checkmark">
-                            <snake-icon name="checkmark" size="36" :color="checkedColor" />
+                            <snake-icon name="checkmark" size="18" :color="checkedColor" />
                         </view>
                         <template v-else>
                             <!-- 自定义日期内容插槽 - 优先级最高 -->

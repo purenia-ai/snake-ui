@@ -1,6 +1,8 @@
 <template>
     <view class="cms-v2-notice" :style="rootStyle" @click="handleClick">
-        <text v-if="data.isLeftIcon !== false" class="cms-v2-notice__icon">📢</text>
+        <view v-if="data.isLeftIcon !== false" class="cms-v2-notice__icon">
+            <snake-icon name="bell" :size="16" :color="data.style?.textColor || '#2d57e7'" />
+        </view>
         <swiper v-if="data.direction === 'column'" class="cms-v2-notice__swiper" vertical autoplay circular>
             <swiper-item
                 v-for="(item, index) in items"
@@ -20,6 +22,7 @@
 <script setup lang="ts">
 /** @component CmsV2Notice @description CMS v2 公告内部渲染器。 @see /cms/overview */
 import { computed } from 'vue';
+import SnakeIcon from '../../../snake-icon/snake-icon.vue';
 import { openV2Link, px, type V2BlockProps } from './shared';
 const props = defineProps<V2BlockProps>();
 const items = computed(() => (Array.isArray(props.data.textList) ? props.data.textList : []));
@@ -46,6 +49,8 @@ const handleClick = () =>
     padding: 0 10px;
 }
 .cms-v2-notice__icon {
+    display: flex;
+    flex-shrink: 0;
     margin-right: 6px;
 }
 .cms-v2-notice__swiper,
@@ -55,6 +60,7 @@ const handleClick = () =>
     overflow: hidden;
 }
 .cms-v2-notice__text {
+    font-size: 12px;
     white-space: nowrap;
 }
 .cms-v2-notice__marquee {

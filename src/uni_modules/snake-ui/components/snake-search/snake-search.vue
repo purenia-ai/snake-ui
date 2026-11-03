@@ -10,7 +10,7 @@
             }"
         >
             <view class="snake-search__icon">
-                <snake-icon :size="30" :name="searchIcon" :color="searchIconColor || color" />
+                <snake-icon :size="15" :name="searchIcon" :color="searchIconColor || color" />
             </view>
             <input
                 confirm-type="search"
@@ -37,7 +37,7 @@
                 @focus="getFocus"
             />
             <view v-if="keyword && clearabled && focused" class="snake-search__clear" @click="clear">
-                <snake-icon name="close-circle-fill" size="34" color="var(--snake-color-text-light, #c0c4cc)" />
+                <snake-icon name="close-circle-fill" size="17" color="var(--snake-color-text-light, #c0c4cc)" />
             </view>
         </view>
         <view

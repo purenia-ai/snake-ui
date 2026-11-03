@@ -6,7 +6,7 @@
                 v-if="status === 'loading' && icon"
                 :type="iconType === 'flower' ? 'spinner' : iconType === 'circle' ? 'circular' : 'spinner'"
                 :color="iconColor"
-                size="34"
+                size="17"
             />
             <text class="snake-loadmore__text">{{ label }}</text>
         </view>

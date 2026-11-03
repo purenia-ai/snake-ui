@@ -1,7 +1,9 @@
 <template>
     <view class="cms-v2-search" :style="rootStyle">
         <view class="cms-v2-search__box" :style="boxStyle" @click="handleBoxClick">
-            <text class="cms-v2-search__symbol">⌕</text>
+            <view class="cms-v2-search__symbol">
+                <snake-icon name="search" :size="iconSize" :color="data.style?.textColor || '#969799'" />
+            </view>
             <input
                 class="cms-v2-search__input"
                 :type="data.inputType === 'number' ? 'number' : 'text'"
@@ -35,8 +37,11 @@
 <script setup lang="ts">
 /** @component CmsV2Search @description CMS v2 搜索框内部渲染器。 @see /cms/overview */
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import SnakeIcon from '../../../snake-icon/snake-icon.vue';
 import { openV2Link, px, type V2BlockProps } from './shared';
 const props = defineProps<V2BlockProps>();
+// 搜索图标随框体高度缩放（编辑器口径：高 30 配 16px 图标）。
+const iconSize = computed(() => Math.max(14, Math.round(Number(props.data.style?.height || 30) * 0.53)));
 const icons = computed(() => (Array.isArray(props.data.icons) ? props.data.icons.slice(0, 2) : []));
 const hotwordIndex = ref(0);
 const hotwords = computed(() => (Array.isArray(props.data.textList) ? props.data.textList : []));
@@ -97,16 +102,20 @@ onBeforeUnmount(() => clearInterval(hotwordTimer));
     display: flex;
     flex: 1;
     align-items: center;
+    box-sizing: border-box;
     height: 100%;
     padding: 0 8px;
+    font-size: 14px;
 }
 .cms-v2-search__input {
     flex: 1;
     min-width: 0;
+    font-size: 14px;
 }
 .cms-v2-search__symbol {
-    margin-right: 5px;
-    font-size: 16px;
+    display: flex;
+    flex-shrink: 0;
+    margin-right: 6px;
 }
 .cms-v2-search__icon {
     width: 30px;

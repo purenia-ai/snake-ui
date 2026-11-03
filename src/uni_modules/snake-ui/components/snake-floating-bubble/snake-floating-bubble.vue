@@ -8,7 +8,7 @@
     >
         <view class="floating-bubble__wrap" :style="wrapStyle" @click="handleNavigate">
             <view v-if="!hasSlot" class="floating-bubble__close" @click.stop.prevent="close">
-                <snake-icon name="close-circle-fill" size="28" color="rgba(7, 7, 7, 0.2)" />
+                <snake-icon name="close-circle-fill" size="14" color="rgba(7, 7, 7, 0.2)" />
             </view>
             <image v-if="!hasSlot" class="floating-bubble__logo" :src="datas.src" />
             <slot v-else />

@@ -9,13 +9,16 @@
     >
         <view class="cms-v2-popup">
             <image class="cms-v2-popup__image" :src="data.image || ''" mode="widthFix" @click="handleImageClick" />
-            <view class="cms-v2-popup__close" @click="show = false">×</view>
+            <view class="cms-v2-popup__close" @click="show = false">
+                <snake-icon name="close" :size="20" color="#ffffff" />
+            </view>
         </view>
     </snake-popup>
 </template>
 <script setup lang="ts">
 /** @component CmsV2Popup @description CMS v2 页面弹窗内部渲染器。 @see /cms/overview */
 import { ref } from 'vue';
+import SnakeIcon from '../../../snake-icon/snake-icon.vue';
 import Popup from '../../../snake-popup/snake-popup.vue';
 import { openV2Link, type V2BlockProps } from './shared';
 const props = defineProps<V2BlockProps>();
@@ -39,8 +42,9 @@ const handleImageClick = async () => {
     position: absolute;
     top: -35px;
     right: 0;
-    color: #fff;
-    font-size: 30px;
-    line-height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
 }
 </style>
