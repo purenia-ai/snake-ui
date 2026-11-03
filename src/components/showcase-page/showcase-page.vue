@@ -14,7 +14,7 @@
                     @keydown.enter.prevent="open(link.path)"
                 >
                     <text>{{ text(link.title) }}</text>
-                    <snake-icon name="arrow-right" :size="16" />
+                    <snake-icon name="arrow-right" :size="8" />
                 </view>
             </view>
         </DemoSection>

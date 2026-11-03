@@ -60,7 +60,7 @@ const englishDescriptions: Record<string, string> = {
     IndexList: 'Jump between groups using an alphabetical index.',
     IndexListPanel: 'Browse indexed groups inside a popup or fixed-height area.',
     IndexAnchor: 'Mark content groups within an indexed list.',
-    'Snake CMS': 'Render a complete CMS page from ordered configuration.',
+    'Snake CMS': 'Render a CMS page from configuration with full v1 / v2 block coverage.',
     CustomModule: 'Insert custom business content through named slots.',
     Images: 'Show one or more images from CMS layout data.',
     PictureAds: 'Rotate banner ads with configurable spacing, corners and timing.',
@@ -292,7 +292,7 @@ const componentGroups: ComponentGroup[] = [
                 '/pages/componentsB/snakeCms/index',
                 'Snake CMS 装修容器',
                 'Snake CMS',
-                '按配置顺序渲染完整的 CMS 页面。',
+                '按配置顺序渲染 CMS 页面，完整覆盖 v1 / v2 两代组件。',
                 true
             ),
             item(

@@ -150,7 +150,8 @@
         "navigationBarTextStyle": "black",
         "navigationBarTitleText": "Snake UI",
         "navigationBarBackgroundColor": "#FFFFFF",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#FFFFFF",
+        "rpxCalcMaxDeviceWidth": 375
     },
     "tabBar": {
         "color": "#909399",

@@ -22,13 +22,13 @@
                     >
                         <template v-if="Boolean(state.customLoading)" #loading>
                             <view class="image-lab__slot image-lab__slot--loading">
-                                <snake-loading size="20" />
+                                <snake-loading size="10" />
                                 <text>{{ isEnglish ? 'Fetching image' : '正在请求图片' }}</text>
                             </view>
                         </template>
                         <template v-if="Boolean(state.customError)" #error>
                             <view class="image-lab__slot image-lab__slot--error">
-                                <snake-icon name="warning" size="22" />
+                                <snake-icon name="warning" size="11" />
                                 <text>{{ isEnglish ? 'Image unavailable' : '图片暂时不可用' }}</text>
                             </view>
                         </template>

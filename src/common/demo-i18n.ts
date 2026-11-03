@@ -779,6 +779,50 @@ const demoTitles: Record<string, string> = {
     coupon: 'Coupon'
 };
 
+Object.assign(englishMessages, {
+    '完整展示 v1 / v2 两代装修协议支持的全部组件与常用形态。':
+        'Full showcase of every component and common variant from both v1 / v2 decoration protocols.',
+    '完整展示 v1 / v2 两代装修协议支持的全部组件。':
+        'Full showcase of every component from both v1 / v2 decoration protocols.',
+    '商品、筛选、活动、优惠券与链接均为本地 mock 服务。':
+        'Goods, filters, activities, coupons and links run on local mocks.',
+    'V1 · 基础内容': 'V1 · Content',
+    'V1 · 营销互动': 'V1 · Marketing',
+    'V1 · 商品楼层': 'V1 · Goods Floor',
+    'V2 · 内容展示': 'V2 · Content',
+    'V2 · 营销浮动': 'V2 · Marketing',
+    'V2 · 商品楼层': 'V2 · Goods Floor',
+    '搜索 / 公告 / 图文导航 / 轮播广告 / 魔方 / 单图 / 视频 / 富文本（setStyle · 750 稿）':
+        'Search / notice / navigation / carousel ads / magic cube / image / video / rich text (setStyle · 750 draft)',
+    '优惠券 / 小程序入口 / 关注 / 自定义插槽 / 悬浮气泡 / 辅助分割':
+        'Coupon / mini-program entry / follow / custom slot / floating bubble / auxiliary segmentation',
+    '页签 + 筛选排序吸顶与商品列表（同一实例仅允许一个商品楼层）':
+        'Tabs + sticky filter bar and goods list (one goods floor per instance)',
+    '搜索 / 公告 / 轮播 / 魔方 / 图片 / 热区 / 视频 / 富文本（props · 375 px 直出）':
+        'Search / notice / carousel / magic cube / images / hotzone / video / rich text (props · 375 px)',
+    '优惠券 / 悬浮按钮 / 自定义插槽 / 分割线（coupon 走 v2 协议自动映射）':
+        'Coupon / float button / custom slot / divider (coupon maps through the v2 protocol)',
+    'bars 开关页签 / 筛选 / 吸顶，display 控制卡片与列数':
+        'bars toggles tabs / filter / sticky, display controls card type and columns',
+    业务插槽可以在这里承载任意内容: 'Add any business content to this slot',
+    'v2 自定义插槽：任意业务内容': 'v2 custom slot: any business content',
+    弹窗组件: 'Popup components',
+    '仅 V1': 'V1 only',
+    '仅 V2': 'V2 only',
+    全部: 'All',
+    暂无商品: 'No products yet',
+    暂无视频: 'No video yet',
+    搜索商品: 'Search products',
+    打开链接: 'Open link',
+    'CMS 渲染异常，详见控制台': 'CMS render error, see console',
+    新版本已发布: 'New version published',
+    'V2 组件全覆盖演示': 'All v2 blocks on display',
+    运动鞋: 'Sneakers',
+    复古包: 'Vintage bags',
+    'V1 装修协议渲染的富文本内容。': 'Rich text rendered by the v1 decoration protocol.',
+    'V2 协议富文本模块，内容经过安全过滤。': 'V2 rich text block with sanitized content.'
+});
+
 export function demoText(value: string): string {
     return currentLocale.value.name === 'en-US' ? (englishMessages[value] ?? value) : value;
 }

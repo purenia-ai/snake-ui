@@ -9,7 +9,7 @@
                 <snake-switch
                     v-else-if="control.type === 'switch'"
                     :model-value="Boolean(values[control.key])"
-                    :size="56"
+                    :size="28"
                     @update:model-value="emit('change', control.key, Boolean($event))"
                 />
             </view>
