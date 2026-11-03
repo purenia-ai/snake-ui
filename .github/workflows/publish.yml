@@ -25,6 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      id-token: write # npm trusted publishing（OIDC）：免 token 免 OTP，身份由 GitHub 签发
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -35,7 +36,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24 # npm ≥ 11.5，trusted publishing 所需
           registry-url: 'https://registry.npmjs.org'
 
       # 纯源码包（无 scripts），无需安装依赖；仅校验 tag 与包版本一致，防止错发
@@ -50,9 +51,7 @@ jobs:
             exit 1
           fi
 
-      - name: Publish (npm token)
+      - name: Publish (trusted publishing / OIDC)
         working-directory: src/uni_modules/snake-ui
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-        # push 触发时 inputs.npm_tag 为空，回退 latest（正式版）；预发布走 workflow_dispatch 填 next / rc
-        run: npm publish --access public --tag ${{ github.event.inputs.npm_tag || 'latest' }}
+        # 无需 npm token：npm 验证 GitHub Actions 的 OIDC 身份（包设置里登记的 Trusted Publisher）
+        run: npm publish --provenance --access public --tag ${{ github.event.inputs.npm_tag || 'latest' }}
