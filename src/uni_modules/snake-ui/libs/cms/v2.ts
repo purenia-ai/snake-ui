@@ -28,7 +28,7 @@ export const cmsV2Defaults: Record<CmsV2BuiltinComponent, Dictionary> = {
     'v2.custom': { slotName: 'custom' },
     'v2.divider': {
         mode: 'blank',
-        height: 30,
+        height: 15,
         lineStyle: 'solid',
         margin: 0,
         style: { lineColor: 'rgb(229, 229, 229)', backgroundColor: 'rgb(255, 255, 255)' }
@@ -37,7 +37,7 @@ export const cmsV2Defaults: Record<CmsV2BuiltinComponent, Dictionary> = {
         src: '',
         link: link(),
         position: { right: 0, bottom: 20 },
-        style: { width: 76, height: 76 }
+        style: { width: 38, height: 38 }
     },
     'v2.goodslist': {
         audience: 'all',
@@ -73,13 +73,13 @@ export const cmsV2Defaults: Record<CmsV2BuiltinComponent, Dictionary> = {
             activitySession: false,
             sticky: false
         },
-        style: { pageMargin: 5, gap: 10, radius: 0, backgroundColor: '#F8F8F8' },
+        style: { pageMargin: 2.5, gap: 5, radius: 0, backgroundColor: '#F8F8F8' },
         empty: { mode: 'default', image: '', text: '列表为空', color: '#000000' }
     },
     'v2.hotzone': { image: '', zones: [] },
     'v2.images': {
         layout: { mode: 'single', columns: 2 },
-        style: { ...mediaStyle(), gap: 8 },
+        style: { ...mediaStyle(), gap: 4 },
         items: []
     },
     'v2.magiccube': {
@@ -87,7 +87,7 @@ export const cmsV2Defaults: Record<CmsV2BuiltinComponent, Dictionary> = {
         columns: 4,
         cells: [],
         play: { interval: 3 },
-        style: { pageMargin: 0, gap: 0, radius: 0, height: 188, backgroundColor: '#FFFFFF' }
+        style: { pageMargin: 0, gap: 0, radius: 0, height: 94, backgroundColor: '#FFFFFF' }
     },
     'v2.notice': {
         direction: 'row',
@@ -96,8 +96,8 @@ export const cmsV2Defaults: Record<CmsV2BuiltinComponent, Dictionary> = {
         textList: [],
         isLeftIcon: true,
         style: {
-            height: 72,
-            pageMargin: 10,
+            height: 36,
+            pageMargin: 5,
             backgroundColor: 'rgb(234, 241, 255)',
             textColor: 'rgb(45, 87, 231)'
         }
@@ -110,11 +110,11 @@ export const cmsV2Defaults: Record<CmsV2BuiltinComponent, Dictionary> = {
         isSearch: false,
         inputType: 'text',
         textList: [],
-        rightImage: { show: false, src: '', link: link(), width: 60, height: 60, borderRadius: 0, marginRight: 0 },
+        rightImage: { show: false, src: '', link: link(), width: 30, height: 30, borderRadius: 0, marginRight: 0 },
         icons: [],
         style: {
             position: 0,
-            height: 60,
+            height: 30,
             pageMargin: 0,
             borderRadius: 0,
             backgroundColor: 'rgb(249, 249, 249)',
@@ -151,7 +151,7 @@ const limits: Record<string, [number, number]> = {
     'v2.goodslist:query.pageSize': [1, 50],
     'v2.images:layout.columns': [1, 4],
     'v2.magiccube:columns': [1, 6],
-    'v2.search:style.height': [60, 80]
+    'v2.search:style.height': [30, 40]
 };
 
 function clone<T>(value: T): T {

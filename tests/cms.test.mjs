@@ -158,7 +158,7 @@ test('CMS v2 normalization fills defaults, coerces primitives, and drops undecla
     ]);
     const props = result.components[0].props;
     assert.equal(props.isSearch, true);
-    assert.equal(props.style.height, 80);
+    assert.equal(props.style.height, 40);
     assert.equal(props.style.position, 1);
     assert.equal(props.searchText.length > 0, true);
     assert.equal(props.internalOnly, undefined);
