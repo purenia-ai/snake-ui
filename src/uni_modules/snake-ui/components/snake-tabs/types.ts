@@ -10,6 +10,8 @@ export interface TabItem extends Record<string, unknown> {
     count?: string | number;
     /** 是否隐藏该标签。 */
     hidden?: boolean;
+    /** 是否禁用该标签：置灰、不可切换，点击触发 disabled 事件。 */
+    disabled?: boolean;
 }
 
 /** Tabs 组件的公开属性。 */
@@ -66,6 +68,10 @@ export interface TabsProps {
 export type TabsEmits = {
     /** 点击非当前标签时返回新索引。 */
     change: [index: number];
+    /** 点击任意标签（含当前项与禁用项）时返回索引。 */
+    click: [index: number];
+    /** 点击禁用标签时返回索引。 */
+    disabled: [index: number];
 };
 
 /** Tabs 暴露的方法。 */

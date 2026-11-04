@@ -57,13 +57,22 @@ test('tabs and swiper expose navigation and indicator contracts', async () => {
     ]);
     for (const name of ['barWidth', 'barHeight', 'gutter', 'isDot', 'showBar', 'itemWidth']) assert.match(tabs, new RegExp(`${name}\\?`));
     assert.match(tabs, /hidden\?/);
-    assert.doesNotMatch(tabs, /disabled\?/);
+    // disabled 只存在于 TabItem 字段与事件，不是组件级 prop
+    assert.match(tabs, /disabled\?: boolean/);
     assert.match(tabsSource, /height:\s*40,[\s\S]*fontSize:\s*15/);
     assert.match(tabsSource, /barWidth:\s*20,[\s\S]*barHeight:\s*3,[\s\S]*gutter:\s*15/);
     assert.match(tabsSource, /createSelectorQuery\(\)\.in\(instance\?\.proxy/);
     assert.match(tabsSource, /const scrollLeft = ref\(0\)/);
     assert.match(tabsSource, /offsetLeft - \(componentWidth\.value - tabWidth\) \/ 2/);
     assert.match(tabsSource, /left - unitToPx\(props\.barWidth\) \/ 2/);
+    // 滑块位置每次切换现场测量（宽度累加、与滚动偏移解耦），不再缓存一次性 rect
+    assert.doesNotMatch(tabsSource, /tabQueryInfo/);
+    // scroll-left 同值不触发滚动，需扰动让回切标签回中
+    assert.match(tabsSource, /Math\.random\(\) \/ 10000/);
+    // 禁用项拦截与 click 事件
+    assert.match(tabsSource, /props\.list\[index\]\?\.disabled/);
+    assert.match(tabs, /click: \[index: number\]/);
+    assert.match(tabs, /disabled: \[index: number\]/);
     assert.match(tabsSource, /defineExpose\(\{ init, clickTab, scrollByIndex \}\)/);
     assert.doesNotMatch(tabsSource, /scroll-into-view/);
     assert.match(tabsSource, /'snake-tabs__scroll-flex': !isScroll/);

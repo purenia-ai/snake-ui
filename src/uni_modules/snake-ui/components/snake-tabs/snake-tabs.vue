@@ -14,7 +14,10 @@
                         :id="`${id}-item-${index}`"
                         :key="index"
                         class="snake-tabs__item snake-line-1"
-                        :class="{ 'snake-tabs__item--hidden': item.hidden }"
+                        :class="{
+                            'snake-tabs__item--hidden': item.hidden,
+                            'snake-tabs__item--disabled': item.disabled
+                        }"
                         :style="tabItemStyle(index)"
                         @tap="clickTab(index)"
                     >
@@ -85,10 +88,8 @@ const props = withDefaults(defineProps<TabsProps>(), {
 const emit = defineEmits<TabsEmits>();
 const instance = getCurrentInstance();
 const scrollLeft = ref(0);
-const tabQueryInfo = ref<UniApp.NodeInfo[]>([]);
 const componentWidth = ref(0);
 const scrollBarLeft = ref(0);
-const parentLeft = ref(0);
 const id = `snake-tabs-${instance?.uid ?? 0}`;
 const currentIndex = ref<number | string>(props.current);
 const barFirstTimeMove = ref(true);
@@ -154,44 +155,62 @@ function getRect(selector: string) {
 async function init() {
     await nextTick();
     if (typeof uni === 'undefined' || typeof uni.createSelectorQuery !== 'function') return;
-    const tabRect = await getRect(`#${id}`);
-    if (!tabRect) return;
-    parentLeft.value = Number(tabRect.left) || 0;
-    componentWidth.value = Number(tabRect.width) || 0;
-    getTabRect();
+    await scrollByIndex();
 }
 
 function clickTab(index: number) {
+    emit('click', index);
+    if (props.list[index]?.disabled) {
+        emit('disabled', index);
+        return;
+    }
     if (index === Number(currentIndex.value)) return;
     emit('change', index);
 }
 
-function getTabRect() {
-    const query = uni.createSelectorQuery().in(instance?.proxy as any);
-    for (let index = 0; index < props.list.length; index += 1) {
-        query.select(`#${id}-item-${index}`).fields({ size: true, rect: true }, () => {});
-    }
-    query.exec(results => {
-        tabQueryInfo.value = (results ?? []) as UniApp.NodeInfo[];
-        scrollByIndex();
+/** 批量查询全部标签宽度：滑块与居中滚动改用“宽度累加”推算内容坐标，与滚动偏移解耦。 */
+function queryTabRects(): Promise<(UniApp.NodeInfo | null)[]> {
+    return new Promise(resolve => {
+        const query = uni.createSelectorQuery().in(instance?.proxy as any);
+        for (let index = 0; index < props.list.length; index += 1) {
+            query.select(`#${id}-item-${index}`).fields({ size: true }, () => {});
+        }
+        query.exec(results => resolve((results ?? []) as (UniApp.NodeInfo | null)[]));
     });
 }
 
-function scrollByIndex() {
-    const tabInfo = tabQueryInfo.value[Number(currentIndex.value)];
-    if (!tabInfo) return;
+/**
+ * 现场测量并更新滚动与滑块位置：每次切换重新取宽，晚到的字体、语言切换
+ * 或同长度换标不会再让滑块停在陈旧位置；返回 false 表示测量未就绪。
+ */
+async function scrollByIndex(): Promise<boolean> {
+    if (typeof uni === 'undefined' || typeof uni.createSelectorQuery !== 'function') return false;
+    const [tabRects, wrapRect] = await Promise.all([queryTabRects(), getRect(`#${id}`)]);
+    const measuredWidth = Number(wrapRect?.width) || 0;
+    if (measuredWidth) componentWidth.value = measuredWidth;
+    const index = Number(currentIndex.value);
+    const tabInfo = tabRects[index];
+    if (!tabInfo || !Number(tabInfo.width)) return false;
     const tabWidth = Number(tabInfo.width) || 0;
-    const offsetLeft = (Number(tabInfo.left) || 0) - parentLeft.value;
+    const offsetLeft = tabRects.slice(0, index).reduce((sum, rect) => sum + (Number(rect?.width) || 0), 0);
     const nextScrollLeft = offsetLeft - (componentWidth.value - tabWidth) / 2;
-    scrollLeft.value = nextScrollLeft < 0 ? 0 : nextScrollLeft;
-    const left = (Number(tabInfo.left) || 0) + tabWidth / 2 - parentLeft.value;
+    // scroll-left 设置相同值时 scroll-view 不会再次滚动，加微量扰动让回切标签也能回中
+    scrollLeft.value =
+        nextScrollLeft < 0
+            ? 0
+            : nextScrollLeft === scrollLeft.value
+              ? nextScrollLeft + Math.random() / 10000
+              : nextScrollLeft;
+    const left = offsetLeft + tabWidth / 2;
     scrollBarLeft.value = left - unitToPx(props.barWidth) / 2;
-    if (!barFirstTimeMove.value) return;
-    if (firstMoveTimer) clearTimeout(firstMoveTimer);
-    firstMoveTimer = setTimeout(() => {
-        barFirstTimeMove.value = false;
-        firstMoveTimer = undefined;
-    }, 100);
+    if (barFirstTimeMove.value) {
+        if (firstMoveTimer) clearTimeout(firstMoveTimer);
+        firstMoveTimer = setTimeout(() => {
+            barFirstTimeMove.value = false;
+            firstMoveTimer = undefined;
+        }, 100);
+    }
+    return true;
 }
 
 watch(
@@ -207,18 +226,22 @@ watch(
     value => {
         void nextTick(() => {
             currentIndex.value = value;
-            scrollByIndex();
+            void scrollByIndex();
         });
     },
     { immediate: true }
 );
 
 onMounted(() => {
-    void nextTick(() => {
-        initTimer = setTimeout(() => {
-            initTimer = undefined;
-            void init();
-        }, 500);
+    void nextTick(async () => {
+        // 首测失败的常见原因是异步内容或布局未就绪：短间隔重试，
+        // 替代旧版固定 500ms 延时——就绪快则快，最多 5 次。
+        for (let attempt = 0; attempt < 5; attempt += 1) {
+            if (await scrollByIndex()) return;
+            await new Promise<void>(resolve => {
+                initTimer = setTimeout(resolve, 50);
+            });
+        }
     });
 });
 
@@ -257,6 +280,9 @@ defineExpose({ init, clickTab, scrollByIndex });
 }
 .snake-tabs__item--hidden {
     display: none;
+}
+.snake-tabs__item--disabled {
+    opacity: 0.4;
 }
 .snake-tabs__bar {
     position: absolute;
