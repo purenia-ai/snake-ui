@@ -4,6 +4,74 @@
 
 ## components
 
+<!-- Source: docs/components/badge.md -->
+
+# Badge 徽标
+
+在任意内容右上角挂载数字或圆点徽标，徽标圆心对准角点；无插槽内容时可作独立徽标使用。
+
+## 平台兼容性
+
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
+
+## 基础用法
+
+包裹内容即在右上角挂载徽标，超过 `max` 显示 `max+`：
+
+```vue
+<snake-badge :value="12" :max="99">
+    <text>消息</text>
+</snake-badge>
+```
+
+## 圆点徽标
+
+`isDot` 忽略内容显示为圆点；`hidden` 可强制隐藏徽标但保留插槽内容：
+
+```vue
+<snake-badge is-dot>
+    <view class="box">待办</view>
+</snake-badge>
+```
+
+## 独立徽标
+
+不传插槽时作为独立徽标使用：
+
+```vue
+<snake-badge :value="8" />
+```
+
+## API
+
+### Props
+
+| 参数                            | 说明                                           | 类型               | 默认值             |
+| ------------------------------- | ---------------------------------------------- | ------------------ | ------------------ |
+| `value`                         | 徽标内容，数字或文本                           | `number \| string` | —                  |
+| `max`                           | 最大值，超过显示 `max+`                        | `number`           | —                  |
+| `isDot`                         | 是否显示为圆点（忽略内容）                     | `boolean`          | `false`            |
+| `showZero`                      | `value` 为 0 时是否仍显示                      | `boolean`          | `false`            |
+| `hidden`                        | 强制隐藏徽标，插槽内容照常渲染                 | `boolean`          | `false`            |
+| `top` / `right`                 | 相对角点的偏移，`top` 正值向下，`right` 正值向左，数值单位 px（375 稿） | `number \| string` | `0` / `0` |
+| `bgColor`                       | 徽标背景色                                     | `string`           | 主题错误色         |
+| `color`                         | 徽标文字颜色                                   | `string`           | `#fff`             |
+| `customClass` / `customStyle`   | 根节点自定义类和样式                           | `string` / 样式值  | 空                 |
+
+### Slots
+
+| 插槽名  | 说明                                       |
+| ------- | ------------------------------------------ |
+| default | 徽标挂载的内容；不传时作为独立徽标展示     |
+
+## 主题变量
+
+| 变量名                  | 说明       |
+| ----------------------- | ---------- |
+| `--snake-color-error`   | 徽标背景色 |
+
 <!-- Source: docs/components/button-sort.md -->
 
 # ButtonSort 排序按钮
@@ -4308,7 +4376,7 @@ const tabs = [{ name: '推荐' }, { name: '新品' }, { name: '热门' }];
 />
 ```
 
-`name` 和 `count` 可指定对象中的字段名；`isDot` 可将数字徽标改成圆点。`hidden` 隐藏标签但不改变其原数组索引；`disabled` 置灰标签并拦截切换，点击触发 `disabled` 事件。
+`name` 和 `count` 可指定对象中的字段名；`isDot` 可将数字徽标改成圆点。徽标由 snake-badge 渲染，圆心锚定标签文字的右上角点，`offset` 在此基础上偏移。`hidden` 隐藏标签但不改变其原数组索引；`disabled` 置灰标签并拦截切换，点击触发 `disabled` 事件。
 
 ## 动态数据
 
@@ -4337,7 +4405,7 @@ tabsRef.value?.init();
 | `gutter`                        | 滚动模式单侧内边距，数值单位 px（375 稿） | `number \| string` | `15`                      |
 | `bgColor`                       | 背景色                                    | `string`           | `#fff`                    |
 | `name` / `count`                | 标题与徽标字段名                          | `string`           | `name` / `count`          |
-| `offset`                        | 徽标 `[top, right]` 偏移                  | `[number, number]` | `[5, 20]`                 |
+| `offset`                        | 徽标 `[top, right]` 偏移，相对文字右上角点，数值单位 px（375 稿） | `[number, number]` | `[0, 0]`           |
 | `isDot` / `bold` / `showBar`    | 圆点徽标、激活加粗、显示滑块              | `boolean`          | `false` / `true` / `true` |
 | `activeItemStyle` / `barStyle`  | 激活项和滑块附加样式                      | `object`           | `{}`                      |
 | `itemWidth`                     | 标签宽度                                  | `number \| string` | `auto`                    |

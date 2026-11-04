@@ -13,7 +13,7 @@
                         v-for="(item, index) in list"
                         :id="`${id}-item-${index}`"
                         :key="index"
-                        class="snake-tabs__item snake-line-1"
+                        class="snake-tabs__item"
                         :class="{
                             'snake-tabs__item--hidden': item.hidden,
                             'snake-tabs__item--disabled': item.disabled
@@ -21,15 +21,18 @@
                         :style="tabItemStyle(index)"
                         @tap="clickTab(index)"
                     >
-                        <view
-                            v-if="Number(badgeCount(item)) !== 0"
-                            class="snake-tabs__badge"
-                            :class="{ 'snake-tabs__badge--dot': isDot }"
-                            :style="{ top: $snake.addUnit(offset[0]), right: $snake.addUnit(offset[1]) }"
+                        <!-- 徽标锚定文字右上角（snake-badge 角点居中），不再锚 item 盒子角 -->
+                        <snake-badge
+                            class="snake-tabs__text"
+                            :value="badgeCount(item)"
+                            :max="99"
+                            :is-dot="isDot"
+                            :hidden="Number(badgeCount(item)) === 0"
+                            :top="offset[0]"
+                            :right="offset[1]"
                         >
-                            {{ badgeText(item) }}
-                        </view>
-                        {{ itemValue(item, name, 'name') }}
+                            <text class="snake-line-1">{{ itemValue(item, name, 'name') }}</text>
+                        </snake-badge>
                     </view>
                     <view v-if="showBar" class="snake-tabs__bar" :style="tabBarStyle" />
                 </view>
@@ -76,7 +79,9 @@ const props = withDefaults(defineProps<TabsProps>(), {
     bgColor: '#fff',
     name: 'name',
     count: 'count',
-    offset: () => [5, 20],
+    // 徽标相对文字右上角点的偏移；0.0.12 起角点居中定位，默认不再偏移
+    // （旧默认 [5, 20] 为 rpx 口径遗物，按 px 解释后间距翻倍导致徽标漂移）
+    offset: () => [0, 0],
     isDot: false,
     bold: true,
     activeItemStyle: () => ({}),
@@ -119,12 +124,6 @@ function itemValue(item: TabItem, key: string, fallback: 'name' | 'count') {
 
 function badgeCount(item: TabItem) {
     return itemValue(item, props.count, 'count') || 0;
-}
-
-function badgeText(item: TabItem) {
-    if (props.isDot) return '';
-    const value = badgeCount(item);
-    return Number(value) > 99 ? '99+' : value;
 }
 
 function tabItemStyle(index: number) {
@@ -272,11 +271,17 @@ defineExpose({ init, clickTab, scrollByIndex });
 .snake-tabs__item {
     position: relative;
     display: inline-block;
-    overflow: hidden;
     text-align: center;
-    text-overflow: ellipsis;
     white-space: nowrap;
     transition-property: background-color, color;
+}
+// 文字节点承接溢出省略（原 item 上的 overflow:hidden 会裁掉挂角的徽标）
+.snake-tabs__text {
+    max-width: 100%;
+}
+.snake-tabs__text text {
+    display: inline-block;
+    max-width: 100%;
 }
 .snake-tabs__item--hidden {
     display: none;
@@ -291,29 +296,6 @@ defineExpose({ init, clickTab, scrollByIndex });
 .snake-tabs__scroll-flex {
     display: flex;
     justify-content: space-between;
-}
-.snake-tabs__badge {
-    position: absolute;
-    z-index: 9;
-    display: inline-flex;
-    min-width: 14px;
-    height: 14px;
-    align-items: center;
-    justify-content: center;
-    padding: 0 3.5px;
-    border-radius: 50px;
-    color: #fff;
-    background: var(--snake-color-error, #fa3534);
-    font-size: 9px;
-    line-height: 14px;
-    transform: scale(0.8);
-    transform-origin: center;
-}
-.snake-tabs__badge--dot {
-    width: 8px;
-    min-width: 8px;
-    height: 8px;
-    padding: 0;
 }
 ::-webkit-scrollbar {
     display: none;

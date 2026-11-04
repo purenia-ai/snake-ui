@@ -54,6 +54,7 @@ const standardizedDocs = [
     'root-portal',
     'config-provider',
     'icon',
+    'badge',
     'image',
     'text',
     'link',
@@ -208,6 +209,7 @@ test('high-use component docs follow the standard documentation shape', async ()
         'transition',
         'root-portal',
         'config-provider',
+        'badge',
         'image',
         'text',
         'link'
@@ -235,7 +237,7 @@ test('high-use component docs follow the standard documentation shape', async ()
 });
 
 test('component registry is the complete documented component source of truth', async () => {
-    assert.equal(componentItems.length, 47);
+    assert.equal(componentItems.length, 48);
     assert.equal(new Set(componentItems.map(item => item.link)).size, componentItems.length);
 
     const packageEntry = await readFile(resolve(root, 'src/uni_modules/snake-ui/index.ts'), 'utf8');

@@ -70,6 +70,7 @@ const componentGroupDefinitions: ComponentGroupDefinition[] = [
             { name: 'ConfigProvider', title: '全局配置', link: '/components/config-provider' },
             { name: 'Button', title: '按钮', link: '/components/button' },
             { name: 'Icon', title: '图标', link: '/components/icon' },
+            { name: 'Badge', title: '徽标', link: '/components/badge' },
             { name: 'Image', title: '图片', link: '/components/image' },
             { name: 'QrCode', title: '二维码', link: '/components/qr-code' },
             { name: 'Loading', title: '加载', link: '/components/loading' },

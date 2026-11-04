@@ -53,7 +53,7 @@ const tabs = [{ name: '推荐' }, { name: '新品' }, { name: '热门' }];
 />
 ```
 
-`name` 和 `count` 可指定对象中的字段名；`isDot` 可将数字徽标改成圆点。`hidden` 隐藏标签但不改变其原数组索引；`disabled` 置灰标签并拦截切换，点击触发 `disabled` 事件。
+`name` 和 `count` 可指定对象中的字段名；`isDot` 可将数字徽标改成圆点。徽标由 snake-badge 渲染，圆心锚定标签文字的右上角点，`offset` 在此基础上偏移。`hidden` 隐藏标签但不改变其原数组索引；`disabled` 置灰标签并拦截切换，点击触发 `disabled` 事件。
 
 ## 动态数据
 
@@ -70,23 +70,23 @@ tabsRef.value?.init();
 
 ### Props
 
-| 参数                            | 说明                                      | 类型               | 默认值                    |
-| ------------------------------- | ----------------------------------------- | ------------------ | ------------------------- |
-| `list`                          | 标签对象数组                              | `TabItem[]`        | `[]`                      |
-| `current`                       | 当前激活索引                              | `number \| string` | `0`                       |
-| `isScroll`                      | 是否允许横向拖动                          | `boolean`          | `true`                    |
-| `height` / `fontSize`           | 高度和字号，数值单位 px（375 稿）         | `number \| string` | `40` / `15`               |
-| `duration`                      | 动画时长，单位秒                          | `number \| string` | `0.5`                     |
-| `activeColor` / `inactiveColor` | 激活与未激活文字颜色                      | `string`           | 主题色 / 主文字色         |
-| `barWidth` / `barHeight`        | 滑块宽高，数值单位 px（375 稿）           | `number \| string` | `20` / `3`                |
-| `gutter`                        | 滚动模式单侧内边距，数值单位 px（375 稿） | `number \| string` | `15`                      |
-| `bgColor`                       | 背景色                                    | `string`           | `#fff`                    |
-| `name` / `count`                | 标题与徽标字段名                          | `string`           | `name` / `count`          |
-| `offset`                        | 徽标 `[top, right]` 偏移                  | `[number, number]` | `[5, 20]`                 |
-| `isDot` / `bold` / `showBar`    | 圆点徽标、激活加粗、显示滑块              | `boolean`          | `false` / `true` / `true` |
-| `activeItemStyle` / `barStyle`  | 激活项和滑块附加样式                      | `object`           | `{}`                      |
-| `itemWidth`                     | 标签宽度                                  | `number \| string` | `auto`                    |
-| `customClass` / `customStyle`   | 根节点自定义类和样式                      | `string` / 样式值  | 空                        |
+| 参数                            | 说明                                                              | 类型               | 默认值                    |
+| ------------------------------- | ----------------------------------------------------------------- | ------------------ | ------------------------- |
+| `list`                          | 标签对象数组                                                      | `TabItem[]`        | `[]`                      |
+| `current`                       | 当前激活索引                                                      | `number \| string` | `0`                       |
+| `isScroll`                      | 是否允许横向拖动                                                  | `boolean`          | `true`                    |
+| `height` / `fontSize`           | 高度和字号，数值单位 px（375 稿）                                 | `number \| string` | `40` / `15`               |
+| `duration`                      | 动画时长，单位秒                                                  | `number \| string` | `0.5`                     |
+| `activeColor` / `inactiveColor` | 激活与未激活文字颜色                                              | `string`           | 主题色 / 主文字色         |
+| `barWidth` / `barHeight`        | 滑块宽高，数值单位 px（375 稿）                                   | `number \| string` | `20` / `3`                |
+| `gutter`                        | 滚动模式单侧内边距，数值单位 px（375 稿）                         | `number \| string` | `15`                      |
+| `bgColor`                       | 背景色                                                            | `string`           | `#fff`                    |
+| `name` / `count`                | 标题与徽标字段名                                                  | `string`           | `name` / `count`          |
+| `offset`                        | 徽标 `[top, right]` 偏移，相对文字右上角点，数值单位 px（375 稿） | `[number, number]` | `[0, 0]`                  |
+| `isDot` / `bold` / `showBar`    | 圆点徽标、激活加粗、显示滑块                                      | `boolean`          | `false` / `true` / `true` |
+| `activeItemStyle` / `barStyle`  | 激活项和滑块附加样式                                              | `object`           | `{}`                      |
+| `itemWidth`                     | 标签宽度                                                          | `number \| string` | `auto`                    |
+| `customClass` / `customStyle`   | 根节点自定义类和样式                                              | `string` / 样式值  | 空                        |
 
 ### Events
 

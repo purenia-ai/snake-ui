@@ -26,6 +26,7 @@ export * from './components/snake-transition/types';
 export * from './components/snake-root-portal/types';
 export * from './components/snake-empty/types';
 export * from './components/snake-icon/types';
+export * from './components/snake-badge/types';
 export * from './components/snake-image/types';
 export * from './components/snake-qr-code/types';
 export * from './components/snake-loadmore/types';

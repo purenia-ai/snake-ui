@@ -4,6 +4,7 @@
 
 ## components
 
+- [Badge 徽标](components/badge.md)
 - [ButtonSort 排序按钮](components/button-sort.md)
 - [Button 按钮](components/button.md)
 - [Calendar 日历](components/calendar.md)

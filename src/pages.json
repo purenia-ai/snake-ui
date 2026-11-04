@@ -56,6 +56,7 @@
                 { "path": "link/index", "style": { "navigationBarTitleText": "超链接" } },
                 { "path": "empty/index", "style": { "navigationBarTitleText": "空状态" } },
                 { "path": "icon/index", "style": { "navigationBarTitleText": "图标" } },
+                { "path": "badge/index", "style": { "navigationBarTitleText": "徽标" } },
                 { "path": "image/index", "style": { "navigationBarTitleText": "图片" } },
                 { "path": "qrCode/index", "style": { "navigationBarTitleText": "二维码" } },
                 { "path": "loadmore/index", "style": { "navigationBarTitleText": "加载更多" } },

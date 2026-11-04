@@ -19,6 +19,7 @@ export interface ComponentGroup {
 const englishDescriptions: Record<string, string> = {
     Button: 'Trigger actions with primary, plain, disabled and loading states.',
     Icon: 'A versatile icon set with customizable size and color.',
+    Badge: 'Hang count or dot badges on the corner of any content.',
     Image: 'Display images with lazy loading, placeholders, rounded corners and fit modes.',
     Loading: 'Show consistent loading states for components and pages.',
     Skeleton: 'Preview page structure while content loads.',
@@ -106,6 +107,12 @@ const componentGroups: ComponentGroup[] = [
                 '触发即时操作，支持主题、朴素、禁用和加载状态。'
             ),
             item('/pages/componentsA/icon/index', 'Icon 图标', 'Icon', '常用图标集合，支持自定义尺寸与颜色。'),
+            item(
+                '/pages/componentsA/badge/index',
+                'Badge 徽标',
+                'Badge',
+                '在内容右上角挂载数字或圆点徽标，角点居中定位。'
+            ),
             item(
                 '/pages/componentsA/image/index',
                 'Image 图片',
