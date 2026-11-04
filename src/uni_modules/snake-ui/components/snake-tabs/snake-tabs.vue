@@ -275,7 +275,7 @@ defineExpose({ init, clickTab, scrollByIndex });
     white-space: nowrap;
     transition-property: background-color, color;
 }
-// 文字节点承接溢出省略（原 item 上的 overflow:hidden 会裁掉挂角的徽标）
+/* 文字节点承接溢出省略（原 item 上的 overflow:hidden 会裁掉挂角的徽标） */
 .snake-tabs__text {
     max-width: 100%;
 }
