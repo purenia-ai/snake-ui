@@ -5,7 +5,7 @@ import type { StyleValue } from '../../types/global';
 export interface StickyProps {
     /** 吸顶或定位的顶部偏移量，数值按 px（375 稿）处理，带 px 后缀时按 px 处理。 */
     offsetTop?: UnitValue;
-    /** 自定义导航栏高度，单位 px。 */
+    /** 自定义导航栏高度，单位 px。未传入时 H5 端自动让出 uni-app 内置导航栏 44px，其余端为 0；显式传 0 表示页面无导航栏。 */
     customNavHeight?: UnitValue;
     /** 组件层级。 */
     zIndex?: number;

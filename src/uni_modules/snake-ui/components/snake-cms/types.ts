@@ -13,7 +13,7 @@ export interface CmsProps {
     scrollTop?: number;
     /** CMS 商品区域和搜索框吸顶偏移量，按 px（375 稿）处理。 */
     stickyOffsetTop?: number;
-    /** 自定义导航栏高度，单位 px。 */
+    /** 自定义导航栏高度，单位 px。未传入时沿用吸顶组件默认：H5 端自动让出内置导航栏 44px，其余端为 0。 */
     stickyCustomNavHeight?: number;
     /** 当前实例使用的 CMS 服务与兼容配置。 */
     cmsOptions?: CmsOptions;

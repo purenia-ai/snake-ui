@@ -99,7 +99,7 @@ const props = defineProps<{
     activityCurrent: string | number;
     scrollTop: number;
     stickyOffsetTop: number;
-    stickyCustomNavHeight: number;
+    stickyCustomNavHeight?: number;
 }>();
 defineEmits<{
     'tab-change': [index: number, list: Record<string, any>[]];

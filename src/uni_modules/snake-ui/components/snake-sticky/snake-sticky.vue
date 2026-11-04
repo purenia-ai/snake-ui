@@ -34,7 +34,6 @@ defineOptions({ name: 'Sticky', options: { virtualHost: true, styleIsolation: 's
 
 const props = withDefaults(defineProps<StickyProps>(), {
     offsetTop: 0,
-    customNavHeight: 0,
     zIndex: 10,
     disabled: false,
     bgColor: 'transparent',
@@ -75,7 +74,17 @@ const isDisabled = computed(() => {
     const value = props.disabled as unknown;
     return value === true || value === 1 || value === '1' || value === 'true';
 });
-const stickyTop = computed(() => offsetTopPx(props.offsetTop) + unitNumber(props.customNavHeight));
+// H5 端 uni-app 内置导航栏是 44px 的 fixed 元素（z-index 998），页面视口仍从窗口顶部开始；
+// 未显式传入 customNavHeight 时自动让出这 44px，避免吸顶内容钻到内置导航栏底下。
+// 其余端原生导航栏在视口之外，无需补偿；显式传入（含 0，表示页面无导航栏）时按传入值计算。
+const stickyTop = computed(() => {
+    // #ifdef H5
+    if (props.customNavHeight === undefined || props.customNavHeight === null || props.customNavHeight === '') {
+        return offsetTopPx(props.offsetTop) + 44;
+    }
+    // #endif
+    return offsetTopPx(props.offsetTop) + unitNumber(props.customNavHeight);
+});
 const placeholderStyle = computed(() => ({ height: fixed.value ? `${height.value}px` : 'auto' }));
 const contentStyle = computed(() => [
     (fixed.value
@@ -146,7 +155,7 @@ async function update() {
 }
 
 watch(
-    () => props.offsetTop,
+    () => [props.offsetTop, props.customNavHeight],
     () => {
         if (!isDisabled.value) void update();
     }

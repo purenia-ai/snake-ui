@@ -290,7 +290,6 @@ const props = withDefaults(
         pageComponents: () => [],
         scrollTop: 0,
         stickyOffsetTop: 0,
-        stickyCustomNavHeight: 0,
         cmsOptions: () => ({})
     }
 );
