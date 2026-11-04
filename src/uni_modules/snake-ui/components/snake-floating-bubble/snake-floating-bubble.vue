@@ -1,10 +1,9 @@
 <template>
     <view
+        v-if="visible"
         class="floating-bubble"
         :class="{ 'floating-bubble--slot': hasSlot }"
-        :animation="animationData"
-        :style="rootStyle"
-        v-if="visible"
+        :style="[rootStyle, awayStyle]"
     >
         <view class="floating-bubble__wrap" :style="wrapStyle" @click="handleNavigate">
             <view v-if="!hasSlot" class="floating-bubble__close" @click.stop.prevent="close">
@@ -22,7 +21,7 @@
  * @description 页面右侧的悬浮气泡。图片模式支持点击跳转与关闭（持久化），插槽模式承载自定义内容；滚动时向屏幕外收起，停止后恢复。
  */
 
-import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, useSlots, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, useSlots, watch } from 'vue';
 import type { FloatingBubbleProps } from './types';
 
 defineOptions({ name: 'FloatingBubble', options: { virtualHost: true, styleIsolation: 'shared' } });
@@ -32,20 +31,18 @@ const props = withDefaults(defineProps<FloatingBubbleProps>(), {
     scrollTop: 0,
     bottom: '40px',
     background: 'transparent',
-    zIndex: 6
+    zIndex: 6,
+    unit: '750',
+    hideOnScroll: true
 });
 const emit = defineEmits<{ click: [] }>();
 
 const slots = useSlots();
 const hasSlot = computed(() => !!slots.default);
 
-const instance = getCurrentInstance();
 const closeList = ref<Array<string | number>>([]);
-const animationData = ref<Record<string, unknown>>({});
-const animation = ref<ReturnType<typeof uni.createAnimation>>();
-const size = ref({ width: 0, right: 0 });
-const off = ref(false);
-let timer: ReturnType<typeof setTimeout> | undefined;
+const away = ref(false);
+let restoreTimer: ReturnType<typeof setTimeout> | undefined;
 
 const isShow = computed(() => !closeList.value.includes(props.datas?.uid ?? ''));
 const visible = computed(() => (hasSlot.value || Boolean(props.datas?.src)) && isShow.value);
@@ -62,47 +59,41 @@ const rootStyle = computed(() => {
     return style;
 });
 
-const wrapStyle = computed(() =>
-    hasSlot.value
-        ? {}
-        : { width: uni.$snake.from750(props.datas?.width ?? 96), height: uni.$snake.from750(props.datas?.height ?? 96) }
-);
-
-watch(() => props.scrollTop, declick);
-
-onMounted(async () => {
-    closeList.value = uni.getStorageSync('suspensionList') || [];
-    animation.value = uni.createAnimation({ duration: 1000, timingFunction: 'ease' });
-    const rect = await uni.$snake.getRect('.floating-bubble', instance);
-    if (rect) size.value = { width: rect.width, right: rect.right ?? 0 };
+const wrapStyle = computed(() => {
+    if (hasSlot.value) return {};
+    const width = Number(props.datas?.width ?? 96);
+    const height = Number(props.datas?.height ?? 96);
+    // v1 装修数据是 750 稿数字；v2 契约是 375 稿 px，由调用方声明口径。
+    if (props.unit === 'px') return { width: `${width}px`, height: `${height}px` };
+    return { width: uni.$snake.from750(width), height: uni.$snake.from750(height) };
 });
 
-onBeforeUnmount(() => clearTimeout(timer));
+// 半藏补偿距右间距：位移 = 自身一半 + 距右间距，露出的恒为半个身位。
+// 间距用 vw 直出（right 百分比即 vw），不引入屏宽测量。
+const awayStyle = computed(() => {
+    if (!away.value) return {};
+    const gap = hasSlot.value ? '14px' : `${Number(props.datas?.right ?? 0) || 0}vw`;
+    return { transform: `translateX(calc(50% + ${gap}))` };
+});
 
-function declick() {
-    if (!off.value) {
-        rotateAndScale();
-        off.value = true;
+// 收起位移为自身宽度的一半（translateX(50%)），滚动时向右半藏、露出一半，
+// 方向恒为右侧。旧实现按一次 getRect 测量 + 屏宽计算位移，测量落在动画中
+// 或失败时会得到负位移或整屏位移，气泡因此偶发飞向屏幕左侧或整只消失。
+watch(
+    () => props.scrollTop,
+    () => {
+        if (!props.hideOnScroll || !visible.value) return;
+        away.value = true;
+        clearTimeout(restoreTimer);
+        restoreTimer = setTimeout(() => (away.value = false), 2000);
     }
-}
+);
 
-function rotateAndScale() {
-    if (!animation.value) return;
-    const screenWidth = uni.$snake.sys().screenWidth;
-    const x = size.value.width / 2 + screenWidth - size.value.right;
-    animation.value.translateX(x).step();
-    animationData.value = animation.value.export();
-    timer = setTimeout(() => {
-        off.value = false;
-        norotateAndScale();
-    }, 2000);
-}
+onMounted(() => {
+    closeList.value = uni.getStorageSync('suspensionList') || [];
+});
 
-function norotateAndScale() {
-    if (!animation.value) return;
-    animation.value.translateX(0).step();
-    animationData.value = animation.value.export();
-}
+onBeforeUnmount(() => clearTimeout(restoreTimer));
 
 function close() {
     const uid = props.datas?.uid;
@@ -134,9 +125,10 @@ defineExpose({ reopen });
     padding-bottom: 0px;
     padding-bottom: constant(safe-area-inset-bottom);
     padding-bottom: env(safe-area-inset-bottom);
+    transition: transform 0.45s ease;
 
     &--slot {
-        right: 14px;
+        right: 14px; // 与 awayStyle 的插槽间距补偿保持一致
     }
 
     &__wrap {

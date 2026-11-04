@@ -137,6 +137,8 @@
                 :data="item.props"
                 :link-service="linkService"
                 :page-info="pageInfo"
+                :scroll-top="scrollTop"
+                :uid="item.id"
             />
             <cms-v2-goods-list
                 v-else-if="item.component === 'v2.goodslist'"

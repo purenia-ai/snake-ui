@@ -28,6 +28,10 @@ export interface FloatingBubbleProps {
     background?: string;
     /** 层级。 */
     zIndex?: number | string;
+    /** datas 宽高数字的口径：'750' 按 750 设计稿换算（默认），'px' 直接作为像素值。 */
+    unit?: '750' | 'px';
+    /** 滚动时是否向右半藏，停止约 2 秒后恢复（v1 悬浮语义）；主流悬浮按钮不随滚动移动。 */
+    hideOnScroll?: boolean;
 }
 
 /** FloatingBubble 实例公开的操作。 */

@@ -181,6 +181,9 @@ onPageScroll(event => {
     scrollTop.value = event.scrollTop;
 });
 
+/* 悬浮类演示的关闭记忆键按页面加载轮换：会话内可验证持久关闭，刷新即复位。 */
+const bubbleSalt = Date.now().toString(36);
+
 /* 演示素材：促销 banner + 商品图形，每种形态不同图。 */
 const banner = {
     spring: '/static/demo-cms-b-spring.png',
@@ -431,7 +434,15 @@ const v1MarketingItems = computed<DemoCmsItem[]>(() => {
             name: name('悬浮气泡', 'Floating Bubble'),
             config: {
                 component: 'suspension',
-                setStyle: { uid: 'v1-demo', src: product.camera, url: '', width: 96, height: 96, right: 0, bottom: 20 }
+                setStyle: {
+                    uid: `suspension-demo-${bubbleSalt}`,
+                    src: product.camera,
+                    url: '',
+                    width: 96,
+                    height: 96,
+                    right: 0,
+                    bottom: 20
+                }
             }
         },
         {
@@ -695,6 +706,7 @@ const v2MarketingItems = computed<DemoCmsItem[]>(() => {
             key: 'v2.floatbutton',
             name: name('悬浮按钮', 'Float Button'),
             config: {
+                id: `floatbutton-demo-${bubbleSalt}`,
                 component: 'v2.floatbutton',
                 props: {
                     src: product.headphones,
