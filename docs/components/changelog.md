@@ -1,5 +1,19 @@
 # 更新日志
 
+## [0.0.11](https://github.com/purenia-ai/snake-ui/compare/v0.0.10...v0.0.11)（2026-11-04）
+
+### ✨ Features | 新功能
+
+- **unitToPx:** 新增尺寸解析工具：裸数字按 375 稿 px、rpx 后缀按视口换算，供参与几何运算的属性使用
+- **snake-sticky:** H5 端未传 `customNavHeight` 时自动让出 uni-app 内置导航栏 44px；显式传值（含 0）仍按传入值生效，其余端行为不变
+
+### 🐛 Bug Fixes | Bug 修复
+
+- **snake-tabs:** 滑块偏移与圆角改用 unitToPx 解析，`barWidth` / `barHeight` 传 `50rpx` 等带单位值时不再使滑块滞留最左侧
+- **snake-circle-progress:** 画布尺寸同步解析单位值，修复 `width` 传 rpx 时按回退值 100 光栅化导致的压缩变形
+- **snake-read-more:** `showHeight` 高度比较同样支持带单位值
+- **snake-subsection:** 分段模式末项分隔线改由内联样式控制，`:not()` 不可靠的小程序端不再残留
+
 ## [0.0.10](https://github.com/purenia-ai/snake-ui/compare/v0.0.9...v0.0.10)（2026-11-04）
 
 ### ✨ Features | 新功能
