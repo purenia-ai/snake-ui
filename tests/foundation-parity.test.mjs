@@ -93,6 +93,26 @@ test('image, overlay, popup and sticky expose behavioral APIs', async () => {
     for (const event of ['fixed', 'unfixed', 'change']) assert.match(sticky, new RegExp(event));
 });
 
+test('size props used in geometry arithmetic parse units instead of NaN-ing', async () => {
+    // barWidth="50rpx" 一类带单位尺寸参与 Number() 运算会得到 NaN，使滑块 translate 整条失效；
+    // 这些落点必须经 unitToPx 解析。
+    const [unit, tabs, circle, readMore] = await Promise.all([
+        read('libs/function/unit.ts'),
+        read('components/snake-tabs/snake-tabs.vue'),
+        read('components/snake-circle-progress/snake-circle-progress.vue'),
+        read('components/snake-read-more/snake-read-more.vue')
+    ]);
+    assert.match(unit, /export function unitToPx/);
+    assert.match(tabs, /unitToPx\(props\.barWidth\)/);
+    assert.match(tabs, /unitToPx\(props\.barHeight\)/);
+    assert.match(circle, /unitToPx\(props\.width\)/);
+    assert.match(circle, /unitToPx\(props\.borderWidth\)/);
+    assert.match(readMore, /unitToPx\(props\.showHeight\)/);
+    for (const source of [tabs, circle, readMore]) {
+        assert.doesNotMatch(source, /Number\(props\.(barWidth|barHeight|width|borderWidth|showHeight)\)/);
+    }
+});
+
 test('image owns viewport lazy loading and configured state artwork', async () => {
     const image = await read('components/snake-image/snake-image.vue');
 

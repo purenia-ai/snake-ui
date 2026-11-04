@@ -42,7 +42,7 @@
  * @see /components/tabs
  */
 import { computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { addUnit } from '../../libs/function/unit';
+import { addUnit, unitToPx } from '../../libs/function/unit';
 import type { TabItem, TabsEmits, TabsProps } from './types';
 
 defineOptions({
@@ -104,7 +104,7 @@ const tabBarStyle = computed(() => [
         backgroundColor: props.activeColor,
         height: addUnit(props.barHeight),
         opacity: barFirstTimeMove.value ? 0 : 1,
-        borderRadius: `${Number(props.barHeight) / 2}px`
+        borderRadius: `${unitToPx(props.barHeight) / 2}px`
     },
     props.barStyle
 ]);
@@ -182,7 +182,7 @@ function scrollByIndex() {
     const nextScrollLeft = offsetLeft - (componentWidth.value - tabWidth) / 2;
     scrollLeft.value = nextScrollLeft < 0 ? 0 : nextScrollLeft;
     const left = (Number(tabInfo.left) || 0) + tabWidth / 2 - parentLeft.value;
-    scrollBarLeft.value = left - Number(props.barWidth) / 2;
+    scrollBarLeft.value = left - unitToPx(props.barWidth) / 2;
     if (!barFirstTimeMove.value) return;
     if (firstMoveTimer) clearTimeout(firstMoveTimer);
     firstMoveTimer = setTimeout(() => {

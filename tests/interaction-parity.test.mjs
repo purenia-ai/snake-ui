@@ -63,7 +63,7 @@ test('tabs and swiper expose navigation and indicator contracts', async () => {
     assert.match(tabsSource, /createSelectorQuery\(\)\.in\(instance\?\.proxy/);
     assert.match(tabsSource, /const scrollLeft = ref\(0\)/);
     assert.match(tabsSource, /offsetLeft - \(componentWidth\.value - tabWidth\) \/ 2/);
-    assert.match(tabsSource, /left - Number\(props\.barWidth\) \/ 2/);
+    assert.match(tabsSource, /left - unitToPx\(props\.barWidth\) \/ 2/);
     assert.match(tabsSource, /defineExpose\(\{ init, clickTab, scrollByIndex \}\)/);
     assert.doesNotMatch(tabsSource, /scroll-into-view/);
     assert.match(tabsSource, /'snake-tabs__scroll-flex': !isScroll/);

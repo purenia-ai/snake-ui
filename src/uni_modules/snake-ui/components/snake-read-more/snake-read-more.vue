@@ -46,6 +46,7 @@
 import { computed, getCurrentInstance, nextTick, onMounted, ref, watch } from 'vue';
 import { guid } from '../../libs/function/guid';
 import { getRect } from '../../libs/function/getRect';
+import { unitToPx } from '../../libs/function/unit';
 import { useLocale } from '../../libs/hooks/useLocale';
 import { readMoreProps, type ReadMoreEmits, type ReadMoreExpose } from './types';
 
@@ -91,7 +92,7 @@ async function init() {
     if (!elId.value) return;
     const rect = await getRect(`.${elId.value}`, instance);
     if (version !== measureVersion) return;
-    isLongContent.value = rect.height > Number(props.showHeight);
+    isLongContent.value = rect.height > unitToPx(props.showHeight);
     if (!isLongContent.value) showMore.value = false;
 }
 

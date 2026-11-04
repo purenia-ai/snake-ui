@@ -26,7 +26,7 @@
  */
 
 import { computed, getCurrentInstance, nextTick, onMounted, watch } from 'vue';
-import { addUnit } from '../../libs/function/unit';
+import { addUnit, unitToPx } from '../../libs/function/unit';
 import { circleProgressProps } from './types';
 
 defineOptions({ name: 'CircleProgress', options: { virtualHost: true, styleIsolation: 'shared' } });
@@ -73,8 +73,8 @@ function resolveColor(value: string, fallback: string): string {
 function drawRing(): void {
     const context = ctx;
     if (!context) return;
-    const size = Number(props.width) || 100;
-    const stroke = Math.max(0, Number(props.borderWidth) || 8);
+    const size = unitToPx(props.width) || 100;
+    const stroke = Math.max(0, unitToPx(props.borderWidth) || 8);
     const radius = Math.max(0, (size - stroke) / 2);
     const center = size / 2;
     const start = -Math.PI / 2; // 12 点方向起笔
@@ -111,7 +111,7 @@ function setupContext(): void {
             const node = (res as { node?: any })?.node;
             if (!node) return;
             const pixelRatio = uni.getSystemInfoSync().pixelRatio || 1;
-            const size = Number(props.width) || 100;
+            const size = unitToPx(props.width) || 100;
             node.width = size * pixelRatio;
             node.height = size * pixelRatio;
             const context = node.getContext('2d');

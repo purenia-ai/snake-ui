@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
-import { addUnit, from375, from750, pxToRpx } from '../src/uni_modules/snake-ui/libs/function/unit.ts';
+import { addUnit, from375, from750, pxToRpx, unitToPx } from '../src/uni_modules/snake-ui/libs/function/unit.ts';
 
 test('addUnit preserves explicit units and applies a default to numeric values', () => {
     assert.equal(addUnit(12), '12px');
@@ -191,4 +191,18 @@ test('native component demos (componentsA) declare slider units in px, not rpx',
     };
     await walk(root);
     assert.deepEqual(offenders, []);
+});
+
+test('unitToPx keeps geometry arithmetic safe for unit-bearing size props', () => {
+    // 裸数字按库口径（375 稿 px）取数值本身
+    assert.equal(unitToPx(50), 50);
+    assert.equal(unitToPx('50'), 50);
+    assert.equal(unitToPx('12px'), 12);
+    // rpx 后缀在无 uni 的 node 环境按 1rpx = 0.5px 折算，不再产生 NaN
+    assert.equal(unitToPx('50rpx'), 25);
+    assert.equal(unitToPx('10RPX'), 5);
+    // 空值与非法值归 0
+    assert.equal(unitToPx(undefined), 0);
+    assert.equal(unitToPx(''), 0);
+    assert.equal(unitToPx('auto'), 0);
 });

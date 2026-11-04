@@ -24,6 +24,28 @@ export function addUnit(value: UnitValue = 0, unit = 'px'): string {
     return BARE_NUMBER_PATTERN.test(normalized) ? `${normalized}${unit}` : normalized;
 }
 
+/**
+ * 尺寸值解析为 px 数值，供参与几何运算的属性使用（滑块偏移、画布尺寸、高度比较等）：
+ * 裸数字与 px 后缀取数值本身（库口径为 375 稿 px），rpx 后缀按当前视口换算，
+ * 无 uni 环境（node 直载测试）按 1rpx = 0.5px 折算；非法值归 0。
+ * 此前组件内直接 Number(props.x) 参与运算，传入 "50rpx" 会得到 NaN 并使
+ * transform / 画布尺寸整体失效，本函数即为其统一替代。
+ */
+export function unitToPx(value: UnitValue = 0): number {
+    if (value === null || value === undefined || value === '') return 0;
+    const normalized = String(value).trim();
+    const numericValue = Number.parseFloat(normalized);
+    if (!Number.isFinite(numericValue)) return 0;
+    if (/rpx$/i.test(normalized)) {
+        if (typeof uni !== 'undefined' && typeof uni.upx2px === 'function') {
+            const converted = Number(uni.upx2px(numericValue));
+            return Number.isFinite(converted) ? converted : numericValue / 2;
+        }
+        return numericValue / 2;
+    }
+    return numericValue;
+}
+
 // node 直载测试等无 uni 环境返回 0，由 pxToRpx 归入非法视口兜底
 function getViewportWidth(): number {
     if (typeof uni === 'undefined') return 0;
