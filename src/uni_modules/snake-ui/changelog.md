@@ -1,5 +1,19 @@
 # 更新日志
 
+## [0.0.12](https://github.com/purenia-ai/snake-ui/compare/v0.0.11...v0.0.12)（2026-11-04）
+
+### ✨ Features | 新功能
+
+- **snake-badge:** 新增徽标组件：包裹内容并在右上角圆心对准角点挂载数字 / 圆点徽标，支持 max 溢出、showZero、hidden 与 top/right 偏移，无插槽时作独立徽标
+- **snake-tabs:** 新增 `click` / `disabled` 事件与标签项 `disabled` 字段（置灰并拦截切换）；徽标改由 snake-badge 渲染并锚定文字右上角点，`offset` 语义改为相对角点偏移且默认归零
+- **snake-tabs:** 滑块与滚动改现场测量（前方宽度累加推算内容坐标），字体晚到、语言切换或动态换标后不再错位；同值 scroll-left 加微量扰动，回切标签也能回中
+
+### 🐛 Bug Fixes | Bug 修复
+
+- **snake-tabs:** 修复徽标上半截被 scroll-view 裁切：包裹层行高回归 normal 并垂直居中，角点留在滚动区内
+- **snake-tabs:** 修复滑块加粗后抬升量随厚度翻倍顶到文字，底部改固定 3px 间隙
+- **snake-tabs:** 修复纯 CSS 样式块内的非法行注释导致 PostCSS 构建失败
+
 ## [0.0.11](https://github.com/purenia-ai/snake-ui/compare/v0.0.10...v0.0.11)（2026-11-04）
 
 ### ✨ Features | 新功能

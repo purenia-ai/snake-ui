@@ -48,29 +48,29 @@
 
 ### Props
 
-| 参数                            | 说明                                           | 类型               | 默认值             |
-| ------------------------------- | ---------------------------------------------- | ------------------ | ------------------ |
-| `value`                         | 徽标内容，数字或文本                           | `number \| string` | —                  |
-| `max`                           | 最大值，超过显示 `max+`                        | `number`           | —                  |
-| `isDot`                         | 是否显示为圆点（忽略内容）                     | `boolean`          | `false`            |
-| `showZero`                      | `value` 为 0 时是否仍显示                      | `boolean`          | `false`            |
-| `hidden`                        | 强制隐藏徽标，插槽内容照常渲染                 | `boolean`          | `false`            |
-| `top` / `right`                 | 相对角点的偏移，`top` 正值向下，`right` 正值向左，数值单位 px（375 稿） | `number \| string` | `0` / `0` |
-| `bgColor`                       | 徽标背景色                                     | `string`           | 主题错误色         |
-| `color`                         | 徽标文字颜色                                   | `string`           | `#fff`             |
-| `customClass` / `customStyle`   | 根节点自定义类和样式                           | `string` / 样式值  | 空                 |
+| 参数                          | 说明                                                                    | 类型               | 默认值     |
+| ----------------------------- | ----------------------------------------------------------------------- | ------------------ | ---------- |
+| `value`                       | 徽标内容，数字或文本                                                    | `number \| string` | —          |
+| `max`                         | 最大值，超过显示 `max+`                                                 | `number`           | —          |
+| `isDot`                       | 是否显示为圆点（忽略内容）                                              | `boolean`          | `false`    |
+| `showZero`                    | `value` 为 0 时是否仍显示                                               | `boolean`          | `false`    |
+| `hidden`                      | 强制隐藏徽标，插槽内容照常渲染                                          | `boolean`          | `false`    |
+| `top` / `right`               | 相对角点的偏移，`top` 正值向下，`right` 正值向左，数值单位 px（375 稿） | `number \| string` | `0` / `0`  |
+| `bgColor`                     | 徽标背景色                                                              | `string`           | 主题错误色 |
+| `color`                       | 徽标文字颜色                                                            | `string`           | `#fff`     |
+| `customClass` / `customStyle` | 根节点自定义类和样式                                                    | `string` / 样式值  | 空         |
 
 ### Slots
 
-| 插槽名  | 说明                                       |
-| ------- | ------------------------------------------ |
-| default | 徽标挂载的内容；不传时作为独立徽标展示     |
+| 插槽名  | 说明                                   |
+| ------- | -------------------------------------- |
+| default | 徽标挂载的内容；不传时作为独立徽标展示 |
 
 ## 主题变量
 
-| 变量名                  | 说明       |
-| ----------------------- | ---------- |
-| `--snake-color-error`   | 徽标背景色 |
+| 变量名                | 说明       |
+| --------------------- | ---------- |
+| `--snake-color-error` | 徽标背景色 |
 
 <!-- Source: docs/components/button-sort.md -->
 
@@ -513,6 +513,20 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 <!-- Source: docs/components/changelog.md -->
 
 # 更新日志
+
+## [0.0.12](https://github.com/purenia-ai/snake-ui/compare/v0.0.11...v0.0.12)（2026-11-04）
+
+### ✨ Features | 新功能
+
+- **snake-badge:** 新增徽标组件：包裹内容并在右上角圆心对准角点挂载数字 / 圆点徽标，支持 max 溢出、showZero、hidden 与 top/right 偏移，无插槽时作独立徽标
+- **snake-tabs:** 新增 `click` / `disabled` 事件与标签项 `disabled` 字段（置灰并拦截切换）；徽标改由 snake-badge 渲染并锚定文字右上角点，`offset` 语义改为相对角点偏移且默认归零
+- **snake-tabs:** 滑块与滚动改现场测量（前方宽度累加推算内容坐标），字体晚到、语言切换或动态换标后不再错位；同值 scroll-left 加微量扰动，回切标签也能回中
+
+### 🐛 Bug Fixes | Bug 修复
+
+- **snake-tabs:** 修复徽标上半截被 scroll-view 裁切：包裹层行高回归 normal 并垂直居中，角点留在滚动区内
+- **snake-tabs:** 修复滑块加粗后抬升量随厚度翻倍顶到文字，底部改固定 3px 间隙
+- **snake-tabs:** 修复纯 CSS 样式块内的非法行注释导致 PostCSS 构建失败
 
 ## [0.0.11](https://github.com/purenia-ai/snake-ui/compare/v0.0.10...v0.0.11)（2026-11-04）
 
@@ -4393,23 +4407,23 @@ tabsRef.value?.init();
 
 ### Props
 
-| 参数                            | 说明                                      | 类型               | 默认值                    |
-| ------------------------------- | ----------------------------------------- | ------------------ | ------------------------- |
-| `list`                          | 标签对象数组                              | `TabItem[]`        | `[]`                      |
-| `current`                       | 当前激活索引                              | `number \| string` | `0`                       |
-| `isScroll`                      | 是否允许横向拖动                          | `boolean`          | `true`                    |
-| `height` / `fontSize`           | 高度和字号，数值单位 px（375 稿）         | `number \| string` | `40` / `15`               |
-| `duration`                      | 动画时长，单位秒                          | `number \| string` | `0.5`                     |
-| `activeColor` / `inactiveColor` | 激活与未激活文字颜色                      | `string`           | 主题色 / 主文字色         |
-| `barWidth` / `barHeight`        | 滑块宽高，数值单位 px（375 稿）           | `number \| string` | `20` / `3`                |
-| `gutter`                        | 滚动模式单侧内边距，数值单位 px（375 稿） | `number \| string` | `15`                      |
-| `bgColor`                       | 背景色                                    | `string`           | `#fff`                    |
-| `name` / `count`                | 标题与徽标字段名                          | `string`           | `name` / `count`          |
-| `offset`                        | 徽标 `[top, right]` 偏移，相对文字右上角点，数值单位 px（375 稿） | `[number, number]` | `[0, 0]`           |
-| `isDot` / `bold` / `showBar`    | 圆点徽标、激活加粗、显示滑块              | `boolean`          | `false` / `true` / `true` |
-| `activeItemStyle` / `barStyle`  | 激活项和滑块附加样式                      | `object`           | `{}`                      |
-| `itemWidth`                     | 标签宽度                                  | `number \| string` | `auto`                    |
-| `customClass` / `customStyle`   | 根节点自定义类和样式                      | `string` / 样式值  | 空                        |
+| 参数                            | 说明                                                              | 类型               | 默认值                    |
+| ------------------------------- | ----------------------------------------------------------------- | ------------------ | ------------------------- |
+| `list`                          | 标签对象数组                                                      | `TabItem[]`        | `[]`                      |
+| `current`                       | 当前激活索引                                                      | `number \| string` | `0`                       |
+| `isScroll`                      | 是否允许横向拖动                                                  | `boolean`          | `true`                    |
+| `height` / `fontSize`           | 高度和字号，数值单位 px（375 稿）                                 | `number \| string` | `40` / `15`               |
+| `duration`                      | 动画时长，单位秒                                                  | `number \| string` | `0.5`                     |
+| `activeColor` / `inactiveColor` | 激活与未激活文字颜色                                              | `string`           | 主题色 / 主文字色         |
+| `barWidth` / `barHeight`        | 滑块宽高，数值单位 px（375 稿）                                   | `number \| string` | `20` / `3`                |
+| `gutter`                        | 滚动模式单侧内边距，数值单位 px（375 稿）                         | `number \| string` | `15`                      |
+| `bgColor`                       | 背景色                                                            | `string`           | `#fff`                    |
+| `name` / `count`                | 标题与徽标字段名                                                  | `string`           | `name` / `count`          |
+| `offset`                        | 徽标 `[top, right]` 偏移，相对文字右上角点，数值单位 px（375 稿） | `[number, number]` | `[0, 0]`                  |
+| `isDot` / `bold` / `showBar`    | 圆点徽标、激活加粗、显示滑块                                      | `boolean`          | `false` / `true` / `true` |
+| `activeItemStyle` / `barStyle`  | 激活项和滑块附加样式                                              | `object`           | `{}`                      |
+| `itemWidth`                     | 标签宽度                                                          | `number \| string` | `auto`                    |
+| `customClass` / `customStyle`   | 根节点自定义类和样式                                              | `string` / 样式值  | 空                        |
 
 ### Events
 
