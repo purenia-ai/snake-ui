@@ -10,6 +10,7 @@
 - [Cell 单元格](components/cell.md)
 - [更新日志](components/changelog.md)
 - [Checkbox 复选框](components/checkbox.md)
+- [CircleProgress 环形进度条](components/circle-progress.md)
 - [Color 色彩](components/color.md)
 - [内置样式](components/common.md)
 - [ConfigProvider 全局配置](components/config-provider.md)
@@ -59,7 +60,6 @@
 - [Tooltip 文字提示](components/tooltip.md)
 - [Transition 过渡动画](components/transition.md)
 - [Upload 文件上传](components/upload.md)
-- [uView Pro 组件兼容性审计](components/uview-compatibility-audit.md)
 
 ## cms
 

@@ -26,12 +26,12 @@ function handleClick() {
 
 <style lang="scss" scoped>
 .page {
-    padding: 32rpx;
+    padding: 16px;
 }
 
 .title {
     display: block;
-    margin-bottom: 24rpx;
+    margin-bottom: 12px;
 }
 </style>
 ```

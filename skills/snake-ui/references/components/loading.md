@@ -26,18 +26,18 @@ triggers: ['loading', 'snake-loading', 'Loading', '加载']
 
 ### Props
 
-| 参数                          | 说明                      | 类型                                  | 默认值            |
-| ----------------------------- | ------------------------- | ------------------------------------- | ----------------- |
-| `show`                        | 是否显示                  | `boolean`                             | `true`            |
-| `type`                        | 加载形态                  | `circular \| spinner \| dots \| wave` | `circular`        |
-| `color`                       | 图标颜色                  | `string`                              | Snake 主色        |
-| `size`                        | 图标尺寸，数字按 rpx 处理 | `string \| number`                    | `34`              |
-| `text`                        | 默认文字                  | `string`                              | `''`              |
-| `textColor` / `textSize`      | 文字颜色与尺寸            | `string` / `string \| number`         | 次要文字色 / `14` |
-| `direction`                   | 图标与文字排列方向        | `horizontal \| vertical`              | `vertical`        |
-| `inheritColor`                | 是否继承父级颜色          | `boolean`                             | `false`           |
-| `duration`                    | 动画周期，单位 ms         | `number`                              | `800`             |
-| `customClass` / `customStyle` | 根节点类名与样式          | `string` / `StyleValue`               | `''`              |
+| 参数                          | 说明                              | 类型                                  | 默认值            |
+| ----------------------------- | --------------------------------- | ------------------------------------- | ----------------- |
+| `show`                        | 是否显示                          | `boolean`                             | `true`            |
+| `type`                        | 加载形态                          | `circular \| spinner \| dots \| wave` | `circular`        |
+| `color`                       | 图标颜色                          | `string`                              | Snake 主色        |
+| `size`                        | 图标尺寸，数字按 px（375 稿）处理 | `string \| number`                    | `17`              |
+| `text`                        | 默认文字                          | `string`                              | `''`              |
+| `textColor` / `textSize`      | 文字颜色与尺寸                    | `string` / `string \| number`         | 次要文字色 / `12` |
+| `direction`                   | 图标与文字排列方向                | `horizontal \| vertical`              | `vertical`        |
+| `inheritColor`                | 是否继承父级颜色                  | `boolean`                             | `false`           |
+| `duration`                    | 动画周期，单位 ms                 | `number`                              | `800`             |
+| `customClass` / `customStyle` | 根节点类名与样式                  | `string` / `StyleValue`               | `''`              |
 
 ### Slots
 

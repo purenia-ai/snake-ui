@@ -43,7 +43,7 @@ H5 中当前分段可通过 Tab 聚焦，左右方向键会循环切换，并自
 | `current`                       | 当前选中索引             | `number \| string`                                      | `0`             |
 | `mode`                          | 按钮滑块或描边分段模式   | `button \| subsection`                                  | `button`        |
 | `activeColor` / `inactiveColor` | 激活和未激活文字颜色     | `string`                                                | 主题默认值      |
-| `fontSize` / `height`           | 字号与组件高度           | `string \| number`                                      | `28` / `70`     |
+| `fontSize` / `height`           | 字号与组件高度           | `string \| number`                                      | `14` / `70`     |
 | `animation` / `bold`            | 滑块动画与激活项加粗     | `boolean`                                               | `true` / `true` |
 | `bgColor` / `buttonColor`       | 按钮模式的轨道和滑块颜色 | `string`                                                | 主题默认值      |
 | `customClass` / `customStyle`   | 自定义类名和样式         | `string \| object \| array`                             | `''`            |

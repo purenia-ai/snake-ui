@@ -62,10 +62,10 @@ triggers: ['notice-bar', 'snake-notice-bar', 'NoticeBar', '通知栏']
 | `volumeIcon` / `moreIcon` / `closeIcon` | 左侧提示、更多、关闭图标                     | `boolean`                   | `false`              |
 | `bgColor` / `color` / `fontSize`        | 背景、文字颜色和字号                         | `string \| number`          | 主题默认值           |
 | `duration`                              | 纵向轮播间隔及横向静态消息停留时间（ms）     | `number`                    | `3000`               |
-| `speed`                                 | 横向滚动速度（rpx/s）                        | `number`                    | `80`                 |
+| `speed`                                 | 横向滚动速度（px/s）                         | `number`                    | `40`                 |
 | `isCircular`                            | 横向是否无缝循环                             | `boolean`                   | `true`               |
 | `disableTouch`                          | 纵向轮播是否禁用手势                         | `boolean`                   | `true`               |
-| `borderRadius` / `padding`              | 圆角与内边距                                 | `string \| number`          | `0` / `18rpx 24rpx`  |
+| `borderRadius` / `padding`              | 圆角与内边距                                 | `string \| number`          | `0` / `9px 12px`     |
 | `noListHidden`                          | 无内容时是否隐藏                             | `boolean`                   | `true`               |
 | `customClass` / `customStyle`           | 自定义类名与样式                             | `string \| object \| array` | `''`                 |
 

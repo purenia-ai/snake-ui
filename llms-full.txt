@@ -70,8 +70,19 @@
 <snake-button type="primary">主要按钮</snake-button>
 <snake-button type="success" plain>镂空按钮</snake-button>
 <snake-button size="small" shape="circle">小型胶囊按钮</snake-button>
+<snake-button icon="search">图标按钮</snake-button>
+<snake-button type="primary" block>块级按钮</snake-button>
 <snake-button loading>加载中</snake-button>
 <snake-button disabled>不可操作</snake-button>
+```
+
+## 图标、块级与加载
+
+`icon` 传入 snake-icon 图标名，颜色与字号跟随按钮文字；`block` 让按钮占满整行；`loading` 内置品牌加载图标，颜色同样跟随按钮文字，期间不触发点击。
+
+```vue
+<snake-button type="primary" icon="right">下一步</snake-button>
+<snake-button type="primary" block :loading="submitting" @click="submit">保存</snake-button>
 ```
 
 ## 主题、尺寸和形状
@@ -134,22 +145,24 @@ async function submit() {
 
 ### Props
 
-| 参数            | 说明                   | 类型               | 默认值    |
-| --------------- | ---------------------- | ------------------ | --------- |
-| `text`          | 无默认插槽时显示的文本 | `string`           | `''`      |
-| `type`          | 主题类型               | `string`           | `default` |
-| `size`          | 按钮尺寸               | `string`           | `default` |
-| `shape`         | 按钮形状               | `square \| circle` | `square`  |
-| `plain`         | 是否镂空               | `boolean`          | `false`   |
-| `hairLine`      | 是否使用细边框         | `boolean`          | `true`    |
-| `disabled`      | 是否禁用               | `boolean`          | `false`   |
-| `loading`       | 是否显示原生加载状态   | `boolean`          | `false`   |
-| `ripple`        | 是否开启水波纹         | `boolean`          | `false`   |
-| `rippleBgColor` | 水波纹颜色             | `string`           | `''`      |
-| `hoverClass`    | 自定义按下类名         | `string`           | `''`      |
-| `throttleTime`  | 点击节流时间，单位 ms  | `number \| string` | `0`       |
-| `customClass`   | 根节点自定义类名       | `string`           | `''`      |
-| `customStyle`   | 根节点自定义样式       | `string \| object` | `{}`      |
+| 参数            | 说明                                 | 类型               | 默认值    |
+| --------------- | ------------------------------------ | ------------------ | --------- |
+| `text`          | 无默认插槽时显示的文本               | `string`           | `''`      |
+| `icon`          | 内置图标名，颜色与字号跟随按钮文字   | `string`           | `''`      |
+| `type`          | 主题类型                             | `string`           | `default` |
+| `size`          | 按钮尺寸                             | `string`           | `default` |
+| `shape`         | 按钮形状                             | `square \| circle` | `square`  |
+| `block`         | 是否为块级按钮，占满整行             | `boolean`          | `false`   |
+| `plain`         | 是否镂空                             | `boolean`          | `false`   |
+| `hairLine`      | 是否使用细边框                       | `boolean`          | `true`    |
+| `disabled`      | 是否禁用                             | `boolean`          | `false`   |
+| `loading`       | 是否显示加载状态，内置图标随文字着色 | `boolean`          | `false`   |
+| `ripple`        | 是否开启水波纹                       | `boolean`          | `false`   |
+| `rippleBgColor` | 水波纹颜色                           | `string`           | `''`      |
+| `hoverClass`    | 自定义按下类名                       | `string`           | `''`      |
+| `throttleTime`  | 点击节流时间，单位 ms                | `number \| string` | `0`       |
+| `customClass`   | 根节点自定义类名                     | `string`           | `''`      |
+| `customStyle`   | 根节点自定义样式                     | `string \| object` | `{}`      |
 
 其余原生能力参数包括 `scope`、`openType`、`formType`、`appParameter`、`hoverStopPropagation`、`lang`、`sessionFrom`、`sendMessageTitle`、`sendMessagePath`、`sendMessageImg`、`showMessageCard`、`dataName`、`hoverStartTime` 和 `hoverStayTime`。
 
@@ -374,25 +387,25 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 
 #### CellItem Props
 
-| 参数                                       | 说明                          | 类型                        | 默认值                   |
-| ------------------------------------------ | ----------------------------- | --------------------------- | ------------------------ |
-| `icon`                                     | 左侧图标名称或图片地址        | `string`                    | `''`                     |
-| `title` / `value` / `label`                | 标题、右侧内容、标题下方描述  | `string \| number`          | `''`                     |
-| `borderBottom`                             | 是否显示下边框                | `boolean`                   | `true`                   |
-| `borderTop`                                | 是否显示上边框                | `boolean`                   | `false`                  |
-| `hoverClass`                               | 点击反馈类名                  | `string`                    | `snake-cell-item--hover` |
-| `arrow`                                    | 是否显示右侧箭头              | `boolean`                   | `true`                   |
-| `arrowDirection`                           | 右侧箭头方向                  | `right \| up \| down`       | `right`                  |
-| `center`                                   | 内容是否垂直居中              | `boolean`                   | `false`                  |
-| `required`                                 | 是否显示左侧必填星号          | `boolean`                   | `false`                  |
-| `titleWidth`                               | 标题宽度，数值按 rpx 处理     | `number \| string`          | `''`                     |
-| `titleStyle` / `valueStyle` / `labelStyle` | 标题、内容、描述样式          | `object \| array`           | `{}`                     |
-| `bgColor`                                  | 背景颜色                      | `string`                    | `transparent`            |
-| `index`                                    | `click` 回调中标识条目的值    | `string \| number`          | `''`                     |
-| `useLabelSlot`                             | 是否使用 `label` 插槽         | `boolean`                   | `false`                  |
-| `iconSize`                                 | 左侧图标大小，数值按 rpx 处理 | `number \| string`          | `34`                     |
-| `iconStyle`                                | 左侧图标样式                  | `object \| array`           | `{}`                     |
-| `customClass` / `customStyle`              | 自定义类名和样式              | `string \| object \| array` | `''`                     |
+| 参数                                       | 说明                                  | 类型                        | 默认值                   |
+| ------------------------------------------ | ------------------------------------- | --------------------------- | ------------------------ |
+| `icon`                                     | 左侧图标名称或图片地址                | `string`                    | `''`                     |
+| `title` / `value` / `label`                | 标题、右侧内容、标题下方描述          | `string \| number`          | `''`                     |
+| `borderBottom`                             | 是否显示下边框                        | `boolean`                   | `true`                   |
+| `borderTop`                                | 是否显示上边框                        | `boolean`                   | `false`                  |
+| `hoverClass`                               | 点击反馈类名                          | `string`                    | `snake-cell-item--hover` |
+| `arrow`                                    | 是否显示右侧箭头                      | `boolean`                   | `true`                   |
+| `arrowDirection`                           | 右侧箭头方向                          | `right \| up \| down`       | `right`                  |
+| `center`                                   | 内容是否垂直居中                      | `boolean`                   | `false`                  |
+| `required`                                 | 是否显示左侧必填星号                  | `boolean`                   | `false`                  |
+| `titleWidth`                               | 标题宽度，数值按 px（375 稿）处理     | `number \| string`          | `''`                     |
+| `titleStyle` / `valueStyle` / `labelStyle` | 标题、内容、描述样式                  | `object \| array`           | `{}`                     |
+| `bgColor`                                  | 背景颜色                              | `string`                    | `transparent`            |
+| `index`                                    | `click` 回调中标识条目的值            | `string \| number`          | `''`                     |
+| `useLabelSlot`                             | 是否使用 `label` 插槽                 | `boolean`                   | `false`                  |
+| `iconSize`                                 | 左侧图标大小，数值按 px（375 稿）处理 | `number \| string`          | `17`                     |
+| `iconStyle`                                | 左侧图标样式                          | `object \| array`           | `{}`                     |
+| `customClass` / `customStyle`              | 自定义类名和样式                      | `string \| object \| array` | `''`                     |
 
 ### Slots
 
@@ -433,115 +446,137 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 
 # 更新日志
 
-本文件是 `@puresnake/snake-ui` 的唯一更新日志来源，遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 风格：条目按「新增 / 变更 / 修复」分类，版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)，日期为实际发布日。文档站的更新日志页面由 `pnpm changelog:sync` 从本文件单向同步生成。
+## [0.0.10](https://github.com/purenia-ai/snake-ui/compare/v0.0.9...v0.0.10)（2026-11-04）
 
-## [0.0.4] - 2026-10-30
+### ✨ Features | 新功能
 
-### 新增
+- **snake-circle-progress:** 新增环形进度条：canvas 绘制、中心透明、圆头弧端，微信端按像素比高清渲染
+- **v2.floatbutton:** 复用悬浮气泡：可关闭（按组件 id 记忆）、滚动半藏家族签名、跳转走 link service
+- **snake-floating-bubble:** 新增 `unit` 尺寸口径与 `hide-on-scroll` 开关属性
+- **snake-link:** 小程序端新增 `copy-success` / `copy-fail` 事件
+- **snake-search:** 新增 `type` 属性，支持数字 / 身份证 / 小数点键盘
 
-- 公开子路径 `@puresnake/snake-ui/qrcode`：导出二维码矩阵生成器 `generateQRCode` / `QRErrorCorrectLevel`，供海报合成等离屏 canvas 场景直接取矩阵数据。`<snake-qr-code>` 组件为屏上渲染，矩阵需求此前无法从包外获取。
+### 🐛 Bug Fixes | Bug 修复
 
-### 修复
+- **snake-floating-bubble:** 收起改为纯 CSS 位移并补偿右边距，修复偶发反向飞出与露幅超半
+- **v2.floatbutton:** 修复 `position.bottom` 为 0 时被默认值吞掉
+- **snake-drop-menu:** 标题栏默认高度 20→40（迁移折半遗留）
+- **snake-line-progress:** `percent` 钳制 0-100 并容错非法输入，百分比文字取整
 
-- `exports` 补充 `./components/snake-cms/types` 显式入口：修复业务侧 `import type ... from '@puresnake/snake-ui/components/snake-cms/types'` 在 TypeScript bundler 解析下报 TS2307 的问题。
-- 背景说明：TypeScript 对 `exports` 目标不做扩展名探测，也不支持中间通配（`*/types`），组件内部模块必须逐个显式声明。
+### ✏️ Documentation | 文档
 
-### 变更
+- 文档与注释全量改用中性表述，移除第三方库对照审计页与对应守卫
+- 修正 floatbutton / drop-menu / line-progress 文档默认值漂移
 
-- 开源仓库迁移至 GitHub 组织 [purenia-ai/snake-ui](https://github.com/purenia-ai/snake-ui)，`repository` / `bugs` / `homepage` 等包元数据与文档链接同步更新。
+## [0.0.9](https://github.com/purenia-ai/snake-ui/compare/v0.0.7...v0.0.9)（2026-11-03）
 
-## [0.0.3] - 2026-10-29
+### ✨ Features | 新功能
 
-### 修复
+- **from375:** 新增 `uni.$snake.from375`，旧 px 语义字段随屏等比渲染
+- **snake-filter-sorts:** 新增 `fontSize` / `titleSize` 属性
+- **snake-button-sort:** 新增 `fontSize` 属性
 
-- `exports` 深层路径对 TypeScript / Vite 的兼容性：`./libs/request`、`./libs/runtime` 提供显式入口；`./libs/config/*`、`./libs/cms/*`、`./libs/function/*`、`./libs/hooks/*` 映射到显式 `.ts` 文件。TypeScript 不做扩展名探测，通配 `./libs/*` 下的无扩展名路径此前无法解析。
+### 🐛 Bug Fixes | Bug 修复
 
-## [0.0.2] - 2026-10-29
+- **from750:** 输出改回 rpx，v1 CMS 区块在宽屏机型恢复随屏等比（375 机型无变化）
+- **magiccube / pictureads:** 盒子与图片高度同步等比，宽屏不再溢出裁切
+- **pictureads:** 修复轮播分支高度 ×2 与圆角口径，App 端与编辑器 v1 预览一致
+- **snake-cms:** 商品区 chrome（tabs / 筛选栏 / 加载更多 / 空态 / 回到顶部）恢复随屏等比
+- **runtime:** 修复 H5 本地开发下商品服务对组件不可见（预打包入口与 easycom 组件各持一份模块状态）
+- **snake-text:** `size` 默认 28→14
+- **snake-skeleton:** `titleHeight` 18→9、`rowsHeight` 16→8、`avatarSize` 32→16
+- **snake-upload:** `width` / `height` 默认 200→100
+- **snake-tooltip:** `offset` 默认 8→4
+- **snake-empty:** `iconSize` 60→80、`fontSize` 13→14，空状态更醒目
+- **snake-loading:** `textSize` 默认 7→12，恢复可读
 
-### 新增
+## [0.0.7](https://github.com/purenia-ai/snake-ui/compare/v0.0.6...v0.0.7)（2026-11-02）
 
-- `package.json` 补齐 `exports` 子路径：`./libs/*`、`./plugins/*`、`./locale/*`、`./iconfont.css`，接入方可以直接通过 `@puresnake/snake-ui/libs/...` 等子路径 import。
-- 新增 `pnpm changelog:sync` 脚本：本文件单向同步到 `docs/components/changelog.md`，文档站更新日志随发版自动对齐。
+### 🐛 Bug Fixes | Bug 修复
 
-## [0.0.1] - 2026-10-29
+- **magiccube:** 修复 `pageMargin` / `imgMargin` 静默失效（模板裸调用未注册的 `from750`，统一走 `$snake.from750`）
 
-### 新增
+## [0.0.6](https://github.com/purenia-ai/snake-ui/compare/v0.0.5...v0.0.6)（2026-11-02）
 
-- 首个 npm 公开发布版本（MIT）。基于 Vue 3 + TypeScript 的 uni-app 组件库，面向商城与 CMS 场景。
-- 46 个通用组件，覆盖基础、表单、数据、反馈、布局、导航等分类，easycom 按需引入。
-- 14 个配置驱动的 CMS 页面区块，统一由 `snake-cms` 渲染。
-- 内置明暗主题（`theme.scss`）、`zh-CN` / `en-US` 多语言、基于 `uni.request` 的 HTTP 客户端与常用 hooks / 工具。
-- 兼容 H5、微信小程序、支付宝小程序、App 等多端。
+### ⚙️ Changes | 变更
 
----
+- **单位体系:** 全库 rpx（750 稿）迁移为 px（375 稿）：裸数字属性按 px 解释、尺寸默认值减半、`1rpx` 细线改 `1px`、`addUnit` 默认单位改 px
+- **宿主迁移:** 传给组件的裸数字属性 ÷2 即可；带 `rpx` 字符串的属性与宿主页面自有样式不受影响
+- **from750:** 新增 `uni.$snake.from750`，承接 CMS v1 存量 750 稿数据，旧数据零迁移
+- **v2 组件:** 尺寸契约改为 375 稿原生 px，渲染助手 `rpx()` 更名 `px()`（编辑器 schema 同步）
+- **pxToRpx:** 标记 deprecated
 
-## 组件索引
+### 🐛 Bug Fixes | Bug 修复
 
-以下清单随组件目录更新，当前共 46 个通用组件入口。
+- **snake-cms:** 修复视频块从不渲染（编辑器存量 key `videoss` 与分发端 `videos` 不一致，现两者兼容）
+- **magiccube:** 修复第 5 种布局高度语义与主路径不一致
 
-基础组件（12）
+### ✏️ Documentation | 文档
 
-- Parse 富文本解析
-- ConfigProvider 全局配置
-- Button 按钮
-- Icon 图标
-- Image 图片
-- QrCode 二维码
-- Loading 加载
-- Skeleton 骨架屏
-- Transition 过渡动画
-- RootPortal 根节点传送
-- Text 文本
-- Link 超链接
+- 文档全量对齐 px 口径（属性表 / 示例 / CMS 数据契约）
 
-表单组件（11）
+## [0.0.5](https://github.com/purenia-ai/snake-ui/compare/v0.0.4...v0.0.5)（2026-10-30）
 
-- Form 表单
-- Input 输入框
-- Textarea 文本域
-- Checkbox 复选框
-- Radio 单选框
-- Switch 开关
-- Slider 滑动选择器
-- Search 搜索框
-- Select 列表选择器
-- Upload 文件上传
-- Calendar 日历
+### 🐛 Bug Fixes | Bug 修复
 
-数据组件（5）
+- **$snake 类型:** 改为可增强的 `SnakeGlobalAPI` 接口，宿主补充成员不再与包内声明冲突
 
-- Loadmore 加载更多
-- LineProgress 线形进度条
-- ReadMore 阅读更多
-- Empty 空状态
-- CountDown 倒计时
+## [0.0.4](https://github.com/purenia-ai/snake-ui/compare/v0.0.3...v0.0.4)（2026-10-30）
 
-反馈组件（5）
+### ✨ Features | 新功能
 
-- NoticeBar 通知栏
-- Overlay 遮罩层
-- Tooltip 文字提示
-- Popup 弹出层
-- NoNetwork 无网络提示
+- **qrcode:** 新增子路径 `@puresnake/snake-ui/qrcode`，导出 `generateQRCode` / `QRErrorCorrectLevel`，海报合成可直接取矩阵
+- **snake-index-list:** 窗口尺寸变化自动重测锚点；开发期 `indexList` 与锚点不匹配时输出告警
+- **snake-button:** 新增 `icon`（内置图标，随文字配色）与 `block`（占满整行）属性
+- **snake-calendar:** 内置节日新增春节、元宵、端午、中秋、重阳（农历换算）与清明（节气）
+- **snake-popup:** 新增 `root-portal` 属性，弹层脱离祖先 transform / overflow 裁剪；补齐 `before-enter` 等四个动画事件透传
 
-布局组件（4）
+### 🐛 Bug Fixes | Bug 修复
 
-- Swiper 轮播图
-- Sticky 吸顶
-- Line 分隔线
-- Cell 单元格
+- **snake-skeleton:** 占位色适配暗色模式（主题变量此前未定义，长期落在浅灰 fallback）
+- **snake-calendar:** 修复 `is-page` 内嵌模式整体不渲染
+- **snake-calendar:** 修复「今天」标记被 `minDate` / `maxDate` 钳制错位
+- **snake-calendar:** `change` 事件 `week` 改为随语言返回
+- **snake-button:** 修复 `type="info"` 无样式、禁用态文字不可见、plain 禁用不可区分等多个状态死角
+- **exports:** 补充 `./components/snake-cms/types` 显式入口，修复 TS bundler 解析报 TS2307
 
-导航组件（9）
+### ⚙️ Changes | 变更
 
-- Navbar 导航栏
-- Tabbar 底部导航栏
-- Tabs 标签页
-- Subsection 分段器
-- ButtonSort 排序按钮
-- DropMenu 下拉菜单
-- IndexList 索引列表
-- IndexListPanel 容器索引列表
-- IndexAnchor 索引锚点
+- **snake-calendar:** 移除双十一内置节日；底部确定按钮占满整行
+- **snake-button:** 加载态改用内置 `snake-loading` 指示器，颜色继承文字色
+- **主题:** `--snake-color-primary-light` 修正为主色 10% 透明度，相关 fallback 同步
+- **仓库:** 迁移至 GitHub 组织 [purenia-ai/snake-ui](https://github.com/purenia-ai/snake-ui)，补 MIT LICENSE 与文档站入口
+
+### ✏️ Documentation | 文档
+
+- 更新日志改为 Keep a Changelog 结构；二维码演示页收敛为卡片布局
+
+## [0.0.3](https://github.com/purenia-ai/snake-ui/compare/v0.0.2...v0.0.3)（2026-10-29）
+
+### 🐛 Bug Fixes | Bug 修复
+
+- **exports:** `./libs/request`、`./libs/runtime` 等深层路径提供显式入口，修复 TS / Vite 无法解析
+
+### ✏️ Documentation | 文档
+
+- 新增 `pnpm changelog:sync`，文档站更新日志随发版自动对齐
+
+## [0.0.2](https://github.com/purenia-ai/snake-ui/compare/v0.0.1...v0.0.2)（2026-10-29）
+
+### ✨ Features | 新功能
+
+- **exports:** 补齐 `./libs/*` 等子路径，可直接按路径 import
+
+> 注：0.0.1 – 0.0.3 发布自同一份工作区快照（npm registry 记录的 gitHead 均为 afb1b62），版本间差异只存在于 npm 包内容，git 比对在此期间为空；自 0.0.3 起改动随提交入库。
+
+## 0.0.1（2026-10-29）
+
+### ✨ Features | 新功能
+
+- 首个 npm 公开发布版本（MIT）。基于 Vue 3 + TypeScript 的 uni-app 组件库，面向商城与 CMS 场景
+- 46 个通用组件 + 14 个配置驱动的 CMS 页面区块（`snake-cms` 统一渲染）
+- 内置明暗主题、中英文多语言、HTTP 客户端与常用 hooks / 工具
+- 兼容 H5、微信 / 支付宝小程序、App 等多端
 
 <!-- Source: docs/components/checkbox.md -->
 
@@ -568,7 +603,7 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 </snake-checkbox-group>
 ```
 
-布局通过 `width` 与 `wrap` 控制：`width` 指定每个 checkbox 的占宽（需带单位，如 `width="240rpx"`），`wrap` 让每个 checkbox 单独占一行。
+布局通过 `width` 与 `wrap` 控制：`width` 指定每个 checkbox 的占宽（需带单位，如 `width="120px"`），`wrap` 让每个 checkbox 单独占一行。
 
 ## 表单值与数量限制
 
@@ -600,7 +635,7 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 | `size`                        | 整体尺寸 small/default/large | `string`               | `''`       |
 | `width`                       | 每个 checkbox 占组宽度       | `string`               | `'auto'`   |
 | `wrap`                        | 是否每个 checkbox 都换行     | `boolean`              | `false`    |
-| `iconSize`                    | 勾号大小，单位 rpx           | `UnitValue`            | `''`       |
+| `iconSize`                    | 勾号大小，单位 px（375 稿）  | `UnitValue`            | `''`       |
 | `customClass` / `customStyle` | 自定义类名和样式             | `string \| style`      | `''`       |
 
 #### Events
@@ -623,7 +658,7 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 | `shape`                       | square/circle 形状                   | `string`           | 继承 Group   |
 | `disabled` / `labelDisabled`  | 禁用 / 禁止点击标签选中              | `boolean`          | `false`      |
 | `activeColor`                 | 选中颜色，设置后覆盖父级 activeColor | `string`           | 主题色       |
-| `iconSize` / `labelSize`      | 勾号与标签字号，单位 rpx             | `UnitValue`        | 按 size 预设 |
+| `iconSize` / `labelSize`      | 勾号与标签字号，单位 px（375 稿）    | `UnitValue`        | 按 size 预设 |
 | `size`                        | 整体尺寸 small/default/large         | `string`           | 继承 Group   |
 | `customClass` / `customStyle` | 自定义类名和样式                     | `string \| style`  | `''`         |
 
@@ -652,6 +687,66 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 ## 类型定义
 
 从包根导入 `CheckboxGroupProps`、`CheckboxProps` 与 `CheckboxEmits`。
+
+<!-- Source: docs/components/circle-progress.md -->
+
+# CircleProgress 环形进度条
+
+canvas 绘制的环形进度条：中心天然透明、弧端默认圆头，可放置在任意背景（含渐变与图片）上。微信小程序端使用 canvas 2d 并按像素比缩放保证清晰，其余端使用旧版 canvas 接口。
+
+## 平台兼容性
+
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
+
+## 基础用法
+
+```vue
+<snake-circle-progress :percent="68">
+    <text class="score">68%</text>
+</snake-circle-progress>
+```
+
+中心内容通过默认插槽自定义，可以是文字、图标或任意组合。
+
+## 方向与端点
+
+```vue
+<!-- 逆时针（仍从 12 点方向起笔） -->
+<snake-circle-progress :percent="40" :clockwise="false" />
+<!-- 平头端点 -->
+<snake-circle-progress :percent="80" line-cap="butt" />
+```
+
+`percent` 会被钳制在 0–100；进度、颜色、线宽变化会立即重画。颜色经 canvas 绘制，不支持 CSS 变量：传入 `var()` 表达式时取其中的回退色值，需要跟随主题时请直接传具体色值。
+
+## API
+
+### Props
+
+| 参数            | 说明                              | 类型                            | 默认值                  |
+| --------------- | --------------------------------- | ------------------------------- | ----------------------- |
+| `percent`       | 进度百分比，数值 0-100            | `number \| string`              | `0`                     |
+| `width`         | 圆环直径，数值按 px（375 稿）处理 | `number \| string`              | `100`                   |
+| `borderWidth`   | 线条宽度，数值按 px（375 稿）处理 | `number \| string`              | `8`                     |
+| `activeColor`   | 激活弧颜色                        | `string`                        | `--snake-color-primary` |
+| `inactiveColor` | 底环颜色                          | `string`                        | `--snake-color-divider` |
+| `lineCap`       | 弧端形状                          | `'round' \| 'butt' \| 'square'` | `'round'`               |
+| `clockwise`     | 是否顺时针                        | `boolean`                       | `true`                  |
+
+### Slots
+
+| 名称    | 说明           |
+| ------- | -------------- |
+| default | 中心自定义内容 |
+
+## 主题变量
+
+| 变量名                  | 说明           |
+| ----------------------- | -------------- |
+| `--snake-color-primary` | 激活弧默认颜色 |
+| `--snake-color-divider` | 底环默认颜色   |
 
 <!-- Source: docs/components/color.md -->
 
@@ -790,23 +885,22 @@ Snake UI 的 `index.scss` 内置了一组常用布局工具类，适合页面中
 </view>
 ```
 
-| 类名 | 样式 |
-| --- | --- |
+| 类名                           | 样式                 |
+| ------------------------------ | -------------------- |
 | `snake-relative`、`snake-rela` | `position: relative` |
 | `snake-absolute`、`snake-abso` | `position: absolute` |
 
 ## 字号
 
-语义字号包含 `snake-font-xs`、`snake-font-sm`、`snake-font-md`、`snake-font-lg` 和 `snake-font-xl`，对应 `22rpx`、`26rpx`、`28rpx`、`30rpx` 和 `34rpx`。
+语义字号包含 `snake-font-xs`、`snake-font-sm`、`snake-font-md`、`snake-font-lg` 和 `snake-font-xl`，对应 `11px`、`13px`、`14px`、`15px` 和 `17px`。
 
 还可以使用数值形式：
 
 - `snake-font-9` 至 `snake-font-19` 使用 `px`。
-- `snake-font-20` 至 `snake-font-40` 使用 `rpx`。
+- `snake-font-20` 至 `snake-font-40` 使用 px。
 
 ```html
-<text class="snake-font-sm">辅助文字</text>
-<text class="snake-font-32">标题文字</text>
+<text class="snake-font-sm">辅助文字</text> <text class="snake-font-32">标题文字</text>
 ```
 
 ## Flex 布局
@@ -830,7 +924,7 @@ Snake UI 的 `index.scss` 内置了一组常用布局工具类，适合页面中
 
 ## 内外边距
 
-间距数值范围为 `0` 至 `80rpx`，其中偶数和 5 的倍数可用。
+间距数值范围为 `0` 至 `40px`，其中偶数和 5 的倍数可用。
 
 - 四周外边距：`snake-margin-20`、`snake-m-20`。
 - 四周内边距：`snake-padding-20`、`snake-p-20`。
@@ -1012,7 +1106,7 @@ import type { ConfigProviderEmits, ConfigProviderProps } from '@puresnake/snake-
     border-color="#06D290"
     color="#06D290"
     bg-color="rgba(6, 210, 144, 0.08)"
-    height="56"
+    height="28"
 />
 ```
 
@@ -1033,18 +1127,18 @@ const remaining = Math.max(0, Math.floor((endAt - Date.now()) / 1000));
 
 ### Props
 
-| 参数                                                     | 说明                        | 类型                        | 默认值               |
-| -------------------------------------------------------- | --------------------------- | --------------------------- | -------------------- |
-| `timestamp`                                              | 倒计时剩余秒数              | `number \| string`          | `0`                  |
-| `autoplay`                                               | 挂载后自动开始              | `boolean`                   | `true`               |
-| `separator`                                              | 分隔符形态                  | `string`                    | `colon`              |
-| `separatorSize` / `separatorColor`                       | 分隔符大小与颜色            | `number \| string / string` | `30` / 主题文字色    |
-| `color` / `fontSize`                                     | 数字颜色与大小（rpx）       | `string / number \| string` | 主题文字色 / `30`    |
-| `bgColor` / `height`                                     | 数字背景与数字块宽高（rpx） | `string / number \| string` | 主题表面色 / `auto`  |
-| `showBorder` / `borderColor`                             | 数字边框开关与颜色          | `boolean / string`          | `false` / 主题文字色 |
-| `showDays` / `showHours` / `showMinutes` / `showSeconds` | 各部分显示开关              | `boolean`                   | `true`               |
-| `hideZeroDay`                                            | 天数为 0 时隐藏天部分       | `boolean`                   | `false`              |
-| `customClass` / `customStyle`                            | 自定义类名与样式            | `string / style`            | `''`                 |
+| 参数                                                     | 说明                               | 类型                        | 默认值               |
+| -------------------------------------------------------- | ---------------------------------- | --------------------------- | -------------------- |
+| `timestamp`                                              | 倒计时剩余秒数                     | `number \| string`          | `0`                  |
+| `autoplay`                                               | 挂载后自动开始                     | `boolean`                   | `true`               |
+| `separator`                                              | 分隔符形态                         | `string`                    | `colon`              |
+| `separatorSize` / `separatorColor`                       | 分隔符大小与颜色                   | `number \| string / string` | `15` / 主题文字色    |
+| `color` / `fontSize`                                     | 数字颜色与大小（px，375 稿）       | `string / number \| string` | 主题文字色 / `30`    |
+| `bgColor` / `height`                                     | 数字背景与数字块宽高（px，375 稿） | `string / number \| string` | 主题表面色 / `auto`  |
+| `showBorder` / `borderColor`                             | 数字边框开关与颜色                 | `boolean / string`          | `false` / 主题文字色 |
+| `showDays` / `showHours` / `showMinutes` / `showSeconds` | 各部分显示开关                     | `boolean`                   | `true`               |
+| `hideZeroDay`                                            | 天数为 0 时隐藏天部分              | `boolean`                   | `false`              |
+| `customClass` / `customStyle`                            | 自定义类名与样式                   | `string / style`            | `''`                 |
 
 ### Events
 
@@ -1128,17 +1222,17 @@ const beforeToggle = ({ resolve }) => resolve(userHasPermission);
 
 #### Props
 
-| 参数                                      | 说明                 | 类型                        | 默认值               |
-| ----------------------------------------- | -------------------- | --------------------------- | -------------------- |
-| `activeColor` / `inactiveColor`           | 激活和默认标题颜色   | `string`                    | 主题色 / 正文色      |
-| `closeOnClickMask`                        | 点击遮罩关闭         | `boolean`                   | `true`               |
-| `closeOnClickSelf`                        | 再次点击当前标题关闭 | `boolean`                   | `true`               |
-| `duration`                                | 面板动画时长，ms     | `number`                    | `300`                |
-| `height`                                  | 菜单栏高度           | `string \| number`          | `40`                 |
-| `borderBottom`                            | 是否显示底边         | `boolean`                   | `false`              |
-| `titleSize` / `menuIcon` / `menuIconSize` | 标题字号、图标和尺寸 | `string \| number`          | `28` / `down` / `18` |
-| `zIndex`                                  | 菜单和弹层层级基准   | `number`                    | `985`                |
-| `customClass` / `customStyle`             | 自定义类名和样式     | `string \| object \| array` | `''`                 |
+| 参数                                      | 说明                 | 类型                        | 默认值              |
+| ----------------------------------------- | -------------------- | --------------------------- | ------------------- |
+| `activeColor` / `inactiveColor`           | 激活和默认标题颜色   | `string`                    | 主题色 / 正文色     |
+| `closeOnClickMask`                        | 点击遮罩关闭         | `boolean`                   | `true`              |
+| `closeOnClickSelf`                        | 再次点击当前标题关闭 | `boolean`                   | `true`              |
+| `duration`                                | 面板动画时长，ms     | `number`                    | `300`               |
+| `height`                                  | 菜单栏高度           | `string \| number`          | `40`                |
+| `borderBottom`                            | 是否显示底边         | `boolean`                   | `false`             |
+| `titleSize` / `menuIcon` / `menuIconSize` | 标题字号、图标和尺寸 | `string \| number`          | `14` / `down` / `9` |
+| `zIndex`                                  | 菜单和弹层层级基准   | `number`                    | `985`               |
+| `customClass` / `customStyle`             | 自定义类名和样式     | `string \| object \| array` | `''`                |
 
 #### Events
 
@@ -1246,10 +1340,10 @@ const beforeToggle = ({ resolve }) => resolve(userHasPermission);
 | `src`                 | 自定义图片地址                                                                                 | `string`                    | `''`         |
 | `icon`                | 自定义图标名或图片地址                                                                         | `string`                    | `''`         |
 | `iconColor`           | 图标颜色                                                                                       | `string`                    | 主题弱文本色 |
-| `iconSize`            | 图标或图片尺寸                                                                                 | `string \| number`          | `120`        |
+| `iconSize`            | 图标或图片尺寸                                                                                 | `string \| number`          | `80`         |
 | `text`                | 提示文字；为空时使用模式默认文案                                                               | `string`                    | `''`         |
 | `color` / `textColor` | 文字颜色，textColor 优先                                                                       | `string`                    | 主题弱文本色 |
-| `fontSize`            | 文字大小                                                                                       | `string \| number`          | `26`         |
+| `fontSize`            | 文字大小                                                                                       | `string \| number`          | `14`         |
 | `marginTop`           | 组件顶部外边距                                                                                 | `string \| number`          | `0`          |
 | `customClass`         | 自定义类名                                                                                     | `string`                    | `''`         |
 | `customStyle`         | 根容器样式                                                                                     | `string \| object \| array` | `''`         |
@@ -1275,7 +1369,7 @@ const beforeToggle = ({ resolve }) => resolve(userHasPermission);
 
 # Form 表单
 
-`Form` 用于管理表单模型和规则，`FormItem` 负责字段布局、校验状态与错误展示。组件行为与 uView Pro Form 保持一致。
+`Form` 用于管理表单模型和规则，`FormItem` 负责字段布局、校验状态与错误展示。组件行为对齐 uni-app 生态广泛使用的 Form 语义。
 
 ## 使用建议
 
@@ -1372,17 +1466,17 @@ const rules = {
 
 ### Form Props
 
-| 参数            | 说明                     | 类型                        | 默认值                 |
-| --------------- | ------------------------ | --------------------------- | ---------------------- |
-| `model`         | 表单数据对象             | `object`                    | `{}`                   |
-| `rules`         | 校验规则                 | `FormRules`                 | `{}`                   |
-| `errorType`     | 错误提示方式             | `FormErrorType[]`           | `['message', 'toast']` |
-| `borderBottom`  | 表单项默认显示底边       | `boolean`                   | `true`                 |
-| `labelPosition` | 标签位置                 | `left \| top`               | `left`                 |
-| `labelWidth`    | 标签宽度，数字单位为 rpx | `string \| number`          | `90`                   |
-| `labelAlign`    | 标签对齐                 | `left \| center \| right`   | `left`                 |
-| `labelStyle`    | 标签样式                 | `object`                    | `{}`                   |
-| `size`          | 表单尺寸                 | `small \| default \| large` | `default`              |
+| 参数            | 说明                              | 类型                        | 默认值                 |
+| --------------- | --------------------------------- | --------------------------- | ---------------------- |
+| `model`         | 表单数据对象                      | `object`                    | `{}`                   |
+| `rules`         | 校验规则                          | `FormRules`                 | `{}`                   |
+| `errorType`     | 错误提示方式                      | `FormErrorType[]`           | `['message', 'toast']` |
+| `borderBottom`  | 表单项默认显示底边                | `boolean`                   | `true`                 |
+| `labelPosition` | 标签位置                          | `left \| top`               | `left`                 |
+| `labelWidth`    | 标签宽度，数字单位为 px（375 稿） | `string \| number`          | `45`                   |
+| `labelAlign`    | 标签对齐                          | `left \| center \| right`   | `left`                 |
+| `labelStyle`    | 标签样式                          | `object`                    | `{}`                   |
+| `size`          | 表单尺寸                          | `small \| default \| large` | `default`              |
 
 ### Form Expose
 
@@ -1474,7 +1568,7 @@ Form 容器没有独立视觉令牌，FormItem 直接使用以下全局变量：
 | ----------------------------------------------------------- | --------------------------------------- | ------------------ | ------------------------ |
 | `name`                                                      | 图标名称或图片地址                      | `string`           | `''`                     |
 | `color`                                                     | 图标颜色，可使用主题色名称              | `string`           | `''`                     |
-| `size`                                                      | 图标尺寸，数值单位为 rpx                | `string \| number` | `inherit`                |
+| `size`                                                      | 图标尺寸，数值单位为 px（375 稿）       | `string \| number` | `inherit`                |
 | `bold`                                                      | 是否加粗                                | `boolean`          | `false`                  |
 | `index`                                                     | 点击和触摸事件返回的标识                | `string \| number` | `''`                     |
 | `hoverClass`                                                | 按下时的样式类                          | `string`           | `''`                     |
@@ -1527,12 +1621,12 @@ Form 容器没有独立视觉令牌，FormItem 直接使用以下全局变量：
     src="/static/logo.png"
     alt="Snake UI 标志"
     width="100%"
-    height="320rpx"
+    height="160px"
     mode="aspectFill"
     :radius="16"
     preview
 />
-<snake-image src="/static/avatar.png" alt="用户头像" width="120rpx" height="120rpx" shape="circle" />
+<snake-image src="/static/avatar.png" alt="用户头像" width="60px" height="60px" shape="circle" />
 ```
 
 ## 加载状态
@@ -1542,9 +1636,9 @@ Form 容器没有独立视觉令牌，FormItem 直接使用以下全局变量：
 默认显示加载图标。简单的品牌占位图可使用 `loading-img`；需要组合动画、文字或骨架屏时使用 `loading` 插槽。
 
 ```vue
-<snake-image src="/static/product.png" width="100%" height="220rpx" loading-img="/static/image-loading.png" />
+<snake-image src="/static/product.png" width="100%" height="110px" loading-img="/static/image-loading.png" />
 
-<snake-image src="/static/product.png" width="100%" height="220rpx">
+<snake-image src="/static/product.png" width="100%" height="110px">
   <template #loading>
     <snake-loading size="24" />
   </template>
@@ -1558,9 +1652,9 @@ Form 容器没有独立视觉令牌，FormItem 直接使用以下全局变量：
 默认显示错误图标与提示。简单错误图使用 `error-img`；需要自定义内容时使用 `error` 插槽。
 
 ```vue
-<snake-image src="/static/not-found.png" width="100%" height="220rpx" error-img="/static/image-error.png" />
+<snake-image src="/static/not-found.png" width="100%" height="110px" error-img="/static/image-error.png" />
 
-<snake-image src="/static/not-found.png" width="100%" height="220rpx">
+<snake-image src="/static/not-found.png" width="100%" height="110px">
   <template #error>
     <view class="image-error">图片暂时无法显示</view>
   </template>
@@ -1592,15 +1686,15 @@ Form 容器没有独立视觉令牌，FormItem 直接使用以下全局变量：
 通过 `mode` 控制图片在容器内的裁剪和对齐方式，常用商品图使用 `aspectFill`，完整展示图片使用 `aspectFit`。
 
 ```vue
-<snake-image src="/static/product.png" width="200rpx" height="200rpx" mode="aspectFill" />
-<snake-image src="/static/product.png" width="200rpx" height="200rpx" mode="aspectFit" />
+<snake-image src="/static/product.png" width="100px" height="100px" mode="aspectFill" />
+<snake-image src="/static/product.png" width="100px" height="100px" mode="aspectFit" />
 ```
 
 ### 圆形与圆角
 
 ```vue
-<snake-image src="/static/avatar.png" width="120rpx" height="120rpx" shape="circle" />
-<snake-image src="/static/product.png" width="240rpx" height="180rpx" :radius="16" />
+<snake-image src="/static/avatar.png" width="60px" height="60px" shape="circle" />
+<snake-image src="/static/product.png" width="120px" height="90px" :radius="16" />
 ```
 
 ## 图片预览
@@ -1610,8 +1704,8 @@ Form 容器没有独立视觉令牌，FormItem 直接使用以下全局变量：
 ```vue
 <snake-image
     src="/static/product-1.png"
-    width="240rpx"
-    height="240rpx"
+    width="120px"
+    height="120px"
     preview
     :preview-urls="['/static/product-1.png', '/static/product-2.png']"
 />
@@ -1737,7 +1831,7 @@ Form 容器没有独立视觉令牌，FormItem 直接使用以下全局变量：
 父容器必须提供确定高度。
 
 ```vue
-<view style="height: 600rpx">
+<view style="height: 300px">
   <snake-index-list-panel :index-list="['A', 'B']" @select="onSelect">
     <snake-index-anchor index="A" />
     <view>Apple</view>
@@ -1856,7 +1950,7 @@ indexListRef.value?.update();
 | `railStyle`                     | 右侧索引栏样式         | `string \| object \| array` | `''`              |
 | `customClass` / `customStyle`   | 自定义类名和样式       | `string \| object \| array` | `''`              |
 
-裸数字和 `rpx` 字符串按 rpx 处理，显式 `px` 字符串按像素处理。
+裸数字按 px（375 稿）处理，带单位字符串（rpx/px）原样使用。
 
 ### Events
 
@@ -2001,11 +2095,11 @@ Snake UI 支持 npm 包和 `uni_modules` 两种安装方式。请选择一种方
 
 开始前需要一个可正常运行的 uni-app Vue 3 项目：
 
-| 依赖 | 要求 |
-| --- | --- |
-| Vue | `>= 3.4.0` |
-| uni-app | `>= 3.0.0` |
-| 样式处理 | 支持 SCSS 与 `rpx` |
+| 依赖     | 要求                      |
+| -------- | ------------------------- |
+| Vue      | `>= 3.4.0`                |
+| uni-app  | `>= 3.0.0`                |
+| 样式处理 | 支持 SCSS 与 px（375 稿） |
 
 普通 Vue Web 项目不等同于完整的 uni-app 运行环境。平台能力和业务依赖见[运行环境与能力边界](/guide/compatibility)。
 
@@ -2100,17 +2194,17 @@ Snake UI 提供覆盖基础交互、表单和商城装修场景的组件。输�
 
 ### Props
 
-| 参数            | 说明                              | 类型                                             | 默认值                  |
-| --------------- | --------------------------------- | ------------------------------------------------ | ----------------------- |
-| `percent`       | 进度百分比，数值 0-100            | `number \| string`                               | `0`                     |
-| `round`         | 两端是否显示半圆形                | `boolean`                                        | `true`                  |
-| `type`          | 主题预设，设置后 activeColor 失效 | `primary \| success \| warning \| error \| info` | `''`                    |
-| `activeColor`   | 激活部分的颜色                    | `string`                                         | `--snake-color-success` |
-| `inactiveColor` | 进度条的底色                      | `string`                                         | `--snake-color-divider` |
-| `showPercent`   | 是否在进度条内部显示百分比        | `boolean`                                        | `true`                  |
-| `height`        | 进度条高度，数值按 rpx 处理       | `number \| string`                               | `28`                    |
-| `striped`       | 是否显示激活部分的条纹            | `boolean`                                        | `false`                 |
-| `stripedActive` | 条纹是否具有动态效果              | `boolean`                                        | `false`                 |
+| 参数            | 说明                                | 类型                                             | 默认值                  |
+| --------------- | ----------------------------------- | ------------------------------------------------ | ----------------------- |
+| `percent`       | 进度百分比，数值 0-100              | `number \| string`                               | `0`                     |
+| `round`         | 两端是否显示半圆形                  | `boolean`                                        | `true`                  |
+| `type`          | 主题预设，设置后 activeColor 失效   | `primary \| success \| warning \| error \| info` | `''`                    |
+| `activeColor`   | 激活部分的颜色                      | `string`                                         | `--snake-color-success` |
+| `inactiveColor` | 进度条的底色                        | `string`                                         | `--snake-color-divider` |
+| `showPercent`   | 是否在进度条内部显示百分比          | `boolean`                                        | `true`                  |
+| `height`        | 进度条高度，数值按 px（375 稿）处理 | `number \| string`                               | `14`                    |
+| `striped`       | 是否显示激活部分的条纹              | `boolean`                                        | `false`                 |
+| `stripedActive` | 条纹是否具有动态效果                | `boolean`                                        | `false`                 |
 
 ### Slots
 
@@ -2147,7 +2241,7 @@ Snake UI 提供覆盖基础交互、表单和商城装修场景的组件。输�
 
 ```vue
 <snake-line />
-<snake-line color="#06D290" margin="20rpx 0" />
+<snake-line color="#06D290" margin="10px 0" />
 ```
 
 ## 方向与线型
@@ -2166,15 +2260,15 @@ Snake UI 提供覆盖基础交互、表单和商城装修场景的组件。输�
 
 ### Props
 
-| 参数                          | 说明                                   | 类型                        | 默认值                 |
-| ----------------------------- | -------------------------------------- | --------------------------- | ---------------------- |
-| `color`                       | 线条颜色                               | `string`                    | `--snake-color-border` |
-| `length`                      | 长度，竖向表现为高度，可为百分比或 rpx | `string`                    | `100%`                 |
-| `direction`                   | 线条方向                               | `row \| col`                | `row`                  |
-| `hairLine`                    | 是否显示半像素细线条                   | `boolean`                   | `true`                 |
-| `margin`                      | 与上下左右元素的间距                   | `string`                    | `0`                    |
-| `borderStyle`                 | 线条类型                               | `solid \| dashed \| dotted` | `solid`                |
-| `customClass` / `customStyle` | 自定义类名和样式                       | `string \| object \| array` | `''`                   |
+| 参数                          | 说明                                         | 类型                        | 默认值                 |
+| ----------------------------- | -------------------------------------------- | --------------------------- | ---------------------- |
+| `color`                       | 线条颜色                                     | `string`                    | `--snake-color-border` |
+| `length`                      | 长度，竖向表现为高度，可为百分比或带单位的值 | `string`                    | `100%`                 |
+| `direction`                   | 线条方向                                     | `row \| col`                | `row`                  |
+| `hairLine`                    | 是否显示半像素细线条                         | `boolean`                   | `true`                 |
+| `margin`                      | 与上下左右元素的间距                         | `string`                    | `0`                    |
+| `borderStyle`                 | 线条类型                                     | `solid \| dashed \| dotted` | `solid`                |
+| `customClass` / `customStyle` | 自定义类名和样式                             | `string \| object \| array` | `''`                   |
 
 ## 主题变量
 
@@ -2210,22 +2304,24 @@ Snake UI 提供覆盖基础交互、表单和商城装修场景的组件。输�
 
 ### Props
 
-| 参数           | 说明                         | 类型               | 默认值                  |
-| -------------- | ---------------------------- | ------------------ | ----------------------- |
-| `text`         | 超链接文字                   | `string \| number` | `''`                    |
-| `color`        | 文字颜色                     | `string`           | `--snake-color-primary` |
-| `fontSize`     | 字体大小，数值按 rpx 处理    | `string \| number` | `28`                    |
-| `underLine`    | 是否显示下划线               | `boolean`          | `false`                 |
-| `href`         | 要跳转的链接                 | `string`           | `''`                    |
-| `mpTips`       | 小程序复制到粘贴板后的提示语 | `string`           | 语言包默认值            |
-| `lineColor`    | 下划线颜色，默认同文字颜色   | `string`           | `''`                    |
-| `defaultClick` | 是否默认点击跳转             | `boolean`          | `true`                  |
+| 参数           | 说明                              | 类型               | 默认值                  |
+| -------------- | --------------------------------- | ------------------ | ----------------------- |
+| `text`         | 超链接文字                        | `string \| number` | `''`                    |
+| `color`        | 文字颜色                          | `string`           | `--snake-color-primary` |
+| `fontSize`     | 字体大小，数值按 px（375 稿）处理 | `string \| number` | `14`                    |
+| `underLine`    | 是否显示下划线                    | `boolean`          | `false`                 |
+| `href`         | 要跳转的链接                      | `string`           | `''`                    |
+| `mpTips`       | 小程序复制到粘贴板后的提示语      | `string`           | 语言包默认值            |
+| `lineColor`    | 下划线颜色，默认同文字颜色        | `string`           | `''`                    |
+| `defaultClick` | 是否默认点击跳转                  | `boolean`          | `true`                  |
 
 ### Events
 
-| 事件名  | 触发时机                     | 参数   |
-| ------- | ---------------------------- | ------ |
-| `click` | defaultClick 为 false 时点击 | `href` |
+| 事件名         | 触发时机                                       | 参数                      |
+| -------------- | ---------------------------------------------- | ------------------------- |
+| `click`        | defaultClick 为 false 时点击                   | `href`                    |
+| `copy-success` | 小程序端复制链接成功（剪贴板权限关闭时不触发） | setClipboardData 结果     |
+| `copy-fail`    | 小程序端复制链接失败（如剪贴板权限被关闭）     | setClipboardData 失败信息 |
 
 ### Slots
 
@@ -2263,18 +2359,18 @@ Snake UI 提供覆盖基础交互、表单和商城装修场景的组件。输�
 
 ### Props
 
-| 参数                          | 说明                      | 类型                                  | 默认值            |
-| ----------------------------- | ------------------------- | ------------------------------------- | ----------------- |
-| `show`                        | 是否显示                  | `boolean`                             | `true`            |
-| `type`                        | 加载形态                  | `circular \| spinner \| dots \| wave` | `circular`        |
-| `color`                       | 图标颜色                  | `string`                              | Snake 主色        |
-| `size`                        | 图标尺寸，数字按 rpx 处理 | `string \| number`                    | `34`              |
-| `text`                        | 默认文字                  | `string`                              | `''`              |
-| `textColor` / `textSize`      | 文字颜色与尺寸            | `string` / `string \| number`         | 次要文字色 / `14` |
-| `direction`                   | 图标与文字排列方向        | `horizontal \| vertical`              | `vertical`        |
-| `inheritColor`                | 是否继承父级颜色          | `boolean`                             | `false`           |
-| `duration`                    | 动画周期，单位 ms         | `number`                              | `800`             |
-| `customClass` / `customStyle` | 根节点类名与样式          | `string` / `StyleValue`               | `''`              |
+| 参数                          | 说明                              | 类型                                  | 默认值            |
+| ----------------------------- | --------------------------------- | ------------------------------------- | ----------------- |
+| `show`                        | 是否显示                          | `boolean`                             | `true`            |
+| `type`                        | 加载形态                          | `circular \| spinner \| dots \| wave` | `circular`        |
+| `color`                       | 图标颜色                          | `string`                              | Snake 主色        |
+| `size`                        | 图标尺寸，数字按 px（375 稿）处理 | `string \| number`                    | `17`              |
+| `text`                        | 默认文字                          | `string`                              | `''`              |
+| `textColor` / `textSize`      | 文字颜色与尺寸                    | `string` / `string \| number`         | 次要文字色 / `12` |
+| `direction`                   | 图标与文字排列方向                | `horizontal \| vertical`              | `vertical`        |
+| `inheritColor`                | 是否继承父级颜色                  | `boolean`                             | `false`           |
+| `duration`                    | 动画周期，单位 ms                 | `number`                              | `800`             |
+| `customClass` / `customStyle` | 根节点类名与样式                  | `string` / `StyleValue`               | `''`              |
 
 ### Slots
 
@@ -2320,20 +2416,20 @@ Snake UI 提供覆盖基础交互、表单和商城装修场景的组件。输�
 
 ### Props
 
-| 参数                             | 说明                       | 类型                        | 默认值        |
-| -------------------------------- | -------------------------- | --------------------------- | ------------- |
-| `status`                         | loadmore/loading/nomore    | `string`                    | `loadmore`    |
-| `loadText`                       | 待加载文案或三态文案对象   | `string \| object`          | `加载更多`    |
-| `loadingText`                    | 加载中文案                 | `string`                    | `正在加载...` |
-| `nomoreText`                     | 无更多文案                 | `string`                    | `没有更多了`  |
-| `icon`                           | 加载中是否显示动画         | `boolean`                   | `true`        |
-| `iconType`                       | circle/flower/spinner      | `string`                    | `circle`      |
-| `iconColor`                      | 动画颜色                   | `string`                    | 主题色        |
-| `isDot`                          | 无更多状态是否显示点状分隔 | `boolean`                   | `false`       |
-| `color` / `fontSize` / `bgColor` | 文字颜色、字号和背景       | `string \| number`          | 主题默认值    |
-| `marginTop` / `marginBottom`     | 上下外边距                 | `string \| number`          | `0`           |
-| `height`                         | 组件高度，数值按 rpx 处理  | `string \| number`          | `auto`        |
-| `customClass` / `customStyle`    | 自定义类名和样式           | `string \| object \| array` | `''`          |
+| 参数                             | 说明                              | 类型                        | 默认值        |
+| -------------------------------- | --------------------------------- | --------------------------- | ------------- |
+| `status`                         | loadmore/loading/nomore           | `string`                    | `loadmore`    |
+| `loadText`                       | 待加载文案或三态文案对象          | `string \| object`          | `加载更多`    |
+| `loadingText`                    | 加载中文案                        | `string`                    | `正在加载...` |
+| `nomoreText`                     | 无更多文案                        | `string`                    | `没有更多了`  |
+| `icon`                           | 加载中是否显示动画                | `boolean`                   | `true`        |
+| `iconType`                       | circle/flower/spinner             | `string`                    | `circle`      |
+| `iconColor`                      | 动画颜色                          | `string`                    | 主题色        |
+| `isDot`                          | 无更多状态是否显示点状分隔        | `boolean`                   | `false`       |
+| `color` / `fontSize` / `bgColor` | 文字颜色、字号和背景              | `string \| number`          | 主题默认值    |
+| `marginTop` / `marginBottom`     | 上下外边距                        | `string \| number`          | `0`           |
+| `height`                         | 组件高度，数值按 px（375 稿）处理 | `string \| number`          | `auto`        |
+| `customClass` / `customStyle`    | 自定义类名和样式                  | `string \| object \| array` | `''`          |
 
 ### Events
 
@@ -2612,10 +2708,10 @@ function handleRetry() {
 | `volumeIcon` / `moreIcon` / `closeIcon` | 左侧提示、更多、关闭图标                     | `boolean`                   | `false`              |
 | `bgColor` / `color` / `fontSize`        | 背景、文字颜色和字号                         | `string \| number`          | 主题默认值           |
 | `duration`                              | 纵向轮播间隔及横向静态消息停留时间（ms）     | `number`                    | `3000`               |
-| `speed`                                 | 横向滚动速度（rpx/s）                        | `number`                    | `80`                 |
+| `speed`                                 | 横向滚动速度（px/s）                         | `number`                    | `40`                 |
 | `isCircular`                            | 横向是否无缝循环                             | `boolean`                   | `true`               |
 | `disableTouch`                          | 纵向轮播是否禁用手势                         | `boolean`                   | `true`               |
-| `borderRadius` / `padding`              | 圆角与内边距                                 | `string \| number`          | `0` / `18rpx 24rpx`  |
+| `borderRadius` / `padding`              | 圆角与内边距                                 | `string \| number`          | `0` / `9px 12px`     |
 | `noListHidden`                          | 无内容时是否隐藏                             | `boolean`                   | `true`               |
 | `customClass` / `customStyle`           | 自定义类名与样式                             | `string \| object \| array` | `''`                 |
 
@@ -2814,31 +2910,35 @@ Popup 适合承载需要暂时打断页面的补充内容。简单反馈优先�
 
 ### Props
 
-| 参数                                          | 说明               | 类型      | 默认值                      |
-| --------------------------------------------- | ------------------ | --------- | --------------------------- |
-| `modelValue` / `show`                         | 显示状态和兼容别名 | `boolean` | `false`                     |
-| `mode`                                        | 弹出方向           | `string`  | `center`                    |
-| `duration` / `zIndex` / `bgColor`             | 动画、层级和背景   | 多类型    | `300 / 10075 / 主题表面色`  |
-| `round` / `zoom`                              | 圆角与中心缩放     | 多类型    | `false / true`              |
-| `closeable` / `closeIcon` / `closeIconPos`    | 关闭按钮参数       | 多类型    | `false / close / top-right` |
-| `closeOnClickOverlay`                         | 点击遮罩关闭       | `boolean` | `true`                      |
-| `overlay` / `overlayOpacity` / `overlayStyle` | 遮罩参数           | 多类型    | `true / 0.5 / ''`           |
-| `lockScroll`                                  | 阻止遮罩触摸滚动   | `boolean` | `true`                      |
-| `safeAreaInsetBottom` / `safeAreaInsetTop`    | 安全区             | `boolean` | `false`                     |
-| `customClass` / `customStyle`                 | 面板类名和样式     | 多类型    | `''`                        |
+| 参数                                          | 说明                                                     | 类型      | 默认值                      |
+| --------------------------------------------- | -------------------------------------------------------- | --------- | --------------------------- |
+| `modelValue` / `show`                         | 显示状态和兼容别名                                       | `boolean` | `false`                     |
+| `mode`                                        | 弹出方向                                                 | `string`  | `center`                    |
+| `duration` / `zIndex` / `bgColor`             | 动画、层级和背景                                         | 多类型    | `300 / 10075 / 主题表面色`  |
+| `round` / `zoom`                              | 圆角与中心缩放                                           | 多类型    | `false / true`              |
+| `closeable` / `closeIcon` / `closeIconPos`    | 关闭按钮参数                                             | 多类型    | `false / close / top-right` |
+| `closeOnClickOverlay`                         | 点击遮罩关闭                                             | `boolean` | `true`                      |
+| `overlay` / `overlayOpacity` / `overlayStyle` | 遮罩参数                                                 | 多类型    | `true / 0.5 / ''`           |
+| `embedded`                                    | 嵌入页面模式                                             | `boolean` | `false`                     |
+| `rootPortal`                                  | 传送到页面根节点渲染，避免被祖先 transform/overflow 裁剪 | `boolean` | `false`                     |
+| `lockScroll`                                  | 阻止遮罩触摸滚动                                         | `boolean` | `true`                      |
+| `safeAreaInsetBottom` / `safeAreaInsetTop`    | 安全区                                                   | `boolean` | `false`                     |
+| `customClass` / `customStyle`                 | 面板类名和样式                                           | 多类型    | `''`                        |
 
-`round` 为数字或字符串时按 rpx 处理，`true` 使用主题大圆角令牌。center 模式四角全圆；四边模式只圆远离屏幕边缘的一侧。四边弹层进出场为整块滑入或滑出。
+`round` 为数字或字符串时按 px（375 稿）处理，`true` 使用主题大圆角令牌。center 模式四角全圆；四边模式只圆远离屏幕边缘的一侧。四边弹层进出场为整块滑入或滑出。
 
 ### Events
 
-| 事件名              | 说明                | 参数       |
-| ------------------- | ------------------- | ---------- |
-| `update:modelValue` | 更新 `v-model`      | `boolean`  |
-| `update:show`       | 更新兼容状态 `show` | `boolean`  |
-| `open` / `close`    | 显示状态开始变化    | -          |
-| `opened` / `closed` | 进入或离开动画完成  | -          |
-| `change`            | 显示状态改变        | `{ show }` |
-| `click-overlay`     | 点击遮罩            | 原生事件   |
+| 事件名                   | 说明                  | 参数       |
+| ------------------------ | --------------------- | ---------- |
+| `update:modelValue`      | 更新 `v-model`        | `boolean`  |
+| `update:show`            | 更新兼容状态 `show`   | `boolean`  |
+| `open` / `close`         | 显示状态开始变化      | -          |
+| `opened` / `closed`      | 进入或离开动画完成    | -          |
+| `before-enter` / `enter` | 进入动画开始前 / 开始 | -          |
+| `before-leave` / `leave` | 离场动画开始前 / 开始 | -          |
+| `change`                 | 显示状态改变          | `{ show }` |
+| `click-overlay`          | 点击遮罩              | 原生事件   |
 
 ### Slots
 
@@ -2975,12 +3075,12 @@ function handleClick() {
 
 <style lang="scss" scoped>
 .page {
-    padding: 32rpx;
+    padding: 16px;
 }
 
 .title {
     display: block;
-    margin-bottom: 24rpx;
+    margin-bottom: 12px;
 }
 </style>
 ```
@@ -3059,7 +3159,7 @@ import Button from './uni_modules/snake-ui/components/snake-button/snake-button.
 </snake-radio-group>
 ```
 
-布局通过 `width` 与 `wrap` 控制：`width` 指定每个 radio 的占宽（如 `width="240rpx"`），`wrap` 让每个 radio 单独占一行。
+布局通过 `width` 与 `wrap` 控制：`width` 指定每个 radio 的占宽（如 `width="120px"`），`wrap` 让每个 radio 单独占一行。
 
 ## 初始值与禁用项
 
@@ -3086,7 +3186,7 @@ import Button from './uni_modules/snake-ui/components/snake-button/snake-button.
 | `size`                        | 整体尺寸 small/default/large | `string`           | `''`       |
 | `labelDisabled`               | 是否禁止点击标签选中         | `boolean`          | `false`    |
 | `shape`                       | circle/square 形状           | `string`           | `'circle'` |
-| `iconSize`                    | 勾号大小，单位 rpx           | `UnitValue`        | `''`       |
+| `iconSize`                    | 勾号大小，单位 px（375 稿）  | `UnitValue`        | `''`       |
 | `width`                       | 每个 radio 占组宽度          | `UnitValue`        | `'auto'`   |
 | `wrap`                        | 是否每个 radio 都换行        | `boolean`          | `false`    |
 | `customClass` / `customStyle` | 自定义类名和样式             | `string \| style`  | `''`       |
@@ -3110,7 +3210,7 @@ import Button from './uni_modules/snake-ui/components/snake-button/snake-button.
 | `shape`                       | circle/square 形状                   | `string`           | 继承 Group   |
 | `disabled` / `labelDisabled`  | 禁用 / 禁止点击标签选中              | `boolean`          | `false`      |
 | `activeColor`                 | 选中颜色，设置后覆盖父级 activeColor | `string`           | 主题色       |
-| `iconSize` / `labelSize`      | 勾号与标签字号，单位 rpx             | `UnitValue`        | 按 size 预设 |
+| `iconSize` / `labelSize`      | 勾号与标签字号，单位 px（375 稿）    | `UnitValue`        | 按 size 预设 |
 | `size`                        | 整体尺寸 small/default/large         | `string`           | 继承 Group   |
 | `customClass` / `customStyle` | 自定义类名和样式                     | `string \| style`  | `''`         |
 
@@ -3152,7 +3252,7 @@ import Button from './uni_modules/snake-ui/components/snake-button/snake-button.
 ## 基础用法
 
 ```vue
-<snake-read-more :show-height="400">
+<snake-read-more :show-height="200">
   <rich-text :nodes="content" />
 </snake-read-more>
 ```
@@ -3173,18 +3273,18 @@ import Button from './uni_modules/snake-ui/components/snake-button/snake-button.
 
 ### Props
 
-| 参数                          | 说明                           | 类型                        | 默认值                    |
-| ----------------------------- | ------------------------------ | --------------------------- | ------------------------- |
-| `showHeight`                  | 显示占位高度，数值按 rpx 处理  | `number \| string`          | `400`                     |
-| `toggle`                      | 展开后是否显示收起按钮         | `boolean`                   | `false`                   |
-| `closeText`                   | 收起状态的提示文字             | `string`                    | 语言包默认值              |
-| `openText`                    | 展开状态的提示文字             | `string`                    | 语言包默认值              |
-| `color`                       | 提示文字颜色                   | `string`                    | `--snake-color-primary`   |
-| `fontSize`                    | 提示文字大小，数值按 rpx 处理  | `number \| string`          | `28`                      |
-| `shadowStyle`                 | 收起时覆盖在内容底部的阴影样式 | `object \| array`           | 渐隐到 surface 的默认阴影 |
-| `textIndent`                  | 段落首行缩进                   | `string`                    | `2em`                     |
-| `index`                       | open/close 事件回调中的标识值  | `number \| string`          | `''`                      |
-| `customClass` / `customStyle` | 自定义类名和样式               | `string \| object \| array` | `''`                      |
+| 参数                          | 说明                                  | 类型                        | 默认值                    |
+| ----------------------------- | ------------------------------------- | --------------------------- | ------------------------- |
+| `showHeight`                  | 显示占位高度，数值按 px（375 稿）处理 | `number \| string`          | `200`                     |
+| `toggle`                      | 展开后是否显示收起按钮                | `boolean`                   | `false`                   |
+| `closeText`                   | 收起状态的提示文字                    | `string`                    | 语言包默认值              |
+| `openText`                    | 展开状态的提示文字                    | `string`                    | 语言包默认值              |
+| `color`                       | 提示文字颜色                          | `string`                    | `--snake-color-primary`   |
+| `fontSize`                    | 提示文字大小，数值按 px（375 稿）处理 | `number \| string`          | `14`                      |
+| `shadowStyle`                 | 收起时覆盖在内容底部的阴影样式        | `object \| array`           | 渐隐到 surface 的默认阴影 |
+| `textIndent`                  | 段落首行缩进                          | `string`                    | `2em`                     |
+| `index`                       | open/close 事件回调中的标识值         | `number \| string`          | `''`                      |
+| `customClass` / `customStyle` | 自定义类名和样式                      | `string \| object \| array` | `''`                      |
 
 ### Events
 
@@ -3305,31 +3405,32 @@ import Button from './uni_modules/snake-ui/components/snake-button/snake-button.
 
 ### Props
 
-| 参数                          | 说明                               | 类型                        | 默认值                         |
-| ----------------------------- | ---------------------------------- | --------------------------- | ------------------------------ |
-| `shape`                       | 搜索框形状                         | `round \| square`           | `round`                        |
-| `bgColor`                     | 搜索框背景色                       | `string`                    | `--snake-color-surface-muted`  |
-| `placeholder`                 | 占位提示文字                       | `string`                    | 语言包默认值                   |
-| `clearabled`                  | 是否启用清除控件                   | `boolean`                   | `true`                         |
-| `focus`                       | 是否自动聚焦                       | `boolean`                   | `false`                        |
-| `showAction`                  | 是否在右侧显示操作按钮             | `boolean`                   | `true`                         |
-| `actionStyle`                 | 右侧操作按钮样式                   | `object \| array`           | `{}`                           |
-| `actionText`                  | 右侧操作按钮文字                   | `string`                    | 语言包默认值                   |
-| `inputAlign`                  | 输入框内容水平对齐方式             | `left \| center \| right`   | `left`                         |
-| `disabled`                    | 是否禁用输入框                     | `boolean`                   | `false`                        |
-| `animation`                   | showAction 时是否聚焦才展开        | `boolean`                   | `false`                        |
-| `borderColor`                 | 边框颜色，配置后才有边框           | `string`                    | `none`                         |
-| `modelValue`                  | 双向绑定的输入值                   | `string`                    | `''`                           |
-| `height`                      | 搜索框高度，数值按 rpx 处理        | `number \| string`          | `64`                           |
-| `inputStyle`                  | 输入框样式，对象形式               | `object \| array`           | `{}`                           |
-| `maxlength`                   | 输入框最大长度，-1 不限制          | `number \| string`          | `-1`                           |
-| `searchIconColor`             | 搜索图标颜色，默认同输入框字体颜色 | `string`                    | `''`                           |
-| `color`                       | 输入框字体颜色                     | `string`                    | `--snake-color-text-secondary` |
-| `placeholderColor`            | placeholder 的颜色                 | `string`                    | `--snake-color-text-muted`     |
-| `margin`                      | 与上下左右元素的间距               | `string`                    | `0`                            |
-| `searchIcon`                  | 左侧图标名称或图片路径             | `string`                    | `search`                       |
-| `adjustPosition`              | 弹出键盘时是否自动调节高度         | `boolean`                   | `true`                         |
-| `customClass` / `customStyle` | 自定义类名和样式                   | `string \| object \| array` | `''`                           |
+| 参数                          | 说明                                                             | 类型                                        | 默认值                         |
+| ----------------------------- | ---------------------------------------------------------------- | ------------------------------------------- | ------------------------------ |
+| `shape`                       | 搜索框形状                                                       | `round \| square`                           | `round`                        |
+| `bgColor`                     | 搜索框背景色                                                     | `string`                                    | `--snake-color-surface-muted`  |
+| `placeholder`                 | 占位提示文字                                                     | `string`                                    | 语言包默认值                   |
+| `clearabled`                  | 是否启用清除控件                                                 | `boolean`                                   | `true`                         |
+| `focus`                       | 是否自动聚焦                                                     | `boolean`                                   | `false`                        |
+| `showAction`                  | 是否在右侧显示操作按钮                                           | `boolean`                                   | `true`                         |
+| `actionStyle`                 | 右侧操作按钮样式                                                 | `object \| array`                           | `{}`                           |
+| `actionText`                  | 右侧操作按钮文字                                                 | `string`                                    | 语言包默认值                   |
+| `inputAlign`                  | 输入框内容水平对齐方式                                           | `left \| center \| right`                   | `left`                         |
+| `disabled`                    | 是否禁用输入框                                                   | `boolean`                                   | `false`                        |
+| `animation`                   | showAction 时是否聚焦才展开                                      | `boolean`                                   | `false`                        |
+| `borderColor`                 | 边框颜色，配置后才有边框                                         | `string`                                    | `none`                         |
+| `modelValue`                  | 双向绑定的输入值                                                 | `string`                                    | `''`                           |
+| `height`                      | 搜索框高度，数值按 px（375 稿）处理                              | `number \| string`                          | `32`                           |
+| `inputStyle`                  | 输入框样式，对象形式                                             | `object \| array`                           | `{}`                           |
+| `maxlength`                   | 输入框最大长度，-1 不限制                                        | `number \| string`                          | `-1`                           |
+| `searchIconColor`             | 搜索图标颜色，默认同输入框字体颜色                               | `string`                                    | `''`                           |
+| `color`                       | 输入框字体颜色                                                   | `string`                                    | `--snake-color-text-secondary` |
+| `placeholderColor`            | placeholder 的颜色                                               | `string`                                    | `--snake-color-text-muted`     |
+| `margin`                      | 与上下左右元素的间距                                             | `string`                                    | `0`                            |
+| `searchIcon`                  | 左侧图标名称或图片路径                                           | `string`                                    | `search`                       |
+| `adjustPosition`              | 弹出键盘时是否自动调节高度                                       | `boolean`                                   | `true`                         |
+| `type`                        | 输入框类型，number 数字键盘 / idcard 身份证 / digit 带小数点数字 | `'text' \| 'number' \| 'idcard' \| 'digit'` | `'text'`                       |
+| `customClass` / `customStyle` | 自定义类名和样式                                                 | `string \| object \| array`                 | `''`                           |
 
 ### Events
 
@@ -3601,8 +3702,8 @@ import Popup from '@puresnake/snake-ui/components/snake-popup/snake-popup.vue';
 ```vue
 <snake-skeleton :loading="loading">
   <template #template>
-    <snake-skeleton-item variant="image" height="300rpx" />
-    <snake-skeleton-item width="60%" custom-style="margin-top: 20rpx" />
+    <snake-skeleton-item variant="image" height="150px" />
+    <snake-skeleton-item width="60%" custom-style="margin-top: 10px" />
   </template>
   <view>真实内容</view>
 </snake-skeleton>
@@ -3632,12 +3733,12 @@ import Popup from '@puresnake/snake-ui/components/snake-popup/snake-popup.vue';
 | `animated`    | 是否启用流光动画         | `boolean`                   | `true`   |
 | `title`       | 是否显示默认标题占位     | `boolean`                   | `true`   |
 | `titleWidth`  | 默认标题宽度             | `string \| number`          | `40%`    |
-| `titleHeight` | 默认标题高度             | `string \| number`          | `18`     |
+| `titleHeight` | 默认标题高度             | `string \| number`          | `9`      |
 | `rows`        | 默认段落行数             | `number`                    | `3`      |
 | `rowsWidth`   | 默认段落宽度，可逐行配置 | `string \| number \| Array` | `100%`   |
-| `rowsHeight`  | 默认段落高度，可逐行配置 | `string \| number \| Array` | `16`     |
+| `rowsHeight`  | 默认段落高度，可逐行配置 | `string \| number \| Array` | `8`      |
 | `avatar`      | 是否显示默认头像占位     | `boolean`                   | `false`  |
-| `avatarSize`  | 默认头像尺寸             | `string \| number`          | `32`     |
+| `avatarSize`  | 默认头像尺寸             | `string \| number`          | `16`     |
 | `avatarShape` | 默认头像形状             | `circle \| square`          | `circle` |
 | `customStyle` | 根节点样式               | `string \| object \| array` | `''`     |
 
@@ -3652,14 +3753,14 @@ import Popup from '@puresnake/snake-ui/components/snake-popup/snake-popup.vue';
 
 #### Props
 
-| 参数          | 说明                                  | 类型                              | 默认值 |
-| ------------- | ------------------------------------- | --------------------------------- | ------ |
-| `variant`     | 占位形态                              | `text \| rect \| circle \| image` | `text` |
-| `width`       | 宽度，裸数字按 rpx；默认值显式使用 px | `string \| number`                | 按形态 |
-| `height`      | 高度，裸数字按 rpx；默认值显式使用 px | `string \| number`                | 按形态 |
-| `radius`      | 圆角，裸数字按 rpx；默认值显式使用 px | `string \| number`                | 按形态 |
-| `animated`    | 动画开关，默认继承骨架容器            | `boolean`                         | `true` |
-| `customStyle` | 根节点样式                            | `string \| object \| array`       | `''`   |
+| 参数          | 说明                                           | 类型                              | 默认值 |
+| ------------- | ---------------------------------------------- | --------------------------------- | ------ |
+| `variant`     | 占位形态                                       | `text \| rect \| circle \| image` | `text` |
+| `width`       | 宽度，裸数字按 px（375 稿）；默认值显式使用 px | `string \| number`                | 按形态 |
+| `height`      | 高度，裸数字按 px（375 稿）；默认值显式使用 px | `string \| number`                | 按形态 |
+| `radius`      | 圆角，裸数字按 px（375 稿）；默认值显式使用 px | `string \| number`                | 按形态 |
+| `animated`    | 动画开关，默认继承骨架容器                     | `boolean`                         | `true` |
+| `customStyle` | 根节点样式                                     | `string \| object \| array`       | `''`   |
 
 ## 主题变量
 
@@ -3769,15 +3870,15 @@ H5 中轨道可通过 Tab 聚焦，方向键按照 `step` 调整数值；触摸�
 
 ### Props
 
-| 参数                          | 说明                                     | 类型               | 默认值             |
-| ----------------------------- | ---------------------------------------- | ------------------ | ------------------ |
-| `offsetTop`                   | 吸顶偏移，裸数字按 rpx，显式 px 原样使用 | `string \| number` | `0`                |
-| `customNavHeight`             | 自定义导航栏高度                         | `string \| number` | `0`                |
-| `scrollTop`                   | 外部滚动位置；也会监听页面滚动           | `number`           | `0`                |
-| `zIndex` / `bgColor`          | 层级和背景                               | `number / string`  | `10 / transparent` |
-| `disabled`                    | 禁用吸顶                                 | `boolean`          | `false`            |
-| `index`                       | 事件携带的业务索引                       | `string \| number` | `0`                |
-| `customClass` / `customStyle` | 自定义类名和样式                         | 多类型             | `''`               |
+| 参数                          | 说明                                              | 类型               | 默认值             |
+| ----------------------------- | ------------------------------------------------- | ------------------ | ------------------ |
+| `offsetTop`                   | 吸顶偏移，裸数字按 px（375 稿），显式 px 原样使用 | `string \| number` | `0`                |
+| `customNavHeight`             | 自定义导航栏高度                                  | `string \| number` | `0`                |
+| `scrollTop`                   | 外部滚动位置；也会监听页面滚动                    | `number`           | `0`                |
+| `zIndex` / `bgColor`          | 层级和背景                                        | `number / string`  | `10 / transparent` |
+| `disabled`                    | 禁用吸顶                                          | `boolean`          | `false`            |
+| `index`                       | 事件携带的业务索引                                | `string \| number` | `0`                |
+| `customClass` / `customStyle` | 自定义类名和样式                                  | 多类型             | `''`               |
 
 ### Events
 
@@ -3844,7 +3945,7 @@ H5 中当前分段可通过 Tab 聚焦，左右方向键会循环切换，并自
 | `current`                       | 当前选中索引             | `number \| string`                                      | `0`             |
 | `mode`                          | 按钮滑块或描边分段模式   | `button \| subsection`                                  | `button`        |
 | `activeColor` / `inactiveColor` | 激活和未激活文字颜色     | `string`                                                | 主题默认值      |
-| `fontSize` / `height`           | 字号与组件高度           | `string \| number`                                      | `28` / `70`     |
+| `fontSize` / `height`           | 字号与组件高度           | `string \| number`                                      | `14` / `70`     |
 | `animation` / `bold`            | 滑块动画与激活项加粗     | `boolean`                                               | `true` / `true` |
 | `bgColor` / `buttonColor`       | 按钮模式的轨道和滑块颜色 | `string`                                                | 主题默认值      |
 | `customClass` / `customStyle`   | 自定义类名和样式         | `string \| object \| array`                             | `''`            |
@@ -3881,13 +3982,22 @@ H5 中当前分段可通过 Tab 聚焦，左右方向键会循环切换，并自
 ## 基础用法
 
 ```vue
-<snake-swiper :list="['/static/a.png', '/static/b.png']" :height="360" indicator />
+<snake-swiper :list="['/static/a.png', '/static/b.png']" :height="180" indicator />
 ```
 
 ## 指示器与 3D 卡片
 
 ```vue
-<snake-swiper :list="banners" name="image" mode="number" indicator-pos="bottomRight" effect3d show-title @change="onChange" @click="openBanner" />
+<snake-swiper
+    :list="banners"
+    name="image"
+    mode="number"
+    indicator-pos="bottomRight"
+    effect3d
+    show-title
+    @change="onChange"
+    @click="openBanner"
+/>
 ```
 
 对象图片依次读取 `name` 指定字段、`src`、`url`；标题读取 `title` 或 `text`。
@@ -3925,7 +4035,7 @@ const banners = [
 | `indicatorPos`                                    | topLeft/topCenter/topRight/bottomLeft/bottomCenter/bottomRight | `string`                    | `bottomCenter`                   |
 | `indicatorColor` / `indicatorActiveColor`         | 普通和激活指示器颜色                                           | `string`                    | 半透明白 / 白色                  |
 | `name`                                            | 对象图片字段                                                   | `string`                    | `image`                          |
-| `radius` / `borderRadius`                         | 圆角，borderRadius 优先                                        | `string \| number`          | `8`                              |
+| `radius` / `borderRadius`                         | 圆角，borderRadius 优先                                        | `string \| number`          | `4`                              |
 | `previousMargin` / `nextMargin`                   | 前后边距                                                       | `string`                    | `0px`                            |
 | `effect3d` / `effect3dPreviousMargin`             | 3D 卡片及露出边距                                              | `boolean \| UnitValue`      | `false` / `50`                   |
 | `imgMode`                                         | 图片裁剪模式                                                   | `string`                    | `aspectFill`                     |
@@ -4082,9 +4192,9 @@ const items = [
 | `hideTabBar`                    | 挂载时隐藏原生 tabBar；非原生 tabBar 页安全忽略        | `boolean`                       | `true`            |
 | `beforeSwitch`                  | 切换拦截器；返回 `true` 或 resolve 的 Promise 才会切换 | `(index) => boolean \| Promise` | -                 |
 | `midButton`                     | 是否启用中间凸起按钮                                   | `boolean`                       | `false`           |
-| `iconSize` / `midButtonSize`    | 常规图标和凸起图标尺寸，数字单位为 rpx                 | `string \| number`              | `40` / `100`      |
-| `textSize` / `gap`              | 文字尺寸、图标与文字间距，数字单位为 rpx               | `string \| number`              | `22` / `5`        |
-| `height`                        | 导航栏高度，数字单位为 rpx                             | `string \| number`              | `104`             |
+| `iconSize` / `midButtonSize`    | 常规图标和凸起图标尺寸，数字单位为 px（375 稿）        | `string \| number`              | `20` / `100`      |
+| `textSize` / `gap`              | 文字尺寸、图标与文字间距，数字单位为 px（375 稿）      | `string \| number`              | `11` / `5`        |
+| `height`                        | 导航栏高度，数字单位为 px（375 稿）                    | `string \| number`              | `52`              |
 | `zIndex`                        | 固定导航栏层级                                         | `number`                        | `120`             |
 | `customClass` / `customStyle`   | 根节点类名和样式                                       | `string` / `StyleValue`         | `''` / `''`       |
 
@@ -4197,23 +4307,23 @@ tabsRef.value?.init();
 
 ### Props
 
-| 参数                            | 说明                             | 类型               | 默认值                    |
-| ------------------------------- | -------------------------------- | ------------------ | ------------------------- |
-| `list`                          | 标签对象数组                     | `TabItem[]`        | `[]`                      |
-| `current`                       | 当前激活索引                     | `number \| string` | `0`                       |
-| `isScroll`                      | 是否允许横向拖动                 | `boolean`          | `true`                    |
-| `height` / `fontSize`           | 高度和字号，数值单位 rpx         | `number \| string` | `80` / `30`               |
-| `duration`                      | 动画时长，单位秒                 | `number \| string` | `0.5`                     |
-| `activeColor` / `inactiveColor` | 激活与未激活文字颜色             | `string`           | 主题色 / 主文字色         |
-| `barWidth` / `barHeight`        | 滑块宽高，数值单位 rpx           | `number \| string` | `40` / `6`                |
-| `gutter`                        | 滚动模式单侧内边距，数值单位 rpx | `number \| string` | `30`                      |
-| `bgColor`                       | 背景色                           | `string`           | `#fff`                    |
-| `name` / `count`                | 标题与徽标字段名                 | `string`           | `name` / `count`          |
-| `offset`                        | 徽标 `[top, right]` 偏移         | `[number, number]` | `[5, 20]`                 |
-| `isDot` / `bold` / `showBar`    | 圆点徽标、激活加粗、显示滑块     | `boolean`          | `false` / `true` / `true` |
-| `activeItemStyle` / `barStyle`  | 激活项和滑块附加样式             | `object`           | `{}`                      |
-| `itemWidth`                     | 标签宽度                         | `number \| string` | `auto`                    |
-| `customClass` / `customStyle`   | 根节点自定义类和样式             | `string` / 样式值  | 空                        |
+| 参数                            | 说明                                      | 类型               | 默认值                    |
+| ------------------------------- | ----------------------------------------- | ------------------ | ------------------------- |
+| `list`                          | 标签对象数组                              | `TabItem[]`        | `[]`                      |
+| `current`                       | 当前激活索引                              | `number \| string` | `0`                       |
+| `isScroll`                      | 是否允许横向拖动                          | `boolean`          | `true`                    |
+| `height` / `fontSize`           | 高度和字号，数值单位 px（375 稿）         | `number \| string` | `20` / `30`               |
+| `duration`                      | 动画时长，单位秒                          | `number \| string` | `0.5`                     |
+| `activeColor` / `inactiveColor` | 激活与未激活文字颜色                      | `string`           | 主题色 / 主文字色         |
+| `barWidth` / `barHeight`        | 滑块宽高，数值单位 px（375 稿）           | `number \| string` | `20` / `6`                |
+| `gutter`                        | 滚动模式单侧内边距，数值单位 px（375 稿） | `number \| string` | `15`                      |
+| `bgColor`                       | 背景色                                    | `string`           | `#fff`                    |
+| `name` / `count`                | 标题与徽标字段名                          | `string`           | `name` / `count`          |
+| `offset`                        | 徽标 `[top, right]` 偏移                  | `[number, number]` | `[5, 20]`                 |
+| `isDot` / `bold` / `showBar`    | 圆点徽标、激活加粗、显示滑块              | `boolean`          | `false` / `true` / `true` |
+| `activeItemStyle` / `barStyle`  | 激活项和滑块附加样式                      | `object`           | `{}`                      |
+| `itemWidth`                     | 标签宽度                                  | `number \| string` | `auto`                    |
+| `customClass` / `customStyle`   | 根节点自定义类和样式                      | `string` / 样式值  | 空                        |
 
 ### Events
 
@@ -4292,7 +4402,7 @@ tabsRef.value?.init();
 | `block`                       | 是否块状显示                     | `boolean`                                                                            | `false`              |
 | `lines`                       | 显示行数，超出显示省略号         | `string \| number`                                                                   | `''`                 |
 | `color`                       | 文本颜色                         | `string`                                                                             | `--snake-color-text` |
-| `size`                        | 字体大小                         | `string \| number`                                                                   | `28`                 |
+| `size`                        | 字体大小（数字按 px / 375 稿）   | `string \| number`                                                                   | `14`                 |
 | `iconStyle` / `textStyle`     | 图标/文字样式                    | `object \| array \| string`                                                          | 默认图标样式 / `{}`  |
 | `decoration`                  | 文字装饰                         | `none \| underline \| line-through`                                                  | `none`               |
 | `margin`                      | 外边距                           | `object \| string \| number`                                                         | `0`                  |
@@ -4343,7 +4453,7 @@ tabsRef.value?.init();
 ## 基础用法
 
 ```vue
-<snake-textarea v-model="intro" :maxlength="200" count :height="180" />
+<snake-textarea v-model="intro" :maxlength="200" count :height="90" />
 ```
 
 中文、日文等输入法处于候选组合阶段时，组件只更新内部显示；组合结束后才同步 `v-model` 并触发表单 `change` 校验，避免半成品拼音造成误校验。
@@ -4355,7 +4465,7 @@ tabsRef.value?.init();
 | 参数                                                   | 说明                   | 类型                   | 默认值                      |
 | ------------------------------------------------------ | ---------------------- | ---------------------- | --------------------------- |
 | `modelValue` / `placeholder` / `maxlength`             | 值、占位和最大长度     | `string \| number`     | `''` / `请输入内容` / `140` |
-| `height` / `autoHeight` / `fixed`                      | 高度、自适应和固定区域 | `UnitValue \| boolean` | `120` / `false`             |
+| `height` / `autoHeight` / `fixed`                      | 高度、自适应和固定区域 | `UnitValue \| boolean` | `60` / `false`              |
 | `count`                                                | 显示字数统计           | `boolean`              | `false`                     |
 | `disabled` / `readonly`                                | 禁用和只读             | `boolean`              | `false`                     |
 | `border` / `size` / `fontSize`                         | 边框、尺寸和字号       | `string \| UnitValue`  | `surround`                  |
@@ -4404,7 +4514,7 @@ Snake Tooltip 与 Wot UI Tooltip 的用途相同，但定位和关闭机制并�
 
 ```vue
 <snake-tooltip content="这是一段说明文字">
-    <snake-icon name="info-circle" size="28rpx" />
+    <snake-icon name="info-circle" size="14px" />
 </snake-tooltip>
 ```
 
@@ -4414,7 +4524,7 @@ Snake Tooltip 与 Wot UI Tooltip 的用途相同，但定位和关闭机制并�
 
 ```vue
 <snake-tooltip v-model="showDetail" placement="bottom-start" :offset="10">
-    <snake-icon name="info-circle" size="28rpx" />
+    <snake-icon name="info-circle" size="14px" />
     <template #content>
         <snake-parse :content="description" />
     </template>
@@ -4465,7 +4575,7 @@ async function expandDetail() {
 | 关闭按钮     | `closeable`，也接受 `show-close`                        | `show-close`                                       |
 | 内容插槽     | 直接使用 `#content`                                     | 当前源码也会自动识别 `#content`                    |
 | 点击外部关闭 | 内置透明遮罩，默认关闭，可用 `closeOnClickOverlay` 控制 | 页面使用 `useQueue().closeOutside()`               |
-| `offset`     | 浮层与触发元素的间距；数字按 `rpx` 处理                 | 沿坐标轴调整位置，接受数字、数组或对象，按像素处理 |
+| `offset`     | 浮层与触发元素的间距；数字按 px（375 稿）处理           | 沿坐标轴调整位置，接受数字、数组或对象，按像素处理 |
 | 内容尺寸变化 | 浮层由 CSS 重新布局，`updatePosition()` 刷新箭头对齐    | `updatePosition()` 重新测量并定位浮层              |
 | 显隐动画     | 立即显示和关闭                                          | 200ms 淡入淡出                                     |
 
@@ -4475,24 +4585,24 @@ async function expandDetail() {
 
 ### Props
 
-| 参数                  | 说明                                  | 类型               | 默认值     |
-| --------------------- | ------------------------------------- | ------------------ | ---------- |
-| `v-model`             | 是否显示                              | `boolean`          | `false`    |
-| `content`             | 纯文本内容；有 `content` 插槽时不使用 | `string`           | `''`       |
-| `placement`           | 展示方向                              | `TooltipPlacement` | `'bottom'` |
-| `offset`              | 与触发元素间距，数值按 `rpx` 处理     | `number \| string` | `8`        |
-| `visibleArrow`        | 是否显示箭头                          | `boolean`          | `true`     |
-| `disabled`            | 是否禁用触发                          | `boolean`          | `false`    |
-| `closeable`           | 是否显示关闭按钮                      | `boolean`          | `false`    |
-| `showClose`           | 关闭按钮兼容别名                      | `boolean`          | `false`    |
-| `closeOnClickOverlay` | 点击透明区域是否关闭                  | `boolean`          | `true`     |
-| `zIndex`              | 透明遮罩层级                          | `number`           | `10070`    |
-| `customClass`         | 根节点自定义类名                      | `string`           | `''`       |
-| `customStyle`         | 根节点自定义样式                      | `StyleValue`       | `''`       |
-| `customArrow`         | 箭头自定义类名                        | `string`           | `''`       |
-| `customPop`           | 浮层面板自定义类名                    | `string`           | `''`       |
-| `contentClass`        | 内容容器自定义类名                    | `string`           | `''`       |
-| `contentStyle`        | 内容容器自定义样式                    | `StyleValue`       | `''`       |
+| 参数                  | 说明                                    | 类型               | 默认值     |
+| --------------------- | --------------------------------------- | ------------------ | ---------- |
+| `v-model`             | 是否显示                                | `boolean`          | `false`    |
+| `content`             | 纯文本内容；有 `content` 插槽时不使用   | `string`           | `''`       |
+| `placement`           | 展示方向                                | `TooltipPlacement` | `'bottom'` |
+| `offset`              | 与触发元素间距，数值按 px（375 稿）处理 | `number \| string` | `4`        |
+| `visibleArrow`        | 是否显示箭头                            | `boolean`          | `true`     |
+| `disabled`            | 是否禁用触发                            | `boolean`          | `false`    |
+| `closeable`           | 是否显示关闭按钮                        | `boolean`          | `false`    |
+| `showClose`           | 关闭按钮兼容别名                        | `boolean`          | `false`    |
+| `closeOnClickOverlay` | 点击透明区域是否关闭                    | `boolean`          | `true`     |
+| `zIndex`              | 透明遮罩层级                            | `number`           | `10070`    |
+| `customClass`         | 根节点自定义类名                        | `string`           | `''`       |
+| `customStyle`         | 根节点自定义样式                        | `StyleValue`       | `''`       |
+| `customArrow`         | 箭头自定义类名                          | `string`           | `''`       |
+| `customPop`           | 浮层面板自定义类名                      | `string`           | `''`       |
+| `contentClass`        | 内容容器自定义类名                      | `string`           | `''`       |
+| `contentStyle`        | 内容容器自定义样式                      | `StyleValue`       | `''`       |
 
 ### Events
 
@@ -4705,7 +4815,7 @@ function onUploadError(_error, index) {
 | `timeout`                             | 默认上传的超时时间，单位毫秒                                | `number`                               | `60000`                       |
 | `accept`                              | 接受的文件类型 `image / video / file / media / all`         | `string`                               | `'image'`                     |
 | `mode`                                | 展示模式 `grid / list`                                      | `string`                               | `'grid'`                      |
-| `width` / `height`                    | 单个格子宽高，单位 rpx                                      | `number \| string`                     | `200`                         |
+| `width` / `height`                    | 单个格子宽高，单位 px（375 稿）                             | `number \| string`                     | `100`                         |
 | `maxCount`                            | 最大文件数量                                                | `number \| string`                     | `52`                          |
 | `maxSize`                             | 单个文件最大字节数                                          | `number \| string`                     | `Number.MAX_VALUE`            |
 | `multiple`                            | 是否开启文件多选                                            | `boolean`                              | `true`                        |
@@ -4811,80 +4921,6 @@ Upload 没有组件专属令牌，直接复用以下全局变量：
 | `--snake-color-border`         | 文件项和选择入口边框   |
 | `--snake-color-surface`        | 文件项背景             |
 | `--snake-color-disabled-bg`    | 禁用背景               |
-
-<!-- Source: docs/components/uview-compatibility-audit.md -->
-
-# uView Pro 组件兼容性审计
-
-审计基准：`D:\development\Projects\UniApp\uView-Pro\src\uni_modules\uview-pro\components`。Snake UI 不依赖 uView 运行时；下表是发布前必须维护的本地兼容性清单，`tests/uview-compatibility-audit.test.mjs` 会校验其覆盖率。
-
-## 已有对应组件（43）
-
-这些组件均有独立的 Snake 类型契约和实现；后续变更需同时核对 Props、Events、Slots、Expose、默认值和跨端关键行为。已有组件测试覆盖公开类型、独立运行时和重点交互；本批新增 Tabbar 的原生栏替换回归。
-
-| uView Pro           | Snake UI                | 当前审计结论                                  |
-| ------------------- | ----------------------- | --------------------------------------------- |
-| `u-button`          | `snake-button`          | 已映射                                        |
-| `u-calendar`        | `snake-calendar`        | 已映射                                        |
-| `u-cell-group`      | `snake-cell-group`      | 已映射                                        |
-| `u-cell-item`       | `snake-cell-item`       | 已映射                                        |
-| `u-checkbox`        | `snake-checkbox`        | 已映射                                        |
-| `u-checkbox-group`  | `snake-checkbox-group`  | 已映射                                        |
-| `u-config-provider` | `snake-config-provider` | 已映射                                        |
-| `u-count-down`      | `snake-count-down`      | 已映射                                        |
-| `u-empty`           | `snake-empty`           | 已映射                                        |
-| `u-form`            | `snake-form`            | 已映射                                        |
-| `u-form-item`       | `snake-form-item`       | 已映射                                        |
-| `u-icon`            | `snake-icon`            | 已映射                                        |
-| `u-image`           | `snake-image`           | 已映射                                        |
-| `u-index-anchor`    | `snake-index-anchor`    | 已映射                                        |
-| `u-index-list`      | `snake-index-list`      | 已映射                                        |
-| `u-input`           | `snake-input`           | 已映射                                        |
-| `u-line`            | `snake-line`            | 已映射                                        |
-| `u-line-progress`   | `snake-line-progress`   | 已映射                                        |
-| `u-link`            | `snake-link`            | 已映射                                        |
-| `u-loadmore`        | `snake-loadmore`        | 已映射                                        |
-| `u-modal`           | `snake-modal`           | 已映射                                        |
-| `u-navbar`          | `snake-navbar`          | 已映射                                        |
-| `u-no-network`      | `snake-no-network`      | 已映射                                        |
-| `u-notice-bar`      | `snake-notice-bar`      | 已映射                                        |
-| `u-popup`           | `snake-popup`           | 已映射                                        |
-| `u-radio`           | `snake-radio`           | 已映射                                        |
-| `u-radio-group`     | `snake-radio-group`     | 已映射                                        |
-| `u-read-more`       | `snake-read-more`       | 已映射                                        |
-| `u-search`          | `snake-search`          | 已映射                                        |
-| `u-select`          | `snake-select`          | 已映射                                        |
-| `u-skeleton`        | `snake-skeleton`        | 已映射                                        |
-| `u-slider`          | `snake-slider`          | 已映射                                        |
-| `u-sticky`          | `snake-sticky`          | 已映射                                        |
-| `u-subsection`      | `snake-subsection`      | 已映射                                        |
-| `u-swiper`          | `snake-swiper`          | 已映射                                        |
-| `u-switch`          | `snake-switch`          | 已映射                                        |
-| `u-tabbar`          | `snake-tabbar`          | 已修复：`hideTabBar` 默认开启并安全处理普通页 |
-| `u-tabs`            | `snake-tabs`            | 已映射                                        |
-| `u-text`            | `snake-text`            | 已映射                                        |
-| `u-textarea`        | `snake-textarea`        | 已映射                                        |
-| `u-toast`           | `snake-toast`           | 已映射                                        |
-| `u-transition`      | `snake-transition`      | 已映射                                        |
-| `u-upload`          | `snake-upload`          | 已映射                                        |
-
-## uView 独有组件（56）
-
-### P0：高频页面基础能力
-
-`u-action-sheet`、`u-badge`、`u-field`、`u-grid`、`u-grid-item`、`u-number-box`、`u-picker`、`u-rate`。
-
-### P1：常用扩展能力
-
-`u-avatar`、`u-back-top`、`u-card`、`u-circle-progress`、`u-collapse`、`u-collapse-item`、`u-count-to`、`u-divider`、`u-dropdown`、`u-dropdown-item`、`u-fab`、`u-keyboard`、`u-pagination`、`u-row`、`u-col`、`u-step`、`u-steps`、`u-swipe-action`、`u-tag`、`u-top-tips`、`u-verification-code`。
-
-### P2：低频、平台特化或可由现有组件组合
-
-`u-action-sheet-item`、`u-alert-tips`、`u-avatar-cropper`、`u-car-keyboard`、`u-city-select`、`u-column-notice`、`u-full-screen`、`u-gap`、`u-lazy-load`、`u-loading`、`u-loading-popup`、`u-mask`、`u-message-input`、`u-number-keyboard`、`u-root-portal`、`u-row-notice`、`u-safe-bottom`、`u-section`、`u-status-bar`、`u-table`、`u-tabs-swiper`、`u-td`、`u-th`、`u-time-line`、`u-time-line-item`、`u-tr`、`u-waterfall`。
-
-## Snake 专属组件
-
-商城、CMS、筛选、活动和页面装修组件属于 Snake UI 产品能力，不应视为 uView 缺失项。后续仅在自身文档和契约测试中维护它们。
 
 ## cms
 
@@ -5113,21 +5149,21 @@ interface CmsV2TextItem {
 ```ts
 {
     component: 'v2.floatbutton', text: '悬浮按钮', type: '3-9', active: true,
-    props: { src: 'https://example.com/service.png', link: { httpType: 10, http: '/pages/service' }, position: { right: 0, bottom: 20 }, style: { width: 76, height: 76 } }
+    props: { src: 'https://example.com/service.png', link: { httpType: 10, http: '/pages/service' }, position: { right: 0, bottom: 20 }, style: { width: 38, height: 38 } }
 }
 ```
 
 ## Props
 
-| 字段                 | 类型        | 默认值  | 说明          |
-| -------------------- | ----------- | ------- | ------------- |
-| `src`                | `string`    | `''`    | 按钮图片      |
-| `link`               | `CmsV2Link` | 空内链  | 点击链接      |
-| `position.right`     | `number`    | `0`     | 距右百分比    |
-| `position.bottom`    | `number`    | `20`    | 距下百分比    |
-| `style.width/height` | `number`    | `76/76` | 按钮尺寸，rpx |
+| 字段                 | 类型        | 默认值  | 说明                   |
+| -------------------- | ----------- | ------- | ---------------------- |
+| `src`                | `string`    | `''`    | 按钮图片               |
+| `link`               | `CmsV2Link` | 空内链  | 点击链接               |
+| `position.right`     | `number`    | `0`     | 距右百分比             |
+| `position.bottom`    | `number`    | `20`    | 距下百分比             |
+| `style.width/height` | `number`    | `38/38` | 按钮尺寸，px（375 稿） |
 
-固定定位可能受宿主安全区和自定义 tabbar 影响，应在目标页面实测。跳转依赖 [link service](/cms/services#链接服务)。
+右上角可关闭（按页面组件 id 记忆，重进页面不重现），跳转统一走 [link service](/cms/services#链接服务)。页面滚动时按钮向右半藏、露出一半，停止滚动约 2 秒后恢复——这是悬浮组件家族的签名行为，与 v1 悬浮气泡、回到顶部一致。固定定位可能受宿主安全区和自定义 tabbar 影响，应在目标页面实测。
 
 <!-- Source: docs/cms/getting-started.md -->
 
@@ -5402,12 +5438,12 @@ CMS 会忽略过期请求结果，页面切换或重新初始化后，较早返�
 
 ## Props：样式与空态
 
-| 字段                          | 类型                                  | 默认值                    | 说明         |
-| ----------------------------- | ------------------------------------- | ------------------------- | ------------ |
-| `style.pageMargin/gap/radius` | `number`                              | `5/10/0`                  | rpx 尺寸     |
-| `style.backgroundColor`       | `string`                              | `'#F8F8F8'`               | 背景色       |
-| `empty.mode`                  | `'default' \| 'forSale' \| 'downBuy'` | `'default'`               | 空态回退模式 |
-| `empty.image/text/color`      | `string`                              | `''/'列表为空'/'#000000'` | 空态内容     |
+| 字段                          | 类型                                  | 默认值                    | 说明              |
+| ----------------------------- | ------------------------------------- | ------------------------- | ----------------- |
+| `style.pageMargin/gap/radius` | `number`                              | `5/10/0`                  | px 尺寸（375 稿） |
+| `style.backgroundColor`       | `string`                              | `'#F8F8F8'`               | 背景色            |
+| `empty.mode`                  | `'default' \| 'forSale' \| 'downBuy'` | `'default'`               | 空态回退模式      |
+| `empty.image/text/color`      | `string`                              | `''/'列表为空'/'#000000'` | 空态内容          |
 
 数据、筛选、分页和商品点击依赖 [commerce service](/cms/services#商品服务)。页面触底调用 `snake-cms` 的 `loadMore()`。
 
@@ -5495,18 +5531,18 @@ CMS 会忽略过期请求结果，页面切换或重新初始化后，较早返�
 
 ## Props
 
-| 字段                                 | 类型                  | 默认值      | 说明             |
-| ------------------------------------ | --------------------- | ----------- | ---------------- |
-| `layout`                             | `MagicCubeLayout`     | `'row'`     | 布局模板         |
-| `columns`                            | `1..6`                | `4`         | row 模式列数     |
-| `style.pageMargin/gap/radius/height` | `number`              | `0/0/0/188` | rpx 尺寸         |
-| `style.backgroundColor`              | `string`              | `'#FFFFFF'` | 背景色           |
-| `play.interval`                      | `number`              | `3`         | 多图轮换间隔，秒 |
-| `cells`                              | `MagicCubeCell[]`     | `[]`        | 图片格列表       |
-| `cells[].src/link`                   | `string / CmsV2Link`  | -           | 默认图片与链接   |
-| `cells[].schedules`                  | `MagicCubeSchedule[]` | `[]`        | 定时覆盖         |
-| `schedules[].weeks`                  | `number[]`            | `[]`        | 星期 1–7         |
-| `schedules[].startTime/endTime`      | `string`              | `''`        | `HH:mm` 时间段   |
+| 字段                                 | 类型                  | 默认值      | 说明              |
+| ------------------------------------ | --------------------- | ----------- | ----------------- |
+| `layout`                             | `MagicCubeLayout`     | `'row'`     | 布局模板          |
+| `columns`                            | `1..6`                | `4`         | row 模式列数      |
+| `style.pageMargin/gap/radius/height` | `number`              | `0/0/0/188` | px 尺寸（375 稿） |
+| `style.backgroundColor`              | `string`              | `'#FFFFFF'` | 背景色            |
+| `play.interval`                      | `number`              | `3`         | 多图轮换间隔，秒  |
+| `cells`                              | `MagicCubeCell[]`     | `[]`        | 图片格列表        |
+| `cells[].src/link`                   | `string / CmsV2Link`  | -           | 默认图片与链接    |
+| `cells[].schedules`                  | `MagicCubeSchedule[]` | `[]`        | 定时覆盖          |
+| `schedules[].weeks`                  | `number[]`            | `[]`        | 星期 1–7          |
+| `schedules[].startTime/endTime`      | `string`              | `''`        | `HH:mm` 时间段    |
 
 `MagicCubeLayout` 可选 `row`、`grid2x2`、`left1right2`、`top1bottom2`、`left1right3`、`left2right1`、`left3right1`。定时项还包含自己的 `src` 和 `link`。跳转依赖 [link service](/cms/services#链接服务)。
 
@@ -5732,7 +5768,7 @@ app.use(SnakeUI, {
 
 ## 通用规则
 
-- 尺寸采用 750 设计稿基准，运行时按 rpx 使用。
+- v2 尺寸字段为 375 设计稿原生 px；v1 存量数据的数字仍按 750 稿 rpx 语义存储，由渲染层自动换算为 px。
 - `active: false` 的区块不会渲染。
 - 链接统一为 `{ httpType: 10 | 11, http: string }`。
 - 远端 JSON 仍需在宿主边界做数组和对象校验。
@@ -5955,7 +5991,7 @@ app.use(SnakeUI, {
 | `rightImage`                                                | `SearchImage`        | 见示例     | 框内右侧图片、链接与尺寸 |
 | `icons`                                                     | `SearchIcon[]`       | `[]`       | 框外图标，最多 2 个      |
 | `style.position`                                            | `0 \| 1`             | `0`        | 普通或滚动吸顶           |
-| `style.height/pageMargin/borderRadius/borderSize`           | `number`             | `60/0/0/1` | rpx 尺寸                 |
+| `style.height/pageMargin/borderRadius/borderSize`           | `number`             | `60/0/0/1` | px 尺寸（375 稿）        |
 | `style.backgroundColor/borderBgColor/textColor/borderColor` | `string`             | 见示例     | 颜色                     |
 | `style.showBorder`                                          | `boolean`            | `true`     | 显示边框                 |
 
@@ -6155,7 +6191,7 @@ Snake UI 为 AI 编码助手提供可定位、可验证的上下文资料，帮�
 4. 运行受影响范围的测试；公开组件或类型变更后，再运行 `pnpm type-check`。
 5. 若更新了 `docs/`，同步生成 AI reference。
 
-不要因为组件名称或模板和其他组件库相似，就推断 Snake UI 的 API 或行为。uView Pro 可以用作参考，但 Snake UI 自身的源码、文档与测试才是最终标准。
+不要因为组件名称或模板和其他组件库相似，就推断 Snake UI 的 API 或行为。Snake UI 自身的源码、文档与测试才是最终标准。
 
 ## 关键约束
 
@@ -6463,13 +6499,13 @@ Snake UI 支持从主题令牌、页面作用域样式和组件根节点三个�
 
 ## 选择定制方式
 
-| 需求 | 推荐方式 |
-| --- | --- |
-| 全应用品牌色、文字色、背景色 | 注册主题或覆盖主题色板 |
-| 页面区域随主题和暗色模式变化 | 使用 `var(--snake-color-*)` |
-| 单个组件调整间距或尺寸 | `custom-style` / `custom-class` |
-| 所有页面获得主题变量 | Config Provider + 虚拟根组件 |
-| 修改组件没有公开的内部结构 | 优先提出组件 API，而不是穿透内部样式 |
+| 需求                         | 推荐方式                             |
+| ---------------------------- | ------------------------------------ |
+| 全应用品牌色、文字色、背景色 | 注册主题或覆盖主题色板               |
+| 页面区域随主题和暗色模式变化 | 使用 `var(--snake-color-*)`          |
+| 单个组件调整间距或尺寸       | `custom-style` / `custom-class`      |
+| 所有页面获得主题变量         | Config Provider + 虚拟根组件         |
+| 修改组件没有公开的内部结构   | 优先提出组件 API，而不是穿透内部样式 |
 
 ## 引入样式入口
 
@@ -6494,7 +6530,7 @@ npm 安装时在 `App.vue` 引入完整样式：
     color: var(--snake-color-text);
     background: var(--snake-color-surface);
     border: 1px solid var(--snake-color-border);
-    box-shadow: 0 8rpx 24rpx var(--snake-color-shadow);
+    box-shadow: 0 4px 12px var(--snake-color-shadow);
 }
 
 .order-card__action {
@@ -6516,7 +6552,7 @@ npm 安装时在 `App.vue` 引入完整样式：
 .my-page {
     :deep(.my-tabs) {
         background-color: #f7f8fa;
-        border-radius: 12rpx;
+        border-radius: 6px;
     }
 }
 ```
@@ -6785,7 +6821,7 @@ npm 与 `uni_modules` 的具体路径见[安装](/components/install)与[配置]
 
 ## 开始前确认
 
-准备一个可正常运行的 uni-app Vue 3 项目，并确认项目支持 SCSS 与 `rpx`。完整版本要求和平台差异见[运行环境与能力边界](/guide/compatibility)。
+准备一个可正常运行的 uni-app Vue 3 项目，并确认项目支持 SCSS 与 px（375 稿）。完整版本要求和平台差异见[运行环境与能力边界](/guide/compatibility)。
 
 ## 1. 安装 Snake UI
 
@@ -6868,12 +6904,12 @@ function handleClick() {
 
 <style lang="scss" scoped>
 .page {
-    padding: 32rpx;
+    padding: 16px;
 }
 
 .title {
     display: block;
-    margin-bottom: 24rpx;
+    margin-bottom: 12px;
 }
 </style>
 ```
@@ -7046,7 +7082,7 @@ Snake UI 是面向 **uni-app Vue 3** 的移动商城与 CMS 组件库。它既�
 ## 框架优势
 
 - 🚀 **Vue 3 原生**：基于 `<script setup lang="ts">` 编写，组件类型随包发布，IDE 补全与校验开箱即用。
-- 🖥️ **多端运行**：H5、微信小程序、App 同一套代码构建，通过 uni-app 内置组件与条件编译屏蔽平台差异。
+- 🖥️ **多端运行**：H5、微信小程序、支付宝小程序、App 同一套代码构建，通过 uni-app 内置组件与条件编译屏蔽平台差异。
 - 🛒 **商城与 CMS 组件**：商品列表、优惠券、筛选、装修渲染等业务组件内置，不绑定具体后端。
 - 🎨 **主题系统**：品牌色七档令牌 + 语义色 + 中性色，CSS 变量驱动，多主题与暗黑模式一键切换。
 - 🌍 **国际化**：内置 `zh-CN` 与 `en-US`，响应式切换、持久化语言偏好、深度合并与回退。
@@ -7244,8 +7280,8 @@ app.use(SnakeUI, {
 
 | 令牌                                                          | 默认值                           | 用途         |
 | ------------------------------------------------------------- | -------------------------------- | ------------ |
-| `controlHeightSmall` / `controlHeight` / `controlHeightLarge` | `64rpx` / `80rpx` / `92rpx`      | 控件三档高度 |
-| `radiusSmall` / `radiusBase` / `radiusLarge`                  | `8rpx` / `12rpx` / `20rpx`       | 圆角三档     |
+| `controlHeightSmall` / `controlHeight` / `controlHeightLarge` | `32px` / `40px` / `46px`         | 控件三档高度 |
+| `radiusSmall` / `radiusBase` / `radiusLarge`                  | `4px` / `6px` / `10px`           | 圆角三档     |
 | `durationFast` / `durationBase`                               | `180ms` / `300ms`                | 动效时长     |
 | `easingStandard`                                              | `cubic-bezier(0.2, 0.8, 0.2, 1)` | 标准缓动     |
 | `zIndexOverlay` / `zIndexPopup`                               | `10070` / `10075`                | 层级         |
@@ -7295,8 +7331,8 @@ console.log(color.primary);
 
 ## 主题与暗色 API
 
-| API                         | 作用                           |
-| --------------------------- | ------------------------------ |
+| API                    | 作用                           |
+| ---------------------- | ------------------------------ |
 | `setTheme(name)`       | 切换主题并持久化，返回是否成功 |
 | `setThemeColor(color)` | 更新当前主题的颜色片段         |
 | `currentTheme`         | 当前主题的响应式引用           |
@@ -8060,7 +8096,7 @@ const item = { id: guid('item'), label: '新项目' };
 
 # HTTP 请求
 
-## uView 风格入口
+## 生态风格入口
 
 `http` 是请求模块的规范单例。`snakeHttp` 仅作为兼容别名保留；请求模块默认导出 `httpPlugin`，可通过 `app.use(httpPlugin, { requestConfig, interceptor })` 挂载 `this.$http`；使用 `app.use(SnakeUI)` 时，`$http` 与 `$snake.http` 同时可用。
 
@@ -8311,7 +8347,7 @@ type2icon('success'); // checkmark-circle
 
 # 对象转 URL 参数
 
-`queryParams(data)` 把对象拼接成 URL 查询串（与 uview 的 `$u.queryParams` 语义一致）；`getQueryParams(url)` 反向把查询串解析为对象。
+`queryParams(data)` 把对象拼接成 URL 查询串（对齐主流生态 `$u.queryParams` 的历史语义）；`getQueryParams(url)` 反向把查询串解析为对象。
 
 ```ts
 import { getQueryParams, queryParams } from '@puresnake/snake-ui';
@@ -8328,7 +8364,7 @@ getQueryParams('/pages/search?q=Snake+UI&page=2'); // { q: 'Snake UI', page: '2'
 - 空值（`''` / `undefined` / `null`）参数直接跳过；
 - 数组按 `arrayFormat` 序列化：`indices`（`ids[0]=1`）、`brackets`（`ids[]=1`，默认）、`repeat`（`ids=1`）、`comma`（`ids=1,2`），非法格式回退 `brackets`；
 - 普通对象 JSON 序列化并 `encodeURIComponent`；
-- 其余值经模板字符串原样输出、不做额外编码（与 uview 一致），含中文或特殊字符的值需自行编码后再传入。
+- 其余值经模板字符串原样输出、不做额外编码（与既有生态一致），含中文或特殊字符的值需自行编码后再传入。
 
 ## 解析规则（getQueryParams）
 
@@ -8448,9 +8484,9 @@ await route('/pages/search#result', {
 ```ts
 import { addUnit } from '@puresnake/snake-ui';
 
-addUnit(24); // 24rpx
+addUnit(24); // 12px
 addUnit('1rem'); // 1rem
-addUnit('12 24px'); // 12rpx 24px
+addUnit('12 24px'); // 6px 24px
 ```
 
 ## 样式转换
@@ -8470,7 +8506,7 @@ toStyle({ backgroundColor: '#fff' }, 'color:#222');
 
 | 方法                                 | 行为                                                   |
 | ------------------------------------ | ------------------------------------------------------ |
-| `addUnit(value = 0, unit = 'rpx')`   | 给裸数字追加单位，含多值简写；空值返回 `0rpx`          |
+| `addUnit(value = 0, unit = 'rpx')`   | 给裸数字追加单位，含多值简写；空值返回 `0px`           |
 | `kebabCase(name)`                    | 将驼峰、空格或下划线写法转换为 CSS 短横线写法          |
 | `addStyle(style, target = 'object')` | 将声明串转为样式对象；`target = 'string'` 时返回字符串 |
 | `toStyle(...styles)`                 | 合并样式对象或声明串，返回 CSS 声明串                  |

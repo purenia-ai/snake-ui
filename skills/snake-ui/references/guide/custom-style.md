@@ -41,7 +41,7 @@ npm 安装时在 `App.vue` 引入完整样式：
     color: var(--snake-color-text);
     background: var(--snake-color-surface);
     border: 1px solid var(--snake-color-border);
-    box-shadow: 0 8rpx 24rpx var(--snake-color-shadow);
+    box-shadow: 0 4px 12px var(--snake-color-shadow);
 }
 
 .order-card__action {
@@ -63,7 +63,7 @@ npm 安装时在 `App.vue` 引入完整样式：
 .my-page {
     :deep(.my-tabs) {
         background-color: #f7f8fa;
-        border-radius: 12rpx;
+        border-radius: 6px;
     }
 }
 ```

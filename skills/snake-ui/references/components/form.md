@@ -6,7 +6,7 @@ triggers: ['form', 'snake-form', 'Form', '表单']
 
 # Form 表单
 
-`Form` 用于管理表单模型和规则，`FormItem` 负责字段布局、校验状态与错误展示。组件行为与 uView Pro Form 保持一致。
+`Form` 用于管理表单模型和规则，`FormItem` 负责字段布局、校验状态与错误展示。组件行为对齐 uni-app 生态广泛使用的 Form 语义。
 
 ## 使用建议
 
@@ -103,17 +103,17 @@ const rules = {
 
 ### Form Props
 
-| 参数            | 说明                     | 类型                        | 默认值                 |
-| --------------- | ------------------------ | --------------------------- | ---------------------- |
-| `model`         | 表单数据对象             | `object`                    | `{}`                   |
-| `rules`         | 校验规则                 | `FormRules`                 | `{}`                   |
-| `errorType`     | 错误提示方式             | `FormErrorType[]`           | `['message', 'toast']` |
-| `borderBottom`  | 表单项默认显示底边       | `boolean`                   | `true`                 |
-| `labelPosition` | 标签位置                 | `left \| top`               | `left`                 |
-| `labelWidth`    | 标签宽度，数字单位为 rpx | `string \| number`          | `90`                   |
-| `labelAlign`    | 标签对齐                 | `left \| center \| right`   | `left`                 |
-| `labelStyle`    | 标签样式                 | `object`                    | `{}`                   |
-| `size`          | 表单尺寸                 | `small \| default \| large` | `default`              |
+| 参数            | 说明                              | 类型                        | 默认值                 |
+| --------------- | --------------------------------- | --------------------------- | ---------------------- |
+| `model`         | 表单数据对象                      | `object`                    | `{}`                   |
+| `rules`         | 校验规则                          | `FormRules`                 | `{}`                   |
+| `errorType`     | 错误提示方式                      | `FormErrorType[]`           | `['message', 'toast']` |
+| `borderBottom`  | 表单项默认显示底边                | `boolean`                   | `true`                 |
+| `labelPosition` | 标签位置                          | `left \| top`               | `left`                 |
+| `labelWidth`    | 标签宽度，数字单位为 px（375 稿） | `string \| number`          | `45`                   |
+| `labelAlign`    | 标签对齐                          | `left \| center \| right`   | `left`                 |
+| `labelStyle`    | 标签样式                          | `object`                    | `{}`                   |
+| `size`          | 表单尺寸                          | `small \| default \| large` | `default`              |
 
 ### Form Expose
 

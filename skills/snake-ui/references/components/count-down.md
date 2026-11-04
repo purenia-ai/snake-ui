@@ -33,7 +33,7 @@ triggers: ['count-down', 'snake-count-down', 'CountDown', '倒计时']
     border-color="#06D290"
     color="#06D290"
     bg-color="rgba(6, 210, 144, 0.08)"
-    height="56"
+    height="28"
 />
 ```
 
@@ -54,18 +54,18 @@ const remaining = Math.max(0, Math.floor((endAt - Date.now()) / 1000));
 
 ### Props
 
-| 参数                                                     | 说明                        | 类型                        | 默认值               |
-| -------------------------------------------------------- | --------------------------- | --------------------------- | -------------------- |
-| `timestamp`                                              | 倒计时剩余秒数              | `number \| string`          | `0`                  |
-| `autoplay`                                               | 挂载后自动开始              | `boolean`                   | `true`               |
-| `separator`                                              | 分隔符形态                  | `string`                    | `colon`              |
-| `separatorSize` / `separatorColor`                       | 分隔符大小与颜色            | `number \| string / string` | `30` / 主题文字色    |
-| `color` / `fontSize`                                     | 数字颜色与大小（rpx）       | `string / number \| string` | 主题文字色 / `30`    |
-| `bgColor` / `height`                                     | 数字背景与数字块宽高（rpx） | `string / number \| string` | 主题表面色 / `auto`  |
-| `showBorder` / `borderColor`                             | 数字边框开关与颜色          | `boolean / string`          | `false` / 主题文字色 |
-| `showDays` / `showHours` / `showMinutes` / `showSeconds` | 各部分显示开关              | `boolean`                   | `true`               |
-| `hideZeroDay`                                            | 天数为 0 时隐藏天部分       | `boolean`                   | `false`              |
-| `customClass` / `customStyle`                            | 自定义类名与样式            | `string / style`            | `''`                 |
+| 参数                                                     | 说明                               | 类型                        | 默认值               |
+| -------------------------------------------------------- | ---------------------------------- | --------------------------- | -------------------- |
+| `timestamp`                                              | 倒计时剩余秒数                     | `number \| string`          | `0`                  |
+| `autoplay`                                               | 挂载后自动开始                     | `boolean`                   | `true`               |
+| `separator`                                              | 分隔符形态                         | `string`                    | `colon`              |
+| `separatorSize` / `separatorColor`                       | 分隔符大小与颜色                   | `number \| string / string` | `15` / 主题文字色    |
+| `color` / `fontSize`                                     | 数字颜色与大小（px，375 稿）       | `string / number \| string` | 主题文字色 / `30`    |
+| `bgColor` / `height`                                     | 数字背景与数字块宽高（px，375 稿） | `string / number \| string` | 主题表面色 / `auto`  |
+| `showBorder` / `borderColor`                             | 数字边框开关与颜色                 | `boolean / string`          | `false` / 主题文字色 |
+| `showDays` / `showHours` / `showMinutes` / `showSeconds` | 各部分显示开关                     | `boolean`                   | `true`               |
+| `hideZeroDay`                                            | 天数为 0 时隐藏天部分              | `boolean`                   | `false`              |
+| `customClass` / `customStyle`                            | 自定义类名与样式                   | `string / style`            | `''`                 |
 
 ### Events
 

@@ -21,12 +21,12 @@ triggers: ['image', 'snake-image', 'Image', '图片']
     src="/static/logo.png"
     alt="Snake UI 标志"
     width="100%"
-    height="320rpx"
+    height="160px"
     mode="aspectFill"
     :radius="16"
     preview
 />
-<snake-image src="/static/avatar.png" alt="用户头像" width="120rpx" height="120rpx" shape="circle" />
+<snake-image src="/static/avatar.png" alt="用户头像" width="60px" height="60px" shape="circle" />
 ```
 
 ## 加载状态
@@ -36,9 +36,9 @@ triggers: ['image', 'snake-image', 'Image', '图片']
 默认显示加载图标。简单的品牌占位图可使用 `loading-img`；需要组合动画、文字或骨架屏时使用 `loading` 插槽。
 
 ```vue
-<snake-image src="/static/product.png" width="100%" height="220rpx" loading-img="/static/image-loading.png" />
+<snake-image src="/static/product.png" width="100%" height="110px" loading-img="/static/image-loading.png" />
 
-<snake-image src="/static/product.png" width="100%" height="220rpx">
+<snake-image src="/static/product.png" width="100%" height="110px">
   <template #loading>
     <snake-loading size="24" />
   </template>
@@ -52,9 +52,9 @@ triggers: ['image', 'snake-image', 'Image', '图片']
 默认显示错误图标与提示。简单错误图使用 `error-img`；需要自定义内容时使用 `error` 插槽。
 
 ```vue
-<snake-image src="/static/not-found.png" width="100%" height="220rpx" error-img="/static/image-error.png" />
+<snake-image src="/static/not-found.png" width="100%" height="110px" error-img="/static/image-error.png" />
 
-<snake-image src="/static/not-found.png" width="100%" height="220rpx">
+<snake-image src="/static/not-found.png" width="100%" height="110px">
   <template #error>
     <view class="image-error">图片暂时无法显示</view>
   </template>
@@ -86,15 +86,15 @@ triggers: ['image', 'snake-image', 'Image', '图片']
 通过 `mode` 控制图片在容器内的裁剪和对齐方式，常用商品图使用 `aspectFill`，完整展示图片使用 `aspectFit`。
 
 ```vue
-<snake-image src="/static/product.png" width="200rpx" height="200rpx" mode="aspectFill" />
-<snake-image src="/static/product.png" width="200rpx" height="200rpx" mode="aspectFit" />
+<snake-image src="/static/product.png" width="100px" height="100px" mode="aspectFill" />
+<snake-image src="/static/product.png" width="100px" height="100px" mode="aspectFit" />
 ```
 
 ### 圆形与圆角
 
 ```vue
-<snake-image src="/static/avatar.png" width="120rpx" height="120rpx" shape="circle" />
-<snake-image src="/static/product.png" width="240rpx" height="180rpx" :radius="16" />
+<snake-image src="/static/avatar.png" width="60px" height="60px" shape="circle" />
+<snake-image src="/static/product.png" width="120px" height="90px" :radius="16" />
 ```
 
 ## 图片预览
@@ -104,8 +104,8 @@ triggers: ['image', 'snake-image', 'Image', '图片']
 ```vue
 <snake-image
     src="/static/product-1.png"
-    width="240rpx"
-    height="240rpx"
+    width="120px"
+    height="120px"
     preview
     :preview-urls="['/static/product-1.png', '/static/product-2.png']"
 />

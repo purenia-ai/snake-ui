@@ -1,5 +1,27 @@
 # 更新日志
 
+## [0.0.10](https://github.com/purenia-ai/snake-ui/compare/v0.0.9...v0.0.10)（2026-11-04）
+
+### ✨ Features | 新功能
+
+- **snake-circle-progress:** 新增环形进度条：canvas 绘制、中心透明、圆头弧端，微信端按像素比高清渲染
+- **v2.floatbutton:** 复用悬浮气泡：可关闭（按组件 id 记忆）、滚动半藏家族签名、跳转走 link service
+- **snake-floating-bubble:** 新增 `unit` 尺寸口径与 `hide-on-scroll` 开关属性
+- **snake-link:** 小程序端新增 `copy-success` / `copy-fail` 事件
+- **snake-search:** 新增 `type` 属性，支持数字 / 身份证 / 小数点键盘
+
+### 🐛 Bug Fixes | Bug 修复
+
+- **snake-floating-bubble:** 收起改为纯 CSS 位移并补偿右边距，修复偶发反向飞出与露幅超半
+- **v2.floatbutton:** 修复 `position.bottom` 为 0 时被默认值吞掉
+- **snake-drop-menu:** 标题栏默认高度 20→40（迁移折半遗留）
+- **snake-line-progress:** `percent` 钳制 0-100 并容错非法输入，百分比文字取整
+
+### ✏️ Documentation | 文档
+
+- 文档与注释全量改用中性表述，移除第三方库对照审计页与对应守卫
+- 修正 floatbutton / drop-menu / line-progress 文档默认值漂移
+
 ## [0.0.9](https://github.com/purenia-ai/snake-ui/compare/v0.0.7...v0.0.9)（2026-11-03）
 
 > 0.0.8 曾发布后撤回，版本号已被 npm 回收不可复用；其全部改动并入本版本。

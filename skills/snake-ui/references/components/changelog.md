@@ -6,112 +6,134 @@ triggers: ['changelog', 'snake-changelog', '更新日志']
 
 # 更新日志
 
-本文件是 `@puresnake/snake-ui` 的唯一更新日志来源，遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 风格：条目按「新增 / 变更 / 修复」分类，版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)，日期为实际发布日。文档站的更新日志页面由 `pnpm changelog:sync` 从本文件单向同步生成。
+## [0.0.10](https://github.com/purenia-ai/snake-ui/compare/v0.0.9...v0.0.10)（2026-11-04）
 
-## [0.0.4] - 2026-10-30
+### ✨ Features | 新功能
 
-### 新增
+- **snake-circle-progress:** 新增环形进度条：canvas 绘制、中心透明、圆头弧端，微信端按像素比高清渲染
+- **v2.floatbutton:** 复用悬浮气泡：可关闭（按组件 id 记忆）、滚动半藏家族签名、跳转走 link service
+- **snake-floating-bubble:** 新增 `unit` 尺寸口径与 `hide-on-scroll` 开关属性
+- **snake-link:** 小程序端新增 `copy-success` / `copy-fail` 事件
+- **snake-search:** 新增 `type` 属性，支持数字 / 身份证 / 小数点键盘
 
-- 公开子路径 `@puresnake/snake-ui/qrcode`：导出二维码矩阵生成器 `generateQRCode` / `QRErrorCorrectLevel`，供海报合成等离屏 canvas 场景直接取矩阵数据。`<snake-qr-code>` 组件为屏上渲染，矩阵需求此前无法从包外获取。
+### 🐛 Bug Fixes | Bug 修复
 
-### 修复
+- **snake-floating-bubble:** 收起改为纯 CSS 位移并补偿右边距，修复偶发反向飞出与露幅超半
+- **v2.floatbutton:** 修复 `position.bottom` 为 0 时被默认值吞掉
+- **snake-drop-menu:** 标题栏默认高度 20→40（迁移折半遗留）
+- **snake-line-progress:** `percent` 钳制 0-100 并容错非法输入，百分比文字取整
 
-- `exports` 补充 `./components/snake-cms/types` 显式入口：修复业务侧 `import type ... from '@puresnake/snake-ui/components/snake-cms/types'` 在 TypeScript bundler 解析下报 TS2307 的问题。
-- 背景说明：TypeScript 对 `exports` 目标不做扩展名探测，也不支持中间通配（`*/types`），组件内部模块必须逐个显式声明。
+### ✏️ Documentation | 文档
 
-### 变更
+- 文档与注释全量改用中性表述，移除第三方库对照审计页与对应守卫
+- 修正 floatbutton / drop-menu / line-progress 文档默认值漂移
 
-- 开源仓库迁移至 GitHub 组织 [purenia-ai/snake-ui](https://github.com/purenia-ai/snake-ui)，`repository` / `bugs` / `homepage` 等包元数据与文档链接同步更新。
+## [0.0.9](https://github.com/purenia-ai/snake-ui/compare/v0.0.7...v0.0.9)（2026-11-03）
 
-## [0.0.3] - 2026-10-29
+### ✨ Features | 新功能
 
-### 修复
+- **from375:** 新增 `uni.$snake.from375`，旧 px 语义字段随屏等比渲染
+- **snake-filter-sorts:** 新增 `fontSize` / `titleSize` 属性
+- **snake-button-sort:** 新增 `fontSize` 属性
 
-- `exports` 深层路径对 TypeScript / Vite 的兼容性：`./libs/request`、`./libs/runtime` 提供显式入口；`./libs/config/*`、`./libs/cms/*`、`./libs/function/*`、`./libs/hooks/*` 映射到显式 `.ts` 文件。TypeScript 不做扩展名探测，通配 `./libs/*` 下的无扩展名路径此前无法解析。
+### 🐛 Bug Fixes | Bug 修复
 
-## [0.0.2] - 2026-10-29
+- **from750:** 输出改回 rpx，v1 CMS 区块在宽屏机型恢复随屏等比（375 机型无变化）
+- **magiccube / pictureads:** 盒子与图片高度同步等比，宽屏不再溢出裁切
+- **pictureads:** 修复轮播分支高度 ×2 与圆角口径，App 端与编辑器 v1 预览一致
+- **snake-cms:** 商品区 chrome（tabs / 筛选栏 / 加载更多 / 空态 / 回到顶部）恢复随屏等比
+- **runtime:** 修复 H5 本地开发下商品服务对组件不可见（预打包入口与 easycom 组件各持一份模块状态）
+- **snake-text:** `size` 默认 28→14
+- **snake-skeleton:** `titleHeight` 18→9、`rowsHeight` 16→8、`avatarSize` 32→16
+- **snake-upload:** `width` / `height` 默认 200→100
+- **snake-tooltip:** `offset` 默认 8→4
+- **snake-empty:** `iconSize` 60→80、`fontSize` 13→14，空状态更醒目
+- **snake-loading:** `textSize` 默认 7→12，恢复可读
 
-### 新增
+## [0.0.7](https://github.com/purenia-ai/snake-ui/compare/v0.0.6...v0.0.7)（2026-11-02）
 
-- `package.json` 补齐 `exports` 子路径：`./libs/*`、`./plugins/*`、`./locale/*`、`./iconfont.css`，接入方可以直接通过 `@puresnake/snake-ui/libs/...` 等子路径 import。
-- 新增 `pnpm changelog:sync` 脚本：本文件单向同步到 `docs/components/changelog.md`，文档站更新日志随发版自动对齐。
+### 🐛 Bug Fixes | Bug 修复
 
-## [0.0.1] - 2026-10-29
+- **magiccube:** 修复 `pageMargin` / `imgMargin` 静默失效（模板裸调用未注册的 `from750`，统一走 `$snake.from750`）
 
-### 新增
+## [0.0.6](https://github.com/purenia-ai/snake-ui/compare/v0.0.5...v0.0.6)（2026-11-02）
 
-- 首个 npm 公开发布版本（MIT）。基于 Vue 3 + TypeScript 的 uni-app 组件库，面向商城与 CMS 场景。
-- 46 个通用组件，覆盖基础、表单、数据、反馈、布局、导航等分类，easycom 按需引入。
-- 14 个配置驱动的 CMS 页面区块，统一由 `snake-cms` 渲染。
-- 内置明暗主题（`theme.scss`）、`zh-CN` / `en-US` 多语言、基于 `uni.request` 的 HTTP 客户端与常用 hooks / 工具。
-- 兼容 H5、微信小程序、支付宝小程序、App 等多端。
+### ⚙️ Changes | 变更
 
----
+- **单位体系:** 全库 rpx（750 稿）迁移为 px（375 稿）：裸数字属性按 px 解释、尺寸默认值减半、`1rpx` 细线改 `1px`、`addUnit` 默认单位改 px
+- **宿主迁移:** 传给组件的裸数字属性 ÷2 即可；带 `rpx` 字符串的属性与宿主页面自有样式不受影响
+- **from750:** 新增 `uni.$snake.from750`，承接 CMS v1 存量 750 稿数据，旧数据零迁移
+- **v2 组件:** 尺寸契约改为 375 稿原生 px，渲染助手 `rpx()` 更名 `px()`（编辑器 schema 同步）
+- **pxToRpx:** 标记 deprecated
 
-## 组件索引
+### 🐛 Bug Fixes | Bug 修复
 
-以下清单随组件目录更新，当前共 46 个通用组件入口。
+- **snake-cms:** 修复视频块从不渲染（编辑器存量 key `videoss` 与分发端 `videos` 不一致，现两者兼容）
+- **magiccube:** 修复第 5 种布局高度语义与主路径不一致
 
-基础组件（12）
+### ✏️ Documentation | 文档
 
-- Parse 富文本解析
-- ConfigProvider 全局配置
-- Button 按钮
-- Icon 图标
-- Image 图片
-- QrCode 二维码
-- Loading 加载
-- Skeleton 骨架屏
-- Transition 过渡动画
-- RootPortal 根节点传送
-- Text 文本
-- Link 超链接
+- 文档全量对齐 px 口径（属性表 / 示例 / CMS 数据契约）
 
-表单组件（11）
+## [0.0.5](https://github.com/purenia-ai/snake-ui/compare/v0.0.4...v0.0.5)（2026-10-30）
 
-- Form 表单
-- Input 输入框
-- Textarea 文本域
-- Checkbox 复选框
-- Radio 单选框
-- Switch 开关
-- Slider 滑动选择器
-- Search 搜索框
-- Select 列表选择器
-- Upload 文件上传
-- Calendar 日历
+### 🐛 Bug Fixes | Bug 修复
 
-数据组件（5）
+- **$snake 类型:** 改为可增强的 `SnakeGlobalAPI` 接口，宿主补充成员不再与包内声明冲突
 
-- Loadmore 加载更多
-- LineProgress 线形进度条
-- ReadMore 阅读更多
-- Empty 空状态
-- CountDown 倒计时
+## [0.0.4](https://github.com/purenia-ai/snake-ui/compare/v0.0.3...v0.0.4)（2026-10-30）
 
-反馈组件（5）
+### ✨ Features | 新功能
 
-- NoticeBar 通知栏
-- Overlay 遮罩层
-- Tooltip 文字提示
-- Popup 弹出层
-- NoNetwork 无网络提示
+- **qrcode:** 新增子路径 `@puresnake/snake-ui/qrcode`，导出 `generateQRCode` / `QRErrorCorrectLevel`，海报合成可直接取矩阵
+- **snake-index-list:** 窗口尺寸变化自动重测锚点；开发期 `indexList` 与锚点不匹配时输出告警
+- **snake-button:** 新增 `icon`（内置图标，随文字配色）与 `block`（占满整行）属性
+- **snake-calendar:** 内置节日新增春节、元宵、端午、中秋、重阳（农历换算）与清明（节气）
+- **snake-popup:** 新增 `root-portal` 属性，弹层脱离祖先 transform / overflow 裁剪；补齐 `before-enter` 等四个动画事件透传
 
-布局组件（4）
+### 🐛 Bug Fixes | Bug 修复
 
-- Swiper 轮播图
-- Sticky 吸顶
-- Line 分隔线
-- Cell 单元格
+- **snake-skeleton:** 占位色适配暗色模式（主题变量此前未定义，长期落在浅灰 fallback）
+- **snake-calendar:** 修复 `is-page` 内嵌模式整体不渲染
+- **snake-calendar:** 修复「今天」标记被 `minDate` / `maxDate` 钳制错位
+- **snake-calendar:** `change` 事件 `week` 改为随语言返回
+- **snake-button:** 修复 `type="info"` 无样式、禁用态文字不可见、plain 禁用不可区分等多个状态死角
+- **exports:** 补充 `./components/snake-cms/types` 显式入口，修复 TS bundler 解析报 TS2307
 
-导航组件（9）
+### ⚙️ Changes | 变更
 
-- Navbar 导航栏
-- Tabbar 底部导航栏
-- Tabs 标签页
-- Subsection 分段器
-- ButtonSort 排序按钮
-- DropMenu 下拉菜单
-- IndexList 索引列表
-- IndexListPanel 容器索引列表
-- IndexAnchor 索引锚点
+- **snake-calendar:** 移除双十一内置节日；底部确定按钮占满整行
+- **snake-button:** 加载态改用内置 `snake-loading` 指示器，颜色继承文字色
+- **主题:** `--snake-color-primary-light` 修正为主色 10% 透明度，相关 fallback 同步
+- **仓库:** 迁移至 GitHub 组织 [purenia-ai/snake-ui](https://github.com/purenia-ai/snake-ui)，补 MIT LICENSE 与文档站入口
+
+### ✏️ Documentation | 文档
+
+- 更新日志改为 Keep a Changelog 结构；二维码演示页收敛为卡片布局
+
+## [0.0.3](https://github.com/purenia-ai/snake-ui/compare/v0.0.2...v0.0.3)（2026-10-29）
+
+### 🐛 Bug Fixes | Bug 修复
+
+- **exports:** `./libs/request`、`./libs/runtime` 等深层路径提供显式入口，修复 TS / Vite 无法解析
+
+### ✏️ Documentation | 文档
+
+- 新增 `pnpm changelog:sync`，文档站更新日志随发版自动对齐
+
+## [0.0.2](https://github.com/purenia-ai/snake-ui/compare/v0.0.1...v0.0.2)（2026-10-29）
+
+### ✨ Features | 新功能
+
+- **exports:** 补齐 `./libs/*` 等子路径，可直接按路径 import
+
+> 注：0.0.1 – 0.0.3 发布自同一份工作区快照（npm registry 记录的 gitHead 均为 afb1b62），版本间差异只存在于 npm 包内容，git 比对在此期间为空；自 0.0.3 起改动随提交入库。
+
+## 0.0.1（2026-10-29）
+
+### ✨ Features | 新功能
+
+- 首个 npm 公开发布版本（MIT）。基于 Vue 3 + TypeScript 的 uni-app 组件库，面向商城与 CMS 场景
+- 46 个通用组件 + 14 个配置驱动的 CMS 页面区块（`snake-cms` 统一渲染）
+- 内置明暗主题、中英文多语言、HTTP 客户端与常用 hooks / 工具
+- 兼容 H5、微信 / 支付宝小程序、App 等多端

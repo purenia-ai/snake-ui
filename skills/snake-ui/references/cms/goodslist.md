@@ -62,11 +62,11 @@ triggers: ['goodslist', '商品列表']
 
 ## Props：样式与空态
 
-| 字段                          | 类型                                  | 默认值                    | 说明         |
-| ----------------------------- | ------------------------------------- | ------------------------- | ------------ |
-| `style.pageMargin/gap/radius` | `number`                              | `5/10/0`                  | rpx 尺寸     |
-| `style.backgroundColor`       | `string`                              | `'#F8F8F8'`               | 背景色       |
-| `empty.mode`                  | `'default' \| 'forSale' \| 'downBuy'` | `'default'`               | 空态回退模式 |
-| `empty.image/text/color`      | `string`                              | `''/'列表为空'/'#000000'` | 空态内容     |
+| 字段                          | 类型                                  | 默认值                    | 说明              |
+| ----------------------------- | ------------------------------------- | ------------------------- | ----------------- |
+| `style.pageMargin/gap/radius` | `number`                              | `5/10/0`                  | px 尺寸（375 稿） |
+| `style.backgroundColor`       | `string`                              | `'#F8F8F8'`               | 背景色            |
+| `empty.mode`                  | `'default' \| 'forSale' \| 'downBuy'` | `'default'`               | 空态回退模式      |
+| `empty.image/text/color`      | `string`                              | `''/'列表为空'/'#000000'` | 空态内容          |
 
 数据、筛选、分页和商品点击依赖 [commerce service](/cms/services#商品服务)。页面触底调用 `snake-cms` 的 `loadMore()`。

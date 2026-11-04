@@ -19,7 +19,7 @@ triggers: ['index-list-panel', 'snake-index-list-panel', 'IndexListPanel', '容�
 父容器必须提供确定高度。
 
 ```vue
-<view style="height: 600rpx">
+<view style="height: 300px">
   <snake-index-list-panel :index-list="['A', 'B']" @select="onSelect">
     <snake-index-anchor index="A" />
     <view>Apple</view>

@@ -20,7 +20,7 @@ Snake Tooltip 与 Wot UI Tooltip 的用途相同，但定位和关闭机制并�
 
 ```vue
 <snake-tooltip content="这是一段说明文字">
-    <snake-icon name="info-circle" size="28rpx" />
+    <snake-icon name="info-circle" size="14px" />
 </snake-tooltip>
 ```
 
@@ -30,7 +30,7 @@ Snake Tooltip 与 Wot UI Tooltip 的用途相同，但定位和关闭机制并�
 
 ```vue
 <snake-tooltip v-model="showDetail" placement="bottom-start" :offset="10">
-    <snake-icon name="info-circle" size="28rpx" />
+    <snake-icon name="info-circle" size="14px" />
     <template #content>
         <snake-parse :content="description" />
     </template>
@@ -81,7 +81,7 @@ async function expandDetail() {
 | 关闭按钮     | `closeable`，也接受 `show-close`                        | `show-close`                                       |
 | 内容插槽     | 直接使用 `#content`                                     | 当前源码也会自动识别 `#content`                    |
 | 点击外部关闭 | 内置透明遮罩，默认关闭，可用 `closeOnClickOverlay` 控制 | 页面使用 `useQueue().closeOutside()`               |
-| `offset`     | 浮层与触发元素的间距；数字按 `rpx` 处理                 | 沿坐标轴调整位置，接受数字、数组或对象，按像素处理 |
+| `offset`     | 浮层与触发元素的间距；数字按 px（375 稿）处理           | 沿坐标轴调整位置，接受数字、数组或对象，按像素处理 |
 | 内容尺寸变化 | 浮层由 CSS 重新布局，`updatePosition()` 刷新箭头对齐    | `updatePosition()` 重新测量并定位浮层              |
 | 显隐动画     | 立即显示和关闭                                          | 200ms 淡入淡出                                     |
 
@@ -91,24 +91,24 @@ async function expandDetail() {
 
 ### Props
 
-| 参数                  | 说明                                  | 类型               | 默认值     |
-| --------------------- | ------------------------------------- | ------------------ | ---------- |
-| `v-model`             | 是否显示                              | `boolean`          | `false`    |
-| `content`             | 纯文本内容；有 `content` 插槽时不使用 | `string`           | `''`       |
-| `placement`           | 展示方向                              | `TooltipPlacement` | `'bottom'` |
-| `offset`              | 与触发元素间距，数值按 `rpx` 处理     | `number \| string` | `8`        |
-| `visibleArrow`        | 是否显示箭头                          | `boolean`          | `true`     |
-| `disabled`            | 是否禁用触发                          | `boolean`          | `false`    |
-| `closeable`           | 是否显示关闭按钮                      | `boolean`          | `false`    |
-| `showClose`           | 关闭按钮兼容别名                      | `boolean`          | `false`    |
-| `closeOnClickOverlay` | 点击透明区域是否关闭                  | `boolean`          | `true`     |
-| `zIndex`              | 透明遮罩层级                          | `number`           | `10070`    |
-| `customClass`         | 根节点自定义类名                      | `string`           | `''`       |
-| `customStyle`         | 根节点自定义样式                      | `StyleValue`       | `''`       |
-| `customArrow`         | 箭头自定义类名                        | `string`           | `''`       |
-| `customPop`           | 浮层面板自定义类名                    | `string`           | `''`       |
-| `contentClass`        | 内容容器自定义类名                    | `string`           | `''`       |
-| `contentStyle`        | 内容容器自定义样式                    | `StyleValue`       | `''`       |
+| 参数                  | 说明                                    | 类型               | 默认值     |
+| --------------------- | --------------------------------------- | ------------------ | ---------- |
+| `v-model`             | 是否显示                                | `boolean`          | `false`    |
+| `content`             | 纯文本内容；有 `content` 插槽时不使用   | `string`           | `''`       |
+| `placement`           | 展示方向                                | `TooltipPlacement` | `'bottom'` |
+| `offset`              | 与触发元素间距，数值按 px（375 稿）处理 | `number \| string` | `4`        |
+| `visibleArrow`        | 是否显示箭头                            | `boolean`          | `true`     |
+| `disabled`            | 是否禁用触发                            | `boolean`          | `false`    |
+| `closeable`           | 是否显示关闭按钮                        | `boolean`          | `false`    |
+| `showClose`           | 关闭按钮兼容别名                        | `boolean`          | `false`    |
+| `closeOnClickOverlay` | 点击透明区域是否关闭                    | `boolean`          | `true`     |
+| `zIndex`              | 透明遮罩层级                            | `number`           | `10070`    |
+| `customClass`         | 根节点自定义类名                        | `string`           | `''`       |
+| `customStyle`         | 根节点自定义样式                        | `StyleValue`       | `''`       |
+| `customArrow`         | 箭头自定义类名                          | `string`           | `''`       |
+| `customPop`           | 浮层面板自定义类名                      | `string`           | `''`       |
+| `contentClass`        | 内容容器自定义类名                      | `string`           | `''`       |
+| `contentStyle`        | 内容容器自定义样式                      | `StyleValue`       | `''`       |
 
 ### Events
 

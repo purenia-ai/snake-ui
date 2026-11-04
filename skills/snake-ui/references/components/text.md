@@ -57,7 +57,7 @@ triggers: ['text', 'snake-text', 'Text', '文本']
 | `block`                       | 是否块状显示                     | `boolean`                                                                            | `false`              |
 | `lines`                       | 显示行数，超出显示省略号         | `string \| number`                                                                   | `''`                 |
 | `color`                       | 文本颜色                         | `string`                                                                             | `--snake-color-text` |
-| `size`                        | 字体大小                         | `string \| number`                                                                   | `28`                 |
+| `size`                        | 字体大小（数字按 px / 375 稿）   | `string \| number`                                                                   | `14`                 |
 | `iconStyle` / `textStyle`     | 图标/文字样式                    | `object \| array \| string`                                                          | 默认图标样式 / `{}`  |
 | `decoration`                  | 文字装饰                         | `none \| underline \| line-through`                                                  | `none`               |
 | `margin`                      | 外边距                           | `object \| string \| number`                                                         | `0`                  |

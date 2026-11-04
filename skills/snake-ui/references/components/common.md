@@ -27,12 +27,12 @@ Snake UI 的 `index.scss` 内置了一组常用布局工具类，适合页面中
 
 ## 字号
 
-语义字号包含 `snake-font-xs`、`snake-font-sm`、`snake-font-md`、`snake-font-lg` 和 `snake-font-xl`，对应 `22rpx`、`26rpx`、`28rpx`、`30rpx` 和 `34rpx`。
+语义字号包含 `snake-font-xs`、`snake-font-sm`、`snake-font-md`、`snake-font-lg` 和 `snake-font-xl`，对应 `11px`、`13px`、`14px`、`15px` 和 `17px`。
 
 还可以使用数值形式：
 
 - `snake-font-9` 至 `snake-font-19` 使用 `px`。
-- `snake-font-20` 至 `snake-font-40` 使用 `rpx`。
+- `snake-font-20` 至 `snake-font-40` 使用 px。
 
 ```html
 <text class="snake-font-sm">辅助文字</text> <text class="snake-font-32">标题文字</text>
@@ -59,7 +59,7 @@ Snake UI 的 `index.scss` 内置了一组常用布局工具类，适合页面中
 
 ## 内外边距
 
-间距数值范围为 `0` 至 `80rpx`，其中偶数和 5 的倍数可用。
+间距数值范围为 `0` 至 `40px`，其中偶数和 5 的倍数可用。
 
 - 四周外边距：`snake-margin-20`、`snake-m-20`。
 - 四周内边距：`snake-padding-20`、`snake-p-20`。

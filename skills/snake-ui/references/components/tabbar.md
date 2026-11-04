@@ -75,9 +75,9 @@ const items = [
 | `hideTabBar`                    | 挂载时隐藏原生 tabBar；非原生 tabBar 页安全忽略        | `boolean`                       | `true`            |
 | `beforeSwitch`                  | 切换拦截器；返回 `true` 或 resolve 的 Promise 才会切换 | `(index) => boolean \| Promise` | -                 |
 | `midButton`                     | 是否启用中间凸起按钮                                   | `boolean`                       | `false`           |
-| `iconSize` / `midButtonSize`    | 常规图标和凸起图标尺寸，数字单位为 rpx                 | `string \| number`              | `40` / `100`      |
-| `textSize` / `gap`              | 文字尺寸、图标与文字间距，数字单位为 rpx               | `string \| number`              | `22` / `5`        |
-| `height`                        | 导航栏高度，数字单位为 rpx                             | `string \| number`              | `104`             |
+| `iconSize` / `midButtonSize`    | 常规图标和凸起图标尺寸，数字单位为 px（375 稿）        | `string \| number`              | `20` / `100`      |
+| `textSize` / `gap`              | 文字尺寸、图标与文字间距，数字单位为 px（375 稿）      | `string \| number`              | `11` / `5`        |
+| `height`                        | 导航栏高度，数字单位为 px（375 稿）                    | `string \| number`              | `52`              |
 | `zIndex`                        | 固定导航栏层级                                         | `number`                        | `120`             |
 | `customClass` / `customStyle`   | 根节点类名和样式                                       | `string` / `StyleValue`         | `''` / `''`       |
 

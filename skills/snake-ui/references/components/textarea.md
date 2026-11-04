@@ -17,7 +17,7 @@ triggers: ['textarea', 'snake-textarea', 'Textarea', '文本域']
 ## 基础用法
 
 ```vue
-<snake-textarea v-model="intro" :maxlength="200" count :height="180" />
+<snake-textarea v-model="intro" :maxlength="200" count :height="90" />
 ```
 
 中文、日文等输入法处于候选组合阶段时，组件只更新内部显示；组合结束后才同步 `v-model` 并触发表单 `change` 校验，避免半成品拼音造成误校验。
@@ -29,7 +29,7 @@ triggers: ['textarea', 'snake-textarea', 'Textarea', '文本域']
 | 参数                                                   | 说明                   | 类型                   | 默认值                      |
 | ------------------------------------------------------ | ---------------------- | ---------------------- | --------------------------- |
 | `modelValue` / `placeholder` / `maxlength`             | 值、占位和最大长度     | `string \| number`     | `''` / `请输入内容` / `140` |
-| `height` / `autoHeight` / `fixed`                      | 高度、自适应和固定区域 | `UnitValue \| boolean` | `120` / `false`             |
+| `height` / `autoHeight` / `fixed`                      | 高度、自适应和固定区域 | `UnitValue \| boolean` | `60` / `false`              |
 | `count`                                                | 显示字数统计           | `boolean`              | `false`                     |
 | `disabled` / `readonly`                                | 禁用和只读             | `boolean`              | `false`                     |
 | `border` / `size` / `fontSize`                         | 边框、尺寸和字号       | `string \| UnitValue`  | `surround`                  |

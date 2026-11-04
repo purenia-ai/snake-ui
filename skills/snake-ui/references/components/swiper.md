@@ -17,13 +17,22 @@ triggers: ['swiper', 'snake-swiper', 'Swiper', '轮播图']
 ## 基础用法
 
 ```vue
-<snake-swiper :list="['/static/a.png', '/static/b.png']" :height="360" indicator />
+<snake-swiper :list="['/static/a.png', '/static/b.png']" :height="180" indicator />
 ```
 
 ## 指示器与 3D 卡片
 
 ```vue
-<snake-swiper :list="banners" name="image" mode="number" indicator-pos="bottomRight" effect3d show-title @change="onChange" @click="openBanner" />
+<snake-swiper
+    :list="banners"
+    name="image"
+    mode="number"
+    indicator-pos="bottomRight"
+    effect3d
+    show-title
+    @change="onChange"
+    @click="openBanner"
+/>
 ```
 
 对象图片依次读取 `name` 指定字段、`src`、`url`；标题读取 `title` 或 `text`。
@@ -61,7 +70,7 @@ const banners = [
 | `indicatorPos`                                    | topLeft/topCenter/topRight/bottomLeft/bottomCenter/bottomRight | `string`                    | `bottomCenter`                   |
 | `indicatorColor` / `indicatorActiveColor`         | 普通和激活指示器颜色                                           | `string`                    | 半透明白 / 白色                  |
 | `name`                                            | 对象图片字段                                                   | `string`                    | `image`                          |
-| `radius` / `borderRadius`                         | 圆角，borderRadius 优先                                        | `string \| number`          | `8`                              |
+| `radius` / `borderRadius`                         | 圆角，borderRadius 优先                                        | `string \| number`          | `4`                              |
 | `previousMargin` / `nextMargin`                   | 前后边距                                                       | `string`                    | `0px`                            |
 | `effect3d` / `effect3dPreviousMargin`             | 3D 卡片及露出边距                                              | `boolean \| UnitValue`      | `false` / `50`                   |
 | `imgMode`                                         | 图片裁剪模式                                                   | `string`                    | `aspectFill`                     |

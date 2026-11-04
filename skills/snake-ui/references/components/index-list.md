@@ -68,7 +68,7 @@ indexListRef.value?.update();
 | `railStyle`                     | 右侧索引栏样式         | `string \| object \| array` | `''`              |
 | `customClass` / `customStyle`   | 自定义类名和样式       | `string \| object \| array` | `''`              |
 
-裸数字和 `rpx` 字符串按 rpx 处理，显式 `px` 字符串按像素处理。
+裸数字按 px（375 稿）处理，带单位字符串（rpx/px）原样使用。
 
 ### Events
 

@@ -105,8 +105,8 @@ app.use(SnakeUI, {
 
 | 令牌                                                          | 默认值                           | 用途         |
 | ------------------------------------------------------------- | -------------------------------- | ------------ |
-| `controlHeightSmall` / `controlHeight` / `controlHeightLarge` | `64rpx` / `80rpx` / `92rpx`      | 控件三档高度 |
-| `radiusSmall` / `radiusBase` / `radiusLarge`                  | `8rpx` / `12rpx` / `20rpx`       | 圆角三档     |
+| `controlHeightSmall` / `controlHeight` / `controlHeightLarge` | `32px` / `40px` / `46px`         | 控件三档高度 |
+| `radiusSmall` / `radiusBase` / `radiusLarge`                  | `4px` / `6px` / `10px`           | 圆角三档     |
 | `durationFast` / `durationBase`                               | `180ms` / `300ms`                | 动效时长     |
 | `easingStandard`                                              | `cubic-bezier(0.2, 0.8, 0.2, 1)` | 标准缓动     |
 | `zIndexOverlay` / `zIndexPopup`                               | `10070` / `10075`                | 层级         |
