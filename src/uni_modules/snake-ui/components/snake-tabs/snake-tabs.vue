@@ -99,7 +99,10 @@ const rootStyle = computed(() => [{ background: props.bgColor }, props.customSty
 const tabBarStyle = computed(() => [
     {
         width: addUnit(props.barWidth),
-        transform: `translate(${scrollBarLeft.value}px, -100%)`,
+        // 底部固定 3px 间隙（与默认 barHeight 等值，默认视觉不变）：
+        // 此前 translateY(-100%) 让抬升量随厚度翻倍，bar 加粗后顶到文字失去间距。
+        bottom: '3px',
+        transform: `translateX(${scrollBarLeft.value}px)`,
         transitionDuration: `${barFirstTimeMove.value ? 0 : props.duration}s`,
         backgroundColor: props.activeColor,
         height: addUnit(props.barHeight),
