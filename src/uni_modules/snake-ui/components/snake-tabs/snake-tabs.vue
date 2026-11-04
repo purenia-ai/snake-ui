@@ -21,9 +21,11 @@
                         :style="tabItemStyle(index)"
                         @tap="clickTab(index)"
                     >
-                        <!-- 徽标锚定文字右上角（snake-badge 角点居中），不再锚 item 盒子角 -->
+                        <!-- 徽标锚定文字右上角（snake-badge 角点居中）；包裹层行高回归 normal，
+                             避免继承 item 的 40px 行高把角点顶到 item 顶边外被 scroll-view 裁切 -->
                         <snake-badge
                             class="snake-tabs__text"
+                            :custom-style="{ lineHeight: 'normal', verticalAlign: 'middle' }"
                             :value="badgeCount(item)"
                             :max="99"
                             :is-dot="isDot"
