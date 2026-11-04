@@ -110,7 +110,10 @@ function itemStyle(option: SubsectionOption, index: number) {
                 : selected
                   ? props.activeColor
                   : props.inactiveColor,
-        borderColor: props.mode === 'subsection' ? props.activeColor : 'transparent',
+        // 内联样式优先级高于样式表，末项必须显式保持透明，
+        // 否则分段模式下最后一项会多出一条右边框。
+        borderRightColor:
+            props.mode === 'subsection' && index < props.list.length - 1 ? props.activeColor : 'transparent',
         fontSize: addUnit(props.fontSize),
         fontWeight: selected && props.bold ? '600' : '400',
         opacity: isDisabled(option) ? 0.45 : 1
@@ -170,10 +173,6 @@ function selectAdjacent(index: number, direction: -1 | 1) {
     transition:
         color 0.3s ease,
         opacity 0.2s ease;
-}
-
-.snake-subsection--subsection .snake-subsection__item:not(:last-child) {
-    border-right-color: var(--snake-color-primary, #06d290);
 }
 
 .snake-subsection__item.is-disabled {
