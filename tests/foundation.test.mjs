@@ -162,7 +162,7 @@ test('$parent walks the instance chain by component name', () => {
     assert.equal(functions.$parent('Form', chain), chain.parent);
     assert.equal(functions.$parent(undefined, chain), chain.parent);
     assert.equal(functions.$parent('Missing', chain), null);
-    // uView 语义：数字 0 视为「未传」回落父组件值，false 视为「已传」覆盖
+    // 旧版语义：数字 0 视为「未传」回落父组件值，false 视为「已传」覆盖
     const inherited = functions.getParent.call(
         { $parent: { $options: { name: 'List' }, gap: 10, bold: true } },
         'List',
@@ -171,7 +171,7 @@ test('$parent walks the instance chain by component name', () => {
     assert.deepEqual(inherited, { gap: 10, bold: false });
 });
 
-test('route supports uView Pro aliases and URL parameter encoding', async () => {
+test('route supports legacy aliases and URL parameter encoding', async () => {
     navigationCalls.length = 0;
     await functions.route('/pages/detail?source=home#summary', {
         id: 1,
@@ -288,7 +288,7 @@ test('query and time helpers handle encoded and normalized values', () => {
     assert.equal(functions.timeFrom((now - 31 * 86_400_000) / 1000, now), '2026-07-20');
 });
 
-test('queryParams serializes objects into uview-compatible query strings', () => {
+test('queryParams serializes objects into legacy-compatible query strings', () => {
     // 默认加 ? 前缀；isPrefix=false 时输出裸串
     assert.equal(functions.queryParams({ page: 2, tag: 'new' }), '?page=2&tag=new');
     assert.equal(functions.queryParams({ page: 2 }, false), 'page=2');
@@ -302,7 +302,7 @@ test('queryParams serializes objects into uview-compatible query strings', () =>
     assert.equal(functions.queryParams({ ids: [1, 2] }, false, 'unknown'), 'ids[]=1&ids[]=2');
     // 对象 JSON 序列化并编码
     assert.equal(functions.queryParams({ filter: { a: 1 } }, false), `filter=${encodeURIComponent('{"a":1}')}`);
-    // 普通值不做额外编码，与 uview 行为一致
+    // 普通值不做额外编码，与既有生态一致
     assert.equal(functions.queryParams({ url: 'https://x.com/a b' }, false), 'url=https://x.com/a b');
 });
 
@@ -343,7 +343,7 @@ test('http keeps legacy adapter support and rejects interceptor cancellation', a
     );
 });
 
-test('http matches uView defaults, plugin injection, and AutoHttp API generation', async () => {
+test('http matches legacy defaults, plugin injection, and AutoHttp API generation', async () => {
     request.http.reset();
     request.http.setTransport(async options => ({
         statusCode: options.url === '/created' ? 201 : 200,

@@ -5,7 +5,7 @@ description: 配置并使用 Snake UI HTTP 客户端、拦截器、错误处理�
 
 # HTTP 请求
 
-## uView 风格入口
+## 生态风格入口
 
 `http` 是请求模块的规范单例。`snakeHttp` 仅作为兼容别名保留；请求模块默认导出 `httpPlugin`，可通过 `app.use(httpPlugin, { requestConfig, interceptor })` 挂载 `this.$http`；使用 `app.use(SnakeUI)` 时，`$http` 与 `$snake.http` 同时可用。
 

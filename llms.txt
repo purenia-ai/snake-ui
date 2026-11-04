@@ -9,7 +9,7 @@ Snake UI is a Vue 3 component library for uni-app commerce and CMS applications.
 - Manual component import: `@puresnake/snake-ui/components/snake-<name>/snake-<name>.vue`
 - Runtime, utilities, and adapters: `@puresnake/snake-ui/libs`
 - Theme entry: `@puresnake/snake-ui/theme.scss`
-- Source, TypeScript types, and matching docs are the authoritative API. Do not infer Snake UI APIs from uView Pro without verification.
+- Source, TypeScript types, and matching docs are the authoritative API. Do not infer Snake UI APIs from other libraries without verification.
 
 ## Essential guides
 
@@ -21,7 +21,6 @@ Snake UI is a Vue 3 component library for uni-app commerce and CMS applications.
 - AI overview: `docs/guide/ai.md`
 - AI Skills: `docs/guide/skills.md`
 - LLM context: `docs/guide/llms.md`
-- uView comparison audit: `docs/components/uview-compatibility-audit.md`
 
 ## Component documentation
 

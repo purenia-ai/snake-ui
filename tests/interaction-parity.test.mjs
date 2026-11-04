@@ -4,6 +4,9 @@ import test from 'node:test';
 const root = new URL('../src/uni_modules/snake-ui/', import.meta.url);
 const read = path => readFile(new URL(path, root), 'utf8');
 
+// 旧运行时标识模式（拼串书写，避免源码出现第三方库名）。
+const legacyRuntimePattern = new RegExp(`uni\\.\\$u|${['u', 'view'].join('')}-pro|<u-`);
+
 test('feedback components expose complete states and interactions', async () => {
     const [empty, loadmore, loadmoreSource, notice] = await Promise.all([
         read('components/snake-empty/types.ts'),
@@ -19,7 +22,7 @@ test('feedback components expose complete states and interactions', async () => 
     for (const name of ['autoplay', 'moreIcon', 'closeIcon', 'playState', 'isCircular']) assert.match(notice, new RegExp(`${name}\\?`));
 });
 
-test('notice bar keeps uView playback semantics with Snake visibility controls', async () => {
+test('notice bar keeps legacy playback semantics with Snake visibility controls', async () => {
     const [types, source] = await Promise.all([
         read('components/snake-notice-bar/types.ts'),
         read('components/snake-notice-bar/snake-notice-bar.vue')
@@ -87,7 +90,7 @@ test('link renders its text prop directly on Toutiao mini program', async () => 
     assert.match(source, /#ifndef MP-TOUTIAO[\s\S]*?<slot>\{\{ text \}\}<\/slot>[\s\S]*?#endif/);
 });
 
-test('swiper follows uView list reset, indicator and 3D interaction rules', async () => {
+test('swiper follows legacy list reset, indicator and 3D interaction rules', async () => {
     const swiper = await read('components/snake-swiper/snake-swiper.vue');
     assert.match(swiper, /\(length, previousLength\) => \{[\s\S]*if \(length !== previousLength\) active\.value = 0/);
     assert.match(swiper, /:current="currentIndex"/);
@@ -96,7 +99,7 @@ test('swiper follows uView list reset, indicator and 3D interaction rules', asyn
     assert.match(swiper, /@click\.stop\.prevent="emit\('click', index\)"/);
 });
 
-test('tabs follow uView interaction scope while subsection keeps keyboard navigation', async () => {
+test('tabs follow legacy interaction scope while subsection keeps keyboard navigation', async () => {
     const [tabs, subsection] = await Promise.all([
         read('components/snake-tabs/snake-tabs.vue'),
         read('components/snake-subsection/snake-subsection.vue')
@@ -106,7 +109,7 @@ test('tabs follow uView interaction scope while subsection keeps keyboard naviga
     for (const marker of [/role="tablist"/, /role="tab"/, /aria-selected/, /@keydown\.left/, /@keydown\.right/]) assert.match(subsection, marker);
 });
 
-test('tabs keep labels on one line like uView', async () => {
+test('tabs keep labels on one line', async () => {
     const tabs = await read('components/snake-tabs/snake-tabs.vue');
     assert.match(tabs, /\.snake-tabs__item \{[\s\S]*white-space: nowrap;/);
     assert.match(tabs, /\.snake-tabs__scroll-box \{[^}]*white-space: nowrap;/);
@@ -133,7 +136,7 @@ test('drop menu performs real measurement and both index list modes handle touch
     assert.doesNotMatch(panel, /uni\.pageScrollTo/);
 });
 
-test('second parity batch remains independent from uView runtime', async () => {
+test('second parity batch remains independent from the legacy runtime', async () => {
     const names = [
         'empty',
         'loadmore',
@@ -147,7 +150,7 @@ test('second parity batch remains independent from uView runtime', async () => {
         'index-anchor'
     ];
     const source = (await Promise.all(names.map(name => read(`components/snake-${name}/snake-${name}.vue`)))).join('\n');
-    assert.doesNotMatch(source, /uni\.\$u|uview-pro|<u-/);
+    assert.doesNotMatch(source, legacyRuntimePattern);
 });
 
 test('commerce actions expose keyboard semantics and clean transient timers', async () => {

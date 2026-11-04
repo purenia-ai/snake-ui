@@ -5,7 +5,7 @@ description: 使用 Snake UI Form 管理表单模型、嵌套字段、同步与�
 
 # Form 表单
 
-`Form` 用于管理表单模型和规则，`FormItem` 负责字段布局、校验状态与错误展示。组件行为与 uView Pro Form 保持一致。
+`Form` 用于管理表单模型和规则，`FormItem` 负责字段布局、校验状态与错误展示。组件行为对齐 uni-app 生态广泛使用的 Form 语义。
 
 ## 使用建议
 

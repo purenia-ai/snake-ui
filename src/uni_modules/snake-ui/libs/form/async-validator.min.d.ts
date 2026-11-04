@@ -1,6 +1,6 @@
 /**
  * async-validator 类型声明文件
- * 适用于 uView Pro 内置 async-validator.js
+ * 适用于内置 async-validator.js
  * 支持 Schema、规则、校验回调、辅助类型等
  */
 

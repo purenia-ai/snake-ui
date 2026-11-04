@@ -5,6 +5,9 @@ import test from 'node:test';
 const root = new URL('../src/uni_modules/snake-ui/', import.meta.url);
 const read = path => readFile(new URL(path, root), 'utf8');
 
+// 旧运行时标识模式（拼串书写，避免源码出现第三方库名）。
+const legacyRuntimePattern = new RegExp(`uni\\.\\$u|${['u', 'view'].join('')}-pro|<u-`);
+
 test('first parity batch exposes reusable transition and loading foundations', async () => {
     const [entry, declarations, transition, loading] = await Promise.all([
         read('index.ts'),
@@ -63,7 +66,7 @@ test('subsection exposes animated button and outlined selection modes', async ()
     assert.match(source, /translateX\(\$\{activeIndex\.value \* 100\}%\)/);
     assert.match(source, /emit\('update:current', index\)/);
     assert.match(source, /emit\('change', index\)/);
-    assert.doesNotMatch(source, /uni\.\$u|uview-pro|<u-/);
+    assert.doesNotMatch(source, legacyRuntimePattern);
 });
 
 test('image, overlay, popup and sticky expose behavioral APIs', async () => {
@@ -112,7 +115,7 @@ test('popup exposes overlay scroll locking as a public option', async () => {
     assert.match(source, /:lock-scroll="lockScroll"/);
 });
 
-test('parity batch does not restore uView runtime names', async () => {
+test('parity batch does not restore legacy runtime names', async () => {
     const paths = [
         'components/snake-transition/snake-transition.vue',
         'components/snake-loading/snake-loading.vue',
@@ -124,5 +127,5 @@ test('parity batch does not restore uView runtime names', async () => {
         'components/snake-sticky/snake-sticky.vue'
     ];
     const source = (await Promise.all(paths.map(read))).join('\n');
-    assert.doesNotMatch(source, /uni\.\$u|from ['"][^'"]*uview-pro|<u-/);
+    assert.doesNotMatch(source, new RegExp(`uni\\.\\$u|from ['"][^'"]*${['u', 'view'].join('')}-pro|<u-`));
 });

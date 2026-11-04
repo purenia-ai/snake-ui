@@ -240,7 +240,7 @@ pnpm type-check
 pnpm test:runtime
 pnpm test:preview-structure
 pnpm test:component-docs
-pnpm test:uview-dependency
+pnpm test:peer-independence
 pnpm test:cms
 
 pnpm build:h5

@@ -5,7 +5,7 @@ import test from 'node:test';
 const componentUrl = new URL('../src/uni_modules/snake-ui/components/snake-upload/snake-upload.vue', import.meta.url);
 const typesUrl = new URL('../src/uni_modules/snake-ui/components/snake-upload/types.ts', import.meta.url);
 
-test('snake-upload keeps uView Pro upload modes and public queue methods', async () => {
+test('snake-upload keeps legacy upload modes and public queue methods', async () => {
     const source = await readFile(componentUrl, 'utf8');
     for (const token of ["mode === 'list'", 'function upload()', 'function retry(index:', 'function addFiles(', 'deleteItem,']) {
         assert.ok(source.includes(token), `missing ${token}`);

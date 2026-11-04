@@ -1,6 +1,6 @@
 /**
- * URL 查询串工具：queryParams 负责「对象 → 串」拼接（与 uView Pro 的
- * queryParams 语义一致），getQueryParams 负责「串 → 对象」解析。
+ * URL 查询串工具：queryParams 负责「对象 → 串」拼接（兼容主流生态的
+ * queryParams 历史语义），getQueryParams 负责「串 → 对象」解析。
  */
 
 /** 数组参数的序列化格式：indices 下标 / brackets 中括号 / repeat 重复键 / comma 逗号合并 */
@@ -9,12 +9,12 @@ export type QueryArrayFormat = 'indices' | 'brackets' | 'repeat' | 'comma';
 const ARRAY_FORMATS = ['indices', 'brackets', 'repeat', 'comma'];
 
 /**
- * 把对象拼接成 URL 查询串（uview 的 queryParams 兼容实现）。
+ * 把对象拼接成 URL 查询串（对齐主流生态 queryParams 的历史行为）。
  *
  * - 空值（'' / undefined / null）参数直接跳过；
  * - 数组按 arrayFormat 序列化，默认 brackets（key[]=v1&key[]=v2）；
  * - 普通对象 JSON 序列化并 encodeURIComponent；
- * - 其余值经模板字符串原样输出、不做额外编码，与 uview 行为一致。
+ * - 其余值经模板字符串原样输出、不做额外编码，与既有生态行为一致。
  *
  * @param data 参数对象
  * @param isPrefix 是否自动加上 "?"，默认 true
@@ -31,7 +31,7 @@ export function queryParams(
 
     Object.keys(data).forEach(key => {
         const value = data[key];
-        // 过滤空参数，与 uview 行为一致
+        // 过滤空参数，与既有生态行为一致
         if (value === '' || value === undefined || value === null) return;
 
         if (Array.isArray(value)) {

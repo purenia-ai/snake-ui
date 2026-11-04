@@ -26,7 +26,7 @@ after(async () => {
 
 const themePresets = await server.ssrLoadModule('/src/snake-ui.theme.ts');
 
-test('demo themes use the approved names and uView Pro palettes', () => {
+test('demo themes use the approved names and legacy palettes', () => {
     assert.deepEqual(
         themePresets.snakeThemePresets.map(theme => [theme.name, theme.label, theme.color.primary]),
         [

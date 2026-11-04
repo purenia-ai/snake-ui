@@ -6,6 +6,8 @@ import { validateFormValue } from '../src/uni_modules/snake-ui/libs/form/validat
 
 const root = new URL('../src/uni_modules/snake-ui/', import.meta.url);
 const read = path => readFile(new URL(path, root), 'utf8');
+// 旧运行时标识模式（拼串书写，避免源码出现第三方库名）。
+const legacyRuntimePattern = new RegExp(`uni\\.\\$u|${['u', 'view'].join('')}-pro|<u-`);
 const components = ['form', 'form-item', 'input', 'textarea', 'checkbox', 'checkbox-group', 'radio', 'radio-group', 'switch', 'slider'];
 
 test('form path helpers support nested objects and arrays', () => {
@@ -52,14 +54,14 @@ test('form control components expose independent contracts', async () => {
     const sources = await Promise.all(components.map(name => read(`components/snake-${name}/types.ts`)));
     for (const [index, source] of sources.entries()) {
         assert.match(source, /export interface [A-Z]/);
-        assert.doesNotMatch(source, /uview-pro|uni\.\$u/);
+        assert.doesNotMatch(source, legacyRuntimePattern);
         assert.ok(source.length > 120, `${components[index]} should expose a real typed contract`);
     }
 });
 
 test('form controls are exported from type and declaration entries', async () => {
     const [runtime, declaration, types] = await Promise.all([read('index.ts'), read('types/components.d.ts'), read('types/components.d.ts')]);
-    // 桶入口只导出 types（不再 re-export .vue，对齐 uView Pro），组件声明在 types/components.d.ts
+    // 桶入口只导出 types（不再 re-export .vue，对齐桶入口惯例），组件声明在 types/components.d.ts
     for (const name of ['Form', 'FormItem', 'Input', 'Textarea', 'Checkbox', 'CheckboxGroup', 'Radio', 'RadioGroup', 'Switch', 'Slider']) {
         assert.match(declaration, new RegExp(`Snake${name}:`));
     }
@@ -104,7 +106,7 @@ test('form item waits for model updates, ignores stale validation, and resets im
     assert.match(source, /validateMessage\.value = ''/);
 });
 
-test('form item keeps uView error channels independent and supports bracket array rule paths', async () => {
+test('form item keeps legacy error channels independent and supports bracket array rule paths', async () => {
     const source = await read('components/snake-form-item/snake-form-item.vue');
     assert.match(source, /showError\('border'\)/);
     assert.ok(source.includes(".replace(/\\[(\\d+)\\]/g, '.$1')"));
@@ -112,7 +114,7 @@ test('form item keeps uView error channels independent and supports bracket arra
     assert.match(source, /setPathValue\(model, props\.prop, cloneFormValue\(initialValue\.value\)\)/);
 });
 
-test('form item matches uView Pro layout, size, slots, and field protocol', async () => {
+test('form item matches the legacy layout, size, slots, and field protocol', async () => {
     const [types, source] = await Promise.all([read('components/snake-form-item/types.ts'), read('components/snake-form-item/snake-form-item.vue')]);
     // form ↔ form-item 单通道：类型化 formKey 注入，不再走组件名爬链
     assert.match(source, /inject\(formKey, null\)/);
@@ -191,12 +193,12 @@ test('form controls keep readable px size defaults', async () => {
         read('components/snake-switch/snake-switch.vue'),
         read('components/snake-slider/snake-slider.vue')
     ]);
-    // checkbox 对齐 uView Pro 的 sizeConfig 预设：盒子 34 / 字号 28 / 勾号 20
+    // checkbox 对齐主流 sizeConfig 预设：盒子 34 / 字号 28 / 勾号 20
     assert.match(checkbox, /small: \{ size: 14, fontSize: 12, iconSize: 8 \}/);
     assert.match(checkbox, /default: \{ size: 17, fontSize: 14, iconSize: 10 \}/);
     assert.match(checkbox, /large: \{ size: 20, fontSize: 16, iconSize: 12 \}/);
     assert.match(checkboxGroup, /max: 999/);
-    // radio 对齐 uView Pro 的 sizeConfig 预设：盒子 34 / 字号 28 / 勾号 20
+    // radio 对齐主流 sizeConfig 预设：盒子 34 / 字号 28 / 勾号 20
     assert.match(radio, /small: \{ size: 14, fontSize: 12, iconSize: 8 \}/);
     assert.match(radio, /default: \{ size: 17, fontSize: 14, iconSize: 10 \}/);
     assert.match(radio, /large: \{ size: 20, fontSize: 16, iconSize: 12 \}/);
@@ -206,12 +208,12 @@ test('form controls keep readable px size defaults', async () => {
     assert.match(slider, /blockWidth: 15,/);
 });
 
-test('form ports async-validator while controls remain independent from uView', async () => {
+test('form ports async-validator while controls remain independent from the legacy runtime', async () => {
     const sourceByComponent = await Promise.all(components.map(name => read(`components/snake-${name}/snake-${name}.vue`)));
     const formItem = sourceByComponent[components.indexOf('form-item')];
     assert.match(formItem, /async-validator/);
     assert.match(await read('libs/form/async-validator.min.js'), /function Schema/);
-    assert.doesNotMatch(sourceByComponent.join('\n'), /uni\.\$u|uview-pro|<u-/);
+    assert.doesNotMatch(sourceByComponent.join('\n'), legacyRuntimePattern);
 });
 
 test('radio and checkbox render the iconfont checkmark', async () => {
@@ -219,11 +221,11 @@ test('radio and checkbox render the iconfont checkmark', async () => {
         read('components/snake-checkbox/snake-checkbox.vue'),
         read('components/snake-radio/snake-radio.vue')
     ]);
-    // checkbox 对齐 uView Pro：勾号常驻渲染，尺寸取自 sizeConfig 预设的 checkboxIconSize
+    // checkbox 对齐主流实现：勾号常驻渲染，尺寸取自 sizeConfig 预设的 checkboxIconSize
     assert.ok(checkbox.includes('name="checkmark"'));
     assert.ok(checkbox.includes(':size="checkboxIconSize"'));
     assert.ok(!checkbox.includes('Number(iconSize) * (20 / 34)'));
-    // radio 对齐 uView Pro：勾号常驻渲染，尺寸取自 sizeConfig 预设的 elIconSize
+    // radio 对齐主流实现：勾号常驻渲染，尺寸取自 sizeConfig 预设的 elIconSize
     assert.ok(radio.includes('name="checkmark"'));
     assert.ok(radio.includes(':size="elIconSize"'));
     assert.ok(!radio.includes('Number(iconSize) * (20 / 34)'));

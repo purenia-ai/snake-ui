@@ -20,7 +20,7 @@ Snake UI 是面向 uni-app 商城和 CMS 场景的 Vue 3 组件库，支持 H5�
 | 主题、国际化、图标、平台能力、排错 | `references/guide/<name>.md`      |
 | HTTP、路由、格式化、hooks          | `references/tools/<name>.md`      |
 
-不要一次加载整个 reference 目录，也不要根据 uView Pro 的名称或模板推断 Snake UI API。
+不要一次加载整个 reference 目录，也不要根据其他组件库的名称或模板推断 Snake UI API。
 
 ## 实现边界
 

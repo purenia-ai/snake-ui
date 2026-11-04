@@ -50,7 +50,7 @@
         "test:foundation-parity": "node --test tests/foundation-parity.test.mjs",
         "test:interaction-parity": "node --test tests/interaction-parity.test.mjs",
         "test:form-controls-parity": "node --experimental-strip-types --test tests/form-controls-parity.test.mjs",
-        "test:uview-dependency": "node --test tests/uview-dependency.test.mjs",
+        "test:peer-independence": "node --test tests/peer-independence.test.mjs",
         "test:dev-server-config": "node --test tests/dev-server-config.test.mjs",
         "test:preview-structure": "node --test tests/preview-structure.test.mjs",
         "test:component-docs": "node --experimental-strip-types --test tests/component-docs.test.mjs",

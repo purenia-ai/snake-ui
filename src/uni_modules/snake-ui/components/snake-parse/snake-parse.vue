@@ -53,7 +53,7 @@ import Parser from './parser';
 import audio from './audio';
 import style from './style';
 
-// Kept local so snake-parse has no uView runtime dependency.
+// Kept local so snake-parse stays dependency-free.
 const plugins = [audio, style];
 // #ifdef APP-PLUS-NVUE
 const dom = weex.requireModule('dom');

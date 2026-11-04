@@ -1,6 +1,6 @@
 # 对象转 URL 参数
 
-`queryParams(data)` 把对象拼接成 URL 查询串（与 uview 的 `$u.queryParams` 语义一致）；`getQueryParams(url)` 反向把查询串解析为对象。
+`queryParams(data)` 把对象拼接成 URL 查询串（对齐主流生态 `$u.queryParams` 的历史语义）；`getQueryParams(url)` 反向把查询串解析为对象。
 
 ```ts
 import { getQueryParams, queryParams } from '@puresnake/snake-ui';
@@ -17,7 +17,7 @@ getQueryParams('/pages/search?q=Snake+UI&page=2'); // { q: 'Snake UI', page: '2'
 - 空值（`''` / `undefined` / `null`）参数直接跳过；
 - 数组按 `arrayFormat` 序列化：`indices`（`ids[0]=1`）、`brackets`（`ids[]=1`，默认）、`repeat`（`ids=1`）、`comma`（`ids=1,2`），非法格式回退 `brackets`；
 - 普通对象 JSON 序列化并 `encodeURIComponent`；
-- 其余值经模板字符串原样输出、不做额外编码（与 uview 一致），含中文或特殊字符的值需自行编码后再传入。
+- 其余值经模板字符串原样输出、不做额外编码（与既有生态一致），含中文或特殊字符的值需自行编码后再传入。
 
 ## 解析规则（getQueryParams）
 
