@@ -21,7 +21,7 @@
                 :placeholder="placeholderText"
                 :placeholder-style="`color: ${placeholderColor}`"
                 class="snake-search__input"
-                type="text"
+                :type="type"
                 :style="[
                     {
                         textAlign: inputAlign,

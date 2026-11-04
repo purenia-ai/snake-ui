@@ -41,9 +41,11 @@ preview: /pages/componentsA/link/index
 
 ### Events
 
-| 事件名  | 触发时机                     | 参数   |
-| ------- | ---------------------------- | ------ |
-| `click` | defaultClick 为 false 时点击 | `href` |
+| 事件名         | 触发时机                                       | 参数                      |
+| -------------- | ---------------------------------------------- | ------------------------- |
+| `click`        | defaultClick 为 false 时点击                   | `href`                    |
+| `copy-success` | 小程序端复制链接成功（剪贴板权限关闭时不触发） | setClipboardData 结果     |
+| `copy-fail`    | 小程序端复制链接失败（如剪贴板权限被关闭）     | setClipboardData 失败信息 |
 
 ### Slots
 

@@ -36,6 +36,7 @@ const foundationComponents = [
     'cell',
     'line',
     'line-progress',
+    'circle-progress',
     'search',
     'select',
     'read-more',
@@ -220,7 +221,7 @@ test('responsive preview uses one mount point and preserves the desktop phone di
     assert.match(frame, /window\.matchMedia\(DESKTOP_PREVIEW_QUERY\)/);
 });
 
-test('desktop phone preview is fixed to the outer page edge like uView2', async () => {
+test('desktop phone preview is fixed to the outer page edge', async () => {
     const layout = await readFile(resolve(root, 'docs/.vitepress/theme/Layout.vue'), 'utf8');
     const css = await readFile(resolve(root, 'docs/.vitepress/theme/custom.css'), 'utf8');
 

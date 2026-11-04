@@ -57,10 +57,12 @@ function openLink() {
     if (typeof uni !== 'undefined' && uni.setClipboardData) {
         uni.setClipboardData({
             data: props.href,
-            success: () => {
+            success: result => {
                 uni.hideToast();
                 toast(mpTipsValue.value);
-            }
+                emit('copy-success', result as { errMsg?: string });
+            },
+            fail: error => emit('copy-fail', error as { errMsg?: string })
         });
     }
     // #endif

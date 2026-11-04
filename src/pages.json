@@ -86,6 +86,7 @@
                 { "path": "noNetwork/index", "style": { "navigationBarTitleText": "无网络提示" } },
                 { "path": "line/index", "style": { "navigationBarTitleText": "分隔线" } },
                 { "path": "lineProgress/index", "style": { "navigationBarTitleText": "线形进度条" } },
+                { "path": "circleProgress/index", "style": { "navigationBarTitleText": "环形进度条" } },
                 { "path": "form/index", "style": { "navigationBarTitleText": "表单" } },
                 { "path": "input/index", "style": { "navigationBarTitleText": "输入框" } },
                 { "path": "textarea/index", "style": { "navigationBarTitleText": "文本域" } },

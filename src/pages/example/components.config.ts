@@ -39,6 +39,7 @@ const englishDescriptions: Record<string, string> = {
     Calendar: 'Pick single or range dates with lunar dates and holidays.',
     Loadmore: 'Show ready, loading and no-more-content states.',
     LineProgress: 'Show task progress with a line, stripes and percentage.',
+    CircleProgress: 'Show task progress on a canvas ring with rounded caps.',
     ReadMore: 'Collapse long content and expand it on demand.',
     Empty: 'Explain an empty state and guide the next action.',
     'Count Down': 'Count down to an event or campaign deadline.',
@@ -189,6 +190,12 @@ const componentGroups: ComponentGroup[] = [
                 'LineProgress 线形进度条',
                 'LineProgress',
                 '以线形进度展示任务完成情况，支持条纹与百分比。'
+            ),
+            item(
+                '/pages/componentsA/circleProgress/index',
+                'CircleProgress 环形进度条',
+                'CircleProgress',
+                'canvas 环形进度，中心透明，可放任意背景。'
             ),
             item(
                 '/pages/componentsA/readMore/index',

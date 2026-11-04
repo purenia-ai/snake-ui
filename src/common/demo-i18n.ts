@@ -741,6 +741,7 @@ const demoTitles: Record<string, string> = {
     cell: 'Cell',
     line: 'Divider',
     'line-progress': 'Line Progress',
+    'circle-progress': 'Circle Progress',
     search: 'Search',
     select: 'Select',
     'read-more': 'Read More',

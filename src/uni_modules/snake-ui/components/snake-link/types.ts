@@ -27,4 +27,8 @@ export type LinkProps = ExtractPropTypes<typeof linkProps>;
 export type LinkEmits = {
     /** defaultClick 为 false 时点击触发，携带链接地址。 */
     click: [href: string];
+    /** 小程序端链接复制成功（用户关闭剪贴板权限时不触发），回传 setClipboardData 的 success 结果。 */
+    'copy-success': [result: { errMsg?: string }];
+    /** 小程序端链接复制失败（如用户关闭剪贴板权限），回传 setClipboardData 的失败信息。 */
+    'copy-fail': [error: { errMsg?: string }];
 };

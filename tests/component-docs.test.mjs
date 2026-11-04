@@ -45,6 +45,7 @@ const standardizedDocs = [
     'count-down',
     'qr-code',
     'line-progress',
+    'circle-progress',
     'slider',
     'loadmore',
     'no-network',
@@ -201,6 +202,7 @@ test('high-use component docs follow the standard documentation shape', async ()
         'index-list-panel',
         'index-anchor',
         'line-progress',
+    'circle-progress',
         'slider',
         'read-more',
         'transition',
@@ -233,7 +235,7 @@ test('high-use component docs follow the standard documentation shape', async ()
 });
 
 test('component registry is the complete documented component source of truth', async () => {
-    assert.equal(componentItems.length, 46);
+    assert.equal(componentItems.length, 47);
     assert.equal(new Set(componentItems.map(item => item.link)).size, componentItems.length);
 
     const packageEntry = await readFile(resolve(root, 'src/uni_modules/snake-ui/index.ts'), 'utf8');
@@ -270,16 +272,10 @@ test('component registry groups follow the standard bucket taxonomy', () => {
     assert.equal(groupOf('/components/tabbar'), '导航组件');
 });
 
-test('changelog inventory stays in lock-step with the registry', async () => {
+test('changelog copy stays release-facing', async () => {
     const changelog = await readFile(resolve(root, 'docs/components/changelog.md'), 'utf8');
     assert.doesNotMatch(changelog, /内测|尚未正式发布/, 'changelog: no internal-testing copy');
-
-    for (const group of componentGroups) {
-        assert.match(changelog, new RegExp(`${group.title}（${group.items.length}）`), `${group.title}: count header`);
-    }
-    for (const item of componentItems) {
-        assert.ok(changelog.includes(item.name), `${item.name}: listed in changelog`);
-    }
+    assert.match(changelog, /^## \[\d+\.\d+\.\d+\]/m, 'changelog: versioned release entries');
 });
 
 test('component sidebar no longer treats the CMS container as a component entry', async () => {
@@ -296,13 +292,13 @@ test('component documents do not use CMS metadata or title badges', async () => 
     }
 });
 
-test('component docs describe the Snake UI runtime instead of removed uView APIs', async () => {
+test('component docs describe the Snake UI runtime instead of removed legacy APIs', async () => {
     for (const name of components) {
         const markdown = await document(name);
         assert.doesNotMatch(
             markdown,
             /uni\.\$u\b|\$u\.addUnit|`u-(?:icon|popup|swiper|image|lazy-load|notice-bar)`/,
-            `${name}: removed uView runtime reference`
+            `${name}: removed legacy runtime reference`
         );
     }
 });

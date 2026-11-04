@@ -5,6 +5,8 @@ import type { StyleValue } from '../../types/global';
 export type SearchShape = 'round' | 'square';
 /** SearchInputAlign 类型定义。 */
 export type SearchInputAlign = 'left' | 'center' | 'right';
+/** SearchInputType 类型定义。 */
+export type SearchInputType = 'text' | 'number' | 'idcard' | 'digit';
 
 /** searchProps 运行时属性及默认值。 */
 export const searchProps = {
@@ -55,7 +57,9 @@ export const searchProps = {
     /** 左侧输入框的图标，可以为图标名称或图片路径。 */
     searchIcon: { type: String, default: 'search' },
     /** 弹出键盘时是否自动调节高度。 */
-    adjustPosition: { type: Boolean, default: true }
+    adjustPosition: { type: Boolean, default: true },
+    /** 输入框类型：text 文本键盘，number 数字键盘，idcard 身份证键盘，digit 带小数点数字键盘。 */
+    type: { type: String as PropType<SearchInputType>, default: 'text' }
 } as const;
 
 /** Search 组件的公开属性。 */

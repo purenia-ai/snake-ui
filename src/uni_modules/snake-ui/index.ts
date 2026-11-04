@@ -47,6 +47,7 @@ export * from './components/snake-cell-group/types';
 export * from './components/snake-cell-item/types';
 export * from './components/snake-line/types';
 export * from './components/snake-line-progress/types';
+export * from './components/snake-circle-progress/types';
 export * from './components/snake-search/types';
 export * from './components/snake-select/types';
 export * from './components/snake-read-more/types';

@@ -101,6 +101,7 @@ const componentGroupDefinitions: ComponentGroupDefinition[] = [
         items: [
             { name: 'Loadmore', title: '加载更多', link: '/components/loadmore' },
             { name: 'LineProgress', title: '线形进度条', link: '/components/line-progress' },
+            { name: 'CircleProgress', title: '环形进度条', link: '/components/circle-progress' },
             { name: 'ReadMore', title: '阅读更多', link: '/components/read-more' },
             { name: 'Empty', title: '空状态', link: '/components/empty' },
             { name: 'CountDown', title: '倒计时', link: '/components/count-down' }
