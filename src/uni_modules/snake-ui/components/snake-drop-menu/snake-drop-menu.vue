@@ -28,7 +28,7 @@ const props = withDefaults(defineProps<DropMenuProps>(), {
     closeOnClickMask: true,
     closeOnClickSelf: true,
     duration: 300,
-    height: 20,
+    height: 40,
     borderBottom: false,
     titleSize: 14,
     menuIcon: 'down',

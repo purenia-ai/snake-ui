@@ -13,7 +13,7 @@
             :style="progressStyle"
         >
             <slot v-if="slots.default" />
-            <text class="snake-line-progress__percent" v-else-if="showPercent">{{ percent }}%</text>
+            <text class="snake-line-progress__percent" v-else-if="showPercent">{{ Math.round(safePercent) }}%</text>
         </view>
     </view>
 </template>
@@ -32,10 +32,17 @@ defineOptions({ name: 'LineProgress', options: { virtualHost: true, styleIsolati
 const props = defineProps(lineProgressProps);
 const slots = useSlots();
 
+/** 百分比钳制在 0-100，非法输入回退 0（宽度与文字共用同一口径）。 */
+const safePercent = computed(() => {
+    const value = Number(props.percent);
+    if (!Number.isFinite(value)) return 0;
+    return Math.min(100, Math.max(0, value));
+});
+
 /** 激活部分的宽度与颜色，主题预设优先于 activeColor。 */
 const progressStyle = computed(() => {
     const style: Record<string, string> = {};
-    style.width = `${props.percent}%`;
+    style.width = `${safePercent.value}%`;
     if (!props.type && props.activeColor) style.backgroundColor = props.activeColor;
     return style;
 });
@@ -57,7 +64,9 @@ const progressStyle = computed(() => {
     justify-content: space-around;
     font-size: 10px;
     color: var(--snake-color-white, #fff);
-    transition: all 0.4s ease;
+    transition:
+        width 0.4s ease,
+        background-color 0.4s ease;
 }
 .snake-line-progress__active--primary {
     background-color: var(--snake-color-primary, #06d290);

@@ -45,7 +45,7 @@ preview: /pages/componentsA/lineProgress/index
 | `activeColor`   | 激活部分的颜色                      | `string`                                         | `--snake-color-success` |
 | `inactiveColor` | 进度条的底色                        | `string`                                         | `--snake-color-divider` |
 | `showPercent`   | 是否在进度条内部显示百分比          | `boolean`                                        | `true`                  |
-| `height`        | 进度条高度，数值按 px（375 稿）处理 | `number \| string`                               | `28`                    |
+| `height`        | 进度条高度，数值按 px（375 稿）处理 | `number \| string`                               | `14`                    |
 | `striped`       | 是否显示激活部分的条纹              | `boolean`                                        | `false`                 |
 | `stripedActive` | 条纹是否具有动态效果                | `boolean`                                        | `false`                 |
 

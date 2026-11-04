@@ -13,7 +13,7 @@ export interface DropMenuProps {
     closeOnClickSelf?: boolean;
     /** 动画持续时间。 */
     duration?: number;
-    /** 组件高度。 */
+    /** 标题菜单栏高度（默认 40，px 375 稿）。 */
     height?: UnitValue;
     /** 是否显示底部边框。 */
     borderBottom?: boolean;
