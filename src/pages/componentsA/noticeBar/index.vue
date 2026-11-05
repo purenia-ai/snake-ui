@@ -13,7 +13,6 @@
                     :volume-icon="Boolean(state.noticeIcon)"
                     :more-icon="Boolean(state.noticeMore)"
                     :mode="liveVertical ? 'vertical' : 'horizontal'"
-                    :direction="liveVertical ? 'column' : 'row'"
                     :text="liveVertical ? '' : liveText"
                     :list="liveVertical ? liveList : []"
                     :autoplay="Boolean(state.noticeAutoplay)"

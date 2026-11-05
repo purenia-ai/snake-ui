@@ -30,7 +30,7 @@
         />
         <snake-icon v-if="showClear" name="close-circle-fill" class="snake-input__action" @click="clear" />
         <snake-icon
-            v-if="showPassword && (type === 'password' || password)"
+            v-if="showPassword && type === 'password'"
             :name="passwordVisible ? 'eye' : 'eye-off'"
             class="snake-input__action"
             @click="passwordVisible = !passwordVisible"
@@ -56,7 +56,6 @@ defineOptions({ name: 'SnakeInput', options: { virtualHost: true, styleIsolation
 const props = withDefaults(defineProps<InputProps>(), {
     modelValue: '',
     type: 'text',
-    password: false,
     placeholder: '请输入内容',
     placeholderStyle: '',
     maxlength: 140,
@@ -101,7 +100,7 @@ watch(
     }
 );
 const size = computed(() => props.size || formItem?.size.value || 'default');
-const actualPassword = computed(() => (props.type === 'password' || props.password) && !passwordVisible.value);
+const actualPassword = computed(() => props.type === 'password' && !passwordVisible.value);
 const showClear = computed(
     () => props.clearable && !props.disabled && !props.readonly && focused.value && innerValue.value.length > 0
 );

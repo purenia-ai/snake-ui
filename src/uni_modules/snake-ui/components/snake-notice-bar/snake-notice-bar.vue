@@ -71,7 +71,6 @@ const props = withDefaults(defineProps<NoticeBarProps>(), {
     text: '',
     type: 'warning',
     mode: 'horizontal',
-    direction: 'row',
     modelValue: undefined,
     show: undefined,
     autoplay: true,
@@ -111,7 +110,7 @@ let measurementId = 0;
 const items = computed(() =>
     props.list.length ? props.list : Array.isArray(props.text) ? props.text : [props.text].filter(Boolean)
 );
-const vertical = computed(() => props.mode === 'vertical' || props.direction === 'column');
+const vertical = computed(() => props.mode === 'vertical');
 const externalShow = computed(() => (showBound ? props.show : modelValueBound ? props.modelValue : undefined));
 const visible = computed(() => localShow.value && (!props.noListHidden || items.value.length > 0));
 const playing = computed(() => visible.value && pageActive.value && props.autoplay && props.playState === 'play');

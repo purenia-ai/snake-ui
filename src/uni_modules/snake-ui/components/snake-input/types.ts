@@ -11,8 +11,6 @@ export interface InputProps {
     modelValue?: string | number;
     /** 组件类型或展示模式。 */
     type?: InputType;
-    /** password 配置。 */
-    password?: boolean;
     /** 输入为空时的占位文本。 */
     placeholder?: string;
     /** 占位文本样式。 */

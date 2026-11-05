@@ -2,8 +2,6 @@ import type { UnitValue } from '../../libs/function/unit';
 import type { StyleValue } from '../../types/global';
 /** NoticeBarMode 类型定义。 */
 export type NoticeBarMode = 'horizontal' | 'vertical';
-/** NoticeBarDirection 类型定义。 */
-export type NoticeBarDirection = 'row' | 'column';
 /** NoticeBar 组件的公开属性。 */
 export interface NoticeBarProps {
     /** 用于渲染的数据列表。 */
@@ -14,8 +12,6 @@ export interface NoticeBarProps {
     type?: 'primary' | 'success' | 'warning' | 'error' | 'info';
     /** 组件展示模式。 */
     mode?: NoticeBarMode;
-    /** 内容排列或滚动方向。 */
-    direction?: NoticeBarDirection;
     /** 标准 v-model 可见性。未传入 show 时作为外部控制值。 */
     modelValue?: boolean;
     /** 是否显示组件。支持 v-model:show。 */
