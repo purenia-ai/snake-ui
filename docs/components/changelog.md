@@ -1,5 +1,29 @@
 # 更新日志
 
+## [0.0.13](https://github.com/purenia-ai/snake-ui/compare/v0.0.12...v0.0.13)（2026-11-05）
+
+### ✨ Features | 新功能
+
+- **snake-verification-code:** 新增验证码倒计时组件：无 UI 状态机，`seconds` / `startText` / `changeText` / `endText` 可配，支持跨页面续跑（`keepRunning` + `uniqueKey`），暴露 `start` / `reset` 方法与 `change` / `start` / `end` 事件，附中英文案与示例页
+
+### 🐛 Bug Fixes | Bug 修复
+
+- **snake-root-portal:** App 端节点清理钩子改用 `beforeUnmount`：`beforeDestroy` 在 Vue 3 视图层不会执行，组件卸载后传送节点不再残留
+- **snake-calendar:** 修复星期文案语言判断：`currentLocale` 是对象而非字符串，中文环境此前一直显示裸“日/一/二”，现正确显示“星期日/星期一”
+- **snake-search:** 输入与搜索事件参数类型放宽，消除与原生 `<input>` 事件签名的类型冲突（运行时行为不变）
+- **snake-parse:** wxs 脚本块移至主脚本之后，避免 vue-tsc 将整个 SFC 误判为 TS 导致类型检查报大量语法错误
+- **request:** 拦截器伪泛型与传输假联合修正，请求类型归位 request 模块
+
+### ⚠️ Breaking Changes | 不兼容变更
+
+- **snake-input:** 移除 `password` 属性，密码框改用 `type="password"`，保留单一入口
+- **snake-notice-bar:** 移除 `direction` 属性，垂直模式改用 `mode="vertical"`，保留单一入口
+
+### ✏️ Documentation | 文档
+
+- 组件文档 API 表重构为一条一行：补齐缺失属性、事件与主题变量，修正默认值
+- 新增 snake-verification-code 组件文档与示例页
+
 ## [0.0.12](https://github.com/purenia-ai/snake-ui/compare/v0.0.11...v0.0.12)（2026-11-04）
 
 ### ✨ Features | 新功能
