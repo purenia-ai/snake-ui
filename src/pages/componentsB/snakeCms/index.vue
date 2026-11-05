@@ -291,8 +291,8 @@ const v1NoticeMarquee = computed(() => ({
     ...noticeData,
     direction: 'row',
     noticeText: isEnglish.value
-        ? 'Notice: Snake UI 0.0.8 ships the full v1 / v2 CMS toolchain.'
-        : '公告：Snake UI 0.0.8 发布，v1 / v2 装修组件全覆盖。'
+        ? 'Notice: Snake UI ships the full v1 / v2 CMS toolchain.'
+        : '公告：Snake UI v1 / v2 装修组件全覆盖。'
 }));
 const v1Navigation = computed(() => ({
     imgStyle: 0,
