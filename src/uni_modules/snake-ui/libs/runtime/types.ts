@@ -1,4 +1,5 @@
-import type { DebugLevel, LocaleOption, RequestSetup, ThemeOption } from '../config/types';
+import type { DebugLevel, LocaleOption, ThemeOption } from '../config/types';
+import type { RequestSetup } from '../request/types';
 import type { CmsOptions } from '../cms/types';
 
 /** 由宿主项目实现的最小请求能力；Snake UI 不绑定某个 HTTP 库。 */

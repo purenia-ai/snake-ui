@@ -11,7 +11,9 @@ import type {
     RequestResponse,
     RequestSetup,
     RequestTransport
-} from '../config/types';
+} from './types';
+
+export * from './types';
 
 const defaultConfig: Required<Omit<RequestConfig, 'baseUrl'>> & Pick<RequestConfig, 'baseUrl'> = {
     baseUrl: '',
