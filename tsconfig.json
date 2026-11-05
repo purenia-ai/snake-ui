@@ -1,15 +1,18 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.json",
-  "compilerOptions": {
-    "allowJs": true,
-    "checkJs": false,
-    "sourceMap": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
+    "extends": "@vue/tsconfig/tsconfig.json",
+    "compilerOptions": {
+        "ignoreDeprecations": "5.0",
+        "allowJs": true,
+        "checkJs": false,
+        "sourceMap": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./src/*"]
+        },
+        "lib": ["esnext", "dom"],
+        "types": ["@dcloudio/types"],
+        "skipLibCheck": true,
+        "noImplicitThis": false
     },
-    "lib": ["esnext", "dom"],
-    "types": ["@dcloudio/types"]
-  },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
+    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
 }
