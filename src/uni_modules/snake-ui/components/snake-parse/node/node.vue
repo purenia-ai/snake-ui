@@ -264,34 +264,6 @@
         </block>
     </view>
 </template>
-<script module="handler" lang="wxs">
-// 行内标签列表
-var inlineTags = {
-    abbr: true,
-    b: true,
-    big: true,
-    code: true,
-    del: true,
-    em: true,
-    i: true,
-    ins: true,
-    label: true,
-    q: true,
-    small: true,
-    span: true,
-    strong: true,
-    sub: true,
-    sup: true
-};
-/**
- * @description 判断是否为行内标签
- */
-module.exports = {
-    isInline: function (tagName, style) {
-        return inlineTags[tagName] || (style || '').indexOf('display:inline') !== -1;
-    }
-};
-</script>
 <script>
 import node from './node';
 export default {
@@ -653,6 +625,34 @@ export default {
                 });
             }
         }
+    }
+};
+</script>
+<script module="handler" lang="wxs">
+// 行内标签列表
+var inlineTags = {
+    abbr: true,
+    b: true,
+    big: true,
+    code: true,
+    del: true,
+    em: true,
+    i: true,
+    ins: true,
+    label: true,
+    q: true,
+    small: true,
+    span: true,
+    strong: true,
+    sub: true,
+    sup: true
+};
+/**
+ * @description 判断是否为行内标签
+ */
+module.exports = {
+    isInline: function (tagName, style) {
+        return inlineTags[tagName] || (style || '').indexOf('display:inline') !== -1;
     }
 };
 </script>

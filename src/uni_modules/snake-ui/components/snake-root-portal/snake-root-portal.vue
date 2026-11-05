@@ -26,6 +26,19 @@
     <!-- #endif -->
 </template>
 
+<script lang="ts">
+export default {
+    name: 'RootPortal',
+    options: {
+        addGlobalClass: true,
+        // #ifndef MP-TOUTIAO
+        virtualHost: true,
+        // #endif
+        styleIsolation: 'shared'
+    }
+};
+</script>
+
 <script setup lang="ts">
 /**
  * @component RootPortal
@@ -35,17 +48,6 @@
 import { computed } from 'vue';
 import { darkMode, systemDark, themeStyle } from '../../libs/config/theme';
 import type { RootPortalProps } from './types';
-
-defineOptions({
-    name: 'RootPortal',
-    options: {
-        addGlobalClass: true,
-        // #ifndef MP-TOUTIAO
-        virtualHost: true,
-        // #endif
-        styleIsolation: 'shared'
-    }
-});
 
 const props = defineProps<RootPortalProps>();
 
@@ -57,33 +59,20 @@ const mode = computed<'light' | 'dark'>(() =>
 
 <!-- #ifdef APP-PLUS -->
 <script module="render" lang="renderjs">
-// renderjs 运行在 webview 的 JS 环境，$ownerInstance 由框架注入，需显式 this 类型 vue-tsc 才能通过
-interface RenderBridge {
-    /** renderjs 桥接的宿主组件实例。 */
-    $ownerInstance?: { $el?: HTMLElement };
-}
-
-/** App 端把组件根节点搬到应用根容器（attach）或移回原位，脱离原父级的 transform/overflow 布局。 */
-function relocate(instance: RenderBridge, attach: boolean): void {
-    const ownerInstance = instance.$ownerInstance;
-    if (!ownerInstance || !ownerInstance.$el) return;
-
-    const root = document.querySelector('uni-app') || document.body;
-    if (attach) {
-        root.appendChild(ownerInstance.$el);
-    } else if (ownerInstance.$el.parentNode === root) {
-        root.removeChild(ownerInstance.$el);
-    }
-}
-
 export default {
-    mounted(this: RenderBridge) {
-        relocate(this, true);
+    mounted() {
+        const ownerInstance = this.$ownerInstance;
+        if (!ownerInstance || !ownerInstance.$el) return;
+
+        const root = document.querySelector('uni-app') || document.body;
+        root.appendChild(ownerInstance.$el);
     },
-    // renderjs 沿用 Vue2 风格生命周期名（与参考实现一致），Vue3 的 eslint 规则在此不适用
-    // eslint-disable-next-line vue/no-deprecated-destroyed-lifecycle
-    beforeDestroy(this: RenderBridge) {
-        relocate(this, false);
+    beforeUnmount() {
+        const ownerInstance = this.$ownerInstance;
+        if (!ownerInstance || !ownerInstance.$el) return;
+
+        const root = document.querySelector('uni-app') || document.body;
+        if (ownerInstance.$el.parentNode === root) root.removeChild(ownerInstance.$el);
     }
 };
 </script>

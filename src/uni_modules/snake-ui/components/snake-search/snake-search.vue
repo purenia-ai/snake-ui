@@ -60,7 +60,6 @@
 
 import { computed, nextTick, ref, watch } from 'vue';
 import { useLocale } from '../../libs/hooks/useLocale';
-import Icon from '../snake-icon/snake-icon.vue';
 import { searchProps, type SearchEmits } from './types';
 
 defineOptions({ name: 'SnakeSearch', options: { virtualHost: true, styleIsolation: 'shared' } });
@@ -101,7 +100,7 @@ const borderStyle = computed(() => {
 });
 
 /** 输入事件，同步输入框内容。 */
-function inputChange(event: { detail: unknown }) {
+function inputChange(event: any) {
     const detail = event.detail as { value?: string | number };
     keyword.value = String(detail?.value ?? '');
 }
@@ -113,7 +112,7 @@ function clear() {
     });
 }
 /** 确定搜索。 */
-function search(event: { detail: unknown }) {
+function search(event: any) {
     const detail = event.detail as { value?: string | number };
     emit('search', String(detail?.value ?? ''));
     try {

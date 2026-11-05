@@ -693,7 +693,7 @@ function changeData() {
 
 /** 获取农历。 */
 function getLunar(yearNum: number, monthNum: number, dayNum: number): CalendarLunar {
-    const val = Calendar.solar2lunar(yearNum, monthNum, dayNum) as {
+    const val = Calendar.solar2lunar(yearNum, monthNum, dayNum) as unknown as {
         IDayCn: string;
         ncWeek: string;
         IMonthCn: string;
@@ -776,7 +776,7 @@ function getWeekText(date: string) {
     const d = new Date(`${date.replace(/-/g, '/')} 00:00:00`);
     const week = d.getDay();
     const weekNames = [t('sun'), t('mon'), t('tue'), t('wed'), t('thu'), t('fri'), t('sat')];
-    return currentLocale.value === 'zh-CN' ? `星期${weekNames[week]}` : weekNames[week];
+    return currentLocale.value.name === 'zh-CN' ? `星期${weekNames[week]}` : weekNames[week];
 }
 
 /** 确定按钮事件。 */
