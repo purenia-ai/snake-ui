@@ -41,22 +41,26 @@ preview: /pages/componentsA/radio/index
 
 #### Props
 
-| 参数                          | 说明                         | 类型               | 默认值     |
-| ----------------------------- | ---------------------------- | ------------------ | ---------- |
-| `modelValue`                  | 当前选中的 name              | `string \| number` | `''`       |
-| `disabled`                    | 全组禁用                     | `boolean`          | `false`    |
-| `activeColor`                 | 选中状态下的颜色             | `string`           | 主题色     |
-| `size`                        | 整体尺寸 small/default/large | `string`           | `''`       |
-| `labelDisabled`               | 是否禁止点击标签选中         | `boolean`          | `false`    |
-| `shape`                       | circle/square 形状           | `string`           | `'circle'` |
-| `iconSize`                    | 勾号大小，单位 px（375 稿）  | `UnitValue`        | `''`       |
-| `width`                       | 每个 radio 占组宽度          | `UnitValue`        | `'auto'`   |
-| `wrap`                        | 是否每个 radio 都换行        | `boolean`          | `false`    |
-| `customClass` / `customStyle` | 自定义类名和样式             | `string \| style`  | `''`       |
+| 参数            | 说明                                                             | 类型               | 默认值     |
+| --------------- | ---------------------------------------------------------------- | ------------------ | ---------- |
+| `customStyle`   | 根节点自定义样式                                                 | `StyleValue`       | `{}`       |
+| `customClass`   | 根节点自定义类名                                                 | `string`           | `''`       |
+| `disabled`      | 是否禁用所有 radio                                               | `boolean`          | `false`    |
+| `modelValue`    | 当前选中的 name（v-model），等于某个 radio 的 `name` 时该项选中  | `string \| number` | `''`       |
+| `activeColor`   | 选中状态下的颜色，应用到所有子 radio                             | `string`           | 主题色     |
+| `size`          | 整体尺寸，可选值 `small` / `default` / `large`，也可传自定义数值 | `string \| number` | `''`       |
+| `labelDisabled` | 是否禁止点击标签选中                                             | `boolean`          | `false`    |
+| `shape`         | 形状，可选值 `square`（方形）/ `circle`（圆形）                  | `string`           | `'circle'` |
+| `iconSize`      | 勾选图标的大小，单位 px（375 稿）                                | `UnitValue`        | `''`       |
+| `width`         | 每个 radio 占 snake-radio-group 的宽度，需带单位                 | `UnitValue`        | `'auto'`   |
+| `wrap`          | 是否每个 radio 都换行                                            | `boolean`          | `false`    |
 
 #### Events
 
-`update:modelValue` 和 `change` 均返回最新 name。
+| 事件名              | 说明                  | 参数      |
+| ------------------- | --------------------- | --------- |
+| `update:modelValue` | 选中值更新（v-model） | 最新 name |
+| `change`            | 任一个 radio 状态变化 | 最新 name |
 
 #### Slots
 
@@ -66,16 +70,19 @@ preview: /pages/componentsA/radio/index
 
 #### Props
 
-| 参数                          | 说明                                 | 类型               | 默认值       |
-| ----------------------------- | ------------------------------------ | ------------------ | ------------ |
-| `label`                       | 展示标签文本                         | `string`           | `''`         |
-| `name`                        | 数据项标识符                         | `string \| number` | `''`         |
-| `shape`                       | circle/square 形状                   | `string`           | 继承 Group   |
-| `disabled` / `labelDisabled`  | 禁用 / 禁止点击标签选中              | `boolean`          | `false`      |
-| `activeColor`                 | 选中颜色，设置后覆盖父级 activeColor | `string`           | 主题色       |
-| `iconSize` / `labelSize`      | 勾号与标签字号，单位 px（375 稿）    | `UnitValue`        | 按 size 预设 |
-| `size`                        | 整体尺寸 small/default/large         | `string`           | 继承 Group   |
-| `customClass` / `customStyle` | 自定义类名和样式                     | `string \| style`  | `''`         |
+| 参数            | 说明                                                             | 类型                | 默认值       |
+| --------------- | ---------------------------------------------------------------- | ------------------- | ------------ |
+| `customStyle`   | 根节点自定义样式                                                 | `StyleValue`        | `{}`         |
+| `customClass`   | 根节点自定义类名                                                 | `string`            | `''`         |
+| `label`         | 展示标签文本，插槽有内容时被覆盖                                 | `string`            | `''`         |
+| `name`          | 数据项标识符，等于 Group 的 `v-model` 时选中                     | `string \| number`  | `''`         |
+| `shape`         | 形状，可选值 `square`（方形）/ `circle`（圆形）                  | `string`            | 继承 Group   |
+| `disabled`      | 是否禁用，未设置时继承 Group                                     | `string \| boolean` | `false`      |
+| `labelDisabled` | 是否禁止点击标签选中，未设置时继承 Group                         | `string \| boolean` | `false`      |
+| `activeColor`   | 选中颜色，设置后覆盖父级 activeColor                             | `string`            | 主题色       |
+| `iconSize`      | 勾选图标的大小，单位 px（375 稿）                                | `UnitValue`         | 按 size 预设 |
+| `labelSize`     | 标签文字的大小，单位 px（375 稿）                                | `UnitValue`         | 按 size 预设 |
+| `size`          | 整体尺寸，可选值 `small` / `default` / `large`，也可传自定义数值 | `string \| number`  | 继承 Group   |
 
 #### Events
 
@@ -98,4 +105,6 @@ preview: /pages/componentsA/radio/index
 
 ## 类型定义
 
-从包根导入 `RadioGroupProps`、`RadioProps` 与 `RadioEmits`。
+```ts
+import type { RadioGroupProps, RadioProps, RadioEmits } from '@puresnake/snake-ui';
+```

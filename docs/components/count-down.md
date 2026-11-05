@@ -52,18 +52,26 @@ const remaining = Math.max(0, Math.floor((endAt - Date.now()) / 1000));
 
 ### Props
 
-| 参数                                                     | 说明                               | 类型                        | 默认值               |
-| -------------------------------------------------------- | ---------------------------------- | --------------------------- | -------------------- |
-| `timestamp`                                              | 倒计时剩余秒数                     | `number \| string`          | `0`                  |
-| `autoplay`                                               | 挂载后自动开始                     | `boolean`                   | `true`               |
-| `separator`                                              | 分隔符形态                         | `string`                    | `colon`              |
-| `separatorSize` / `separatorColor`                       | 分隔符大小与颜色                   | `number \| string / string` | `15` / 主题文字色    |
-| `color` / `fontSize`                                     | 数字颜色与大小（px，375 稿）       | `string / number \| string` | 主题文字色 / `30`    |
-| `bgColor` / `height`                                     | 数字背景与数字块宽高（px，375 稿） | `string / number \| string` | 主题表面色 / `auto`  |
-| `showBorder` / `borderColor`                             | 数字边框开关与颜色                 | `boolean / string`          | `false` / 主题文字色 |
-| `showDays` / `showHours` / `showMinutes` / `showSeconds` | 各部分显示开关                     | `boolean`                   | `true`               |
-| `hideZeroDay`                                            | 天数为 0 时隐藏天部分              | `boolean`                   | `false`              |
-| `customClass` / `customStyle`                            | 自定义类名与样式                   | `string / style`            | `''`                 |
+| 参数             | 说明                                                     | 类型               | 默认值     |
+| ---------------- | -------------------------------------------------------- | ------------------ | ---------- |
+| `customClass`    | 根节点自定义类名                                         | `string`           | `''`       |
+| `customStyle`    | 根节点自定义样式                                         | `StyleValue`       | `''`       |
+| `timestamp`      | 倒计时剩余秒数                                           | `number \| string` | `0`        |
+| `autoplay`       | 是否挂载后自动开始倒计时                                 | `boolean`          | `true`     |
+| `separator`      | 分隔符形态，可选值 `colon`（英文冒号）/ `zh`（中文单位） | `string`           | `colon`    |
+| `separatorSize`  | 分隔符大小，单位 px（375 稿）                            | `number \| string` | `15`       |
+| `separatorColor` | 分隔符颜色                                               | `string`           | 主题文字色 |
+| `color`          | 倒计时数字颜色                                           | `string`           | 主题文字色 |
+| `fontSize`       | 倒计时数字大小，单位 px（375 稿）                        | `number \| string` | `15`       |
+| `bgColor`        | 倒计时数字背景颜色                                       | `string`           | 主题表面色 |
+| `height`         | 数字块高度（宽度同值），单位 px（375 稿）                | `number \| string` | `auto`     |
+| `showBorder`     | 是否显示数字边框                                         | `boolean`          | `false`    |
+| `borderColor`    | 数字边框颜色                                             | `string`           | 主题文字色 |
+| `showSeconds`    | 是否显示秒                                               | `boolean`          | `true`     |
+| `showMinutes`    | 是否显示分钟                                             | `boolean`          | `true`     |
+| `showHours`      | 是否显示小时                                             | `boolean`          | `true`     |
+| `showDays`       | 是否显示天                                               | `boolean`          | `true`     |
+| `hideZeroDay`    | 天数为 0 时是否隐藏天部分                                | `boolean`          | `false`    |
 
 ### Events
 
@@ -74,15 +82,16 @@ const remaining = Math.max(0, Math.floor((endAt - Date.now()) / 1000));
 
 ### Expose
 
-| 方法      | 说明               |
-| --------- | ------------------ |
-| `start()` | 开始或继续倒计时   |
-| `end()`   | 提前结束当前倒计时 |
+| 方法        | 说明                              |
+| ----------- | --------------------------------- |
+| `start()`   | 开始或继续倒计时                  |
+| `end()`     | 提前结束当前倒计时                |
+| `destroy()` | 主动停止倒计时，不触发 `end` 事件 |
 
 ## 类型定义
 
 ```ts
-import type { CountDownProps, CountDownEmits, CountDownExpose } from 'snake-ui';
+import type { CountDownProps, CountDownEmits, CountDownExpose } from '@puresnake/snake-ui';
 ```
 
 ## 主题变量

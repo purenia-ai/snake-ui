@@ -60,30 +60,42 @@ const banners = [
 
 ### Props
 
-| 参数                                              | 说明                                                           | 类型                        | 默认值                           |
-| ------------------------------------------------- | -------------------------------------------------------------- | --------------------------- | -------------------------------- |
-| `list`                                            | 图片地址或对象列表                                             | `Array<string \| object>`   | `[]`                             |
-| `current` / `height`                              | 当前索引、轮播高度                                             | `number \| string`          | `0` / `250`                      |
-| `autoplay` / `interval` / `duration` / `circular` | 自动播放、间隔、动画时长、循环                                 | `boolean \| number`         | `true` / `3000` / `300` / `true` |
-| `indicator`                                       | 是否显示自定义指示器；也兼容配置对象                           | `boolean \| object`         | `{}`                             |
-| `mode`                                            | round/dot/rect/line/number                                     | `string`                    | `round`                          |
-| `indicatorPos`                                    | topLeft/topCenter/topRight/bottomLeft/bottomCenter/bottomRight | `string`                    | `bottomCenter`                   |
-| `indicatorColor` / `indicatorActiveColor`         | 普通和激活指示器颜色                                           | `string`                    | 半透明白 / 白色                  |
-| `name`                                            | 对象图片字段                                                   | `string`                    | `image`                          |
-| `radius` / `borderRadius`                         | 圆角，borderRadius 优先                                        | `string \| number`          | `4`                              |
-| `previousMargin` / `nextMargin`                   | 前后边距                                                       | `string`                    | `0px`                            |
-| `effect3d` / `effect3dPreviousMargin`             | 3D 卡片及露出边距                                              | `boolean \| UnitValue`      | `false` / `50`                   |
-| `imgMode`                                         | 图片裁剪模式                                                   | `string`                    | `aspectFill`                     |
-| `showTitle` / `title` / `titleStyle`              | 标题显示、兼容别名和样式                                       | `boolean \| style`          | `false`                          |
-| `bgColor` / `customClass` / `customStyle`         | 背景与自定义样式                                               | `string \| object \| array` | 主题默认值                       |
+| 参数                     | 说明                                                                                                                                               | 类型                                 | 默认值                 |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ | ---------------------- |
+| `list`                   | 用于渲染的数据列表，支持图片地址字符串或对象                                                                                                       | `SwiperItem[]`                       | `[]`                   |
+| `current`                | 当前激活项索引，可绑定状态受控切换                                                                                                                 | `number \| string`                   | `0`                    |
+| `height`                 | 组件高度                                                                                                                                           | `UnitValue`                          | `125`                  |
+| `autoplay`               | 是否自动播放                                                                                                                                       | `boolean`                            | `true`                 |
+| `interval`               | 自动播放间隔，单位 ms                                                                                                                              | `number`                             | `3000`                 |
+| `duration`               | 切换动画时长，单位 ms                                                                                                                              | `number`                             | `500`                  |
+| `circular`               | 是否循环播放                                                                                                                                       | `boolean`                            | `true`                 |
+| `indicator`              | 是否显示指示器，也可传配置对象，传 `false` 时隐藏                                                                                                  | `boolean \| Record<string, unknown>` | `{}`                   |
+| `mode`                   | 指示器样式，可选值 `round`（圆点，激活时拉伸）/ `dot`（圆点）/ `rect`（矩形）/ `line`（横线）/ `number`（数字页码）/ `none`（不渲染内置指示器）    | `SwiperIndicatorMode`                | `round`                |
+| `indicatorPos`           | 指示器位置，可选值 `topLeft`（左上）/ `topCenter`（上中）/ `topRight`（右上）/ `bottomLeft`（左下）/ `bottomCenter`（下中）/ `bottomRight`（右下） | `SwiperIndicatorPosition`            | `bottomCenter`         |
+| `indicatorColor`         | 指示器未激活颜色                                                                                                                                   | `string`                             | `rgba(0,0,0,.3)`       |
+| `indicatorActiveColor`   | 指示器激活颜色                                                                                                                                     | `string`                             | `rgba(255,255,255,.8)` |
+| `name`                   | 对象数据中图片地址的字段名，未命中时依次回退 `image` / `src` / `url`                                                                               | `string`                             | `image`                |
+| `radius`                 | 圆角大小                                                                                                                                           | `UnitValue`                          | `4`                    |
+| `borderRadius`           | 圆角大小，设置后优先于 `radius`                                                                                                                    | `UnitValue`                          | -                      |
+| `previousMargin`         | 露出前一项的边距                                                                                                                                   | `string`                             | `0px`                  |
+| `nextMargin`             | 露出后一项的边距                                                                                                                                   | `string`                             | `0px`                  |
+| `effect3d`               | 是否开启 3D 卡片效果                                                                                                                               | `boolean`                            | `false`                |
+| `effect3dPreviousMargin` | 3D 卡片模式下露出前后项的边距                                                                                                                      | `UnitValue`                          | `25`                   |
+| `imgMode`                | 图片裁剪与缩放模式                                                                                                                                 | `ImageMode`                          | `aspectFill`           |
+| `showTitle`              | 是否在图片底部显示标题，标题取数据项的 `title` 或 `text` 字段                                                                                      | `boolean`                            | `false`                |
+| `title`                  | 是否显示标题，`showTitle` 的兼容写法                                                                                                               | `boolean`                            | -                      |
+| `titleStyle`             | 标题自定义样式                                                                                                                                     | `StyleValue`                         | `''`                   |
+| `bgColor`                | 背景颜色                                                                                                                                           | `string`                             | 主题背景色             |
+| `customClass`            | 根节点自定义类名                                                                                                                                   | `string`                             | `''`                   |
+| `customStyle`            | 根节点自定义样式                                                                                                                                   | `StyleValue`                         | `''`                   |
 
 ### Events
 
 | 事件名            | 触发时机   | 参数                   |
 | ----------------- | ---------- | ---------------------- |
 | `change`          | 当前项变化 | `current: number`      |
-| `animationfinish` | 动画结束   | `{ current, source? }` |
 | `click`           | 点击轮播项 | `index: number`        |
+| `animationfinish` | 动画结束   | `{ current, source? }` |
 
 ### Slots
 

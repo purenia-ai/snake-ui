@@ -47,44 +47,53 @@ triggers: ['checkbox', 'snake-checkbox', 'Checkbox', '复选框']
 
 #### Props
 
-| 参数                          | 说明                         | 类型                   | 默认值     |
-| ----------------------------- | ---------------------------- | ---------------------- | ---------- |
-| `modelValue`                  | 选中的 name 数组             | `(string \| number)[]` | -          |
-| `max`                         | 最多能选中多少个             | `number`               | `999`      |
-| `disabled`                    | 全组禁用                     | `boolean`              | `false`    |
-| `name`                        | 表单内提交时的标识符         | `boolean \| string`    | `''`       |
-| `labelDisabled`               | 是否禁止点击标签选中         | `boolean`              | `false`    |
-| `shape`                       | square/circle 形状           | `string`               | `'square'` |
-| `activeColor`                 | 选中状态下的颜色             | `string`               | 主题色     |
-| `size`                        | 整体尺寸 small/default/large | `string`               | `''`       |
-| `width`                       | 每个 checkbox 占组宽度       | `string`               | `'auto'`   |
-| `wrap`                        | 是否每个 checkbox 都换行     | `boolean`              | `false`    |
-| `iconSize`                    | 勾号大小，单位 px（375 稿）  | `UnitValue`            | `''`       |
-| `customClass` / `customStyle` | 自定义类名和样式             | `string \| style`      | `''`       |
+| 参数            | 说明                                                        | 类型                   | 默认值   |
+| --------------- | ----------------------------------------------------------- | ---------------------- | -------- |
+| `customStyle`   | 根节点自定义样式                                            | `StyleValue`           | `''`     |
+| `customClass`   | 根节点自定义类名                                            | `string`               | `''`     |
+| `modelValue`    | 绑定值，选中的 checkbox name 组成的数组（v-model）          | `(string \| number)[]` | -        |
+| `max`           | 最多能选中多少个 checkbox                                   | `number`               | `999`    |
+| `disabled`      | 是否禁用所有 checkbox                                       | `boolean`              | `false`  |
+| `name`          | 在表单内提交时的标识符                                      | `boolean \| string`    | `''`     |
+| `labelDisabled` | 是否禁止点击标签选中                                        | `boolean`              | `false`  |
+| `shape`         | 形状，可选值 `square`（方形）/ `circle`（圆形）             | `string`               | `square` |
+| `activeColor`   | 选中状态下的颜色，应用到所有子 checkbox                     | `string`               | 主题色   |
+| `size`          | 整体尺寸，可选值 `small` / `default` / `large` 或自定义数值 | `string \| number`     | `''`     |
+| `width`         | 每个 checkbox 占 CheckboxGroup 的宽度，需带单位             | `string`               | `auto`   |
+| `wrap`          | 是否每个 checkbox 都换行                                    | `boolean`              | `false`  |
+| `iconSize`      | 勾选图标的大小，单位 px（375 稿）                           | `UnitValue`            | `''`     |
 
 #### Events
 
-`update:modelValue` 和 `change` 均返回最新选中数组。
+| 事件名              | 说明                         | 参数                          |
+| ------------------- | ---------------------------- | ----------------------------- |
+| `update:modelValue` | 选中值数组更新（v-model）    | `value: (string \| number)[]` |
+| `change`            | 任一 checkbox 状态变化时触发 | `value: (string \| number)[]` |
 
 #### Slots
 
-默认插槽放置 Checkbox。
+| 名称      | 说明          |
+| --------- | ------------- |
+| `default` | 放置 Checkbox |
 
 ### Checkbox
 
 #### Props
 
-| 参数                          | 说明                                 | 类型               | 默认值       |
-| ----------------------------- | ------------------------------------ | ------------------ | ------------ |
-| `modelValue`                  | 是否选中，支持 v-model               | `boolean`          | `false`      |
-| `name`                        | 数据项标识符                         | `string \| number` | `''`         |
-| `label`                       | 展示标签文本                         | `string`           | `''`         |
-| `shape`                       | square/circle 形状                   | `string`           | 继承 Group   |
-| `disabled` / `labelDisabled`  | 禁用 / 禁止点击标签选中              | `boolean`          | `false`      |
-| `activeColor`                 | 选中颜色，设置后覆盖父级 activeColor | `string`           | 主题色       |
-| `iconSize` / `labelSize`      | 勾号与标签字号，单位 px（375 稿）    | `UnitValue`        | 按 size 预设 |
-| `size`                        | 整体尺寸 small/default/large         | `string`           | 继承 Group   |
-| `customClass` / `customStyle` | 自定义类名和样式                     | `string \| style`  | `''`         |
+| 参数            | 说明                                                                                            | 类型                | 默认值                       |
+| --------------- | ----------------------------------------------------------------------------------------------- | ------------------- | ---------------------------- |
+| `customStyle`   | 根节点自定义样式                                                                                | `StyleValue`        | `{}`                         |
+| `customClass`   | 根节点自定义类名                                                                                | `string`            | `''`                         |
+| `label`         | 展示标签文本                                                                                    | `string`            | `''`                         |
+| `name`          | 数据项名称或唯一标识                                                                            | `string \| number`  | `''`                         |
+| `shape`         | 形状，可选值 `square`（方形）/ `circle`（圆形），未设置时继承 CheckboxGroup                     | `string`            | `square`                     |
+| `modelValue`    | 是否选中，支持 v-model（独立模式）                                                              | `boolean`           | `false`                      |
+| `disabled`      | 是否禁用，未设置时继承 CheckboxGroup                                                            | `string \| boolean` | `''`                         |
+| `labelDisabled` | 是否禁止点击标签选中，未设置时继承 CheckboxGroup                                                | `string \| boolean` | `''`                         |
+| `activeColor`   | 选中状态下的颜色，设置后覆盖 CheckboxGroup 的 `activeColor`                                     | `string`            | 主题色（继承 CheckboxGroup） |
+| `iconSize`      | 勾选图标的大小，单位 px（375 稿），未设置时按 size 预设                                         | `UnitValue`         | 按 size 预设                 |
+| `labelSize`     | 标签文字大小，单位 px（375 稿），未设置时按 size 预设                                           | `UnitValue`         | 按 size 预设                 |
+| `size`          | 整体尺寸，可选值 `small` / `default` / `large` 或自定义数值，未设置时继承 CheckboxGroup 与 Form | `string \| number`  | `default`                    |
 
 #### Events
 
@@ -95,7 +104,9 @@ triggers: ['checkbox', 'snake-checkbox', 'Checkbox', '复选框']
 
 #### Slots
 
-默认插槽用于标签内容。
+| 名称      | 说明                         |
+| --------- | ---------------------------- |
+| `default` | 标签内容，不传时显示 `label` |
 
 ## 主题变量
 
@@ -110,4 +121,6 @@ triggers: ['checkbox', 'snake-checkbox', 'Checkbox', '复选框']
 
 ## 类型定义
 
-从包根导入 `CheckboxGroupProps`、`CheckboxProps` 与 `CheckboxEmits`。
+```ts
+import type { CheckboxGroupProps, CheckboxProps, CheckboxEmits } from '@puresnake/snake-ui';
+```

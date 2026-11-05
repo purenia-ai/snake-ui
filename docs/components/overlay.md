@@ -39,13 +39,16 @@ preview: /pages/componentsA/overlay/index
 
 ### Props
 
-| 参数                          | 说明                 | 类型      | 默认值        |
-| ----------------------------- | -------------------- | --------- | ------------- |
-| `modelValue` / `show`         | 显示状态和兼容别名   | `boolean` | `false`       |
-| `opacity`                     | 黑色遮罩透明度       | `number`  | `0.5`         |
-| `zIndex` / `duration`         | 层级和动画时长       | `number`  | `10070 / 300` |
-| `lockScroll`                  | 是否阻止遮罩区域滚动 | `boolean` | `true`        |
-| `customClass` / `customStyle` | 自定义类名和样式     | 多类型    | `''`          |
+| 参数          | 说明                                                        | 类型         | 默认值  |
+| ------------- | ----------------------------------------------------------- | ------------ | ------- |
+| `modelValue`  | 显示状态（v-model）                                         | `boolean`    | `false` |
+| `show`        | 显示状态兼容别名（v-model:show），未设置时跟随 `modelValue` | `boolean`    | `-`     |
+| `opacity`     | 黑色遮罩透明度                                              | `number`     | `0.5`   |
+| `zIndex`      | 遮罩层级                                                    | `number`     | `10070` |
+| `duration`    | 淡入淡出动画时长，单位 ms                                   | `number`     | `300`   |
+| `lockScroll`  | 是否阻止遮罩区域滚动                                        | `boolean`    | `true`  |
+| `customClass` | 根节点自定义类名                                            | `string`     | `''`    |
+| `customStyle` | 根节点自定义样式                                            | `StyleValue` | `''`    |
 
 ### Events
 

@@ -28,27 +28,34 @@ App-NVue 通过内置 WebView 渲染复杂内容；`iframe`、`embed` 等嵌入�
 
 ### Props
 
-| 参数                         | 说明                             | 类型                                      | 默认值           |
-| ---------------------------- | -------------------------------- | ----------------------------------------- | ---------------- |
-| `content`                    | HTML 字符串                      | `string`                                  | `''`             |
-| `domain`                     | 相对链接主域名                   | `string`                                  | —                |
-| `containerStyle`             | 根容器样式                       | `string`                                  | `''`             |
-| `tagStyle`                   | 标签默认样式                     | `Record<string, string>`                  | —                |
-| `previewImg` / `lazyLoad`    | 图片预览、懒加载                 | `boolean \| string`                       | `true` / `false` |
-| `loadingImg` / `errorImg`    | 图片占位图                       | `string`                                  | `''`             |
-| `showImgMenu` / `copyLink`   | 图片菜单、外链处理               | `boolean \| string`                       | `true`           |
-| `pauseVideo` / `scrollTable` | 媒体自动暂停、表格横滑           | `boolean \| string`                       | `true` / —       |
-| `selectable` / `useAnchor`   | 文本选择、页内锚点               | `boolean \| string` / `boolean \| number` | —                |
-| `setTitle`                   | 是否将 HTML `title` 设为页面标题 | `boolean \| string`                       | `true`           |
+| 参数             | 说明                                 | 类型                     | 默认值  |
+| ---------------- | ------------------------------------ | ------------------------ | ------- |
+| `content`        | 要渲染的 HTML 内容                   | `string`                 | `''`    |
+| `containerStyle` | 根容器样式                           | `string`                 | `''`    |
+| `domain`         | 相对资源地址使用的主域名             | `string`                 | -       |
+| `tagStyle`       | 标签默认样式映射                     | `Record<string, string>` | -       |
+| `lazyLoad`       | 是否延迟加载图片                     | `boolean`                | `false` |
+| `loadingImg`     | 图片加载中的占位图地址               | `string`                 | `''`    |
+| `errorImg`       | 图片加载失败的占位图地址             | `string`                 | `''`    |
+| `previewImg`     | 点击图片时是否打开预览               | `boolean`                | `true`  |
+| `showImgMenu`    | 是否显示图片长按菜单                 | `boolean`                | `true`  |
+| `copyLink`       | 点击外部链接时是否复制地址           | `boolean`                | `true`  |
+| `pauseVideo`     | 播放新视频时是否暂停其他视频         | `boolean`                | `true`  |
+| `scrollTable`    | 是否让表格独立横向滚动               | `boolean`                | -       |
+| `selectable`     | 文本是否可长按选择                   | `boolean`                | -       |
+| `setTitle`       | 是否使用 HTML `title` 更新页面标题   | `boolean`                | `true`  |
+| `useAnchor`      | 是否启用锚点定位，传数字可指定偏移量 | `boolean \| number`      | -       |
 
 ### Events
 
-| 事件                 | 触发时机与参数                                   |
-| -------------------- | ------------------------------------------------ |
-| `load`               | 内容解析并加载后触发                             |
-| `ready`              | 图片等内容就绪后触发，参数为节点布局信息或空对象 |
-| `imgtap` / `linktap` | 点击图片或链接时触发，传入相应属性               |
-| `play` / `error`     | 媒体播放或出错时触发                             |
+| 事件名    | 说明                     | 参数                |
+| --------- | ------------------------ | ------------------- |
+| `load`    | 内容解析并加载后触发     | -                   |
+| `ready`   | 内容布局完成后触发       | `rect`              |
+| `imgtap`  | 点击图片时触发           | `attrs`             |
+| `linktap` | 点击链接时触发           | `attrs`             |
+| `play`    | 媒体开始播放时触发       | `{ source, attrs }` |
+| `error`   | 富文本资源加载失败时触发 | `{ source, attrs }` |
 
 ### Methods
 

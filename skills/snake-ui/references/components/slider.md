@@ -32,24 +32,35 @@ H5 中轨道可通过 Tab 聚焦，方向键按照 `step` 调整数值；触摸�
 
 ### Props
 
-| 参数                                           | 说明                       | 类型                | 默认值                  |
-| ---------------------------------------------- | -------------------------- | ------------------- | ----------------------- |
-| `modelValue` / `min` / `max` / `step`          | 当前值、范围和步长         | `number \| string`  | `0` / `0` / `100` / `1` |
-| `height` / `blockWidth`                        | 轨道高度和滑块尺寸         | `UnitValue`         | `6` / `30`              |
-| `activeColor` / `inactiveColor` / `blockColor` | 状态颜色                   | `string`            | 主题默认值              |
-| `blockStyle`                                   | 滑块附加样式               | `style`             | `''`                    |
-| `disabled` / `useSlot`                         | 禁用和使用自定义滑块       | `boolean`           | `false`                 |
-| `showValue` / `valuePosition`                  | 数值气泡和 top/bottom 位置 | `boolean \| string` | `false` / `top`         |
-| `showEdgeValue`                                | 显示最小和最大值           | `boolean`           | `false`                 |
-| `customClass` / `customStyle`                  | 自定义类名和样式           | `string \| style`   | `''`                    |
+| 参数            | 说明                                                 | 类型                  | 默认值       |
+| --------------- | ---------------------------------------------------- | --------------------- | ------------ |
+| `modelValue`    | 双向绑定的当前值（v-model）                          | `number \| string`    | `0`          |
+| `min`           | 允许设置的最小值                                     | `number \| string`    | `0`          |
+| `max`           | 允许设置的最大值                                     | `number \| string`    | `100`        |
+| `step`          | 每次变化的步长                                       | `number \| string`    | `1`          |
+| `height`        | 组件高度，数值按 px（375 稿）处理                    | `UnitValue`           | `3`          |
+| `blockWidth`    | 滑块宽度，数值按 px（375 稿）处理                    | `UnitValue`           | `15`         |
+| `activeColor`   | 激活状态颜色                                         | `string`              | 主题色       |
+| `inactiveColor` | 未激活状态颜色                                       | `string`              | 主题分隔线色 |
+| `blockColor`    | 滑块颜色                                             | `string`              | `#fff`       |
+| `blockStyle`    | 滑块附加样式                                         | `StyleValue`          | `''`         |
+| `disabled`      | 是否禁用交互                                         | `boolean`             | `false`      |
+| `useSlot`       | 是否使用默认插槽替换默认滑块                         | `boolean`             | `false`      |
+| `showValue`     | 是否显示当前数值气泡                                 | `boolean`             | `false`      |
+| `valuePosition` | 数值气泡位置，可选值 `top`（上方）/ `bottom`（下方） | `SliderValuePosition` | `top`        |
+| `showEdgeValue` | 是否显示最小和最大值                                 | `boolean`             | `false`      |
+| `customClass`   | 根节点自定义类名                                     | `string`              | `''`         |
+| `customStyle`   | 根节点自定义样式                                     | `StyleValue`          | `''`         |
 
 ### Events
 
-| 事件名                     | 说明                 | 参数  |
-| -------------------------- | -------------------- | ----- |
-| `update:modelValue`        | 拖动或点击实时更新   | value |
-| `start` / `moving` / `end` | 触摸开始、移动、结束 | value |
-| `change`                   | 点击或拖动结束       | value |
+| 事件名              | 说明               | 参数    |
+| ------------------- | ------------------ | ------- |
+| `update:modelValue` | 拖动或点击实时更新 | `value` |
+| `change`            | 点击或拖动结束     | `value` |
+| `start`             | 触摸开始           | `value` |
+| `moving`            | 触摸移动           | `value` |
+| `end`               | 触摸结束           | `value` |
 
 ### Expose
 

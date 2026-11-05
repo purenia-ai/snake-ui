@@ -52,7 +52,7 @@ Snake Tooltip 与 Wot UI Tooltip 的用途相同，但定位和关闭机制并�
 ```vue
 <script setup lang="ts">
 import { nextTick, ref } from 'vue';
-import type { TooltipExpose } from '@/uni_modules/snake-ui/components/snake-tooltip/types';
+import type { TooltipExpose } from '@puresnake/snake-ui';
 
 const tooltip = ref<TooltipExpose | null>(null);
 const detail = ref('简短说明');

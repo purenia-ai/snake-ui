@@ -43,44 +43,47 @@ triggers: ['search', 'snake-search', 'Search', '搜索框']
 
 ### Props
 
-| 参数                          | 说明                                                             | 类型                                        | 默认值                         |
-| ----------------------------- | ---------------------------------------------------------------- | ------------------------------------------- | ------------------------------ |
-| `shape`                       | 搜索框形状                                                       | `round \| square`                           | `round`                        |
-| `bgColor`                     | 搜索框背景色                                                     | `string`                                    | `--snake-color-surface-muted`  |
-| `placeholder`                 | 占位提示文字                                                     | `string`                                    | 语言包默认值                   |
-| `clearabled`                  | 是否启用清除控件                                                 | `boolean`                                   | `true`                         |
-| `focus`                       | 是否自动聚焦                                                     | `boolean`                                   | `false`                        |
-| `showAction`                  | 是否在右侧显示操作按钮                                           | `boolean`                                   | `true`                         |
-| `actionStyle`                 | 右侧操作按钮样式                                                 | `object \| array`                           | `{}`                           |
-| `actionText`                  | 右侧操作按钮文字                                                 | `string`                                    | 语言包默认值                   |
-| `inputAlign`                  | 输入框内容水平对齐方式                                           | `left \| center \| right`                   | `left`                         |
-| `disabled`                    | 是否禁用输入框                                                   | `boolean`                                   | `false`                        |
-| `animation`                   | showAction 时是否聚焦才展开                                      | `boolean`                                   | `false`                        |
-| `borderColor`                 | 边框颜色，配置后才有边框                                         | `string`                                    | `none`                         |
-| `modelValue`                  | 双向绑定的输入值                                                 | `string`                                    | `''`                           |
-| `height`                      | 搜索框高度，数值按 px（375 稿）处理                              | `number \| string`                          | `32`                           |
-| `inputStyle`                  | 输入框样式，对象形式                                             | `object \| array`                           | `{}`                           |
-| `maxlength`                   | 输入框最大长度，-1 不限制                                        | `number \| string`                          | `-1`                           |
-| `searchIconColor`             | 搜索图标颜色，默认同输入框字体颜色                               | `string`                                    | `''`                           |
-| `color`                       | 输入框字体颜色                                                   | `string`                                    | `--snake-color-text-secondary` |
-| `placeholderColor`            | placeholder 的颜色                                               | `string`                                    | `--snake-color-text-muted`     |
-| `margin`                      | 与上下左右元素的间距                                             | `string`                                    | `0`                            |
-| `searchIcon`                  | 左侧图标名称或图片路径                                           | `string`                                    | `search`                       |
-| `adjustPosition`              | 弹出键盘时是否自动调节高度                                       | `boolean`                                   | `true`                         |
-| `type`                        | 输入框类型，number 数字键盘 / idcard 身份证 / digit 带小数点数字 | `'text' \| 'number' \| 'idcard' \| 'digit'` | `'text'`                       |
-| `customClass` / `customStyle` | 自定义类名和样式                                                 | `string \| object \| array`                 | `''`                           |
+| 参数               | 说明                                                                                                 | 类型               | 默认值         |
+| ------------------ | ---------------------------------------------------------------------------------------------------- | ------------------ | -------------- |
+| `customStyle`      | 根节点自定义样式                                                                                     | `StyleValue`       | `''`           |
+| `customClass`      | 根节点自定义类名                                                                                     | `string`           | `''`           |
+| `shape`            | 搜索框形状，可选值 `round`（圆形）/ `square`（方形）                                                 | `SearchShape`      | `round`        |
+| `bgColor`          | 搜索框背景色                                                                                         | `string`           | 主题浅色表面   |
+| `placeholder`      | 占位提示文字                                                                                         | `string`           | 语言包默认值   |
+| `clearabled`       | 是否启用清除控件                                                                                     | `boolean`          | `true`         |
+| `focus`            | 是否自动聚焦                                                                                         | `boolean`          | `false`        |
+| `showAction`       | 是否在搜索框右侧显示操作按钮                                                                         | `boolean`          | `true`         |
+| `actionStyle`      | 右侧操作按钮的样式                                                                                   | `StyleValue`       | `{}`           |
+| `actionText`       | 右侧操作按钮文字                                                                                     | `string`           | 语言包默认值   |
+| `inputAlign`       | 输入框内容水平对齐方式，可选值 `left` / `center` / `right`                                           | `SearchInputAlign` | `left`         |
+| `disabled`         | 是否禁用输入框                                                                                       | `boolean`          | `false`        |
+| `animation`        | 开启 `showAction` 时，是否仅在输入框聚焦时才显示操作按钮                                             | `boolean`          | `false`        |
+| `borderColor`      | 边框颜色，配置后才有边框                                                                             | `string`           | `none`         |
+| `modelValue`       | 双向绑定的输入值（v-model）                                                                          | `string`           | `''`           |
+| `height`           | 搜索框高度，数值按 px（375 稿）处理                                                                  | `UnitValue`        | `32`           |
+| `inputStyle`       | 输入框的样式，可定义文字颜色、大小等                                                                 | `StyleValue`       | `{}`           |
+| `maxlength`        | 输入框最大能输入的长度，`-1` 为不限制                                                                | `UnitValue`        | `'-1'`         |
+| `searchIconColor`  | 搜索图标的颜色，默认同输入框字体颜色                                                                 | `string`           | `''`           |
+| `color`            | 输入框字体颜色                                                                                       | `string`           | 主题次要文字色 |
+| `placeholderColor` | placeholder 的颜色                                                                                   | `string`           | 主题占位色     |
+| `margin`           | 与上下左右元素的间距，带单位的字符串形式                                                             | `string`           | `'0'`          |
+| `searchIcon`       | 左侧输入框的图标，可为图标名称或图片路径                                                             | `string`           | `search`       |
+| `adjustPosition`   | 弹出键盘时是否自动调节高度                                                                           | `boolean`          | `true`         |
+| `type`             | 输入框类型，可选值 `text`（文本）/ `number`（数字键盘）/ `idcard`（身份证）/ `digit`（带小数点数字） | `SearchInputType`  | `'text'`       |
 
 ### Events
 
-| 事件名              | 触发时机             | 参数    |
-| ------------------- | -------------------- | ------- |
-| `update:modelValue` | 输入值变化           | `value` |
-| `input` / `change`  | 输入/内容变化        | `value` |
-| `search`            | 用户确定搜索         | `value` |
-| `custom`            | 点击右侧操作按钮     | `value` |
-| `clear`             | 点击清除按钮         | -       |
-| `focus` / `blur`    | 输入框聚焦/失焦      | `value` |
-| `click`             | 禁用状态下点击搜索框 | -       |
+| 事件名              | 触发时机              | 参数    |
+| ------------------- | --------------------- | ------- |
+| `update:modelValue` | 输入值变化（v-model） | `value` |
+| `input`             | 输入时触发            | `value` |
+| `change`            | 内容变化时触发        | `value` |
+| `search`            | 用户确定搜索          | `value` |
+| `custom`            | 点击右侧操作按钮      | `value` |
+| `clear`             | 点击清除按钮          | -       |
+| `focus`             | 输入框获得焦点        | `value` |
+| `blur`              | 输入框失去焦点        | `value` |
+| `click`             | 禁用状态下点击搜索框  | -       |
 
 ## 主题变量
 

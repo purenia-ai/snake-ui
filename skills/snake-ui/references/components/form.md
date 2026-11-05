@@ -103,17 +103,19 @@ const rules = {
 
 ### Form Props
 
-| 参数            | 说明                              | 类型                        | 默认值                 |
-| --------------- | --------------------------------- | --------------------------- | ---------------------- |
-| `model`         | 表单数据对象                      | `object`                    | `{}`                   |
-| `rules`         | 校验规则                          | `FormRules`                 | `{}`                   |
-| `errorType`     | 错误提示方式                      | `FormErrorType[]`           | `['message', 'toast']` |
-| `borderBottom`  | 表单项默认显示底边                | `boolean`                   | `true`                 |
-| `labelPosition` | 标签位置                          | `left \| top`               | `left`                 |
-| `labelWidth`    | 标签宽度，数字单位为 px（375 稿） | `string \| number`          | `45`                   |
-| `labelAlign`    | 标签对齐                          | `left \| center \| right`   | `left`                 |
-| `labelStyle`    | 标签样式                          | `object`                    | `{}`                   |
-| `size`          | 表单尺寸                          | `small \| default \| large` | `default`              |
+| 参数            | 说明                                                                                                                                                                         | 类型                  | 默认值                 |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- | ---------------------- |
+| `model`         | 表单数据对象                                                                                                                                                                 | `Record<string, any>` | `{}`                   |
+| `rules`         | 表单校验规则                                                                                                                                                                 | `FormRules`           | `{}`                   |
+| `errorType`     | 错误提示方式，可选值 `message`（字段下方文字）/ `toast`（全表校验提示第一个错误）/ `border-bottom`（字段底边错误色）/ `border`（输入控件边框错误色）/ `none`（隐藏全部提示） | `FormErrorType[]`     | `['message', 'toast']` |
+| `borderBottom`  | 是否显示表单项底边                                                                                                                                                           | `boolean`             | `true`                 |
+| `labelPosition` | 标签位置，可选值 `left` / `top`                                                                                                                                              | `FormLabelPosition`   | `left`                 |
+| `labelWidth`    | 标签宽度，数字单位为 px（375 稿）                                                                                                                                            | `string \| number`    | `45`                   |
+| `labelAlign`    | 标签对齐方式，可选值 `left` / `center` / `right`                                                                                                                             | `FormLabelAlign`      | `left`                 |
+| `labelStyle`    | 标签自定义样式                                                                                                                                                               | `Record<string, any>` | `{}`                   |
+| `size`          | 表单控件尺寸，可选值 `small` / `default` / `large`                                                                                                                           | `FormSize`            | `default`              |
+| `customClass`   | 根节点自定义类名                                                                                                                                                             | `string`              | `''`                   |
+| `customStyle`   | 根节点自定义样式                                                                                                                                                             | `StyleValue`          | `''`                   |
 
 ### Form Expose
 
@@ -132,16 +134,25 @@ const rules = {
 
 ### FormItem Props
 
-| 参数                                                         | 说明                              | 默认值    |
-| ------------------------------------------------------------ | --------------------------------- | --------- |
-| `label` / `prop`                                             | 标签和模型字段路径                | `''`      |
-| `required`                                                   | 仅显示必填星号                    | `false`   |
-| `borderBottom`                                               | 是否显示底边；空字符串时继承 Form | `''`      |
-| `labelPosition` / `labelWidth` / `labelAlign` / `labelStyle` | 标签布局；未设置时继承 Form       | -         |
-| `leftIcon` / `rightIcon`                                     | 左右图标                          | `''`      |
-| `leftIconPrefix` / `rightIconPrefix`                         | 自定义图标类前缀                  | `sicon`   |
-| `leftIconStyle` / `rightIconStyle`                           | 图标样式                          | `{}`      |
-| `size`                                                       | small/default/large 或自定义字号  | 继承 Form |
+| 参数              | 说明                                                                                | 类型                  | 默认值    |
+| ----------------- | ----------------------------------------------------------------------------------- | --------------------- | --------- |
+| `label`           | 标签文本                                                                            | `string`              | `''`      |
+| `prop`            | 表单模型中的字段路径，支持 `profile.name`、`accounts.0.name` 等嵌套路径             | `string`              | `''`      |
+| `borderBottom`    | 是否显示底边，空字符串时继承 Form                                                   | `string \| boolean`   | `''`      |
+| `labelPosition`   | 标签位置，可选值 `left` / `top`，未设置时继承 Form                                  | `FormLabelPosition`   | `''`      |
+| `labelWidth`      | 标签宽度，数值按 px（375 稿）处理，未设置时继承 Form                                | `UnitValue`           | `''`      |
+| `labelStyle`      | 标签自定义样式，未设置时继承 Form                                                   | `Record<string, any>` | `{}`      |
+| `labelAlign`      | 标签对齐方式，可选值 `left` / `center` / `right`，未设置时继承 Form                 | `FormLabelAlign`      | `''`      |
+| `rightIcon`       | 右侧图标名称                                                                        | `string`              | `''`      |
+| `leftIcon`        | 左侧图标名称                                                                        | `string`              | `''`      |
+| `leftIconPrefix`  | 左侧图标字体前缀                                                                    | `string`              | `sicon`   |
+| `rightIconPrefix` | 右侧图标字体前缀                                                                    | `string`              | `sicon`   |
+| `leftIconStyle`   | 左侧图标样式                                                                        | `StyleValue`          | `{}`      |
+| `rightIconStyle`  | 右侧图标样式                                                                        | `StyleValue`          | `{}`      |
+| `required`        | 是否展示必填星号，仅影响展示不参与校验                                              | `boolean`             | `false`   |
+| `size`            | 预设尺寸，可选值 `small` / `default` / `large`，或自定义字号数值，未设置时继承 Form | `string`              | 继承 Form |
+| `customClass`     | 根节点自定义类名                                                                    | `string`              | `''`      |
+| `customStyle`     | 根节点自定义样式                                                                    | `StyleValue`          | `''`      |
 
 ### FormItem Slots
 
@@ -155,7 +166,12 @@ const rules = {
 
 ### FormItem Expose
 
-`validation(trigger?, callback?)`、`resetField()`、`onFormBlur()`、`onFormChange()`。
+| 方法                              | 说明                 |
+| --------------------------------- | -------------------- |
+| `validation(trigger?, callback?)` | 校验当前字段         |
+| `resetField()`                    | 将字段恢复为初始值   |
+| `onFormBlur()`                    | 触发 blur 规则校验   |
+| `onFormChange()`                  | 触发 change 规则校验 |
 
 ## 主题变量
 

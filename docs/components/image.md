@@ -113,20 +113,32 @@ preview: /pages/componentsA/image/index
 
 ### Props
 
-| 参数                                         | 说明                   | 类型                              | 默认值              |
-| -------------------------------------------- | ---------------------- | --------------------------------- | ------------------- |
-| `src` / `mode`                               | 图片地址和裁剪方式     | `string`                          | `'' / scaleToFill`  |
-| `alt`                                        | 图片的可访问文本       | `string`                          | `''`                |
-| `width` / `height`                           | 容器尺寸               | `string \| number`                | `100% / auto`       |
-| `shape` / `radius`                           | 形状和圆角             | `square\|circle / string\|number` | `square / 0`        |
-| `lazyLoad` / `lazyThreshold`                 | 视口懒加载及预加载距离 | `boolean / number`                | `false / 100`       |
-| `webp`                                       | 使用 WebP              | `boolean`                         | `false`             |
-| `showMenuByLongpress`                        | 长按显示识别菜单       | `boolean`                         | `false`             |
-| `fade` / `duration`                          | 淡入及其时长           | `boolean / number`                | `true / 300`        |
-| `showLoading` / `loadingIcon` / `loadingImg` | 加载反馈与图片占位     | `boolean / string / string`       | `true / '' / ''`    |
-| `showError` / `errorIcon` / `errorImg`       | 失败反馈与图片回退     | `boolean / string / string`       | `true / image / ''` |
-| `preview` / `previewUrls`                    | 点击预览及图片集合     | `boolean / string[]`              | `false`             |
-| `bgColor` / `customClass` / `customStyle`    | 背景和自定义样式       | 多类型                            | 主题默认值          |
+| 参数                  | 说明                                                        | 类型                  | 默认值        |
+| --------------------- | ----------------------------------------------------------- | --------------------- | ------------- |
+| `src`                 | 图片资源地址                                                | `string`              | `''`          |
+| `alt`                 | 图片替代文本                                                | `string`              | `''`          |
+| `mode`                | 裁剪缩放模式，如 `scaleToFill` / `aspectFit` / `aspectFill` | `ImageMode`           | `scaleToFill` |
+| `width`               | 组件宽度                                                    | `UnitValue`           | `100%`        |
+| `height`              | 组件高度，传 `auto` 表示自适应                              | `UnitValue \| 'auto'` | `auto`        |
+| `shape`               | 形状，可选值 `square`（方形）/ `circle`（圆形）             | `string`              | `square`      |
+| `radius`              | 圆角尺寸，数值按 px（375 稿）处理                           | `UnitValue`           | `0`           |
+| `lazyLoad`            | 是否开启视口懒加载，进入预加载范围后才请求真实图片          | `boolean`             | `false`       |
+| `lazyThreshold`       | 视口懒加载的预加载距离                                      | `number`              | `100`         |
+| `showMenuByLongpress` | 是否开启长按识别菜单                                        | `boolean`             | `false`       |
+| `webp`                | 是否默认使用 WebP                                           | `boolean`             | `false`       |
+| `fade`                | 是否开启淡入动画                                            | `boolean`             | `true`        |
+| `duration`            | 淡入动画持续时间，单位 ms                                   | `number`              | `300`         |
+| `bgColor`             | 背景颜色，未设置时使用 `--snake-color-surface-muted`        | `string`              | -             |
+| `showLoading`         | 是否显示加载反馈                                            | `boolean`             | `true`        |
+| `loadingIcon`         | 加载状态图标名称，为空时使用默认图标                        | `string`              | `''`          |
+| `loadingImg`          | 加载中显示的占位图片地址                                    | `string`              | `''`          |
+| `showError`           | 是否显示加载失败反馈                                        | `boolean`             | `true`        |
+| `errorIcon`           | 加载失败图标名称                                            | `string`              | `image`       |
+| `errorImg`            | 加载失败显示的回退图片地址                                  | `string`              | `''`          |
+| `preview`             | 点击图片时是否调用 `uni.previewImage` 预览                  | `boolean`             | `false`       |
+| `previewUrls`         | 预览图集合，应包含当前 `src`                                | `string[]`            | -             |
+| `customClass`         | 根节点自定义类名                                            | `string`              | `''`          |
+| `customStyle`         | 根节点自定义样式                                            | `StyleValue`          | `''`          |
 
 ### Events
 

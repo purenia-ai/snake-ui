@@ -37,16 +37,21 @@ H5 中当前分段可通过 Tab 聚焦，左右方向键会循环切换，并自
 
 ### Props
 
-| 参数                            | 说明                     | 类型                                                    | 默认值          |
-| ------------------------------- | ------------------------ | ------------------------------------------------------- | --------------- |
-| `list`                          | 字符串或对象选项列表     | `Array<string \| { name: string; disabled?: boolean }>` | `[]`            |
-| `current`                       | 当前选中索引             | `number \| string`                                      | `0`             |
-| `mode`                          | 按钮滑块或描边分段模式   | `button \| subsection`                                  | `button`        |
-| `activeColor` / `inactiveColor` | 激活和未激活文字颜色     | `string`                                                | 主题默认值      |
-| `fontSize` / `height`           | 字号与组件高度           | `string \| number`                                      | `14` / `70`     |
-| `animation` / `bold`            | 滑块动画与激活项加粗     | `boolean`                                               | `true` / `true` |
-| `bgColor` / `buttonColor`       | 按钮模式的轨道和滑块颜色 | `string`                                                | 主题默认值      |
-| `customClass` / `customStyle`   | 自定义类名和样式         | `string \| object \| array`                             | `''`            |
+| 参数            | 说明                                                                | 类型                 | 默认值         |
+| --------------- | ------------------------------------------------------------------- | -------------------- | -------------- |
+| `list`          | 用于渲染的数据列表，字符串或对象选项                                | `SubsectionOption[]` | `[]`           |
+| `current`       | 当前激活项索引（v-model:current）                                   | `number \| string`   | `0`            |
+| `mode`          | 组件展示模式，可选值 `button`（按钮滑块）/ `subsection`（描边分段） | `SubsectionMode`     | `button`       |
+| `activeColor`   | 激活状态颜色                                                        | `string`             | 主题色         |
+| `inactiveColor` | 未激活状态颜色                                                      | `string`             | 主题次要文字色 |
+| `fontSize`      | 文字尺寸，数值按 px（375 稿）处理                                   | `UnitValue`          | `14`           |
+| `height`        | 组件高度，数值按 px（375 稿）处理                                   | `UnitValue`          | `35`           |
+| `animation`     | 是否开启滑块动画                                                    | `boolean`            | `true`         |
+| `bold`          | 是否使用粗体文字                                                    | `boolean`            | `true`         |
+| `bgColor`       | 背景颜色（按钮模式的轨道颜色）                                      | `string`             | 主题浅色表面   |
+| `buttonColor`   | 按钮模式下滑块的颜色                                                | `string`             | 主题表面色     |
+| `customClass`   | 根节点自定义类名                                                    | `string`             | `''`           |
+| `customStyle`   | 根节点自定义样式                                                    | `StyleValue`         | `''`           |
 
 ### Events
 

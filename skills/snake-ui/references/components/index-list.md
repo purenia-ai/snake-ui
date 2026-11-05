@@ -57,16 +57,18 @@ indexListRef.value?.update();
 
 ### Props
 
-| 参数                            | 说明                   | 类型                        | 默认值            |
-| ------------------------------- | ---------------------- | --------------------------- | ----------------- |
-| `indexList`                     | 右侧索引值             | `Array<string \| number>`   | `[]`              |
-| `scrollTop`                     | 页面当前滚动位置       | `number \| string`          | `0`               |
-| `zIndex`                        | 索引栏和吸顶锚点层级   | `number`                    | `965`             |
-| `sticky`                        | 锚点是否吸顶           | `boolean`                   | `true`            |
-| `offsetTop`                     | 页面吸顶与滚动目标偏移 | `string \| number`          | `0`               |
-| `activeColor` / `inactiveColor` | 当前和默认索引颜色     | `string`                    | 主题色 / 弱文本色 |
-| `railStyle`                     | 右侧索引栏样式         | `string \| object \| array` | `''`              |
-| `customClass` / `customStyle`   | 自定义类名和样式       | `string \| object \| array` | `''`              |
+| 参数            | 说明                   | 类型               | 默认值   |
+| --------------- | ---------------------- | ------------------ | -------- |
+| `indexList`     | 右侧索引值             | `IndexValue[]`     | `[]`     |
+| `scrollTop`     | 页面当前滚动位置       | `number \| string` | `0`      |
+| `zIndex`        | 索引栏和吸顶锚点层级   | `number`           | `965`    |
+| `sticky`        | 锚点是否吸顶           | `boolean`          | `true`   |
+| `offsetTop`     | 页面吸顶与滚动目标偏移 | `UnitValue`        | `0`      |
+| `activeColor`   | 当前索引颜色           | `string`           | 主题色   |
+| `inactiveColor` | 未激活索引颜色         | `string`           | 弱文本色 |
+| `railStyle`     | 右侧索引栏样式         | `StyleValue`       | `''`     |
+| `customClass`   | 根节点自定义类名       | `string`           | `''`     |
+| `customStyle`   | 根节点自定义样式       | `StyleValue`       | `''`     |
 
 裸数字按 px（375 稿）处理，带单位字符串（rpx/px）原样使用。
 

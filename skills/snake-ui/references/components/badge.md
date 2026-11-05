@@ -46,17 +46,19 @@ triggers: ['badge', 'snake-badge', 'Badge', '徽标']
 
 ### Props
 
-| 参数                          | 说明                                                                    | 类型               | 默认值     |
-| ----------------------------- | ----------------------------------------------------------------------- | ------------------ | ---------- |
-| `value`                       | 徽标内容，数字或文本                                                    | `number \| string` | —          |
-| `max`                         | 最大值，超过显示 `max+`                                                 | `number`           | —          |
-| `isDot`                       | 是否显示为圆点（忽略内容）                                              | `boolean`          | `false`    |
-| `showZero`                    | `value` 为 0 时是否仍显示                                               | `boolean`          | `false`    |
-| `hidden`                      | 强制隐藏徽标，插槽内容照常渲染                                          | `boolean`          | `false`    |
-| `top` / `right`               | 相对角点的偏移，`top` 正值向下，`right` 正值向左，数值单位 px（375 稿） | `number \| string` | `0` / `0`  |
-| `bgColor`                     | 徽标背景色                                                              | `string`           | 主题错误色 |
-| `color`                       | 徽标文字颜色                                                            | `string`           | `#fff`     |
-| `customClass` / `customStyle` | 根节点自定义类和样式                                                    | `string` / 样式值  | 空         |
+| 参数          | 说明                                                  | 类型               | 默认值     |
+| ------------- | ----------------------------------------------------- | ------------------ | ---------- |
+| `customStyle` | 根节点自定义样式                                      | `StyleValue`       | `''`       |
+| `customClass` | 根节点自定义类名                                      | `string`           | `''`       |
+| `value`       | 徽标内容，数字或文本                                  | `number \| string` | -          |
+| `max`         | 最大值，超过显示 `max+`                               | `number`           | -          |
+| `isDot`       | 是否显示为圆点（忽略内容）                            | `boolean`          | `false`    |
+| `showZero`    | `value` 为 0 时是否仍显示                             | `boolean`          | `false`    |
+| `hidden`      | 强制隐藏徽标，插槽内容照常渲染                        | `boolean`          | `false`    |
+| `top`         | 相对角点的垂直偏移，正值向下，数值按 px（375 稿）处理 | `UnitValue`        | `0`        |
+| `right`       | 相对角点的水平偏移，正值向左，数值按 px（375 稿）处理 | `UnitValue`        | `0`        |
+| `bgColor`     | 徽标背景色                                            | `string`           | 主题错误色 |
+| `color`       | 徽标文字颜色                                          | `string`           | `#fff`     |
 
 ### Slots
 

@@ -34,21 +34,29 @@ preview: /pages/componentsA/navbar/index
 
 ### Props
 
-| 参数                                                    | 说明                       | 类型                        | 默认值                           |
-| ------------------------------------------------------- | -------------------------- | --------------------------- | -------------------------------- |
-| `title`                                                 | 中间标题                   | `string`                    | `''`                             |
-| `height`                                                | 导航内容高度，单位 px      | `string \| number`          | `44`                             |
-| `isBack`                                                | 是否显示返回按钮           | `boolean`                   | `true`                           |
-| `backIconName` / `backIconColor` / `backIconSize`       | 返回图标名称、颜色和尺寸   | 组合类型                    | `arrow-left` / 主题文字色 / `40` |
-| `backText` / `backTextStyle`                            | 返回辅助文字及样式         | 组合类型                    | `''`                             |
-| `titleWidth` / `titleColor` / `titleSize` / `titleBold` | 标题宽度、颜色、字号和字重 | 组合类型                    | 主题默认值                       |
-| `background`                                            | 导航栏背景样式或颜色       | `string \| object \| array` | 白色表面背景                     |
-| `fixed` / `immersive`                                   | 固定顶部及是否允许内容沉浸 | `boolean`                   | `true` / `false`                 |
-| `safeAreaInsetTop`                                      | 是否包含状态栏安全区       | `boolean`                   | `true`                           |
-| `borderBottom`                                          | 是否显示底部分隔线         | `boolean`                   | `true`                           |
-| `zIndex`                                                | 固定定位层级               | `string \| number`          | `980`                            |
-| `customBack`                                            | 自定义返回处理             | `() => void`                | `null`                           |
-| `customClass` / `customStyle`                           | 自定义类名和样式           | 组合类型                    | `''`                             |
+| 参数               | 说明                                   | 类型         | 默认值       |
+| ------------------ | -------------------------------------- | ------------ | ------------ |
+| `title`            | 中间标题                               | `string`     | `''`         |
+| `height`           | 导航内容高度，数值按 px（375 稿）处理  | `UnitValue`  | `44`         |
+| `backIconColor`    | 返回图标颜色                           | `string`     | 主题文字色   |
+| `backIconName`     | 返回图标名称                           | `string`     | `arrow-left` |
+| `backIconSize`     | 返回图标尺寸，数值按 px（375 稿）处理  | `UnitValue`  | `20`         |
+| `backText`         | 返回区域辅助文字                       | `string`     | `''`         |
+| `backTextStyle`    | 返回区域辅助文字样式                   | `StyleValue` | `''`         |
+| `titleWidth`       | 标题区域宽度，数值按 px（375 稿）处理  | `UnitValue`  | `180`        |
+| `titleColor`       | 标题颜色                               | `string`     | 主题文字色   |
+| `titleSize`        | 标题字号，数值按 px（375 稿）处理      | `UnitValue`  | `16`         |
+| `titleBold`        | 标题是否加粗                           | `boolean`    | `false`      |
+| `isBack`           | 是否显示返回按钮                       | `boolean`    | `true`       |
+| `background`       | 导航栏背景样式或颜色                   | `StyleValue` | 主题表面色   |
+| `fixed`            | 是否固定在顶部                         | `boolean`    | `true`       |
+| `immersive`        | 是否允许内容沉浸到状态栏区域           | `boolean`    | `false`      |
+| `safeAreaInsetTop` | 是否包含状态栏安全区                   | `boolean`    | `true`       |
+| `borderBottom`     | 是否显示底部分隔线                     | `boolean`    | `true`       |
+| `zIndex`           | 固定定位层级                           | `UnitValue`  | `980`        |
+| `customBack`       | 自定义返回处理，传入时拦截默认返回逻辑 | `Function`   | `null`       |
+| `customClass`      | 根节点自定义类名                       | `string`     | `''`         |
+| `customStyle`      | 根节点自定义样式                       | `StyleValue` | `''`         |
 
 ### Slots
 

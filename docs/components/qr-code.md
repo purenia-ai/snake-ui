@@ -54,17 +54,20 @@ async function saveQrCode() {
 
 ### Props
 
-| 参数                          | 说明                                       | 类型                       | 默认值                |
-| ----------------------------- | ------------------------------------------ | -------------------------- | --------------------- |
-| `text`                        | 二维码内容，UTF-8 文本或链接               | `string`                   | `''`                  |
-| `size`                        | 二维码边长（px）                           | `number`                   | `200`                 |
-| `correctLevel`                | 纠错级别                                   | `'L' \| 'M' \| 'Q' \| 'H'` | `H`                   |
-| `colorDark` / `colorLight`    | 深色模块 / 浅色背景颜色                    | `string`                   | `#000000` / `#FFFFFF` |
-| `margin`                      | 四周留白（px）                             | `number`                   | `0`                   |
-| `logo`                        | 中心 Logo 图片地址，为空时不绘制           | `string`                   | `''`                  |
-| `logoWidth` / `logoHeight`    | Logo 宽高（px），0 时取 size 的 20% / 同宽 | `number`                   | `0`                   |
-| `canvasId`                    | Canvas 标识，同页多实例时建议显式指定      | `string`                   | 自动生成              |
-| `customClass` / `customStyle` | 自定义类名与样式                           | `string / style`           | `''`                  |
+| 参数           | 说明                                                                       | 类型                 | 默认值    |
+| -------------- | -------------------------------------------------------------------------- | -------------------- | --------- |
+| `customClass`  | 根节点自定义类名                                                           | `string`             | `''`      |
+| `customStyle`  | 根节点自定义样式                                                           | `StyleValue`         | `''`      |
+| `text`         | 二维码内容，UTF-8 文本或链接                                               | `string`             | `''`      |
+| `size`         | 二维码边长（px）                                                           | `number`             | `200`     |
+| `correctLevel` | 纠错级别，可选值 `L`（约 7%）/ `M`（约 15%）/ `Q`（约 25%）/ `H`（约 30%） | `QrCodeCorrectLevel` | `H`       |
+| `colorDark`    | 深色模块颜色                                                               | `string`             | `#000000` |
+| `colorLight`   | 浅色背景颜色                                                               | `string`             | `#FFFFFF` |
+| `margin`       | 二维码四周留白（px）                                                       | `number`             | `0`       |
+| `logo`         | 中心 Logo 图片地址，为空时不绘制                                           | `string`             | `''`      |
+| `logoWidth`    | Logo 宽度（px），传 `0` 时取 `size` 的 20%                                 | `number`             | `0`       |
+| `logoHeight`   | Logo 高度（px），传 `0` 时同 `logoWidth`                                   | `number`             | `0`       |
+| `canvasId`     | Canvas 标识，不传时自动生成，同页多实例时建议显式指定                      | `string`             | `''`      |
 
 ### Events
 
@@ -82,7 +85,7 @@ async function saveQrCode() {
 ## 类型定义
 
 ```ts
-import type { QrCodeProps, QrCodeEmits, QrCodeExpose } from 'snake-ui';
+import type { QrCodeProps, QrCodeEmits, QrCodeExpose } from '@puresnake/snake-ui';
 ```
 
 ## 主题变量

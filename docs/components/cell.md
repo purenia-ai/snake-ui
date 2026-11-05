@@ -65,34 +65,40 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 
 #### CellGroup Props
 
-| 参数                          | 说明                 | 类型                        | 默认值 |
-| ----------------------------- | -------------------- | --------------------------- | ------ |
-| `title`                       | 分组标题             | `string`                    | `''`   |
-| `border`                      | 是否显示分组上下边框 | `boolean`                   | `true` |
-| `titleStyle`                  | 分组标题样式         | `object \| array`           | `{}`   |
-| `customClass` / `customStyle` | 自定义类名和样式     | `string \| object \| array` | `''`   |
+| 参数          | 说明                   | 类型         | 默认值 |
+| ------------- | ---------------------- | ------------ | ------ |
+| `customStyle` | 根节点自定义样式       | `StyleValue` | `''`   |
+| `customClass` | 根节点自定义类名       | `string`     | `''`   |
+| `title`       | 分组标题               | `string`     | `''`   |
+| `border`      | 是否显示分组上下边框   | `boolean`    | `true` |
+| `titleStyle`  | 分组标题样式，对象形式 | `StyleValue` | `{}`   |
 
 #### CellItem Props
 
-| 参数                                       | 说明                                  | 类型                        | 默认值                   |
-| ------------------------------------------ | ------------------------------------- | --------------------------- | ------------------------ |
-| `icon`                                     | 左侧图标名称或图片地址                | `string`                    | `''`                     |
-| `title` / `value` / `label`                | 标题、右侧内容、标题下方描述          | `string \| number`          | `''`                     |
-| `borderBottom`                             | 是否显示下边框                        | `boolean`                   | `true`                   |
-| `borderTop`                                | 是否显示上边框                        | `boolean`                   | `false`                  |
-| `hoverClass`                               | 点击反馈类名                          | `string`                    | `snake-cell-item--hover` |
-| `arrow`                                    | 是否显示右侧箭头                      | `boolean`                   | `true`                   |
-| `arrowDirection`                           | 右侧箭头方向                          | `right \| up \| down`       | `right`                  |
-| `center`                                   | 内容是否垂直居中                      | `boolean`                   | `false`                  |
-| `required`                                 | 是否显示左侧必填星号                  | `boolean`                   | `false`                  |
-| `titleWidth`                               | 标题宽度，数值按 px（375 稿）处理     | `number \| string`          | `''`                     |
-| `titleStyle` / `valueStyle` / `labelStyle` | 标题、内容、描述样式                  | `object \| array`           | `{}`                     |
-| `bgColor`                                  | 背景颜色                              | `string`                    | `transparent`            |
-| `index`                                    | `click` 回调中标识条目的值            | `string \| number`          | `''`                     |
-| `useLabelSlot`                             | 是否使用 `label` 插槽                 | `boolean`                   | `false`                  |
-| `iconSize`                                 | 左侧图标大小，数值按 px（375 稿）处理 | `number \| string`          | `17`                     |
-| `iconStyle`                                | 左侧图标样式                          | `object \| array`           | `{}`                     |
-| `customClass` / `customStyle`              | 自定义类名和样式                      | `string \| object \| array` | `''`                     |
+| 参数             | 说明                                                          | 类型                     | 默认值                   |
+| ---------------- | ------------------------------------------------------------- | ------------------------ | ------------------------ |
+| `customStyle`    | 根节点自定义样式                                              | `StyleValue`             | `''`                     |
+| `customClass`    | 根节点自定义类名                                              | `string`                 | `''`                     |
+| `icon`           | 左侧图标名称或图片地址                                        | `string`                 | `''`                     |
+| `title`          | 左侧标题                                                      | `string \| number`       | `''`                     |
+| `value`          | 右侧内容                                                      | `string \| number`       | `''`                     |
+| `label`          | 标题下方的描述信息                                            | `string \| number`       | `''`                     |
+| `borderBottom`   | 是否显示下边框                                                | `boolean`                | `true`                   |
+| `borderTop`      | 是否显示上边框                                                | `boolean`                | `false`                  |
+| `hoverClass`     | 点击反馈类名，点击时背景变灰                                  | `string`                 | `snake-cell-item--hover` |
+| `arrow`          | 是否显示右侧箭头                                              | `boolean`                | `true`                   |
+| `center`         | 内容是否垂直居中                                              | `boolean`                | `false`                  |
+| `required`       | 是否显示左侧必填星号                                          | `boolean`                | `false`                  |
+| `titleWidth`     | 标题宽度，数值按 px（375 稿）处理                             | `number \| string`       | `''`                     |
+| `arrowDirection` | 右侧箭头方向，可选值 `right`（右）/ `up`（上）/ `down`（下）  | `CellItemArrowDirection` | `right`                  |
+| `titleStyle`     | 标题样式，对象形式                                            | `StyleValue`             | `{}`                     |
+| `valueStyle`     | 右侧内容样式，对象形式                                        | `StyleValue`             | `{}`                     |
+| `labelStyle`     | 描述信息样式，对象形式                                        | `StyleValue`             | `{}`                     |
+| `bgColor`        | 背景颜色                                                      | `string`                 | `transparent`            |
+| `index`          | `click` 事件回调中标识当前条目的值                            | `CellItemIndex`          | `''`                     |
+| `useLabelSlot`   | 是否使用 `label` 插槽                                         | `boolean`                | `false`                  |
+| `iconSize`       | 左侧图标大小，数值按 px（375 稿）处理，仅在传入 `icon` 时生效 | `number \| string`       | `17`                     |
+| `iconStyle`      | 左侧图标样式，对象形式                                        | `StyleValue`             | `{}`                     |
 
 ### Slots
 

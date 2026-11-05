@@ -43,6 +43,7 @@ const standardizedDocs = [
     'index-list-panel',
     'index-anchor',
     'count-down',
+    'verification-code',
     'qr-code',
     'line-progress',
     'circle-progress',
@@ -237,7 +238,7 @@ test('high-use component docs follow the standard documentation shape', async ()
 });
 
 test('component registry is the complete documented component source of truth', async () => {
-    assert.equal(componentItems.length, 48);
+    assert.equal(componentItems.length, 49);
     assert.equal(new Set(componentItems.map(item => item.link)).size, componentItems.length);
 
     const packageEntry = await readFile(resolve(root, 'src/uni_modules/snake-ui/index.ts'), 'utf8');

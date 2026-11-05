@@ -39,35 +39,51 @@ Popup 适合承载需要暂时打断页面的补充内容。简单反馈优先�
 
 ### Props
 
-| 参数                                          | 说明                                                     | 类型      | 默认值                      |
-| --------------------------------------------- | -------------------------------------------------------- | --------- | --------------------------- |
-| `modelValue` / `show`                         | 显示状态和兼容别名                                       | `boolean` | `false`                     |
-| `mode`                                        | 弹出方向                                                 | `string`  | `center`                    |
-| `duration` / `zIndex` / `bgColor`             | 动画、层级和背景                                         | 多类型    | `300 / 10075 / 主题表面色`  |
-| `round` / `zoom`                              | 圆角与中心缩放                                           | 多类型    | `false / true`              |
-| `closeable` / `closeIcon` / `closeIconPos`    | 关闭按钮参数                                             | 多类型    | `false / close / top-right` |
-| `closeOnClickOverlay`                         | 点击遮罩关闭                                             | `boolean` | `true`                      |
-| `overlay` / `overlayOpacity` / `overlayStyle` | 遮罩参数                                                 | 多类型    | `true / 0.5 / ''`           |
-| `embedded`                                    | 嵌入页面模式                                             | `boolean` | `false`                     |
-| `rootPortal`                                  | 传送到页面根节点渲染，避免被祖先 transform/overflow 裁剪 | `boolean` | `false`                     |
-| `lockScroll`                                  | 阻止遮罩触摸滚动                                         | `boolean` | `true`                      |
-| `safeAreaInsetBottom` / `safeAreaInsetTop`    | 安全区                                                   | `boolean` | `false`                     |
-| `customClass` / `customStyle`                 | 面板类名和样式                                           | 多类型    | `''`                        |
+| 参数                  | 说明                                                                                                        | 类型                          | 默认值         |
+| --------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------- | -------------- |
+| `modelValue`          | 显示状态（v-model）                                                                                         | `boolean`                     | `false`        |
+| `show`                | 显示状态的兼容别名，绑定后优先于 `v-model`                                                                  | `boolean`                     | `false`        |
+| `mode`                | 弹出方向，可选值 `center`（居中）/ `top`（顶部）/ `right`（右侧）/ `bottom`（底部）/ `left`（左侧）         | `PopupMode`                   | `center`       |
+| `bgColor`             | 面板背景颜色                                                                                                | `string`                      | 主题表面色     |
+| `zIndex`              | 弹层层级                                                                                                    | `number`                      | `10075`        |
+| `duration`            | 动画持续时间，单位 ms                                                                                       | `number`                      | `300`          |
+| `round`               | 圆角值，`true` 使用主题大圆角，数字或字符串按 px（375 稿）处理                                              | `number \| string \| boolean` | `false`        |
+| `zoom`                | `center` 模式是否使用缩放动画，关闭时退回淡入淡出                                                           | `boolean`                     | `true`         |
+| `closeable`           | 是否显示关闭按钮                                                                                            | `boolean`                     | `false`        |
+| `closeIcon`           | 关闭按钮图标名称                                                                                            | `string`                      | `close`        |
+| `closeIconColor`      | 关闭按钮图标颜色                                                                                            | `string`                      | 主题次要文字色 |
+| `closeIconSize`       | 关闭按钮图标大小，数值按 px（375 稿）处理                                                                   | `number \| string`            | `10`           |
+| `closeIconPos`        | 关闭按钮位置，可选值 `top-left`（左上）/ `top-right`（右上）/ `bottom-left`（左下）/ `bottom-right`（右下） | `PopupCloseIconPosition`      | `top-right`    |
+| `closeOnClickOverlay` | 点击遮罩时是否关闭                                                                                          | `boolean`                     | `true`         |
+| `overlay`             | 是否显示遮罩层                                                                                              | `boolean`                     | `true`         |
+| `embedded`            | 嵌入页面模式，根与面板回到文档流随内容撑高，不固定、不裁剪                                                  | `boolean`                     | `false`        |
+| `rootPortal`          | 传送到页面根节点渲染，避免被祖先 transform/overflow 裁剪                                                    | `boolean`                     | `false`        |
+| `overlayOpacity`      | 遮罩层透明度                                                                                                | `number`                      | `0.5`          |
+| `lockScroll`          | 是否阻止遮罩区域的触摸滚动                                                                                  | `boolean`                     | `true`         |
+| `overlayStyle`        | 遮罩层自定义样式                                                                                            | `StyleValue`                  | `''`           |
+| `safeAreaInsetBottom` | 是否适配底部安全区                                                                                          | `boolean`                     | `false`        |
+| `safeAreaInsetTop`    | 是否适配顶部安全区                                                                                          | `boolean`                     | `false`        |
+| `customClass`         | 根节点自定义类名                                                                                            | `string`                      | `''`           |
+| `customStyle`         | 根节点自定义样式                                                                                            | `StyleValue`                  | `''`           |
 
 `round` 为数字或字符串时按 px（375 稿）处理，`true` 使用主题大圆角令牌。center 模式四角全圆；四边模式只圆远离屏幕边缘的一侧。四边弹层进出场为整块滑入或滑出。
 
 ### Events
 
-| 事件名                   | 说明                  | 参数       |
-| ------------------------ | --------------------- | ---------- |
-| `update:modelValue`      | 更新 `v-model`        | `boolean`  |
-| `update:show`            | 更新兼容状态 `show`   | `boolean`  |
-| `open` / `close`         | 显示状态开始变化      | -          |
-| `opened` / `closed`      | 进入或离开动画完成    | -          |
-| `before-enter` / `enter` | 进入动画开始前 / 开始 | -          |
-| `before-leave` / `leave` | 离场动画开始前 / 开始 | -          |
-| `change`                 | 显示状态改变          | `{ show }` |
-| `click-overlay`          | 点击遮罩              | 原生事件   |
+| 事件名              | 说明                    | 参数       |
+| ------------------- | ----------------------- | ---------- |
+| `update:modelValue` | 显示状态更新（v-model） | `boolean`  |
+| `update:show`       | 更新兼容状态 `show`     | `boolean`  |
+| `open`              | 弹层开始打开            | -          |
+| `opened`            | 进入动画完成            | -          |
+| `close`             | 弹层开始关闭            | -          |
+| `closed`            | 离开动画完成            | -          |
+| `before-enter`      | 进入动画开始前          | -          |
+| `enter`             | 进入动画开始            | -          |
+| `before-leave`      | 离场动画开始前          | -          |
+| `leave`             | 离场动画开始            | -          |
+| `change`            | 显示状态改变            | `{ show }` |
+| `click-overlay`     | 点击遮罩                | 原生事件   |
 
 ### Slots
 

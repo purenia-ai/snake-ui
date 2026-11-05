@@ -62,24 +62,30 @@ const items = [
 
 ### Props
 
-| 参数                            | 说明                                                   | 类型                            | 默认值            |
-| ------------------------------- | ------------------------------------------------------ | ------------------------------- | ----------------- |
-| `items` / `list`                | 导航项列表；优先使用 `items`                           | `TabbarItem[]`                  | `[]`              |
-| `current`                       | 当前激活项的 `key`                                     | `string \| number`              | `''`              |
-| `modelValue`                    | 通过 `v-model` 绑定的激活项索引                        | `string \| number`              | `0`               |
-| `show` / `fixed`                | 显示导航栏、固定在页面底部                             | `boolean`                       | `true` / `true`   |
-| `safeAreaInsetBottom`           | 是否预留底部安全区                                     | `boolean`                       | `true`            |
-| `activeColor` / `inactiveColor` | 激活和未激活颜色                                       | `string`                        | 主色 / 弱化文字色 |
-| `bgColor`                       | 背景色                                                 | `string`                        | 表面背景色        |
-| `borderTop`                     | 是否显示顶部边框                                       | `boolean`                       | `true`            |
-| `hideTabBar`                    | 挂载时隐藏原生 tabBar；非原生 tabBar 页安全忽略        | `boolean`                       | `true`            |
-| `beforeSwitch`                  | 切换拦截器；返回 `true` 或 resolve 的 Promise 才会切换 | `(index) => boolean \| Promise` | -                 |
-| `midButton`                     | 是否启用中间凸起按钮                                   | `boolean`                       | `false`           |
-| `iconSize` / `midButtonSize`    | 常规图标和凸起图标尺寸，数字单位为 px（375 稿）        | `string \| number`              | `20` / `100`      |
-| `textSize` / `gap`              | 文字尺寸、图标与文字间距，数字单位为 px（375 稿）      | `string \| number`              | `11` / `5`        |
-| `height`                        | 导航栏高度，数字单位为 px（375 稿）                    | `string \| number`              | `52`              |
-| `zIndex`                        | 固定导航栏层级                                         | `number`                        | `120`             |
-| `customClass` / `customStyle`   | 根节点类名和样式                                       | `string` / `StyleValue`         | `''` / `''`       |
+| 参数                  | 说明                                                   | 类型                                             | 默认值         |
+| --------------------- | ------------------------------------------------------ | ------------------------------------------------ | -------------- |
+| `items`               | 导航项列表（推荐使用）                                 | `TabbarItem[]`                                   | `[]`           |
+| `list`                | 备用导航项列表，未传 `items` 时使用                    | `TabbarItem[]`                                   | `[]`           |
+| `current`             | 当前激活项的 `key`                                     | `string \| number`                               | `''`           |
+| `modelValue`          | 通过 `v-model` 绑定的激活项索引                        | `string \| number`                               | `0`            |
+| `show`                | 是否显示导航栏                                         | `boolean`                                        | `true`         |
+| `fixed`               | 是否固定在页面底部                                     | `boolean`                                        | `true`         |
+| `safeAreaInsetBottom` | 是否预留底部安全区                                     | `boolean`                                        | `true`         |
+| `customStyle`         | 根节点自定义样式                                       | `StyleValue`                                     | `''`           |
+| `customClass`         | 根节点自定义类名                                       | `string`                                         | `''`           |
+| `activeColor`         | 激活颜色                                               | `string`                                         | 主题主色       |
+| `inactiveColor`       | 未激活颜色                                             | `string`                                         | 主题弱化文字色 |
+| `bgColor`             | 导航栏背景色                                           | `string`                                         | 主题表面色     |
+| `borderTop`           | 是否显示顶部边框                                       | `boolean`                                        | `true`         |
+| `hideTabBar`          | 挂载时是否隐藏原生 tabBar，非原生 tabBar 页安全忽略    | `boolean`                                        | `true`         |
+| `beforeSwitch`        | 切换拦截器，返回 `true` 或 resolve 的 Promise 才会切换 | `(index: number) => boolean \| Promise<unknown>` | -              |
+| `midButton`           | 是否启用中间凸起按钮                                   | `boolean`                                        | `false`        |
+| `iconSize`            | 常规图标尺寸，数字单位为 px（375 稿）                  | `string \| number`                               | `20`           |
+| `midButtonSize`       | 中间凸起按钮图标尺寸，数字单位为 px（375 稿）          | `string \| number`                               | `50`           |
+| `textSize`            | 文字尺寸，数字单位为 px（375 稿）                      | `string \| number`                               | `11`           |
+| `gap`                 | 图标与文字间距，数字单位为 px（375 稿）                | `string \| number`                               | `2.5`          |
+| `height`              | 导航栏高度，数字单位为 px（375 稿）                    | `string \| number`                               | `52`           |
+| `zIndex`              | 固定导航栏层级                                         | `number`                                         | `120`          |
 
 ## 原生 tabBar
 
@@ -87,27 +93,31 @@ const items = [
 
 ### TabbarItem
 
-| 参数                            | 说明                                     | 类型                | 默认值       |
-| ------------------------------- | ---------------------------------------- | ------------------- | ------------ |
-| `key`                           | 导航项唯一标识                           | `string \| number`  | 当前索引     |
-| `text`                          | 导航文字                                 | `string`            | `''`         |
-| `icon` / `iconPath`             | 未选中图标名称，`iconPath` 优先          | `string`            | `''`         |
-| `selectedIconPath`              | 选中图标名称                             | `string`            | 未选中图标   |
-| `customIcon`                    | 图标字体前缀；传字符串时直接作为前缀     | `boolean \| string` | `false`      |
-| `pagePath`                      | 页面路径；传入后按当前页面自动确定激活项 | `string`            | `''`         |
-| `midButton`                     | 是否作为中间凸起项                       | `boolean`           | `false`      |
-| `width`                         | 单项宽度；任一项设置后其余项填充剩余空间 | `string \| number`  | 自动均分     |
-| `iconSize` / `textSize` / `gap` | 单项图标尺寸、文字尺寸、间距             | `string \| number`  | 继承组件属性 |
-| `badge` / `count`               | 角标文字或数量，`badge` 优先             | `string \| number`  | `undefined`  |
-| `isDot`                         | 是否仅显示点状角标                       | `boolean`           | `false`      |
-| `disabled`                      | 是否禁用点击                             | `boolean`           | `false`      |
+| 参数               | 说明                                                             | 类型                | 默认值       |
+| ------------------ | ---------------------------------------------------------------- | ------------------- | ------------ |
+| `key`              | 导航项唯一标识                                                   | `string \| number`  | 当前索引     |
+| `text`             | 导航文字                                                         | `string`            | `''`         |
+| `icon`             | 未选中图标名称，`iconPath` 优先                                  | `string`            | `''`         |
+| `iconPath`         | 未选中图标名称，优先于 `icon`                                    | `string`            | `''`         |
+| `selectedIconPath` | 选中图标名称，未设置时沿用未选中图标                             | `string`            | 未选中图标   |
+| `customIcon`       | 图标字体前缀，传 `true` 使用 `custom-icon`，传字符串直接作为前缀 | `boolean \| string` | `false`      |
+| `pagePath`         | 页面路径，传入后按当前页面自动确定激活项                         | `string`            | `''`         |
+| `midButton`        | 是否作为中间凸起项                                               | `boolean`           | `false`      |
+| `width`            | 单项宽度，任一项设置后其余项填充剩余空间                         | `string \| number`  | 自动均分     |
+| `iconSize`         | 单项图标尺寸                                                     | `string \| number`  | 继承组件属性 |
+| `textSize`         | 单项文字尺寸                                                     | `string \| number`  | 继承组件属性 |
+| `gap`              | 单项图标与文字间距                                               | `string \| number`  | 继承组件属性 |
+| `count`            | 角标数量，`badge` 优先                                           | `string \| number`  | -            |
+| `isDot`            | 是否仅显示点状角标                                               | `boolean`           | `false`      |
+| `disabled`         | 是否禁用点击                                                     | `boolean`           | `false`      |
+| `badge`            | 徽标文字或数字，优先于 `count`                                   | `string \| number`  | -            |
 
 ### Events
 
-| 事件名              | 触发时机                     | 参数        |
-| ------------------- | ---------------------------- | ----------- |
-| `change`            | 点击未禁用的导航项           | `key, item` |
-| `update:modelValue` | 点击无 `pagePath` 的导航项时 | `index`     |
+| 事件名              | 触发时机                     | 参数                                      |
+| ------------------- | ---------------------------- | ----------------------------------------- |
+| `change`            | 点击未禁用的导航项           | `key: string \| number, item: TabbarItem` |
+| `update:modelValue` | 点击无 `pagePath` 的导航项时 | `index: number`                           |
 
 `pagePath` 存在时，组件会调用 `uni.switchTab()`；不需要由父组件重复处理跳转。`beforeSwitch` 返回 `false` 或 rejected Promise 时，组件不发出事件、不更新值、也不跳转。
 

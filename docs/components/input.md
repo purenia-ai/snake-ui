@@ -51,30 +51,55 @@ Input 适合单行内容。多行输入使用 [Textarea](/components/textarea)�
 
 ### Props
 
-| 参数                                                    | 说明                                                  | 类型                            | 默认值            |
-| ------------------------------------------------------- | ----------------------------------------------------- | ------------------------------- | ----------------- |
-| `modelValue`                                            | v-model 值                                            | `string \| number`              | `''`              |
-| `type` / `password`                                     | text/number/idcard/digit/password/nickname 与密码模式 | `string \| boolean`             | `text`            |
-| `placeholder` / `placeholderStyle` / `placeholderColor` | 占位内容和样式                                        | `string`                        | 主题默认值        |
-| `maxlength` / `clearable` / `showPassword`              | 最大长度、清空和密码切换                              | `number \| boolean`             | `140` / `false`   |
-| `prefixIcon` / `suffixIcon`                             | 前后图标                                              | `string`                        | `''`              |
-| `border` / `shape` / `size`                             | none/surround/bottom、square/circle、尺寸             | `string`                        | `none` / `square` |
-| `disabled` / `readonly`                                 | 禁用和只读                                            | `boolean`                       | `false`           |
-| `formatter` / `formatTrigger` / `trim`                  | 格式化函数、input/blur 时机、失焦去空格               | `function \| string \| boolean` | -                 |
-| `focus` / `cursor` / `selectionStart` / `selectionEnd`  | 焦点与光标选择                                        | `boolean \| number`             | 原生默认值        |
-| `confirmType` / `confirmHold` / `holdKeyboard`          | 键盘确认配置                                          | `string \| boolean`             | `done` / `false`  |
-| `adjustPosition` / `cursorSpacing`                      | 键盘避让                                              | `boolean \| number`             | `true` / `0`      |
-| `customClass` / `customStyle`                           | 自定义类名和样式                                      | `string \| style`               | `''`              |
+| 参数               | 说明                                                                                         | 类型               | 默认值       |
+| ------------------ | -------------------------------------------------------------------------------------------- | ------------------ | ------------ |
+| `modelValue`       | 输入框的值（v-model）                                                                        | `string \| number` | `''`         |
+| `type`             | 输入类型，可选值 `text` / `number` / `idcard` / `digit` / `password`（密码遮罩）/ `nickname` | `InputType`        | `text`       |
+| `placeholder`      | 占位文本                                                                                     | `string`           | `请输入内容` |
+| `placeholderStyle` | 占位文本样式，仅支持 color、font-size、font-weight                                           | `string`           | `''`         |
+| `placeholderColor` | 占位文本颜色                                                                                 | `string`           | 主题占位色   |
+| `maxlength`        | 最大输入长度                                                                                 | `number`           | `140`        |
+| `clearable`        | 是否显示清空按钮（聚焦且有内容时）                                                           | `boolean`          | `false`      |
+| `showPassword`     | 是否显示密码可见切换图标                                                                     | `boolean`          | `false`      |
+| `prefixIcon`       | 前置图标名称                                                                                 | `string`           | `''`         |
+| `suffixIcon`       | 后置图标名称                                                                                 | `string`           | `''`         |
+| `border`           | 边框模式，可选值 `none`（无边框）/ `surround`（全边框）/ `bottom`（底部线）                  | `string`           | `none`       |
+| `shape`            | 形状，可选值 `square`（小圆角）/ `circle`（胶囊）                                            | `string`           | `square`     |
+| `size`             | 尺寸，可选值 `small` / `default` / `large`；在 Form 内未设置时跟随 Form                      | `string`           | `default`    |
+| `color`            | 文字颜色                                                                                     | `string`           | 主题文字色   |
+| `fontSize`         | 文字大小，数值按 px（375 稿）处理                                                            | `UnitValue`        | `14`         |
+| `inputAlign`       | 内容对齐方式，可选值 `left` / `center` / `right`                                             | `string`           | `left`       |
+| `disabled`         | 是否禁用                                                                                     | `boolean`          | `false`      |
+| `readonly`         | 是否只读                                                                                     | `boolean`          | `false`      |
+| `disabledColor`    | 禁用状态的背景色                                                                             | `string`           | 主题禁用底色 |
+| `formatter`        | 输入格式化函数，应为同步且无副作用                                                           | `Function`         | -            |
+| `formatTrigger`    | 格式化时机，可选值 `input` / `blur`                                                          | `string`           | `input`      |
+| `trim`             | 失焦时是否去除首尾空格                                                                       | `boolean`          | `false`      |
+| `focus`            | 是否自动获取焦点                                                                             | `boolean`          | `false`      |
+| `cursor`           | 聚焦时的光标位置                                                                             | `number`           | `-1`         |
+| `selectionStart`   | 光标起始位置，需与 `selectionEnd` 搭配使用                                                   | `number`           | `-1`         |
+| `selectionEnd`     | 光标结束位置，需与 `selectionStart` 搭配使用                                                 | `number`           | `-1`         |
+| `confirmType`      | 键盘右下角按钮文字，可选值 `done` / `go` / `next` / `search` / `send`                        | `string`           | `done`       |
+| `confirmHold`      | 点击确认键后是否保持键盘不收起                                                               | `boolean`          | `false`      |
+| `adjustPosition`   | 键盘弹起时是否自动上推页面                                                                   | `boolean`          | `true`       |
+| `holdKeyboard`     | 聚焦时点击页面是否保持键盘不收起                                                             | `boolean`          | `false`      |
+| `cursorSpacing`    | 光标与键盘的距离，单位 px                                                                    | `number`           | `0`          |
+| `customClass`      | 根节点自定义类名                                                                             | `string`           | `''`         |
+| `customStyle`      | 根节点自定义样式                                                                             | `StyleValue`       | `''`         |
 
 ### Events
 
-| 事件名                                   | 说明                   | 参数             |
-| ---------------------------------------- | ---------------------- | ---------------- |
-| `update:modelValue` / `input` / `change` | 值更新、输入和失焦确认 | `value`          |
-| `focus` / `blur`                         | 获取或失去焦点         | 原生事件         |
-| `confirm`                                | 点击键盘确认           | `(value, event)` |
-| `clear` / `click`                        | 清空、点击组件         | - / event        |
-| `keyboardheightchange`                   | 键盘高度变化           | 原生事件         |
+| 事件名                 | 说明               | 参数             |
+| ---------------------- | ------------------ | ---------------- |
+| `update:modelValue`    | 值更新（v-model）  | `value: string`  |
+| `input`                | 输入时触发         | `value: string`  |
+| `change`               | 失焦且值变化后触发 | `value: string`  |
+| `focus`                | 获得焦点           | 原生事件         |
+| `blur`                 | 失去焦点           | 原生事件         |
+| `confirm`              | 点击键盘确认键     | `(value, event)` |
+| `clear`                | 点击清空按钮       | -                |
+| `click`                | 点击组件           | 原生事件         |
+| `keyboardheightchange` | 键盘高度变化       | 原生事件         |
 
 ### Slots
 
@@ -100,4 +125,6 @@ Input 复用全局主题令牌：
 
 ## 类型定义
 
-从包根导入 `InputProps` 与 `InputEmits`。`formatter` 应保持同步且无副作用，异步校验交给 Form 规则处理。
+```ts
+import type { InputProps, InputEmits } from '@puresnake/snake-ui';
+```

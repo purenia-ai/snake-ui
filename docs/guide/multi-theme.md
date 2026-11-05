@@ -59,51 +59,78 @@ app.use(SnakeUI, {
 
 ## 默认色板速查
 
-未定制的令牌继承默认主题。完整色板如下：
+未定制的令牌继承默认主题。下表为亮色默认值（暗色模式另有独立色板）；颜色令牌可通过主题 API 覆盖。CSS 变量名按 `--snake-color-<token>` 映射（camelCase 转 kebab-case，如 `primaryDark` → `--snake-color-primary-dark`），尺寸与动效令牌为 `--snake-<token>` 静态值。
 
 ### 品牌与状态
 
-| 令牌                                                           | 默认值                                        | 用途                 |
-| -------------------------------------------------------------- | --------------------------------------------- | -------------------- |
-| `primary` / `primaryDark` / `primaryDeep` / `primaryDeeper`    | `#06d290` / `#2ebd7c` / `#26273a` / `#22242e` | 品牌绿七档阶梯       |
-| `primaryDisabled` / `primaryLight`                             | `#a6ebd3` / `rgba(6,210,144,0.1)`             | 禁用态与浅底         |
-| `primaryInk`                                                   | `#ffffff`                                     | 主色实心背景上的文字 |
-| `success` / `successDark` / `successDisabled` / `successLight` | `#19be6b` 系                                  | 成功态               |
-| `warning` / `warningDark` / `warningDisabled` / `warningLight` | `#ff9900` 系                                  | 警告态               |
-| `error` / `errorDark` / `errorDisabled` / `errorLight`         | `#fa3534` 系                                  | 错误态               |
-| `info` / `infoDark` / `infoDisabled` / `infoLight`             | `#909399` 系                                  | 信息态               |
+| 令牌               | 默认值      | 用途                 |
+| ------------------ | ----------- | -------------------- |
+| `primary`          | `#06d290`   | 品牌主色             |
+| `primaryDark`      | `#2ebd7c`   | 品牌深档（按压态）   |
+| `primaryDeep`      | `#26273a`   | 品牌深底             |
+| `primaryDeeper`    | `#22242e`   | 品牌最深底           |
+| `primaryDisabled`  | `#a6ebd3`   | 品牌禁用态           |
+| `primaryLight`     | `#06d2901a` | 品牌浅底（10% 透明） |
+| `primaryInk`       | `#ffffff`   | 主色实心背景上的文字 |
+| `success`          | `#19be6b`   | 成功态               |
+| `successDark`      | `#18b566`   | 成功深档             |
+| `successDisabled`  | `#71d5a1`   | 成功禁用态           |
+| `successLight`     | `#dbf1e1`   | 成功浅底             |
+| `warning`          | `#ff9900`   | 警告态               |
+| `warningDark`      | `#f29100`   | 警告深档             |
+| `warningDisabled`  | `#fcbd71`   | 警告禁用态           |
+| `warningLight`     | `#fdf6ec`   | 警告浅底             |
+| `error`            | `#fa3534`   | 错误态               |
+| `errorDark`        | `#dd6161`   | 错误深档             |
+| `errorDisabled`    | `#fab6b6`   | 错误禁用态           |
+| `errorLight`       | `#fef0f0`   | 错误浅底             |
+| `info`             | `#909399`   | 信息态               |
+| `infoDark`         | `#82848a`   | 信息深档             |
+| `infoDisabled`     | `#c8c9cc`   | 信息禁用态           |
+| `infoLight`        | `#f4f4f5`   | 信息浅底             |
+| `notice`           | `#ff9900`   | 通知栏强调色         |
+| `noticeBackground` | `#fdf6ec`   | 通知栏底色           |
+| `formError`        | `#fa3534`   | 表单校验错误色       |
 
 ### 文本与描边
 
-| 令牌              | 默认值                | 用途          |
-| ----------------- | --------------------- | ------------- |
-| `text`            | `#303133`             | 主要文字      |
-| `textSecondary`   | `#606266`             | 常规文字      |
-| `textMuted`       | `#909399`             | 次要/提示文字 |
-| `textLight`       | `#c0c4cc`             | 占位/弱文字   |
-| `white` / `black` | `#ffffff` / `#000000` | 纯色          |
-| `border`          | `#dcdfe6`             | 边框          |
-| `divider`         | `#e4e7ed`             | 分割线        |
+| 令牌            | 默认值    | 用途          |
+| --------------- | --------- | ------------- |
+| `text`          | `#303133` | 主要文字      |
+| `textSecondary` | `#606266` | 常规文字      |
+| `textMuted`     | `#909399` | 次要/提示文字 |
+| `textLight`     | `#c0c4cc` | 占位/弱文字   |
+| `white`         | `#ffffff` | 纯白          |
+| `black`         | `#000000` | 纯黑          |
+| `border`        | `#dcdfe6` | 边框          |
+| `divider`       | `#e4e7ed` | 分割线        |
 
 ### 背景与表面
 
-| 令牌              | 默认值                                | 用途          |
-| ----------------- | ------------------------------------- | ------------- |
-| `background`      | `#f6f6f6`                             | 页面背景      |
-| `surface`         | `#ffffff`                             | 卡片/面板表面 |
-| `surfaceMuted`    | `#f1f1f1`                             | 弱表面        |
-| `disabledBg`      | `#f1f1f1`                             | 禁用背景      |
-| `mask` / `shadow` | `rgba(0,0,0,0.4)` / `rgba(0,0,0,0.1)` | 遮罩与阴影    |
+| 令牌           | 默认值               | 用途          |
+| -------------- | -------------------- | ------------- |
+| `background`   | `#f6f6f6`            | 页面背景      |
+| `surface`      | `#ffffff`            | 卡片/面板表面 |
+| `surfaceMuted` | `#f1f1f1`            | 弱表面        |
+| `disabledBg`   | `#f1f1f1`            | 禁用背景      |
+| `mask`         | `rgba(0, 0, 0, 0.4)` | 遮罩          |
+| `shadow`       | `rgba(0, 0, 0, 0.1)` | 阴影          |
 
 ### 尺寸与动效
 
-| 令牌                                                          | 默认值                           | 用途         |
-| ------------------------------------------------------------- | -------------------------------- | ------------ |
-| `controlHeightSmall` / `controlHeight` / `controlHeightLarge` | `32px` / `40px` / `46px`         | 控件三档高度 |
-| `radiusSmall` / `radiusBase` / `radiusLarge`                  | `4px` / `6px` / `10px`           | 圆角三档     |
-| `durationFast` / `durationBase`                               | `180ms` / `300ms`                | 动效时长     |
-| `easingStandard`                                              | `cubic-bezier(0.2, 0.8, 0.2, 1)` | 标准缓动     |
-| `zIndexOverlay` / `zIndexPopup`                               | `10070` / `10075`                | 层级         |
+| 令牌                 | 默认值                           | 用途           |
+| -------------------- | -------------------------------- | -------------- |
+| `controlHeightSmall` | `32px`                           | 小尺寸控件高度 |
+| `controlHeight`      | `40px`                           | 默认控件高度   |
+| `controlHeightLarge` | `46px`                           | 大尺寸控件高度 |
+| `radiusSmall`        | `4px`                            | 小圆角         |
+| `radiusBase`         | `6px`                            | 基础圆角       |
+| `radiusLarge`        | `10px`                           | 大圆角         |
+| `durationFast`       | `180ms`                          | 快速动效时长   |
+| `durationBase`       | `300ms`                          | 基础动效时长   |
+| `easingStandard`     | `cubic-bezier(0.2, 0.8, 0.2, 1)` | 标准缓动       |
+| `zIndexOverlay`      | `10070`                          | 遮罩层级       |
+| `zIndexPopup`        | `10075`                          | 弹窗层级       |
 
 ## 让主题覆盖所有页面
 

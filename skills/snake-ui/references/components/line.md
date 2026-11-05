@@ -37,15 +37,16 @@ triggers: ['line', 'snake-line', 'Line', '分隔线']
 
 ### Props
 
-| 参数                          | 说明                                         | 类型                        | 默认值                 |
-| ----------------------------- | -------------------------------------------- | --------------------------- | ---------------------- |
-| `color`                       | 线条颜色                                     | `string`                    | `--snake-color-border` |
-| `length`                      | 长度，竖向表现为高度，可为百分比或带单位的值 | `string`                    | `100%`                 |
-| `direction`                   | 线条方向                                     | `row \| col`                | `row`                  |
-| `hairLine`                    | 是否显示半像素细线条                         | `boolean`                   | `true`                 |
-| `margin`                      | 与上下左右元素的间距                         | `string`                    | `0`                    |
-| `borderStyle`                 | 线条类型                                     | `solid \| dashed \| dotted` | `solid`                |
-| `customClass` / `customStyle` | 自定义类名和样式                             | `string \| object \| array` | `''`                   |
+| 参数          | 说明                                                                         | 类型              | 默认值     |
+| ------------- | ---------------------------------------------------------------------------- | ----------------- | ---------- |
+| `color`       | 线条颜色                                                                     | `string`          | 主题边框色 |
+| `length`      | 长度，竖向表现为高度，可为百分比或带单位的值                                 | `string`          | `100%`     |
+| `direction`   | 线条方向，可选值 `row`（横向）/ `col`（竖向）                                | `LineDirection`   | `row`      |
+| `hairLine`    | 是否显示半像素细线条                                                         | `boolean`         | `true`     |
+| `margin`      | 与上下左右元素的间距，如 `15px`、`10px 15px`                                 | `string`          | `0`        |
+| `borderStyle` | 线条类型，可选值 `solid`（实线）/ `dashed`（方形虚线）/ `dotted`（圆点虚线） | `LineBorderStyle` | `solid`    |
+| `customClass` | 根节点自定义类名                                                             | `string`          | `''`       |
+| `customStyle` | 根节点自定义样式                                                             | `StyleValue`      | `''`       |
 
 ## 主题变量
 

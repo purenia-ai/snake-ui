@@ -52,33 +52,44 @@ triggers: ['notice-bar', 'snake-notice-bar', 'NoticeBar', '通知栏']
 
 ### Props
 
-| 参数                                    | 说明                                         | 类型                        | 默认值               |
-| --------------------------------------- | -------------------------------------------- | --------------------------- | -------------------- |
-| `list` / `text`                         | 通知列表或文本                               | `string[] \| string`        | `[]` / `''`          |
-| `type`                                  | `primary/success/warning/error/info` 主题    | `string`                    | `warning`            |
-| `mode` / `direction`                    | `horizontal/vertical`，`row/column` 兼容写法 | `string`                    | `horizontal` / `row` |
-| `modelValue` / `show`                   | `v-model` / `v-model:show` 可见性            | `boolean`                   | `true`               |
-| `autoplay` / `playState`                | 是否自动播放、`play/paused` 播放状态         | `boolean \| string`         | `true` / `play`      |
-| `volumeIcon` / `moreIcon` / `closeIcon` | 左侧提示、更多、关闭图标                     | `boolean`                   | `false`              |
-| `bgColor` / `color` / `fontSize`        | 背景、文字颜色和字号                         | `string \| number`          | 主题默认值           |
-| `duration`                              | 纵向轮播间隔及横向静态消息停留时间（ms）     | `number`                    | `3000`               |
-| `speed`                                 | 横向滚动速度（px/s）                         | `number`                    | `40`                 |
-| `isCircular`                            | 横向是否无缝循环                             | `boolean`                   | `true`               |
-| `disableTouch`                          | 纵向轮播是否禁用手势                         | `boolean`                   | `true`               |
-| `borderRadius` / `padding`              | 圆角与内边距                                 | `string \| number`          | `0` / `9px 12px`     |
-| `noListHidden`                          | 无内容时是否隐藏                             | `boolean`                   | `true`               |
-| `customClass` / `customStyle`           | 自定义类名与样式                             | `string \| object \| array` | `''`                 |
+| 参数           | 说明                                                                  | 类型                 | 默认值           |
+| -------------- | --------------------------------------------------------------------- | -------------------- | ---------------- |
+| `list`         | 用于轮播或滚动的消息列表                                              | `string[]`           | `[]`             |
+| `text`         | 展示文本；传入数组时按列表轮播                                        | `string \| string[]` | `''`             |
+| `type`         | 主题类型，可选值 `primary` / `success` / `warning` / `error` / `info` | `string`             | `warning`        |
+| `mode`         | 展示模式，可选值 `horizontal`（横向滚动）/ `vertical`（纵向轮播）     | `NoticeBarMode`      | `horizontal`     |
+| `modelValue`   | 可见性（v-model）                                                     | `boolean`            | `true`           |
+| `show`         | 是否显示组件（v-model:show），未设置时跟随 `modelValue`               | `boolean`            | `true`           |
+| `autoplay`     | 是否自动播放                                                          | `boolean`            | `true`           |
+| `volumeIcon`   | 是否显示左侧提示图标                                                  | `boolean`            | `false`          |
+| `volumeSize`   | 左侧提示图标尺寸，数值按 px（375 稿）处理                             | `UnitValue`          | `17`             |
+| `moreIcon`     | 是否显示右侧"更多"图标                                                | `boolean`            | `false`          |
+| `closeIcon`    | 是否显示关闭图标                                                      | `boolean`            | `false`          |
+| `bgColor`      | 背景颜色                                                              | `string`             | 主题类型浅色背景 |
+| `color`        | 文字颜色                                                              | `string`             | 主题类型文字色   |
+| `fontSize`     | 文字大小，数值按 px（375 稿）处理                                     | `UnitValue`          | `14`             |
+| `duration`     | 纵向轮播间隔及横向静态消息停留时间，单位 ms                           | `number`             | `3000`           |
+| `speed`        | 横向滚动速度，单位 px/s                                               | `number`             | `40`             |
+| `isCircular`   | 横向是否无缝循环                                                      | `boolean`            | `true`           |
+| `playState`    | 播放状态，可选值 `play`（播放）/ `paused`（暂停）                     | `string`             | `play`           |
+| `disableTouch` | 纵向轮播是否禁用手势                                                  | `boolean`            | `true`           |
+| `borderRadius` | 圆角大小，数值按 px（375 稿）处理                                     | `UnitValue`          | `0`              |
+| `padding`      | 内边距                                                                | `string`             | `9px 12px`       |
+| `noListHidden` | 无内容时是否隐藏组件                                                  | `boolean`            | `true`           |
+| `customClass`  | 根节点自定义类名                                                      | `string`             | `''`             |
+| `customStyle`  | 根节点自定义样式                                                      | `StyleValue`         | `''`             |
 
 ### Events
 
-| 事件名                              | 触发时机                                 | 参数      |
-| ----------------------------------- | ---------------------------------------- | --------- |
-| `update:modelValue` / `update:show` | 关闭时同步可见性                         | `boolean` |
-| `click`                             | 点击当前通知                             | 当前索引  |
-| `change`                            | 纵向通知切换                             | 当前索引  |
-| `close`                             | 点击关闭图标                             | -         |
-| `getMore`                           | 点击更多图标                             | -         |
-| `end`                               | 非循环横向播放完成，或纵向消息完成一整轮 | -         |
+| 事件名              | 触发时机                                 | 参数      |
+| ------------------- | ---------------------------------------- | --------- |
+| `update:modelValue` | 关闭时同步 v-model 可见性                | `boolean` |
+| `update:show`       | 关闭时同步 v-model:show 可见性           | `boolean` |
+| `click`             | 点击当前通知                             | 当前索引  |
+| `change`            | 纵向通知切换                             | 当前索引  |
+| `close`             | 点击关闭图标                             | -         |
+| `getMore`           | 点击更多图标                             | -         |
+| `end`               | 非循环横向播放完成，或纵向消息完成一整轮 | -         |
 
 ## 主题变量
 

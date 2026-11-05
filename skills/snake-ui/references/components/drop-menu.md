@@ -57,17 +57,21 @@ const beforeToggle = ({ resolve }) => resolve(userHasPermission);
 
 #### Props
 
-| 参数                                      | 说明                 | 类型                        | 默认值              |
-| ----------------------------------------- | -------------------- | --------------------------- | ------------------- |
-| `activeColor` / `inactiveColor`           | 激活和默认标题颜色   | `string`                    | 主题色 / 正文色     |
-| `closeOnClickMask`                        | 点击遮罩关闭         | `boolean`                   | `true`              |
-| `closeOnClickSelf`                        | 再次点击当前标题关闭 | `boolean`                   | `true`              |
-| `duration`                                | 面板动画时长，ms     | `number`                    | `300`               |
-| `height`                                  | 菜单栏高度           | `string \| number`          | `40`                |
-| `borderBottom`                            | 是否显示底边         | `boolean`                   | `false`             |
-| `titleSize` / `menuIcon` / `menuIconSize` | 标题字号、图标和尺寸 | `string \| number`          | `14` / `down` / `9` |
-| `zIndex`                                  | 菜单和弹层层级基准   | `number`                    | `985`               |
-| `customClass` / `customStyle`             | 自定义类名和样式     | `string \| object \| array` | `''`                |
+| 参数               | 说明                                      | 类型         | 默认值         |
+| ------------------ | ----------------------------------------- | ------------ | -------------- |
+| `activeColor`      | 激活状态的标题颜色                        | `string`     | 主题色         |
+| `inactiveColor`    | 未激活状态的标题颜色                      | `string`     | 主题次要文字色 |
+| `closeOnClickMask` | 是否允许点击遮罩关闭                      | `boolean`    | `true`         |
+| `closeOnClickSelf` | 再次点击已展开标题时是否关闭              | `boolean`    | `true`         |
+| `duration`         | 面板动画持续时间，单位 ms                 | `number`     | `300`          |
+| `height`           | 标题菜单栏高度，数值按 px（375 稿）处理   | `UnitValue`  | `40`           |
+| `borderBottom`     | 是否显示菜单栏底部边框                    | `boolean`    | `false`        |
+| `titleSize`        | 标题文字尺寸，数值按 px（375 稿）处理     | `UnitValue`  | `14`           |
+| `menuIcon`         | 标题右侧图标名称                          | `string`     | `down`         |
+| `menuIconSize`     | 标题右侧图标尺寸，数值按 px（375 稿）处理 | `UnitValue`  | `9`            |
+| `zIndex`           | 菜单和弹层层级基准                        | `number`     | `985`          |
+| `customClass`      | 根节点自定义类名                          | `string`     | `''`           |
+| `customStyle`      | 根节点自定义样式                          | `StyleValue` | `''`           |
 
 #### Events
 
@@ -78,27 +82,28 @@ const beforeToggle = ({ resolve }) => resolve(userHasPermission);
 
 #### Expose
 
-| 方法                     | 说明                              |
-| ------------------------ | --------------------------------- |
-| `open(index)`            | 展开指定项                        |
-| `close()` / `colseAll()` | 关闭当前项；colseAll 保留历史拼写 |
-| `highlight(index?)`      | 只高亮指定标题，不展开面板        |
-| `updateDropMenuRect()`   | 主动重新测量菜单位置              |
+| 方法                   | 说明                           |
+| ---------------------- | ------------------------------ |
+| `open(index)`          | 展开指定项                     |
+| `close()`              | 关闭当前展开项                 |
+| `colseAll()`           | 关闭全部菜单项（保留历史拼写） |
+| `highlight(index?)`    | 只高亮指定标题，不展开面板     |
+| `updateDropMenuRect()` | 主动重新测量菜单位置           |
 
 ### DropMenuItem
 
 #### Props
 
-| 参数           | 说明                                             | 类型                        | 默认值  |
-| -------------- | ------------------------------------------------ | --------------------------- | ------- |
-| `modelValue`   | 当前选中值，支持 v-model                         | `unknown`                   | -       |
-| `title`        | 固定标题；为空时显示选中项 label                 | `string`                    | `''`    |
-| `options`      | `{ label, value, disabled? }[]`                  | `array`                     | `[]`    |
-| `disabled`     | 是否禁用菜单项                                   | `boolean`                   | `false` |
-| `height`       | 面板最大高度或 auto                              | `string \| number`          | `auto`  |
-| `show`         | 外部强制显示面板                                 | `boolean`                   | -       |
-| `beforeToggle` | 展开前回调，通过 `resolve(boolean)` 决定是否展开 | `function`                  | -       |
-| `customStyle`  | 面板自定义样式                                   | `string \| object \| array` | `''`    |
+| 参数           | 说明                                             | 类型                   | 默认值  |
+| -------------- | ------------------------------------------------ | ---------------------- | ------- |
+| `modelValue`   | 双向绑定的当前值，支持 v-model                   | `unknown`              | -       |
+| `title`        | 固定标题；为空时显示选中项 label                 | `string`               | `''`    |
+| `options`      | 可选项列表，格式 `{ label, value, disabled? }[]` | `DropMenuOption[]`     | `[]`    |
+| `disabled`     | 是否禁用菜单项                                   | `boolean`              | `false` |
+| `height`       | 面板最大高度，传 `auto` 表示不限制               | `UnitValue \| 'auto'`  | `auto`  |
+| `show`         | 外部强制显示面板                                 | `boolean`              | -       |
+| `beforeToggle` | 展开前回调，通过 `resolve(boolean)` 决定是否展开 | `DropMenuBeforeToggle` | -       |
+| `customStyle`  | 面板自定义样式                                   | `StyleValue`           | `''`    |
 
 #### Events
 

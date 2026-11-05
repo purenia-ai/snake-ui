@@ -48,41 +48,59 @@ preview: /pages/componentsA/calendar/index
 
 ### Props
 
-| 参数                                 | 说明                                      | 类型                        | 默认值                               |
-| ------------------------------------ | ----------------------------------------- | --------------------------- | ------------------------------------ |
-| `modelValue`                         | 双向绑定控制弹出与收起                    | `boolean`                   | `false`                              |
-| `mode`                               | 选择模式                                  | `date \| range`             | `date`                               |
-| `changeYear` / `changeMonth`         | 是否显示年份/月份切换按钮                 | `boolean`                   | `true`                               |
-| `maxYear` / `minYear`                | 可切换的最大/最小年份                     | `number \| string`          | `2050` / `1950`                      |
-| `minDate` / `maxDate`                | 最小/最大可选日期                         | `number \| string`          | `1950-01-01` / 今天                  |
-| `defaultDate`                        | 默认选中的日期，mode 为 date 时生效       | `string`                    | `''`                                 |
-| `startDate` / `endDate`              | 默认开始/结束日期，mode 为 range 时生效   | `string`                    | `''`                                 |
-| `defaultSelectToday`                 | 初始化时是否默认选中今天                  | `boolean`                   | `true`                               |
-| `showLunar`                          | 是否显示农历                              | `boolean`                   | `false`                              |
-| `showFestival`                       | 是否显示内置节日                          | `boolean`                   | `false`                              |
-| `festivals`                          | 节日配置 `{ '04-04': '清明节' }`          | `object`                    | `{}`                                 |
-| `holidays` / `workdays`              | 节假日/加班日列表                         | `string[]`                  | `[]`                                 |
-| `checkinMode`                        | 是否启用打卡签到模式                      | `boolean`                   | `false`                              |
-| `checkedDates`                       | 已打卡日期列表                            | `string[]`                  | `[]`                                 |
-| `todayChecked`                       | 今日是否已打卡                            | `boolean`                   | `false`                              |
-| `color`                              | 默认日期字体颜色                          | `string`                    | `--snake-color-text`                 |
-| `activeBgColor` / `activeColor`      | 选中日期背景/字体颜色                     | `string`                    | `--snake-color-primary` / white      |
-| `rangeBgColor` / `rangeColor`        | 范围内日期背景/字体颜色                   | `string`                    | 主题色浅色 / `--snake-color-primary` |
-| `monthArrowColor` / `yearArrowColor` | 月/年切换箭头颜色                         | `string`                    | 文本次要色 / 文本弱化色              |
-| `startText` / `endText`              | 起始/结束日期自定义文案                   | `string`                    | 语言包默认值                         |
-| `btnType`                            | 确定按钮样式类型                          | `string`                    | `primary`                            |
-| `toolTip`                            | 顶部提示文字                              | `string`                    | 语言包默认值                         |
-| `closeable`                          | 是否显示右上角关闭图标                    | `boolean`                   | `true`                               |
-| `isPage`                             | 是否在页面中直接显示，不使用弹窗          | `boolean`                   | `false`                              |
-| `readonly`                           | 是否只读，只读模式下禁止选择              | `boolean`                   | `false`                              |
-| `isChange`                           | 切换年月是否触发事件，mode 为 date 时生效 | `boolean`                   | `false`                              |
-| `isActiveCurrent`                    | 当前选中日期带选中效果                    | `boolean`                   | `true`                               |
-| `borderRadius`                       | 弹窗顶部左右两边的圆角值                  | `number \| string`          | `20`                                 |
-| `zIndex`                             | 弹出层级，0 使用弹层默认层级              | `number \| string`          | `0`                                  |
-| `maskCloseAble`                      | 是否允许点击遮罩关闭                      | `boolean`                   | `true`                               |
-| `safeAreaInsetBottom`                | 是否开启底部安全区适配                    | `boolean`                   | `false`                              |
-| `useDateSlot`                        | 是否启用自定义日期内容插槽                | `boolean`                   | `false`                              |
-| `customClass` / `customStyle`        | 自定义类名和样式                          | `string \| object \| array` | `''`                                 |
+| 参数                  | 说明                                                                         | 类型                     | 默认值         |
+| --------------------- | ---------------------------------------------------------------------------- | ------------------------ | -------------- |
+| `customStyle`         | 根节点自定义样式                                                             | `StyleValue`             | `''`           |
+| `customClass`         | 根节点自定义类名                                                             | `string`                 | `''`           |
+| `safeAreaInsetBottom` | 是否开启底部安全区适配                                                       | `boolean`                | `false`        |
+| `maskCloseAble`       | 是否允许点击遮罩关闭                                                         | `boolean`                | `true`         |
+| `modelValue`          | 双向绑定控制弹出与收起（v-model）                                            | `boolean`                | `false`        |
+| `zIndex`              | 弹出时的层级，`0` 表示使用弹层默认层级                                       | `number \| string`       | `0`            |
+| `changeYear`          | 是否显示年份切换按钮                                                         | `boolean`                | `true`         |
+| `changeMonth`         | 是否显示月份切换按钮                                                         | `boolean`                | `true`         |
+| `mode`                | 选择模式，可选值 `date`（单个日期）/ `range`（日期范围）                     | `CalendarMode`           | `date`         |
+| `maxYear`             | 可切换的最大年份                                                             | `number \| string`       | `2050`         |
+| `minYear`             | 可切换的最小年份                                                             | `number \| string`       | `1950`         |
+| `minDate`             | 最小可选日期，格式 `2024-01-01`，范围外日期禁用不可选                        | `number \| string`       | `1950-01-01`   |
+| `maxDate`             | 最大可选日期，格式 `2024-01-01`                                              | `number \| string`       | 今天           |
+| `borderRadius`        | 弹窗顶部左右两边的圆角值                                                     | `number \| string`       | `20`           |
+| `monthArrowColor`     | 月份切换按钮箭头颜色                                                         | `string`                 | 主题次要文字色 |
+| `yearArrowColor`      | 年份切换按钮箭头颜色                                                         | `string`                 | 主题弱化文字色 |
+| `color`               | 默认日期字体颜色                                                             | `string`                 | 主题文字色     |
+| `activeBgColor`       | 选中/起始结束日期背景色                                                      | `string`                 | 主题色         |
+| `activeColor`         | 选中/起始结束日期字体颜色                                                    | `string`                 | 主题白色       |
+| `rangeBgColor`        | 范围内日期背景色                                                             | `string`                 | 主题色浅色     |
+| `rangeColor`          | 范围内日期字体颜色                                                           | `string`                 | 主题色         |
+| `startText`           | 起始日期自定义文案，mode 为 `range` 时生效                                   | `string`                 | 语言包默认值   |
+| `endText`             | 结束日期自定义文案，mode 为 `range` 时生效                                   | `string`                 | 语言包默认值   |
+| `btnType`             | 确定按钮样式类型                                                             | `string`                 | `primary`      |
+| `isActiveCurrent`     | 当前选中日期是否带选中效果                                                   | `boolean`                | `true`         |
+| `defaultSelectToday`  | 初始化时是否默认选中今天，优先级低于 `defaultDate` / `startDate` / `endDate` | `boolean`                | `true`         |
+| `isChange`            | 切换年月是否触发事件，mode 为 `date` 时生效                                  | `boolean`                | `false`        |
+| `closeable`           | 是否显示右上角关闭图标                                                       | `boolean`                | `true`         |
+| `toolTip`             | 顶部提示文字                                                                 | `string`                 | 语言包默认值   |
+| `showLunar`           | 是否显示农历                                                                 | `boolean`                | `false`        |
+| `isPage`              | 是否在页面中直接显示，不使用弹窗                                             | `boolean`                | `false`        |
+| `defaultDate`         | 默认选中的日期，mode 为 `date` 时生效，格式 `2024-01-01`                     | `string`                 | `''`           |
+| `startDate`           | 默认选中的开始日期，mode 为 `range` 时生效，格式 `2024-01-01`                | `string`                 | `''`           |
+| `endDate`             | 默认选中的结束日期，mode 为 `range` 时生效，格式 `2024-01-01`                | `string`                 | `''`           |
+| `readonly`            | 是否只读，只读模式下禁止点击选择日期                                         | `boolean`                | `false`        |
+| `checkedDates`        | 已打卡日期列表，格式 `['2024-01-01']`                                        | `string[]`               | `[]`           |
+| `checkedBgColor`      | 打卡日期背景色                                                               | `string`                 | 主题警告色     |
+| `checkedColor`        | 打卡日期字体颜色                                                             | `string`                 | 主题白色       |
+| `todayChecked`        | 今日是否已打卡                                                               | `boolean`                | `false`        |
+| `todayCheckedBgColor` | 今日已打卡背景色                                                             | `string`                 | 主题成功色     |
+| `uncheckedBgColor`    | 未打卡日期背景色                                                             | `string`                 | 主题浅文字色   |
+| `uncheckedColor`      | 未打卡日期字体颜色                                                           | `string`                 | 主题白色       |
+| `checkinMode`         | 是否启用打卡签到模式（未打卡日期显示灰色）                                   | `boolean`                | `false`        |
+| `holidays`            | 节假日列表，格式 `['2024-01-01']`                                            | `string[]`               | `[]`           |
+| `holidayColor`        | 节假日文字颜色                                                               | `string`                 | 主题错误色     |
+| `workdays`            | 加班日列表，格式 `['2024-01-06']`                                            | `string[]`               | `[]`           |
+| `workdayColor`        | 加班日文字颜色                                                               | `string`                 | 主题色         |
+| `festivals`           | 节日配置，格式 `{ '2024-04-04': '清明节' }`                                  | `Record<string, string>` | `{}`           |
+| `festivalColor`       | 节日文字颜色                                                                 | `string`                 | 主题色         |
+| `showFestival`        | 是否显示内置节日（中国传统节日）                                             | `boolean`                | `false`        |
+| `useDateSlot`         | 是否启用自定义日期内容插槽                                                   | `boolean`                | `false`        |
 
 ### Events
 

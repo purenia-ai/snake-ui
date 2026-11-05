@@ -28,6 +28,7 @@ const componentDescriptions: Partial<Record<ComponentItem['link'], string>> = {
     '/components/button': '触发提交、确认和页面操作，覆盖加载、禁用与开放能力。',
     '/components/form': '组织表单字段、校验规则和错误提示，支持嵌套数据。',
     '/components/input': '采集文本、数字和密码，支持格式化与表单校验联动。',
+    '/components/verification-code': '维护验证码倒计时状态与文案，支持跨页面续跑，界面由宿主自由组合。',
     '/components/upload': '选择、预览并上传图片、视频或文件，支持自定义上传。',
     '/components/popup': '承载对话、选择器和底部面板，处理遮罩、滚动与安全区。',
     '/components/tabbar': '构建应用一级底部导航，支持原生 tabBar 替换和安全区。',
@@ -94,6 +95,7 @@ const componentGroupDefinitions: ComponentGroupDefinition[] = [
             { name: 'Search', title: '搜索框', link: '/components/search' },
             { name: 'Select', title: '列选择器', link: '/components/select' },
             { name: 'Upload', title: '文件上传', link: '/components/upload' },
+            { name: 'VerificationCode', title: '验证码倒计时', link: '/components/verification-code' },
             { name: 'Calendar', title: '日历', link: '/components/calendar' }
         ]
     },

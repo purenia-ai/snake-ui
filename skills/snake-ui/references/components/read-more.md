@@ -38,18 +38,19 @@ triggers: ['read-more', 'snake-read-more', 'ReadMore', '阅读更多']
 
 ### Props
 
-| 参数                          | 说明                                  | 类型                        | 默认值                    |
-| ----------------------------- | ------------------------------------- | --------------------------- | ------------------------- |
-| `showHeight`                  | 显示占位高度，数值按 px（375 稿）处理 | `number \| string`          | `200`                     |
-| `toggle`                      | 展开后是否显示收起按钮                | `boolean`                   | `false`                   |
-| `closeText`                   | 收起状态的提示文字                    | `string`                    | 语言包默认值              |
-| `openText`                    | 展开状态的提示文字                    | `string`                    | 语言包默认值              |
-| `color`                       | 提示文字颜色                          | `string`                    | `--snake-color-primary`   |
-| `fontSize`                    | 提示文字大小，数值按 px（375 稿）处理 | `number \| string`          | `14`                      |
-| `shadowStyle`                 | 收起时覆盖在内容底部的阴影样式        | `object \| array`           | 渐隐到 surface 的默认阴影 |
-| `textIndent`                  | 段落首行缩进                          | `string`                    | `2em`                     |
-| `index`                       | open/close 事件回调中的标识值         | `number \| string`          | `''`                      |
-| `customClass` / `customStyle` | 自定义类名和样式                      | `string \| object \| array` | `''`                      |
+| 参数          | 说明                                  | 类型               | 默认值                    |
+| ------------- | ------------------------------------- | ------------------ | ------------------------- |
+| `customStyle` | 根节点自定义样式                      | `StyleValue`       | `''`                      |
+| `customClass` | 根节点自定义类名                      | `string`           | `''`                      |
+| `showHeight`  | 显示占位高度，数值按 px（375 稿）处理 | `UnitValue`        | `200`                     |
+| `toggle`      | 展开后是否显示收起按钮                | `boolean`          | `false`                   |
+| `closeText`   | 收起状态的提示文字                    | `string`           | 语言包默认值              |
+| `openText`    | 展开状态的提示文字                    | `string`           | 语言包默认值              |
+| `color`       | 提示文字颜色                          | `string`           | 主题色                    |
+| `fontSize`    | 提示文字大小，数值按 px（375 稿）处理 | `UnitValue`        | `14`                      |
+| `shadowStyle` | 收起时覆盖在内容底部的阴影样式        | `StyleValue`       | 渐隐到 surface 的默认阴影 |
+| `textIndent`  | 段落首行缩进                          | `string`           | `2em`                     |
+| `index`       | open/close 事件回调中的标识值         | `number \| string` | `''`                      |
 
 ### Events
 

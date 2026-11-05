@@ -68,23 +68,27 @@ function onConfirm(values) {
 
 ### Props
 
-| 参数                          | 说明                           | 类型                                                 | 默认值                         |
-| ----------------------------- | ------------------------------ | ---------------------------------------------------- | ------------------------------ |
-| `list`                        | 列数据                         | `array`                                              | `[]`                           |
-| `modelValue`                  | 双向绑定控制弹出与收起         | `boolean`                                            | `false`                        |
-| `mode`                        | 模式选择                       | `single-column \| mutil-column \| mutil-column-auto` | `single-column`                |
-| `labelName` / `valueName`     | 自定义 label/value 属性名      | `string`                                             | `label` / `value`              |
-| `childName`                   | 多列联动模式的 children 属性名 | `string`                                             | `children`                     |
-| `defaultValue`                | 默认选中的下标数组             | `number[]`                                           | `[0]`                          |
-| `preserveSelection`           | 是否保留上次确认的选择         | `boolean`                                            | `true`                         |
-| `title`                       | 顶部标题                       | `string`                                             | `''`                           |
-| `cancelText` / `confirmText`  | 取消/确认按钮文字              | `string`                                             | 语言包默认值                   |
-| `cancelColor`                 | 取消按钮颜色                   | `string`                                             | `--snake-color-text-secondary` |
-| `confirmColor`                | 确认按钮颜色                   | `string`                                             | `--snake-color-primary`        |
-| `zIndex`                      | 弹出层级，0 使用弹层默认层级   | `number \| string`                                   | `0`                            |
-| `maskCloseAble`               | 是否允许点击遮罩关闭           | `boolean`                                            | `true`                         |
-| `safeAreaInsetBottom`         | 是否开启底部安全区适配         | `boolean`                                            | `false`                        |
-| `customClass` / `customStyle` | 自定义类名和样式               | `string \| object \| array`                          | `''`                           |
+| 参数                  | 说明                                                                                          | 类型                             | 默认值          |
+| --------------------- | --------------------------------------------------------------------------------------------- | -------------------------------- | --------------- |
+| `customStyle`         | 根节点自定义样式                                                                              | `StyleValue`                     | `''`            |
+| `customClass`         | 根节点自定义类名                                                                              | `string`                         | `''`            |
+| `list`                | 列数据，`mutil-column` 模式为二维数组                                                         | `SelectItem[] \| SelectItem[][]` | `[]`            |
+| `border`              | 是否显示边框（当前版本未参与渲染，仅作声明保留）                                              | `boolean`                        | `true`          |
+| `modelValue`          | 双向绑定控制选择器的弹出与收起（v-model）                                                     | `boolean`                        | `false`         |
+| `cancelColor`         | 取消按钮的颜色                                                                                | `string`                         | 主题次要文字色  |
+| `confirmColor`        | 确认按钮的颜色                                                                                | `string`                         | 主题色          |
+| `zIndex`              | 弹出时的层级，`0` 表示使用弹层默认层级                                                        | `UnitValue`                      | `0`             |
+| `safeAreaInsetBottom` | 是否开启底部安全区适配                                                                        | `boolean`                        | `false`         |
+| `maskCloseAble`       | 是否允许通过点击遮罩关闭选择器                                                                | `boolean`                        | `true`          |
+| `defaultValue`        | 默认选中的下标数组                                                                            | `number[]`                       | `[0]`           |
+| `preserveSelection`   | 是否保留用户上次确认的选择                                                                    | `boolean`                        | `true`          |
+| `mode`                | 模式，可选值 `single-column`（单列）/ `mutil-column`（多列）/ `mutil-column-auto`（多列联动） | `SelectMode`                     | `single-column` |
+| `valueName`           | 自定义 value 属性名                                                                           | `string`                         | `'value'`       |
+| `labelName`           | 自定义 label 属性名                                                                           | `string`                         | `'label'`       |
+| `childName`           | 自定义多列联动模式的 children 属性名                                                          | `string`                         | `'children'`    |
+| `title`               | 顶部标题                                                                                      | `string`                         | `''`            |
+| `cancelText`          | 取消按钮的文字                                                                                | `string`                         | 语言包默认值    |
+| `confirmText`         | 确认按钮的文字                                                                                | `string`                         | 语言包默认值    |
 
 ### Events
 
@@ -94,6 +98,7 @@ function onConfirm(values) {
 | `confirm`           | 点击确认按钮             | `[{ value, label, extra? }]` |
 | `cancel`            | 点击取消按钮             | `[{ value, label, extra? }]` |
 | `close`             | 点击遮罩等非按钮方式关闭 | -                            |
+| `click`             | 点击触发入口（兼容声明） | -                            |
 
 ## 主题变量
 

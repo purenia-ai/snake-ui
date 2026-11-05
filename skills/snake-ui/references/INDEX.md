@@ -61,6 +61,7 @@
 - [Tooltip 文字提示](components/tooltip.md)
 - [Transition 过渡动画](components/transition.md)
 - [Upload 文件上传](components/upload.md)
+- [VerificationCode 验证码倒计时](components/verification-code.md)
 
 ## cms
 

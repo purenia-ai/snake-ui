@@ -33,22 +33,28 @@ H5 中组件可通过 Tab 聚焦，并使用 Enter 或空格切换。`disabled` 
 
 ### Props
 
-| 参数                            | 说明             | 类型                          | 默认值           |
-| ------------------------------- | ---------------- | ----------------------------- | ---------------- |
-| `modelValue`                    | 当前值           | `boolean \| string \| number` | `false`          |
-| `activeValue` / `inactiveValue` | 开启和关闭值     | 同 modelValue                 | `true` / `false` |
-| `loading` / `disabled`          | 加载和禁用       | `boolean`                     | `false`          |
-| `size` / `space`                | 开关尺寸和内边距 | `UnitValue`                   | `50` / `2`       |
-| `activeColor` / `inactiveColor` | 开启和关闭颜色   | `string`                      | 主题默认值       |
-| `vibrateShort`                  | 切换时尝试短震动 | `boolean`                     | `false`          |
-| `customClass` / `customStyle`   | 自定义类名和样式 | `string \| style`             | `''`             |
+| 参数            | 说明                                                                                   | 类型                    | 默认值     |
+| --------------- | -------------------------------------------------------------------------------------- | ----------------------- | ---------- |
+| `modelValue`    | 当前值（v-model）                                                                      | `SwitchValue`           | `false`    |
+| `activeValue`   | 开启状态对应的值                                                                       | `SwitchValue`           | `true`     |
+| `inactiveValue` | 关闭状态对应的值                                                                       | `SwitchValue`           | `false`    |
+| `loading`       | 是否显示加载状态，加载中不可切换                                                       | `boolean`               | `false`    |
+| `disabled`      | 是否禁用交互                                                                           | `boolean`               | `false`    |
+| `size`          | 开关尺寸，支持数值或 `small` / `default` / `large`；未设置时跟随 FormItem，兜底为 `25` | `UnitValue \| FormSize` | -          |
+| `activeColor`   | 开启状态颜色                                                                           | `string`                | 主题主色   |
+| `inactiveColor` | 关闭状态颜色                                                                           | `string`                | 主题边框色 |
+| `space`         | 滑块与轨道之间的内边距                                                                 | `UnitValue`             | `1`        |
+| `vibrateShort`  | 切换时是否触发短震动                                                                   | `boolean`               | `false`    |
+| `customClass`   | 根节点自定义类名                                                                       | `string`                | `''`       |
+| `customStyle`   | 根节点自定义样式                                                                       | `StyleValue`            | `''`       |
 
 ### Events
 
-| 事件名                         | 说明                     | 参数  |
-| ------------------------------ | ------------------------ | ----- |
-| `update:modelValue` / `change` | 状态更新                 | 新值  |
-| `click`                        | 点击组件，禁用时也会触发 | event |
+| 事件名              | 说明                     | 参数                 |
+| ------------------- | ------------------------ | -------------------- |
+| `update:modelValue` | 状态更新（v-model）      | `value: SwitchValue` |
+| `change`            | 状态变化时触发           | `value: SwitchValue` |
+| `click`             | 点击组件，禁用时也会触发 | `event`              |
 
 ## 主题变量
 

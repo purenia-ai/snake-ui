@@ -26,18 +26,20 @@ triggers: ['loading', 'snake-loading', 'Loading', '加载']
 
 ### Props
 
-| 参数                          | 说明                              | 类型                                  | 默认值            |
-| ----------------------------- | --------------------------------- | ------------------------------------- | ----------------- |
-| `show`                        | 是否显示                          | `boolean`                             | `true`            |
-| `type`                        | 加载形态                          | `circular \| spinner \| dots \| wave` | `circular`        |
-| `color`                       | 图标颜色                          | `string`                              | Snake 主色        |
-| `size`                        | 图标尺寸，数字按 px（375 稿）处理 | `string \| number`                    | `17`              |
-| `text`                        | 默认文字                          | `string`                              | `''`              |
-| `textColor` / `textSize`      | 文字颜色与尺寸                    | `string` / `string \| number`         | 次要文字色 / `12` |
-| `direction`                   | 图标与文字排列方向                | `horizontal \| vertical`              | `vertical`        |
-| `inheritColor`                | 是否继承父级颜色                  | `boolean`                             | `false`           |
-| `duration`                    | 动画周期，单位 ms                 | `number`                              | `800`             |
-| `customClass` / `customStyle` | 根节点类名与样式                  | `string` / `StyleValue`               | `''`              |
+| 参数           | 说明                                                                                       | 类型               | 默认值     |
+| -------------- | ------------------------------------------------------------------------------------------ | ------------------ | ---------- |
+| `show`         | 是否显示                                                                                   | `boolean`          | `true`     |
+| `type`         | 加载形态，可选值 `circular`（圆环）/ `spinner`（旋转条）/ `dots`（跳动点）/ `wave`（波浪） | `LoadingType`      | `circular` |
+| `color`        | 图标颜色                                                                                   | `string`           | 主题色     |
+| `size`         | 图标尺寸，数值按 px（375 稿）处理                                                          | `number \| string` | `17`       |
+| `text`         | 默认文字                                                                                   | `string`           | `''`       |
+| `textColor`    | 文字颜色                                                                                   | `string`           | 次要文字色 |
+| `textSize`     | 文字大小，数值按 px（375 稿）处理                                                          | `number \| string` | `12`       |
+| `direction`    | 图标与文字排列方向，可选值 `horizontal`（水平）/ `vertical`（垂直）                        | `LoadingDirection` | `vertical` |
+| `inheritColor` | 是否继承父级颜色                                                                           | `boolean`          | `false`    |
+| `duration`     | 动画周期，单位 ms                                                                          | `number`           | `800`      |
+| `customClass`  | 根节点自定义类名                                                                           | `string`           | `''`       |
+| `customStyle`  | 根节点自定义样式                                                                           | `StyleValue`       | `''`       |
 
 ### Slots
 

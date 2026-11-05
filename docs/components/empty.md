@@ -43,20 +43,21 @@ preview: /pages/componentsA/empty/index
 
 ### Props
 
-| 参数                  | 说明                                                                                           | 类型                        | 默认值       |
-| --------------------- | ---------------------------------------------------------------------------------------------- | --------------------------- | ------------ |
-| `show`                | 是否显示                                                                                       | `boolean`                   | `true`       |
-| `mode`                | 语义模式：data/list/search/page/order/coupon/favor/permission/history/message/wifi/address/car | `string`                    | `data`       |
-| `src`                 | 自定义图片地址                                                                                 | `string`                    | `''`         |
-| `icon`                | 自定义图标名或图片地址                                                                         | `string`                    | `''`         |
-| `iconColor`           | 图标颜色                                                                                       | `string`                    | 主题弱文本色 |
-| `iconSize`            | 图标或图片尺寸                                                                                 | `string \| number`          | `80`         |
-| `text`                | 提示文字；为空时使用模式默认文案                                                               | `string`                    | `''`         |
-| `color` / `textColor` | 文字颜色，textColor 优先                                                                       | `string`                    | 主题弱文本色 |
-| `fontSize`            | 文字大小                                                                                       | `string \| number`          | `14`         |
-| `marginTop`           | 组件顶部外边距                                                                                 | `string \| number`          | `0`          |
-| `customClass`         | 自定义类名                                                                                     | `string`                    | `''`         |
-| `customStyle`         | 根容器样式                                                                                     | `string \| object \| array` | `''`         |
+| 参数          | 说明                                                                                                                                                    | 类型         | 默认值         |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | -------------- |
+| `show`        | 是否显示组件                                                                                                                                            | `boolean`    | `true`         |
+| `mode`        | 语义模式，可选值 `data` / `list` / `search` / `page` / `order` / `coupon` / `favor` / `permission` / `history` / `message` / `wifi` / `address` / `car` | `EmptyMode`  | `data`         |
+| `src`         | 自定义图片地址，优先于模式图标                                                                                                                          | `string`     | `''`           |
+| `icon`        | 自定义图标名或图片地址                                                                                                                                  | `string`     | `''`           |
+| `iconColor`   | 图标颜色                                                                                                                                                | `string`     | 主题浅文字色   |
+| `iconSize`    | 图标或图片尺寸，数值按 px（375 稿）处理                                                                                                                 | `UnitValue`  | `80`           |
+| `text`        | 展示文本，为空时使用模式默认文案                                                                                                                        | `string`     | `''`           |
+| `color`       | 文字颜色，设置后覆盖 `textColor`                                                                                                                        | `string`     | `''`           |
+| `textColor`   | 文字颜色默认值                                                                                                                                          | `string`     | 主题弱化文字色 |
+| `fontSize`    | 文字尺寸，数值按 px（375 稿）处理                                                                                                                       | `UnitValue`  | `14`           |
+| `marginTop`   | 组件顶部外边距，数值按 px（375 稿）处理                                                                                                                 | `UnitValue`  | `0`            |
+| `customClass` | 根节点自定义类名                                                                                                                                        | `string`     | `''`           |
+| `customStyle` | 根节点自定义样式                                                                                                                                        | `StyleValue` | `''`           |
 
 ### Slots
 
