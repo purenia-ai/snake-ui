@@ -66,6 +66,7 @@ export * from './components/snake-textarea/types';
 export * from './components/snake-checkbox/types';
 export * from './components/snake-checkbox-group/types';
 export * from './components/snake-count-down/types';
+export * from './components/snake-verification-code/types';
 export * from './components/snake-radio/types';
 export * from './components/snake-radio-group/types';
 export * from './components/snake-switch/types';

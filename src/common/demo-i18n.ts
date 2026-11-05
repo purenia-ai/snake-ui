@@ -750,6 +750,7 @@ const demoTitles: Record<string, string> = {
     link: 'Link',
     calendar: 'Calendar',
     'count-down': 'Count Down',
+    'verification-code': 'Verification Code',
     'qr-code': 'QR Code',
     form: 'Form',
     input: 'Input',
@@ -821,7 +822,18 @@ Object.assign(englishMessages, {
     运动鞋: 'Sneakers',
     复古包: 'Vintage bags',
     'V1 装修协议渲染的富文本内容。': 'Rich text rendered by the v1 decoration protocol.',
-    'V2 协议富文本模块，内容经过安全过滤。': 'V2 rich text block with sanitized content.'
+    'V2 协议富文本模块，内容经过安全过滤。': 'V2 rich text block with sanitized content.',
+    '无 UI 的验证码倒计时状态机，文案与按钮由宿主自由组合。':
+        'A headless SMS countdown state machine; host renders the label and button freely.',
+    请输入手机号: 'Enter mobile number',
+    重置倒计时: 'Reset countdown',
+    等待开始倒计时: 'Waiting to start',
+    最近事件: 'Latest event',
+    倒计时秒数: 'Countdown seconds',
+    跨页面续跑: 'Keep running across pages',
+    开始文案: 'Start text',
+    倒计时文案: 'Counting text',
+    结束文案: 'End text'
 });
 
 export function demoText(value: string): string {
