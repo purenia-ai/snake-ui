@@ -901,6 +901,47 @@ Object.assign(englishMessages, {
     添加文件: 'Add files'
 });
 
+Object.assign(englishMessages, {
+    '弹出层支持从页面不同方向出现，并可组合圆角、关闭按钮、遮罩与嵌入模式。':
+        'Popups can enter from any direction and combine rounded corners, a close button, overlays and embedded mode.',
+    方向: 'Placement',
+    左侧: 'Left',
+    右侧: 'Right',
+    点击方向按当前参数打开: 'Tap a placement to open with the current settings',
+    '这是一个可交互的弹出层。': 'This is an interactive popup.',
+    关闭弹窗: 'Close popup',
+    预置场景: 'Presets',
+    分享面板: 'Share sheet',
+    确认对话框: 'Confirm dialog',
+    筛选抽屉: 'Filter drawer',
+    分享到: 'Share to',
+    微信: 'WeChat',
+    朋友圈: 'Moments',
+    收藏: 'Favorites',
+    更多: 'More',
+    取消: 'Cancel',
+    '删除这条记录？': 'Delete this record?',
+    '删除后无法恢复，请确认后继续。': 'This cannot be undone. Continue?',
+    确认删除: 'Delete',
+    已删除: 'Deleted',
+    筛选: 'Filters',
+    筛选条件: 'Filter condition',
+    确定: 'Confirm',
+    嵌入模式: 'Embedded mode',
+    '嵌入模式让弹层回到文档流并随内容撑高，不遮挡页面。':
+        'Embedded mode keeps the panel in the document flow and lets its content set the height.',
+    关闭按钮: 'Close button',
+    关闭按钮位置: 'Close button position',
+    关闭按钮大小: 'Close button size',
+    左上: 'Top left',
+    右上: 'Top right',
+    左下: 'Bottom left',
+    右下: 'Bottom right',
+    缩放动画: 'Zoom animation',
+    遮罩透明度: 'Overlay opacity',
+    底部安全区: 'Bottom safe area'
+});
+
 export function demoText(value: string): string {
     return currentLocale.value.name === 'en-US' ? (englishMessages[value] ?? value) : value;
 }
