@@ -59,9 +59,9 @@ const controls: DemoControl[] = [
         key: 'emptyIconSize',
         label: '图标大小',
         type: 'slider',
-        defaultValue: 60,
+        defaultValue: 96,
         min: 36,
-        max: 90,
+        max: 120,
         step: 6,
         unit: 'px'
     },

@@ -24,7 +24,7 @@ triggers: ['empty', 'snake-empty', 'Empty', '空状态']
 ## 自定义图片与操作区
 
 ```vue
-<snake-empty src="/static/empty.png" :icon-size="160" text="还没有收藏">
+<snake-empty src="/static/empty.png" :image-size="160" text="还没有收藏">
   <template #bottom><snake-button size="small">去逛逛</snake-button></template>
 </snake-empty>
 ```
@@ -52,7 +52,8 @@ triggers: ['empty', 'snake-empty', 'Empty', '空状态']
 | `src`         | 自定义图片地址，优先于模式图标                                                                                                                          | `string`     | `''`           |
 | `icon`        | 自定义图标名或图片地址                                                                                                                                  | `string`     | `''`           |
 | `iconColor`   | 图标颜色                                                                                                                                                | `string`     | 主题浅文字色   |
-| `iconSize`    | 图标或图片尺寸，数值按 px（375 稿）处理                                                                                                                 | `UnitValue`  | `80`           |
+| `iconSize`    | 字体图标尺寸（em 字号），数值按 px（375 稿）处理                                                                                                        | `UnitValue`  | `96`           |
+| `imageSize`   | 图片（`src` / 图片地址形态）尺寸，与字体图标分开计量，数值按 px（375 稿）处理                                                                           | `UnitValue`  | `160`          |
 | `text`        | 展示文本，为空时使用模式默认文案                                                                                                                        | `string`     | `''`           |
 | `color`       | 文字颜色，设置后覆盖 `textColor`                                                                                                                        | `string`     | `''`           |
 | `textColor`   | 文字颜色默认值                                                                                                                                          | `string`     | 主题弱化文字色 |

@@ -29,8 +29,10 @@ export interface EmptyProps {
     icon?: string;
     /** 图标颜色。 */
     iconColor?: string;
-    /** 图标尺寸，数值按 px（375 稿）处理。 */
+    /** 字体图标尺寸（em 字号），数值按 px（375 稿）处理。 */
     iconSize?: UnitValue;
+    /** 图片（`src` / 图片地址形态）尺寸，与字体图标分开计量，数值按 px（375 稿）处理。 */
+    imageSize?: UnitValue;
     /** 展示文本。 */
     text?: string;
     /** 内容颜色。 */

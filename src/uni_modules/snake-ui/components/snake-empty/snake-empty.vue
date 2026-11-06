@@ -21,7 +21,6 @@
 import { computed } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import { translate } from '../../locale';
-import Icon from '../snake-icon/snake-icon.vue';
 import type { EmptyProps } from './types';
 
 defineOptions({ name: 'Empty', options: { virtualHost: true, styleIsolation: 'shared' } });
@@ -31,7 +30,8 @@ const props = withDefaults(defineProps<EmptyProps>(), {
     src: '',
     icon: '',
     iconColor: 'var(--snake-color-text-light, #c0c4cc)',
-    iconSize: 80,
+    iconSize: 96,
+    imageSize: 160,
     text: '',
     color: '',
     textColor: 'var(--snake-color-text-muted, #909399)',
@@ -75,7 +75,8 @@ const modeIcons: Record<string, string> = {
 };
 const iconName = computed(() => source.value || modeIcons[props.mode] || 'image');
 const rootStyle = computed(() => [{ marginTop: addUnit(props.marginTop) }, props.customStyle]);
-const imageStyle = computed(() => ({ width: addUnit(props.iconSize), height: addUnit(props.iconSize) }));
+// 图片（src / 图片地址形态）与字体图标分开计量：插画类空态图 160 对齐主流库默认，字体图标 96 仅指 em 字号
+const imageStyle = computed(() => ({ width: addUnit(props.imageSize), height: addUnit(props.imageSize) }));
 const textStyle = computed(() => ({ color: props.color || props.textColor, fontSize: addUnit(props.fontSize) }));
 </script>
 
@@ -85,13 +86,13 @@ const textStyle = computed(() => ({ color: props.color || props.textColor, fontS
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px 12px;
+    padding: 24px 12px;
 }
 .snake-empty__image {
     display: block;
 }
 .snake-empty__text {
-    margin-top: 12px;
+    margin-top: 16px;
     line-height: 1.5;
 }
 .snake-empty__bottom {
