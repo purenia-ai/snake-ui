@@ -597,7 +597,7 @@ export default {
         height: 100%;
         min-height: 0;
         width: 0;
-        padding-left: 10px;
+        padding: 0 10px;
         background-color: var(--snake-color-surface, #fff);
 
         .title {
@@ -683,7 +683,7 @@ export default {
 
     .price-input-item {
         box-sizing: border-box;
-        width: 114.5px;
+        width: 100%;
         height: 30px;
         font-size: 13px;
         color: var(--snake-color-text-muted, #acacb7);
