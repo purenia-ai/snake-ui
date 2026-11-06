@@ -114,17 +114,24 @@ test('size props used in geometry arithmetic parse units instead of NaN-ing', as
 });
 
 test('image owns viewport lazy loading and configured state artwork', async () => {
-    const image = await read('components/snake-image/snake-image.vue');
+    const [image, iconfont] = await Promise.all([
+        read('components/snake-image/snake-image.vue'),
+        read('iconfont.css')
+    ]);
 
     assert.match(image, /type ImageStatus = 'idle' \| 'loading' \| 'success' \| 'error'/);
     assert.match(image, /relativeToViewport\(\{ top: props\.lazyThreshold, bottom: props\.lazyThreshold \}\)/);
-    assert.match(image, /v-if="loadingImg" class="snake-image__status-image"/);
-    assert.match(image, /v-if="errorImg" class="snake-image__status-image"/);
+    assert.match(image, /v-if="loadingImg && !loadingImageFailed"/);
+    assert.match(image, /v-if="errorImg && !errorImageFailed"/);
+    assert.match(image, /@error="onLoadingImageError"/);
+    assert.match(image, /@error="onErrorImageError"/);
+    assert.match(image, /if \(props\.lazyLoad\) resetLoadState\(\)/);
+    assert.match(image, /errorIcon: 'error-circle'/);
+    assert.match(iconfont, /\.sicon-error-circle:before/);
     assert.match(image, /onBeforeUnmount\(disconnectObserver\)/);
     assert.match(image, /:key="imageKey"/);
     assert.doesNotMatch(image, /:lazy-load="lazyLoad"/);
     assert.match(image, /status\.value === 'success'/);
-    assert.match(image, /translate\('image\.error'\)/);
     assert.match(image, /defineExpose<ImageExpose>\(\{ reload \}\)/);
 });
 

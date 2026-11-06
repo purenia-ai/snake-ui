@@ -15,9 +15,15 @@
         />
         <view v-if="isLoading && showLoading" class="snake-image__status" :style="statusStyle">
             <slot name="loading">
-                <image v-if="loadingImg" class="snake-image__status-image" :src="loadingImg" mode="aspectFit" />
-                <snake-icon v-else-if="loadingIcon" :name="loadingIcon" />
-                <snake-loading v-else size="10" />
+                <image
+                    v-if="loadingImg && !loadingImageFailed"
+                    class="snake-image__status-image"
+                    :src="loadingImg"
+                    mode="aspectFit"
+                    @error="onLoadingImageError"
+                />
+                <snake-icon v-else-if="loadingIcon" :name="loadingIcon" size="24" />
+                <snake-loading v-else size="24" />
             </slot>
         </view>
         <view
@@ -26,11 +32,14 @@
             :style="statusStyle"
         >
             <slot name="error">
-                <image v-if="errorImg" class="snake-image__status-image" :src="errorImg" mode="aspectFit" />
-                <template v-else>
-                    <snake-icon :name="errorIcon" size="11" />
-                    <text class="snake-image__error-text">{{ errorText }}</text>
-                </template>
+                <image
+                    v-if="errorImg && !errorImageFailed"
+                    class="snake-image__status-image"
+                    :src="errorImg"
+                    mode="aspectFit"
+                    @error="onErrorImageError"
+                />
+                <snake-icon v-else :name="errorIcon" size="24" />
             </slot>
         </view>
     </view>
@@ -45,7 +54,6 @@
 
 import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { addUnit } from '../../libs/function/unit';
-import { translate } from '../../locale';
 import type { ImageEmits, ImageExpose, ImageProps } from './types';
 
 defineOptions({ name: 'SnakeImage', options: { virtualHost: true, styleIsolation: 'shared' } });
@@ -68,7 +76,7 @@ const props = withDefaults(defineProps<ImageProps>(), {
     loadingIcon: '',
     loadingImg: '',
     showError: true,
-    errorIcon: 'image',
+    errorIcon: 'error-circle',
     errorImg: '',
     preview: false,
     customClass: '',
@@ -80,6 +88,8 @@ type ImageStatus = 'idle' | 'loading' | 'success' | 'error';
 const status = ref<ImageStatus>(props.src ? (props.lazyLoad ? 'idle' : 'loading') : 'error');
 const shouldLoad = ref(!props.lazyLoad && Boolean(props.src));
 const imageKey = ref(0);
+const loadingImageFailed = ref(false);
+const errorImageFailed = ref(false);
 const instance = getCurrentInstance();
 let observer: ReturnType<typeof uni.createIntersectionObserver> | undefined;
 let mounted = false;
@@ -88,7 +98,6 @@ const isLoading = computed(() => status.value === 'idle' || status.value === 'lo
 const displaySrc = computed(() => (shouldLoad.value ? props.src : ''));
 const previewUrls = computed(() => (props.previewUrls?.length ? props.previewUrls : [props.src]));
 const autoHeight = computed(() => props.height === 'auto' || props.height == null);
-const errorText = computed(() => translate('image.error'));
 const rootStyle = computed(() => [
     {
         width: addUnit(props.width),
@@ -103,7 +112,12 @@ const imageStyle = computed(() => ({
     opacity: status.value === 'success' ? 1 : 0,
     transitionDuration: props.fade ? `${props.duration}ms` : '0ms'
 }));
-const statusStyle = computed(() => (autoHeight.value ? undefined : { minHeight: '0' }));
+const statusStyle = computed(() => {
+    const style: Record<string, string> = {};
+    if (props.bgColor) style.backgroundColor = props.bgColor;
+    if (!autoHeight.value) style.minHeight = '0';
+    return style;
+});
 
 function disconnectObserver() {
     observer?.disconnect();
@@ -140,6 +154,8 @@ function observeViewport() {
 function resetLoadState() {
     disconnectObserver();
     imageKey.value += 1;
+    loadingImageFailed.value = false;
+    errorImageFailed.value = false;
     if (!props.src) {
         shouldLoad.value = false;
         status.value = 'error';
@@ -162,6 +178,13 @@ function onError(event: unknown) {
     status.value = 'error';
     emit('error', event);
 }
+/** 占位图自身请求失败时回退到内置图标，避免失败状态出现空白。 */
+function onLoadingImageError() {
+    loadingImageFailed.value = true;
+}
+function onErrorImageError() {
+    errorImageFailed.value = true;
+}
 /** 供业务在失败重试或鉴权地址刷新后重新发起当前资源请求。 */
 function reload() {
     resetLoadState();
@@ -181,9 +204,22 @@ function click(event: unknown) {
 }
 
 watch([() => props.src, () => props.lazyLoad, () => props.lazyThreshold], resetLoadState);
+watch(
+    () => props.loadingImg,
+    () => {
+        loadingImageFailed.value = false;
+    }
+);
+watch(
+    () => props.errorImg,
+    () => {
+        errorImageFailed.value = false;
+    }
+);
 onMounted(() => {
     mounted = true;
-    resetLoadState();
+    // 非懒加载图片在首次渲染时已发起请求，再走一次重置会重复创建图片节点并发起请求。
+    if (props.lazyLoad) resetLoadState();
 });
 onBeforeUnmount(disconnectObserver);
 
@@ -213,18 +249,14 @@ defineExpose<ImageExpose>({ reload });
     justify-content: center;
     min-height: 60px;
     color: var(--snake-image-status-color, var(--snake-color-text-muted, #909399));
-    background-color: var(--snake-image-status-bg, transparent);
+    background-color: var(--snake-image-status-bg, var(--snake-color-surface-muted, #f1f1f1));
 }
 .snake-image__status--error {
     flex-direction: column;
-    font-size: 12px;
     color: var(--snake-image-error-color, var(--snake-color-text-muted, #909399));
 }
 .snake-image__status-image {
     width: 100%;
     height: 100%;
-}
-.snake-image__error-text {
-    margin-top: 5px;
 }
 </style>

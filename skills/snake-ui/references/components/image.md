@@ -33,7 +33,7 @@ triggers: ['image', 'snake-image', 'Image', '图片']
 
 ### 加载中
 
-默认显示加载图标。简单的品牌占位图可使用 `loading-img`；需要组合动画、文字或骨架屏时使用 `loading` 插槽。
+加载中默认在浅灰占位块（`--snake-color-surface-muted`）内居中显示加载动画。简单的品牌占位图可使用 `loading-img`；需要组合动画、文字或骨架屏时使用 `loading` 插槽。
 
 ```vue
 <snake-image src="/static/product.png" width="100%" height="110px" loading-img="/static/image-loading.png" />
@@ -49,7 +49,7 @@ triggers: ['image', 'snake-image', 'Image', '图片']
 
 ### 加载失败
 
-默认显示错误图标与提示。简单错误图使用 `error-img`；需要自定义内容时使用 `error` 插槽。
+失败时默认在浅灰占位块中显示居中图标（默认 `error-circle`），图标尺寸与加载状态一致，不在图片内叠加文案。简单的错误图使用 `error-img`；需要文案等自定义内容时使用 `error` 插槽，插槽内容会替换默认图标。
 
 ```vue
 <snake-image src="/static/not-found.png" width="100%" height="110px" error-img="/static/image-error.png" />
@@ -61,7 +61,7 @@ triggers: ['image', 'snake-image', 'Image', '图片']
 </snake-image>
 ```
 
-传入 `show-error="false"` 可隐藏失败反馈。两个状态的渲染优先级均为：同名插槽 > `loading-img` / `error-img` > 默认图标。
+传入 `show-error="false"` 可隐藏失败反馈。两个状态的渲染优先级均为：同名插槽 > `loading-img` / `error-img` > 默认图标；占位图自身请求失败时同样回退到默认图标，不会停留在空白状态。`src` 为空时按占位图标显示。
 
 ## 视口懒加载
 
@@ -115,32 +115,32 @@ triggers: ['image', 'snake-image', 'Image', '图片']
 
 ### Props
 
-| 参数                  | 说明                                                        | 类型                  | 默认值        |
-| --------------------- | ----------------------------------------------------------- | --------------------- | ------------- |
-| `src`                 | 图片资源地址                                                | `string`              | `''`          |
-| `alt`                 | 图片替代文本                                                | `string`              | `''`          |
-| `mode`                | 裁剪缩放模式，如 `scaleToFill` / `aspectFit` / `aspectFill` | `ImageMode`           | `scaleToFill` |
-| `width`               | 组件宽度                                                    | `UnitValue`           | `100%`        |
-| `height`              | 组件高度，传 `auto` 表示自适应                              | `UnitValue \| 'auto'` | `auto`        |
-| `shape`               | 形状，可选值 `square`（方形）/ `circle`（圆形）             | `string`              | `square`      |
-| `radius`              | 圆角尺寸，数值按 px（375 稿）处理                           | `UnitValue`           | `0`           |
-| `lazyLoad`            | 是否开启视口懒加载，进入预加载范围后才请求真实图片          | `boolean`             | `false`       |
-| `lazyThreshold`       | 视口懒加载的预加载距离                                      | `number`              | `100`         |
-| `showMenuByLongpress` | 是否开启长按识别菜单                                        | `boolean`             | `false`       |
-| `webp`                | 是否默认使用 WebP                                           | `boolean`             | `false`       |
-| `fade`                | 是否开启淡入动画                                            | `boolean`             | `true`        |
-| `duration`            | 淡入动画持续时间，单位 ms                                   | `number`              | `300`         |
-| `bgColor`             | 背景颜色，未设置时使用 `--snake-color-surface-muted`        | `string`              | -             |
-| `showLoading`         | 是否显示加载反馈                                            | `boolean`             | `true`        |
-| `loadingIcon`         | 加载状态图标名称，为空时使用默认图标                        | `string`              | `''`          |
-| `loadingImg`          | 加载中显示的占位图片地址                                    | `string`              | `''`          |
-| `showError`           | 是否显示加载失败反馈                                        | `boolean`             | `true`        |
-| `errorIcon`           | 加载失败图标名称                                            | `string`              | `image`       |
-| `errorImg`            | 加载失败显示的回退图片地址                                  | `string`              | `''`          |
-| `preview`             | 点击图片时是否调用 `uni.previewImage` 预览                  | `boolean`             | `false`       |
-| `previewUrls`         | 预览图集合，应包含当前 `src`                                | `string[]`            | -             |
-| `customClass`         | 根节点自定义类名                                            | `string`              | `''`          |
-| `customStyle`         | 根节点自定义样式                                            | `StyleValue`          | `''`          |
+| 参数                  | 说明                                                        | 类型                  | 默认值         |
+| --------------------- | ----------------------------------------------------------- | --------------------- | -------------- |
+| `src`                 | 图片资源地址                                                | `string`              | `''`           |
+| `alt`                 | 图片替代文本                                                | `string`              | `''`           |
+| `mode`                | 裁剪缩放模式，如 `scaleToFill` / `aspectFit` / `aspectFill` | `ImageMode`           | `scaleToFill`  |
+| `width`               | 组件宽度                                                    | `UnitValue`           | `100%`         |
+| `height`              | 组件高度，传 `auto` 表示自适应                              | `UnitValue \| 'auto'` | `auto`         |
+| `shape`               | 形状，可选值 `square`（方形）/ `circle`（圆形）             | `string`              | `square`       |
+| `radius`              | 圆角尺寸，数值按 px（375 稿）处理                           | `UnitValue`           | `0`            |
+| `lazyLoad`            | 是否开启视口懒加载，进入预加载范围后才请求真实图片          | `boolean`             | `false`        |
+| `lazyThreshold`       | 视口懒加载的预加载距离                                      | `number`              | `100`          |
+| `showMenuByLongpress` | 是否开启长按识别菜单                                        | `boolean`             | `false`        |
+| `webp`                | 是否默认使用 WebP                                           | `boolean`             | `false`        |
+| `fade`                | 是否开启淡入动画                                            | `boolean`             | `true`         |
+| `duration`            | 淡入动画持续时间，单位 ms                                   | `number`              | `300`          |
+| `bgColor`             | 背景颜色，未设置时使用 `--snake-color-surface-muted`        | `string`              | -              |
+| `showLoading`         | 是否显示加载反馈                                            | `boolean`             | `true`         |
+| `loadingIcon`         | 加载状态图标名称，为空时使用默认图标                        | `string`              | `''`           |
+| `loadingImg`          | 加载中显示的占位图片地址                                    | `string`              | `''`           |
+| `showError`           | 是否显示加载失败反馈                                        | `boolean`             | `true`         |
+| `errorIcon`           | 加载失败图标名称                                            | `string`              | `error-circle` |
+| `errorImg`            | 加载失败显示的回退图片地址                                  | `string`              | `''`           |
+| `preview`             | 点击图片时是否调用 `uni.previewImage` 预览                  | `boolean`             | `false`        |
+| `previewUrls`         | 预览图集合，应包含当前 `src`                                | `string[]`            | -              |
+| `customClass`         | 根节点自定义类名                                            | `string`              | `''`           |
+| `customStyle`         | 根节点自定义样式                                            | `StyleValue`          | `''`           |
 
 ### Events
 
@@ -170,4 +170,5 @@ triggers: ['image', 'snake-image', 'Image', '图片']
 | `--snake-color-surface-muted` | 图片容器默认背景色         |
 | `--snake-color-text-muted`    | 状态图标默认颜色           |
 | `--snake-image-status-color`  | 加载状态文字与图标颜色     |
+| `--snake-image-status-bg`     | 加载与失败占位块背景色     |
 | `--snake-image-error-color`   | 加载失败状态文字与图标颜色 |

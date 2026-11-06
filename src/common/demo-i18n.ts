@@ -836,6 +836,49 @@ Object.assign(englishMessages, {
     结束文案: 'End text'
 });
 
+Object.assign(englishMessages, {
+    图片资源: 'Image source',
+    品牌图片: 'Brand image',
+    错误地址: 'Broken URL',
+    空地址: 'Empty src',
+    空地址占位: 'Empty placeholder',
+    宽度: 'Width',
+    高度: 'Height',
+    图片形状: 'Image shape',
+    圆角尺寸: 'Corner radius',
+    淡入动画: 'Fade in',
+    视口懒加载: 'Viewport lazy load',
+    点击预览: 'Enable preview',
+    显示加载反馈: 'Show loading',
+    显示失败反馈: 'Show error',
+    自定义加载内容: 'Custom loading',
+    自定义失败内容: 'Custom error',
+    加载成功: 'Loaded',
+    '404 占位': '404 placeholder',
+    失败回退图: 'Fallback artwork',
+    实时预览: 'Live preview',
+    占位状态: 'Placeholder states',
+    自定义内容: 'Custom content',
+    形状与裁剪: 'Shape and fit',
+    暂时不可用: 'Unavailable',
+    点击预览大图: 'Tap to preview',
+    占位显示: 'Placeholder',
+    图片预览已关闭: 'Preview is disabled',
+    点击图片可预览: 'Tap the image to preview',
+    加载成功后可预览: 'Preview is available after loading',
+    空地址没有可预览的图片: 'No preview for an empty source',
+    '图片容器支持加载与失败占位、状态插槽、懒加载、预览、形状和裁剪模式。':
+        'An image container with loading and failure placeholders, state slots, lazy loading, preview, shape and fit modes.',
+    '失败时默认在浅灰占位块中显示 error-circle 图标，不叠加文案；需要文案或图文组合时使用 error 插槽。':
+        'On failure a muted placeholder shows the error-circle icon only; use the error slot for text or custom content.',
+    'error-img 与 loading-img 自身请求失败时会回退到内置图标，不会停留在空白状态。':
+        'If error-img or loading-img fails to load, the built-in icon takes over instead of leaving a blank block.',
+    '切换资源地址可观察加载、成功、失败与空地址四种状态；失败后点击重新加载会重新发起请求。':
+        'Switch the source to see loading, success, failure and empty states; reload re-requests the current source.',
+    '仅加载成功的图片可点击预览；形状与裁剪只影响容器内的呈现。':
+        'Only loaded images open in preview; shape and fit only change how the image renders inside the container.'
+});
+
 export function demoText(value: string): string {
     return currentLocale.value.name === 'en-US' ? (englishMessages[value] ?? value) : value;
 }
