@@ -10,7 +10,7 @@ export const IconProps = {
     customClass: { type: String, default: '' },
     name: { type: String, default: '' },
     color: { type: String, default: '' },
-    size: { type: [Number, String] as PropType<string | number>, default: 'inherit' },
+    size: { type: [Number, String] as PropType<string | number>, default: 14 },
     bold: { type: Boolean, default: false },
     index: { type: [Number, String] as PropType<string | number>, default: '' },
     hoverClass: { type: String, default: '' },
