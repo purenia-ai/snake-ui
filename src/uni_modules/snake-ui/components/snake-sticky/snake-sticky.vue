@@ -1,7 +1,7 @@
 <template>
     <view class="snake-sticky">
         <view class="snake-sticky__wrap" :class="[elClass, customClass]" :style="placeholderStyle">
-            <view class="snake-sticky__content" :style="contentStyle">
+            <view class="snake-sticky__content" :class="contentClass" :style="contentStyle">
                 <slot />
             </view>
         </view>
@@ -11,7 +11,7 @@
 <script setup lang="ts">
 /**
  * @component Sticky
- * @description 通过节点测量与 IntersectionObserver 观察占位层实现跨端吸顶，采用三层结构（外层容器 / 占位层 / 内容层），不支持 Observer 的环境降级为宿主推送滚动位置。
+ * @description 三层结构吸顶（外层容器 / 占位层 / 内容层）：测得高度后占位层常驻定高、内容层常驻绝对定位，fixed 切换不改变文档流，高度塌陷在结构上不存在；未测到高度前内容暂留文档流。不支持 Observer 的环境降级为宿主推送滚动位置。
  * @see /components/sticky
  */
 
@@ -49,14 +49,21 @@ const height = ref(0);
 const width = ref(0);
 const left = ref(0);
 
-// 每个实例唯一类名，用于测量和观察占位层，避免 CMS 循环中多个实例互相串扰。
+// 每个实例唯一类名，避免 CMS 循环中多个实例互相串扰：
+// elClass 观察/取位占位层（吸顶判定依据它在文档流中的位置），contentClass 测量内容层（占位层高度被常驻样式钉死后，只有内容层能反映真实高度）。
 const elClass = guid('snake-sticky');
+const contentClass = guid('snake-sticky-content');
 // 是否支持 IntersectionObserver（H5 / 微信小程序 / App 均支持）。
 const supportsObserver = typeof uni !== 'undefined' && typeof uni.createIntersectionObserver === 'function';
 
 let contentObserver: any = null;
 // 高度校正会在下一个事件循环重建观察器，卸载后不能再建。
 let destroyed = false;
+// #ifdef H5
+// H5 端用浏览器原生 ResizeObserver 监听内容尺寸（小程序端无对应 API，靠越线时机补测兜底），
+// 不引入 wot 式双 scroll-view 探测，CMS 多实例场景零额外节点。
+let contentResizeObserver: ResizeObserver | null = null;
+// #endif
 
 function unitNumber(value: number | string | null | undefined) {
     const number = Number.parseFloat(String(value ?? 0));
@@ -83,11 +90,19 @@ const stickyTop = computed(() => {
     // #endif
     return offsetTopPx(props.offsetTop) + unitNumber(props.customNavHeight);
 });
-const placeholderStyle = computed(() => ({ height: fixed.value ? `${height.value}px` : 'auto' }));
+// 测得高度后进入「常驻占位」模式（wot-design-uni 的结构）：占位层定高并成为内容层的包含块，
+// 内容层常驻 absolute、吸顶时才换成 fixed —— 两种定位都不参与文档流，切换瞬间零布局变化。
+// 未测到高度（首帧/降级）前内容保持 static 参与流，避免首屏高度为 0 的空窗。
+const measured = computed(() => height.value > 0);
+const placeholderStyle = computed<CSSProperties>(() =>
+    measured.value ? { height: `${height.value}px`, position: 'relative' } : {}
+);
 const contentStyle = computed(() => [
     (fixed.value
         ? { position: 'fixed', top: `${stickyTop.value}px`, left: `${left.value}px`, width: `${width.value}px` }
-        : { position: 'static' }) as CSSProperties,
+        : measured.value
+          ? { position: 'absolute', top: '0px', left: '0px', width: '100%' }
+          : { position: 'static' }) as CSSProperties,
     { zIndex: props.zIndex, backgroundColor: props.bgColor },
     props.customStyle
 ]);
@@ -95,8 +110,12 @@ const contentStyle = computed(() => [
 async function setFixed(value: boolean) {
     if (fixed.value === value) return;
     // 吸顶瞬间补一次测量：内容（如 CMS 筛选数据）异步渲染时，挂载期重试可能仍测到 0。
-    // 此刻 fixed 尚未应用、占位层仍在文档流中，测得的就是真实高宽。
-    if (value) await measure();
+    // 内容层常驻 absolute、按内容自然高度撑开，此刻测得的就是真实高宽与吸顶坐标。
+    if (value) {
+        await measure();
+        // 未测到高度（降级/查询失败）时宁可不吸顶，也不让 fixed 内容脱离空占位造成塌陷。
+        if (height.value <= 0) return;
+    }
     fixed.value = value;
     const detail = { isFixed: value, index: props.index };
     if (value) emit('fixed', detail);
@@ -128,22 +147,16 @@ function observeContent() {
     contentObserver.observe(`.${elClass}`, (res: any) => {
         if (isDisabled.value) return;
         const rect = res.boundingClientRect || {};
-        // 判定根依赖自身高度：异步内容改变高度后判定点会偏移，就地校正并重建观察。
-        if (rect.height && Math.abs(Number(rect.height) - height.value) > 1) {
-            height.value = Number(rect.height);
-            scheduleReobserve();
-            return;
-        }
+        // 占位层高度是常驻定值，回调里检测不到内容变化；在越线时机补测内容层，漂移超过 1px 才重建观察。
+        const before = height.value;
+        void measure().then(() => {
+            if (Math.abs(height.value - before) > 1) scheduleReobserve();
+        });
         setFixed(Number(rect.top) <= stickyTop.value);
     });
     // 观察建立时页面可能已经滚过吸顶线（返回页恢复滚动、锚点跳转、首屏带锚点），补一次实时判定。
     getRect(`.${elClass}`, instance).then(rect => {
         if (!rect.height || isDisabled.value) return;
-        if (Math.abs(rect.height - height.value) > 1) {
-            height.value = rect.height;
-            scheduleReobserve();
-            return;
-        }
         setFixed(Number(rect.top) <= stickyTop.value);
     });
 }
@@ -158,7 +171,8 @@ function syncByScrollTop() {
 }
 
 async function measure() {
-    const rect = await getRect(`.${elClass}`, instance);
+    // 测内容层而非占位层：占位层高度已被常驻样式钉死，内容层在任何定位状态下都按内容自然高度撑开。
+    const rect = await getRect(`.${contentClass}`, instance);
     if (!rect || !rect.height) return false;
     height.value = Number(rect.height) || height.value;
     width.value = Number(rect.width) || width.value;
@@ -205,10 +219,26 @@ watch(
         if (!supportsObserver) syncByScrollTop();
     }
 );
-onMounted(() => void update());
+onMounted(() => {
+    void update();
+    // #ifdef H5
+    // 内容尺寸变化（异步数据、图片加载）→ 重测并重建观察，H5 端无需等待越线时机。
+    if (typeof document !== 'undefined' && typeof ResizeObserver === 'function') {
+        const contentEl = document.querySelector(`.${contentClass}`);
+        if (contentEl) {
+            contentResizeObserver = new ResizeObserver(() => void update());
+            contentResizeObserver.observe(contentEl);
+        }
+    }
+    // #endif
+});
 onBeforeUnmount(() => {
     destroyed = true;
     disconnectObserver();
+    // #ifdef H5
+    contentResizeObserver?.disconnect();
+    contentResizeObserver = null;
+    // #endif
 });
 defineExpose({ update });
 </script>
