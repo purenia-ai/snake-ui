@@ -621,7 +621,8 @@ export default {
 
             .tabs-item {
                 box-sizing: border-box;
-                width: 83px;
+                /* 每行固定 4 个：4 列分摊 3 条 5px 间距 */
+                width: calc((100% - 15px) / 4);
                 height: 30px;
                 margin-right: 5px;
                 margin-bottom: 5px;
@@ -633,6 +634,11 @@ export default {
                 background: var(--snake-color-surface-muted, #f6f6f6);
                 border: 1px solid var(--snake-color-border, #f6f6f6);
                 border-radius: 1px;
+            }
+
+            /* 每行最后一个不留右间距，保证四列左右对齐 */
+            .tabs-item:nth-child(4n) {
+                margin-right: 0;
             }
 
             .tabs-item--active {
