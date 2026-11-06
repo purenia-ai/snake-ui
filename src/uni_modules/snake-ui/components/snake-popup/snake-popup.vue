@@ -106,7 +106,7 @@ const props = withDefaults(defineProps<PopupProps>(), {
     closeable: false,
     closeIcon: 'close',
     closeIconColor: 'var(--snake-color-text-muted, #909399)',
-    closeIconSize: 10,
+    closeIconSize: 16,
     closeIconPos: 'top-right',
     closeOnClickOverlay: true,
     overlay: true,

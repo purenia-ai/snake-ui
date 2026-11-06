@@ -52,7 +52,7 @@ Popup 适合承载需要暂时打断页面的补充内容。简单反馈优先�
 | `closeable`           | 是否显示关闭按钮                                                                                            | `boolean`                     | `false`        |
 | `closeIcon`           | 关闭按钮图标名称                                                                                            | `string`                      | `close`        |
 | `closeIconColor`      | 关闭按钮图标颜色                                                                                            | `string`                      | 主题次要文字色 |
-| `closeIconSize`       | 关闭按钮图标大小，数值按 px（375 稿）处理                                                                   | `number \| string`            | `10`           |
+| `closeIconSize`       | 关闭按钮图标大小，数值按 px（375 稿）处理                                                                   | `number \| string`            | `16`           |
 | `closeIconPos`        | 关闭按钮位置，可选值 `top-left`（左上）/ `top-right`（右上）/ `bottom-left`（左下）/ `bottom-right`（右下） | `PopupCloseIconPosition`      | `top-right`    |
 | `closeOnClickOverlay` | 点击遮罩时是否关闭                                                                                          | `boolean`                     | `true`         |
 | `overlay`             | 是否显示遮罩层                                                                                              | `boolean`                     | `true`         |
