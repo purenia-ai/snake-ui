@@ -4,7 +4,7 @@ preview: /pages/componentsA/dropMenu/index
 
 # DropMenu 下拉菜单
 
-`DropMenu` 与 `DropMenuItem` 成对使用：容器负责多个菜单项的布局、互斥展开和弹层定位，菜单项提供触发器、遮罩与内容面板。面板打开前会真实测量菜单底部位置，适用于普通布局和吸顶布局。
+`DropMenu` 与 `DropMenuItem` 成对使用：容器统一渲染标题菜单栏、共享遮罩并管理多个菜单项的互斥展开；菜单项只提供内容面板。面板打开前会真实测量菜单底部位置（含 H5 导航栏补偿），适用于普通布局和吸顶布局。
 
 ## 平台兼容性
 
@@ -14,7 +14,7 @@ preview: /pages/componentsA/dropMenu/index
 
 ## 基础用法
 
-`DropMenuItem` 必须作为 `DropMenu` 的直接子组件使用，每个菜单项通过 `v-model` 独立绑定选中值：
+`DropMenuItem` 必须作为 `DropMenu` 的直接子组件使用，标题栏由容器根据菜单项自动渲染并均分宽度，每个菜单项通过 `v-model` 独立绑定选中值：
 
 ```vue
 <snake-drop-menu @open="onOpen" @close="onClose">
@@ -65,7 +65,7 @@ const beforeToggle = ({ resolve }) => resolve(userHasPermission);
 | `height`           | 标题菜单栏高度，数值按 px（375 稿）处理   | `UnitValue`  | `40`           |
 | `borderBottom`     | 是否显示菜单栏底部边框                    | `boolean`    | `false`        |
 | `titleSize`        | 标题文字尺寸，数值按 px（375 稿）处理     | `UnitValue`  | `14`           |
-| `menuIcon`         | 标题右侧图标名称                          | `string`     | `down`         |
+| `menuIcon`         | 标题右侧图标名称，展开时旋转 180°         | `string`     | `arrow-down`   |
 | `menuIconSize`     | 标题右侧图标尺寸，数值按 px（375 稿）处理 | `UnitValue`  | `9`            |
 | `zIndex`           | 菜单和弹层层级基准                        | `number`     | `985`          |
 | `customClass`      | 根节点自定义类名                          | `string`     | `''`           |
@@ -80,13 +80,14 @@ const beforeToggle = ({ resolve }) => resolve(userHasPermission);
 
 #### Expose
 
-| 方法                   | 说明                           |
-| ---------------------- | ------------------------------ |
-| `open(index)`          | 展开指定项                     |
-| `close()`              | 关闭当前展开项                 |
-| `colseAll()`           | 关闭全部菜单项（保留历史拼写） |
-| `highlight(index?)`    | 只高亮指定标题，不展开面板     |
-| `updateDropMenuRect()` | 主动重新测量菜单位置           |
+| 方法                   | 说明                            |
+| ---------------------- | ------------------------------- |
+| `open(index)`          | 展开指定项（跳过 beforeToggle） |
+| `close()`              | 关闭当前展开项                  |
+| `highlight(index?)`    | 只高亮指定标题，不展开面板      |
+| `updateDropMenuRect()` | 主动重新测量菜单位置            |
+
+同屏存在多个 `DropMenu` 实例时互斥：展开其中一个会自动收起其他实例。
 
 ### DropMenuItem
 
@@ -99,18 +100,20 @@ const beforeToggle = ({ resolve }) => resolve(userHasPermission);
 | `options`      | 可选项列表，格式 `{ label, value, disabled? }[]` | `DropMenuOption[]`     | `[]`    |
 | `disabled`     | 是否禁用菜单项                                   | `boolean`              | `false` |
 | `height`       | 面板最大高度，传 `auto` 表示不限制               | `UnitValue \| 'auto'`  | `auto`  |
-| `show`         | 外部强制显示面板                                 | `boolean`              | -       |
+| `show`         | 是否在菜单栏中显示该标题                         | `boolean`              | `true`  |
 | `beforeToggle` | 展开前回调，通过 `resolve(boolean)` 决定是否展开 | `DropMenuBeforeToggle` | -       |
 | `customStyle`  | 面板自定义样式                                   | `StyleValue`           | `''`    |
 
 #### Events
 
-| 事件名              | 触发时机     | 参数       |
-| ------------------- | ------------ | ---------- |
-| `update:modelValue` | 选择可用选项 | 选项 value |
-| `change`            | 选择可用选项 | 选项 value |
-| `open`              | 面板展开     | -          |
-| `close`             | 面板关闭     | -          |
+| 事件名              | 触发时机         | 参数       |
+| ------------------- | ---------------- | ---------- |
+| `update:modelValue` | 选择可用选项     | 选项 value |
+| `change`            | 选择可用选项     | 选项 value |
+| `open`              | 面板开始展开     | -          |
+| `opened`            | 面板展开动画结束 | -          |
+| `close`             | 面板开始收起     | -          |
+| `closed`            | 面板收起动画结束 | -          |
 
 #### Slots
 

@@ -88,7 +88,7 @@ const emit = defineEmits<FilterSortsEmits>();
 
 const instance = getCurrentInstance();
 
-const dropMenuRef = ref<{ updateDropMenuRect: () => void; colseAll: () => void } | null>(null);
+const dropMenuRef = ref<{ updateDropMenuRect: () => void; close: () => void } | null>(null);
 
 const showDrawer = ref(false);
 const filterParams = ref<Record<string, string | number | boolean>>({
@@ -144,7 +144,7 @@ const handleBeforeToggle = async ({ resolve }: { resolve: (value: boolean) => vo
 // 排序选择
 const sortSelectHandle = (propName: string | number, value: string) => {
     filterParams.value[propName] = value;
-    dropMenuRef.value?.colseAll();
+    dropMenuRef.value?.close();
     emitChange();
 };
 
@@ -155,7 +155,7 @@ const filterConfirm = (e: Record<string, string | number | boolean>) => {
         price: filterParams.value.price,
         ...e
     };
-    dropMenuRef.value?.colseAll();
+    dropMenuRef.value?.close();
     emitChange();
 };
 const emitChange = () => {

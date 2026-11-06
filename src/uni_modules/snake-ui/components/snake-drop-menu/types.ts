@@ -1,6 +1,7 @@
 import type { InjectionKey, Ref } from 'vue';
 import type { UnitValue } from '../../libs/function/unit';
 import type { StyleValue } from '../../types/global';
+import type { DropMenuItemProps } from '../snake-drop-menu-item/types';
 /** DropMenu 组件的公开属性。 */
 export interface DropMenuProps {
     /** 激活状态颜色。 */
@@ -19,9 +20,9 @@ export interface DropMenuProps {
     borderBottom?: boolean;
     /** 标题文字尺寸，数值按 px（375 稿）处理。 */
     titleSize?: UnitValue;
-    /** menu icon 配置。 */
+    /** 标题右侧图标名称。 */
     menuIcon?: string;
-    /** menu icon size 配置。 */
+    /** 标题右侧图标尺寸，数值按 px（375 稿）处理。 */
     menuIconSize?: UnitValue;
     /** 组件层级。 */
     zIndex?: number;
@@ -41,8 +42,6 @@ export type DropMenuEmits = {
 export interface DropMenuExpose {
     /** updateDropMenuRect 方法。 */
     updateDropMenuRect(): Promise<void>;
-    /** colseAll 方法。 */
-    colseAll(): void;
     /** close 方法。 */
     close(): void;
     /** open 方法。 */
@@ -51,44 +50,30 @@ export interface DropMenuExpose {
     highlight(index?: number): void;
 }
 
+/** 父组件登记的一个菜单项：id 配对，props 为子组件的响应式属性对象。 */
+export interface DropMenuRegistration {
+    /** 菜单项配对标识。 */
+    id: symbol;
+    /** 子组件响应式属性（标题、选项、禁用等），供父组件渲染标题栏。 */
+    props: DropMenuItemProps;
+}
+
 /** DropMenu 向 DropMenuItem 注入的配对上下文。 */
 export interface DropMenuContext {
     /** 当前展开项的标识，null 表示全部收起。 */
     activeItem: Ref<symbol | null>;
-    /** 键盘导航高亮的选项下标。 */
-    highlighted: Ref<number | undefined>;
-    /** 菜单栏距页面顶部的偏移。 */
-    menuTop: Ref<number>;
-    /** 激活状态颜色。 */
-    activeColor: Ref<string>;
-    /** 未激活状态颜色。 */
-    inactiveColor: Ref<string>;
-    /** 标题文字尺寸。 */
-    titleSize: Ref<string | number | null | undefined>;
-    /** 标题右侧图标名。 */
-    menuIcon: Ref<string>;
-    /** 标题右侧图标尺寸。 */
-    menuIconSize: Ref<string | number | null | undefined>;
+    /** 标题栏底部距页面顶部的偏移（视口坐标系，不含 H5 导航栏高度）。 */
+    offset: Ref<number>;
     /** 面板动画时长。 */
     duration: Ref<number>;
-    /** 点击遮罩是否关闭。 */
-    closeOnClickMask: Ref<boolean>;
-    /** 再次点击已展开标题是否关闭。 */
-    closeOnClickSelf: Ref<boolean>;
     /** 组件层级。 */
     zIndex: Ref<number>;
-    /** 注册一个菜单项并返回其下标。 */
-    register(item: symbol): number;
+    /** 登记一个菜单项。 */
+    register(id: symbol, props: DropMenuItemProps): void;
     /** 注销一个菜单项。 */
-    unregister(item: symbol): void;
-    /** 查询菜单项下标。 */
-    indexOf(item: symbol): number;
-    /** 展开指定菜单项。 */
-    open(item: symbol): void;
+    unregister(id: symbol): void;
     /** 收起全部菜单项。 */
     close(): void;
-    /** 重新测量菜单栏位置。 */
-    updateRect(): Promise<void>;
 }
 
 /** DropMenu ↔ DropMenuItem 配对注入键。 */

@@ -20,19 +20,19 @@ export interface DropMenuOption {
 export interface DropMenuItemProps {
     /** 双向绑定的当前值。 */
     modelValue?: unknown;
-    /** 标题文本。 */
+    /** 标题文本；为空时显示选中项 label。 */
     title?: string;
     /** options 配置。 */
     options?: DropMenuOption[];
-    /** 是否禁用交互。 */
+    /** 是否禁用菜单项。 */
     disabled?: boolean;
-    /** 组件高度。 */
+    /** 面板最大高度，传 `auto` 表示不限制。 */
     height?: UnitValue | 'auto';
-    /** 是否显示组件。 */
+    /** 是否在菜单栏中显示该标题（不参与标题布局，面板内容仍由父组件按需渲染）。 */
     show?: boolean;
-    /** before toggle 配置。 */
+    /** 展开前回调，通过 `resolve(boolean)` 决定是否展开。 */
     beforeToggle?: DropMenuBeforeToggle;
-    /** 根节点自定义样式。 */
+    /** 面板自定义样式。 */
     customStyle?: StyleValue;
 }
 /** DropMenuItem 组件的事件契约。 */
@@ -43,6 +43,10 @@ export type DropMenuItemEmits = {
     change: [value: unknown];
     /** open 事件携带的参数。 */
     open: [];
+    /** opened 事件携带的参数。 */
+    opened: [];
     /** close 事件携带的参数。 */
     close: [];
+    /** closed 事件携带的参数。 */
+    closed: [];
 };

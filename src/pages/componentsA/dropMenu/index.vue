@@ -82,10 +82,6 @@ function updateValue(key: string, value: DemoValue) {
     min-height: 160px;
     padding: 14px 0;
 }
-.demo-menu :deep(.snake-drop-menu) {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-}
 .demo-menu-panel {
     padding: 24px 14px;
     color: var(--snake-color-text-secondary);

@@ -185,17 +185,19 @@ test('commerce actions expose keyboard semantics and clean transient timers', as
 });
 
 test('commerce price sort uses legacy triangles while filter uses bundled directional icons', async () => {
-    const [sort, dropItem] = await Promise.all([
+    const [sort, dropMenu] = await Promise.all([
         read('components/snake-button-sort/snake-button-sort.vue'),
-        read('components/snake-drop-menu-item/snake-drop-menu-item.vue')
+        read('components/snake-drop-menu/snake-drop-menu.vue')
     ]);
     assert.match(sort, /class="snake-sort__arrow-up"/);
     assert.match(sort, /class="snake-sort__arrow-down"/);
     assert.match(sort, /border-bottom-color: var\(--snake-color-text-muted, #888891\)/);
     assert.match(sort, /border-top-color: var\(--snake-color-text-muted, #888891\)/);
     assert.doesNotMatch(sort, /<snake-icon/);
-    assert.match(dropItem, /:name="isOpen \? 'arrow-up' : 'arrow-down'"/);
-    assert.match(dropItem, /:size="menu\?\.menuIconSize\.value \|\| 18"/);
+    // 标题栏由 DropMenu 渲染：箭头用图标库 arrow-down，展开时旋转 180°
+    assert.match(dropMenu, /menuIcon: 'arrow-down'/);
+    assert.match(dropMenu, /snake-drop-menu__arrow--open/);
+    assert.match(dropMenu, /transform: rotate\(180deg\)/);
 });
 
 test('auction actions and active activity retain the legacy blue accent', async () => {
