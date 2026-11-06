@@ -1,5 +1,22 @@
 # 更新日志
 
+## [0.0.15](https://github.com/purenia-ai/snake-ui/compare/v0.0.14...v0.0.15)（2026-11-06）
+
+### ✨ Features | 新功能
+
+- **snake-icon:** `size` 默认值由 `inherit` 改为 `14`（px，375 稿）：默认带尺寸保底，父级字号较小时不再跟着缩小（对齐 wot-ui）；显式传 `inherit` 仍可跟随父级字号
+- **snake-empty:** 图标与图片尺寸分离：`iconSize` 明确为字体图标 em 字号（默认 80 → 96），新增 `imageSize` 控制插画/图片尺寸（默认 160），内边距与文案间距同步调整
+
+### 🐛 Bug Fixes | Bug 修复
+
+- **snake-drop-menu:** 架构重构，标题栏收归 `DropMenu` 统一渲染、菜单项只保留内容面板：共享 `snake-overlay` 遮罩（锁定背景滚动）、面板定位补 `--window-top`（修复 H5 导航栏偏移）、`menuIcon` 真正生效、`show` 语义改为是否在标题栏显示、修复动态增删菜单项后 `highlight`/`open` 下标错位、同屏多实例互斥、暴露方法去掉 `colseAll` 统一为 `close`
+- **snake-sticky:** 常驻占位结构重构：测得高度后占位层定高、内容层常驻 absolute，吸顶切换不再引起布局跳动；测量对象改为内容层，H5 端用 ResizeObserver 监听内容尺寸
+- **snake-filter-sorts:** 筛选标签固定每行 4 个（宽度改为百分比），新增 `nth-child(4n)` 规则去掉行尾右间距，四列左右对齐
+
+### ✏️ Documentation | 文档
+
+- `color.md` 色板的 `primary-light` 修正为 token 实际值 `#06D2901A`
+
 ## [0.0.14](https://github.com/purenia-ai/snake-ui/compare/v0.0.13...v0.0.14)（2026-11-06）
 
 ### 🐛 Bug Fixes | Bug 修复
