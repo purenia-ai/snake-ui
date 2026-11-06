@@ -4,7 +4,7 @@ preview: /pages/componentsA/sticky/index
 
 # Sticky 吸顶
 
-通过节点测量和页面滚动状态实现跨端吸顶，不再只依赖浏览器 CSS sticky。
+通过节点测量和 IntersectionObserver 实现跨端吸顶，不再只依赖浏览器 CSS sticky。
 
 ## 平台兼容性
 
@@ -24,7 +24,7 @@ preview: /pages/componentsA/sticky/index
 
 H5 端使用 uni-app 内置导航栏的页面无需任何配置：未传入 `custom-nav-height` 时组件自动让出内置导航栏的 44px。小程序 / App 的原生导航栏在视口之外，默认从页面顶部吸附；页面自绘固定导航栏时通过 `custom-nav-height` 传入其高度，无导航栏页面显式传 `0`。
 
-固定导航栏下使用 `offset-top` 避开导航区。异步筛选项、图片或折叠内容改变高度后，等待视图更新并调用实例 `update()` 重新测量。
+固定导航栏下使用 `offset-top` 避开导航区。内容高度变化后组件的吸顶判定会跟随校正；吸顶状态下内容尺寸变化，或异步内容渲染完成后，仍建议等待视图更新并调用实例 `update()` 重新测量。
 
 ## API
 
@@ -37,7 +37,7 @@ H5 端使用 uni-app 内置导航栏的页面无需任何配置：未传入 `cus
 | `zIndex`          | 组件层级                                                                                                    | `number`           | `10`                   |
 | `disabled`        | 是否禁用吸顶                                                                                                | `boolean`          | `false`                |
 | `bgColor`         | 背景颜色                                                                                                    | `string`           | `transparent`          |
-| `scrollTop`       | 外部滚动位置，仅在降级定位模式下参与计算，该模式同时监听页面滚动                                            | `number`           | `0`                    |
+| `scrollTop`       | 外部滚动位置，仅在不支持 `IntersectionObserver` 的环境下作为降级判定的触发源                                | `number`           | `0`                    |
 | `index`           | 当前数据项索引，事件回调中携带                                                                              | `number \| string` | `0`                    |
 | `customClass`     | 根节点自定义类名                                                                                            | `string`           | `''`                   |
 | `customStyle`     | 根节点自定义样式                                                                                            | `StyleValue`       | `''`                   |

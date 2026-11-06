@@ -236,6 +236,14 @@ test('CMS sticky keeps legacy enable semantics and explicit navigation offset', 
     assert.match(cms, /:custom-nav-height="stickyCustomNavHeight"/);
     assert.match(sticky, /offsetTopPx[\s\S]*?return number;/);
     assert.match(sticky, /unitNumber\(props\.customNavHeight\)/);
+    // 观察根顶边取「吸顶线 + 自身高度」：可见比例在吸顶线处归零，阈值 0 与判定 <= 配套，
+    // 吸顶与解除同点触发；根顶边只取吸顶线时，高吸顶块比例永远到不了 1。
+    assert.match(sticky, /const offset = stickyTop\.value \+ height\.value;/);
+    assert.match(sticky, /thresholds: \[0\]/);
+    assert.match(sticky, /relativeToViewport\(\{ top: -offset \}\)/);
+    assert.match(sticky, /setFixed\(Number\(rect\.top\) <= stickyTop\.value\)/);
+    // 组件里注册页面滚动钩子不会被 uni-app 调用，吸顶不能依赖 onPageScroll。
+    assert.doesNotMatch(sticky, /onPageScroll/);
 });
 
 test('lazy goods images accept host-provided loading and error artwork through request states', async () => {

@@ -13,7 +13,7 @@ export interface StickyProps {
     disabled?: boolean;
     /** 背景颜色。 */
     bgColor?: string;
-    /** 页面或容器当前滚动距离。 */
+    /** 页面或容器当前滚动距离，仅在不支持 IntersectionObserver 的环境下作为降级判定触发。 */
     scrollTop?: number;
     /** 当前数据项索引。 */
     index?: number | string;

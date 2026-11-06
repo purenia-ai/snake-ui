@@ -11,11 +11,10 @@
 <script setup lang="ts">
 /**
  * @component Sticky
- * @description 通过 IntersectionObserver 相对视口观察占位层实现跨端吸顶，采用三层结构（外层容器 / 占位层 / 内容层），并在不支持 Observer 的环境降级为页面 scrollTop 定位。
+ * @description 通过节点测量与 IntersectionObserver 观察占位层实现跨端吸顶，采用三层结构（外层容器 / 占位层 / 内容层），不支持 Observer 的环境降级为宿主推送滚动位置。
  * @see /components/sticky
  */
 
-import { onPageScroll } from '@dcloudio/uni-app';
 import {
     computed,
     getCurrentInstance,
@@ -49,9 +48,6 @@ const fixed = ref(false);
 const height = ref(0);
 const width = ref(0);
 const left = ref(0);
-// 页面绝对定位的原始位置，仅用于降级方案。
-const originTop = ref(0);
-const currentScrollTop = ref(props.scrollTop);
 
 // 每个实例唯一类名，用于测量和观察占位层，避免 CMS 循环中多个实例互相串扰。
 const elClass = guid('snake-sticky');
@@ -59,6 +55,8 @@ const elClass = guid('snake-sticky');
 const supportsObserver = typeof uni !== 'undefined' && typeof uni.createIntersectionObserver === 'function';
 
 let contentObserver: any = null;
+// 高度校正会在下一个事件循环重建观察器，卸载后不能再建。
+let destroyed = false;
 
 function unitNumber(value: number | string | null | undefined) {
     const number = Number.parseFloat(String(value ?? 0));
@@ -113,20 +111,50 @@ function disconnectObserver() {
     }
 }
 
+// 高度校正后会重建观察器，放到下一轮事件循环里做，避免在回调栈内断开正在派发的 observer。
+function scheduleReobserve() {
+    setTimeout(observeContent, 0);
+}
+
 function observeContent() {
     disconnectObserver();
-    contentObserver = uni.createIntersectionObserver(instance?.proxy as any, { thresholds: [0.95, 0.98, 1] });
-    contentObserver.relativeToViewport({ top: -stickyTop.value });
+    if (destroyed || !supportsObserver) return;
+    // 观察根的顶边取「吸顶线 + 自身高度」：占位层的可见比例随位置连续变化（比例 = (top - 吸顶线) / 高度），
+    // 越过吸顶线时比例恰好归零。只用阈值 0，吸顶与解除都发生在同一条线上；根顶边若只取吸顶线，
+    // 高于可视区的吸顶块比例永远到不了 1，初始回调之后会彻底静默。
+    const offset = stickyTop.value + height.value;
+    contentObserver = uni.createIntersectionObserver(instance?.proxy as any, { thresholds: [0] });
+    contentObserver.relativeToViewport({ top: -offset });
     contentObserver.observe(`.${elClass}`, (res: any) => {
         if (isDisabled.value) return;
-        setFixed(res.boundingClientRect.top < stickyTop.value);
+        const rect = res.boundingClientRect || {};
+        // 判定根依赖自身高度：异步内容改变高度后判定点会偏移，就地校正并重建观察。
+        if (rect.height && Math.abs(Number(rect.height) - height.value) > 1) {
+            height.value = Number(rect.height);
+            scheduleReobserve();
+            return;
+        }
+        setFixed(Number(rect.top) <= stickyTop.value);
+    });
+    // 观察建立时页面可能已经滚过吸顶线（返回页恢复滚动、锚点跳转、首屏带锚点），补一次实时判定。
+    getRect(`.${elClass}`, instance).then(rect => {
+        if (!rect.height || isDisabled.value) return;
+        if (Math.abs(rect.height - height.value) > 1) {
+            height.value = rect.height;
+            scheduleReobserve();
+            return;
+        }
+        setFixed(Number(rect.top) <= stickyTop.value);
     });
 }
 
-// 降级方案：基于页面 scrollTop 手动计算是否吸顶。
-function updatePosition(scrollTop = currentScrollTop.value) {
-    currentScrollTop.value = scrollTop;
-    setFixed(!isDisabled.value && scrollTop + stickyTop.value >= originTop.value);
+// 降级方案：环境不支持 IntersectionObserver 时，由宿主推送的 scrollTop 触发实时几何判定。
+function syncByScrollTop() {
+    if (isDisabled.value) return;
+    getRect(`.${elClass}`, instance).then(rect => {
+        if (!rect.height) return;
+        setFixed(Number(rect.top) <= stickyTop.value);
+    });
 }
 
 async function measure() {
@@ -135,7 +163,6 @@ async function measure() {
     height.value = Number(rect.height) || height.value;
     width.value = Number(rect.width) || width.value;
     left.value = Number(rect.left) || 0;
-    originTop.value = Number(rect.top) + currentScrollTop.value;
     return true;
 }
 
@@ -150,7 +177,7 @@ async function update() {
     }
     nextTick(() => {
         if (supportsObserver) observeContent();
-        else updatePosition();
+        else syncByScrollTop();
     });
 }
 
@@ -171,16 +198,17 @@ watch(
         }
     }
 );
+// scrollTop 仅作为降级方案的触发源；支持 Observer 时吸顶由观察回调驱动，不参与计算。
 watch(
     () => props.scrollTop,
-    value => {
-        if (!supportsObserver) updatePosition(Number(value) || 0);
+    () => {
+        if (!supportsObserver) syncByScrollTop();
     }
 );
-onPageScroll(event => {
-    if (!supportsObserver) updatePosition(Number(event.scrollTop) || 0);
-});
 onMounted(() => void update());
-onBeforeUnmount(disconnectObserver);
+onBeforeUnmount(() => {
+    destroyed = true;
+    disconnectObserver();
+});
 defineExpose({ update });
 </script>
