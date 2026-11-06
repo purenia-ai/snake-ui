@@ -1,169 +1,166 @@
 <template>
-    <DemoPage
-        class="upload-demo-page"
-        title="Upload 文件上传"
-        desc="支持图片、视频和普通文件，可接入业务接口或 OSS 等自定义上传服务。"
-    >
-        <view class="upload-demo">
-            <view class="u-demo-wrap">
-                <view class="u-demo-title">基础用法 - 图片上传</view>
-                <view class="u-demo-area">
-                    <snake-upload
-                        v-model="imageFiles"
-                        accept="image"
-                        :upload-request="mockUpload"
-                        :max-count="6"
-                        width="100"
-                        height="100"
-                    />
-                </view>
+    <DemoPage :title="title" :desc="text('支持图片、视频和普通文件，可接入业务接口或 OSS 等自定义上传服务。')">
+        <DemoSection variant="preview" :title="text('实时预览')">
+            <view class="upload-live">
+                <snake-upload
+                    v-model="previewFiles"
+                    :accept="String(state.accept)"
+                    :mode="String(state.mode)"
+                    :max-count="Number(state.maxCount)"
+                    :auto-upload="Boolean(state.autoUpload)"
+                    :show-file-size="Boolean(state.showFileSize)"
+                    :upload-text="String(state.uploadText)"
+                    :upload-request="mockUpload"
+                    :max-duration="60"
+                    width="100"
+                    height="100"
+                />
             </view>
-
-            <view class="u-demo-wrap">
-                <view class="u-demo-title">文件上传 - 列表模式</view>
-                <view class="u-demo-area">
-                    <snake-upload
-                        v-model="documentFiles"
-                        accept="file"
-                        mode="list"
-                        :upload-request="mockUpload"
-                        :max-count="5"
-                        show-file-name
-                        show-file-size
-                        upload-text="添加文件"
-                    />
-                </view>
+        </DemoSection>
+        <DemoSection variant="controls" :title="text('参数配置')">
+            <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
+        </DemoSection>
+        <DemoSection :title="text('手动上传')">
+            <snake-upload
+                ref="manualUploadRef"
+                v-model="manualFiles"
+                accept="image"
+                :upload-request="mockUpload"
+                :auto-upload="false"
+                :max-count="3"
+                width="100"
+                height="100"
+            />
+            <view class="upload-actions">
+                <snake-button type="primary" :disabled="manualFiles.length === 0" @tap="startManualUpload">
+                    {{ text('开始上传') }}
+                </snake-button>
+                <snake-button :disabled="manualFiles.length === 0" @tap="clearManualFiles">
+                    {{ text('清空列表') }}
+                </snake-button>
             </view>
-
-            <view class="u-demo-wrap">
-                <view class="u-demo-title">视频上传</view>
-                <view class="u-demo-area">
-                    <snake-upload
-                        v-model="videoFiles"
-                        accept="video"
-                        :upload-request="mockUpload"
-                        :max-count="2"
-                        :max-duration="60"
-                        width="100"
-                        height="100"
-                        upload-text="添加视频"
-                    />
-                </view>
-            </view>
-
-            <view class="u-demo-wrap">
-                <view class="u-demo-title">手动上传（点击按钮开始上传）</view>
-                <view class="u-demo-area">
-                    <snake-upload
-                        ref="manualUploadRef"
-                        v-model="manualFiles"
-                        accept="image"
-                        :upload-request="mockUpload"
-                        :auto-upload="false"
-                        :max-count="3"
-                        width="100"
-                        height="100"
-                    />
-                    <view class="upload-actions">
-                        <snake-button type="primary" :disabled="manualFiles.length === 0" @tap="startManualUpload">
-                            开始上传
-                        </snake-button>
-                        <snake-button :disabled="manualFiles.length === 0" @tap="clearManualFiles">
-                            清空列表
-                        </snake-button>
+        </DemoSection>
+        <DemoSection :title="text('自定义上传按钮')">
+            <snake-upload
+                v-model="customButtonFiles"
+                accept="image"
+                :upload-request="mockUpload"
+                :custom-btn="true"
+                :max-count="3"
+                width="100"
+                height="100"
+            >
+                <template #addBtn>
+                    <view class="custom-upload-button" hover-class="custom-upload-button--hover">
+                        <snake-icon name="photo" size="22" color="var(--snake-color-primary)" />
+                        <text class="custom-upload-button__text">{{ text('选择图片') }}</text>
                     </view>
-                </view>
-            </view>
-
-            <view class="u-demo-wrap">
-                <view class="u-demo-title">自定义上传按钮</view>
-                <view class="u-demo-area">
-                    <snake-upload
-                        v-model="customButtonFiles"
-                        accept="image"
-                        :upload-request="mockUpload"
-                        :custom-btn="true"
-                        :max-count="3"
-                        width="100"
-                        height="100"
-                    >
-                        <template #addBtn>
-                            <view class="custom-upload-button" hover-class="custom-upload-button--hover">
-                                <snake-icon name="photo" size="22" color="var(--snake-color-primary)" />
-                                <text class="custom-upload-button__text">选择图片</text>
+                </template>
+            </snake-upload>
+        </DemoSection>
+        <DemoSection :title="text('自定义文件列表')">
+            <snake-upload
+                ref="customListUploadRef"
+                v-model="customListFiles"
+                accept="file"
+                mode="list"
+                :upload-request="mockUpload"
+                :show-upload-list="false"
+                :custom-btn="true"
+                :max-count="5"
+            >
+                <template #file="{ file }">
+                    <view class="custom-file-list">
+                        <view v-for="(item, index) in file" :key="`${item.name}-${index}`" class="custom-file">
+                            <view class="custom-file__icon">
+                                <snake-icon name="file-text" size="17" color="var(--snake-color-primary)" />
                             </view>
-                        </template>
-                    </snake-upload>
-                </view>
-            </view>
-
-            <view class="u-demo-wrap">
-                <view class="u-demo-title">自定义文件列表</view>
-                <view class="u-demo-area">
-                    <snake-upload
-                        ref="customListUploadRef"
-                        v-model="customListFiles"
-                        accept="file"
-                        mode="list"
-                        :upload-request="mockUpload"
-                        :show-upload-list="false"
-                        :custom-btn="true"
-                        :max-count="5"
-                    >
-                        <template #file="{ file }">
-                            <view class="custom-file-list">
-                                <view v-for="(item, index) in file" :key="`${item.name}-${index}`" class="custom-file">
-                                    <view class="custom-file__icon">
-                                        <snake-icon name="file-text" size="17" color="var(--snake-color-primary)" />
-                                    </view>
-                                    <view class="custom-file__content">
-                                        <text class="custom-file__name">{{ item.name || '未命名文件' }}</text>
-                                        <text class="custom-file__meta">{{ formatFileSize(item.size) }}</text>
-                                        <view
-                                            v-if="
-                                                item.progress !== undefined && item.progress > 0 && item.progress < 100
-                                            "
-                                            class="custom-file__progress"
-                                        >
-                                            <snake-line-progress
-                                                :percent="item.progress"
-                                                :show-percent="false"
-                                                height="2"
-                                            />
-                                        </view>
-                                    </view>
-                                    <view class="custom-file__status">
-                                        <snake-icon
-                                            :name="item.error ? 'close-circle' : 'checkmark-circle'"
-                                            size="16"
-                                            :color="
-                                                item.error ? 'var(--snake-color-error)' : 'var(--snake-color-success)'
-                                            "
-                                        />
-                                    </view>
-                                    <view class="custom-file__delete" @tap.stop="removeCustomFile(index)">
-                                        <snake-icon name="trash" size="15" color="var(--snake-color-text-muted)" />
-                                    </view>
+                            <view class="custom-file__content">
+                                <text class="custom-file__name">{{ item.name || text('未命名文件') }}</text>
+                                <text class="custom-file__meta">{{ formatFileSize(item.size) }}</text>
+                                <view
+                                    v-if="item.progress !== undefined && item.progress > 0 && item.progress < 100"
+                                    class="custom-file__progress"
+                                >
+                                    <snake-line-progress :percent="item.progress" :show-percent="false" height="2" />
                                 </view>
                             </view>
-                        </template>
-                        <template #addBtn>
-                            <view class="custom-file-add" hover-class="custom-file-add--hover">
-                                <snake-icon name="plus" size="15" color="var(--snake-color-primary)" />
-                                <text>添加文件</text>
+                            <view class="custom-file__status">
+                                <snake-icon
+                                    :name="item.error ? 'close-circle' : 'checkmark-circle'"
+                                    size="16"
+                                    :color="item.error ? 'var(--snake-color-error)' : 'var(--snake-color-success)'"
+                                />
                             </view>
-                        </template>
-                    </snake-upload>
-                </view>
-            </view>
-        </view>
+                            <view class="custom-file__delete" @tap.stop="removeCustomFile(index)">
+                                <snake-icon name="trash" size="15" color="var(--snake-color-text-muted)" />
+                            </view>
+                        </view>
+                    </view>
+                </template>
+                <template #addBtn>
+                    <view class="custom-file-add" hover-class="custom-file-add--hover">
+                        <snake-icon name="plus" size="15" color="var(--snake-color-primary)" />
+                        <text>{{ text('添加文件') }}</text>
+                    </view>
+                </template>
+            </snake-upload>
+        </DemoSection>
     </DemoPage>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import type { UploadExpose, UploadFileItem, UploadRequest } from '../../../uni_modules/snake-ui';
+import { computed, reactive, ref } from 'vue';
+import { demoTitle, useDemoLocale } from '../../../common/demo-i18n';
+import type { DemoControl, DemoValue } from '../../../common/demo-types';
+import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
+import DemoSection from '../../../components/demo-section/demo-section.vue';
+import type { UploadExpose, UploadFileItem, UploadRequest } from '../../../uni_modules/snake-ui';
+
+const { localeName, text } = useDemoLocale();
+const controls: DemoControl[] = [
+    {
+        key: 'accept',
+        label: '文件类别',
+        type: 'select',
+        defaultValue: 'image',
+        options: [
+            { label: '图片', value: 'image' },
+            { label: '视频', value: 'video' },
+            { label: '文件', value: 'file' }
+        ]
+    },
+    {
+        key: 'mode',
+        label: '展示模式',
+        type: 'select',
+        defaultValue: 'grid',
+        options: [
+            { label: '宫格', value: 'grid' },
+            { label: '列表', value: 'list' }
+        ]
+    },
+    { key: 'maxCount', label: '最大数量', type: 'slider', defaultValue: 6, min: 2, max: 8, step: 1, unit: '个' },
+    { key: 'uploadText', label: '上传提示', type: 'input', defaultValue: '添加图片' },
+    { key: 'autoUpload', label: '自动上传', type: 'switch', defaultValue: true },
+    { key: 'showFileSize', label: '显示文件大小', type: 'switch', defaultValue: false }
+];
+const state = reactive<Record<string, DemoValue>>(
+    Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))
+);
+const localizedControls = computed(() => {
+    const _locale = localeName.value;
+    return controls.map(control => ({
+        ...control,
+        label: text(control.label),
+        options: control.options?.map(option => ({ ...option, label: text(option.label) }))
+    }));
+});
+const title = computed(() => {
+    const _locale = localeName.value;
+    return demoTitle('upload', '文件上传');
+});
 
 const demoImage = 'https://cdn.puresnake.com/joker/recycle/like.png';
 const successfulFile = (name: string, size: number, fileType: 'image' | 'video' | 'file', url: string) => ({
@@ -175,12 +172,15 @@ const successfulFile = (name: string, size: number, fileType: 'image' | 'video' 
     progress: 100,
     error: false
 });
+const defaultFiles = (accept: DemoValue): UploadFileItem[] => {
+    if (accept === 'file') {
+        return [successfulFile('组件设计说明.pdf', 2.4 * 1024 * 1024, 'file', 'https://example.com/design.pdf')];
+    }
+    if (accept === 'video') return [];
+    return [successfulFile('snake-ui.png', 86 * 1024, 'image', demoImage)];
+};
 
-const imageFiles = ref<UploadFileItem[]>([successfulFile('snake-ui.png', 86 * 1024, 'image', demoImage)]);
-const documentFiles = ref<UploadFileItem[]>([
-    successfulFile('组件设计说明.pdf', 2.4 * 1024 * 1024, 'file', 'https://example.com/design.pdf')
-]);
-const videoFiles = ref<UploadFileItem[]>([]);
+const previewFiles = ref<UploadFileItem[]>(defaultFiles('image'));
 const manualFiles = ref<UploadFileItem[]>([]);
 const customButtonFiles = ref<UploadFileItem[]>([]);
 const customListFiles = ref<UploadFileItem[]>([
@@ -204,6 +204,12 @@ function delay(duration: number) {
     return new Promise<void>(resolve => setTimeout(resolve, duration));
 }
 
+function updateValue(key: string, value: DemoValue) {
+    state[key] = value;
+    // 切换文件类别后，原列表里的示例文件不再匹配，重置为对应的默认内容。
+    if (key === 'accept') previewFiles.value = defaultFiles(value);
+}
+
 function startManualUpload() {
     manualUploadRef.value?.upload();
 }
@@ -225,29 +231,8 @@ function formatFileSize(bytes?: number) {
 </script>
 
 <style scoped>
-.upload-demo-page {
-    background: var(--snake-color-background, #f6f6f6);
-}
-.upload-demo {
-    margin: 0 -12px;
-}
-.u-demo-wrap {
-    margin-bottom: 10px;
-    padding: 17px 16px 19px;
-    background: var(--snake-color-surface, #fff);
-}
-.u-demo-wrap:last-child {
-    margin-bottom: 0;
-}
-.u-demo-title {
-    margin-bottom: 14px;
-    color: var(--snake-color-text, #303133);
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1.4;
-}
-.u-demo-area {
-    min-height: 40px;
+.upload-live {
+    min-height: 110px;
 }
 .upload-actions {
     display: flex;

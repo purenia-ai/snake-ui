@@ -778,7 +778,8 @@ const demoTitles: Record<string, string> = {
     'activity-list': 'Activity List',
     'filter-sorts': 'Filter & Sort',
     'list-switching': 'List Switching',
-    coupon: 'Coupon'
+    coupon: 'Coupon',
+    upload: 'Upload'
 };
 
 Object.assign(englishMessages, {
@@ -877,6 +878,27 @@ Object.assign(englishMessages, {
         'Switch the source to see loading, success, failure and empty states; reload re-requests the current source.',
     '仅加载成功的图片可点击预览；形状与裁剪只影响容器内的呈现。':
         'Only loaded images open in preview; shape and fit only change how the image renders inside the container.'
+});
+
+Object.assign(englishMessages, {
+    '支持图片、视频和普通文件，可接入业务接口或 OSS 等自定义上传服务。':
+        'Upload images, videos and generic files; plug in a business API or an OSS-compatible adapter.',
+    文件类别: 'File type',
+    视频: 'Video',
+    文件: 'File',
+    最大数量: 'Max count',
+    上传提示: 'Upload hint',
+    添加图片: 'Add images',
+    自动上传: 'Auto upload',
+    显示文件大小: 'Show file size',
+    手动上传: 'Manual upload',
+    开始上传: 'Start upload',
+    清空列表: 'Clear list',
+    自定义上传按钮: 'Custom add button',
+    选择图片: 'Pick images',
+    自定义文件列表: 'Custom file list',
+    未命名文件: 'Untitled file',
+    添加文件: 'Add files'
 });
 
 export function demoText(value: string): string {
