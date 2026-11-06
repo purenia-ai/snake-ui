@@ -120,11 +120,6 @@ function updateValue(key: string, nextValue: DemoValue) {
     gap: 14px;
     padding: 12px;
 }
-.demo-variant-title {
-    color: var(--snake-color-text);
-    font-size: 14px;
-    font-weight: 600;
-}
 .demo-control-stack > text {
     color: var(--snake-color-text-secondary);
     font-size: 13px;

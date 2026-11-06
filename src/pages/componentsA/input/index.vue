@@ -260,11 +260,6 @@ function sendSms() {
     gap: 14px;
     padding: 12px;
 }
-.demo-variant-title {
-    color: var(--snake-color-text);
-    font-size: 14px;
-    font-weight: 600;
-}
 .demo-variant-title:not(:first-child) {
     margin-top: 6px;
 }

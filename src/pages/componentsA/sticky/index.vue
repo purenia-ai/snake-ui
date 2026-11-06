@@ -64,9 +64,6 @@ function updateValue(key: string, value: DemoValue) {
 .demo-variant-title {
     display: block;
     padding: 12px 12px 0;
-    color: var(--snake-color-text);
-    font-size: 14px;
-    font-weight: 600;
 }
 .demo-scroll-hero {
     display: flex;

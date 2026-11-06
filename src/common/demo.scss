@@ -13,4 +13,16 @@ page {
     --snake-demo-accent-text: var(--snake-color-primary, #06d290);
 }
 
+/*
+ * 示例页预览区内的小标题(变体/场景标签)。
+ * App.vue 全局引入此文件,页面不再各自复制;页面专属布局
+ * (间距、padding)可在页面样式里对同名类追加覆盖。
+ */
+.demo-variant-title {
+    color: var(--snake-color-text);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
 /* 供 @import 消费的 SCSS 桥接别名。 */

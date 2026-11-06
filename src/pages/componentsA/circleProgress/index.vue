@@ -119,10 +119,4 @@ function updateValue(key: string, value: DemoValue) {
     gap: 12px;
     justify-content: space-between;
 }
-.demo-variant-title {
-    color: var(--snake-color-text);
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1.4;
-}
 </style>

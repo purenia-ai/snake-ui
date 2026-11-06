@@ -110,12 +110,6 @@ function updateValue(key: string, value: DemoValue) {
     flex-direction: column;
     gap: 12px;
 }
-.demo-variant-title {
-    color: var(--snake-color-text);
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1.4;
-}
 .demo-line-live {
     display: flex;
     min-height: 72px;

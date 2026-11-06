@@ -77,9 +77,6 @@ function updateValue(key: string, value: DemoValue) {
 .demo-variant-title {
     display: block;
     margin-bottom: 12px;
-    color: var(--snake-color-text);
-    font-size: 14px;
-    font-weight: 600;
 }
 .demo-popup {
     padding: 20px 16px calc(20px + env(safe-area-inset-bottom));

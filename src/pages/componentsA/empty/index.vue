@@ -119,12 +119,6 @@ function tryAgain() {
     flex-direction: column;
     gap: 12px;
 }
-.demo-variant-title {
-    color: var(--snake-color-text);
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1.4;
-}
 .demo-empty-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));

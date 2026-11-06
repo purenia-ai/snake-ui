@@ -50,9 +50,6 @@ function updateValue(key: string, value: DemoValue) {
 .demo-variant-title {
     display: block;
     margin-bottom: 12px;
-    color: var(--snake-color-text);
-    font-size: 14px;
-    font-weight: 600;
 }
 .demo-overlay-tip {
     display: flex;

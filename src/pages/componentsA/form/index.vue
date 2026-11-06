@@ -368,11 +368,6 @@ function resetForm() {
     gap: 10px;
     padding: 12px;
 }
-.demo-variant-title {
-    color: var(--snake-color-text);
-    font-size: 14px;
-    font-weight: 600;
-}
 .demo-form__group + .demo-form__group {
     margin-top: 10px;
 }

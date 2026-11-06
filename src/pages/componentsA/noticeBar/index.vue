@@ -201,12 +201,6 @@ function handleActionClose() {
     justify-content: space-between;
     gap: 8px;
 }
-.demo-variant-title {
-    color: var(--snake-color-text);
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1.4;
-}
 .demo-variant-caption {
     flex: 1;
     overflow: hidden;
