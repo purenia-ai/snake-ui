@@ -540,6 +540,17 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 
 # 更新日志
 
+## [0.0.14](https://github.com/purenia-ai/snake-ui/compare/v0.0.13...v0.0.14)（2026-11-06）
+
+### 🐛 Bug Fixes | Bug 修复
+
+- **snake-image:** 失败态改为灰底居中图标：默认 `errorIcon` 改用 `error-circle`，占位层补 `--snake-color-surface-muted` 底色，加载/失败统一 24px 图标且不再叠加默认文案（插槽仍可自定义）；`loading-img` / `error-img` 自身加载失败时回退内置图标，空 `src` 不再提示"加载失败"，仅懒加载时重置图片 key 避免挂载即重复请求
+- **snake-sticky:** 吸顶判定重构：观察根顶边改为吸顶线加自身高度并按阈值 0 实时判定，修复吸顶块高于视口时永不触发；降级路径改用宿主 `scrollTop`（原 `onPageScroll` 注册在 H5 与小程序均不会回调），返回页恢复滚动与锚点跳转后也会即时校正
+
+### ✏️ Documentation | 文档
+
+- 示例页骨架统一：`.demo-variant-title` 基础样式收编至全局 demo.scss，去除 30 个示例页的重复定义；upload 示例迁移到 DemoSection / DemoControlPanel 统一骨架并补齐中英文案
+
 ## [0.0.13](https://github.com/purenia-ai/snake-ui/compare/v0.0.12...v0.0.13)（2026-11-05）
 
 ### ✨ Features | 新功能
