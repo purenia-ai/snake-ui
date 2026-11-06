@@ -6,7 +6,7 @@ preview: /pages/other/color/index
 const colorGroups = [
     {
         title: '主题主色',
-        items: [{ name: 'Snake 绿', token: 'primary', value: '#06D290', dark: '#2EBD7C', disabled: '#A6EBD3', light: '#EEFFE0', ink: '#FFFFFF' }]
+        items: [{ name: 'Snake 绿', token: 'primary', value: '#06D290', dark: '#2EBD7C', disabled: '#A6EBD3', light: '#06D2901A', ink: '#FFFFFF' }]
     },
     {
         title: '辅助色',
