@@ -737,6 +737,7 @@ const demoTitles: Record<string, string> = {
     'button-sort': 'Sort Button',
     'drop-menu': 'Dropdown Menu',
     'index-list': 'Index List',
+    'index-list-panel': 'Index List Panel',
     'index-anchor': 'Index Anchor',
     cell: 'Cell',
     line: 'Divider',
@@ -1049,6 +1050,22 @@ Object.assign(englishMessages, {
     消息: 'Messages',
     待办: 'Tasks',
     '超出上限显示 99+': 'Values above 99 render as 99+'
+});
+
+Object.assign(englishMessages, {
+    当前分组: 'Active group',
+    滚动同步: 'Scroll sync',
+    点击索引: 'Index taps',
+    吸顶偏移: 'Sticky offset',
+    '跳到 C 组': 'Jump to group C',
+    '跳到 D 组': 'Jump to group D',
+    重新测量: 'Re-measure',
+    已重新测量: 'Measured again',
+    右侧索引可点击或拖动: 'The rail supports tap and drag',
+    '容器给定高度，列表在其内部滚动': 'The list scrolls inside this fixed-height container',
+    容器高度: 'Container height',
+    条: 'items',
+    切换插槽内容可对比文字锚点与自定义内容: 'Toggle slot content to compare text and custom anchors'
 });
 
 export function demoText(value: string): string {
