@@ -16,12 +16,13 @@
                     <text class="demo-icon-preview__name">{{ selectedIcon }}</text>
                 </view>
                 <view class="demo-icon-heading">
-                    <text>{{ isEnglish ? 'Built-in icons' : '内置图标' }}</text>
-                    <text class="demo-icon-heading__count">{{ iconNames.length }}</text>
+                    <text>{{ text('内置图标') }}</text>
+                    <text class="demo-icon-heading__count">{{ filteredIcons.length }} / {{ iconNames.length }}</text>
                 </view>
+                <snake-input v-model="keyword" clearable :placeholder="text('搜索图标')" />
                 <view class="demo-icons">
                     <view
-                        v-for="name in iconNames"
+                        v-for="name in filteredIcons"
                         :key="name"
                         :class="['demo-icon-item', { 'demo-icon-item--active': selectedIcon === name }]"
                         hover-class="demo-icon-item--pressed"
@@ -58,7 +59,6 @@ import DemoSection from '../../../components/demo-section/demo-section.vue';
 import { iconNames } from '../../../uni_modules/snake-ui/components/snake-icon/icon-names';
 
 const { localeName, text } = useDemoLocale();
-const isEnglish = computed(() => localeName.value === 'en-US');
 const controls: DemoControl[] = [
     {
         key: 'iconColor',
@@ -108,6 +108,11 @@ function updateValue(key: string, value: DemoValue) {
 }
 
 const selectedIcon = ref('search');
+const keyword = ref('');
+const filteredIcons = computed(() => {
+    const query = keyword.value.trim().toLowerCase();
+    return query ? iconNames.filter(name => name.toLowerCase().includes(query)) : iconNames;
+});
 </script>
 
 <style scoped>

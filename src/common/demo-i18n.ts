@@ -1033,6 +1033,24 @@ Object.assign(englishMessages, {
     搜索无结果: 'No results found'
 });
 
+Object.assign(englishMessages, {
+    搜索图标: 'Search icons',
+    点击切换预览图标: 'Tap an icon to preview it',
+    数字徽标: 'Numeric badge',
+    圆点徽标: 'Dot badge',
+    零值显示: 'Zero value',
+    独立徽标: 'Standalone badge',
+    徽标数值: 'Badge value',
+    圆点模式: 'Dot mode',
+    零值仍显示: 'Show zero',
+    背景颜色: 'Background color',
+    红色: 'Red',
+    蓝色: 'Blue',
+    消息: 'Messages',
+    待办: 'Tasks',
+    '超出上限显示 99+': 'Values above 99 render as 99+'
+});
+
 export function demoText(value: string): string {
     return currentLocale.value.name === 'en-US' ? (englishMessages[value] ?? value) : value;
 }
