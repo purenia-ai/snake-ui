@@ -1148,10 +1148,12 @@ async function uploadFile(index = 0): Promise<void> {
             if (abortedFiles.has(currentFile)) return;
             const normalized = typeof result === 'string' ? { url: result } : result;
             if (!normalized?.url) throw new Error('uploadRequest must return a url');
+            const { url: remoteUrl, name: remoteName, response: remoteResponse, ...metadata } = normalized;
             if (lists.value[index] === currentFile) {
-                currentFile.url = normalized.url;
-                currentFile.name = normalized.name || currentFile.name;
-                currentFile.response = normalized.response ?? normalized;
+                Object.assign(currentFile, metadata);
+                currentFile.url = remoteUrl;
+                currentFile.name = remoteName || currentFile.name;
+                currentFile.response = remoteResponse ?? normalized;
                 currentFile.progress = 100;
                 currentFile.status = 'success';
                 currentFile.error = false;

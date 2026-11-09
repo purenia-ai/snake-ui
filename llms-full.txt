@@ -5329,7 +5329,7 @@ const uploadToOss: UploadRequest = async (file, { onProgress }) => {
 </template>
 ```
 
-`uploadRequest` 返回远程 URL 字符串，或 `{ url, response?, name? }`。抛出错误时文件进入失败状态，可调用 `retry(index)` 或 `reUpload(index)`。
+`uploadRequest` 返回远程 URL 字符串，或 `{ url, response?, name? }`。返回对象里的其余字段会合并到文件项，适合透传 `imageId`、宽高等元数据；抛出错误时文件进入失败状态，可调用 `retry(index)` 或 `reUpload(index)`。
 
 ## 手动上传
 

@@ -49,6 +49,15 @@ test('snake-upload lets hosts gate choosing and preview, configure success codes
     assert.match(source, /function abort\(index\?: number\)/);
 });
 
+test('snake-upload merges uploadRequest metadata onto the file item', async () => {
+    const source = await readFile(componentUrl, 'utf8');
+    assert.match(
+        source,
+        /const \{ url: remoteUrl, name: remoteName, response: remoteResponse, \.\.\.metadata \} = normalized;/
+    );
+    assert.match(source, /Object\.assign\(currentFile, metadata\)/);
+});
+
 test('snake-upload gives consumers typed events and keeps list keys stable', async () => {
     const [source, types] = await Promise.all([readFile(componentUrl, 'utf8'), readFile(typesUrl, 'utf8')]);
     assert.match(types, /export type UploadEmits =/);

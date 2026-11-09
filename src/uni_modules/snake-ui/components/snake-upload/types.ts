@@ -58,7 +58,7 @@ export interface UploadRequestContext {
     registerAbort: (abort: () => void) => void;
 }
 
-/** 自定义上传适配器的标准成功结果。 */
+/** 自定义上传适配器的标准成功结果；`url`、`name`、`response` 之外的字段会合并到文件项。 */
 export interface UploadRequestResult extends Record<string, unknown> {
     /** 上传完成后的公开访问地址。 */
     url: string;
