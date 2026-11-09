@@ -61,7 +61,7 @@ let contentObserver: any = null;
 let destroyed = false;
 // #ifdef H5
 // H5 端用浏览器原生 ResizeObserver 监听内容尺寸（小程序端无对应 API，靠越线时机补测兜底），
-// 不引入 wot 式双 scroll-view 探测，CMS 多实例场景零额外节点。
+// 不引入双 scroll-view 探测，CMS 多实例场景零额外节点。
 let contentResizeObserver: ResizeObserver | null = null;
 // #endif
 
@@ -90,7 +90,7 @@ const stickyTop = computed(() => {
     // #endif
     return offsetTopPx(props.offsetTop) + unitNumber(props.customNavHeight);
 });
-// 测得高度后进入「常驻占位」模式（wot-design-uni 的结构）：占位层定高并成为内容层的包含块，
+// 测得高度后进入「常驻占位」模式：占位层定高并成为内容层的包含块，
 // 内容层常驻 absolute、吸顶时才换成 fixed —— 两种定位都不参与文档流，切换瞬间零布局变化。
 // 未测到高度（首帧/降级）前内容保持 static 参与流，避免首屏高度为 0 的空窗。
 const measured = computed(() => height.value > 0);

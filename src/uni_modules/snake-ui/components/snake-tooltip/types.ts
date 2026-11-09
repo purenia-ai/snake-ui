@@ -32,8 +32,6 @@ export interface TooltipProps {
     disabled?: boolean;
     /** 是否显示右上角关闭按钮。 */
     closeable?: boolean;
-    /** 是否显示关闭按钮；兼容 Wot UI 的 show-close 写法。 */
-    showClose?: boolean;
     /** 点击透明遮罩时是否关闭。 */
     closeOnClickOverlay?: boolean;
     /** 透明遮罩的层级；内容层始终比它高一层。 */

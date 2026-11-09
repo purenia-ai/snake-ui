@@ -99,7 +99,7 @@ const contentStyle = computed(() => [
     font-size: 9px;
     line-height: 1;
     white-space: nowrap;
-    // 圆心对准包裹内容的右上角点（wot 同款变换），top/right 在此基础上偏移
+    // 圆心对准包裹内容的右上角点，top/right 在此基础上偏移
     transform: translateY(-50%) translateX(50%);
     transform-origin: center;
 }

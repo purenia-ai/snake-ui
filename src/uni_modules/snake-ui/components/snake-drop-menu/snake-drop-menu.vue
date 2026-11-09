@@ -75,7 +75,7 @@ const highlighted = ref<number>();
 const offset = ref(0);
 const items = shallowRef<DropMenuRegistration[]>([]);
 
-// 模块级展开登记：同屏多个 DropMenu 实例互斥，展开一个时收起其他（对齐 wot-ui 全局队列行为）。
+// 模块级展开登记：同屏多个 DropMenu 实例互斥，展开一个时收起其他。
 const openClosers = new Set<() => void>();
 
 /** 登记表中的可见项（show !== false），标题栏与 open/highlight 的下标均以可见项为准。 */

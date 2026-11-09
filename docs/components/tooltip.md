@@ -6,7 +6,7 @@ preview: /pages/componentsA/tooltip/index
 
 Tooltip 用于展示与触发元素相关的简短说明或非操作性内容。它以默认插槽作为触发元素，内容可通过 `content` 属性或 `content` 插槽传入。
 
-Snake Tooltip 与 Wot UI Tooltip 的用途相同，但定位和关闭机制并不相同：Snake 用 CSS 将浮层附着在触发元素上，并用透明遮罩处理点击外部关闭；Wot UI 会测量浮层位置，点击外部关闭通常由页面配合 `useQueue()` 处理。
+浮层用 CSS 附着在触发元素上，方向与箭头按布局对齐；点击外部关闭由内置透明遮罩完成，不需要页面额外维护队列或测量位置。
 
 ## 平台兼容性
 
@@ -72,18 +72,18 @@ async function expandDetail() {
 </template>
 ```
 
-## 与 Wot UI 的 API 差异
+## 兼容写法与行为说明
 
-| 功能         | Snake Tooltip                                           | Wot UI Tooltip                                     |
-| ------------ | ------------------------------------------------------- | -------------------------------------------------- |
-| 关闭按钮     | `closeable`，也接受 `show-close`                        | `show-close`                                       |
-| 内容插槽     | 直接使用 `#content`                                     | 当前源码也会自动识别 `#content`                    |
-| 点击外部关闭 | 内置透明遮罩，默认关闭，可用 `closeOnClickOverlay` 控制 | 页面使用 `useQueue().closeOutside()`               |
-| `offset`     | 浮层与触发元素的间距；数字按 px（375 稿）处理           | 沿坐标轴调整位置，接受数字、数组或对象，按像素处理 |
-| 内容尺寸变化 | 浮层由 CSS 重新布局，`updatePosition()` 刷新箭头对齐    | `updatePosition()` 重新测量并定位浮层              |
-| 显隐动画     | 立即显示和关闭                                          | 200ms 淡入淡出                                     |
+| 功能         | 说明                                                        |
+| ------------ | ----------------------------------------------------------- |
+| 关闭按钮     | 用 `closeable` 控制                                         |
+| 内容插槽     | 使用 `#content` 插槽；`use-content-slot` 这类属性写法不支持 |
+| 点击外部关闭 | 内置透明遮罩，默认关闭，可用 `closeOnClickOverlay` 控制     |
+| `offset`     | 浮层与触发元素的间距；数字按 px（375 稿）处理               |
+| 内容尺寸变化 | 浮层由 CSS 重新布局，`updatePosition()` 刷新箭头对齐        |
+| 显隐动画     | 立即显示和关闭，没有过渡动画                                |
 
-`customArrow` 和 `customPop` 分别用于箭头与浮层面板的类名；`contentClass`、`contentStyle` 只作用于内容容器。Wot UI 文档示例仍写有 `use-content-slot`，但当前 Tooltip 类型与组件实现均没有这个属性。
+`customArrow` 和 `customPop` 分别用于箭头与浮层面板的类名；`contentClass`、`contentStyle` 只作用于内容容器。
 
 ## API
 
@@ -98,7 +98,6 @@ async function expandDetail() {
 | `visibleArrow`        | 是否显示箭头                            | `boolean`          | `true`     |
 | `disabled`            | 是否禁用触发                            | `boolean`          | `false`    |
 | `closeable`           | 是否显示关闭按钮                        | `boolean`          | `false`    |
-| `showClose`           | 关闭按钮兼容别名                        | `boolean`          | `false`    |
 | `closeOnClickOverlay` | 点击透明区域是否关闭                    | `boolean`          | `true`     |
 | `zIndex`              | 透明遮罩层级                            | `number`           | `10070`    |
 | `customClass`         | 根节点自定义类名                        | `string`           | `''`       |

@@ -55,7 +55,6 @@ const props = withDefaults(defineProps<TooltipProps>(), {
     visibleArrow: true,
     disabled: false,
     closeable: false,
-    showClose: false,
     closeOnClickOverlay: true,
     zIndex: zIndexes.mask,
     customClass: '',
@@ -71,7 +70,7 @@ const emit = defineEmits<TooltipEmits>();
 const visible = ref(props.modelValue);
 const instance = getCurrentInstance();
 const arrowPosition = ref<{ x?: number; y?: number }>({});
-const showCloseButton = computed(() => props.closeable || props.showClose);
+const showCloseButton = computed(() => props.closeable);
 const layerZIndex = computed(() => Number(props.zIndex) || zIndexes.mask);
 const panelStyle = computed(() => ({
     '--snake-tooltip-offset': addUnit(props.offset),

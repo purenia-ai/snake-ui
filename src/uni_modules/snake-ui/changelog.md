@@ -26,7 +26,7 @@
 
 ### ✨ Features | 新功能
 
-- **snake-icon:** `size` 默认值由 `inherit` 改为 `14`（px，375 稿）：默认带尺寸保底，父级字号较小时不再跟着缩小（对齐 wot-ui）；显式传 `inherit` 仍可跟随父级字号
+- **snake-icon:** `size` 默认值由 `inherit` 改为 `14`（px，375 稿）：默认带尺寸保底，父级字号较小时不再跟着缩小；显式传 `inherit` 仍可跟随父级字号
 - **snake-empty:** 图标与图片尺寸分离：`iconSize` 明确为字体图标 em 字号（默认 80 → 96），新增 `imageSize` 控制插画/图片尺寸（默认 160），内边距与文案间距同步调整
 
 ### 🐛 Bug Fixes | Bug 修复
