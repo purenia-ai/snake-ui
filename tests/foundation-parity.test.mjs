@@ -29,22 +29,42 @@ test('first parity batch exposes reusable transition and loading foundations', a
 });
 
 test('button has full state and native capability contract', async () => {
-    const [types, source] = await Promise.all([read('components/snake-button/types.ts'), read('components/snake-button/snake-button.vue')]);
-    for (const prop of ['size', 'shape', 'hoverBgColor', 'rippleBgColor', 'ripple', 'throttleTime', 'openType']) {
+    const [types, source] = await Promise.all([
+        read('components/snake-button/types.ts'),
+        read('components/snake-button/snake-button.vue')
+    ]);
+    for (const prop of [
+        'size',
+        'shape',
+        'block',
+        'rippleBgColor',
+        'ripple',
+        'hoverClass',
+        'throttleTime',
+        'openType'
+    ]) {
         assert.match(types, new RegExp(`${prop}\\?`));
     }
     for (const event of ['getphonenumber', 'chooseavatar', 'agreeprivacyauthorization']) {
         assert.match(source, new RegExp(`@${event}`));
     }
-    assert.match(source, /:loading="loading"/);
+    assert.match(source, /<snake-loading/);
+    assert.match(source, /v-if="loading"/);
+    assert.match(source, /:open-type="disabled \|\| loading \? undefined : openType \|\| undefined"/);
+    // 镂空按钮按压态只加深文字与描边，浅色底不反转为实心（见组件内注释）
     for (const type of ['default', 'primary', 'success', 'warning', 'error', 'info']) {
         assert.match(
             source,
-            new RegExp(`\\.snake-${type}-plain-hover \\{[^}]*color:[^}]*border-color:[^}]*background-color:`),
-            `${type} plain hover should use a filled theme state`
+            new RegExp(`\\.snake-${type}-plain-hover \\{[^}]*color:[^}]*border-color:`),
+            `${type} plain hover should deepen text and border`
+        );
+        assert.doesNotMatch(
+            source,
+            new RegExp(`\\.snake-${type}-plain-hover \\{[^}]*background:`),
+            `${type} plain hover must not flip to a solid fill`
         );
     }
-    for (const removed of ['loadingText', 'loadingMode', 'iconColor', 'contentStyle', 'block']) {
+    for (const removed of ['hoverBgColor', 'loadingText', 'loadingMode', 'iconColor', 'contentStyle']) {
         assert.doesNotMatch(types, new RegExp(`${removed}\\?`));
     }
 });
@@ -114,10 +134,7 @@ test('size props used in geometry arithmetic parse units instead of NaN-ing', as
 });
 
 test('image owns viewport lazy loading and configured state artwork', async () => {
-    const [image, iconfont] = await Promise.all([
-        read('components/snake-image/snake-image.vue'),
-        read('iconfont.css')
-    ]);
+    const [image, iconfont] = await Promise.all([read('components/snake-image/snake-image.vue'), read('iconfont.css')]);
 
     assert.match(image, /type ImageStatus = 'idle' \| 'loading' \| 'success' \| 'error'/);
     assert.match(image, /relativeToViewport\(\{ top: props\.lazyThreshold, bottom: props\.lazyThreshold \}\)/);
@@ -136,7 +153,10 @@ test('image owns viewport lazy loading and configured state artwork', async () =
 });
 
 test('popup exposes overlay scroll locking as a public option', async () => {
-    const [source, types] = await Promise.all([read('components/snake-popup/snake-popup.vue'), read('components/snake-popup/types.ts')]);
+    const [source, types] = await Promise.all([
+        read('components/snake-popup/snake-popup.vue'),
+        read('components/snake-popup/types.ts')
+    ]);
 
     assert.match(types, /lockScroll\?: boolean/);
     assert.match(source, /:lock-scroll="lockScroll"/);
