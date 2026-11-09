@@ -329,7 +329,7 @@ const englishMessages: Record<string, string> = {
     表单尺寸: 'Form size',
     错误提示: 'Error display',
     文字: 'Text',
-    底边: 'Bottom border',
+    底边: 'Bottom',
     输入框边框: 'Input border',
     请输入姓名: 'Enter a name',
     '姓名长度为 2–12 个字符': 'Name must be 2–12 characters',
@@ -940,6 +940,37 @@ Object.assign(englishMessages, {
     缩放动画: 'Zoom animation',
     遮罩透明度: 'Overlay opacity',
     底部安全区: 'Bottom safe area'
+});
+
+Object.assign(englishMessages, {
+    账户注册表单: 'Account registration',
+    账户资料: 'Account details',
+    偏好设置: 'Preferences',
+    收款联系人: 'Payment contacts',
+    密码: 'Password',
+    确认密码: 'Confirm password',
+    简介: 'Bio',
+    水果偏好: 'Fruit preference',
+    口味: 'Flavor',
+    服务协议: 'Terms of service',
+    联系人: 'Contact',
+    苹果: 'Apple',
+    雪梨: 'Pear',
+    鲜甜: 'Sweet',
+    香辣: 'Spicy',
+    嵌套路径校验: 'Nested path validation',
+    添加联系人: 'Add contact',
+    删除最后一项: 'Remove last',
+    整表校验: 'Validate all',
+    校验姓名: 'Validate name',
+    校验姓名和密码: 'Validate name & password',
+    简介设为必填: 'Require bio',
+    简介设为可选: 'Make bio optional',
+    重置: 'Reset',
+    请输入内容: 'Enter content',
+    '请输入 2–12 个字符的姓名': '2–12 characters',
+    '至少 6 位，包含字母和数字': 'Min 6, letters + digits',
+    'Toast 仅在执行整表校验时出现。': 'Toast appears only after whole-form validation.'
 });
 
 export function demoText(value: string): string {
