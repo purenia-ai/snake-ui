@@ -53,6 +53,7 @@ const englishDescriptions: Record<string, string> = {
     NoNetwork: 'Detect lost connectivity and offer a full-screen retry action.',
     Swiper: 'Show slides with autoplay, indicators and titles.',
     Sticky: 'Keep important content visible while the page scrolls.',
+    Backtop: 'Return to the top of a long page with one tap.',
     Line: 'Separate content horizontally or vertically with fine lines.',
     Cell: 'Build grouped rows for settings, profiles and lists.',
     Navbar: 'Navigate between pages with back actions and safe-area support.',
@@ -246,6 +247,12 @@ const componentGroups: ComponentGroup[] = [
         list: [
             item('/pages/componentsA/swiper/index', 'Swiper 轮播图', 'Swiper', '支持自动播放、指示器与标题展示。'),
             item('/pages/componentsA/sticky/index', 'Sticky 吸顶', 'Sticky', '滚动时将重要内容固定在页面顶部。'),
+            item(
+                '/pages/componentsA/backtop/index',
+                'Backtop 回到顶部',
+                'Backtop',
+                '长页面滚动超过阈值后一键回到顶部。'
+            ),
             item(
                 '/pages/componentsA/line/index',
                 'Line 分隔线',

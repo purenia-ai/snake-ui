@@ -37,7 +37,8 @@ const componentDescriptions: Partial<Record<ComponentItem['link'], string>> = {
     '/components/icon': '使用内置图标字库或自定义图标前缀展示语义图标。',
     '/components/image': '加载、裁剪和预览图片，并提供加载失败兜底。',
     '/components/qr-code': '把文本或链接渲染为可扫描的二维码，支持中心 Logo 与导出图片。',
-    '/components/tooltip': '在目标元素附近展示轻量提示内容和操作说明。'
+    '/components/tooltip': '在目标元素附近展示轻量提示内容和操作说明。',
+    '/components/backtop': '长页面滚动后提供一键回顶入口，隐藏时不占位。'
 };
 
 const componentKeywords: Partial<Record<ComponentItem['link'], string[]>> = {
@@ -125,6 +126,7 @@ const componentGroupDefinitions: ComponentGroupDefinition[] = [
         items: [
             { name: 'Swiper', title: '轮播图', link: '/components/swiper' },
             { name: 'Sticky', title: '吸顶', link: '/components/sticky' },
+            { name: 'Backtop', title: '回到顶部', link: '/components/backtop' },
             { name: 'Line', title: '分隔线', link: '/components/line' },
             { name: 'Cell', title: '单元格', link: '/components/cell' }
         ]

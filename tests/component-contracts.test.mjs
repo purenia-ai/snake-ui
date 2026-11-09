@@ -20,6 +20,7 @@ const components = [
     'snake-overlay',
     'snake-popup',
     'snake-sticky',
+    'snake-backtop',
     'snake-swiper',
     'snake-tabs',
     'snake-upload',
@@ -233,6 +234,7 @@ test('package entry exposes precise foundation component props', async () => {
         'Overlay',
         'Popup',
         'Sticky',
+        'Backtop',
         'Swiper',
         'Tabs',
         'ButtonSort',
@@ -335,4 +337,18 @@ test('icon loads the complete bundled glyph set from the component', async () =>
     for (const icon of ['search', 'checkmark-circle', 'warning', 'eye-off-outline', 'arrow-right']) {
         assert.match(stylesheet, new RegExp(`\\.sicon-${icon}::?before`), `${icon}: missing bundled glyph`);
     }
+});
+
+test('backtop compares the host scroll distance and delegates scrolling to the platform', async () => {
+    const source = await readFile(new URL('components/snake-backtop/snake-backtop.vue', root), 'utf8');
+    const types = await readFile(new URL('components/snake-backtop/types.ts', root), 'utf8');
+
+    // 组件拿不到页面滚动，阈值必须消费宿主 onPageScroll 喂入的 scrollTop；带单位的 top 先折成 px 再比较
+    assert.match(source, /Number\(props\.scrollTop\) > unitToPx\(props\.top\)/);
+    assert.match(types, /scrollTop: number;/);
+    assert.match(source, /uni\.pageScrollTo\(\{ scrollTop: 0, duration: props\.duration \}\)/);
+    // 隐藏态交给 snake-transition 卸载，避免残留透明按钮挡住页面点击
+    assert.match(source, /<snake-transition :show="visible" name="fade">/);
+    // 图标不再绑定 click，否则根节点和图标会各触发一次回顶
+    assert.doesNotMatch(source, /<snake-icon[^>]*@click/);
 });

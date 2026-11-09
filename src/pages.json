@@ -69,6 +69,7 @@
                     "style": { "navigationBarTitleText": "导航栏", "navigationStyle": "custom" }
                 },
                 { "path": "sticky/index", "style": { "navigationBarTitleText": "吸顶" } },
+                { "path": "backtop/index", "style": { "navigationBarTitleText": "回到顶部" } },
                 { "path": "swiper/index", "style": { "navigationBarTitleText": "轮播图" } },
                 { "path": "tabs/index", "style": { "navigationBarTitleText": "标签页" } },
                 { "path": "upload/index", "style": { "navigationBarTitleText": "文件上传" } },

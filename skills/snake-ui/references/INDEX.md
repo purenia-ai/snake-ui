@@ -4,6 +4,7 @@
 
 ## components
 
+- [Backtop 回到顶部](components/backtop.md)
 - [Badge 徽标](components/badge.md)
 - [ButtonSort 排序按钮](components/button-sort.md)
 - [Button 按钮](components/button.md)

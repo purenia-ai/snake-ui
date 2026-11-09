@@ -61,6 +61,7 @@ const standardizedDocs = [
     'link',
     'textarea',
     'tooltip',
+    'backtop',
     'search'
 ];
 const undocumentedCmsComponents = [
@@ -178,6 +179,7 @@ test('high-use component docs follow the standard documentation shape', async ()
         'text',
         'link',
         'textarea',
+        'backtop',
         'search'
     ]) {
         const markdown = await document(name);
@@ -213,6 +215,7 @@ test('high-use component docs follow the standard documentation shape', async ()
         'badge',
         'image',
         'text',
+        'backtop',
         'link'
     ]) {
         assert.match(await document(name), /^#{3,4} Slots$/m, `${name}: slots`);
@@ -238,7 +241,7 @@ test('high-use component docs follow the standard documentation shape', async ()
 });
 
 test('component registry is the complete documented component source of truth', async () => {
-    assert.equal(componentItems.length, 49);
+    assert.equal(componentItems.length, 50);
     assert.equal(new Set(componentItems.map(item => item.link)).size, componentItems.length);
 
     const packageEntry = await readFile(resolve(root, 'src/uni_modules/snake-ui/index.ts'), 'utf8');

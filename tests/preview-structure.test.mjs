@@ -19,6 +19,7 @@ const foundationComponents = [
     'tooltip',
     'popup',
     'sticky',
+    'backtop',
     'swiper',
     'tabs',
     'subsection',

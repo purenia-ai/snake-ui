@@ -36,6 +36,7 @@ export * from './components/snake-overlay/types';
 export * from './components/snake-tooltip/types';
 export * from './components/snake-popup/types';
 export * from './components/snake-sticky/types';
+export * from './components/snake-backtop/types';
 export * from './components/snake-swiper/types';
 export * from './components/snake-tabs/types';
 export * from './components/snake-tabbar/types';
