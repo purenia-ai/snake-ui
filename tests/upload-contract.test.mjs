@@ -5,9 +5,15 @@ import test from 'node:test';
 const componentUrl = new URL('../src/uni_modules/snake-ui/components/snake-upload/snake-upload.vue', import.meta.url);
 const typesUrl = new URL('../src/uni_modules/snake-ui/components/snake-upload/types.ts', import.meta.url);
 
-test('snake-upload keeps legacy upload modes and public queue methods', async () => {
+test('snake-upload keeps both display modes and public queue methods', async () => {
     const source = await readFile(componentUrl, 'utf8');
-    for (const token of ["mode === 'list'", 'function upload()', 'function retry(index:', 'function addFiles(', 'deleteItem,']) {
+    for (const token of [
+        "mode === 'list'",
+        'function upload()',
+        'function retry(index:',
+        'function addFiles(',
+        'deleteItem'
+    ]) {
         assert.ok(source.includes(token), `missing ${token}`);
     }
 });
@@ -20,12 +26,21 @@ test('snake-upload gives uploadRequest priority over action and validates its UR
     assert.match(source, /onProgress: \(percent: number\)/);
 });
 
-test('snake-upload exposes the legacy custom-upload bridge', async () => {
-    const source = await readFile(componentUrl, 'utf8');
-    assert.match(source, /if \(props\.isCustomUpload\)/);
-    assert.match(source, /emit\('customUpload'/);
-    assert.match(source, /function onBeforeRead\(/);
-    assert.match(source, /chooseFile: chooseLegacyFiles/);
+test('snake-upload no longer ships the legacy custom-upload bridge', async () => {
+    const [source, types] = await Promise.all([readFile(componentUrl, 'utf8'), readFile(typesUrl, 'utf8')]);
+    for (const token of [
+        'isCustomUpload',
+        'customUpload',
+        'onBeforeRead',
+        'chooseLegacyFiles',
+        'afterRead',
+        'clickPreview'
+    ]) {
+        assert.ok(!source.includes(token), `unexpected ${token} in component`);
+        assert.ok(!types.includes(token), `unexpected ${token} in types`);
+    }
+    assert.match(source, /if \(props\.customChoose\)/);
+    assert.match(source, /emit\('on-choose'/);
 });
 
 test('snake-upload publishes a vendor-neutral custom request contract', async () => {
@@ -62,7 +77,9 @@ test('snake-upload gives consumers typed events and keeps list keys stable', asy
     const [source, types] = await Promise.all([readFile(componentUrl, 'utf8'), readFile(typesUrl, 'utf8')]);
     assert.match(types, /export type UploadEmits =/);
     assert.match(types, /'update:modelValue': \[files: UploadFileItem\[\]\]/);
-    assert.match(types, /customUpload:/);
+    for (const legacy of ['customUpload:', 'afterRead:', 'clickPreview:']) {
+        assert.ok(!types.includes(legacy), `unexpected ${legacy}`);
+    }
     assert.match(source, /defineEmits<UploadEmits>\(\)/);
     assert.match(source, /const fileKeys = new WeakMap<UploadFileItem, string>\(\)/);
     assert.equal((source.match(/:key="fileKey\(item\)"/g) || []).length, 2);

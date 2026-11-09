@@ -351,7 +351,6 @@ const deleteIconStyle = {
  * @property {Number} max-duration 选择视频时拍摄最长时长，单位秒（默认60）
  * @property {String} camera 选择视频时摄像头方向，可选值：front|back（默认'back'）
  * @property {String} image-shape 图片/图标展示形状，可选值：square|circle（默认'square'），在grid模式下作用于图片和添加按钮，在list模式下作用于图标
- * @property {Array<Object>} file-list 默认显示的文件列表，数组元素为对象，必须提供url属性
  * @property {Function} before-upload 上传前钩子，返回false或Promise.reject则跳过当前文件上传
  * @property {Function} before-remove 删除前钩子，返回false或Promise.reject则阻止删除
  * @property {Boolean} to-json 如果上传后的返回值为json字符串，是否自动转为json格式（默认true）
@@ -374,7 +373,7 @@ const deleteIconStyle = {
  * @event {Function} on-list-change 文件列表发生变化时触发
  * @event {Function} on-choose 启用 custom-choose 时触发，参数为 { accept, maxCount, fileList, index }，用户可自定义文件选择逻辑
  *
- * @example <snake-upload :action="action" :file-list="fileList" accept="image"></snake-upload>
+ * @example <snake-upload :action="action" v-model="fileList" accept="image"></snake-upload>
  * @example <snake-upload :action="action" accept="file" mode="list" :show-file-name="true"></snake-upload>
  */
 
@@ -487,11 +486,10 @@ const uploadBtnText = computed(() => {
 /**
  * 同步外部列表到内部 lists
  * @param val 外部传入的文件列表
- * @param isModelValue 是否来自 modelValue
  */
-function syncToInternal(val: UploadFileItem[], isModelValue: boolean = false) {
+function syncToInternal(val: UploadFileItem[]) {
     // 只有当不是由内部变化触发时才同步（避免循环更新）
-    const externalList = isModelValue ? props.modelValue : props.fileList;
+    const externalList = props.modelValue;
     // 同步业务端更新的上传状态，同时避免 lists 自身触发的等值回写循环。
     const needSync =
         externalList.length !== lists.value.length ||
@@ -525,24 +523,13 @@ function syncToInternal(val: UploadFileItem[], isModelValue: boolean = false) {
     });
 }
 
-// 监听 modelValue 变化，自动同步内部 lists（v-model 模式，优先级更高）
+// 监听 modelValue 变化，自动同步内部 lists（v-model 模式）
 watch(
     () => props.modelValue,
     val => {
         if (val && val.length > 0) {
-            syncToInternal(val, true);
+            syncToInternal(val);
         }
-    },
-    { immediate: true, deep: true }
-);
-
-// 监听 fileList 变化，自动同步内部 lists（向后兼容模式，仅在 modelValue 为空时生效）
-watch(
-    () => props.fileList,
-    val => {
-        // 如果 modelValue 有值，优先使用 modelValue，忽略 fileList
-        if (props.modelValue && props.modelValue.length > 0) return;
-        syncToInternal(val, false);
     },
     { immediate: true, deep: true }
 );
@@ -715,21 +702,6 @@ async function selectFile() {
         return;
     }
 
-    if (props.isCustomUpload) {
-        emit('customUpload', {
-            accept: props.accept,
-            multiple: props.multiple,
-            capture: props.sourceType,
-            compressed: props.compressed,
-            maxDuration: props.maxDuration,
-            sizeType: props.sizeType,
-            camera: props.camera,
-            maxCount: Number(props.maxCount) - lists.value.length,
-            chooseFile: chooseLegacyFiles
-        });
-        return;
-    }
-
     emit('chooseStart');
 
     // 根据 accept 类型选择不同的文件选择方式
@@ -750,39 +722,6 @@ async function selectFile() {
         default:
             chooseImage();
     }
-}
-
-/** 兼容旧版 customUpload 事件中的文件选择函数。 */
-function chooseLegacyFiles(options: Record<string, any> = {}): Promise<any[]> {
-    const accept = options.accept || props.accept;
-    const maxCount = Number(options.maxCount ?? Number(props.maxCount) - lists.value.length);
-    return new Promise((resolve, reject) => {
-        if (accept === 'video') {
-            uni.chooseVideo({
-                sourceType: options.capture || options.sourceType || props.sourceType,
-                compressed: options.compressed ?? props.compressed,
-                maxDuration: options.maxDuration ?? props.maxDuration,
-                camera: options.camera || props.camera,
-                success: (res: any) => resolve([{ ...res, url: res.tempFilePath, path: res.tempFilePath }]),
-                fail: reject
-            });
-            return;
-        }
-        uni.chooseImage({
-            count: options.multiple === false ? 1 : Math.min(maxCount, 9),
-            sourceType: options.capture || options.sourceType || props.sourceType,
-            sizeType: options.sizeType || props.sizeType,
-            success: (res: any) =>
-                resolve(
-                    (res.tempFiles || []).map((file: any, index: number) => ({
-                        ...file,
-                        url: file.path || res.tempFilePaths?.[index],
-                        path: file.path || res.tempFilePaths?.[index]
-                    }))
-                ),
-            fail: reject
-        });
-    });
 }
 
 /**
@@ -920,11 +859,10 @@ function chooseFile() {
     // #endif
 }
 
-/** 兼容旧版选择生命周期，选择取消或失败时也要结束页面 loading。 */
+/** 选择取消或失败时结束选择生命周期。 */
 function handleChooseFail(error: any) {
     emit('on-choose-fail', error);
     emit('chooseComplete');
-    emit('error', error);
 }
 
 /**
@@ -934,7 +872,6 @@ function handleChooseFail(error: any) {
  */
 function handleFilesSelected(files: any[], sourceType: 'image' | 'video' | 'media' | 'file') {
     let listOldLength = lists.value.length;
-    const acceptedFiles: UploadFileItem[] = [];
 
     files.forEach((val: any, index: number) => {
         // 检查文件后缀是否允许
@@ -945,7 +882,6 @@ function handleFilesSelected(files: any[], sourceType: 'image' | 'video' | 'medi
 
         if (val.size > Number(props.maxSize)) {
             emit('on-oversize', val, lists.value, props.index);
-            emit('oversize', { file: val, name: props.name, index: lists.value.length });
             showToast(t('overSize'));
         } else {
             if (Number(props.maxCount) <= lists.value.length) {
@@ -988,35 +924,14 @@ function handleFilesSelected(files: any[], sourceType: 'image' | 'video' | 'medi
                 type: val.type
             };
             lists.value.push(acceptedFile);
-            acceptedFiles.push(acceptedFile);
         }
     });
 
     // 每次文件选择完，抛出一个事件，并将当前内部选择的文件数组抛出去
     emit('on-choose-complete', lists.value, props.index);
     emit('chooseComplete');
-    if (acceptedFiles.length > 0 && !props.action && !props.uploadRequest) {
-        emit('afterRead', {
-            file: props.multiple ? acceptedFiles : acceptedFiles[0],
-            name: props.name,
-            index: listOldLength
-        });
-    }
     // 使用 props.autoUpload 是否立即上传
     if (props.autoUpload && (props.action || props.uploadRequest)) uploadFile(listOldLength);
-}
-
-/** 兼容旧版组件：把自定义选择或裁剪后的文件交给业务 afterRead。 */
-function onBeforeRead(file: UploadFileItem | UploadFileItem[]) {
-    const files = Array.isArray(file) ? file : [file];
-    const detail = { name: props.name, index: lists.value.length };
-    emit('beforeRead', { file, ...detail });
-    const accepted = files.filter(item => {
-        if (Number(item.size || 0) <= Number(props.maxSize)) return true;
-        emit('oversize', { file: item, ...detail });
-        return false;
-    });
-    if (accepted.length > 0) emit('afterRead', { file: Array.isArray(file) ? accepted : accepted[0], ...detail });
 }
 
 /**
@@ -1303,7 +1218,6 @@ function handlerDeleteItem(index: number) {
     }
     lists.value.splice(index, 1);
     emit('on-remove', index, lists.value, props.index);
-    emit('delete', { file: item, name: props.name, index });
     showToast(t('removeSuccess'));
 }
 
@@ -1401,7 +1315,6 @@ async function passBeforePreview(item: UploadFileItem, index: number): Promise<b
 async function handlePreview(item: UploadFileItem, index: number) {
     if (!(await passBeforePreview(item, index))) return;
     emit('on-preview', item.url || item.path, lists.value, props.index);
-    emit('clickPreview', { ...item, name: props.name, index });
     // 判断是否允许预览
     if (!props.previewFile) return;
     // 图片文件预览
@@ -1516,8 +1429,7 @@ defineExpose({
     previewImage: doPreviewImage,
     previewFile: doPreviewFile,
     addFiles,
-    deleteItem,
-    onBeforeRead
+    deleteItem
 });
 </script>
 
