@@ -2,14 +2,12 @@
     <DemoPage :title="title" :desc="text('按钮用于触发即时操作，支持主题、朴素、禁用和加载状态。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-button-showcase">
-                <view class="demo-button-section">
-                    <text class="demo-button-section__title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
+                <text class="demo-variant-title">{{ text('实时预览') }}</text>
+                <view class="demo-button-stage">
                     <snake-button
                         :type="String(state.type)"
                         :size="state.buttonSize"
                         :shape="state.buttonShape"
-                        :icon="String(state.icon)"
-                        :block="Boolean(state.block)"
                         :plain="Boolean(state.plain)"
                         :disabled="Boolean(state.disabled)"
                         :loading="Boolean(state.loading)"
@@ -19,33 +17,26 @@
                         Snake Button
                     </snake-button>
                 </view>
+                <text class="demo-variant-caption">{{ clickText }}</text>
             </view>
         </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
             <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
         </DemoSection>
-        <DemoSection :title="isEnglish ? 'Current code' : '当前代码'">
+        <DemoSection :title="text('当前代码')">
             <view class="demo-button-code">
                 <text selectable>{{ currentCode }}</text>
             </view>
             <view class="demo-button-actions">
                 <button type="button" class="demo-button-action demo-button-action--primary" @tap="copyCode">
-                    {{
-                        copyState === 'success'
-                            ? isEnglish
-                                ? 'Copied'
-                                : '已复制'
-                            : isEnglish
-                              ? 'Copy code'
-                              : '复制代码'
-                    }}
+                    {{ copyState === 'success' ? text('已复制') : text('复制代码') }}
                 </button>
                 <button type="button" class="demo-button-action" @tap="resetState">
-                    {{ isEnglish ? 'Reset' : '恢复默认' }}
+                    {{ text('恢复默认') }}
                 </button>
             </view>
             <text v-if="copyState === 'error'" class="demo-button-feedback" aria-live="polite">
-                {{ isEnglish ? 'Copy failed. Select the code manually.' : '复制失败，请手动选择代码。' }}
+                {{ text('复制失败，请手动选择代码。') }}
             </text>
         </DemoSection>
     </DemoPage>
@@ -60,7 +51,7 @@ import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 
 const { localeName, text } = useDemoLocale();
-const isEnglish = computed(() => localeName.value === 'en-US');
+const clickCount = ref(0);
 const controls: DemoControl[] = [
     {
         key: 'type',
@@ -99,19 +90,6 @@ const controls: DemoControl[] = [
             { label: '胶囊', value: 'circle' }
         ]
     },
-    {
-        key: 'icon',
-        label: '内置图标',
-        type: 'select',
-        defaultValue: '',
-        options: [
-            { label: '无图标', value: '' },
-            { label: '搜索', value: 'search' },
-            { label: '对勾', value: 'checkmark' },
-            { label: '右箭头', value: 'right' }
-        ]
-    },
-    { key: 'block', label: '块级按钮', type: 'switch', defaultValue: false },
     { key: 'plain', label: '朴素样式', type: 'switch', defaultValue: false },
     { key: 'loading', label: '加载状态', type: 'switch', defaultValue: false },
     { key: 'disabled', label: '禁用状态', type: 'switch', defaultValue: false },
@@ -133,13 +111,15 @@ const title = computed(() => {
     const _locale = localeName.value;
     return demoTitle('button', '按钮');
 });
+const clickText = computed(() => {
+    const label = text('点击次数');
+    return `${label}${localeName.value === 'en-US' ? ': ' : '：'}${clickCount.value}`;
+});
 const currentCode = computed(() => {
     const attributes: string[] = [];
     if (state.type !== 'default') attributes.push(`type="${String(state.type)}"`);
     if (state.buttonSize !== 'default') attributes.push(`size="${String(state.buttonSize)}"`);
     if (state.buttonShape !== 'square') attributes.push(`shape="${String(state.buttonShape)}"`);
-    if (state.icon) attributes.push(`icon="${String(state.icon)}"`);
-    if (state.block) attributes.push('block');
     for (const key of ['plain', 'loading', 'disabled', 'ripple']) {
         if (state[key]) attributes.push(key);
     }
@@ -155,8 +135,10 @@ function updateValue(key: string, value: DemoValue) {
 function resetState() {
     for (const control of controls) state[control.key] = control.defaultValue;
     copyState.value = 'idle';
+    clickCount.value = 0;
 }
 function handlePreviewClick() {
+    clickCount.value += 1;
     uni.showToast({ title: text('按钮被点击'), icon: 'none' });
 }
 
@@ -174,20 +156,22 @@ function copyCode() {
 .demo-button-showcase {
     display: flex;
     flex-direction: column;
-    gap: 18px;
-}
-
-.demo-button-section {
-    display: flex;
-    flex-direction: column;
     gap: 10px;
 }
 
-.demo-button-section__title {
-    color: var(--snake-color-text);
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1.4;
+.demo-button-stage {
+    display: flex;
+    min-height: 96px;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    border-radius: 8px;
+    background: var(--snake-color-surface-muted);
+}
+
+.demo-variant-caption {
+    color: var(--snake-color-text-secondary);
+    font-size: 12px;
 }
 
 .demo-button-code {

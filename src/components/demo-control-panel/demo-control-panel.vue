@@ -35,7 +35,7 @@
             <view v-else-if="control.type === 'input'" class="demo-control__input">
                 <snake-input
                     :model-value="String(values[control.key] ?? '')"
-                    :placeholder="control.placeholder || `${text('请输入')}${control.label}`"
+                    :placeholder="control.placeholder ? text(control.placeholder) : `${text('请输入')}${control.label}`"
                     @update:model-value="emit('change', control.key, String($event ?? ''))"
                 />
             </view>

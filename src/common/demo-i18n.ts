@@ -973,6 +973,20 @@ Object.assign(englishMessages, {
     'Toast 仅在执行整表校验时出现。': 'Toast appears only after whole-form validation.'
 });
 
+Object.assign(englishMessages, {
+    当前代码: 'Current code',
+    复制代码: 'Copy code',
+    恢复默认: 'Reset',
+    已复制: 'Copied',
+    '复制失败，请手动选择代码。': 'Copy failed. Select the code manually.',
+    点击次数: 'Clicks',
+    加载: 'Loading',
+    水波纹: 'Ripple',
+    中: 'Medium',
+    '上方为实时生效的加载指示器，下方为四种内置形态。':
+        'The indicator above is live; the four built-in shapes are below.'
+});
+
 export function demoText(value: string): string {
     return currentLocale.value.name === 'en-US' ? (englishMessages[value] ?? value) : value;
 }

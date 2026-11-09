@@ -2,7 +2,7 @@
     <DemoPage :title="title" :desc="text('展示不同形态、尺寸、颜色与方向的加载指示器。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack">
-                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
+                <text class="demo-variant-title">{{ text('实时预览') }}</text>
                 <view class="demo-feedback-row">
                     <snake-loading
                         :show="Boolean(state.loadingShow)"
@@ -10,11 +10,12 @@
                         :size="Number(state.loadingSize)"
                         :direction="state.loadingDirection as any"
                         :color="String(state.loadingColor)"
-                        :text="String(state.loadingText) || (isEnglish ? 'Loading' : '加载中')"
+                        :text="String(state.loadingText) || text('加载中')"
                         :text-size="Number(state.loadingTextSize)"
                     />
                 </view>
-                <text class="demo-variant-title">{{ isEnglish ? 'Types' : '加载形态' }}</text>
+                <text class="demo-variant-caption">{{ text('上方为实时生效的加载指示器，下方为四种内置形态。') }}</text>
+                <text class="demo-variant-title">{{ text('加载形态') }}</text>
                 <view class="demo-feedback-row">
                     <snake-loading type="circular" :text="text('圆环')" />
                     <snake-loading type="spinner" :text="text('旋转条')" />
@@ -36,7 +37,6 @@ import DemoControlPanel from '../../../components/demo-control-panel/demo-contro
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
-const isEnglish = computed(() => localeName.value === 'en-US');
 const controls: DemoControl[] = [
     { key: 'loadingShow', label: '是否显示', type: 'switch', defaultValue: true },
     { key: 'loadingText', label: '提示文字', type: 'input', defaultValue: '', placeholder: '加载中' },
@@ -121,5 +121,9 @@ function updateValue(key: string, value: DemoValue) {
     padding: 12px;
     border-radius: 8px;
     background: var(--snake-color-surface-muted);
+}
+.demo-variant-caption {
+    color: var(--snake-color-text-secondary);
+    font-size: 12px;
 }
 </style>
