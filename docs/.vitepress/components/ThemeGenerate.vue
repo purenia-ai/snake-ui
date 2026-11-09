@@ -1234,15 +1234,15 @@ function themeToTs(theme: QueuedTheme): string {
 
 function buildExportContent(themes: QueuedTheme[]): string {
     const lines: string[] = [];
-    lines.push(`import { defaultSnakeTheme, type SnakeTheme } from './uni_modules/snake-ui';`);
+    lines.push(`import { defaultTheme, type Theme } from './uni_modules/snake-ui';`);
     lines.push('');
     lines.push('/**');
     lines.push(' * Snake UI 主题预设 —— 由主题生成器导出');
     lines.push(` * 生成时间: ${new Date().toLocaleString('zh-CN')}`);
     lines.push(' * 用法: 覆盖 demo 工程 src/snake-ui.theme.ts 后重新编译即可。');
     lines.push(' */');
-    lines.push('export const snakeThemePresets: SnakeTheme[] = [');
-    lines.push('    defaultSnakeTheme,');
+    lines.push('export const snakeThemePresets: Theme[] = [');
+    lines.push('    defaultTheme,');
     themes.forEach((theme, index) => {
         lines.push(themeToTs(theme));
         if (index < themes.length - 1) lines.push('');

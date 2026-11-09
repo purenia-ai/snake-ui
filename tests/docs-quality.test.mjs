@@ -66,6 +66,10 @@ test('theme generator exposes labelled fields and a keyboard-contained dialog', 
     assert.match(generator, /name="theme-name"/);
     assert.match(generator, /name="theme-color-value"/);
     assert.match(generator, /aria-live="polite"/);
+    // 导出片段必须 import 库里真实存在的符号，否则生成的主题文件编译不过
+    assert.match(generator, /import \{ defaultTheme, type Theme \} from '\.\/uni_modules\/snake-ui'/);
+    assert.match(generator, /export const snakeThemePresets: Theme\[\] = \[/);
+    assert.doesNotMatch(generator, /defaultSnakeTheme|SnakeTheme/);
 });
 
 test('preview layout protects reading width at common desktop sizes', async () => {
