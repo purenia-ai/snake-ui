@@ -36,6 +36,19 @@ test('snake-upload publishes a vendor-neutral custom request contract', async ()
     assert.match(source, /uploadRequest: \{ type: Function as PropType<UploadRequest>/);
 });
 
+test('snake-upload lets hosts gate choosing and preview, configure success codes, and abort', async () => {
+    const [source, types] = await Promise.all([readFile(componentUrl, 'utf8'), readFile(typesUrl, 'utf8')]);
+    assert.match(types, /successStatus: \{ type: \[Number, Array\] as PropType<number \| number\[\]>/);
+    assert.match(types, /beforeChoose: \{ type: Function as PropType<UploadBeforeChoose>/);
+    assert.match(types, /beforePreview: \{ type: Function as PropType<UploadBeforePreview>/);
+    assert.match(types, /registerAbort: \(abort: \(\) => void\) => void/);
+    assert.match(types, /abort: \(index\?: number\) => void/);
+    assert.match(source, /const successCodes = Array\.isArray\(props\.successStatus\)/);
+    assert.match(source, /async function passBeforeChoose/);
+    assert.match(source, /async function passBeforePreview/);
+    assert.match(source, /function abort\(index\?: number\)/);
+});
+
 test('snake-upload gives consumers typed events and keeps list keys stable', async () => {
     const [source, types] = await Promise.all([readFile(componentUrl, 'utf8'), readFile(typesUrl, 'utf8')]);
     assert.match(types, /export type UploadEmits =/);

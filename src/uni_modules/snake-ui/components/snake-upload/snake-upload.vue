@@ -356,6 +356,9 @@ const deleteIconStyle = {
  * @property {Function} before-remove 删除前钩子，返回false或Promise.reject则阻止删除
  * @property {Boolean} to-json 如果上传后的返回值为json字符串，是否自动转为json格式（默认true）
  * @property {Boolean} custom-choose 是否使用自定义文件选择，开启后点击选择文件会触发 on-choose 事件而不调用默认选择API（默认false）
+ * @property {Number|Array} success-status 判定上传成功的响应状态码（默认[200, 201, 204]）
+ * @property {Function} before-choose 选择文件前钩子，返回false或Promise.reject则中止本次选择
+ * @property {Function} before-preview 预览文件前钩子，返回false或Promise.reject则跳过预览
  *
  * @event {Function} on-oversize 文件大小超出max-size限制时触发
  * @event {Function} on-exceed 文件数量超出max-count限制时触发
@@ -382,6 +385,8 @@ const { t } = useLocale('upload');
 const emit = defineEmits<UploadEmits>();
 
 const lists = ref<UploadFileItem[]>([]);
+const abortHandlers = new WeakMap<UploadFileItem, () => void>();
+const abortedFiles = new WeakSet<UploadFileItem>();
 const uploading = ref(false);
 const fileKeys = new WeakMap<UploadFileItem, string>();
 let fileKeySeed = 0;
@@ -682,11 +687,22 @@ function reUpload(index?: number) {
     uploadFile();
 }
 
+/** 选择文件前的拦截钩子。 */
+async function passBeforeChoose(): Promise<boolean> {
+    if (typeof props.beforeChoose !== 'function') return true;
+    try {
+        return (await props.beforeChoose(lists.value)) !== false;
+    } catch {
+        return false;
+    }
+}
+
 /**
  * 选择文件
  */
-function selectFile() {
+async function selectFile() {
     if (props.disabled) return;
+    if (!(await passBeforeChoose())) return;
 
     // 如果启用了自定义选择，触发 on-choose 事件，由用户自行处理文件选择
     if (props.customChoose) {
@@ -1124,8 +1140,12 @@ async function uploadFile(index = 0): Promise<void> {
                     const progress = Math.max(0, Math.min(100, Number(percent) || 0));
                     currentFile.progress = progress;
                     emit('on-progress', { progress }, index, lists.value, props.index);
+                },
+                registerAbort: (handler: () => void) => {
+                    abortHandlers.set(currentFile, handler);
                 }
             });
+            if (abortedFiles.has(currentFile)) return;
             const normalized = typeof result === 'string' ? { url: result } : result;
             if (!normalized?.url) throw new Error('uploadRequest must return a url');
             if (lists.value[index] === currentFile) {
@@ -1139,8 +1159,10 @@ async function uploadFile(index = 0): Promise<void> {
                 emit('on-change', currentFile.response, index, lists.value, props.index);
             }
         } catch (error) {
-            if (lists.value[index] === currentFile) uploadError(index, error);
+            if (!abortedFiles.has(currentFile) && lists.value[index] === currentFile) uploadError(index, error);
         } finally {
+            abortHandlers.delete(currentFile);
+            abortedFiles.delete(currentFile);
             uploading.value = false;
             uploadFile(index + 1);
         }
@@ -1148,36 +1170,41 @@ async function uploadFile(index = 0): Promise<void> {
     }
 
     // 创建上传对象
+    const uploadItem = lists.value[index];
     const uploadTask = uni.uploadFile({
         url: props.action,
         timeout: props.timeout,
-        filePath: lists.value[index].url || lists.value[index].path || '',
+        filePath: uploadItem.url || uploadItem.path || '',
         name: props.name,
         formData: props.formData,
         header: props.header,
         // #ifdef MP-ALIPAY
-        fileType: isImageFile(lists.value[index]) ? 'image' : 'video',
+        fileType: isImageFile(uploadItem) ? 'image' : 'video',
         // #endif
         success: (res: any) => {
+            if (abortedFiles.has(uploadItem)) return;
             // 判断是否json字符串，将其转为json格式
             let data = props.toJson && isJsonString(res.data) ? JSON.parse(res.data) : res.data;
-            if (![200, 201, 204].includes(res.statusCode)) {
+            const successCodes = Array.isArray(props.successStatus) ? props.successStatus : [props.successStatus];
+            if (!successCodes.includes(res.statusCode)) {
                 uploadError(index, data);
             } else {
                 // 上传成功
-                lists.value[index].response = data;
-                lists.value[index].progress = 100;
-                lists.value[index].status = 'success';
-                lists.value[index].error = false;
+                uploadItem.response = data;
+                uploadItem.progress = 100;
+                uploadItem.status = 'success';
+                uploadItem.error = false;
                 emit('on-success', data, index, lists.value, props.index);
             }
         },
         fail: (e: any) => {
+            if (abortedFiles.has(uploadItem)) return;
             uploadError(index, e);
         },
         complete: (res: any) => {
             // 上传完成后清除任务引用
-            lists.value[index].uploadTask = undefined;
+            uploadItem.uploadTask = undefined;
+            abortedFiles.delete(uploadItem);
             uni.hideLoading();
             uploading.value = false;
             uploadFile(index + 1);
@@ -1186,11 +1213,12 @@ async function uploadFile(index = 0): Promise<void> {
     });
 
     // 保存上传任务引用，用于后续取消上传
-    lists.value[index].uploadTask = uploadTask as unknown as UniApp.UploadTask;
+    uploadItem.uploadTask = uploadTask as unknown as UniApp.UploadTask;
 
     uploadTask.onProgressUpdate((res: any) => {
+        if (abortedFiles.has(uploadItem)) return;
         if (res.progress > 0) {
-            lists.value[index].progress = res.progress;
+            uploadItem.progress = res.progress;
             emit('on-progress', res, index, lists.value, props.index);
         }
     });
@@ -1355,10 +1383,21 @@ function openDocument(item: UploadFileItem) {
     // #endif
 }
 
+/** 预览文件前的拦截钩子。 */
+async function passBeforePreview(item: UploadFileItem, index: number): Promise<boolean> {
+    if (typeof props.beforePreview !== 'function') return true;
+    try {
+        return (await props.beforePreview(item, index, lists.value)) !== false;
+    } catch {
+        return false;
+    }
+}
+
 /**
  * 统一处理预览
  */
-function handlePreview(item: UploadFileItem, index: number) {
+async function handlePreview(item: UploadFileItem, index: number) {
+    if (!(await passBeforePreview(item, index))) return;
     emit('on-preview', item.url || item.path, lists.value, props.index);
     emit('clickPreview', { ...item, name: props.name, index });
     // 判断是否允许预览
@@ -1441,12 +1480,35 @@ function checkFileExt(file: { name?: string; path?: string }): boolean {
     return isValid;
 }
 
+/**
+ * 取消上传
+ * @param index 指定文件索引，不传时取消全部正在上传的文件
+ */
+function abort(index?: number) {
+    const targets = typeof index === 'number' ? [lists.value[index]] : lists.value.slice();
+    targets.forEach(file => {
+        if (!file) return;
+        abortedFiles.add(file);
+        abortHandlers.get(file)?.();
+        abortHandlers.delete(file);
+        file.uploadTask?.abort?.();
+        file.uploadTask = undefined;
+        if (file.status === 'uploading') {
+            file.status = 'ready';
+            file.progress = 0;
+            file.error = false;
+            file.message = '';
+        }
+    });
+}
+
 defineExpose({
     lists,
     clear,
     reUpload,
     selectFile,
     upload,
+    abort,
     retry,
     remove,
     previewImage: doPreviewImage,

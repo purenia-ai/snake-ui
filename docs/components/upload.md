@@ -87,6 +87,31 @@ function onUploadError(_error, index) {
 
 设置 `custom-choose` 后，组件不再调用系统文件选择器，而是通过 `on-choose` 将当前限制条件交给业务；业务取得文件后调用 `addFiles(files)` 加入队列。
 
+## 拦截与取消
+
+`before-choose`、`before-preview` 与已有的 `before-upload`、`before-remove` 用法一致：返回 `false` 或 Promise 拒绝即中止本次操作。
+
+```vue
+<snake-upload
+    ref="uploadRef"
+    v-model="files"
+    :upload-request="uploadToOss"
+    :success-status="[200, 201]"
+    :before-choose="current => current.length < 9"
+    :before-preview="file => file.status === 'success'"
+/>
+```
+
+```ts
+// 取消全部正在上传的文件，或只取消指定索引
+uploadRef.value?.abort();
+uploadRef.value?.abort(0);
+```
+
+- `success-status` 决定 `action` 模式下哪些响应码算成功，默认 `[200, 201, 204]`；`uploadRequest` 模式下以 Promise 是否 resolve 为准。
+- 取消后文件回到 `ready` 状态、进度归零，再次调用 `upload()` 即可重传。
+- `beforePreview` 返回 `false` 时不触发 `on-preview` 事件，也不会打开预览。
+
 ## 无障碍
 
 - 自定义选择入口时使用可点击控件并提供明确文案，例如“选择商品图片”。
@@ -147,6 +172,9 @@ function onUploadError(_error, index) {
 | `imageShape`       | 图片/图标形状，可选值 `square`（方形）/ `circle`（圆形）                                                      | `'square' \| 'circle'`                                                    | `square`                     |
 | `customChoose`     | 自定义文件选择，开启后点击触发 `on-choose` 而不调用默认 API                                                   | `boolean`                                                                 | `false`                      |
 | `uploadRequest`    | 自定义上传适配器（OSS 等），优先于 `action`                                                                   | `UploadRequest`                                                           | -                            |
+| `successStatus`    | `action` 模式下判定上传成功的响应状态码                                                                       | `number \| number[]`                                                      | `[200, 201, 204]`            |
+| `beforeChoose`     | 选择文件前钩子，返回 `false` 或 Promise 拒绝则中止本次选择                                                    | `(files: UploadFileItem[]) => boolean \| Promise<boolean>`                | -                            |
+| `beforePreview`    | 预览文件前钩子，返回 `false` 或 Promise 拒绝则跳过预览                                                        | `(item, index, files) => boolean \| Promise<boolean>`                     | -                            |
 | `isCustomUpload`   | 旧版兼容，选择文件走 `customUpload` 事件                                                                      | `boolean`                                                                 | `false`                      |
 
 ### Events
@@ -191,6 +219,7 @@ function onUploadError(_error, index) {
 | -------------------------- | -------------------------------------------------- |
 | `lists`                    | 当前内部文件列表（暴露属性）                       |
 | `upload()`                 | 上传全部待上传文件                                 |
+| `abort(index?)`            | 取消指定或全部正在上传的文件                       |
 | `retry(index)`             | 重试指定文件                                       |
 | `reUpload(index?)`         | 重传指定文件或失败队列                             |
 | `addFiles(files)`          | 添加外部选择的文件                                 |

@@ -54,6 +54,8 @@ export interface UploadRequestContext {
     formData: Record<string, unknown>;
     /** 向组件报告上传进度。 */
     onProgress: (percent: number) => void;
+    /** 注册取消回调，组件调用 abort() 时会执行它。 */
+    registerAbort: (abort: () => void) => void;
 }
 
 /** 自定义上传适配器的标准成功结果。 */
@@ -74,6 +76,16 @@ export type UploadRequest = (
 
 /** Upload 回调中用于区分组件实例的索引。 */
 export type UploadIndex = string | number;
+
+/** 选择文件前的钩子，返回 false 或 reject 时中止本次选择。 */
+export type UploadBeforeChoose = (files: UploadFileItem[]) => boolean | Promise<boolean>;
+
+/** 预览文件前的钩子，返回 false 或 reject 时跳过预览。 */
+export type UploadBeforePreview = (
+    item: UploadFileItem,
+    index: number,
+    files: UploadFileItem[]
+) => boolean | Promise<boolean>;
 
 /** Upload 选择、超限和预览等事件的统一载荷。 */
 export interface UploadFileEvent {
@@ -228,6 +240,9 @@ export const uploadProps = {
     imageShape: { type: String as PropType<'square' | 'circle'>, default: 'square' },
     customChoose: { type: Boolean, default: false },
     uploadRequest: { type: Function as PropType<UploadRequest>, default: undefined },
+    successStatus: { type: [Number, Array] as PropType<number | number[]>, default: () => [200, 201, 204] },
+    beforeChoose: { type: Function as PropType<UploadBeforeChoose>, default: undefined },
+    beforePreview: { type: Function as PropType<UploadBeforePreview>, default: undefined },
     isCustomUpload: { type: Boolean, default: false }
 };
 
@@ -251,7 +266,13 @@ export interface UploadExpose {
     /** 按组件交互规则删除指定文件。 */
     deleteItem: (index: number) => void;
     /** 打开文件选择器。 */
-    selectFile: () => void;
+    selectFile: () => void | Promise<void>;
+    /** 取消指定文件的上传；不传索引时取消全部正在上传的文件。 */
+    abort: (index?: number) => void;
+    /** 预览指定地址的图片。 */
+    previewImage: (url: string, index?: number) => void;
+    /** 预览或打开指定文件。 */
+    previewFile: (item: string | UploadFileItem, index?: number) => void;
     /** 将外部选择的文件加入上传队列。 */
     addFiles: (files: UploadFileItem[]) => void;
     /** 兼容旧组件，将文件交给 beforeRead/afterRead 流程。 */
