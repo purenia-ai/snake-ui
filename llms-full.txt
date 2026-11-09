@@ -4,6 +4,113 @@
 
 ## components
 
+<!-- Source: docs/components/backtop.md -->
+
+# Backtop 回到顶部
+
+长页面滚动超过阈值后出现的回到顶部按钮，点击调用 `uni.pageScrollTo` 平滑回到页面顶部。
+
+## 平台兼容性
+
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
+
+## 基础用法
+
+组件拿不到页面滚动距离，需要在页面的 `onPageScroll` 中把 `scrollTop` 传进来：
+
+```vue
+<template>
+    <view class="page">
+        <snake-backtop :scroll-top="scrollTop" />
+    </view>
+</template>
+
+<script setup lang="ts">
+import { onPageScroll } from '@dcloudio/uni-app';
+import { ref } from 'vue';
+
+const scrollTop = ref(0);
+onPageScroll(event => {
+    scrollTop.value = event.scrollTop;
+});
+</script>
+```
+
+滚动距离超过 `top`（默认 300px）时按钮淡入，回落到阈值以内时淡出，隐藏状态不渲染节点，不会残留透明按钮挡住页面点击。
+
+## 自定义形状、位置与内容
+
+```vue
+<snake-backtop :scroll-top="scrollTop" shape="square" text="TOP" :bottom="120" :right="24" />
+```
+
+默认插槽会整体替换按钮内容，需要图标和文字以外的组合时直接写插槽：
+
+```vue
+<snake-backtop :scroll-top="scrollTop">
+  <snake-icon name="arrow-up" />
+  <text>顶部</text>
+</snake-backtop>
+```
+
+`shape="square"` 使用圆角矩形；`circle`（默认）在图标模式下是正圆，带文字时呈胶囊形。
+
+## API
+
+### Props
+
+| 参数          | 说明                                                        | 类型           | 默认值         |
+| ------------- | ----------------------------------------------------------- | -------------- | -------------- |
+| `scrollTop`   | 页面滚动距离，取 `onPageScroll` 的 `e.scrollTop`，必填      | `number`       | -              |
+| `top`         | 显示阈值，滚动距离超过该值显示按钮                          | `UnitValue`    | `300`          |
+| `bottom`      | 距屏幕底部的距离                                            | `UnitValue`    | `100`          |
+| `right`       | 距屏幕右侧的距离                                            | `UnitValue`    | `20`           |
+| `shape`       | 按钮形状，可选 `circle` / `square`                          | `BacktopShape` | `circle`       |
+| `icon`        | 图标名或图片地址，规则同 [Icon](/components/icon) 的 `name` | `string`       | `arrow-upward` |
+| `iconSize`    | 图标尺寸，数值按 px（375 稿）处理                           | `UnitValue`    | `20`           |
+| `iconColor`   | 图标颜色                                                    | `string`       | 主题次要文字色 |
+| `text`        | 图标下方文字，为空时不渲染                                  | `string`       | `''`           |
+| `duration`    | 回到顶部的滚动时长，单位 ms                                 | `number`       | `100`          |
+| `zIndex`      | 按钮层级                                                    | `number`       | `10`           |
+| `customClass` | 根节点自定义类名                                            | `string`       | `''`           |
+| `customStyle` | 根节点自定义样式                                            | `StyleValue`   | `''`           |
+
+`top`、`bottom`、`right`、`iconSize` 的裸数字按 375 稿 px 处理，带单位的字符串原样生效，例如 `top="600rpx"`。
+
+### Events
+
+| 事件名  | 说明                     | 参数             |
+| ------- | ------------------------ | ---------------- |
+| `click` | 点击按钮时触发，早于滚动 | `event: unknown` |
+
+### Slots
+
+| 插槽名    | 说明                     |
+| --------- | ------------------------ |
+| `default` | 整体替换默认的图标与文字 |
+
+## 主题变量
+
+| 变量                           | 用途         |
+| ------------------------------ | ------------ |
+| `--snake-color-surface`        | 按钮背景色   |
+| `--snake-color-border`         | 按钮描边颜色 |
+| `--snake-color-shadow`         | 按钮投影颜色 |
+| `--snake-color-text-secondary` | 默认图标颜色 |
+| `--snake-color-text-muted`     | 文字颜色     |
+| `--snake-radius-large`         | 方形模式圆角 |
+
+需要跟随主题换色时覆盖上述变量即可，例如把按钮改成品牌实心色：
+
+```scss
+.snake-backtop {
+    background-color: var(--snake-color-primary);
+    border-color: var(--snake-color-primary);
+}
+```
+
 <!-- Source: docs/components/badge.md -->
 
 # Badge 徽标
@@ -566,7 +673,7 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 
 ### ✨ Features | 新功能
 
-- **snake-icon:** `size` 默认值由 `inherit` 改为 `14`（px，375 稿）：默认带尺寸保底，父级字号较小时不再跟着缩小（对齐 wot-ui）；显式传 `inherit` 仍可跟随父级字号
+- **snake-icon:** `size` 默认值由 `inherit` 改为 `14`（px，375 稿）：默认带尺寸保底，父级字号较小时不再跟着缩小；显式传 `inherit` 仍可跟随父级字号
 - **snake-empty:** 图标与图片尺寸分离：`iconSize` 明确为字体图标 em 字号（默认 80 → 96），新增 `imageSize` 控制插画/图片尺寸（默认 160），内边距与文案间距同步调整
 
 ### 🐛 Bug Fixes | Bug 修复
@@ -4968,7 +5075,7 @@ tabsRef.value?.init();
 
 Tooltip 用于展示与触发元素相关的简短说明或非操作性内容。它以默认插槽作为触发元素，内容可通过 `content` 属性或 `content` 插槽传入。
 
-Snake Tooltip 与 Wot UI Tooltip 的用途相同，但定位和关闭机制并不相同：Snake 用 CSS 将浮层附着在触发元素上，并用透明遮罩处理点击外部关闭；Wot UI 会测量浮层位置，点击外部关闭通常由页面配合 `useQueue()` 处理。
+浮层用 CSS 附着在触发元素上，方向与箭头按布局对齐；点击外部关闭由内置透明遮罩完成，不需要页面额外维护队列或测量位置。
 
 ## 平台兼容性
 
@@ -5034,18 +5141,18 @@ async function expandDetail() {
 </template>
 ```
 
-## 与 Wot UI 的 API 差异
+## 兼容写法与行为说明
 
-| 功能         | Snake Tooltip                                           | Wot UI Tooltip                                     |
-| ------------ | ------------------------------------------------------- | -------------------------------------------------- |
-| 关闭按钮     | `closeable`，也接受 `show-close`                        | `show-close`                                       |
-| 内容插槽     | 直接使用 `#content`                                     | 当前源码也会自动识别 `#content`                    |
-| 点击外部关闭 | 内置透明遮罩，默认关闭，可用 `closeOnClickOverlay` 控制 | 页面使用 `useQueue().closeOutside()`               |
-| `offset`     | 浮层与触发元素的间距；数字按 px（375 稿）处理           | 沿坐标轴调整位置，接受数字、数组或对象，按像素处理 |
-| 内容尺寸变化 | 浮层由 CSS 重新布局，`updatePosition()` 刷新箭头对齐    | `updatePosition()` 重新测量并定位浮层              |
-| 显隐动画     | 立即显示和关闭                                          | 200ms 淡入淡出                                     |
+| 功能         | 说明                                                        |
+| ------------ | ----------------------------------------------------------- |
+| 关闭按钮     | 用 `closeable` 控制                                         |
+| 内容插槽     | 使用 `#content` 插槽；`use-content-slot` 这类属性写法不支持 |
+| 点击外部关闭 | 内置透明遮罩，默认关闭，可用 `closeOnClickOverlay` 控制     |
+| `offset`     | 浮层与触发元素的间距；数字按 px（375 稿）处理               |
+| 内容尺寸变化 | 浮层由 CSS 重新布局，`updatePosition()` 刷新箭头对齐        |
+| 显隐动画     | 立即显示和关闭，没有过渡动画                                |
 
-`customArrow` 和 `customPop` 分别用于箭头与浮层面板的类名；`contentClass`、`contentStyle` 只作用于内容容器。Wot UI 文档示例仍写有 `use-content-slot`，但当前 Tooltip 类型与组件实现均没有这个属性。
+`customArrow` 和 `customPop` 分别用于箭头与浮层面板的类名；`contentClass`、`contentStyle` 只作用于内容容器。
 
 ## API
 
@@ -5060,7 +5167,6 @@ async function expandDetail() {
 | `visibleArrow`        | 是否显示箭头                            | `boolean`          | `true`     |
 | `disabled`            | 是否禁用触发                            | `boolean`          | `false`    |
 | `closeable`           | 是否显示关闭按钮                        | `boolean`          | `false`    |
-| `showClose`           | 关闭按钮兼容别名                        | `boolean`          | `false`    |
 | `closeOnClickOverlay` | 点击透明区域是否关闭                    | `boolean`          | `true`     |
 | `zIndex`              | 透明遮罩层级                            | `number`           | `10070`    |
 | `customClass`         | 根节点自定义类名                        | `string`           | `''`       |
@@ -5303,7 +5409,6 @@ function onUploadError(_error, index) {
 | `multiple`         | 是否开启文件多选                                                                                              | `boolean`                                                                 | `true`                       |
 | `maxSize`          | 单个文件最大字节数                                                                                            | `number \| string`                                                        | `Number.MAX_VALUE`           |
 | `modelValue`       | 文件列表，支持 `v-model`                                                                                      | `UploadFileItem[]`                                                        | `[]`                         |
-| `fileList`         | 初始文件列表（旧版兼容，`modelValue` 有值时优先）                                                             | `UploadFileItem[]`                                                        | `[]`                         |
 | `limitType`        | 允许的文件后缀，优先级高于 `accept` 内置格式限制                                                              | `string[]`                                                                | `[]`                         |
 | `autoUpload`       | 选择完是否自动上传                                                                                            | `boolean`                                                                 | `true`                       |
 | `showTips`         | 是否自动 toast 提示                                                                                           | `boolean`                                                                 | `true`                       |
@@ -5322,35 +5427,27 @@ function onUploadError(_error, index) {
 | `imageShape`       | 图片/图标形状，可选值 `square`（方形）/ `circle`（圆形）                                                      | `'square' \| 'circle'`                                                    | `square`                     |
 | `customChoose`     | 自定义文件选择，开启后点击触发 `on-choose` 而不调用默认 API                                                   | `boolean`                                                                 | `false`                      |
 | `uploadRequest`    | 自定义上传适配器（OSS 等），优先于 `action`                                                                   | `UploadRequest`                                                           | -                            |
-| `isCustomUpload`   | 旧版兼容，选择文件走 `customUpload` 事件                                                                      | `boolean`                                                                 | `false`                      |
 
 ### Events
 
-| 事件名               | 说明                                         | 参数                                       |
-| -------------------- | -------------------------------------------- | ------------------------------------------ |
-| `update:modelValue`  | 文件列表更新，支持 `v-model`                 | `files`                                    |
-| `on-list-change`     | 文件列表发生变化                             | `files, index`                             |
-| `on-oversize`        | 文件超过 `maxSize`                           | `file, files, index`                       |
-| `on-exceed`          | 数量超过 `maxCount`                          | `file, files, index`                       |
-| `on-choose`          | 启用 `customChoose` 时点击选择触发           | `{ accept, maxCount, fileList, index }`    |
-| `on-choose-complete` | 每次文件选择完成后                           | `files, index`                             |
-| `on-choose-fail`     | 文件选择失败                                 | `error`                                    |
-| `on-uploaded`        | 全部文件上传完毕                             | `files, index`                             |
-| `on-success`         | 单个文件上传成功                             | `data, fileIndex, files, index`            |
-| `on-error`           | 单个文件上传失败                             | `error, fileIndex, files, index`           |
-| `on-change`          | 单个文件上传状态改变（无论成败）             | `response, fileIndex, files, index`        |
-| `on-progress`        | 上传进度变化                                 | `progress, fileIndex, files, index`        |
-| `on-remove`          | 移除文件时                                   | `fileIndex, files, index`                  |
-| `on-preview`         | 预览文件时                                   | `url, files, index`                        |
-| `customUpload`       | 旧版兼容：配合 `isCustomUpload` 自行选择文件 | `detail: UploadLegacyCustomEvent`          |
-| `chooseStart`        | 开始选择文件时                               | -                                          |
-| `chooseComplete`     | 选择文件结束时                               | -                                          |
-| `error`              | 旧版兼容：文件选择或上传出错                 | `error`                                    |
-| `beforeRead`         | 旧版兼容：文件进入读取流程前                 | `detail: UploadFileEvent`                  |
-| `afterRead`          | 旧版兼容：文件进入读取流程后                 | `detail: UploadFileEvent`                  |
-| `oversize`           | 旧版兼容：文件超过大小限制                   | `detail: UploadFileEvent`                  |
-| `delete`             | 旧版兼容：删除文件时                         | `detail: UploadFileItem & { name, index }` |
-| `clickPreview`       | 旧版兼容：点击预览文件时                     | `detail: UploadFileItem & { name, index }` |
+| 事件名               | 说明                               | 参数                                    |
+| -------------------- | ---------------------------------- | --------------------------------------- |
+| `update:modelValue`  | 文件列表更新，支持 `v-model`       | `files`                                 |
+| `on-list-change`     | 文件列表发生变化                   | `files, index`                          |
+| `on-oversize`        | 文件超过 `maxSize`                 | `file, files, index`                    |
+| `on-exceed`          | 数量超过 `maxCount`                | `file, files, index`                    |
+| `on-choose`          | 启用 `customChoose` 时点击选择触发 | `{ accept, maxCount, fileList, index }` |
+| `on-choose-complete` | 每次文件选择完成后                 | `files, index`                          |
+| `on-choose-fail`     | 文件选择失败                       | `error`                                 |
+| `on-uploaded`        | 全部文件上传完毕                   | `files, index`                          |
+| `on-success`         | 单个文件上传成功                   | `data, fileIndex, files, index`         |
+| `on-error`           | 单个文件上传失败                   | `error, fileIndex, files, index`        |
+| `on-change`          | 单个文件上传状态改变（无论成败）   | `response, fileIndex, files, index`     |
+| `on-progress`        | 上传进度变化                       | `progress, fileIndex, files, index`     |
+| `on-remove`          | 移除文件时                         | `fileIndex, files, index`               |
+| `on-preview`         | 预览文件时                         | `url, files, index`                     |
+| `chooseStart`        | 开始选择文件时                     | -                                       |
+| `chooseComplete`     | 选择文件结束时                     | -                                       |
 
 ### Slots
 
@@ -5362,20 +5459,19 @@ function onUploadError(_error, index) {
 
 ### Methods
 
-| 方法                       | 说明                                               |
-| -------------------------- | -------------------------------------------------- |
-| `lists`                    | 当前内部文件列表（暴露属性）                       |
-| `upload()`                 | 上传全部待上传文件                                 |
-| `retry(index)`             | 重试指定文件                                       |
-| `reUpload(index?)`         | 重传指定文件或失败队列                             |
-| `addFiles(files)`          | 添加外部选择的文件                                 |
-| `deleteItem(index)`        | 按确认和钩子规则删除文件                           |
-| `remove(index)`            | 直接移除指定文件                                   |
-| `selectFile()`             | 打开文件选择器                                     |
-| `clear()`                  | 清空列表                                           |
-| `previewImage(url)`        | 预览图片                                           |
-| `previewFile(item, index)` | 预览/打开文件                                      |
-| `onBeforeRead(file)`       | 旧版兼容：把文件交给 `beforeRead`/`afterRead` 流程 |
+| 方法                       | 说明                         |
+| -------------------------- | ---------------------------- |
+| `lists`                    | 当前内部文件列表（暴露属性） |
+| `upload()`                 | 上传全部待上传文件           |
+| `retry(index)`             | 重试指定文件                 |
+| `reUpload(index?)`         | 重传指定文件或失败队列       |
+| `addFiles(files)`          | 添加外部选择的文件           |
+| `deleteItem(index)`        | 按确认和钩子规则删除文件     |
+| `remove(index)`            | 直接移除指定文件             |
+| `selectFile()`             | 打开文件选择器               |
+| `clear()`                  | 清空列表                     |
+| `previewImage(url)`        | 预览图片                     |
+| `previewFile(item, index)` | 预览/打开文件                |
 
 ## 类型定义
 
@@ -5388,10 +5484,6 @@ import type {
     UploadExpose
 } from '@puresnake/snake-ui';
 ```
-
-## 旧版兼容
-
-旧项目仍可使用 `isCustomUpload`、`@customUpload` 和 `onBeforeRead(file)`。新代码推荐使用 `customChoose`/`@on-choose`/`addFiles` 处理自定义选择，使用 `uploadRequest` 处理 OSS 上传。
 
 ## 主题变量
 

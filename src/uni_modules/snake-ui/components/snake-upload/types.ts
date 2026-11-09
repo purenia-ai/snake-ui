@@ -75,16 +75,6 @@ export type UploadRequest = (
 /** Upload 回调中用于区分组件实例的索引。 */
 export type UploadIndex = string | number;
 
-/** Upload 选择、超限和预览等事件的统一载荷。 */
-export interface UploadFileEvent {
-    /** 关联的文件。 */
-    file: UploadFileItem | UploadFileItem[];
-    /** 上传字段名称。 */
-    name: string;
-    /** 文件在列表中的起始位置。 */
-    index: number;
-}
-
 /** Upload 自定义选取事件的载荷。 */
 export interface UploadChooseEvent {
     /** 当前允许的文件类型。 */
@@ -95,28 +85,6 @@ export interface UploadChooseEvent {
     fileList: UploadFileItem[];
     /** 调用方传入的组件索引。 */
     index: UploadIndex;
-}
-
-/** Upload 旧版 customUpload 事件的载荷。 */
-export interface UploadLegacyCustomEvent {
-    /** 当前允许的文件类型。 */
-    accept: UploadAcceptType;
-    /** 是否允许多选。 */
-    multiple: boolean;
-    /** 可用的文件来源。 */
-    capture: Array<'album' | 'camera'>;
-    /** 是否压缩视频。 */
-    compressed: boolean;
-    /** 视频最长时长。 */
-    maxDuration: number;
-    /** 图像尺寸策略。 */
-    sizeType: Array<'original' | 'compressed'>;
-    /** 视频摄像头方向。 */
-    camera: 'front' | 'back';
-    /** 本次还能选择的文件数。 */
-    maxCount: number;
-    /** 调用默认文件选择器。 */
-    chooseFile: (options?: Record<string, unknown>) => Promise<unknown[]>;
 }
 
 /** Upload 组件的事件契约。 */
@@ -149,24 +117,10 @@ export type UploadEmits = {
     'on-remove': [index: number, files: UploadFileItem[], componentIndex: UploadIndex];
     /** 文件预览。 */
     'on-preview': [url: string | undefined, files: UploadFileItem[], componentIndex: UploadIndex];
-    /** 兼容旧版自定义上传。 */
-    customUpload: [detail: UploadLegacyCustomEvent];
     /** 开始选择文件。 */
     chooseStart: [];
     /** 选择文件结束。 */
     chooseComplete: [];
-    /** 兼容旧版错误事件。 */
-    error: [error: unknown];
-    /** 文件进入读取流程前。 */
-    beforeRead: [detail: UploadFileEvent];
-    /** 文件进入读取流程后。 */
-    afterRead: [detail: UploadFileEvent];
-    /** 兼容旧版超限事件。 */
-    oversize: [detail: UploadFileEvent];
-    /** 兼容旧版删除事件。 */
-    delete: [detail: UploadFileItem & { name: string; index: number }];
-    /** 兼容旧版预览事件。 */
-    clickPreview: [detail: UploadFileItem & { name: string; index: number }];
 };
 
 /** Snake Upload 的运行时 props 定义。 */
@@ -200,7 +154,6 @@ export const uploadProps = {
     multiple: { type: Boolean, default: true },
     maxSize: { type: [Number, String], default: Number.MAX_VALUE },
     modelValue: { type: Array as PropType<UploadFileItem[]>, default: () => [] },
-    fileList: { type: Array as PropType<UploadFileItem[]>, default: () => [] },
     limitType: { type: Array as PropType<string[]>, default: () => [] },
     autoUpload: { type: Boolean, default: true },
     showTips: { type: Boolean, default: true },
@@ -227,8 +180,7 @@ export const uploadProps = {
     extension: { type: Array as PropType<string[]>, default: () => [] },
     imageShape: { type: String as PropType<'square' | 'circle'>, default: 'square' },
     customChoose: { type: Boolean, default: false },
-    uploadRequest: { type: Function as PropType<UploadRequest>, default: undefined },
-    isCustomUpload: { type: Boolean, default: false }
+    uploadRequest: { type: Function as PropType<UploadRequest>, default: undefined }
 };
 
 /** Snake Upload 的公开属性类型。 */
@@ -254,6 +206,4 @@ export interface UploadExpose {
     selectFile: () => void;
     /** 将外部选择的文件加入上传队列。 */
     addFiles: (files: UploadFileItem[]) => void;
-    /** 兼容旧组件，将文件交给 beforeRead/afterRead 流程。 */
-    onBeforeRead: (file: UploadFileItem | UploadFileItem[]) => void;
 }
