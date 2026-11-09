@@ -1,33 +1,47 @@
 <template>
     <DemoPage :title="title" :desc="text('为浮层和内容切换提供一致的跨端进出场动画。')">
         <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-stack demo-transition-showcase">
-                <text class="demo-variant-title">{{ isEnglish ? 'Interactive transition' : '交互动画' }}</text>
-                <snake-button size="small" @click="visible = !visible">
-                    {{ isEnglish ? 'Toggle' : '切换显示' }}
-                </snake-button>
-                <snake-transition
-                    :show="visible"
-                    :name="state.transitionName as any"
-                    :duration="Number(state.transitionDuration)"
-                >
-                    <view class="demo-transition-card">Snake Transition</view>
-                </snake-transition>
-                <text class="demo-variant-title">{{ isEnglish ? 'Preset: fade and zoom' : '预设：淡入与缩放' }}</text>
-                <view class="demo-feedback-row">
-                    <view class="demo-transition-preset">
-                        <snake-transition :key="fadeKey" show appear name="fade">
-                            <view class="demo-transition-chip">Fade</view>
+            <view class="demo-transition-showcase">
+                <text class="demo-variant-title">{{ text('交互动画') }}</text>
+                <view class="demo-transition-stage">
+                    <snake-transition
+                        :show="visible"
+                        :name="transitionName"
+                        :duration="Number(state.transitionDuration)"
+                        @after-enter="enterCount += 1"
+                        @after-leave="leaveCount += 1"
+                    >
+                        <view class="demo-transition-card">Snake Transition</view>
+                    </snake-transition>
+                </view>
+                <view class="demo-transition-toolbar">
+                    <snake-button size="small" @click="visible = !visible">
+                        {{ visible ? text('隐藏') : text('显示') }}
+                    </snake-button>
+                    <text class="demo-variant-caption">{{ eventText }}</text>
+                </view>
+
+                <text class="demo-variant-title">{{ text('预设一览') }}</text>
+                <view class="demo-transition-grid">
+                    <view
+                        v-for="preset in presets"
+                        :key="preset"
+                        class="demo-transition-preset"
+                        hover-class="demo-transition-preset--hover"
+                        @click="replay(preset)"
+                    >
+                        <snake-transition
+                            :key="`${preset}-${replayKeys[preset] || 0}`"
+                            show
+                            appear
+                            :name="preset"
+                            :duration="400"
+                        >
+                            <view class="demo-transition-chip">{{ preset }}</view>
                         </snake-transition>
-                        <snake-button size="mini" @click="fadeKey++">{{ isEnglish ? 'Replay' : '重播' }}</snake-button>
-                    </view>
-                    <view class="demo-transition-preset">
-                        <snake-transition :key="zoomKey" show appear name="zoom-in">
-                            <view class="demo-transition-chip">Zoom</view>
-                        </snake-transition>
-                        <snake-button size="mini" @click="zoomKey++">{{ isEnglish ? 'Replay' : '重播' }}</snake-button>
                     </view>
                 </view>
+                <text class="demo-variant-caption">{{ text('点击任意预设可重播该动画') }}</text>
             </view>
         </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
@@ -43,12 +57,14 @@ import type { DemoControl, DemoValue } from '../../../common/demo-types';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
+import type { TransitionPreset } from '../../../uni_modules/snake-ui/components/snake-transition/types';
 
 const { localeName, text } = useDemoLocale();
-const isEnglish = computed(() => localeName.value === 'en-US');
 const visible = ref(true);
-const fadeKey = ref(0);
-const zoomKey = ref(0);
+const enterCount = ref(0);
+const leaveCount = ref(0);
+const replayKeys = reactive<Record<string, number>>({});
+const presets: TransitionPreset[] = ['fade', 'fade-up', 'fade-down', 'slide-left', 'slide-right', 'zoom-in'];
 const controls: DemoControl[] = [
     {
         key: 'transitionName',
@@ -87,48 +103,88 @@ const title = computed(() => {
     const _locale = localeName.value;
     return demoTitle('transition', '过渡动画');
 });
+const transitionName = computed(() => String(state.transitionName) as TransitionPreset);
+const eventText = computed(() => {
+    const colon = localeName.value === 'en-US' ? ': ' : '：';
+    const parts = [
+        `${text('当前预设')}${colon}${transitionName.value} · ${Number(state.transitionDuration)}ms`,
+        `${text('进入动画完成')} ${enterCount.value}`,
+        `${text('离开动画完成')} ${leaveCount.value}`
+    ];
+    return parts.join(' · ');
+});
 function updateValue(key: string, value: DemoValue) {
     state[key] = value;
+}
+function replay(preset: TransitionPreset) {
+    replayKeys[preset] = (replayKeys[preset] || 0) + 1;
 }
 </script>
 
 <style scoped>
-.demo-stack {
+.demo-transition-showcase {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
 }
-.demo-feedback-row {
-    display: flex;
-    min-height: 60px;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 24px;
+
+.demo-transition-stage {
+    min-height: 120px;
     padding: 12px;
     border-radius: 8px;
     background: var(--snake-color-surface-muted);
 }
-.demo-transition-chip {
-    padding: 10px 14px;
-    border-radius: 6px;
-    background: var(--snake-color-primary-light);
-    color: var(--snake-demo-accent-text);
-}
-.demo-transition-preset {
-    display: flex;
-    min-width: 60px;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-}
+
 .demo-transition-card {
     display: flex;
-    min-height: 110px;
+    width: 100%;
+    min-height: 96px;
     align-items: center;
     justify-content: center;
     border-radius: 10px;
     color: #fff;
     background: linear-gradient(135deg, var(--snake-color-primary-deep), var(--snake-color-primary-deeper));
+}
+
+.demo-transition-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.demo-variant-caption {
+    flex: 1;
+    color: var(--snake-color-text-secondary);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.demo-transition-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.demo-transition-preset {
+    display: flex;
+    height: 64px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--snake-color-divider);
+    border-radius: 8px;
+    background: var(--snake-color-surface);
+}
+
+.demo-transition-preset--hover {
+    background: var(--snake-color-surface-muted);
+}
+
+.demo-transition-chip {
+    padding: 6px 8px;
+    border-radius: 6px;
+    color: var(--snake-demo-accent-text);
+    font-size: 11px;
+    line-height: 1;
+    background: var(--snake-color-primary-light);
 }
 </style>

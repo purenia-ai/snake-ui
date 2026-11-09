@@ -2,7 +2,7 @@
     <DemoPage :title="title" :desc="text('价格、脱敏、日期与链接等常用文本场景。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack demo-text-showcase">
-                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
+                <text class="demo-variant-title">{{ text('实时预览') }}</text>
                 <snake-text
                     :mode="String(state.tMode)"
                     :type="String(state.tType)"
@@ -20,12 +20,26 @@
                     href="https://github.com/purenia-ai/snake-ui"
                     @click="onTextClick"
                 />
-                <text class="demo-variant-sub">{{ lastClick || (isEnglish ? 'No event yet' : '暂无事件') }}</text>
-                <text class="demo-variant-title">{{ isEnglish ? 'Preset modes' : '模式示例' }}</text>
-                <snake-text :text="'13800138000'" mode="phone" format="encrypt" />
-                <snake-text :text="'张三丰'" mode="name" format="encrypt" />
-                <snake-text :text="1288" mode="price" />
-                <snake-text :text="new Date(2026, 0, 1).getTime()" mode="date" />
+                <text class="demo-variant-sub">{{ lastClick || text('暂无事件') }}</text>
+                <text class="demo-variant-title">{{ text('模式示例') }}</text>
+                <view class="demo-text-presets">
+                    <view class="demo-text-preset">
+                        <text class="demo-text-preset__label">{{ text('脱敏手机号') }}</text>
+                        <snake-text :text="'13800138000'" mode="phone" format="encrypt" />
+                    </view>
+                    <view class="demo-text-preset">
+                        <text class="demo-text-preset__label">{{ text('脱敏姓名') }}</text>
+                        <snake-text :text="'张三丰'" mode="name" format="encrypt" />
+                    </view>
+                    <view class="demo-text-preset">
+                        <text class="demo-text-preset__label">{{ text('价格格式') }}</text>
+                        <snake-text :text="1288" mode="price" />
+                    </view>
+                    <view class="demo-text-preset">
+                        <text class="demo-text-preset__label">{{ text('日期格式') }}</text>
+                        <snake-text :text="new Date(2026, 0, 1).getTime()" mode="date" />
+                    </view>
+                </view>
             </view>
         </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
@@ -43,7 +57,6 @@ import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 
 const { localeName, text } = useDemoLocale();
-const isEnglish = computed(() => localeName.value === 'en-US');
 const lastClick = ref('');
 const controls: DemoControl[] = [
     {
@@ -173,14 +186,14 @@ function sampleText(): string | number {
         case 'date':
             return new Date(2026, 0, 1, 10, 30).getTime();
         case 'link':
-            return isEnglish.value ? 'Open Snake UI' : '打开 Snake UI';
+            return text('打开 Snake UI');
         default:
             if (state.tLines) {
-                return isEnglish.value
-                    ? 'Snake UI keeps reusable interface components consistent across commerce and content pages. This longer sample lets you compare one-line and two-line truncation while adjusting text size and style.'
-                    : 'Snake UI 将常用界面组件组合到商城和内容页面中。这段较长的示例文字用于观察单行与双行截断效果，也方便比较字号、颜色和图标设置后的变化。';
+                return text(
+                    'Snake UI 将常用界面组件组合到商城和内容页面中。这段较长的示例文字用于观察单行与双行截断效果，也方便比较字号、颜色和图标设置后的变化。'
+                );
             }
-            return isEnglish.value ? 'Snake UI text component' : 'Snake UI 文本组件示例';
+            return text('Snake UI 文本组件示例');
     }
 }
 function sampleFormat() {
@@ -201,5 +214,25 @@ function onTextClick() {
 .demo-variant-sub {
     color: var(--snake-color-text-muted);
     font-size: 12px;
+}
+.demo-text-presets {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.demo-text-preset {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--snake-color-divider);
+}
+.demo-text-preset:last-child {
+    border-bottom: 0;
+}
+.demo-text-preset__label {
+    color: var(--snake-color-text-secondary);
+    font-size: 13px;
 }
 </style>

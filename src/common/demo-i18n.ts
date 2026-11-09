@@ -987,6 +987,40 @@ Object.assign(englishMessages, {
         'The indicator above is live; the four built-in shapes are below.'
 });
 
+Object.assign(englishMessages, {
+    交互动画: 'Interactive transition',
+    切换显示: 'Toggle',
+    显示: 'Show',
+    隐藏: 'Hide',
+    '预设：淡入与缩放': 'Presets: fade and zoom',
+    预设一览: 'All presets',
+    当前预设: 'Current preset',
+    重播: 'Replay',
+    进入动画完成: 'Enter animations',
+    离开动画完成: 'Leave animations',
+    点击任意预设可重播该动画: 'Tap a preset to replay it',
+    '带 transform 的容器': 'A container with transform',
+    '这里的 fixed 弹层会被困住：跟随缩放、被裁剪':
+        'A fixed popup here is trapped: it follows the scale and gets clipped',
+    显示弹层: 'Show popup',
+    传送后的弹层: 'Portaled popup',
+    '渲染在页面根节点，主题变量依然生效。': 'Rendered at the page root; theme variables still apply.',
+    被困住的弹层: 'Trapped popup',
+    '被 transform 容器困住，无法铺满视口。': 'Trapped by the transformed container, it cannot fill the viewport.',
+    当前模式: 'Current mode',
+    已开启传送: 'Portal on',
+    未开启传送: 'Portal off',
+    模式示例: 'Preset modes',
+    '打开 Snake UI': 'Open Snake UI',
+    'Snake UI 文本组件示例': 'Snake UI text component',
+    'Snake UI 将常用界面组件组合到商城和内容页面中。这段较长的示例文字用于观察单行与双行截断效果，也方便比较字号、颜色和图标设置后的变化。':
+        'Snake UI composes reusable interface components across commerce and content pages. This longer sample shows one-line versus two-line truncation while you adjust size, color and icons.',
+    脱敏手机号: 'Masked phone',
+    脱敏姓名: 'Masked name',
+    价格格式: 'Price format',
+    日期格式: 'Date format'
+});
+
 export function demoText(value: string): string {
     return currentLocale.value.name === 'en-US' ? (englishMessages[value] ?? value) : value;
 }
