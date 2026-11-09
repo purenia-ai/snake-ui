@@ -1,4 +1,5 @@
 ---
+preview: /pages/componentsA/tabbar/index
 description: 使用 Snake UI Tabbar 构建应用一级底部导航，支持角标、安全区和原生 tabBar 替换。
 ---
 

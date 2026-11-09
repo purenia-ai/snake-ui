@@ -44,7 +44,7 @@
                     />
                     <text
                         v-if="item.badge !== undefined || item.count !== undefined || item.isDot"
-                        class="snake-tabbar__badge"
+                        :class="['snake-tabbar__badge', { 'snake-tabbar__badge--dot': item.isDot }]"
                     >
                         {{ item.isDot ? '' : (item.badge ?? item.count) }}
                     </text>
@@ -293,6 +293,16 @@ async function clickItem(item: TabbarItem, index: number) {
     font-size: 8px;
     line-height: 10px;
     text-align: center;
+}
+/* 圆点模式没有文字内容，必须自带尺寸，否则只剩 padding 撑出的一条细线。 */
+.snake-tabbar__badge--dot {
+    top: -1px;
+    right: -4px;
+    width: 8px;
+    min-width: 8px;
+    height: 8px;
+    padding: 0;
+    border-radius: 50%;
 }
 .snake-tabbar__label {
     font-size: 11px;

@@ -731,6 +731,7 @@ const demoTitles: Record<string, string> = {
     popup: 'Popup',
     sticky: 'Sticky',
     navbar: 'Navbar',
+    tabbar: 'Tabbar',
     swiper: 'Swiper',
     tabs: 'Tabs',
     subsection: 'Subsection',
@@ -1066,6 +1067,29 @@ Object.assign(englishMessages, {
     容器高度: 'Container height',
     条: 'items',
     切换插槽内容可对比文字锚点与自定义内容: 'Toggle slot content to compare text and custom anchors'
+});
+
+Object.assign(englishMessages, {
+    '构建应用一级底部导航，支持选中态、角标、凸起按钮与安全区。':
+        'Build primary app navigation with active states, badges, a raised action and safe areas.',
+    '底部导航固定在页面底部，这里用内嵌方式预览，点击可切换选中态。':
+        'The tabbar is pinned to the page bottom; previewed inline here, tap to switch the active item.',
+    当前项: 'Active item',
+    分类: 'Category',
+    发布: 'Publish',
+    购物车: 'Cart',
+    我的: 'Mine',
+    凸起按钮: 'Raised button',
+    角标: 'Badge',
+    '数字 12': 'Number 12',
+    '禁用「我的」': 'Disable Mine',
+    顶部分隔线: 'Top divider',
+    导航高度: 'Tabbar height',
+    切换: 'Switches',
+    页面内容区: 'Page content',
+    '导航栏贴在页面底部，一级页面之间用它切换': 'The bar sits at the page bottom and switches top-level pages',
+    '禁用项不触发事件；原生 tabBar 页面会自动隐藏系统导航':
+        'Disabled items ignore taps; native tabBar pages hide the system bar automatically'
 });
 
 export function demoText(value: string): string {

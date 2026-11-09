@@ -37,6 +37,7 @@ const englishDescriptions: Record<string, string> = {
     Search: 'Search input with a placeholder, clear action and action button.',
     Select: 'Choose from single, multiple or linked columns in a bottom sheet.',
     Upload: 'Upload images, videos and files with OSS adapter support.',
+    VerificationCode: 'Track verification code countdown state and copy across pages.',
     Calendar: 'Pick single or range dates with lunar dates and holidays.',
     Loadmore: 'Show ready, loading and no-more-content states.',
     LineProgress: 'Show task progress with a line, stripes and percentage.',
@@ -55,6 +56,7 @@ const englishDescriptions: Record<string, string> = {
     Line: 'Separate content horizontally or vertically with fine lines.',
     Cell: 'Build grouped rows for settings, profiles and lists.',
     Navbar: 'Navigate between pages with back actions and safe-area support.',
+    Tabbar: 'Build primary bottom navigation with active states, badges and safe-area support.',
     Tabs: 'Switch quickly between content at the same level.',
     Subsection: 'Choose between a small set of exclusive options.',
     ButtonSort: 'Cycle through ascending, descending and default sort order.',
@@ -174,6 +176,12 @@ const componentGroups: ComponentGroup[] = [
                 '上传图片、视频和文件，支持 OSS 适配器。'
             ),
             item(
+                '/pages/componentsA/verificationCode/index',
+                'VerificationCode 验证码倒计时',
+                'VerificationCode',
+                '维护验证码倒计时状态与文案，界面由宿主自由组合。'
+            ),
+            item(
                 '/pages/componentsA/calendar/index',
                 'Calendar 日历',
                 'Calendar',
@@ -258,6 +266,12 @@ const componentGroups: ComponentGroup[] = [
         icon: '⌘',
         list: [
             item('/pages/componentsA/navbar/index', 'Navbar 导航栏', 'Navbar', '用于页面顶部导航并处理返回与安全区。'),
+            item(
+                '/pages/componentsA/tabbar/index',
+                'Tabbar 底部导航栏',
+                'Tabbar',
+                '构建应用一级底部导航，支持角标、凸起按钮与安全区。'
+            ),
             item('/pages/componentsA/tabs/index', 'Tabs 标签页', 'Tabs', '在同层级内容之间快速切换。'),
             item(
                 '/pages/componentsA/subsection/index',
