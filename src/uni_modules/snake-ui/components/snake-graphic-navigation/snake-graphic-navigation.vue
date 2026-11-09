@@ -1,6 +1,6 @@
 <template>
     <view v-if="imageList.length" class="graphicnavigation">
-        <!-- 鍥哄畾鍒楄〃 -->
+        <!-- 固定列表 -->
         <block v-if="datas.imgStyle === 0">
             <view class="defaultNavigation" :style="{ backgroundColor: datas.backgroundColor, flexWrap: 'wrap' }">
                 <view
@@ -21,7 +21,7 @@
                 </view>
             </view>
         </block>
-        <!-- 妯悜婊戝姩鍒楄〃 -->
+        <!-- 横向滑动列表 -->
         <block v-if="datas.imgStyle === 1">
             <view
                 class="scrollList-box"
@@ -84,7 +84,7 @@ export default {
         imageList() {
             return this.datas?.imageList || [];
         },
-        // 鏂囧瓧鏍峰紡
+        // 文字样式
         textStyle() {
             const style = {};
             style.color = this.datas.textColor;
@@ -92,15 +92,15 @@ export default {
             style.lineHeight = `${this.datas.textHeight}px`;
             return style;
         },
-        // 妯悜婊戝姩鍒楄〃
+        // 横向滑动列表
         scrollList() {
-            // 鎷疯礉鍘熸暟缁?闃叉splice鏂规硶褰卞搷浜嗗師鏁扮粍
+            // 拷贝原数组，防止 splice 影响原数组
             const copyList = [...this.datas.imageList];
             const list = [];
             if (this.datas.imageList.length <= 5) {
                 list.push({ data: this.datas.imageList });
             } else {
-                // 鏁扮粍闀垮害澶т簬绛変簬20骞崇瓑鍒?浠斤紝鍚﹀垯鍒嗘垚涓や唤
+                // 数组长度大于等于 20 时等分成三行，否则等分成两行（当前 row 固定为 2）
                 const row = 2;
                 // if (this.datas.imageList.length >= 20) {
                 // 	row = 3
@@ -154,7 +154,7 @@ export default {
     }
 }
 
-// 妯悜婊戝姩鍒楄〃
+// 横向滑动列表
 .scrollList-box {
     box-sizing: border-box;
     width: 100%;
