@@ -6,6 +6,28 @@ triggers: ['changelog', 'snake-changelog', '更新日志']
 
 # 更新日志
 
+## [0.0.16](https://github.com/purenia-ai/snake-ui/compare/v0.0.15...v0.0.16)（2026-11-09）
+
+### ✨ Features | 新功能
+
+- **theme:** 主题支持自定义 CSS 变量：`Theme.css` / `Theme.darkCss` 随色板注入页面根部，暗色模式下合并生效（`darkCss` 只覆盖同名键，其余沿用 `css`）；`theme` 配置顶层 `css` / `darkCss` 可广播到全部主题，主题自身同名键优先
+
+### 🐛 Bug Fixes | Bug 修复
+
+- **theme（行为变更）:** 只改亮色的令牌按亮色色相与饱和度派生暗色、明度沿用基线，暗色下不再回落到内置颜色；`background`、`surface`、`text`、`border`、`divider`、`mask`、`shadow`、`primaryInk` 等结构性令牌仍使用基线暗色
+- **theme（行为变更）:** `themes` 不再自动混入内置主题，声明的列表即最终列表；空数组回退内置主题；默认主题名不存在时回写 `config.defaultTheme`；`setThemeColor` 在亮色下同步派生暗色
+- **theme:** 扁平单主题形态支持 `css` / `darkCss` / `name` / `darkColor`，`css`、`label` 等元信息不再被当作颜色令牌
+- **snake-tabbar:** `isDot` 圆点角标补 8×8 尺寸修饰类，不再渲染成 18×2 的细线
+- **snake-popup:** 关闭按钮默认尺寸由 10 调整为 16
+- **snake-filter-sorts:** 筛选面板内边距左右对称，价格输入撑满列宽
+- **docs:** 主题生成器导出片段改用库中真实导出（`defaultTheme`、`Theme`），修复产物无法编译
+
+### ♻️ Documentation | 文档
+
+- **多主题:** 新增「自定义 CSS 变量」章节（`css` / `darkCss` 合并语义、顶层共享变量、暗色推导与结构性令牌例外），修正主题持久化键名
+- **tabbar:** 新增 Tabbar 示例页（凸起按钮、角标、禁用、激活色与高度调节），补概览条目与文档预览
+- **示例页:** indexList / indexAnchor / indexListPanel / popup / form / badge / icon / button / loading / link / empty / text / transition / rootPortal 示例页 i18n 收口与结构重排，概览页补齐 verificationCode 条目
+
 ## [0.0.15](https://github.com/purenia-ai/snake-ui/compare/v0.0.14...v0.0.15)（2026-11-06）
 
 ### ✨ Features | 新功能

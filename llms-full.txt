@@ -540,6 +540,28 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 
 # 更新日志
 
+## [0.0.16](https://github.com/purenia-ai/snake-ui/compare/v0.0.15...v0.0.16)（2026-11-09）
+
+### ✨ Features | 新功能
+
+- **theme:** 主题支持自定义 CSS 变量：`Theme.css` / `Theme.darkCss` 随色板注入页面根部，暗色模式下合并生效（`darkCss` 只覆盖同名键，其余沿用 `css`）；`theme` 配置顶层 `css` / `darkCss` 可广播到全部主题，主题自身同名键优先
+
+### 🐛 Bug Fixes | Bug 修复
+
+- **theme（行为变更）:** 只改亮色的令牌按亮色色相与饱和度派生暗色、明度沿用基线，暗色下不再回落到内置颜色；`background`、`surface`、`text`、`border`、`divider`、`mask`、`shadow`、`primaryInk` 等结构性令牌仍使用基线暗色
+- **theme（行为变更）:** `themes` 不再自动混入内置主题，声明的列表即最终列表；空数组回退内置主题；默认主题名不存在时回写 `config.defaultTheme`；`setThemeColor` 在亮色下同步派生暗色
+- **theme:** 扁平单主题形态支持 `css` / `darkCss` / `name` / `darkColor`，`css`、`label` 等元信息不再被当作颜色令牌
+- **snake-tabbar:** `isDot` 圆点角标补 8×8 尺寸修饰类，不再渲染成 18×2 的细线
+- **snake-popup:** 关闭按钮默认尺寸由 10 调整为 16
+- **snake-filter-sorts:** 筛选面板内边距左右对称，价格输入撑满列宽
+- **docs:** 主题生成器导出片段改用库中真实导出（`defaultTheme`、`Theme`），修复产物无法编译
+
+### ♻️ Documentation | 文档
+
+- **多主题:** 新增「自定义 CSS 变量」章节（`css` / `darkCss` 合并语义、顶层共享变量、暗色推导与结构性令牌例外），修正主题持久化键名
+- **tabbar:** 新增 Tabbar 示例页（凸起按钮、角标、禁用、激活色与高度调节），补概览条目与文档预览
+- **示例页:** indexList / indexAnchor / indexListPanel / popup / form / badge / icon / button / loading / link / empty / text / transition / rootPortal 示例页 i18n 收口与结构重排，概览页补齐 verificationCode 条目
+
 ## [0.0.15](https://github.com/purenia-ai/snake-ui/compare/v0.0.14...v0.0.15)（2026-11-06）
 
 ### ✨ Features | 新功能
@@ -3234,7 +3256,7 @@ Popup 适合承载需要暂时打断页面的补充内容。简单反馈优先�
 | `closeable`           | 是否显示关闭按钮                                                                                            | `boolean`                     | `false`        |
 | `closeIcon`           | 关闭按钮图标名称                                                                                            | `string`                      | `close`        |
 | `closeIconColor`      | 关闭按钮图标颜色                                                                                            | `string`                      | 主题次要文字色 |
-| `closeIconSize`       | 关闭按钮图标大小，数值按 px（375 稿）处理                                                                   | `number \| string`            | `10`           |
+| `closeIconSize`       | 关闭按钮图标大小，数值按 px（375 稿）处理                                                                   | `number \| string`            | `16`           |
 | `closeIconPos`        | 关闭按钮位置，可选值 `top-left`（左上）/ `top-right`（右上）/ `bottom-left`（左下）/ `bottom-right`（右下） | `PopupCloseIconPosition`      | `top-right`    |
 | `closeOnClickOverlay` | 点击遮罩时是否关闭                                                                                          | `boolean`                     | `true`         |
 | `overlay`             | 是否显示遮罩层                                                                                              | `boolean`                     | `true`         |
@@ -7889,6 +7911,56 @@ import ConfigProvider from './uni_modules/snake-ui/components/snake-config-provi
 
 仓库 demo 通过 `App.root.vue` 配合根包装插件实现，宿主项目也可以按自身页面架构显式包裹，详见[虚拟根组件](/guide/root)。
 
+## 自定义 CSS 变量
+
+除了颜色令牌，主题还可以直接注入自定义 CSS 变量：`css` 在亮色模式生效，`darkCss` 在暗色模式下**覆盖同名键**，其余键继续沿用 `css`。
+
+```ts
+const themes: Theme[] = [
+    {
+        name: 'brand',
+        color: { primary: '#7C3AED' },
+        css: {
+            '--snake-brand-accent': '#7C3AED',
+            '--snake-brand-accent-soft': '#F3E8FF'
+        },
+        darkCss: {
+            // 只覆盖暗色需要变化的键
+            '--snake-brand-accent-soft': '#241436'
+        }
+    }
+];
+```
+
+暗色下 `--snake-brand-accent` 仍是 `#7C3AED`，`--snake-brand-accent-soft` 变为 `#241436`。切换主题时会清掉上一套主题独有的变量，不会残留。
+
+### 全部主题共享的变量
+
+`theme` 配置顶层的 `css` / `darkCss` 会广播到每一套主题，主题自身同名键优先：
+
+```ts
+app.use(SnakeUI, {
+    theme: {
+        themes,
+        css: { '--snake-page-gutter': '16px' },
+        darkCss: { '--snake-page-gutter': '12px' }
+    }
+});
+```
+
+### 只改亮色时的暗色推导
+
+`color` 里声明、但 `darkColor` 里没声明的令牌，会按亮色的色相与饱和度、配合基线暗色的明度推导出暗色值。因此只改亮色不会让暗色退回内置颜色。
+
+```ts
+{
+    name: 'brand',
+    color: { primary: '#E11D48' } // 暗色 primary 推导为同色相的暗色值
+}
+```
+
+`background`、`surface`、`text`、`border`、`divider`、`mask`、`shadow` 以及 `primaryInk` 等结构性令牌不参与推导，继续使用基线暗色，避免随明暗模式整体反转的令牌被亮色值覆盖。
+
 ## 在样式和脚本中使用
 
 ```scss
@@ -7926,7 +7998,7 @@ console.log(color.primary);
 
 ## 暗色跟随与持久化
 
-`auto` 会在平台支持时跟随系统主题。主题名和暗色策略分别保存在 `@puresnake/snake-ui-theme` 与 `@puresnake/snake-ui-dark-mode`，重新进入应用后自动恢复。
+`auto` 会在平台支持时跟随系统主题。主题名和暗色策略分别保存在 `snake-ui-theme` 与 `snake-ui-dark-mode`，重新进入应用后自动恢复。
 
 ## 使用主题生成器
 

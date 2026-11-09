@@ -159,6 +159,56 @@ import ConfigProvider from './uni_modules/snake-ui/components/snake-config-provi
 
 仓库 demo 通过 `App.root.vue` 配合根包装插件实现，宿主项目也可以按自身页面架构显式包裹，详见[虚拟根组件](/guide/root)。
 
+## 自定义 CSS 变量
+
+除了颜色令牌，主题还可以直接注入自定义 CSS 变量：`css` 在亮色模式生效，`darkCss` 在暗色模式下**覆盖同名键**，其余键继续沿用 `css`。
+
+```ts
+const themes: Theme[] = [
+    {
+        name: 'brand',
+        color: { primary: '#7C3AED' },
+        css: {
+            '--snake-brand-accent': '#7C3AED',
+            '--snake-brand-accent-soft': '#F3E8FF'
+        },
+        darkCss: {
+            // 只覆盖暗色需要变化的键
+            '--snake-brand-accent-soft': '#241436'
+        }
+    }
+];
+```
+
+暗色下 `--snake-brand-accent` 仍是 `#7C3AED`，`--snake-brand-accent-soft` 变为 `#241436`。切换主题时会清掉上一套主题独有的变量，不会残留。
+
+### 全部主题共享的变量
+
+`theme` 配置顶层的 `css` / `darkCss` 会广播到每一套主题，主题自身同名键优先：
+
+```ts
+app.use(SnakeUI, {
+    theme: {
+        themes,
+        css: { '--snake-page-gutter': '16px' },
+        darkCss: { '--snake-page-gutter': '12px' }
+    }
+});
+```
+
+### 只改亮色时的暗色推导
+
+`color` 里声明、但 `darkColor` 里没声明的令牌，会按亮色的色相与饱和度、配合基线暗色的明度推导出暗色值。因此只改亮色不会让暗色退回内置颜色。
+
+```ts
+{
+    name: 'brand',
+    color: { primary: '#E11D48' } // 暗色 primary 推导为同色相的暗色值
+}
+```
+
+`background`、`surface`、`text`、`border`、`divider`、`mask`、`shadow` 以及 `primaryInk` 等结构性令牌不参与推导，继续使用基线暗色，避免随明暗模式整体反转的令牌被亮色值覆盖。
+
 ## 在样式和脚本中使用
 
 ```scss
@@ -196,7 +246,7 @@ console.log(color.primary);
 
 ## 暗色跟随与持久化
 
-`auto` 会在平台支持时跟随系统主题。主题名和暗色策略分别保存在 `@puresnake/snake-ui-theme` 与 `@puresnake/snake-ui-dark-mode`，重新进入应用后自动恢复。
+`auto` 会在平台支持时跟随系统主题。主题名和暗色策略分别保存在 `snake-ui-theme` 与 `snake-ui-dark-mode`，重新进入应用后自动恢复。
 
 ## 使用主题生成器
 
