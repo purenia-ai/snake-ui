@@ -1,6 +1,6 @@
 import { computed, reactive, ref } from 'vue';
 import { isDebugMode, config } from './state';
-import type { DarkMode, Theme, ThemeColor, ThemeOption } from './types';
+import type { DarkMode, SingleTheme, Theme, ThemeColor, ThemeConfig, ThemeOption } from './types';
 
 const THEME_STORAGE_KEY = 'snake-ui-theme';
 const DARK_MODE_STORAGE_KEY = 'snake-ui-dark-mode';
@@ -102,6 +102,8 @@ export const defaultTheme: Theme = {
     color: lightPalette,
     darkColor: darkPalette
 };
+
+const builtinThemes: Theme[] = [defaultTheme];
 
 export const themes = ref<Theme[]>([defaultTheme]);
 export const currentTheme = ref<Theme>(defaultTheme);
@@ -214,18 +216,196 @@ function prepareListeners(): void {
     }
 }
 
-function normalizeTheme(theme: Theme): Theme {
+/**
+ * 亮色改色时不派生到暗色的令牌：这些令牌随明暗模式整体反转，
+ * 继续沿用基线暗色比“跟着亮色走”更安全。
+ */
+const structuralTokens = new Set<keyof ThemeColor>([
+    'white',
+    'black',
+    'text',
+    'textSecondary',
+    'textMuted',
+    'textLight',
+    'border',
+    'divider',
+    'mask',
+    'shadow',
+    'background',
+    'surface',
+    'surfaceMuted',
+    'primaryInk'
+]);
+
+/** 扁平单主题里不属于颜色令牌的字段。 */
+const themeMetaKeys = new Set([
+    'themes',
+    'css',
+    'darkCss',
+    'darkColor',
+    'name',
+    'label',
+    'description',
+    'defaultTheme',
+    'defaultDarkMode',
+    'force'
+]);
+
+interface HslColor {
+    h: number;
+    s: number;
+    l: number;
+}
+
+interface ParsedColor {
+    r: number;
+    g: number;
+    b: number;
+    alpha?: number;
+}
+
+function parseHexColor(value?: string): ParsedColor | undefined {
+    if (typeof value !== 'string') return undefined;
+    const match = /^#([0-9a-f]{6})([0-9a-f]{2})?$/i.exec(value.trim());
+    if (!match) return undefined;
+    const rgb = Number.parseInt(match[1], 16);
     return {
-        ...theme,
-        color: { ...lightPalette, ...theme.color },
-        darkColor: { ...darkPalette, ...theme.darkColor }
+        r: (rgb >> 16) & 255,
+        g: (rgb >> 8) & 255,
+        b: rgb & 255,
+        alpha: match[2] ? Number.parseInt(match[2], 16) / 255 : undefined
     };
 }
 
-function mergeThemes(custom: Theme[]): Theme[] {
-    const map = new Map<string, Theme>([[defaultTheme.name, defaultTheme]]);
-    custom.forEach(theme => map.set(theme.name, normalizeTheme(theme)));
-    return Array.from(map.values());
+function channelToHex(value: number): string {
+    return Math.min(255, Math.max(0, Math.round(value)))
+        .toString(16)
+        .padStart(2, '0');
+}
+
+function rgbToHsl({ r, g, b }: ParsedColor): HslColor {
+    const red = r / 255;
+    const green = g / 255;
+    const blue = b / 255;
+    const max = Math.max(red, green, blue);
+    const min = Math.min(red, green, blue);
+    const l = (max + min) / 2;
+    if (max === min) return { h: 0, s: 0, l };
+    const delta = max - min;
+    const s = l > 0.5 ? delta / (2 - max - min) : delta / (max + min);
+    let h: number;
+    if (max === red) h = ((green - blue) / delta + (green < blue ? 6 : 0)) * 60;
+    else if (max === green) h = ((blue - red) / delta + 2) * 60;
+    else h = ((red - green) / delta + 4) * 60;
+    return { h, s, l };
+}
+
+function hslToRgb({ h, s, l }: HslColor): ParsedColor {
+    const c = (1 - Math.abs(2 * l - 1)) * s;
+    const hp = (((h % 360) + 360) % 360) / 60;
+    const x = c * (1 - Math.abs((hp % 2) - 1));
+    const [r1, g1, b1] =
+        hp < 1
+            ? [c, x, 0]
+            : hp < 2
+              ? [x, c, 0]
+              : hp < 3
+                ? [0, c, x]
+                : hp < 4
+                  ? [0, x, c]
+                  : hp < 5
+                    ? [x, 0, c]
+                    : [c, 0, x];
+    const m = l - c / 2;
+    return { r: (r1 + m) * 255, g: (g1 + m) * 255, b: (b1 + m) * 255 };
+}
+
+/**
+ * 从亮色令牌派生暗色令牌：色相与饱和度沿用亮色，明度取基线暗色。
+ * 这样用户只改亮色时，暗色拿到的是同一色相的新颜色，而不是内置主题的旧颜色。
+ */
+function deriveDarkToken(lightValue: string, baseDarkValue?: string): string | undefined {
+    const light = parseHexColor(lightValue);
+    if (!light) return undefined;
+    const baseDark = parseHexColor(baseDarkValue);
+    const lightHsl = rgbToHsl(light);
+    const l = baseDark ? rgbToHsl(baseDark).l : lightHsl.l;
+    const next = hslToRgb({ h: lightHsl.h, s: lightHsl.s, l });
+    if (light.alpha == null) {
+        return `#${channelToHex(next.r)}${channelToHex(next.g)}${channelToHex(next.b)}`;
+    }
+    const alpha = Math.round(light.alpha * 100) / 100;
+    return `rgba(${Math.round(next.r)}, ${Math.round(next.g)}, ${Math.round(next.b)}, ${alpha})`;
+}
+
+/** 用户改过的亮色键从基线暗色里摘除，交给 deriveDarkToken 重新生成。 */
+function inheritBaseDarkColor(
+    colorOverrides: Partial<ThemeColor> | undefined,
+    baseDark: Partial<ThemeColor> | undefined,
+    ownDark: Partial<ThemeColor> | undefined
+): Partial<ThemeColor> | undefined {
+    const inherited: Partial<ThemeColor> = { ...(baseDark || {}) };
+    Object.keys(colorOverrides || {}).forEach(key => {
+        if (!ownDark || !Object.prototype.hasOwnProperty.call(ownDark, key)) {
+            delete (inherited as Record<string, unknown>)[key];
+        }
+    });
+    if (!Object.keys(inherited).length) return ownDark;
+    return { ...inherited, ...(ownDark || {}) };
+}
+
+function normalizeTheme(theme: Theme): Theme {
+    const color: Partial<ThemeColor> = { ...theme.color };
+    const derived: Partial<ThemeColor> = {};
+    Object.entries(color).forEach(([key, value]) => {
+        if (typeof value !== 'string') return;
+        const token = key as keyof ThemeColor;
+        if (structuralTokens.has(token)) return;
+        if (theme.darkColor && Object.prototype.hasOwnProperty.call(theme.darkColor, key)) return;
+        const next = deriveDarkToken(value, darkPalette[token]);
+        if (next) derived[token] = next;
+    });
+    return {
+        ...theme,
+        color: { ...lightPalette, ...color },
+        darkColor: { ...darkPalette, ...derived, ...theme.darkColor }
+    };
+}
+
+/**
+ * 归一化主题列表：
+ * - 同名主题按内置主题补齐未声明的字段（基线补齐），不再总是合并内置主题
+ * - 用户声明的列表就是最终列表，未声明时（空列表 / 未配置）才回退到内置主题
+ */
+function mergeThemes(entries: Theme[]): Theme[] {
+    const merged = new Map<string, Theme>();
+    entries.forEach(entry => {
+        const name = entry.name || defaultTheme.name;
+        const base = merged.get(name) ?? builtinThemes.find(theme => theme.name === name);
+        merged.set(
+            name,
+            normalizeTheme({
+                name,
+                label: entry.label ?? base?.label,
+                description: entry.description ?? base?.description,
+                color: { ...(base?.color || {}), ...(entry.color || {}) },
+                darkColor: inheritBaseDarkColor(entry.color, base?.darkColor, entry.darkColor),
+                css: { ...(base?.css || {}), ...(entry.css || {}) },
+                darkCss: { ...(base?.darkCss || {}), ...(entry.darkCss || {}) }
+            })
+        );
+    });
+    return Array.from(merged.values());
+}
+
+/** 顶层共享变量广播到全部主题，主题自身同名键优先。 */
+function applyGlobalCss(entries: Theme[], css?: Record<string, string>, darkCss?: Record<string, string>): Theme[] {
+    if (!css && !darkCss) return entries;
+    return entries.map(entry => ({
+        ...entry,
+        css: { ...(css || {}), ...(entry.css || {}) },
+        darkCss: { ...(darkCss || {}), ...(entry.darkCss || {}) }
+    }));
 }
 
 function activeMode(): 'light' | 'dark' {
@@ -251,7 +431,8 @@ function createCssVars(theme: Theme, mode: 'light' | 'dark'): Record<string, str
             if (rgb) result[`${name}-rgb`] = rgb;
         }
     });
-    Object.assign(result, mode === 'dark' ? theme.darkCss : theme.css);
+    // 暗色下合并 css 与 darkCss：只在 darkCss 里声明同名键时覆盖，未声明的亮色变量继续可用。
+    Object.assign(result, mode === 'dark' ? { ...(theme.css || {}), ...(theme.darkCss || {}) } : theme.css);
     return result;
 }
 
@@ -277,32 +458,108 @@ export function applyTheme(): void {
     flushDocument(vars, mode);
 }
 
-export function initTheme(option?: ThemeOption): void {
-    prepareListeners();
-    let themeEntries: Theme[] = [];
-    let defaultThemeName = config.defaultTheme;
-    let defaultDarkMode = config.defaultDarkMode;
-    let force = false;
+/** `resolveThemeOption` 的归一化结果。 */
+export interface ResolvedThemeOption {
+    themes?: Theme[];
+    defaultTheme?: string;
+    defaultDarkMode?: DarkMode;
+    force?: boolean;
+    css?: Record<string, string>;
+    darkCss?: Record<string, string>;
+}
 
-    if (Array.isArray(option)) {
-        themeEntries = option;
-    } else if (
-        option &&
-        typeof option === 'object' &&
-        ('themes' in option || 'defaultTheme' in option || 'defaultDarkMode' in option || 'force' in option)
-    ) {
-        themeEntries = option.themes || [];
-        defaultThemeName = option.defaultTheme || defaultThemeName;
-        defaultDarkMode = option.defaultDarkMode || defaultDarkMode;
-        force = Boolean(option.force);
-    } else if (option && typeof option === 'object') {
-        themeEntries = [{ ...defaultTheme, color: { ...defaultTheme.color, ...option } }];
+/**
+ * 把三种主题配置形态归一化为同一种结构：
+ * - `Theme[]`：多主题
+ * - `{ themes, defaultTheme, defaultDarkMode, force, css?, darkCss? }`：多主题 + 共享变量
+ * - 扁平单主题：`{ primary, ..., name?, darkColor?, css?, darkCss? }`
+ */
+export function resolveThemeOption(option?: ThemeOption): ResolvedThemeOption {
+    if (!option) return {};
+    if (Array.isArray(option)) return { themes: option };
+
+    const configOption = option as ThemeConfig;
+    if (Array.isArray(configOption.themes)) {
+        return {
+            themes: configOption.themes,
+            defaultTheme: configOption.defaultTheme,
+            defaultDarkMode: configOption.defaultDarkMode,
+            force: configOption.force,
+            css: configOption.css,
+            darkCss: configOption.darkCss
+        };
     }
 
-    if (!initialized || force || themeEntries.length) themes.value = mergeThemes(themeEntries);
+    // 扁平单主题：剔除元信息字段后，其余字段视为颜色令牌，避免 css / name 被当成颜色令牌吞掉。
+    const flat = option as SingleTheme & { defaultTheme?: string };
+    const color: Partial<ThemeColor> = {};
+    Object.entries(flat).forEach(([key, value]) => {
+        if (themeMetaKeys.has(key) || typeof value !== 'string') return;
+        (color as Record<string, string>)[key] = value;
+    });
+    const hasCustomCss =
+        Boolean(flat.css && Object.keys(flat.css).length) || Boolean(flat.darkCss && Object.keys(flat.darkCss).length);
+
+    // 只带配置字段（默认模式 / force）时保持主题列表不变，与旧版行为一致。
+    if (!Object.keys(color).length && !hasCustomCss && !flat.darkColor) {
+        return { defaultTheme: flat.defaultTheme, defaultDarkMode: flat.defaultDarkMode, force: flat.force };
+    }
+
+    return {
+        themes: [
+            {
+                name: flat.name || defaultTheme.name,
+                label: flat.label,
+                description: flat.description,
+                color,
+                darkColor: flat.darkColor,
+                css: flat.css,
+                darkCss: flat.darkCss
+            }
+        ],
+        defaultTheme: flat.defaultTheme,
+        defaultDarkMode: flat.defaultDarkMode,
+        force: flat.force
+    };
+}
+
+export function initTheme(option?: ThemeOption): void {
+    prepareListeners();
+    const resolved = resolveThemeOption(option);
+    const force = Boolean(resolved.force);
+
+    let entries = resolved.themes;
+    if (entries && !entries.length) {
+        if (isDebugMode('warn')) {
+            console.warn('[Snake UI] initTheme 收到空主题数组，已回退到内置主题');
+        }
+        entries = builtinThemes.slice();
+    }
+    if (!entries && (!initialized || force)) entries = builtinThemes.slice();
+    if (entries) {
+        const merged = applyGlobalCss(mergeThemes(entries), resolved.css, resolved.darkCss);
+        if (merged.length) themes.value = merged;
+    }
+
     const savedTheme = force ? undefined : readStorage<string>(THEME_STORAGE_KEY);
     const savedMode = force ? undefined : readStorage<DarkMode>(DARK_MODE_STORAGE_KEY);
-    currentTheme.value = themes.value.find(theme => theme.name === (savedTheme || defaultThemeName)) || themes.value[0];
+    const defaultThemeName = resolved.defaultTheme || config.defaultTheme;
+    const defaultDarkMode = resolved.defaultDarkMode || config.defaultDarkMode;
+    const found = themes.value.find(theme => theme.name === (savedTheme || defaultThemeName)) || themes.value[0];
+    if (!found) return;
+
+    // 默认主题名指向不存在的主题时回写到实际生效值，避免 $snake.config.defaultTheme 成为脏值。
+    if (resolved.defaultTheme) {
+        if (themes.value.some(theme => theme.name === resolved.defaultTheme)) {
+            config.defaultTheme = resolved.defaultTheme;
+        } else if (isDebugMode('warn')) {
+            console.warn(`[Snake UI] 默认主题 ${resolved.defaultTheme} 不存在，已回退到 ${found.name}`);
+        }
+    }
+    if (!themes.value.some(theme => theme.name === config.defaultTheme)) config.defaultTheme = found.name;
+    if (resolved.defaultDarkMode) config.defaultDarkMode = resolved.defaultDarkMode;
+
+    currentTheme.value = found;
     darkMode.value = savedMode || defaultDarkMode;
     initialized = true;
     applyTheme();
@@ -332,11 +589,22 @@ export function isDarkMode(): boolean {
 }
 
 export function setThemeColor(colors: Partial<ThemeColor>): void {
-    const key = activeMode() === 'dark' ? 'darkColor' : 'color';
-    currentTheme.value = {
-        ...currentTheme.value,
-        [key]: { ...currentTheme.value[key], ...colors }
-    };
+    const theme = currentTheme.value;
+    if (activeMode() === 'dark') {
+        currentTheme.value = { ...theme, darkColor: { ...theme.darkColor, ...colors } };
+        applyTheme();
+        return;
+    }
+    const darkColor: Partial<ThemeColor> = { ...theme.darkColor };
+    Object.entries(colors).forEach(([key, value]) => {
+        const token = key as keyof ThemeColor;
+        if (typeof value !== 'string' || structuralTokens.has(token)) return;
+        // 主题自己声明过的暗色保持不动，其余按亮色派生，避免暗色继续显示基线色。
+        if (theme.darkColor && theme.darkColor[token] !== darkPalette[token]) return;
+        const next = deriveDarkToken(value, darkPalette[token]);
+        if (next) darkColor[token] = next;
+    });
+    currentTheme.value = { ...theme, color: { ...theme.color, ...colors }, darkColor };
     applyTheme();
 }
 
@@ -344,6 +612,8 @@ export const themeStyle = computed<Record<string, string>>(() => cssVars.value);
 
 export function resetTheme(): void {
     initialized = false;
+    config.defaultTheme = defaultTheme.name;
+    config.defaultDarkMode = 'light';
     themes.value = [defaultTheme];
     currentTheme.value = defaultTheme;
     darkMode.value = 'light';

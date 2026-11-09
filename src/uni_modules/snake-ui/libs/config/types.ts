@@ -1,4 +1,4 @@
-﻿export type DarkMode = 'light' | 'dark' | 'auto';
+export type DarkMode = 'light' | 'dark' | 'auto';
 export type DebugLevel = 'log' | 'warn' | 'error';
 
 export interface ThemeColor {
@@ -48,7 +48,9 @@ export interface Theme {
     description?: string;
     color: Partial<ThemeColor>;
     darkColor?: Partial<ThemeColor>;
+    /** 主题自定义 CSS 变量（亮色），与色板令牌一起写入页面根部。 */
     css?: Record<string, string>;
+    /** 主题自定义 CSS 变量（暗色），暗色模式下覆盖 `css` 的同名键。 */
     darkCss?: Record<string, string>;
 }
 
@@ -57,9 +59,28 @@ export interface ThemeConfig {
     defaultTheme?: string;
     defaultDarkMode?: DarkMode;
     force?: boolean;
+    /** 广播到全部主题的自定义变量（亮色），主题自身同名键优先。 */
+    css?: Record<string, string>;
+    /** 广播到全部主题的自定义变量（暗色），主题自身同名键优先。 */
+    darkCss?: Record<string, string>;
 }
 
-export type ThemeOption = Partial<ThemeColor> | Theme[] | ThemeConfig;
+/**
+ * 单主题配置形态：颜色令牌 + 可选的元信息与自定义变量。
+ * 未列出的颜色令牌继承内置色板；未列出的暗色令牌由亮色派生。
+ */
+export type SingleTheme = Partial<ThemeColor> & {
+    name?: string;
+    label?: string;
+    description?: string;
+    darkColor?: Partial<ThemeColor>;
+    css?: Record<string, string>;
+    darkCss?: Record<string, string>;
+    defaultDarkMode?: DarkMode;
+    force?: boolean;
+};
+
+export type ThemeOption = SingleTheme | Theme[] | ThemeConfig;
 
 export interface Locale {
     name: string;

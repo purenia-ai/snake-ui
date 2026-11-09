@@ -27,7 +27,12 @@ export function migrateThemePresetStorage(): string | undefined {
  * Dark values include matching palette variants and Snake-only tokens.
  */
 export const snakeThemePresets: Theme[] = [
-    defaultTheme,
+    {
+        ...defaultTheme,
+        // 自定义变量：亮色声明在 css，暗色只在 darkCss 覆盖需要变化的键
+        css: { '--snake-brand-accent': '#06D290', '--snake-brand-accent-soft': '#06D2901A' },
+        darkCss: { '--snake-brand-accent-soft': '#0C2A1E' }
+    },
     {
         name: 'purple',
         label: '霞光紫',
@@ -84,7 +89,9 @@ export const snakeThemePresets: Theme[] = [
             infoLight: '#73757B',
             notice: '#F9B21A',
             noticeBackground: '#7F7453'
-        }
+        },
+        css: { '--snake-brand-accent': '#7C3AED', '--snake-brand-accent-soft': '#F3E8FF' },
+        darkCss: { '--snake-brand-accent-soft': '#241436' }
     },
     {
         name: 'rose',
@@ -142,7 +149,9 @@ export const snakeThemePresets: Theme[] = [
             infoLight: '#73757B',
             notice: '#F9B21A',
             noticeBackground: '#7F7453'
-        }
+        },
+        css: { '--snake-brand-accent': '#E11D48', '--snake-brand-accent-soft': '#FFF1F2' },
+        darkCss: { '--snake-brand-accent-soft': '#33121A' }
     },
     {
         name: 'orange',
@@ -200,7 +209,9 @@ export const snakeThemePresets: Theme[] = [
             infoLight: '#69717E',
             notice: '#F9B21A',
             noticeBackground: '#7F7453'
-        }
+        },
+        css: { '--snake-brand-accent': '#FF6B35', '--snake-brand-accent-soft': '#FFF0E8' },
+        darkCss: { '--snake-brand-accent-soft': '#33190F' }
     },
     {
         name: 'dark',
@@ -258,7 +269,9 @@ export const snakeThemePresets: Theme[] = [
             infoLight: '#69717E',
             notice: '#EDA218',
             noticeBackground: '#7F7453'
-        }
+        },
+        css: { '--snake-brand-accent': '#2F5CBF', '--snake-brand-accent-soft': '#DBEAFE' },
+        darkCss: { '--snake-brand-accent-soft': '#16233F' }
     }
 ];
 

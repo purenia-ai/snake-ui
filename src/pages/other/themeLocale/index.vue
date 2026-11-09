@@ -10,6 +10,23 @@
                 >
             </view>
         </view>
+        <view class="theme-actions">
+            <snake-button
+                v-for="preset in themePresets"
+                :key="preset.name"
+                size="mini"
+                :plain="currentTheme.name !== preset.name"
+                @click="setTheme(preset.name)"
+                >{{ text(preset.label || preset.name) }}</snake-button
+            >
+        </view>
+        <view class="card custom-vars">
+            <view class="custom-vars__dot" />
+            <view class="body">
+                <text class="title">{{ text('主题自定义变量') }}</text>
+                <text class="meta">{{ text('来自主题的 css / darkCss，暗色只覆盖同名键') }}</text>
+            </view>
+        </view>
         <view class="mode-actions">
             <snake-button size="mini" plain @click="setDarkMode('auto')">{{ text('跟随系统') }}</snake-button>
             <snake-button size="mini" plain @click="setDarkMode('light')">{{ text('亮色') }}</snake-button>
@@ -30,9 +47,11 @@
 import { computed } from 'vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import { useDemoLocale } from '../../../common/demo-i18n';
+import { snakeThemePresets } from '../../../snake-ui.theme';
 import { useLocale, useTheme } from '../../../uni_modules/snake-ui';
 
-const { currentTheme, darkMode, color, setDarkMode, isInDarkMode } = useTheme();
+const { currentTheme, darkMode, color, setTheme, setDarkMode, isInDarkMode } = useTheme();
+const themePresets = snakeThemePresets;
 const { currentLocale, t, setLocale } = useLocale();
 const nextLocale = computed(() => (currentLocale.value.name === 'zh-CN' ? 'en-US' : 'zh-CN'));
 const modeLabel = computed(() =>
@@ -77,6 +96,23 @@ const { text } = useDemoLocale();
     flex-wrap: wrap;
     gap: 8px;
     margin: -6px 4px 18px;
+}
+.theme-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: -6px 4px 14px;
+}
+.custom-vars {
+    border-color: var(--snake-brand-accent);
+    background: var(--snake-brand-accent-soft);
+}
+.custom-vars__dot {
+    width: 42px;
+    height: 42px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--snake-brand-accent);
 }
 .title,
 .meta {

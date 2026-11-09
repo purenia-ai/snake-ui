@@ -35,11 +35,17 @@ globalThis.uni = {
     reLaunch: recordNavigation('reLaunch'),
     navigateBack: recordNavigation('navigateBack'),
     navigateToMiniProgram: options => {
-        miniProgramCalls.push({ method: 'navigateToMiniProgram', options: { ...options, success: undefined, fail: undefined } });
+        miniProgramCalls.push({
+            method: 'navigateToMiniProgram',
+            options: { ...options, success: undefined, fail: undefined }
+        });
         options.success?.({ errMsg: 'navigateToMiniProgram:ok' });
     },
     openCustomerServiceChat: options => {
-        miniProgramCalls.push({ method: 'openCustomerServiceChat', options: { ...options, success: undefined, fail: undefined } });
+        miniProgramCalls.push({
+            method: 'openCustomerServiceChat',
+            options: { ...options, success: undefined, fail: undefined }
+        });
         options.success?.({ errMsg: 'openCustomerServiceChat:ok' });
     }
 };
@@ -58,6 +64,7 @@ after(async () => {
 });
 
 const theme = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/config/theme.ts');
+const state = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/config/state.ts');
 const locale = await server.ssrLoadModule('/src/uni_modules/snake-ui/locale/index.ts');
 const functions = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/function/index.ts');
 const request = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/request/index.ts');
@@ -81,6 +88,89 @@ test('theme accepts config-only options without treating them as color tokens', 
     assert.equal(theme.isDarkMode(), true);
     assert.equal(theme.color.primary, theme.darkPalette.primary);
     assert.equal('defaultDarkMode' in theme.color, false);
+});
+
+test('theme custom css survives dark mode and darkCss overrides matching keys', () => {
+    storage.clear();
+    theme.resetTheme();
+    theme.initTheme({
+        themes: [
+            {
+                name: 'brand',
+                color: { primary: '#7C3AED' },
+                css: { '--brand-solid': '#7C3AED', '--brand-tint': '#F3EFF9' },
+                darkCss: { '--brand-tint': '#1A1024' }
+            }
+        ],
+        defaultTheme: 'brand'
+    });
+    assert.equal(theme.currentTheme.value.name, 'brand');
+    assert.equal(theme.cssVars.value['--brand-solid'], '#7C3AED');
+    assert.equal(theme.cssVars.value['--brand-tint'], '#F3EFF9');
+    theme.setDarkMode('dark');
+    assert.equal(theme.cssVars.value['--brand-solid'], '#7C3AED');
+    assert.equal(theme.cssVars.value['--brand-tint'], '#1A1024');
+});
+
+test('theme keeps the declared list and derives dark colors from light overrides', () => {
+    storage.clear();
+    theme.resetTheme();
+    theme.initTheme({ themes: [{ name: 'brand', color: { primary: '#E11D48' } }], defaultTheme: 'brand' });
+    assert.deepEqual(
+        theme.themes.value.map(item => item.name),
+        ['brand']
+    );
+    assert.equal(theme.cssVars.value['--snake-color-primary'], '#E11D48');
+    theme.setDarkMode('dark');
+    const darkPrimary = theme.cssVars.value['--snake-color-primary'];
+    assert.notEqual(darkPrimary, theme.darkPalette.primary, 'dark primary must not fall back to the built-in green');
+    const red = Number.parseInt(darkPrimary.slice(1, 3), 16);
+    const green = Number.parseInt(darkPrimary.slice(3, 5), 16);
+    const blue = Number.parseInt(darkPrimary.slice(5, 7), 16);
+    assert.ok(red > green && red > blue, `dark primary should keep the brand hue, got ${darkPrimary}`);
+    assert.equal(theme.color.primary, darkPrimary);
+    assert.equal(theme.cssVars.value['--snake-color-background'], theme.darkPalette.background);
+});
+
+test('single-theme options accept custom css without leaking meta keys into the palette', () => {
+    storage.clear();
+    theme.resetTheme();
+    theme.initTheme({ primary: '#1E3A8A', css: { '--flat-token': '#123456' }, darkCss: { '--flat-token': '#654321' } });
+    assert.equal(theme.color.primary, '#1E3A8A');
+    assert.equal('css' in theme.color, false);
+    assert.equal('darkCss' in theme.color, false);
+    assert.equal(theme.cssVars.value['--flat-token'], '#123456');
+    theme.setDarkMode('dark');
+    assert.equal(theme.cssVars.value['--flat-token'], '#654321');
+});
+
+test('theme config css is broadcast to every theme and yields to theme-level keys', () => {
+    storage.clear();
+    theme.resetTheme();
+    theme.initTheme({
+        themes: [
+            { name: 'alpha', color: { primary: '#111111' } },
+            { name: 'beta', color: { primary: '#222222' }, css: { '--shared': 'theme' } }
+        ],
+        defaultTheme: 'alpha',
+        css: { '--shared': 'global' }
+    });
+    assert.equal(theme.cssVars.value['--shared'], 'global');
+    assert.equal(theme.setTheme('beta'), true);
+    assert.equal(theme.cssVars.value['--shared'], 'theme');
+});
+
+test('empty theme list falls back to built-in themes and the effective default is written back', () => {
+    storage.clear();
+    theme.resetTheme();
+    theme.initTheme({ themes: [] });
+    assert.deepEqual(
+        theme.themes.value.map(item => item.name),
+        ['snake']
+    );
+    theme.initTheme({ themes: [{ name: 'brand', color: { primary: '#123456' } }], defaultTheme: 'brand' });
+    assert.equal(theme.currentTheme.value.name, 'brand');
+    assert.equal(state.config.defaultTheme, 'brand');
 });
 
 test('locale uses current language, Chinese fallback, and replacements', () => {
@@ -141,7 +231,10 @@ test('test suite keeps snake semantics and covers the full validator set', () =>
     assert.equal(suite.jsonString('{"a":1}'), true);
     assert.equal(suite.code('123456'), true);
     assert.equal(suite.code('12345', 5), true);
-    assert.equal(suite.func(() => {}), true);
+    assert.equal(
+        suite.func(() => {}),
+        true
+    );
     assert.equal(suite.promise(Promise.resolve()), true);
     assert.equal(suite.image('a.png?x=1'), true);
     assert.equal(suite.video('a.mp4'), true);
@@ -154,7 +247,10 @@ test('styleUtils merges css strings and objects in both directions', () => {
         color: 'red',
         backgroundColor: 'blue'
     });
-    assert.equal(functions.mergeCssStrings({ backgroundColor: '#fff' }, 'color:#000'), 'background-color: #fff; color: #000;');
+    assert.equal(
+        functions.mergeCssStrings({ backgroundColor: '#fff' }, 'color:#000'),
+        'background-color: #fff; color: #000;'
+    );
 });
 
 test('$parent walks the instance chain by component name', () => {
@@ -355,11 +451,14 @@ test('http matches legacy defaults, plugin injection, and AutoHttp API generatio
     assert.ok(new request.Request() instanceof request.Request);
     assert.equal(request.default, request.httpPlugin);
     const created = await request.http.request({ url: '/created' });
-    assert.deepEqual({ statusCode: created.statusCode, data: created.data, header: created.header }, {
-        statusCode: 201,
-        data: { url: '/created', method: 'POST' },
-        header: {}
-    });
+    assert.deepEqual(
+        { statusCode: created.statusCode, data: created.data, header: created.header },
+        {
+            statusCode: 201,
+            data: { url: '/created', method: 'POST' },
+            header: {}
+        }
+    );
     assert.equal(created.config?.url, '/created');
     assert.deepEqual(await request.http.get('/goods', { page: 2 }, { meta: { originalData: false } }), {
         url: '/goods',
@@ -441,7 +540,10 @@ test('http preserves platform failures, strips internal fields, and keeps concur
         request.http.setInterceptor({ request: () => Promise.reject(new Error('token refresh failed')) });
         await assert.rejects(
             request.http.get('/interceptor'),
-            error => error instanceof request.RequestError && error.kind === 'interceptor' && error.message.includes('request interceptor failed')
+            error =>
+                error instanceof request.RequestError &&
+                error.kind === 'interceptor' &&
+                error.message.includes('request interceptor failed')
         );
     } finally {
         request.http.reset();
