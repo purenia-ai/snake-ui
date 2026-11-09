@@ -7,7 +7,7 @@ const typesUrl = new URL('../src/uni_modules/snake-ui/components/snake-upload/ty
 
 test('snake-upload keeps legacy upload modes and public queue methods', async () => {
     const source = await readFile(componentUrl, 'utf8');
-    for (const token of ["mode === 'list'", 'function upload()', 'function retry(index:', 'function addFiles(', 'deleteItem']) {
+    for (const token of ["mode === 'list'", 'function upload()', 'function retry(index:', 'function addFiles(', 'deleteItem,']) {
         assert.ok(source.includes(token), `missing ${token}`);
     }
 });
@@ -20,12 +20,12 @@ test('snake-upload gives uploadRequest priority over action and validates its UR
     assert.match(source, /onProgress: \(percent: number\)/);
 });
 
-test('snake-upload drops the legacy custom-upload bridge', async () => {
-    const [source, types] = await Promise.all([readFile(componentUrl, 'utf8'), readFile(typesUrl, 'utf8')]);
-    for (const token of ['isCustomUpload', 'customUpload', 'onBeforeRead', 'chooseLegacyFiles']) {
-        assert.ok(!source.includes(token), `unexpected ${token} in component`);
-        assert.ok(!types.includes(token), `unexpected ${token} in types`);
-    }
+test('snake-upload exposes the legacy custom-upload bridge', async () => {
+    const source = await readFile(componentUrl, 'utf8');
+    assert.match(source, /if \(props\.isCustomUpload\)/);
+    assert.match(source, /emit\('customUpload'/);
+    assert.match(source, /function onBeforeRead\(/);
+    assert.match(source, /chooseFile: chooseLegacyFiles/);
 });
 
 test('snake-upload publishes a vendor-neutral custom request contract', async () => {
@@ -40,6 +40,7 @@ test('snake-upload gives consumers typed events and keeps list keys stable', asy
     const [source, types] = await Promise.all([readFile(componentUrl, 'utf8'), readFile(typesUrl, 'utf8')]);
     assert.match(types, /export type UploadEmits =/);
     assert.match(types, /'update:modelValue': \[files: UploadFileItem\[\]\]/);
+    assert.match(types, /customUpload:/);
     assert.match(source, /defineEmits<UploadEmits>\(\)/);
     assert.match(source, /const fileKeys = new WeakMap<UploadFileItem, string>\(\)/);
     assert.equal((source.match(/:key="fileKey\(item\)"/g) || []).length, 2);

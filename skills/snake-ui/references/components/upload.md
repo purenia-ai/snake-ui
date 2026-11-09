@@ -129,6 +129,7 @@ function onUploadError(_error, index) {
 | `multiple`         | 是否开启文件多选                                                                                              | `boolean`                                                                 | `true`                       |
 | `maxSize`          | 单个文件最大字节数                                                                                            | `number \| string`                                                        | `Number.MAX_VALUE`           |
 | `modelValue`       | 文件列表，支持 `v-model`                                                                                      | `UploadFileItem[]`                                                        | `[]`                         |
+| `fileList`         | 初始文件列表（旧版兼容，`modelValue` 有值时优先）                                                             | `UploadFileItem[]`                                                        | `[]`                         |
 | `limitType`        | 允许的文件后缀，优先级高于 `accept` 内置格式限制                                                              | `string[]`                                                                | `[]`                         |
 | `autoUpload`       | 选择完是否自动上传                                                                                            | `boolean`                                                                 | `true`                       |
 | `showTips`         | 是否自动 toast 提示                                                                                           | `boolean`                                                                 | `true`                       |
@@ -147,27 +148,35 @@ function onUploadError(_error, index) {
 | `imageShape`       | 图片/图标形状，可选值 `square`（方形）/ `circle`（圆形）                                                      | `'square' \| 'circle'`                                                    | `square`                     |
 | `customChoose`     | 自定义文件选择，开启后点击触发 `on-choose` 而不调用默认 API                                                   | `boolean`                                                                 | `false`                      |
 | `uploadRequest`    | 自定义上传适配器（OSS 等），优先于 `action`                                                                   | `UploadRequest`                                                           | -                            |
+| `isCustomUpload`   | 旧版兼容，选择文件走 `customUpload` 事件                                                                      | `boolean`                                                                 | `false`                      |
 
 ### Events
 
-| 事件名               | 说明                               | 参数                                    |
-| -------------------- | ---------------------------------- | --------------------------------------- |
-| `update:modelValue`  | 文件列表更新，支持 `v-model`       | `files`                                 |
-| `on-list-change`     | 文件列表发生变化                   | `files, index`                          |
-| `on-oversize`        | 文件超过 `maxSize`                 | `file, files, index`                    |
-| `on-exceed`          | 数量超过 `maxCount`                | `file, files, index`                    |
-| `on-choose`          | 启用 `customChoose` 时点击选择触发 | `{ accept, maxCount, fileList, index }` |
-| `on-choose-complete` | 每次文件选择完成后                 | `files, index`                          |
-| `on-choose-fail`     | 文件选择失败                       | `error`                                 |
-| `on-uploaded`        | 全部文件上传完毕                   | `files, index`                          |
-| `on-success`         | 单个文件上传成功                   | `data, fileIndex, files, index`         |
-| `on-error`           | 单个文件上传失败                   | `error, fileIndex, files, index`        |
-| `on-change`          | 单个文件上传状态改变（无论成败）   | `response, fileIndex, files, index`     |
-| `on-progress`        | 上传进度变化                       | `progress, fileIndex, files, index`     |
-| `on-remove`          | 移除文件时                         | `fileIndex, files, index`               |
-| `on-preview`         | 预览文件时                         | `url, files, index`                     |
-| `chooseStart`        | 开始选择文件时                     | -                                       |
-| `chooseComplete`     | 选择文件结束时                     | -                                       |
+| 事件名               | 说明                                         | 参数                                       |
+| -------------------- | -------------------------------------------- | ------------------------------------------ |
+| `update:modelValue`  | 文件列表更新，支持 `v-model`                 | `files`                                    |
+| `on-list-change`     | 文件列表发生变化                             | `files, index`                             |
+| `on-oversize`        | 文件超过 `maxSize`                           | `file, files, index`                       |
+| `on-exceed`          | 数量超过 `maxCount`                          | `file, files, index`                       |
+| `on-choose`          | 启用 `customChoose` 时点击选择触发           | `{ accept, maxCount, fileList, index }`    |
+| `on-choose-complete` | 每次文件选择完成后                           | `files, index`                             |
+| `on-choose-fail`     | 文件选择失败                                 | `error`                                    |
+| `on-uploaded`        | 全部文件上传完毕                             | `files, index`                             |
+| `on-success`         | 单个文件上传成功                             | `data, fileIndex, files, index`            |
+| `on-error`           | 单个文件上传失败                             | `error, fileIndex, files, index`           |
+| `on-change`          | 单个文件上传状态改变（无论成败）             | `response, fileIndex, files, index`        |
+| `on-progress`        | 上传进度变化                                 | `progress, fileIndex, files, index`        |
+| `on-remove`          | 移除文件时                                   | `fileIndex, files, index`                  |
+| `on-preview`         | 预览文件时                                   | `url, files, index`                        |
+| `customUpload`       | 旧版兼容：配合 `isCustomUpload` 自行选择文件 | `detail: UploadLegacyCustomEvent`          |
+| `chooseStart`        | 开始选择文件时                               | -                                          |
+| `chooseComplete`     | 选择文件结束时                               | -                                          |
+| `error`              | 旧版兼容：文件选择或上传出错                 | `error`                                    |
+| `beforeRead`         | 旧版兼容：文件进入读取流程前                 | `detail: UploadFileEvent`                  |
+| `afterRead`          | 旧版兼容：文件进入读取流程后                 | `detail: UploadFileEvent`                  |
+| `oversize`           | 旧版兼容：文件超过大小限制                   | `detail: UploadFileEvent`                  |
+| `delete`             | 旧版兼容：删除文件时                         | `detail: UploadFileItem & { name, index }` |
+| `clickPreview`       | 旧版兼容：点击预览文件时                     | `detail: UploadFileItem & { name, index }` |
 
 ### Slots
 
@@ -179,19 +188,20 @@ function onUploadError(_error, index) {
 
 ### Methods
 
-| 方法                       | 说明                         |
-| -------------------------- | ---------------------------- |
-| `lists`                    | 当前内部文件列表（暴露属性） |
-| `upload()`                 | 上传全部待上传文件           |
-| `retry(index)`             | 重试指定文件                 |
-| `reUpload(index?)`         | 重传指定文件或失败队列       |
-| `addFiles(files)`          | 添加外部选择的文件           |
-| `deleteItem(index)`        | 按确认和钩子规则删除文件     |
-| `remove(index)`            | 直接移除指定文件             |
-| `selectFile()`             | 打开文件选择器               |
-| `clear()`                  | 清空列表                     |
-| `previewImage(url)`        | 预览图片                     |
-| `previewFile(item, index)` | 预览/打开文件                |
+| 方法                       | 说明                                               |
+| -------------------------- | -------------------------------------------------- |
+| `lists`                    | 当前内部文件列表（暴露属性）                       |
+| `upload()`                 | 上传全部待上传文件                                 |
+| `retry(index)`             | 重试指定文件                                       |
+| `reUpload(index?)`         | 重传指定文件或失败队列                             |
+| `addFiles(files)`          | 添加外部选择的文件                                 |
+| `deleteItem(index)`        | 按确认和钩子规则删除文件                           |
+| `remove(index)`            | 直接移除指定文件                                   |
+| `selectFile()`             | 打开文件选择器                                     |
+| `clear()`                  | 清空列表                                           |
+| `previewImage(url)`        | 预览图片                                           |
+| `previewFile(item, index)` | 预览/打开文件                                      |
+| `onBeforeRead(file)`       | 旧版兼容：把文件交给 `beforeRead`/`afterRead` 流程 |
 
 ## 类型定义
 
@@ -204,6 +214,10 @@ import type {
     UploadExpose
 } from '@puresnake/snake-ui';
 ```
+
+## 旧版兼容
+
+旧项目仍可使用 `isCustomUpload`、`@customUpload` 和 `onBeforeRead(file)`。新代码推荐使用 `customChoose`/`@on-choose`/`addFiles` 处理自定义选择，使用 `uploadRequest` 处理 OSS 上传。
 
 ## 主题变量
 
