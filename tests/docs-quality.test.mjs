@@ -75,8 +75,9 @@ test('theme generator exposes labelled fields and a keyboard-contained dialog', 
 test('preview layout protects reading width at common desktop sizes', async () => {
     const css = await text('docs/.vitepress/theme/custom.css');
 
-    assert.match(css, /@media \(min-width: 1280px\) and \(max-width: 1599px\)/);
-    assert.match(css, /\.snake-preview-layout \.VPDoc\.has-aside \.aside\s*{\s*display: none;/);
+    // 手机预览不得挤掉正文与右侧大纲：任何断点下都不隐藏大纲
+    assert.doesNotMatch(css, /\.snake-preview-layout \.VPDoc\.has-aside \.aside\s*{[^}]*display:\s*none/s);
+    assert.match(css, /--preview-reserved-space:\s*calc\(375px \* var\(--preview-scale/);
     assert.match(css, /\.dark\s*{[\s\S]*?color-scheme: dark;/);
     assert.match(css, /\.doc-actions/);
 });

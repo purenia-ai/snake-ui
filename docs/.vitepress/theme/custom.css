@@ -551,7 +551,7 @@ body {
 
 @media (min-width: 1280px) {
     .snake-preview-layout {
-        --preview-reserved-space: calc(375px * var(--preview-scale, 0.8) + 40px);
+        --preview-reserved-space: calc(375px * var(--preview-scale, 0.704) + 40px);
     }
 
     .snake-preview-layout .VPContent.has-sidebar {
@@ -589,7 +589,7 @@ body {
 
 @media (min-width: 1450px) {
     .snake-preview-layout {
-        --preview-reserved-space: calc(375px * var(--preview-scale, 0.853) + 70px);
+        --preview-reserved-space: calc(375px * var(--preview-scale, 0.8) + 70px);
     }
 
     .preview-panel {
@@ -597,15 +597,11 @@ body {
     }
 }
 
-@media (min-width: 1280px) and (max-width: 1599px) {
-    .snake-preview-layout .VPDoc.has-aside .aside {
-        display: none;
-    }
-}
-
 @media (min-width: 1680px) {
     .snake-preview-layout {
-        --preview-reserved-space: calc(375px * var(--preview-scale, 1) + 40px + max(0px, calc((100vw - 1680px) / 2)));
+        --preview-reserved-space: calc(
+            375px * var(--preview-scale, 0.907) + 40px + max(0px, calc((100vw - 1680px) / 2))
+        );
     }
 
     .preview-panel {

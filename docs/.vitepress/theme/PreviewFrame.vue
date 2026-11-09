@@ -78,14 +78,15 @@ let previewMediaQuery: MediaQueryList | undefined;
 
 const DESKTOP_PREVIEW_QUERY = '(min-width: 1280px) and (min-height: 560px)';
 
-// 手机壳基准宽度为 375px,视口空间不足时保持真机比例缩放,视口空间不足时按断点+高度等比缩放。
+// 手机壳基准宽度为 375px,视口空间不足时保持真机比例缩小,
+// 同时为正文和右侧「本页内容」大纲留出空间。断点与 custom.css 中的预留宽度保持一致。
 // CSS 无法做长度除法,缩放系数在此计算后写入 --preview-scale 供 custom.css 消费。
 const PHONE_WIDTH = 375;
 const PHONE_HEIGHT = (375 * 143.6) / 70.9;
 
 function updateScale() {
     if (typeof window === 'undefined' || !isDesktopPreview.value) return;
-    const budgetWidth = window.innerWidth >= 1680 ? 375 : window.innerWidth >= 1450 ? 320 : 300;
+    const budgetWidth = window.innerWidth >= 1680 ? 340 : window.innerWidth >= 1450 ? 300 : 264;
     const budgetHeight = window.innerHeight - 130;
     const scale = Math.max(0.5, Math.min(budgetWidth / PHONE_WIDTH, budgetHeight / PHONE_HEIGHT, 1));
     document.documentElement.style.setProperty('--preview-scale', scale.toFixed(3));
