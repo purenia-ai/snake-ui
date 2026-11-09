@@ -1,0 +1,63 @@
+name: CI
+
+on:
+    push:
+        branches: [main]
+        paths:
+            - 'src/**'
+            - 'tests/**'
+            - 'docs/**'
+            - 'package.json'
+            - 'pnpm-lock.yaml'
+            - '.github/workflows/ci.yml'
+    pull_request:
+        branches: [main]
+        paths:
+            - 'src/**'
+            - 'tests/**'
+            - 'docs/**'
+            - 'package.json'
+            - 'pnpm-lock.yaml'
+            - '.github/workflows/ci.yml'
+    workflow_dispatch:
+
+# 同一分支重复推送时取消旧 run
+concurrency:
+    group: ci-${{ github.ref }}
+    cancel-in-progress: true
+
+permissions:
+    contents: read
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v6
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 10
+
+            - name: Setup Node
+              uses: actions/setup-node@v6
+              with:
+                  node-version: 22
+                  cache: pnpm
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Type check
+              run: pnpm type-check
+
+            - name: Tests
+              run: pnpm test:all
+
+            # 待修的既有问题清完后可以再加：仓库当前有 26 个 eslint error、44 个文件未过 prettier
+            # - name: Lint
+            #   run: pnpm lint
+            # - name: Format
+            #   run: pnpm format:check
