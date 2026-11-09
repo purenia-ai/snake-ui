@@ -133,9 +133,33 @@ test('package exports and published files cover documented entry points', async 
     ]) {
         assert.ok(manifest.exports[key], `missing export: ${key}`);
     }
-    assert.equal(manifest.exports['./libs/*'], undefined);
+    // 深路径工具函数（libs/function/* 等）是宿主直接引用的公开入口，保留通配子路径
+    assert.equal(manifest.exports['./libs/*'], './libs/*');
+    assert.deepEqual(
+        Object.keys(manifest.exports)
+            .filter(key => key.includes('*'))
+            .sort(),
+        [
+            './components/*',
+            './libs/*',
+            './libs/cms/*',
+            './libs/config/*',
+            './libs/function/*',
+            './libs/hooks/*',
+            './locale/*',
+            './plugins/*',
+            './types/*'
+        ]
+    );
     for (const file of ['components', 'libs', 'locale', 'plugins', 'types', 'iconfont.css']) {
         assert.ok(manifest.files.includes(file), `missing published file: ${file}`);
     }
     assert.equal(manifest.files.includes('iconfont.woff2'), false);
+});
+
+test('runtime version constant tracks the published package version', async () => {
+    const manifest = JSON.parse(await read('package.json'));
+    const state = await read('libs/config/state.ts');
+
+    assert.match(state, new RegExp(`SNAKE_UI_VERSION = '${manifest.version.replaceAll('.', '\\.')}'`));
 });

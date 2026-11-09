@@ -1,7 +1,7 @@
 import { reactive } from 'vue';
 import type { DebugLevel } from './types';
 
-export const SNAKE_UI_VERSION = '0.3.0';
+export const SNAKE_UI_VERSION = '0.0.16';
 
 export interface AppConfig {
     v: string;
