@@ -2,10 +2,10 @@
     <DemoPage :title="title" :desc="text('跨端打开链接或复制到粘贴板。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack demo-link-showcase">
-                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
-                <view>
+                <text class="demo-variant-title">{{ text('实时预览') }}</text>
+                <view class="demo-link-stage">
                     <snake-link
-                        :text="String(state.lText) || (isEnglish ? 'Visit Snake UI' : '访问 Snake UI 仓库')"
+                        :text="String(state.lText) || text('访问 Snake UI 仓库')"
                         :href="String(state.lHref)"
                         :under-line="Boolean(state.lUnderLine)"
                         :default-click="Boolean(state.lDefaultClick)"
@@ -34,7 +34,6 @@ import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 
 const { localeName, text } = useDemoLocale();
-const isEnglish = computed(() => localeName.value === 'en-US');
 const lastClick = ref('');
 const controls: DemoControl[] = [
     { key: 'lText', label: '显示文字', type: 'input', defaultValue: '', placeholder: '请输入显示文字' },
@@ -102,5 +101,13 @@ function onLinkClick(href: string) {
 .demo-variant-sub {
     color: var(--snake-color-text-muted);
     font-size: 12px;
+}
+.demo-link-stage {
+    display: flex;
+    min-height: 88px;
+    align-items: center;
+    padding: 16px;
+    border-radius: 8px;
+    background: var(--snake-color-surface-muted);
 }
 </style>

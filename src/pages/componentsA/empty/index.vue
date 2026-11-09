@@ -2,7 +2,7 @@
     <DemoPage :title="title" :desc="text('在没有数据时提供清晰的占位和下一步提示。')">
         <DemoSection variant="preview" :title="text('演示效果')">
             <view class="demo-stack demo-empty-showcase">
-                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
+                <text class="demo-variant-title">{{ text('实时预览') }}</text>
                 <snake-empty
                     :mode="String(state.emptyMode)"
                     :icon="state.customIcon ? '/static/logo.png' : ''"
@@ -15,10 +15,12 @@
                         <snake-button type="primary" size="small" @click="tryAgain">{{ text('重试') }}</snake-button>
                     </template>
                 </snake-empty>
-                <text class="demo-variant-title">{{ isEnglish ? 'Semantic states' : '语义状态' }}</text>
+                <text class="demo-variant-title">{{ text('语义状态') }}</text>
                 <view class="demo-empty-grid">
-                    <snake-empty mode="search" :text="isEnglish ? 'No results' : '没有搜索结果'" icon-size="36" />
-                    <snake-empty mode="wifi" :text="isEnglish ? 'Network error' : '网络连接异常'" icon-size="36" />
+                    <snake-empty mode="data" :text="text('无数据')" icon-size="36" />
+                    <snake-empty mode="list" :text="text('无内容')" icon-size="36" />
+                    <snake-empty mode="wifi" :text="text('网络不可用')" icon-size="36" />
+                    <snake-empty mode="search" :text="text('搜索无结果')" icon-size="36" />
                 </view>
             </view>
         </DemoSection>
@@ -37,7 +39,6 @@ import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 
 const { localeName, text } = useDemoLocale();
-const isEnglish = computed(() => localeName.value === 'en-US');
 const controls: DemoControl[] = [
     {
         key: 'emptyMode',
@@ -82,15 +83,13 @@ const state = reactive<Record<string, DemoValue>>(
 const previewText = computed(() => {
     const customText = String(state.text).trim();
     if (customText) return customText;
-    if (!isEnglish.value) return '';
-    return (
-        {
-            data: 'No data',
-            list: 'No content',
-            wifi: 'Network unavailable',
-            search: 'No results'
-        }[String(state.emptyMode)] || 'No data'
-    );
+    const preset: Record<string, string> = {
+        data: '无数据',
+        list: '无内容',
+        wifi: '网络不可用',
+        search: '搜索无结果'
+    };
+    return text(preset[String(state.emptyMode)] || '无数据');
 });
 const localizedControls = computed(() => {
     const _locale = localeName.value;

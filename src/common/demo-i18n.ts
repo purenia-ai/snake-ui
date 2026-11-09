@@ -1021,6 +1021,18 @@ Object.assign(englishMessages, {
     日期格式: 'Date format'
 });
 
+Object.assign(englishMessages, {
+    请输入显示文字: 'Enter display text',
+    '访问 Snake UI 仓库': 'Visit the Snake UI repo',
+    语义状态: 'Semantic states',
+    没有搜索结果: 'No results',
+    网络连接异常: 'Network error',
+    无数据: 'No data',
+    无内容: 'No content',
+    网络不可用: 'Network unavailable',
+    搜索无结果: 'No results found'
+});
+
 export function demoText(value: string): string {
     return currentLocale.value.name === 'en-US' ? (englishMessages[value] ?? value) : value;
 }
