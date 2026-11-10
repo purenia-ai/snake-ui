@@ -39,6 +39,15 @@
                 {{ text('复制失败，请手动选择代码。') }}
             </text>
         </DemoSection>
+        <DemoSection :title="text('自定义颜色')">
+            <view class="demo-button-showcase">
+                <view class="demo-button-stage">
+                    <snake-button :custom-style="customColorStyle" @click="handlePreviewClick">
+                        {{ text('自定义背景色') }}
+                    </snake-button>
+                </view>
+            </view>
+        </DemoSection>
     </DemoPage>
 </template>
 
@@ -52,6 +61,8 @@ import DemoSection from '../../../components/demo-section/demo-section.vue';
 
 const { localeName, text } = useDemoLocale();
 const clickCount = ref(0);
+/** 自定义底色示例：只给背景色和文字色，细边框由组件自动取为同色。 */
+const customColorStyle = { backgroundColor: '#b94131', color: '#ffffff' };
 const controls: DemoControl[] = [
     {
         key: 'type',

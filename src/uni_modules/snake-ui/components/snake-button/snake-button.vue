@@ -11,6 +11,7 @@
             hairLine ? hairLineClass : 'snake-button--bold-border',
             `snake-button--${type}`,
             disabled ? (plain ? 'snake-button--plain-disabled' : `snake-button--${type}--disabled`) : '',
+            hasCustomBackground ? 'snake-button--filled' : '',
             customClass
         ]"
         :hover-start-time="Number(hoverStartTime)"
@@ -105,6 +106,18 @@ const hoverClassName = computed(() => {
 const hairLineClass = computed(() =>
     ['primary', 'success', 'error', 'warning'].includes(props.type) && !props.plain ? '' : 'snake-hairline-border'
 );
+/**
+ * customStyle 是否指定了背景色。镂空按钮的细边框就是它的描边，不参与。
+ * 实心按钮此时把细边框做成与背景同色，避免自定义底色上出现一条异色描边。
+ */
+const hasCustomBackground = computed(() => {
+    if (props.plain) return false;
+    const style = props.customStyle;
+    if (!style) return false;
+    if (typeof style === 'string') return /(?:^|;)\s*background(-?color)?\s*:/i.test(style);
+    const source = style as Record<string, unknown>;
+    return Boolean(source.backgroundColor ?? source.background);
+});
 const rootStyle = computed(() => toStyle({ overflow: props.ripple ? 'hidden' : 'visible' }, props.customStyle));
 
 function click(event: unknown) {
@@ -289,6 +302,10 @@ function getAuthorize(event: unknown) {
     transform: scale(0.5);
     transform-origin: 0 0;
     pointer-events: none;
+}
+/* customStyle 指定背景色的实心按钮：细边框取透明，边框区露出的即是自身背景，等效“边框色等于背景色”。 */
+.snake-button--filled.snake-hairline-border::after {
+    border-color: transparent;
 }
 .snake-wave-ripple {
     position: absolute;
