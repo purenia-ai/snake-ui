@@ -10,7 +10,39 @@ async function parseSFC(code) {
   }
 }
 function stripJsonComments(str) {
-  return str.replace(/\/\/.*$/gm, "").replace(/\/\*[\s\S]*?\*\//g, "");
+  let out = "";
+  let quote = "";
+  for (let i = 0; i < str.length; i++) {
+    const char = str[i];
+    if (quote) {
+      out += char;
+      if (char === "\\") {
+        out += str[++i] ?? "";
+        continue;
+      }
+      if (char === quote) quote = "";
+      continue;
+    }
+    if (char === '"') {
+      quote = char;
+      out += char;
+      continue;
+    }
+    if (char === "/" && str[i + 1] === "/") {
+      while (i < str.length && str[i] !== "\n") i++;
+      out += "\n";
+      continue;
+    }
+    if (char === "/" && str[i + 1] === "*") {
+      i += 2;
+      while (i < str.length && !(str[i] === "*" && str[i + 1] === "/")) i++;
+      i += 1;
+      out += " ";
+      continue;
+    }
+    out += char;
+  }
+  return out;
 }
 function formatPagePath(root, path) {
   return normalizePath(`${join(root, path)}.vue`).replace(/^[A-Z]:/, (match) => match.toLowerCase());
@@ -57,6 +89,52 @@ function findNode(sfc, rawTagName) {
   };
   return traverse(nodeAst.children);
 }
+function wrapPageTemplate(code, sfc) {
+  const openMatch = code.match(/<template\b[^>]*>/);
+  if (!openMatch) return null;
+  const closeTagStart = code.lastIndexOf("</template>");
+  if (closeTagStart === -1) return null;
+  const openTagEnd = openMatch.index + openMatch[0].length;
+  const content = code.slice(openTagEnd, closeTagStart);
+  let pageMetaSource = "";
+  let newContent = content;
+  if (sfc?.template) {
+    const pageMetaNode = findNode(sfc, "PageMeta");
+    if (pageMetaNode) {
+      pageMetaSource = pageMetaNode.loc.source;
+      const metaStart = pageMetaNode.loc.start.offset;
+      const metaEnd = pageMetaNode.loc.end.offset;
+      const metaStartInContent = metaStart - openTagEnd;
+      const metaEndInContent = metaEnd - openTagEnd;
+      newContent = content.slice(0, metaStartInContent) + content.slice(metaEndInContent);
+    }
+  } else {
+    const pageMetaMatch = content.match(/<page-meta\b[^>]*>[\s\S]*?<\/page-meta>/);
+    if (pageMetaMatch) {
+      pageMetaSource = pageMetaMatch[0];
+      newContent = content.replace(pageMetaMatch[0], "");
+    } else {
+      const selfClosingMatch = content.match(/<page-meta\b[^>]*\/>/);
+      if (selfClosingMatch) {
+        pageMetaSource = selfClosingMatch[0];
+        newContent = content.replace(selfClosingMatch[0], "");
+      }
+    }
+  }
+  const wrappedContent = `
+${pageMetaSource}
+<global-root-view>${newContent}</global-root-view>
+`;
+  return {
+    code: code.slice(0, openTagEnd) + wrappedContent + code.slice(closeTagStart),
+    map: {
+      version: 3,
+      sources: [],
+      names: [],
+      mappings: ""
+    }
+  };
+}
 function normalizePlatformPath(id) {
   const platform = process.env.UNI_PLATFORM;
   if (!platform) return id;
@@ -82,5 +160,6 @@ export {
   parseSFC,
   stripJsonComments,
   toKebabCase,
-  toPascalCase
+  toPascalCase,
+  wrapPageTemplate
 };
