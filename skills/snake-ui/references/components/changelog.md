@@ -6,6 +6,12 @@ triggers: ['changelog', 'snake-changelog', '更新日志']
 
 # 更新日志
 
+## [0.0.19](https://github.com/purenia-ai/snake-ui/compare/v0.0.18...v0.0.19)（2026-11-10）
+
+### 🐛 Bug Fixes | Bug 修复
+
+- **plugins:** 修复 `plugins` 编译产物把 `App.root.vue` 的注入路径误补成 `.vue.cjs` / `.vue.mjs` 的问题：扩展名只补齐「没有扩展名的相对导入」，并加构建断言防止复发
+
 ## [0.0.18](https://github.com/purenia-ai/snake-ui/compare/v0.0.17...v0.0.18)（2026-11-10）
 
 ### ✨ Features | 新功能
