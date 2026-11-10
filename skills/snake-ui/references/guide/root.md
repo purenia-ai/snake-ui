@@ -6,7 +6,7 @@ triggers: ['root', '虚拟根组件']
 
 # 虚拟根组件
 
-uni-app 没有可直接包裹所有页面的应用级根组件。Snake UI 内置 `Root` Vite 插件，在构建时为每个页面自动注入全局根组件，让主题、暗黑模式、全局提示和弹窗在任意页面自动生效，无需逐页添加组件代码。
+uni-app 没有可直接包裹所有页面的应用级根组件。Snake UI 内置 `UniRoot` Vite 插件，在构建时为每个页面自动注入全局根组件，让主题、暗黑模式、全局提示和弹窗在任意页面自动生效，无需逐页添加组件代码。
 
 ## 解决的问题
 
@@ -16,11 +16,11 @@ uni-app 没有可直接包裹所有页面的应用级根组件。Snake UI 内置
 - 全局提示、弹窗要在每个页面各放一份，维护成本高，容易遗漏。
 - 新增一个全局能力就要改一遍所有页面。
 
-`Root` 把这件事收敛到构建阶段：页面源码保持原样，编译时自动完成根组件注册与包裹。
+`UniRoot` 把这件事收敛到构建阶段：页面源码保持原样，编译时自动完成根组件注册与包裹。
 
 ## 技术方案
 
-`Root` 是零额外依赖的纯字符串构建插件，分三步完成注入：
+`UniRoot` 是零额外依赖的纯字符串构建插件，分三步完成注入：
 
 1. **注册根组件**：向 `main.ts` 注入 `import GlobalRootView from "./App.root.vue"`，并注册为全局组件 `global-root-view`。
 2. **包裹页面模板**：解析每个页面的 SFC，将模板内容包裹进 `<global-root-view>`；页面中的 `<page-meta>` 节点会提取到包裹层外部。
@@ -52,11 +52,11 @@ import ConfigProvider from './uni_modules/snake-ui/components/snake-config-provi
 ```ts
 import { defineConfig } from 'vite';
 import Uni from '@dcloudio/vite-plugin-uni';
-// npm 安装：import { Root } from '@puresnake/snake-ui/plugins';
-import { Root } from './src/uni_modules/snake-ui/plugins';
+// npm 安装：import { UniRoot } from '@puresnake/snake-ui/plugins';
+import { UniRoot } from './src/uni_modules/snake-ui/plugins';
 
 export default defineConfig({
-    plugins: [Root(), Uni()]
+    plugins: [UniRoot(), Uni()]
 });
 ```
 
@@ -126,12 +126,12 @@ modal.confirm({ content: '确认删除？' });
 如需使用其他文件名（如 `App.global.vue`），修改配置即可：
 
 ```ts
-Root({ rootFileName: 'App.global' });
+UniRoot({ rootFileName: 'App.global' });
 ```
 
 ## 跨端兼容
 
-`Root` 是纯 Vite 构建时插件，在 uni-app 编译之前完成源代码转换，不依赖任何平台特定 API。H5、微信小程序、支付宝小程序、头条/抖音小程序、Android App、iOS App 与鸿蒙 App 均支持。
+`UniRoot` 是纯 Vite 构建时插件，在 uni-app 编译之前完成源代码转换，不依赖任何平台特定 API。H5、微信小程序、支付宝小程序、头条/抖音小程序、Android App、iOS App 与鸿蒙 App 均支持。
 
 启用后修改 `pages.json` 会自动重载页面列表，无需手动重启开发服务器。
 
@@ -140,7 +140,7 @@ Root({ rootFileName: 'App.global' });
 - **`<slot />` 必须保留**：它是页面内容的渲染位置，删除后页面不会渲染任何内容。
 - **`<page-meta>` 会被提取**：页面模板中的 `<page-meta>` 会移到包裹层外部，确保微信小程序兼容，无需手动处理。
 - **Vue 版本要求**：需要 Vue `>= 3.2.13`（使用 `vue/compiler-sfc` 的 `parse` API；HBuilderX 环境下自动降级为正则匹配）。
-- **插件顺序**：如果项目还有其他修改 `pages.json` 的插件，请把 `Root()` 放在它们之后。
+- **插件顺序**：如果项目还有其他修改 `pages.json` 的插件，请把 `UniRoot()` 放在它们之后。
 - **不启用插件时**：也可以在需要主题变量的页面外层显式包裹 `ConfigProvider`，两种方式互斥，不要同时使用。
 - **首次启用需要重启**：开发服务需要在配置完成后重启一次，之后才进入自动包裹与 HMR 状态。
 

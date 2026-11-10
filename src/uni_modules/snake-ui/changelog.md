@@ -1,5 +1,11 @@
 # 更新日志
 
+## [0.0.18](https://github.com/purenia-ai/snake-ui/compare/v0.0.17...v0.0.18)（2026-11-10）
+
+### ✨ Features | 新功能
+
+- **plugins:** `@puresnake/snake-ui/plugins` 提供 ESM / CJS 双入口：`plugins/index.mjs`、`plugins/index.cjs` 指向编译产物 `plugins/root/dist`，`package.json` 的 `exports` 按 `import` / `require` 条件分发，`types` 仍指向源码；`vite.config.ts` 可直接 `import { UniRoot } from '@puresnake/snake-ui/plugins'`，无需相对路径，也不再依赖 pnpm hoisted 布局
+
 ## [0.0.16](https://github.com/purenia-ai/snake-ui/compare/v0.0.15...v0.0.16)（2026-11-09）
 
 ### ✨ Features | 新功能

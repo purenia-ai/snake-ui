@@ -6,7 +6,7 @@ triggers: ['config-provider', 'snake-config-provider', 'ConfigProvider', '全局
 
 # ConfigProvider 全局配置
 
-`snake-config-provider` 是 Snake UI 主题系统的页面入口组件，负责把当前主题的 CSS 变量注入页面，并根据主题模式附加明亮或暗黑类名。将它与 `Root` 插件配合使用，可以让主题配置自动作用于每个页面，无需逐页添加组件。
+`snake-config-provider` 是 Snake UI 主题系统的页面入口组件，负责把当前主题的 CSS 变量注入页面，并根据主题模式附加明亮或暗黑类名。将它与 `UniRoot` 插件配合使用，可以让主题配置自动作用于每个页面，无需逐页添加组件。
 
 ## 平台兼容性
 
@@ -32,7 +32,7 @@ import ConfigProvider from './uni_modules/snake-ui/components/snake-config-provi
 
 ## 配合虚拟根组件
 
-uni-app 没有可直接包裹所有页面的应用级根组件。推荐在 `src/App.root.vue` 中保留页面插槽，再通过 `Root` 插件为每个页面自动注入全局根组件。
+uni-app 没有可直接包裹所有页面的应用级根组件。推荐在 `src/App.root.vue` 中保留页面插槽，再通过 `UniRoot` 插件为每个页面自动注入全局根组件。
 
 ```vue
 <!-- src/App.root.vue -->
@@ -52,10 +52,10 @@ import ConfigProvider from './uni_modules/snake-ui/components/snake-config-provi
 ```ts
 import { defineConfig } from 'vite';
 import Uni from '@dcloudio/vite-plugin-uni';
-import { Root } from './src/uni_modules/snake-ui/plugins';
+import { UniRoot } from './src/uni_modules/snake-ui/plugins';
 
 export default defineConfig({
-    plugins: [Root(), Uni()]
+    plugins: [UniRoot(), Uni()]
 });
 ```
 
@@ -99,7 +99,7 @@ export default defineConfig({
 
 ## 常见场景
 
-- **应用全局主题**：在 `App.root.vue` 中使用一次，并配合 `Root` 自动覆盖所有页面。
+- **应用全局主题**：在 `App.root.vue` 中使用一次，并配合 `UniRoot` 自动覆盖所有页面。
 - **独立页面入口**：不启用根组件插件时，在需要主题变量的页面外层显式包裹。
 - **受控主题设置**：由设置页维护主题名和暗黑模式，通过 props 同步到主题引擎。
 - **局部样式扩展**：使用 `custom-class` 或 `custom-style` 补充根节点布局，同时继续继承主题变量。

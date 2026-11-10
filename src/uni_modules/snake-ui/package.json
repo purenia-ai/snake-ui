@@ -2,7 +2,7 @@
     "id": "snake-ui",
     "name": "@puresnake/snake-ui",
     "displayName": "Snake UI",
-    "version": "0.0.17",
+    "version": "0.0.18",
     "description": "面向 uni-app 商城与 CMS 场景的 Vue 组件库",
     "license": "MIT",
     "author": "PURESNAKE",
@@ -72,8 +72,9 @@
         "./types/*": "./types/*.d.ts",
         "./plugins": {
             "types": "./plugins/index.ts",
-            "import": "./plugins/index.ts",
-            "default": "./plugins/index.ts"
+            "import": "./plugins/index.mjs",
+            "require": "./plugins/index.cjs",
+            "default": "./plugins/index.mjs"
         },
         "./locale": "./locale/index.ts",
         "./index.scss": "./index.scss",

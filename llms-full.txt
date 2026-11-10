@@ -647,6 +647,12 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 
 # 更新日志
 
+## [0.0.18](https://github.com/purenia-ai/snake-ui/compare/v0.0.17...v0.0.18)（2026-11-10）
+
+### ✨ Features | 新功能
+
+- **plugins:** `@puresnake/snake-ui/plugins` 提供 ESM / CJS 双入口：`plugins/index.mjs`、`plugins/index.cjs` 指向编译产物 `plugins/root/dist`，`package.json` 的 `exports` 按 `import` / `require` 条件分发，`types` 仍指向源码；`vite.config.ts` 可直接 `import { UniRoot } from '@puresnake/snake-ui/plugins'`，无需相对路径，也不再依赖 pnpm hoisted 布局
+
 ## [0.0.16](https://github.com/purenia-ai/snake-ui/compare/v0.0.15...v0.0.16)（2026-11-09）
 
 ### ✨ Features | 新功能
@@ -1253,7 +1259,7 @@ Snake UI 的 `index.scss` 内置了一组常用布局工具类，适合页面中
 
 # ConfigProvider 全局配置
 
-`snake-config-provider` 是 Snake UI 主题系统的页面入口组件，负责把当前主题的 CSS 变量注入页面，并根据主题模式附加明亮或暗黑类名。将它与 `Root` 插件配合使用，可以让主题配置自动作用于每个页面，无需逐页添加组件。
+`snake-config-provider` 是 Snake UI 主题系统的页面入口组件，负责把当前主题的 CSS 变量注入页面，并根据主题模式附加明亮或暗黑类名。将它与 `UniRoot` 插件配合使用，可以让主题配置自动作用于每个页面，无需逐页添加组件。
 
 ## 平台兼容性
 
@@ -1279,7 +1285,7 @@ import ConfigProvider from './uni_modules/snake-ui/components/snake-config-provi
 
 ## 配合虚拟根组件
 
-uni-app 没有可直接包裹所有页面的应用级根组件。推荐在 `src/App.root.vue` 中保留页面插槽，再通过 `Root` 插件为每个页面自动注入全局根组件。
+uni-app 没有可直接包裹所有页面的应用级根组件。推荐在 `src/App.root.vue` 中保留页面插槽，再通过 `UniRoot` 插件为每个页面自动注入全局根组件。
 
 ```vue
 <!-- src/App.root.vue -->
@@ -1299,10 +1305,10 @@ import ConfigProvider from './uni_modules/snake-ui/components/snake-config-provi
 ```ts
 import { defineConfig } from 'vite';
 import Uni from '@dcloudio/vite-plugin-uni';
-import { Root } from './src/uni_modules/snake-ui/plugins';
+import { UniRoot } from './src/uni_modules/snake-ui/plugins';
 
 export default defineConfig({
-    plugins: [Root(), Uni()]
+    plugins: [UniRoot(), Uni()]
 });
 ```
 
@@ -1346,7 +1352,7 @@ export default defineConfig({
 
 ## 常见场景
 
-- **应用全局主题**：在 `App.root.vue` 中使用一次，并配合 `Root` 自动覆盖所有页面。
+- **应用全局主题**：在 `App.root.vue` 中使用一次，并配合 `UniRoot` 自动覆盖所有页面。
 - **独立页面入口**：不启用根组件插件时，在需要主题变量的页面外层显式包裹。
 - **受控主题设置**：由设置页维护主题名和暗黑模式，通过 props 同步到主题引擎。
 - **局部样式扩展**：使用 `custom-class` 或 `custom-style` 补充根节点布局，同时继续继承主题变量。
@@ -7259,7 +7265,7 @@ npm 安装时在 `App.vue` 引入完整样式：
 
 ## 让主题覆盖页面
 
-页面必须处于 `snake-config-provider` 的变量作用域内，主题和暗色模式才能完整传递。可以逐页包裹，也可以在 `App.root.vue` 中配合 `Root` 插件统一注入。
+页面必须处于 `snake-config-provider` 的变量作用域内，主题和暗色模式才能完整传递。可以逐页包裹，也可以在 `App.root.vue` 中配合 `UniRoot` 插件统一注入。
 
 完整根组件配置见 [ConfigProvider](/components/config-provider) 与[虚拟根组件](/guide/root)。
 
@@ -7784,7 +7790,7 @@ Snake UI 是面向 **uni-app Vue 3** 的移动商城与 CMS 组件库。它既�
 - 🛒 **商城与 CMS 组件**：商品列表、优惠券、筛选、装修渲染等业务组件内置，不绑定具体后端。
 - 🎨 **主题系统**：品牌色七档令牌 + 语义色 + 中性色，CSS 变量驱动，多主题与暗黑模式一键切换。
 - 🌍 **国际化**：内置 `zh-CN` 与 `en-US`，响应式切换、持久化语言偏好、深度合并与回退。
-- 🔌 **虚拟根组件**：`Root` 插件全局注入主题、提示与弹窗，无需逐页添加组件。
+- 🔌 **虚拟根组件**：`UniRoot` 插件全局注入主题、提示与弹窗，无需逐页添加组件。
 - 🌙 **暗黑模式**：`light` / `dark` / `auto` 三种策略，跟随系统主题并持久化选择。
 - 📦 **按需使用**：工具与组合式函数走 `libs` 子路径按需导入，自动 tree-shaking。
 
@@ -8133,7 +8139,7 @@ console.log(color.primary);
 
 # 虚拟根组件
 
-uni-app 没有可直接包裹所有页面的应用级根组件。Snake UI 内置 `Root` Vite 插件，在构建时为每个页面自动注入全局根组件，让主题、暗黑模式、全局提示和弹窗在任意页面自动生效，无需逐页添加组件代码。
+uni-app 没有可直接包裹所有页面的应用级根组件。Snake UI 内置 `UniRoot` Vite 插件，在构建时为每个页面自动注入全局根组件，让主题、暗黑模式、全局提示和弹窗在任意页面自动生效，无需逐页添加组件代码。
 
 ## 解决的问题
 
@@ -8143,11 +8149,11 @@ uni-app 没有可直接包裹所有页面的应用级根组件。Snake UI 内置
 - 全局提示、弹窗要在每个页面各放一份，维护成本高，容易遗漏。
 - 新增一个全局能力就要改一遍所有页面。
 
-`Root` 把这件事收敛到构建阶段：页面源码保持原样，编译时自动完成根组件注册与包裹。
+`UniRoot` 把这件事收敛到构建阶段：页面源码保持原样，编译时自动完成根组件注册与包裹。
 
 ## 技术方案
 
-`Root` 是零额外依赖的纯字符串构建插件，分三步完成注入：
+`UniRoot` 是零额外依赖的纯字符串构建插件，分三步完成注入：
 
 1. **注册根组件**：向 `main.ts` 注入 `import GlobalRootView from "./App.root.vue"`，并注册为全局组件 `global-root-view`。
 2. **包裹页面模板**：解析每个页面的 SFC，将模板内容包裹进 `<global-root-view>`；页面中的 `<page-meta>` 节点会提取到包裹层外部。
@@ -8179,11 +8185,11 @@ import ConfigProvider from './uni_modules/snake-ui/components/snake-config-provi
 ```ts
 import { defineConfig } from 'vite';
 import Uni from '@dcloudio/vite-plugin-uni';
-// npm 安装：import { Root } from '@puresnake/snake-ui/plugins';
-import { Root } from './src/uni_modules/snake-ui/plugins';
+// npm 安装：import { UniRoot } from '@puresnake/snake-ui/plugins';
+import { UniRoot } from './src/uni_modules/snake-ui/plugins';
 
 export default defineConfig({
-    plugins: [Root(), Uni()]
+    plugins: [UniRoot(), Uni()]
 });
 ```
 
@@ -8253,12 +8259,12 @@ modal.confirm({ content: '确认删除？' });
 如需使用其他文件名（如 `App.global.vue`），修改配置即可：
 
 ```ts
-Root({ rootFileName: 'App.global' });
+UniRoot({ rootFileName: 'App.global' });
 ```
 
 ## 跨端兼容
 
-`Root` 是纯 Vite 构建时插件，在 uni-app 编译之前完成源代码转换，不依赖任何平台特定 API。H5、微信小程序、支付宝小程序、头条/抖音小程序、Android App、iOS App 与鸿蒙 App 均支持。
+`UniRoot` 是纯 Vite 构建时插件，在 uni-app 编译之前完成源代码转换，不依赖任何平台特定 API。H5、微信小程序、支付宝小程序、头条/抖音小程序、Android App、iOS App 与鸿蒙 App 均支持。
 
 启用后修改 `pages.json` 会自动重载页面列表，无需手动重启开发服务器。
 
@@ -8267,7 +8273,7 @@ Root({ rootFileName: 'App.global' });
 - **`<slot />` 必须保留**：它是页面内容的渲染位置，删除后页面不会渲染任何内容。
 - **`<page-meta>` 会被提取**：页面模板中的 `<page-meta>` 会移到包裹层外部，确保微信小程序兼容，无需手动处理。
 - **Vue 版本要求**：需要 Vue `>= 3.2.13`（使用 `vue/compiler-sfc` 的 `parse` API；HBuilderX 环境下自动降级为正则匹配）。
-- **插件顺序**：如果项目还有其他修改 `pages.json` 的插件，请把 `Root()` 放在它们之后。
+- **插件顺序**：如果项目还有其他修改 `pages.json` 的插件，请把 `UniRoot()` 放在它们之后。
 - **不启用插件时**：也可以在需要主题变量的页面外层显式包裹 `ConfigProvider`，两种方式互斥，不要同时使用。
 - **首次启用需要重启**：开发服务需要在配置完成后重启一次，之后才进入自动包裹与 HMR 状态。
 
