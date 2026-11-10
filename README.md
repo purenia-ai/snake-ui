@@ -288,8 +288,7 @@ src/uni_modules/snake-ui/
 ├─ locale/            # 国际化资源
 ├─ plugins/           # Vite 插件
 ├─ types/             # components/global/uni-app 声明入口
-├─ index.ts           # 插件与公开运行时导出
-├─ index.d.ts         # TypeScript 薄入口
+├─ index.ts           # 插件、公开导出与全局属性声明（源码即类型入口）
 ├─ index.scss         # 全量样式入口
 └─ theme.scss         # 可选主题变量
 ```

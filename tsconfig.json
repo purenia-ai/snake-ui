@@ -5,7 +5,6 @@
         "allowJs": true,
         "checkJs": false,
         "sourceMap": true,
-        "baseUrl": ".",
         "paths": {
             "@/*": ["./src/*"]
         },
@@ -14,5 +13,5 @@
         "skipLibCheck": true,
         "noImplicitThis": false
     },
-    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
+    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "vite.config.ts"]
 }

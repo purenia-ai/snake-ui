@@ -9,16 +9,3 @@ import type { FoundationAPI } from '../libs/foundation';
  * 报错被 skipLibCheck 压掉后，$snake 的类型会随文件加载顺序漂移。
  */
 export interface SnakeGlobalAPI extends FoundationAPI {}
-
-declare global {
-    interface Uni {
-        $snake: SnakeGlobalAPI;
-    }
-}
-
-declare module '@vue/runtime-core' {
-    interface ComponentCustomProperties {
-        $snake: SnakeGlobalAPI;
-        $themeStyle: Readonly<Record<string, string>>;
-    }
-}

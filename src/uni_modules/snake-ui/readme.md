@@ -66,6 +66,24 @@ page {
 <snake-popup v-model="visible" mode="bottom">...</snake-popup>
 ```
 
+## Volar 支持
+
+组件库内置全局组件类型声明（`global.d.ts`），在 Volar（VS Code）和 `vue-tsc` 中为模板里的 `<snake-*>` 标签提供 props、事件的类型提示与检查，无需手动导入组件类型。
+
+- **uni_modules 安装**：零配置。`src/uni_modules/snake-ui/global.d.ts` 位于项目 tsconfig 的 `include` 范围内，类型声明自动生效。
+- **npm 安装**：在 `tsconfig.json` 的 `compilerOptions.types` 中添加 `"@puresnake/snake-ui/global"`（已有 `types` 数组时追加即可）：
+
+```json
+// tsconfig.json
+{
+    "compilerOptions": {
+        "types": ["@dcloudio/types", "@puresnake/snake-ui/global"]
+    }
+}
+```
+
+提示：HBuilderX 项目不支持此配置，本节仅适用于 CLI 项目。若添加后组件类型仍未生效且项目使用 pnpm，请移除 `tsconfig.json` 中的 `baseUrl` 后重试（`paths` 别名不受影响）。
+
 ## 手动导入
 
 组件推荐使用 easycom 标签；如需手动导入，按组件路径引入：

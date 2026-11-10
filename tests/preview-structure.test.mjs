@@ -411,9 +411,11 @@ test('icon preview exposes the bundled glyph set with a restrained interactive g
 
 test('button preview presents one configurable button', async () => {
     const renderer = await readFile(resolve(root, 'src/pages/componentsA/button/index.vue'), 'utf8');
+    // 只约束预览区：页面上可以有额外的静态示例，但预览区必须保持“一个可配置按钮”。
+    const preview = renderer.match(/<DemoSection variant="preview"[\s\S]*?<\/DemoSection>/)?.[0] ?? '';
 
     assert.doesNotMatch(renderer, /loading-text|loading-mode|\bicon=|<snake-button[^>]*\scolor=|:block=/);
-    assert.equal(renderer.match(/^\s*<snake-button\b/gm)?.length, 1);
+    assert.equal(preview.match(/^\s*<snake-button\b/gm)?.length, 1);
     assert.match(renderer, /:type="String\(state\.type\)"/);
     assert.match(renderer, /:size="state\.buttonSize"/);
     assert.match(renderer, /:shape="state\.buttonShape"/);

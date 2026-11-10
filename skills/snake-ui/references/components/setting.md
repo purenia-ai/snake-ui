@@ -94,7 +94,24 @@ export function createApp() {
 
 项目中只能有一个 `easycom` 字段；已有配置时应合并 `custom` 规则。修改后请重新编译项目。
 
-## 4. 使用组件
+## 4. Volar 类型提示
+
+组件库内置全局组件类型声明 `global.d.ts`，让 Volar / `vue-tsc` 识别模板中的 `<snake-*>` 标签，提供属性、事件的补全与校验。npm 安装时，在 `tsconfig.json` 的 `compilerOptions.types` 中加入类型入口（已有 `types` 数组时追加，不要覆盖）：
+
+```json
+// tsconfig.json
+{
+    "compilerOptions": {
+        "types": ["@dcloudio/types", "@puresnake/snake-ui/global"]
+    }
+}
+```
+
+::: tip
+uni_modules 安装零配置：`src/uni_modules/snake-ui/global.d.ts` 位于项目 tsconfig 的 `include` 范围内，类型自动生效。HBuilderX 项目不支持此配置，本节仅适用于 CLI 项目。
+:::
+
+## 5. 使用组件
 
 配置完成后无需在页面中注册：
 

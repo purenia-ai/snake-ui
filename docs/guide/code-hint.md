@@ -11,17 +11,17 @@ Snake UI 面向 Vue 3 + TypeScript 开发，组件标签、属性、事件和工
 <snake-tabs :list="tabs" :current="0" />
 ```
 
-IDE（Volar）会把 easycom 规则解析到真实的 `.vue` 组件文件，组件内部通过 `defineProps<XxxProps>()` 声明的类型即为模板补全来源：属性名、类型、必填性和事件签名都能获得校验与补全。
+标签的类型提示来自组件库内置的全局组件声明 `global.d.ts`：它通过 `declare module 'vue'` 增强 `GlobalComponents`，把每个 `<snake-*>` 标签关联到真实的 `.vue` 组件。组件内部用 `defineProps<XxxProps>()` 声明的类型即为模板补全来源：属性名、类型、必填性和事件签名都能获得校验与补全。启用方式见[配置 · Volar 类型提示](/components/setting#_4-volar-类型提示)。
 
 ## 类型提示
 
 ### 包类型入口
 
-`@puresnake/snake-ui` 的 `package.json` 声明了 `types: index.d.ts`，TypeScript 会自动解析到全部组件与全局类型：
+`@puresnake/snake-ui` 不维护独立的声明入口，TypeScript 直接把包入口源码 `index.ts` 当作声明（源码即声明，同 wot UI、uView Pro 的源码分发方式）：
 
 - 每个组件导出自己的 `XxxProps` 与 `XxxEmits` 类型。
-- 全局 API 声明为 `uni.$snake` 与模板中的 `$snake`、`$themeStyle`。
-- npm 安装走包的 types 入口；uni_modules 本地安装由 IDE 直接读取源码类型，无需额外配置。
+- 全局 API 声明为 `uni.$snake` 与模板中的 `$snake`、`$themeStyle`，随入口源码自动生效。
+- `import` 导入的类型走入口源码 `index.ts`，npm 与 uni_modules 安装均无需额外配置；模板标签提示走 `global.d.ts`，npm 安装需在 tsconfig 中启用（见上文）。
 
 ### 按需导入组件类型
 
@@ -69,8 +69,9 @@ HBuilderX 内置 Vue 语言服务，可以正常编译和预览，但 TypeScript
 1. **安装方式与路径一致**：npm 安装用 `@puresnake/snake-ui`，uni_modules 安装用 `@/uni_modules/snake-ui/...`，两种方式不要混用。
 2. **Volar 未启用或 Vetur 未禁用**：检查扩展列表，重启 VSCode。
 3. **组件目录名正确**：组件目录和文件名必须为 `snake-组件名`，easycom 才能解析到对应类型。
-4. **重启 TS 服务**：修改 `pages.json` 的 easycom 或升级依赖后，重启语言服务（VSCode 命令面板执行 *TypeScript: Restart TS Server*）或重启编辑器。
-5. **版本过旧**：升级 Snake UI 至最新版本后重试。
+4. **重启 TS 服务**：修改 `pages.json` 的 easycom 或升级依赖后，重启语言服务（VSCode 命令面板执行 _TypeScript: Restart TS Server_）或重启编辑器。
+5. **pnpm 项目模板标签无类型**：`tsconfig.json` 设置了 `baseUrl` 时会导致全局组件声明失效，移除后重启语言服务（`paths` 别名不受影响）。
+6. **版本过旧**：升级 Snake UI 至最新版本后重试。
 
 ## 下一步
 

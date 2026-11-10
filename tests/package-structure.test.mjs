@@ -105,18 +105,30 @@ test('useChildren does not import Vue runtime helpers unavailable in mini-progra
 });
 
 test('type declarations have one authoritative component entry', async () => {
-    const [entry, types, components, uniApp] = await Promise.all([
-        read('index.d.ts'),
+    const [entry, types, uniApp, manifestRaw] = await Promise.all([
+        read('index.ts'),
         read('types/index.d.ts'),
-        read('types/components.d.ts'),
-        read('types/uni-app.d.ts')
+        read('types/uni-app.d.ts'),
+        read('package.json')
     ]);
-    assert.match(entry, /export \* from '.\/types'/);
-    assert.match(types, /export \* from '.\/components'/);
-    assert.match(components, /export const SnakeButton:/);
-    assert.match(components, /export const SnakeNavbar:/);
+    const manifest = JSON.parse(manifestRaw);
+    // 源码即声明：入口不再维护 index.d.ts，也不声明独立 types 入口
+    assert.equal(manifest.types, undefined);
+    assert.equal(manifest.exports['.'].types, undefined);
+    assert.equal(manifest.files.includes('index.d.ts'), false);
+    // 组件类型经入口源码转发，是唯一的权威出口
+    assert.match(entry, /export \* from '\.\/components\/snake-button\/types'/);
+    assert.match(entry, /export \* from '\.\/components\/snake-navbar\/types'/);
+    // 环境声明随入口源码加载；声明文件里不得重复声明（重复会导致接口合并冲突）
+    assert.match(entry, /import type \{ SnakeGlobalAPI \} from '\.\/types\/uni-app';/);
+    assert.match(entry, /interface Uni\s*\{\s*\$snake: SnakeGlobalAPI;/);
+    assert.match(
+        entry,
+        /interface ComponentCustomProperties\s*\{\s*\$snake: SnakeGlobalAPI;\s*\$themeStyle: Readonly<Record<string, string>>;/
+    );
+    assert.doesNotMatch(uniApp, /declare global/);
     assert.match(uniApp, /export interface SnakeGlobalAPI extends FoundationAPI/);
-    assert.match(uniApp, /\$snake: SnakeGlobalAPI/);
+    assert.match(types, /export \* from '.\/components'/);
 });
 
 test('package exports and published files cover documented entry points', async () => {

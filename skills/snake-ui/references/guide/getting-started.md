@@ -73,6 +73,8 @@ export function createApp() {
 }
 ```
 
+npm 安装如需模板标签的 Volar 类型提示，按[配置 · Volar 类型提示](/components/setting#_4-volar-类型提示)在 tsconfig 中加入类型入口。
+
 ## 5. 渲染第一个组件
 
 在任意页面加入按钮，用一次交互同时验证组件解析、主题样式和插件注册：

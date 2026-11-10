@@ -1,5 +1,23 @@
 import type { App } from 'vue';
 import { configureRuntime, installUIFoundation, runtimeOptionsKey, snake, type RuntimeOptions } from './libs';
+import type { SnakeGlobalAPI } from './types/uni-app';
+
+/**
+ * 全局属性类型声明放在入口源码里（源码即声明）：宿主只要 `import ... from '@puresnake/snake-ui'`，
+ * uni.$snake 与模板 $snake / $themeStyle 的类型即在宿主程序中生效，无需额外接线。
+ */
+declare global {
+    interface Uni {
+        $snake: SnakeGlobalAPI;
+    }
+}
+
+declare module '@vue/runtime-core' {
+    interface ComponentCustomProperties {
+        $snake: SnakeGlobalAPI;
+        $themeStyle: Readonly<Record<string, string>>;
+    }
+}
 
 const SnakeUI = {
     install(app: App, options: RuntimeOptions = {}): void {
