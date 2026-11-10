@@ -36,6 +36,7 @@
         "build:quickapp-webview": "uni build -p quickapp-webview",
         "build:quickapp-webview-huawei": "uni build -p quickapp-webview-huawei",
         "build:quickapp-webview-union": "uni build -p quickapp-webview-union",
+        "build:plugins": "node scripts/build-plugins.mjs",
         "type-check": "vue-tsc --noEmit",
         "prepare": "husky",
         "commit": "git-cz",

@@ -30,3 +30,10 @@ dist
 
 # Local agent settings
 .claude
+
+# 放行 plugins 编译产物（需提交到 git，CI 发布时直接打包，不装依赖）
+!src/uni_modules/snake-ui/plugins/index.mjs
+!src/uni_modules/snake-ui/plugins/index.cjs
+!src/uni_modules/snake-ui/plugins/root/dist/
+!src/uni_modules/snake-ui/plugins/root/dist/**/*.mjs
+!src/uni_modules/snake-ui/plugins/root/dist/**/*.cjs

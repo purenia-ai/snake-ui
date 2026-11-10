@@ -1,0 +1,115 @@
+/**
+ * 编译 vite 插件源码：src/uni_modules/snake-ui/plugins/root/*.ts -> root/dist/*.{mjs,cjs}
+ *
+ * 为什么需要：`plugins` 入口是给 Node 加载的——消费端在 `vite.config.ts` 里
+ * `import { UniRoot } from '@puresnake/snake-ui/plugins'`，而 vite 打包配置时会把裸包名外部化，
+ * 运行期交给 Node。Node 不转译 `node_modules` 里的 .ts（ERR_UNSUPPORTED_NODE_MODULES_TYPE_STRIPPING），
+ * 所以必须随包发布 ESM / CJS 双份 JS，由 package.json 的 exports 条件分别指向；`types` 仍指向源码。
+ *
+ * 产物（与 uview-pro 的 plugins 布局一致，随包提交，发布时无需再装依赖）：
+ *   plugins/index.mjs / index.cjs     —— 两个再导出入口
+ *   plugins/root/dist/*.mjs / *.cjs   —— 编译后的实现
+ *
+ * 用法：pnpm build:plugins（改了 plugins/ 下的源码后必须重跑，否则发出去的是旧插件）
+ */
+import fs from 'node:fs';
+import path from 'node:path';
+import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
+
+const require = createRequire(import.meta.url);
+
+const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
+const pluginsDir = path.join(root, 'src/uni_modules/snake-ui/plugins');
+const sourceDir = path.join(pluginsDir, 'root');
+const outDir = path.join(sourceDir, 'dist');
+
+/**
+ * esbuild 在本仓库只是 vite 的间接依赖，pnpm 隔离布局下顶层 require 取不到，
+ * 所以回落到 node_modules/.pnpm 里挑版本最高的一个。
+ */
+function resolveEsbuild() {
+    try {
+        return require('esbuild');
+    } catch {
+        const store = path.join(root, 'node_modules/.pnpm');
+        const candidates = fs.existsSync(store)
+            ? fs
+                  .readdirSync(store)
+                  .filter(name => name.startsWith('esbuild@'))
+                  .sort()
+                  .reverse()
+            : [];
+        for (const name of candidates) {
+            try {
+                return require(path.join(store, name, 'node_modules/esbuild'));
+            } catch {
+                // 该版本不可用就试下一个
+            }
+        }
+        throw new Error('找不到 esbuild，请先在本仓库执行 pnpm install');
+    }
+}
+
+function listSourceFiles(dir) {
+    return fs.readdirSync(dir, { withFileTypes: true }).flatMap(entry => {
+        const full = path.join(dir, entry.name);
+        if (entry.isDirectory()) return listSourceFiles(full);
+        if (entry.isFile() && entry.name.endsWith('.ts') && !entry.name.endsWith('.d.ts')) return [full];
+        return [];
+    });
+}
+
+/**
+ * esbuild 只做转译（不打包），相对说明符原样保留、不带扩展名；
+ * Node ESM 要求显式扩展名，这里统一补齐（已带扩展名的跳过）。
+ */
+function fillExtensions(dir, ext) {
+    for (const name of fs.readdirSync(dir)) {
+        if (!name.endsWith(ext)) continue;
+        const file = path.join(dir, name);
+        const before = fs.readFileSync(file, 'utf8');
+        const after = before.replace(/(from\s+|require\s*\(\s*)(['"])(\.\/[^'"]*?)\2/g, (match, lead, quote, spec) =>
+            spec.endsWith(ext) ? match : `${lead}${quote}${spec}${ext}${quote}`
+        );
+        if (after !== before) fs.writeFileSync(file, after);
+    }
+}
+
+const esbuild = resolveEsbuild();
+const entryPoints = listSourceFiles(sourceDir);
+
+if (entryPoints.length === 0) {
+    console.error(`[build-plugins] 没有找到插件源码：${sourceDir}`);
+    process.exit(1);
+}
+
+fs.rmSync(outDir, { recursive: true, force: true });
+
+for (const [format, ext] of [
+    ['esm', '.mjs'],
+    ['cjs', '.cjs']
+]) {
+    await esbuild.build({
+        entryPoints,
+        outdir: outDir,
+        outExtension: { '.js': ext },
+        format,
+        platform: 'node',
+        target: 'node18',
+        logLevel: 'warning'
+    });
+    fillExtensions(outDir, ext);
+}
+
+fs.writeFileSync(path.join(pluginsDir, 'index.mjs'), "export * from './root/dist/index.mjs';\n");
+fs.writeFileSync(path.join(pluginsDir, 'index.cjs'), "module.exports = require('./root/dist/index.cjs');\n");
+
+const outputs = fs
+    .readdirSync(outDir)
+    .sort()
+    .map(name => `plugins/root/dist/${name}  ${fs.statSync(path.join(outDir, name)).size}B`);
+
+console.log(`[build-plugins] 已生成 ${outputs.length + 2} 个文件：`);
+console.log('  plugins/index.mjs  plugins/index.cjs');
+for (const line of outputs) console.log(`  ${line}`);

@@ -7,7 +7,7 @@ import { registerRootApp, rebuildRootApp } from './root';
 import { transformPage } from './page';
 import { loadPagesJson, normalizePlatformPath, debounce } from './utils';
 
-interface RootOptions {
+interface UniRootOptions {
     /** 根组件文件名（不含扩展名），默认 App.root */
     rootFileName?: string;
 }
@@ -38,8 +38,8 @@ function normalizeId(id: string) {
  * 纯 Vite 构建时插件，在所有 UniApp 支持的平台（H5、微信小程序、支付宝小程序、
  * 头条小程序、Android App、iOS App、鸿蒙 App）均可正常工作
  */
-export function Root(options?: RootOptions): Plugin {
-    const resolvedOptions: Required<RootOptions> = {
+export function UniRoot(options?: UniRootOptions): Plugin {
+    const resolvedOptions: Required<UniRootOptions> = {
         rootFileName: 'App.root',
         ...options
     };
@@ -119,5 +119,5 @@ export function Root(options?: RootOptions): Plugin {
     };
 }
 
-export default Root;
-export type { RootOptions };
+export default UniRoot;
+export type { UniRootOptions };

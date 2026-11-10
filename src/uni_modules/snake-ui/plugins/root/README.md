@@ -19,11 +19,11 @@ App.root.vue(源码)        → 在 main.ts 中导入并注册为全局组件 gl
 三步实现:
 
 1. **main.ts 注入**(`root.ts -> registerRootApp`)
-   - 注入 `import GlobalRootView from "./App.root.vue"` 与 `app.component("global-root-view", GlobalRootView)`
+    - 注入 `import GlobalRootView from "./App.root.vue"` 与 `app.component("global-root-view", GlobalRootView)`
 2. **页面模板包裹**(`page.ts -> transformPage`)
-   - 解析 SFC,提取 PageMeta 节点(如有则放到包裹层外部),模板内容包裹 `<global-root-view>`
+    - 解析 SFC,提取 PageMeta 节点(如有则放到包裹层外部),模板内容包裹 `<global-root-view>`
 3. **App.root.vue 加载**(`index.ts -> load`)
-   - 拦截 `App.root.vue` 的模块请求,从文件读取并返回;模板中的 `<slot />` 接收页面内容
+    - 拦截 `App.root.vue` 的模块请求,从文件读取并返回;模板中的 `<slot />` 接收页面内容
 
 ## 使用方式
 
@@ -46,10 +46,10 @@ import ConfigProvider from './uni_modules/snake-ui/components/snake-config-provi
 ### 2. 配置 vite.config.ts
 
 ```ts
-import { Root } from './src/uni_modules/snake-ui/plugins';
+import { UniRoot } from './src/uni_modules/snake-ui/plugins';
 
 export default defineConfig({
-    plugins: [Root(), uni()]
+    plugins: [UniRoot(), uni()]
 });
 ```
 
@@ -60,7 +60,7 @@ export default defineConfig({
 ## 配置项
 
 ```ts
-Root({
+UniRoot({
     rootFileName: 'App.root' // 根组件文件名(不含扩展名),默认 App.root
 });
 ```
