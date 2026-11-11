@@ -1,4 +1,3 @@
-/// <reference path="./uni_modules/snake-ui/global.d.ts" />
 import { createSSRApp } from 'vue';
 import App from './App.vue';
 import SnakeUI from './uni_modules/snake-ui';
