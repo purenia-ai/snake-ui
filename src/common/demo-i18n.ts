@@ -625,6 +625,8 @@ const englishMessages: Record<string, string> = {
 Object.assign(englishMessages, {
     '按钮用于触发即时操作，支持主题、朴素、禁用和加载状态。':
         'Buttons trigger actions and support variants, plain, disabled and loading states.',
+    自定义颜色: 'Custom color',
+    自定义背景色: 'Custom background',
     '统一展示按钮、图片和列表中的加载状态。': 'Provides consistent loading feedback for buttons, images and lists.',
     '为浮层和内容切换提供一致的跨端进出场动画。': 'Provides consistent cross-platform enter and leave transitions.',
     '在没有数据时提供清晰的占位和下一步提示。': 'Shows a clear placeholder and next step when no data is available.',
@@ -1102,6 +1104,65 @@ Object.assign(englishMessages, {
     '导航栏贴在页面底部，一级页面之间用它切换': 'The bar sits at the page bottom and switches top-level pages',
     '禁用项不触发事件；原生 tabBar 页面会自动隐藏系统导航':
         'Disabled items ignore taps; native tabBar pages hide the system bar automatically'
+});
+
+Object.assign(englishMessages, {
+    禁用时组件不渲染任何内容: 'A disabled upload renders nothing',
+    添加示例文件: 'Add sample files',
+    '点击格子右上角删除会弹出确认框，点击已上传内容可以预览。':
+        'Tapping the top-right corner deletes after a confirm dialog; tapping uploaded content previews it.',
+    校验与拦截: 'Validation and guards',
+    '入队时校验类型、大小和数量，不合规的文件会被拒绝并提示。':
+        'Type, size and count are checked on enqueue; rejected files never enter the list.',
+    拦截选择: 'Block choosing',
+    拦截预览: 'Block preview',
+    '选择入口已交给业务接管（custom-choose），点中间的加号不会打开系统选择器。':
+        'Choosing is delegated to your code (custom-choose), so the plus tile never opens the system picker.',
+    手动上传与取消: 'Manual upload and cancel',
+    '关闭自动上传后由业务控制上传时机，失败项可以重试，进行中的上传可以取消。':
+        'With auto upload off your code controls the timing; failed items can retry and running uploads can be cancelled.',
+    取消上传: 'Cancel upload',
+    全部重试: 'Retry all',
+    自定义按钮与列表: 'Custom button and list',
+    '选择入口和文件列表都可以换成业务自己的实现。':
+        'Both the picker entry and the file list can be replaced with your own implementation.',
+    总数: 'Total',
+    上传中: 'Uploading',
+    失败: 'Failed',
+    上传成功: 'Upload succeeded',
+    上传失败: 'Upload failed',
+    移除文件: 'File removed',
+    预览文件: 'File previewed',
+    全部上传完成: 'All uploads finished',
+    上传已取消: 'Upload cancelled',
+    超出大小限制: 'Over the size limit',
+    超出数量限制: 'Over the count limit',
+    选择完成: 'Choosing finished',
+    选择已拦截: 'Choose blocked',
+    预览已拦截: 'Preview blocked',
+    正常: 'Normal',
+    慢速: 'Slow',
+    显示进度: 'Show progress',
+    可删除: 'Deletable',
+    禁用组件: 'Disable component',
+    留空则按文件类别自动生成: 'Leave empty to use the default for the file type',
+    合规图片: 'Valid image',
+    '8 MB 图片': '8 MB image',
+    'PDF 文件': 'PDF file',
+    '一次 4 张': 'Add 4 at once',
+    '合规图片已入队，等待手动上传': 'The valid image joined the queue and waits for a manual upload',
+    '超过 2 MB 的文件不会入队，并触发 on-oversize': 'Files above 2 MB never enter the queue; on-oversize fires instead',
+    '不在 limit-type 里的后缀会被跳过，并 toast 提示': 'Extensions outside limit-type are skipped with a toast',
+    '超出 max-count 的部分触发 on-exceed': 'Items past max-count fire on-exceed',
+    '已通过 on-choose 加入 1 张示例图片': 'Added one sample image through on-choose',
+    已拦截本次选择: 'This choose was blocked',
+    已拦截本次预览: 'This preview was blocked',
+    '添加示例文件后点「开始上传」，成功后进度条消失':
+        'Add sample files, then start the upload; the progress bar clears on success',
+    '失败的文件会停在格子上，切回「正常」后点格子里的重试即可成功':
+        'Failed files stay on the tile; switch back to Normal and retry from the tile',
+    '慢速模式便于观察进度条，点「取消上传」可让进度归零并回到待上传':
+        'Slow mode makes the progress bar visible; cancel resets it back to the ready state'
 });
 
 export function demoText(value: string): string {
