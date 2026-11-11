@@ -1,5 +1,21 @@
 # 更新日志
 
+## [0.0.20](https://github.com/purenia-ai/snake-ui/compare/v0.0.19...v0.0.20)（2026-11-11）
+
+### 🐛 Bug Fixes | Bug 修复
+
+- **snake-button:** `customStyle` 指定背景色时追加 `snake-button--filled`，细边框置透明、边框区露出自身底色，消除自定义深色底上多出的一条异色描边（`hairLine` 的 `::after` 取 `currentColor`，会跟随 `customStyle.color` 变白）
+- **plugins:** root 插件的 JSONC 注释剥离改为字符串感知扫描，`https://…` 这类字符串内容不再被当作注释截断，修复 `pages.json` 启动解析崩溃
+- **types:** 新增 `global.d.ts` 声明全部组件的 `GlobalComponents` 类型增强，volar 3.x 编辑器不再把组件退化为 `any`
+
+### ⚙️ Changes | 变更
+
+- **types（行为变更）:** 入口类型收编为源码即声明：删除 `index.d.ts`，ambient 声明并入 `index.ts`；`package.json` 移除 `types` 字段，类型改由源码解析
+
+### ✏️ Documentation | 文档
+
+- **upload:** 示例页重写，覆盖校验拦截、手动上传与取消、自定义按钮与列表等场景，i18n 同步补齐英文词条
+
 ## [0.0.19](https://github.com/purenia-ai/snake-ui/compare/v0.0.18...v0.0.19)（2026-11-10）
 
 ### 🐛 Bug Fixes | Bug 修复
