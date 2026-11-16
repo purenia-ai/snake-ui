@@ -36,6 +36,7 @@ const componentDescriptions: Partial<Record<ComponentItem['link'], string>> = {
     '/components/calendar': '选择单日、日期范围或多日期并处理可选边界。',
     '/components/icon': '使用内置图标字库或自定义图标前缀展示语义图标。',
     '/components/image': '加载、裁剪和预览图片，并提供加载失败兜底。',
+    '/components/skeleton': '在首次加载时用结构占位替代内容，避免列表与详情页闪白。',
     '/components/rich-text': '渲染后台编辑的 HTML 正文，补齐图片预览、链接、表格与音视频交互。',
     '/components/qr-code': '把文本或链接渲染为可扫描的二维码，支持中心 Logo 与导出图片。',
     '/components/tooltip': '在目标元素附近展示轻量提示内容和操作说明。',
@@ -49,6 +50,7 @@ const componentDescriptions: Partial<Record<ComponentItem['link'], string>> = {
 };
 
 const componentKeywords: Partial<Record<ComponentItem['link'], string[]>> = {
+    '/components/skeleton': ['骨架屏', '占位', '加载中', '首屏', 'shimmer', 'pulse'],
     '/components/rich-text': ['富文本', 'HTML', '正文', '文章详情', 'mp-html', 'parse'],
     '/components/popup': ['弹窗', '抽屉', '底部面板', 'dialog', 'sheet'],
     '/components/upload': ['文件', '图片上传', '视频上传', 'OSS', '选择文件'],
