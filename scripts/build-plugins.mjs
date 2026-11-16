@@ -72,10 +72,10 @@ function fillExtensions(dir, ext, format) {
     const patterns =
         format === 'esm'
             ? [
-                  /^([ \t]*(?:import|export)\b[^'"]*?\bfrom[ \t]*)(['"])(\.\/[^'"\/.]+)\2/gm,
-                  /^([ \t]*import[ \t]*)(['"])(\.\/[^'"\/.]+)\2/gm
+                  /^([ \t]*(?:import|export)\b[^'"]*?\bfrom[ \t]*)(['"])(\.\/[^'"/.]+)\2/gm,
+                  /^([ \t]*import[ \t]*)(['"])(\.\/[^'"/.]+)\2/gm
               ]
-            : [/(\brequire\(\s*)(['"])(\.\/[^'"\/.]+)\2/g];
+            : [/(\brequire\(\s*)(['"])(\.\/[^'"/.]+)\2/g];
 
     for (const name of fs.readdirSync(dir)) {
         if (!name.endsWith(ext)) continue;
@@ -102,7 +102,9 @@ function assertVueImportIntact(dir, ext) {
         const file = path.join(dir, name);
         const code = fs.readFileSync(file, 'utf8');
         if (code.includes(`.vue.${ext.slice(1)}`)) {
-            throw new Error(`${path.join('plugins/root/dist', name)} 里的 App.root.vue 注入字符串被误改成 .vue.${ext.slice(1)}`);
+            throw new Error(
+                `${path.join('plugins/root/dist', name)} 里的 App.root.vue 注入字符串被误改成 .vue.${ext.slice(1)}`
+            );
         }
         if (name === `root${ext}` && !code.includes('"./${fileName}.vue"')) {
             throw new Error(`${path.join('plugins/root/dist', name)} 里找不到预期的 "./\${fileName}.vue" 注入字符串`);

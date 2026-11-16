@@ -27,7 +27,13 @@ preview: /pages/componentsA/transition/index
 `duration` 可传对象，为进入和离开设置不同节奏；通过生命周期事件衔接数据准备或资源清理。
 
 ```vue
-<snake-transition :show="visible" name="slide-up" :duration="{ enter: 220, leave: 160 }" @after-enter="loadPanelData" @after-leave="resetPanel">
+<snake-transition
+    :show="visible"
+    name="slide-up"
+    :duration="{ enter: 220, leave: 160 }"
+    @after-enter="loadPanelData"
+    @after-leave="resetPanel"
+>
   <view class="sheet">内容</view>
 </snake-transition>
 ```

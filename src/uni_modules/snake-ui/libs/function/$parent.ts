@@ -11,10 +11,7 @@ export interface ParentLike {
     type?: { name?: string };
 }
 
-export function $parent(
-    componentName?: string,
-    instance?: ParentLike | null
-): ParentLike | null | undefined {
+export function $parent(componentName?: string, instance?: ParentLike | null): ParentLike | null | undefined {
     let parent = instance?.parent ?? null;
 
     if (!componentName) return parent;

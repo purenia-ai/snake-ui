@@ -37,7 +37,19 @@ test('runtime source and package metadata stay independent from the legacy peer 
 });
 
 test('all replacement primitives are public components resolved via easycom', async () => {
-    const names = ['button', 'empty', 'icon', 'image', 'loadmore', 'notice-bar', 'overlay', 'popup', 'sticky', 'swiper', 'tabs'];
+    const names = [
+        'button',
+        'empty',
+        'icon',
+        'image',
+        'loadmore',
+        'notice-bar',
+        'overlay',
+        'popup',
+        'sticky',
+        'swiper',
+        'tabs'
+    ];
     const entry = await readFile(resolve(root, 'src/uni_modules/snake-ui/index.ts'), 'utf8');
     const pagesJson = await readFile(resolve(root, 'src/pages.json'), 'utf8');
 
@@ -48,6 +60,10 @@ test('all replacement primitives are public components resolved via easycom', as
     for (const name of names) {
         const file = resolve(root, `src/uni_modules/snake-ui/components/snake-${name}/snake-${name}.vue`);
         assert.ok((await readFile(file, 'utf8')).includes('<template>'), `missing template: snake-${name}`);
-        assert.match(entry, new RegExp(`export \\* from './components/snake-${name}/types'`), `snake-${name}: missing type export`);
+        assert.match(
+            entry,
+            new RegExp(`export \\* from './components/snake-${name}/types'`),
+            `snake-${name}: missing type export`
+        );
     }
 });

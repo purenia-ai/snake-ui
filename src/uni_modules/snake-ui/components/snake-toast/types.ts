@@ -10,7 +10,10 @@ export type ToastPosition = 'center' | 'top' | 'bottom';
 /** toastProps 运行时属性及默认值。 */
 export const toastProps = {
     /** 根节点自定义样式。 */
-    customStyle: { type: [String, Object, Array] as PropType<string | Record<string, any> | unknown[]>, default: () => ({}) },
+    customStyle: {
+        type: [String, Object, Array] as PropType<string | Record<string, any> | unknown[]>,
+        default: () => ({})
+    },
     /** 根节点自定义类名。 */
     customClass: { type: String, default: '' },
     /** 层级 z-index。 */

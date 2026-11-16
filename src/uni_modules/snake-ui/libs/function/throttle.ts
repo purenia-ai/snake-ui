@@ -7,7 +7,10 @@ import type { CancelableFunction } from './debounce';
  * @param wait 节流窗口，单位 ms，默认 300
  * @returns 带 cancel() 的包装函数；cancel 同时重置计时基准
  */
-export function throttle<Args extends unknown[]>(callback: (...args: Args) => void, wait = 300): CancelableFunction<Args> {
+export function throttle<Args extends unknown[]>(
+    callback: (...args: Args) => void,
+    wait = 300
+): CancelableFunction<Args> {
     let lastCall = 0;
     let timer: ReturnType<typeof setTimeout> | undefined;
     const wrapped = ((...args: Args) => {

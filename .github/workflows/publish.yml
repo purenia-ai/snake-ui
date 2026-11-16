@@ -1,57 +1,57 @@
 name: Publish npm package
 
 on:
-  push:
-    tags:
-      - 'v*'
-  workflow_dispatch:
-    inputs:
-      ref:
-        description: '分支 / 标签 / commit SHA'
-        required: true
-        default: 'main'
-      npm_tag:
-        description: 'npm dist-tag：正式版 latest，预发布填 next / rc'
-        required: false
-        default: 'latest'
+    push:
+        tags:
+            - 'v*'
+    workflow_dispatch:
+        inputs:
+            ref:
+                description: '分支 / 标签 / commit SHA'
+                required: true
+                default: 'main'
+            npm_tag:
+                description: 'npm dist-tag：正式版 latest，预发布填 next / rc'
+                required: false
+                default: 'latest'
 
 # 同一 tag 重复触发时取消旧 run
 concurrency:
-  group: publish-${{ github.ref }}
-  cancel-in-progress: true
+    group: publish-${{ github.ref }}
+    cancel-in-progress: true
 
 jobs:
-  publish:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write # npm trusted publishing（OIDC）：免 token 免 OTP，身份由 GitHub 签发
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          ref: ${{ github.event.inputs.ref || github.ref }}
-          fetch-depth: 0
+    publish:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            id-token: write # npm trusted publishing（OIDC）：免 token 免 OTP，身份由 GitHub 签发
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v6
+              with:
+                  ref: ${{ github.event.inputs.ref || github.ref }}
+                  fetch-depth: 0
 
-      - name: Setup Node
-        uses: actions/setup-node@v6
-        with:
-          node-version: 24 # npm ≥ 11.5，trusted publishing 所需
-          registry-url: 'https://registry.npmjs.org'
+            - name: Setup Node
+              uses: actions/setup-node@v6
+              with:
+                  node-version: 24 # npm ≥ 11.5，trusted publishing 所需
+                  registry-url: 'https://registry.npmjs.org'
 
-      # 纯源码包（无 scripts），无需安装依赖；仅校验 tag 与包版本一致，防止错发
-      - name: 校验 tag 与包版本一致
-        if: github.event_name == 'push'
-        working-directory: src/uni_modules/snake-ui
-        run: |
-          TAG_VERSION="${GITHUB_REF_NAME#v}"
-          PKG_VERSION=$(node -p "require('./package.json').version")
-          if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
-            echo "tag ${GITHUB_REF_NAME} 与 package.json 版本 ${PKG_VERSION} 不一致，终止发布" >&2
-            exit 1
-          fi
+            # 纯源码包（无 scripts），无需安装依赖；仅校验 tag 与包版本一致，防止错发
+            - name: 校验 tag 与包版本一致
+              if: github.event_name == 'push'
+              working-directory: src/uni_modules/snake-ui
+              run: |
+                  TAG_VERSION="${GITHUB_REF_NAME#v}"
+                  PKG_VERSION=$(node -p "require('./package.json').version")
+                  if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
+                    echo "tag ${GITHUB_REF_NAME} 与 package.json 版本 ${PKG_VERSION} 不一致，终止发布" >&2
+                    exit 1
+                  fi
 
-      - name: Publish (trusted publishing / OIDC)
-        working-directory: src/uni_modules/snake-ui
-        # 无需 npm token：npm 验证 GitHub Actions 的 OIDC 身份（包设置里登记的 Trusted Publisher）
-        run: npm publish --provenance --access public --tag ${{ github.event.inputs.npm_tag || 'latest' }}
+            - name: Publish (trusted publishing / OIDC)
+              working-directory: src/uni_modules/snake-ui
+              # 无需 npm token：npm 验证 GitHub Actions 的 OIDC 身份（包设置里登记的 Trusted Publisher）
+              run: npm publish --provenance --access public --tag ${{ github.event.inputs.npm_tag || 'latest' }}

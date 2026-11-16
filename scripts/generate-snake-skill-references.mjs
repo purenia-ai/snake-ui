@@ -81,9 +81,7 @@ async function findMarkdownFiles(directory) {
         })
     );
 
-    return files
-        .flat()
-        .sort((left, right) => left.localeCompare(right, 'en'));
+    return files.flat().sort((left, right) => left.localeCompare(right, 'en'));
 }
 
 async function generateLlmsFull() {
@@ -119,12 +117,7 @@ for (const category of categories) {
     generated.set(category, await generateCategory(category));
 }
 
-const index = [
-    '# Snake UI References',
-    '',
-    '此目录由 `pnpm skill:sync` 根据 `docs/` 自动生成，请不要直接编辑。',
-    ''
-];
+const index = ['# Snake UI References', '', '此目录由 `pnpm skill:sync` 根据 `docs/` 自动生成，请不要直接编辑。', ''];
 
 for (const category of categories) {
     index.push(`## ${category}`);

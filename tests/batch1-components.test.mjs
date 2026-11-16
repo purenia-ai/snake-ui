@@ -145,10 +145,7 @@ test('snake-grid 契约：宽度按列等分，外框与内线分别绘制', asy
 test('snake-swipe-action 契约：越界重锚、同组互斥走模块登记、插槽按钮实测宽度', async () => {
     const source = await read('snake-swipe-action', 'snake-swipe-action.vue');
     const types = await read('snake-swipe-action', 'types.ts');
-    const registry = await readFile(
-        resolve(root, 'snake-swipe-action/registry.ts'),
-        'utf8'
-    );
+    const registry = await readFile(resolve(root, 'snake-swipe-action/registry.ts'), 'utf8');
     const touch = await readFile(
         resolve(import.meta.dirname, '../src/uni_modules/snake-ui/libs/hooks/useTouch.ts'),
         'utf8'

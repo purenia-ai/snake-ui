@@ -106,9 +106,7 @@ export function translate(
     replacements?: Record<string, unknown> | unknown[],
     localeName?: string
 ): string {
-    const selected = localeName
-        ? locales.value.find(locale => locale.name === localeName)
-        : currentLocale.value;
+    const selected = localeName ? locales.value.find(locale => locale.name === localeName) : currentLocale.value;
     const fallback = locales.value.find(locale => locale.name === 'zh-CN');
     let result = readMessage(selected, key) || readMessage(fallback, key) || key;
     if (Array.isArray(replacements)) {

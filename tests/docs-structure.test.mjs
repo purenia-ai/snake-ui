@@ -96,7 +96,10 @@ test('top navigation keeps quick start first within the guide domain', async () 
     assert.equal((config.match(/items: \[/g) || []).length >= 8, true, 'top navigation provides dropdown items');
     assert.ok(config.includes("'/cms/': cmsSidebar"));
     assert.ok(config.includes("'/tools/': toolGroups"));
-    assert.match(config, /socialLinks:\s*\[\{ icon: 'github', link: 'https:\/\/github\.com\/purenia-ai\/snake-ui' \}\]/);
+    assert.match(
+        config,
+        /socialLinks:\s*\[\{ icon: 'github', link: 'https:\/\/github\.com\/purenia-ai\/snake-ui' \}\]/
+    );
     assert.ok(!config.includes("text: '工具', link: '/guide/tools'"));
 });
 
@@ -171,7 +174,12 @@ test('CMS documentation presents one current protocol without version navigation
     assert.match(start, /component: 'v2\./);
     assert.match(start, /props: \{/);
 
-    for (const path of ['docs/cms/legacy/overview.md', 'docs/cms/legacy/components.md', 'docs/cms/component-data.md', 'docs/cms/components.md']) {
+    for (const path of [
+        'docs/cms/legacy/overview.md',
+        'docs/cms/legacy/components.md',
+        'docs/cms/component-data.md',
+        'docs/cms/components.md'
+    ]) {
         await assert.rejects(access(resolve(root, path)), { code: 'ENOENT' });
     }
 });
@@ -229,7 +237,9 @@ test('tool registry covers every documented public utility and composable', asyn
     const functionFiles = await readdir(resolve(root, 'src/uni_modules/snake-ui/libs/function'));
     const sources = (
         await Promise.all([
-            ...functionFiles.filter(file => file.endsWith('.ts')).map(file => text(`src/uni_modules/snake-ui/libs/function/${file}`)),
+            ...functionFiles
+                .filter(file => file.endsWith('.ts'))
+                .map(file => text(`src/uni_modules/snake-ui/libs/function/${file}`)),
             text('src/uni_modules/snake-ui/libs/hooks/index.ts'),
             text('src/uni_modules/snake-ui/libs/request/index.ts')
         ])

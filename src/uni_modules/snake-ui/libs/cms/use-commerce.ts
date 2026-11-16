@@ -15,7 +15,9 @@ export interface CmsCommerceControllerOptions {
 
 function valuesToQuery(input: unknown): Dictionary {
     if (!input || typeof input !== 'object') return {};
-    return Object.fromEntries(Object.entries(input as Dictionary).map(([key, value]) => [key, Array.isArray(value) ? value.join(',') : value]));
+    return Object.fromEntries(
+        Object.entries(input as Dictionary).map(([key, value]) => [key, Array.isArray(value) ? value.join(',') : value])
+    );
 }
 
 export function useCmsCommerce(input: CmsCommerceControllerOptions) {
@@ -178,7 +180,9 @@ export function useCmsCommerce(input: CmsCommerceControllerOptions) {
         if (currentGeneration !== generation) return;
         const items = result.items || [];
         // “全部”是基于首个活动构造的前端虚拟项，id=001 不对应真实活动，请求时会转换为空 activityId。
-        const all = items.length ? [{ ...items[0], id: '001', squareImage: input.options().assets?.activityAll }, ...items] : [];
+        const all = items.length
+            ? [{ ...items[0], id: '001', squareImage: input.options().assets?.activityAll }, ...items]
+            : [];
         activityList.value = all;
         auctionSetParams.value = all[0] || {};
         const requested = input.pageInfo().activityId;
@@ -245,7 +249,10 @@ export function useCmsCommerce(input: CmsCommerceControllerOptions) {
     }
 
     function fail(stage: CmsError['stage'], cause: unknown): void {
-        const error = cause instanceof CmsError ? cause : new CmsError(stage, cause instanceof Error ? cause.message : String(cause), cause);
+        const error =
+            cause instanceof CmsError
+                ? cause
+                : new CmsError(stage, cause instanceof Error ? cause.message : String(cause), cause);
         setStatus('error');
         input.onError?.(error);
     }
@@ -334,7 +341,9 @@ export function useCmsCommerce(input: CmsCommerceControllerOptions) {
         filterParams.value = {};
         tabsParams.value = item.paramType
             ? { [item.paramType]: item.value }
-            : Object.fromEntries((item.customList || []).map((entry: Dictionary) => [entry.customLabel, entry.customValue]));
+            : Object.fromEntries(
+                  (item.customList || []).map((entry: Dictionary) => [entry.customLabel, entry.customValue])
+              );
         await refresh();
     }
 

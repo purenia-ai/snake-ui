@@ -44,7 +44,9 @@ const findVNodeIndex = (vnodes: VNode[], vnode: VNode) => {
     const index = vnodes.indexOf(vnode);
     if (index === -1) {
         // 异步渲染等场景下 vnode 引用可能已变化；带 key 时退回 type + key 匹配以保持模板顺序。
-        return vnodes.findIndex(item => vnode.key !== undefined && vnode.key !== null && item.type === vnode.type && item.key === vnode.key);
+        return vnodes.findIndex(
+            item => vnode.key !== undefined && vnode.key !== null && item.type === vnode.type && item.key === vnode.key
+        );
     }
     return index;
 };

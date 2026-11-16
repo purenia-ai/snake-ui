@@ -118,12 +118,12 @@ function changeLocale(locale: 'zh-CN' | 'en-US') {
 
 ## API 摘要
 
-| API | 作用 |
-| --- | --- |
-| `setLocale(name)` | 切换并持久化已注册语言，返回是否成功 |
-| `translate(key, replacements?, localeName?)` | 翻译词条并执行参数替换 |
-| `useLocale(namespace?)` | 获取当前语言、语言列表、`t()` 和切换方法 |
-| `currentLocale` | 当前语言的响应式引用 |
-| `locales` | 已注册语言列表的响应式引用 |
+| API                                          | 作用                                     |
+| -------------------------------------------- | ---------------------------------------- |
+| `setLocale(name)`                            | 切换并持久化已注册语言，返回是否成功     |
+| `translate(key, replacements?, localeName?)` | 翻译词条并执行参数替换                   |
+| `useLocale(namespace?)`                      | 获取当前语言、语言列表、`t()` 和切换方法 |
+| `currentLocale`                              | 当前语言的响应式引用                     |
+| `locales`                                    | 已注册语言列表的响应式引用               |
 
 全局配置入口见[全局配置总览](/guide/foundation)。

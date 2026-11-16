@@ -1,11 +1,4 @@
-import type {
-    FormError,
-    FormRule,
-    FormRules,
-    FormTrigger,
-    FormValidatorCallback,
-    FormValidatorResult
-} from './types';
+import type { FormError, FormRule, FormRules, FormTrigger, FormValidatorCallback, FormValidatorResult } from './types';
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const urlPattern = /^(https?|ftp):\/\/[^\s]+$/i;

@@ -5,7 +5,8 @@ export type SwiperItem = string | Record<string, unknown>;
 /** SwiperIndicatorMode 类型定义。 */
 export type SwiperIndicatorMode = 'round' | 'dot' | 'rect' | 'line' | 'number' | 'none';
 /** SwiperIndicatorPosition 类型定义。 */
-export type SwiperIndicatorPosition = 'topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight';
+export type SwiperIndicatorPosition =
+    'topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight';
 /** Swiper 组件的公开属性。 */
 export interface SwiperProps {
     /** 用于渲染的数据列表。 */

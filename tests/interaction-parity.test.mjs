@@ -19,7 +19,8 @@ test('feedback components expose complete states and interactions', async () => 
     assert.equal((loadmoreSource.match(/<SnakeLine/g) || []).length, 2);
     assert.match(loadmoreSource, /<Loading[\s\S]*size="17"/);
     assert.match(loadmoreSource, /height: props\.height === 'auto' \? 'auto' : addUnit\(props\.height\)/);
-    for (const name of ['autoplay', 'moreIcon', 'closeIcon', 'playState', 'isCircular']) assert.match(notice, new RegExp(`${name}\\?`));
+    for (const name of ['autoplay', 'moreIcon', 'closeIcon', 'playState', 'isCircular'])
+        assert.match(notice, new RegExp(`${name}\\?`));
 });
 
 test('notice bar keeps legacy playback semantics with Snake visibility controls', async () => {
@@ -36,12 +37,21 @@ test('notice bar keeps legacy playback semantics with Snake visibility controls'
     assert.match(source, /@animationend="marqueeEnd"/);
     assert.match(source, /name="volume"/);
     assert.match(source, /snake-notice-bar__marquee-primary">\{\{ marqueeText \}\}<\/view>/);
-    assert.match(source, /const canScroll = computed\(\(\) => marqueeWidth\.value > 0 && contentWidth\.value > marqueeWidth\.value\)/);
-    assert.match(source, /const hasMarqueeDimensions = computed\(\(\) => marqueeWidth\.value > 0 && contentWidth\.value > 0\)/);
+    assert.match(
+        source,
+        /const canScroll = computed\(\(\) => marqueeWidth\.value > 0 && contentWidth\.value > marqueeWidth\.value\)/
+    );
+    assert.match(
+        source,
+        /const hasMarqueeDimensions = computed\(\(\) => marqueeWidth\.value > 0 && contentWidth\.value > 0\)/
+    );
     assert.match(source, /query\.select\('\.snake-notice-bar__marquee-measure'\)\.boundingClientRect\(\)/);
     assert.match(source, /contentWidth\.value = Number\(measureText\?\.width\) \|\| Number\(content\?\.width\) \|\| 0/);
     assert.match(source, /volumeSize: 17/);
-    assert.match(source, /paddingLeft: !props\.isCircular && canScroll\.value \? `\$\{marqueeWidth\.value\}px` : undefined/);
+    assert.match(
+        source,
+        /paddingLeft: !props\.isCircular && canScroll\.value \? `\$\{marqueeWidth\.value\}px` : undefined/
+    );
     assert.match(source, /'is-playing': playing && \(isCircular \? hasMarqueeDimensions : canScroll\)/);
     assert.match(source, /transform: translateX\(var\(--snake-notice-marquee-width\)\)/);
     assert.match(source, /transform: translateX\(calc\(-1 \* var\(--snake-notice-content-width\)\)\)/);
@@ -55,7 +65,8 @@ test('tabs and swiper expose navigation and indicator contracts', async () => {
         read('components/snake-tabs/snake-tabs.vue'),
         read('components/snake-swiper/types.ts')
     ]);
-    for (const name of ['barWidth', 'barHeight', 'gutter', 'isDot', 'showBar', 'itemWidth']) assert.match(tabs, new RegExp(`${name}\\?`));
+    for (const name of ['barWidth', 'barHeight', 'gutter', 'isDot', 'showBar', 'itemWidth'])
+        assert.match(tabs, new RegExp(`${name}\\?`));
     assert.match(tabs, /hidden\?/);
     // disabled 只存在于 TabItem 字段与事件，不是组件级 prop
     assert.match(tabs, /disabled\?: boolean/);
@@ -79,7 +90,8 @@ test('tabs and swiper expose navigation and indicator contracts', async () => {
     assert.equal((tabsSource.match(/class="snake-tabs__bar"/g) || []).length, 1);
     const listSwitching = await read('components/snake-list-switching/snake-list-switching.vue');
     assert.match(listSwitching, /changeTabs\(index\)\s*{\s*this\.active1 = index/);
-    for (const name of ['indicatorPos', 'effect3d', 'animationfinish', 'titleStyle']) assert.match(swiper, new RegExp(name));
+    for (const name of ['indicatorPos', 'effect3d', 'animationfinish', 'titleStyle'])
+        assert.match(swiper, new RegExp(name));
 });
 
 test('countdown clears timers on unmount and exposes explicit destroy', async () => {
@@ -115,7 +127,8 @@ test('tabs follow legacy interaction scope while subsection keeps keyboard navig
     ]);
     for (const marker of ['role="tablist"', 'role="tab"', 'aria-selected', '@keydown.left', '@keydown.right'])
         assert.doesNotMatch(tabs, new RegExp(marker.replace('.', '\\.')));
-    for (const marker of [/role="tablist"/, /role="tab"/, /aria-selected/, /@keydown\.left/, /@keydown\.right/]) assert.match(subsection, marker);
+    for (const marker of [/role="tablist"/, /role="tab"/, /aria-selected/, /@keydown\.left/, /@keydown\.right/])
+        assert.match(subsection, marker);
 });
 
 test('tabs keep labels on one line', async () => {
@@ -158,7 +171,9 @@ test('second parity batch remains independent from the legacy runtime', async ()
         'index-list-panel',
         'index-anchor'
     ];
-    const source = (await Promise.all(names.map(name => read(`components/snake-${name}/snake-${name}.vue`)))).join('\n');
+    const source = (await Promise.all(names.map(name => read(`components/snake-${name}/snake-${name}.vue`)))).join(
+        '\n'
+    );
     assert.doesNotMatch(source, legacyRuntimePattern);
 });
 
@@ -232,7 +247,10 @@ test('commerce filter panel gives percentage-height content a definite containin
 });
 
 test('CMS sticky keeps legacy enable semantics and explicit navigation offset', async () => {
-    const [cms, sticky] = await Promise.all([read('components/snake-cms/snake-cms.vue'), read('components/snake-sticky/snake-sticky.vue')]);
+    const [cms, sticky] = await Promise.all([
+        read('components/snake-cms/snake-cms.vue'),
+        read('components/snake-sticky/snake-sticky.vue')
+    ]);
     assert.match(cms, /:disabled="resolveStickyDisabled\(item\.setStyle\.stickyDisabled\)"/);
     assert.match(cms, /function resolveStickyDisabled/);
     assert.match(cms, /:custom-nav-height="stickyCustomNavHeight"/);
