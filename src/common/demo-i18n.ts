@@ -1474,7 +1474,23 @@ Object.assign(englishMessages, {
     最多选择数: 'Max selections',
     列表最大高度: 'List max height',
     定位已选项: 'Scroll to selection',
-    单复选选择器: 'Select Picker'
+    单复选选择器: 'Select Picker',
+    '管理一组互斥的单选值，支持列表形态、自定义尺寸与表单校验。':
+        'Manages a mutually exclusive set of radio values, with list layout, custom sizes and form validation.',
+    互斥选择: 'Exclusive selection',
+    列表形态: 'List layout',
+    '指示器在右 + 行分隔线': 'Indicator on the right + row dividers',
+    尺寸与状态: 'Sizes and states',
+    表单校验: 'Form validation',
+    配送方式: 'Delivery method',
+    请选择配送方式: 'Please choose a delivery method',
+    '可独立使用的复选框，也可放入 CheckboxGroup 管理数量上下限与批量操作。':
+        'A checkbox that works standalone, or inside CheckboxGroup with count limits and bulk actions.',
+    独立复选框: 'Standalone checkbox',
+    分组多选与数量限制: 'Group selection with count limits',
+    全选与半选: 'Select all and indeterminate',
+    通知方式: 'Notification channels',
+    请至少选择一种通知方式: 'Please choose at least one notification channel'
 });
 
 export function demoText(value: string): string {

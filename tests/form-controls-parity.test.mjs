@@ -272,8 +272,9 @@ test('selection controls use typed group protocols', async () => {
     assert.match(radioGroup, /useChildren\(RADIO_GROUP_KEY\)/);
     assert.match(radioGroup, /linkChildren\(\{ props, disabled: elDisabled, setValue \}\)/);
     assert.doesNotMatch(checkbox + radio, /props\.value/);
+    // Props 里数据项标识符统一为 name，不再暴露 value 别名（暴露接口里的 value 是 defineExpose 的公开字段）
     for (const source of [checkboxTypes, radioTypes])
-        assert.doesNotMatch(source, /^\s*value\??:\s*(?:string \| number;|\{)/m);
+        assert.doesNotMatch(source, /export interface (?:Checkbox|Radio)Props \{[^}]*\n\s*value\??:/);
     assert.match(checkbox, /const checkboxValue = computed\(\(\) => props\.name\)/);
     assert.match(radio, /const radioValue = computed\(\(\) => props\.name\)/);
 });

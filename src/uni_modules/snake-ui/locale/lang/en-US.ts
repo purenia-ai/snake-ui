@@ -28,6 +28,7 @@ const enUS: Locale = {
             noMatchText: 'No matches',
             minText: 'Select at least {n}'
         },
+        checkbox: { maxText: 'Select at most {n} items', minText: 'Select at least {n} items' },
         noNetwork: {
             tips: 'Ooops, network disconnected',
             retry: 'Retry',

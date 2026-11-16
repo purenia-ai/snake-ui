@@ -3,6 +3,8 @@
         class="snake-radio-group snake-radio-group--clearfix"
         :class="[customClass, { 'is-disabled': elDisabled }]"
         :style="customStyle"
+        role="radiogroup"
+        :aria-disabled="elDisabled"
     >
         <slot />
     </view>
@@ -18,7 +20,7 @@ import { computed, inject } from 'vue';
 import { useChildren } from '../../libs/hooks';
 import { RADIO_GROUP_KEY } from './types';
 import { formItemKey } from '../snake-form-item/types';
-import type { RadioGroupEmits, RadioGroupProps } from './types';
+import type { RadioGroupEmits, RadioGroupExpose, RadioGroupProps } from './types';
 
 defineOptions({
     name: 'RadioGroup',
@@ -37,12 +39,17 @@ const props = withDefaults(defineProps<RadioGroupProps>(), {
     disabled: false,
     modelValue: '',
     activeColor: 'var(--snake-color-primary, #06D290)',
+    inactiveColor: '',
     size: '',
     labelDisabled: false,
     shape: 'circle',
+    placement: 'left',
     iconSize: '',
     width: 'auto',
-    wrap: false
+    wrap: false,
+    labelSize: '',
+    labelColor: '',
+    border: false
 });
 
 const emit = defineEmits<RadioGroupEmits>();
@@ -62,10 +69,15 @@ function getData() {
         labelDisabled: props.labelDisabled,
         disabled: elDisabled.value,
         shape: props.shape,
+        placement: props.placement,
         activeColor: props.activeColor,
+        inactiveColor: props.inactiveColor,
         size: props.size,
         width: props.width,
         wrap: props.wrap,
+        labelSize: props.labelSize,
+        labelColor: props.labelColor,
+        border: props.border,
         value: props.modelValue
     };
 }
@@ -86,7 +98,7 @@ function setValue(val: string | number) {
 // 向子 radio 提供上下文：props（含 modelValue）实时联动 + 合并后的禁用态 + 选中值入口
 linkChildren({ props, disabled: elDisabled, setValue });
 
-defineExpose({ props, getData, setValue });
+defineExpose({ props, getData, setValue } as unknown as RadioGroupExpose);
 </script>
 <style scoped>
 .snake-radio-group {

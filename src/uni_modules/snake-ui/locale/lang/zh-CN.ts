@@ -28,6 +28,7 @@ const zhCN: Locale = {
             noMatchText: '无匹配项',
             minText: '至少选择 {n} 项'
         },
+        checkbox: { maxText: '最多选择 {n} 项', minText: '至少选择 {n} 项' },
         noNetwork: {
             tips: '哎呀，网络信号丢失',
             retry: '重试',
