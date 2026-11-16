@@ -6,6 +6,25 @@ triggers: ['changelog', 'snake-changelog', '更新日志']
 
 # 更新日志
 
+## [0.1.2](https://github.com/purenia-ai/snake-ui/compare/v0.1.1...v0.1.2)（2026-11-16）
+
+### 🐛 Bug Fixes | 修复
+
+- **snake-image:** 移除 `imageKey` 计数器，改为状态驱动渲染，修复开发环境下 `Duplicate keys found during update` 警告：计数器的取值（0/1/2…）与 `v-if` 链的编译期自动 key（1、2）落在同一个 children 数组，`src` 换到第二张图或调用 `reload()` 时必然撞车；加载与失败占位同时拆成两个独立 `v-if`，此后模板内不再出现任何手工 `:key`
+- **snake-image:** 换地址不再销毁重建图片节点（此前 `watch(src)` 也走 `resetLoadState()`，每次换图都重挂节点，淡入被打断且可能多一次闪烁）；只有 `reload()` 这种"同地址重试"才卸载再挂载
+- **snake-image:** `height="auto"` 且加载失败时容器高度塌成 0（占位层绝对定位不参与父级高度计算），现在图片节点不渲染时（失败、懒加载待触发）占位层改为参与布局，兜底高度沿用占位的 60px
+
+### ⚙️ Changes | 变更
+
+- **snake-image（行为变更）:** 失败态会卸载图片节点、由占位层接管显示，`reload()` 在成功态下先卸载一帧再挂载，从而对同一地址重新发起请求；`src` 为空时 `height="auto"` 的占位图标此前被裁掉，现在正常显示
+- **snake-image:** `show-error="false"` 且 `height="auto"` 时失败态没有任何占位内容，容器高度仍为 0，需显式给尺寸
+- **version:** 版本号进入 `0.1.2`
+
+### ✏️ Documentation | 文档
+
+- `snake-image` 文档补充：换地址与 `reload()` 的渲染差异、失败态节点卸载与 `height="auto"` 的兜底高度
+- 新增 `tests/snake-image.test.mjs`（模板不出现手工 key、编译产物无表达式 key）与 `tests/snake-image-runtime.test.mjs`（自定义渲染器真实挂载：改 `src` 无重复 key、换地址不重挂、`reload()` 重挂、失败态卸载并兜底高度）
+
 ## [0.1.1](https://github.com/purenia-ai/snake-ui/compare/v0.1.0...v0.1.1)（2026-11-16）
 
 ### ✨ Features | 新功能
