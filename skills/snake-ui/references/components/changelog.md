@@ -6,10 +6,13 @@ triggers: ['changelog', 'snake-changelog', '更新日志']
 
 # 更新日志
 
-## [0.1.0](https://github.com/purenia-ai/snake-ui/compare/v0.0.20...v0.1.0)（2026-11-13）
+## [0.1.0](https://github.com/purenia-ai/snake-ui/compare/v0.0.20...v0.1.0)（2026-11-16）
 
 ### ✨ Features | 新功能
 
+- **snake-skeleton:** 新增 `animation`（`shimmer` / `pulse` / `none`），旧的 `animated` 布尔开关保留兼容且优先级更低；`pulse` 只动透明度、交给合成层处理，长列表与低端机上比逐帧重绘背景的 `shimmer` 更省
+- **snake-skeleton:** 新增 `label` 无障碍文案：`loading` 时写入根节点 `aria-label` 并补 `aria-busy`，快速模式的占位块整体 `aria-hidden`，读屏不再逐个朗读空块
+- **snake-skeleton:** `snake-skeleton-item` 新增 `size`（宽高同值），圆形/方形占位不必再写两遍尺寸，显式 `width` / `height` 仍然优先
 - **snake-tag:** 新增标签组件：主题、尺寸、镂空、圆角、可关闭与左侧图标（`icon` 与 `icon` 插槽二选一）；默认档位 24px 高 / 12px 字号（对齐 wot-ui，`medium` / `small` / `mini` 依次 20 / 18 / 16px）；镂空描边由 `::after` 缩放 50% 绘制，`hairLine` 可关闭；实心态用 `customStyle` 自定义背景色时描边自动透明（与 `snake-button` 一致），关闭图标由原生 `view` 承载并把点击热区扩到 18px
 - **snake-action-sheet:** 新增动作面板：基于 `snake-popup` 的底部动作列表，支持标题说明、图标、`disabled`/`loading` 拦截 `select`、`common.cancel` 兜底文案，并暴露 `open` / `close`
 - **snake-action-sheet:** 新增 `action-item` 作用域插槽用于自定义单行内容（行容器、点击与关闭逻辑仍由组件负责）；`loading` 行改为渲染 `snake-loading` 转圈并保留文案，不再只做整行置灰
@@ -21,6 +24,11 @@ triggers: ['changelog', 'snake-changelog', '更新日志']
 
 ### 🐛 Bug Fixes | 修复
 
+- **snake-skeleton:** 快速模式的默认尺寸只有参考实现的一半（标题 9px / 段落 8px / 头像 16px，是 0.0.6 单位迁移时机械折半的结果），灰条细得不像文字行、头像小得像圆点；现在对齐 wot-ui / uView-Pro 的量级：标题 16px、段落 12px、头像 32px
+- **snake-skeleton:** 占位色此前是半透明中性灰叠加，浅色下比两家都更暗、深色下又偏亮；现在取主题的 muted 表面色（`--snake-color-surface-muted`，浅色 `#F1F1F1` / 暗色 `#1A1A1A`，与 uView-Pro 的 `#F1F2F4`、wot-ui 的 `#E5E6EB` 同量级），明暗模式自动切换
+- **snake-skeleton:** 流光高亮带改为半透明叠加（`--snake-skeleton-highlight`，默认 `rgba(120,120,130,0.12)`）：「透明 → 高亮 → 透明」压在底色上，浅色底扫出更深的带（对齐 uView-Pro 的 `#E6E6E6`）、深色底扫出更亮的带（对齐 wot-ui 的 `#F7F8FA`）；系统开启「减少动态效果」时连静止的高亮带一起去掉
+- **snake-skeleton:** `snake-skeleton-item` 的 `width` / `height` / `radius` 默认值此前以内联样式写死，未传 props 时主题变量对占位块的尺寸与圆角完全无效；现在只有显式传值才写内联样式，其余交给形态类名读取 `--snake-skeleton-*`
+- **snake-skeleton:** 快速模式的头像间距与段落间距是内联 `margin`，无法主题化；现在改为 `--snake-skeleton-avatar-gap` / `--snake-skeleton-title-gap` / `--snake-skeleton-row-gap` 三个变量，默认值与旧表现一致
 - **snake-search:** 清除控件改为「有内容就显示」，不再依赖聚焦：原实现是 `v-if="keyword && clearabled && focused"`，输入后点空白处失焦按钮即消失，只能再点一次输入框才能清空；顺带移除了靠 100ms 延时抢点击的 blur hack
 - **snake-search:** 程序化修改 `modelValue` 不再回派 `input` / `change`：原实现在 `watch(keyword)` 里派发，父组件从外部赋值（点热词、重置表单）会触发一次假的输入事件，业务在 `@input` 里做防抖请求时会多发一次
 - **snake-search:** 右侧操作按钮的显隐与 `actionStyle` 解耦：原实现把 `actionStyle` 内联到按钮同一个节点，内联 `width` 永远压过 `.snake-search__action` 的 `width: 0`，`showAction=false` 仍会显示按钮、`animation` 永远收不起来（消费方用 `actionStyle` 传 `width` 即中招）；现在外层容器用 `max-width` + `opacity` 控制展开，`actionStyle` 落在内层按钮上
@@ -64,13 +72,11 @@ triggers: ['changelog', 'snake-changelog', '更新日志']
 - **snake-navbar:** 微信 / QQ 小程序右上角胶囊会压住右侧插槽：现在按 `getMenuButtonBoundingClientRect()` 让出胶囊宽度，标题的最大宽度同步扣掉这段，`#right` 里的操作不再被胶囊盖住（H5 / App 取 0，行为不变）
 - **snake-navbar:** 底部分隔线由 1px 实线改为半像素（`::after` + `scaleY(0.5)`），高分屏上不再比小程序原生导航栏粗一倍；`backText` 默认跟随 `backIconColor`，此前会掉回全局文字色
 
-- **snake-rich-text:** `tagStyle` / `scrollTable` / `useAnchor` / `domain` / `previewImg` 只在解析阶段生效，运行期改动不会重新解析——示例页里「表格横向滚动」开关切了完全没反应；现在按解析相关参数快照重新解析（`tagStyle` 逐键排序后序列化，父组件每次渲染传等值对象不会重复解析）
-- **snake-rich-text:** `content` 传 `null` / `undefined` 时解析器直接抛错（接口透传字段时很常见），现在按空内容处理并落到默认插槽
-- **snake-rich-text:** 内容连续更新时上一轮的 `ready` 高度轮询不会中断，同一个实例会多次派发 `ready`；现在新的 `setContent` 会先清掉旧定时器
-- **snake-rich-text:** Vue 3 不再调用 `beforeDestroy`，mp-html 的懒加载 `IntersectionObserver` 在组件卸载后没有断开；现在补 `unmounted` 清理（`node` 子组件同步处理），并清掉 `ready` 轮询
-
 ### ⚙️ Changes | 变更
 
+- **snake-skeleton（行为变更）:** 快速模式的 `titleHeight` 默认 `9 → 16`、`rowsHeight` 默认 `8 → 12`、`avatarSize` 默认 `16 → 32`；依赖旧默认值的页面会看到更厚实的占位块，要保留旧尺寸显式传 `:title-height="9"` / `:rows-height="8"` / `:avatar-size="16"` 即可
+- **snake-skeleton:** 主题变量由 2 个增至 13 个：新增 6 个形态尺寸变量、2 个动画周期变量、3 个间距变量
+- **snake-skeleton:** 内部注入契约 `SkeletonContext` 的 `animated` 换成 `animation`，类名 `snake-skeleton-item--animated` 拆为 `--animation-shimmer` / `--animation-pulse`；仅影响自己实现 provider 或覆盖该类名的宿主
 - **version:** 版本号进入 `0.1.0`；本批新增的 9 个组件目录（6 个公开组件 + 3 个子项）API 冻结，后续只增不改
 - **size:** 默认尺寸按 375 稿对齐 wot-ui / uView-Pro —— `snake-tag` 24px 高 / 12px 字号、`snake-collapse-item` 标题 15px 内容 14px、`snake-step` 标题 14px 描述 12px、`snake-grid-item` 文案 14px、`snake-swipe-action` 按钮 80px / 14px；`snake-action-sheet` 已落在两家区间内，未调整
 - **snake-step:** 连接线由 `::after` 伪元素改为真实节点 + `v-if` 判末，不再依赖 `:last-child`（WXSS 选择器白名单里没有伪类，小程序端会漏画最后一段）；横向等分宽度从父级 scoped 后代选择器移到子项自身的 `flex: 1 1 0`，避免跨组件作用域失效后整排挤到左侧
@@ -104,13 +110,10 @@ triggers: ['changelog', 'snake-changelog', '更新日志']
 - **demo:** 示例应用导航栏不再硬编码品牌绿（原 `#007A55`，暗色 `#01513B`），改为「主题主色做底 + 白字做前景」，与按钮 / 标签的实心主色一致：切主题时整条跟着品牌色走，按压反馈叠黑，文档站手机预览壳的状态栏同步
 - **docs:** 组件总览公开条目由 50 个增至 56 个，README 组件数量同步修正
 
-- **snake-rich-text:** 链接色不再用 mp-html 内置的固定蓝 `#366092`，改为跟随主色（`--snake-rich-text-link-color` → `--snake-color-primary`），与 `snake-link` 一致
-- **snake-rich-text:** 新增 5 个组件级主题变量 `--snake-rich-text-color` / `--snake-rich-text-font-size` / `--snake-rich-text-line-height` / `--snake-rich-text-link-color` / `--snake-rich-text-image-radius`；默认值全部继承原表现（链接除外，取主色），不设置变量时布局不变
-- **snake-rich-text:** `emits` 补齐 `pause` / `fullscreenchange`：此前只声明 6 个事件，实际媒体暂停与视频全屏变化也会派发，未声明的监听会被当成普通属性透传到根节点
-- **snake-rich-text:** 类型新增 `RichTextMediaEvent`，`play` / `pause` / `fullscreenchange` 的载荷统一为 `{ source, attrs }`，并透传平台 detail
-
 ### ✏️ Documentation | 文档
 
+- **docs:** skeleton 文档重写：快速模式与逐行宽度、自定义模板（并说明为什么不做 `row-col` 声明式配置）、动画三档与性能差异、主题变量、无障碍、「与其他组件库的对照」以及常见问题（闪一下就消失 / 高度抖动 / 深色发白 / 动画不动 / 小程序卡顿 / NVUE 百分比）
+- **demo:** 骨架屏示例页重做：快速模式、动画对比（三档动画各占一行，避免 320~420 宽下头像把正文挤成几像素）、自定义模板（商品卡片 / 图文列表）、跟随主题、占位形态、请求状态联动与参数面板；补齐中英文案，顺带修掉英文界面下标题回落成中文的问题
 - **docs:** 新增 tag / action-sheet / steps / collapse / grid / swipe-action 文档页与总览注册，并补齐 `preview` 在线预览
 - **demo:** 新增 6 个示例页（含 `DemoControlPanel` 参数面板与中英文案），覆盖标签主题与镂空、动作面板显隐与 `action-item` 单行自定义、步骤条方向/点状模式/异常状态/自定义图标、折叠面板图标插槽/动画时长、宫格列数/等高/间距、滑动操作阈值与同组互斥
 - **docs:** steps 文档补充点状模式、对齐方式与新增主题变量（`--snake-step-dot-size` / `--snake-step-icon-size` / `--snake-step-status-color`），并把示例里不在字库中的图标名（`wallet` / `box` / `truck`）换成 `rmb` / `bag` / `car`
@@ -139,19 +142,9 @@ triggers: ['changelog', 'snake-changelog', '更新日志']
 - **plugins:** root 插件的 JSONC 注释剥离改为字符串感知扫描，`https://…` 这类字符串内容不再被当作注释截断，修复 `pages.json` 启动解析崩溃
 - **types:** 新增 `global.d.ts` 声明全部组件的 `GlobalComponents` 类型增强，volar 3.x 编辑器不再把组件退化为 `any`
 
-- **snake-rich-text:** `tagStyle` / `scrollTable` / `useAnchor` / `domain` / `previewImg` 只在解析阶段生效，运行期改动不会重新解析——示例页里「表格横向滚动」开关切了完全没反应；现在按解析相关参数快照重新解析（`tagStyle` 逐键排序后序列化，父组件每次渲染传等值对象不会重复解析）
-- **snake-rich-text:** `content` 传 `null` / `undefined` 时解析器直接抛错（接口透传字段时很常见），现在按空内容处理并落到默认插槽
-- **snake-rich-text:** 内容连续更新时上一轮的 `ready` 高度轮询不会中断，同一个实例会多次派发 `ready`；现在新的 `setContent` 会先清掉旧定时器
-- **snake-rich-text:** Vue 3 不再调用 `beforeDestroy`，mp-html 的懒加载 `IntersectionObserver` 在组件卸载后没有断开；现在补 `unmounted` 清理（`node` 子组件同步处理），并清掉 `ready` 轮询
-
 ### ⚙️ Changes | 变更
 
 - **types（行为变更）:** 入口类型收编为源码即声明：删除 `index.d.ts`，ambient 声明并入 `index.ts`；`package.json` 移除 `types` 字段，类型改由源码解析
-
-- **snake-rich-text:** 链接色不再用 mp-html 内置的固定蓝 `#366092`，改为跟随主色（`--snake-rich-text-link-color` → `--snake-color-primary`），与 `snake-link` 一致
-- **snake-rich-text:** 新增 5 个组件级主题变量 `--snake-rich-text-color` / `--snake-rich-text-font-size` / `--snake-rich-text-line-height` / `--snake-rich-text-link-color` / `--snake-rich-text-image-radius`；默认值全部继承原表现（链接除外，取主色），不设置变量时布局不变
-- **snake-rich-text:** `emits` 补齐 `pause` / `fullscreenchange`：此前只声明 6 个事件，实际媒体暂停与视频全屏变化也会派发，未声明的监听会被当成普通属性透传到根节点
-- **snake-rich-text:** 类型新增 `RichTextMediaEvent`，`play` / `pause` / `fullscreenchange` 的载荷统一为 `{ source, attrs }`，并透传平台 detail
 
 ### ✏️ Documentation | 文档
 
@@ -204,11 +197,6 @@ triggers: ['changelog', 'snake-changelog', '更新日志']
 - **snake-sticky:** 常驻占位结构重构：测得高度后占位层定高、内容层常驻 absolute，吸顶切换不再引起布局跳动；测量对象改为内容层，H5 端用 ResizeObserver 监听内容尺寸
 - **snake-filter-sorts:** 筛选标签固定每行 4 个（宽度改为百分比），新增 `nth-child(4n)` 规则去掉行尾右间距，四列左右对齐
 
-- **snake-rich-text:** 链接色不再用 mp-html 内置的固定蓝 `#366092`，改为跟随主色（`--snake-rich-text-link-color` → `--snake-color-primary`），与 `snake-link` 一致
-- **snake-rich-text:** 新增 5 个组件级主题变量 `--snake-rich-text-color` / `--snake-rich-text-font-size` / `--snake-rich-text-line-height` / `--snake-rich-text-link-color` / `--snake-rich-text-image-radius`；默认值全部继承原表现（链接除外，取主色），不设置变量时布局不变
-- **snake-rich-text:** `emits` 补齐 `pause` / `fullscreenchange`：此前只声明 6 个事件，实际媒体暂停与视频全屏变化也会派发，未声明的监听会被当成普通属性透传到根节点
-- **snake-rich-text:** 类型新增 `RichTextMediaEvent`，`play` / `pause` / `fullscreenchange` 的载荷统一为 `{ source, attrs }`，并透传平台 detail
-
 ### ✏️ Documentation | 文档
 
 - `color.md` 色板的 `primary-light` 修正为 token 实际值 `#06D2901A`
@@ -219,11 +207,6 @@ triggers: ['changelog', 'snake-changelog', '更新日志']
 
 - **snake-image:** 失败态改为灰底居中图标：默认 `errorIcon` 改用 `error-circle`，占位层补 `--snake-color-surface-muted` 底色，加载/失败统一 24px 图标且不再叠加默认文案（插槽仍可自定义）；`loading-img` / `error-img` 自身加载失败时回退内置图标，空 `src` 不再提示"加载失败"，仅懒加载时重置图片 key 避免挂载即重复请求
 - **snake-sticky:** 吸顶判定重构：观察根顶边改为吸顶线加自身高度并按阈值 0 实时判定，修复吸顶块高于视口时永不触发；降级路径改用宿主 `scrollTop`（原 `onPageScroll` 注册在 H5 与小程序均不会回调），返回页恢复滚动与锚点跳转后也会即时校正
-
-- **snake-rich-text:** 链接色不再用 mp-html 内置的固定蓝 `#366092`，改为跟随主色（`--snake-rich-text-link-color` → `--snake-color-primary`），与 `snake-link` 一致
-- **snake-rich-text:** 新增 5 个组件级主题变量 `--snake-rich-text-color` / `--snake-rich-text-font-size` / `--snake-rich-text-line-height` / `--snake-rich-text-link-color` / `--snake-rich-text-image-radius`；默认值全部继承原表现（链接除外，取主色），不设置变量时布局不变
-- **snake-rich-text:** `emits` 补齐 `pause` / `fullscreenchange`：此前只声明 6 个事件，实际媒体暂停与视频全屏变化也会派发，未声明的监听会被当成普通属性透传到根节点
-- **snake-rich-text:** 类型新增 `RichTextMediaEvent`，`play` / `pause` / `fullscreenchange` 的载荷统一为 `{ source, attrs }`，并透传平台 detail
 
 ### ✏️ Documentation | 文档
 
@@ -247,11 +230,6 @@ triggers: ['changelog', 'snake-changelog', '更新日志']
 
 - **snake-input:** 移除 `password` 属性，密码框改用 `type="password"`，保留单一入口
 - **snake-notice-bar:** 移除 `direction` 属性，垂直模式改用 `mode="vertical"`，保留单一入口
-
-- **snake-rich-text:** 链接色不再用 mp-html 内置的固定蓝 `#366092`，改为跟随主色（`--snake-rich-text-link-color` → `--snake-color-primary`），与 `snake-link` 一致
-- **snake-rich-text:** 新增 5 个组件级主题变量 `--snake-rich-text-color` / `--snake-rich-text-font-size` / `--snake-rich-text-line-height` / `--snake-rich-text-link-color` / `--snake-rich-text-image-radius`；默认值全部继承原表现（链接除外，取主色），不设置变量时布局不变
-- **snake-rich-text:** `emits` 补齐 `pause` / `fullscreenchange`：此前只声明 6 个事件，实际媒体暂停与视频全屏变化也会派发，未声明的监听会被当成普通属性透传到根节点
-- **snake-rich-text:** 类型新增 `RichTextMediaEvent`，`play` / `pause` / `fullscreenchange` 的载荷统一为 `{ source, attrs }`，并透传平台 detail
 
 ### ✏️ Documentation | 文档
 
@@ -303,11 +281,6 @@ triggers: ['changelog', 'snake-changelog', '更新日志']
 - **snake-drop-menu:** 标题栏默认高度 20→40（迁移折半遗留）
 - **snake-line-progress:** `percent` 钳制 0-100 并容错非法输入，百分比文字取整
 
-- **snake-rich-text:** 链接色不再用 mp-html 内置的固定蓝 `#366092`，改为跟随主色（`--snake-rich-text-link-color` → `--snake-color-primary`），与 `snake-link` 一致
-- **snake-rich-text:** 新增 5 个组件级主题变量 `--snake-rich-text-color` / `--snake-rich-text-font-size` / `--snake-rich-text-line-height` / `--snake-rich-text-link-color` / `--snake-rich-text-image-radius`；默认值全部继承原表现（链接除外，取主色），不设置变量时布局不变
-- **snake-rich-text:** `emits` 补齐 `pause` / `fullscreenchange`：此前只声明 6 个事件，实际媒体暂停与视频全屏变化也会派发，未声明的监听会被当成普通属性透传到根节点
-- **snake-rich-text:** 类型新增 `RichTextMediaEvent`，`play` / `pause` / `fullscreenchange` 的载荷统一为 `{ source, attrs }`，并透传平台 detail
-
 ### ✏️ Documentation | 文档
 
 - 文档与注释全量改用中性表述，移除第三方库对照审计页与对应守卫
@@ -343,11 +316,6 @@ triggers: ['changelog', 'snake-changelog', '更新日志']
 
 ## [0.0.6](https://github.com/purenia-ai/snake-ui/compare/v0.0.5...v0.0.6)（2026-11-02）
 
-- **snake-rich-text:** `tagStyle` / `scrollTable` / `useAnchor` / `domain` / `previewImg` 只在解析阶段生效，运行期改动不会重新解析——示例页里「表格横向滚动」开关切了完全没反应；现在按解析相关参数快照重新解析（`tagStyle` 逐键排序后序列化，父组件每次渲染传等值对象不会重复解析）
-- **snake-rich-text:** `content` 传 `null` / `undefined` 时解析器直接抛错（接口透传字段时很常见），现在按空内容处理并落到默认插槽
-- **snake-rich-text:** 内容连续更新时上一轮的 `ready` 高度轮询不会中断，同一个实例会多次派发 `ready`；现在新的 `setContent` 会先清掉旧定时器
-- **snake-rich-text:** Vue 3 不再调用 `beforeDestroy`，mp-html 的懒加载 `IntersectionObserver` 在组件卸载后没有断开；现在补 `unmounted` 清理（`node` 子组件同步处理），并清掉 `ready` 轮询
-
 ### ⚙️ Changes | 变更
 
 - **单位体系:** 全库 rpx（750 稿）迁移为 px（375 稿）：裸数字属性按 px 解释、尺寸默认值减半、`1rpx` 细线改 `1px`、`addUnit` 默认单位改 px
@@ -360,11 +328,6 @@ triggers: ['changelog', 'snake-changelog', '更新日志']
 
 - **snake-cms:** 修复视频块从不渲染（编辑器存量 key `videoss` 与分发端 `videos` 不一致，现两者兼容）
 - **magiccube:** 修复第 5 种布局高度语义与主路径不一致
-
-- **snake-rich-text:** 链接色不再用 mp-html 内置的固定蓝 `#366092`，改为跟随主色（`--snake-rich-text-link-color` → `--snake-color-primary`），与 `snake-link` 一致
-- **snake-rich-text:** 新增 5 个组件级主题变量 `--snake-rich-text-color` / `--snake-rich-text-font-size` / `--snake-rich-text-line-height` / `--snake-rich-text-link-color` / `--snake-rich-text-image-radius`；默认值全部继承原表现（链接除外，取主色），不设置变量时布局不变
-- **snake-rich-text:** `emits` 补齐 `pause` / `fullscreenchange`：此前只声明 6 个事件，实际媒体暂停与视频全屏变化也会派发，未声明的监听会被当成普通属性透传到根节点
-- **snake-rich-text:** 类型新增 `RichTextMediaEvent`，`play` / `pause` / `fullscreenchange` 的载荷统一为 `{ source, attrs }`，并透传平台 detail
 
 ### ✏️ Documentation | 文档
 
@@ -395,22 +358,12 @@ triggers: ['changelog', 'snake-changelog', '更新日志']
 - **snake-button:** 修复 `type="info"` 无样式、禁用态文字不可见、plain 禁用不可区分等多个状态死角
 - **exports:** 补充 `./components/snake-cms/types` 显式入口，修复 TS bundler 解析报 TS2307
 
-- **snake-rich-text:** `tagStyle` / `scrollTable` / `useAnchor` / `domain` / `previewImg` 只在解析阶段生效，运行期改动不会重新解析——示例页里「表格横向滚动」开关切了完全没反应；现在按解析相关参数快照重新解析（`tagStyle` 逐键排序后序列化，父组件每次渲染传等值对象不会重复解析）
-- **snake-rich-text:** `content` 传 `null` / `undefined` 时解析器直接抛错（接口透传字段时很常见），现在按空内容处理并落到默认插槽
-- **snake-rich-text:** 内容连续更新时上一轮的 `ready` 高度轮询不会中断，同一个实例会多次派发 `ready`；现在新的 `setContent` 会先清掉旧定时器
-- **snake-rich-text:** Vue 3 不再调用 `beforeDestroy`，mp-html 的懒加载 `IntersectionObserver` 在组件卸载后没有断开；现在补 `unmounted` 清理（`node` 子组件同步处理），并清掉 `ready` 轮询
-
 ### ⚙️ Changes | 变更
 
 - **snake-calendar:** 移除双十一内置节日；底部确定按钮占满整行
 - **snake-button:** 加载态改用内置 `snake-loading` 指示器，颜色继承文字色
 - **主题:** `--snake-color-primary-light` 修正为主色 10% 透明度，相关 fallback 同步
 - **仓库:** 迁移至 GitHub 组织 [purenia-ai/snake-ui](https://github.com/purenia-ai/snake-ui)，补 MIT LICENSE 与文档站入口
-
-- **snake-rich-text:** 链接色不再用 mp-html 内置的固定蓝 `#366092`，改为跟随主色（`--snake-rich-text-link-color` → `--snake-color-primary`），与 `snake-link` 一致
-- **snake-rich-text:** 新增 5 个组件级主题变量 `--snake-rich-text-color` / `--snake-rich-text-font-size` / `--snake-rich-text-line-height` / `--snake-rich-text-link-color` / `--snake-rich-text-image-radius`；默认值全部继承原表现（链接除外，取主色），不设置变量时布局不变
-- **snake-rich-text:** `emits` 补齐 `pause` / `fullscreenchange`：此前只声明 6 个事件，实际媒体暂停与视频全屏变化也会派发，未声明的监听会被当成普通属性透传到根节点
-- **snake-rich-text:** 类型新增 `RichTextMediaEvent`，`play` / `pause` / `fullscreenchange` 的载荷统一为 `{ source, attrs }`，并透传平台 detail
 
 ### ✏️ Documentation | 文档
 
@@ -421,11 +374,6 @@ triggers: ['changelog', 'snake-changelog', '更新日志']
 ### 🐛 Bug Fixes | Bug 修复
 
 - **exports:** `./libs/request`、`./libs/runtime` 等深层路径提供显式入口，修复 TS / Vite 无法解析
-
-- **snake-rich-text:** 链接色不再用 mp-html 内置的固定蓝 `#366092`，改为跟随主色（`--snake-rich-text-link-color` → `--snake-color-primary`），与 `snake-link` 一致
-- **snake-rich-text:** 新增 5 个组件级主题变量 `--snake-rich-text-color` / `--snake-rich-text-font-size` / `--snake-rich-text-line-height` / `--snake-rich-text-link-color` / `--snake-rich-text-image-radius`；默认值全部继承原表现（链接除外，取主色），不设置变量时布局不变
-- **snake-rich-text:** `emits` 补齐 `pause` / `fullscreenchange`：此前只声明 6 个事件，实际媒体暂停与视频全屏变化也会派发，未声明的监听会被当成普通属性透传到根节点
-- **snake-rich-text:** 类型新增 `RichTextMediaEvent`，`play` / `pause` / `fullscreenchange` 的载荷统一为 `{ source, attrs }`，并透传平台 detail
 
 ### ✏️ Documentation | 文档
 
