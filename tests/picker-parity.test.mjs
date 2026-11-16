@@ -316,6 +316,30 @@ test('picker owns the old select names: no snake-select leftovers anywhere', asy
     assert.doesNotMatch(await readFile(new URL('src/pages.json', workspaceRoot), 'utf8'), /componentsA\/select/);
 });
 
+test('snake-picker forwards immediate-change to the native picker-view', async () => {
+    const types = await pickerTypes();
+    const source = await pickerSource();
+    const docs = await readFile(new URL('docs/components/picker.md', workspaceRoot), 'utf8');
+    const demo = await readFile(new URL('src/pages/componentsA/picker/index.vue', workspaceRoot), 'utf8');
+
+    // 默认沿用原生时机（滚动动画结束后派发），开启后由原生 picker-view 在手指松开时派发
+    assert.match(types, /immediateChange: \{ type: Boolean, default: false \}/);
+    // 平台限制必须写进类型注释，避免被当成 H5 / App 也能用的能力
+    assert.match(types, /仅微信小程序（基础库 2\.21\.1\+）生效/);
+    assert.match(
+        source,
+        /<picker-view[\s\S]{0,300}:immediate-change="immediateChange"[\s\S]{0,300}@change="columnChange"/
+    );
+    // 透传给原生 picker-view，组件内不另造定时器伪造时机
+    assert.doesNotMatch(source, /setTimeout/);
+
+    assert.ok(docs.includes('| `immediateChange`'), '文档缺少 immediateChange 属性');
+    assert.ok(docs.includes('## 即时 change'), '文档缺少「即时 change」章节');
+    assert.match(docs, /2\.21\.1/);
+    assert.match(demo, /:immediate-change="Boolean\(state\.slImmediateChange\)"/);
+    assert.match(demo, /key: 'slImmediateChange'/);
+});
+
 test('snake-picker avoids rpx literals and unsupported wxss selectors', async () => {
     const source = await pickerSource();
 

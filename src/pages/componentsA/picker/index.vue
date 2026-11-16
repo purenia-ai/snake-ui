@@ -8,12 +8,16 @@
                 </snake-button>
                 <text class="demo-variant-sub">{{ text('选择结果') }}：{{ lastResult }}</text>
                 <text class="demo-variant-sub">{{ text('滚动中实时值') }}：{{ changeResult }}</text>
+                <text v-if="state.slImmediateChange" class="demo-variant-sub">{{
+                    text('仅微信小程序（基础库 2.21.1+）生效')
+                }}</text>
                 <snake-picker
                     v-model="pickerShow"
                     :list="currentList"
                     :mode="String(state.slMode)"
                     :item-height="Number(state.slItemHeight)"
                     :visible-item-count="Number(state.slVisibleCount)"
+                    :immediate-change="Boolean(state.slImmediateChange)"
                     :border="Boolean(state.slBorder)"
                     :round="Boolean(state.slRound)"
                     :root-portal="Boolean(state.slRootPortal)"
@@ -197,6 +201,7 @@ const controls: DemoControl[] = [
         ]
     },
     { key: 'slBorder', label: '工具栏分隔线', type: 'switch', defaultValue: true },
+    { key: 'slImmediateChange', label: '手指松开即触发 change', type: 'switch', defaultValue: false },
     { key: 'slRound', label: '面板圆角', type: 'switch', defaultValue: true },
     { key: 'slRootPortal', label: '传入根节点', type: 'switch', defaultValue: false },
     { key: 'slPreserve', label: '保留上次选择', type: 'switch', defaultValue: true },

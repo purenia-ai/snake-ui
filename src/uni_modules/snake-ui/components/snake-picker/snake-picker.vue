@@ -61,6 +61,7 @@
                         :value="defaultSelector"
                         class="snake-picker__body__picker-view"
                         :indicator-style="indicatorStyle"
+                        :immediate-change="immediateChange"
                         mask-class="snake-picker__mask"
                         indicator-class="snake-picker__indicator"
                         @pickstart="pickstart"

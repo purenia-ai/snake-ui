@@ -1490,7 +1490,9 @@ Object.assign(englishMessages, {
     分组多选与数量限制: 'Group selection with count limits',
     全选与半选: 'Select all and indeterminate',
     通知方式: 'Notification channels',
-    请至少选择一种通知方式: 'Please choose at least one notification channel'
+    请至少选择一种通知方式: 'Please choose at least one notification channel',
+    '手指松开即触发 change': 'Fire change on finger release',
+    '仅微信小程序（基础库 2.21.1+）生效': 'Only effective on WeChat Mini Program (base library 2.21.1+)'
 });
 
 export function demoText(value: string): string {

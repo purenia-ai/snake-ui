@@ -72,6 +72,8 @@ export const pickerProps = {
     itemHeight: { type: Number, default: DEFAULT_PICKER_ITEM_HEIGHT },
     /** 可见的行数，与 itemHeight 共同决定选择器高度。 */
     visibleItemCount: { type: Number, default: DEFAULT_PICKER_VISIBLE_ITEM_COUNT },
+    /** 手指松开即派发 change，而非等滚动动画结束；仅微信小程序（基础库 2.21.1+）生效。 */
+    immediateChange: { type: Boolean, default: false },
     /** 确认前的异步拦截器。 */
     beforeConfirm: { type: Function as PropType<PickerBeforeConfirm>, default: undefined },
     /** 顶部标题。 */
