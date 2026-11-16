@@ -118,6 +118,11 @@
             <view class="image-notes">
                 <text>{{
                     text(
+                        '加载中默认显示静态 photo 图标，图标尺寸跟随容器短边收敛在 12–24px；需要转圈或图文组合时打开“自定义加载内容”，即通过 loading 插槽显式声明动画。'
+                    )
+                }}</text>
+                <text>{{
+                    text(
                         '失败时默认在浅灰占位块中显示 error-circle 图标，不叠加文案；需要文案或图文组合时使用 error 插槽。'
                     )
                 }}</text>

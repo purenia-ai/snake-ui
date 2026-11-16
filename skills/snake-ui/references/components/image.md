@@ -33,11 +33,16 @@ triggers: ['image', 'snake-image', 'Image', '图片']
 
 ### 加载中
 
-加载中默认在浅灰占位块（`--snake-color-surface-muted`）内居中显示加载动画。简单的品牌占位图可使用 `loading-img`；需要组合动画、文字或骨架屏时使用 `loading` 插槽。
+加载中默认在浅灰占位块（`--snake-color-surface-muted`）内居中显示静态 `photo` 图标，图标尺寸跟随容器短边收敛在 12–24px 之间。需要品牌占位图时传 `loading-img`，需要动效、文字或骨架屏时使用 `loading` 插槽。
 
 ```vue
+<!-- 默认表现：占位块 + 静态 photo 图标 -->
+<snake-image src="/static/product.png" width="100%" height="110px" />
+
+<!-- 品牌占位图 -->
 <snake-image src="/static/product.png" width="100%" height="110px" loading-img="/static/image-loading.png" />
 
+<!-- 需要动画时显式声明 -->
 <snake-image src="/static/product.png" width="100%" height="110px">
   <template #loading>
     <snake-loading size="24" />
@@ -45,7 +50,7 @@ triggers: ['image', 'snake-image', 'Image', '图片']
 </snake-image>
 ```
 
-传入 `show-loading="false"` 可隐藏加载反馈。
+加载态默认不使用动画，需要转圈、文案或骨架屏时由 `loading` 插槽自行组合。传入 `loading-icon=""` 只保留占位底色；传入 `show-loading="false"` 可隐藏整层加载反馈。
 
 ### 加载失败
 
@@ -131,8 +136,8 @@ triggers: ['image', 'snake-image', 'Image', '图片']
 | `fade`                | 是否开启淡入动画                                            | `boolean`             | `true`         |
 | `duration`            | 淡入动画持续时间，单位 ms                                   | `number`              | `300`          |
 | `bgColor`             | 背景颜色，未设置时使用 `--snake-color-surface-muted`        | `string`              | -              |
-| `showLoading`         | 是否显示加载反馈                                            | `boolean`             | `true`         |
-| `loadingIcon`         | 加载状态图标名称，为空时使用默认图标                        | `string`              | `''`           |
+| `showLoading`         | 是否显示加载占位层（底色 + 状态图标）                       | `boolean`             | `true`         |
+| `loadingIcon`         | 加载状态图标名称，默认静态图标；传 `''` 只留占位底色        | `string`              | `photo`        |
 | `loadingImg`          | 加载中显示的占位图片地址                                    | `string`              | `''`           |
 | `showError`           | 是否显示加载失败反馈                                        | `boolean`             | `true`         |
 | `errorIcon`           | 加载失败图标名称                                            | `string`              | `error-circle` |

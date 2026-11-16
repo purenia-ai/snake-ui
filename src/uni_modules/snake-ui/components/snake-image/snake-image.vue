@@ -22,8 +22,7 @@
                     mode="aspectFit"
                     @error="onLoadingImageError"
                 />
-                <snake-icon v-else-if="loadingIcon" :name="loadingIcon" size="24" />
-                <snake-loading v-else size="24" />
+                <snake-icon v-else-if="loadingIcon" :name="loadingIcon" :size="statusSize" />
             </slot>
         </view>
         <view
@@ -39,7 +38,7 @@
                     mode="aspectFit"
                     @error="onErrorImageError"
                 />
-                <snake-icon v-else :name="errorIcon" size="24" />
+                <snake-icon v-else :name="errorIcon" :size="statusSize" />
             </slot>
         </view>
     </view>
@@ -53,7 +52,7 @@
  */
 
 import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { addUnit } from '../../libs/function/unit';
+import { addUnit, unitToPx } from '../../libs/function/unit';
 import type { ImageEmits, ImageExpose, ImageProps } from './types';
 
 defineOptions({ name: 'SnakeImage', options: { virtualHost: true, styleIsolation: 'shared' } });
@@ -73,7 +72,7 @@ const props = withDefaults(defineProps<ImageProps>(), {
     fade: true,
     duration: 300,
     showLoading: true,
-    loadingIcon: '',
+    loadingIcon: 'photo',
     loadingImg: '',
     showError: true,
     errorIcon: 'error-circle',
@@ -117,6 +116,26 @@ const statusStyle = computed(() => {
     if (props.bgColor) style.backgroundColor = props.bgColor;
     if (!autoHeight.value) style.minHeight = '0';
     return style;
+});
+
+/** 状态图标只接受裸数字 / px / rpx，百分比与视口单位不参与尺寸推断。 */
+const PLAIN_UNIT_PATTERN = /^-?\d+(?:\.\d+)?(?:px|rpx)?$/i;
+const STATUS_ICON_MIN = 12;
+const STATUS_ICON_MAX = 24;
+
+function measureContainerSide(value: unknown): number {
+    const raw = String(value ?? '').trim();
+    return PLAIN_UNIT_PATTERN.test(raw) ? unitToPx(raw) : 0;
+}
+
+/** 状态图标尺寸：跟随容器短边取一半并收敛到 12–24，容器尺寸不可解析时回退 24。 */
+const statusSize = computed(() => {
+    const sides = [measureContainerSide(props.width), autoHeight.value ? 0 : measureContainerSide(props.height)].filter(
+        side => side > 0
+    );
+    if (!sides.length) return STATUS_ICON_MAX;
+    const shortest = Math.min(...sides);
+    return Math.max(STATUS_ICON_MIN, Math.min(STATUS_ICON_MAX, Math.round(shortest / 2)));
 });
 
 function disconnectObserver() {

@@ -144,7 +144,13 @@ test('image owns viewport lazy loading and configured state artwork', async () =
     assert.match(image, /@error="onErrorImageError"/);
     assert.match(image, /if \(props\.lazyLoad\) resetLoadState\(\)/);
     assert.match(image, /errorIcon: 'error-circle'/);
+    // 加载态兜底是静态图标（对齐 uView-Pro），动画只能由业务通过 loading 插槽显式声明
+    assert.match(image, /loadingIcon: 'photo'/);
+    assert.doesNotMatch(image, /<snake-loading/);
+    assert.match(image, /const statusSize = computed/);
+    assert.match(image, /:size="statusSize"/);
     assert.match(iconfont, /\.sicon-error-circle:before/);
+    assert.match(iconfont, /\.sicon-photo:before/);
     assert.match(image, /onBeforeUnmount\(disconnectObserver\)/);
     assert.match(image, /:key="imageKey"/);
     assert.doesNotMatch(image, /:lazy-load="lazyLoad"/);

@@ -31,15 +31,15 @@ export interface ImageProps {
     duration?: number;
     /** 背景颜色。 */
     bgColor?: string;
-    /** show loading 配置。 */
+    /** 是否显示加载占位层（占位底色 + 状态图标），默认开启。 */
     showLoading?: boolean;
-    /** loading icon 配置。 */
+    /** 加载中的图标名，默认 `photo`（静态图标）；传空字符串只保留占位底色，需要动效请使用 `loading` 插槽。 */
     loadingIcon?: string;
     /** 加载中显示的图片地址。 */
     loadingImg?: string;
-    /** show error 配置。 */
+    /** 是否显示失败占位层（占位底色 + 状态图标），默认开启。 */
     showError?: boolean;
-    /** error icon 配置。 */
+    /** 加载失败的图标名，默认 `error-circle`。 */
     errorIcon?: string;
     /** 加载失败显示的图片地址。 */
     errorImg?: string;
