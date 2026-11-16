@@ -803,6 +803,41 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 
 # 更新日志
 
+## [0.1.1](https://github.com/purenia-ai/snake-ui/compare/v0.1.0...v0.1.1)（2026-11-16）
+
+### ✨ Features | 新功能
+
+- **snake-select-picker:** 新增单复选选择器：底部弹层内列表勾选，`multiple` 默认单选，`v-model` 承载选中值、`v-model:visible` 控制开合；支持本地搜索（命中高亮）、`min` / `max` 数量限制、`beforeConfirm` 异步确认、`loading` 与空态；复用 `snake-popup` / `snake-search` / `snake-button` / `snake-loading`，自绘行与选中指示器，并接入 `snake-form-item` 的校验与禁用
+- **snake-checkbox / snake-radio:** 新增 `inactiveColor`（未选中边框色）、`placement`（`left` / `right`，指示器在右由 `row-reverse` + `space-between` 实现，配 `wrap` 即「标签左、指示器右」的设置行）、`border`（行分隔线，只画在项与项之间，末项靠 `useParent` 的 `index` 判断而不依赖 `:last-child`）、`labelColor`
+- **snake-checkbox:** 新增 `indeterminate` 半选：复用 `minus` 图标，`aria-checked="mixed"`，强调色与选中态一致
+- **snake-checkbox-group:** 新增 `min`（达下限后已选项锁定，误点给一次轻提示）；新增 `toggleAll({ checked, skipDisabled })` 批量勾选/取反，结果受 `min` / `max` 约束，`setAllChecked` 保留为别名
+- **snake-checkbox-group / snake-radio-group:** 新增分组级 `labelSize` / `labelColor` / `placement` / `border` / `inactiveColor`，子项可逐项覆盖
+- **snake-checkbox / snake-radio:** 补齐无障碍与键盘：子项 `role`、`aria-checked`（半选 `mixed`）、`aria-disabled`、`tabindex` 与 `Enter` / `Space`；分组 `role="radiogroup"` / `role="group"`；按压反馈走 `hover-class`，只缩放图标不动布局
+- **snake-picker:** 新增 `immediateChange`：透传原生 `picker-view` 的 `immediate-change`，手指松开即派发 `change`，不再等滚动动画结束；按 uni-app 平台表仅微信小程序（基础库 2.21.1+）生效
+
+### 🐛 Bug Fixes | 修复
+
+- **snake-checkbox / snake-radio:** 自定义数值 `size` 完全失效（落在预设档位之外时静默回落到 17px），现在按数值解析盒子高度，勾号约 0.59×、字号约 0.82×，非预设尺寸的图标也不再固定 20
+- **snake-checkbox / snake-radio:** 禁用态只有图标变灰、标签仍是正常文字色，现在标签同步降到 `--snake-color-text-muted`
+- **snake-checkbox-group:** 达到 `max` 时只弹一次 toast、且文案硬编码中文，现在未选项进入锁定态（`--locked`，与真正的 `disabled` 分开，仍可聚焦并解释原因），文案走语言包 `maxText` / `minText`（`{n}` 占位）并可用同名属性覆盖
+- **snake-checkbox-group:** `validateSelection()` 会在取值时弹出提示，现在改为纯判定；`setAllChecked()` 不再 `console.warn`，也不再无视 `min` / `max`
+- **snake-checkbox-group / snake-radio-group:** `width` 契约不一致（一个裸 `string`，一个给每个子项强塞 `width:auto; float:left`），现在统一为 `UnitValue` + `addUnit`，并把 `'auto'` 定义为「不设置宽度」
+- **snake-checkbox-group:** 删除从未实现的 `name` 属性（表单取值一直走 `form-item` 的 `prop`）
+- **snake-image:** 加载态兜底不再用 `<snake-loading>` 动画：`loadingIcon` 默认值改为 `photo`，与失败态的 `error-circle` 对称；新增 `statusSize` 跟随容器短边取一半并收敛到 12–24（`%` / `vh` / `auto` 回落 24）；动画改为显式声明（`loading` 插槽，或 `loading-icon` / `loading-img`）
+
+### ⚙️ Changes | 变更
+
+- **snake-checkbox-group（行为变更）:** `CheckboxGroupProps.name` 移除；`width` 默认 `'auto'` 现在表示不设置宽度，radio 子项不再默认带 `float:left`
+- **snake-checkbox-group（行为变更）:** `validateSelection()` 只返回布尔值，不再弹提示；`toggleAll` / `setAllChecked` 的返回值受 `min` / `max` 约束
+- **snake-checkbox / snake-radio（行为变更）:** 禁用与锁定项的标签文字颜色由 `--snake-color-text` 改为 `--snake-color-text-muted`
+- **snake-picker:** `immediateChange` 默认 `false`，与原生默认一致，不开时行为不变
+- **version:** 版本号进入 `0.1.1`
+
+### ✏️ Documentation | 文档
+
+- 新增 `snake-select-picker` 与 `snake-image` 加载态设计文档；重写 `checkbox` / `radio` 组件文档与示例页（各 5～7 个 preview 区块、10～11 项参数面板）
+- 移除 `snake-picker` 文档里关于组件旧名的说明
+
 ## [0.1.0](https://github.com/purenia-ai/snake-ui/compare/v0.0.20...v0.1.0)（2026-11-16）
 
 ### ✨ Features | 新功能
