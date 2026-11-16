@@ -9,7 +9,7 @@
                         :title="String(state.ciTitle || text('单元格标题'))"
                         :label="String(state.ciLabel)"
                         :arrow="Boolean(state.ciArrow)"
-                        :arrow-direction="String(state.ciArrowDirection)"
+                        :arrow-direction="state.ciArrowDirection"
                         :required="Boolean(state.ciRequired)"
                         :center="Boolean(state.ciCenter)"
                         :value="String(state.ciValue) || (isEnglish ? 'Value' : '内容')"
@@ -53,9 +53,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
-import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
+import { computed, ref } from 'vue';
+import { demoTitle, localizeDemoControls, useDemoLocale } from '../../../common/demo-i18n';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
+import { demoState, setDemoValue } from '../../../common/demo-state';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
@@ -63,7 +64,7 @@ import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
 const clickedIndex = ref<string | number>('');
-const controls: DemoControl[] = [
+const controls = [
     { key: 'cgTitle', label: '分组标题', type: 'input', defaultValue: '', placeholder: '请输入分组标题' },
     { key: 'cgBorder', label: '外边框', type: 'switch', defaultValue: true },
     {
@@ -105,25 +106,15 @@ const controls: DemoControl[] = [
     },
     { key: 'ciRequired', label: '必填星号', type: 'switch', defaultValue: false },
     { key: 'ciCenter', label: '内容垂直居中', type: 'switch', defaultValue: false }
-];
-const state = reactive<Record<string, DemoValue>>(
-    Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))
-);
-const localizedControls = computed(() => {
-    const _locale = localeName.value;
-    return controls.map(control => ({
-        ...control,
-        label: demoText(control.label),
-        placeholder: control.placeholder ? demoText(control.placeholder) : undefined,
-        options: control.options?.map(option => ({ ...option, label: demoText(option.label) }))
-    }));
-});
+] as const satisfies readonly DemoControl[];
+const state = demoState(controls);
+const localizedControls = computed(() => localizeDemoControls(controls));
 const title = computed(() => {
     const _locale = localeName.value;
     return demoTitle('cell', '单元格');
 });
 function updateValue(key: string, value: DemoValue) {
-    state[key] = value;
+    setDemoValue(state, key, value);
 }
 function cellClicked(index: string | number) {
     clickedIndex.value = index;

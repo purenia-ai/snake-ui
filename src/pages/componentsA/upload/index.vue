@@ -20,8 +20,8 @@
                     :key="acceptType"
                     v-model="previewFiles"
                     :accept="acceptType"
-                    :mode="String(state.mode)"
-                    :image-shape="String(state.imageShape)"
+                    :mode="state.mode"
+                    :image-shape="state.imageShape"
                     :max-count="Number(state.maxCount)"
                     :auto-upload="Boolean(state.autoUpload)"
                     :show-file-size="Boolean(state.showFileSize)"
@@ -272,9 +272,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
-import { demoTitle, useDemoLocale } from '../../../common/demo-i18n';
+import { computed, ref } from 'vue';
+import { demoTitle, localizeDemoControls, useDemoLocale } from '../../../common/demo-i18n';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
+import { demoState, setDemoValue } from '../../../common/demo-state';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
@@ -326,7 +327,7 @@ const eventLabels: Record<DemoEventKey, string> = {
     'blocked-preview': '预览已拦截'
 };
 
-const controls: DemoControl[] = [
+const controls = [
     {
         key: 'accept',
         label: '文件类别',
@@ -371,19 +372,10 @@ const controls: DemoControl[] = [
     { key: 'showFileSize', label: '显示文件大小', type: 'switch', defaultValue: false },
     { key: 'autoUpload', label: '自动上传', type: 'switch', defaultValue: true },
     { key: 'disabled', label: '禁用组件', type: 'switch', defaultValue: false }
-];
+] as const satisfies readonly DemoControl[];
 
-const state = reactive<Record<string, DemoValue>>(
-    Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))
-);
-const localizedControls = computed(() => {
-    const _locale = localeName.value;
-    return controls.map(control => ({
-        ...control,
-        label: text(control.label),
-        options: control.options?.map(option => ({ ...option, label: text(option.label) }))
-    }));
-});
+const state = demoState(controls);
+const localizedControls = computed(() => localizeDemoControls(controls));
 const title = computed(() => {
     const _locale = localeName.value;
     return demoTitle('upload', '文件上传');
@@ -493,7 +485,7 @@ function clearPreview() {
 }
 
 function updateValue(key: string, value: DemoValue) {
-    state[key] = value;
+    setDemoValue(state, key, value);
     // 切换文件类别后，原列表里的示例文件不再匹配，重置为对应的默认内容。
     if (key === 'accept') {
         previewFiles.value = defaultFiles(value);

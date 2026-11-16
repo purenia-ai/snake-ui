@@ -11,7 +11,7 @@
                             :alt="isEnglish ? 'Snake UI demo image' : 'Snake UI 示例图片'"
                             :width="Number(state.width)"
                             :height="Number(state.height)"
-                            :mode="String(state.mode)"
+                            :mode="state.mode"
                             :shape="state.shape === 'circle' ? 'circle' : 'square'"
                             :radius="Number(state.radius)"
                             :lazy-load="Boolean(state.lazyLoad)"
@@ -137,9 +137,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
-import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
+import { computed, ref } from 'vue';
+import { demoTitle, localizeDemoControls, useDemoLocale } from '../../../common/demo-i18n';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
+import { demoState, setDemoValue } from '../../../common/demo-state';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
@@ -152,7 +153,7 @@ const imageRef = ref<ImageExpose>();
 const loadStatus = ref<LoadStatus>('loading');
 const previewGallery = ['/static/logo.png', '/static/demo-cms-p-watch.png', '/static/demo-cms-p-cup.png'];
 const isEnglish = computed(() => localeName.value === 'en-US');
-const controls: DemoControl[] = [
+const controls = [
     {
         key: 'source',
         label: '图片资源',
@@ -194,23 +195,14 @@ const controls: DemoControl[] = [
     { key: 'showError', label: '显示失败反馈', type: 'switch', defaultValue: true },
     { key: 'customLoading', label: '自定义加载内容', type: 'switch', defaultValue: false },
     { key: 'customError', label: '自定义失败内容', type: 'switch', defaultValue: false }
-];
-const state = reactive<Record<string, DemoValue>>(
-    Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))
-);
+] as const satisfies readonly DemoControl[];
+const state = demoState(controls);
 const currentSrc = computed(() => {
     if (state.source === 'error') return '/static/not-found.png';
     if (state.source === 'empty') return '';
     return '/static/logo.png';
 });
-const localizedControls = computed(() => {
-    const _locale = localeName.value;
-    return controls.map(control => ({
-        ...control,
-        label: demoText(control.label),
-        options: control.options?.map(option => ({ ...option, label: demoText(option.label) }))
-    }));
-});
+const localizedControls = computed(() => localizeDemoControls(controls));
 const title = computed(() => {
     const _locale = localeName.value;
     return demoTitle('image', '图片');
@@ -240,9 +232,9 @@ function reloadImage() {
     imageRef.value?.reload();
 }
 function updateValue(key: string, value: DemoValue) {
-    state[key] = value;
+    setDemoValue(state, key, value);
     if (state.shape === 'circle' && (key === 'shape' || key === 'width' || key === 'height')) {
-        const size = key === 'height' ? value : state.width;
+        const size = key === 'height' ? Number(value) : state.width;
         state.width = size;
         state.height = size;
     }

@@ -6,7 +6,7 @@
                     :key="countdownKey"
                     :timestamp="durationSeconds"
                     :autoplay="Boolean(state.cAutoPlay)"
-                    :separator="String(state.cSeparator)"
+                    :separator="state.cSeparator"
                     :show-days="Boolean(state.cShowDays)"
                     :show-hours="Boolean(state.cShowHours)"
                     :show-minutes="Boolean(state.cShowMinutes)"
@@ -37,9 +37,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
-import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
+import { computed, ref } from 'vue';
+import { demoTitle, localizeDemoControls, useDemoLocale } from '../../../common/demo-i18n';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
+import { demoState, setDemoValue } from '../../../common/demo-state';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
@@ -48,7 +49,7 @@ const { localeName, text } = useDemoLocale();
 const restSeconds = ref(86461);
 const finished = ref(false);
 const countdownKey = ref(0);
-const controls: DemoControl[] = [
+const controls = [
     { key: 'cTimestamp', label: '剩余秒数', type: 'input', defaultValue: '86461', placeholder: 'seconds' },
     { key: 'cAutoPlay', label: '自动开始', type: 'switch', defaultValue: true },
     {
@@ -67,28 +68,19 @@ const controls: DemoControl[] = [
     { key: 'cShowSeconds', label: '显示秒', type: 'switch', defaultValue: true },
     { key: 'cHideZeroDay', label: '天为零隐藏', type: 'switch', defaultValue: false },
     { key: 'cShowBorder', label: '数字边框', type: 'switch', defaultValue: false }
-];
-const state = reactive<Record<string, DemoValue>>(
-    Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))
-);
+] as const satisfies readonly DemoControl[];
+const state = demoState(controls);
 const durationSeconds = computed(() => {
     const seconds = Number(state.cTimestamp);
     return Number.isFinite(seconds) ? Math.max(0, Math.floor(seconds)) : 0;
 });
-const localizedControls = computed(() => {
-    const _locale = localeName.value;
-    return controls.map(control => ({
-        ...control,
-        label: demoText(control.label),
-        options: control.options?.map(option => ({ ...option, label: demoText(option.label) }))
-    }));
-});
+const localizedControls = computed(() => localizeDemoControls(controls));
 const title = computed(() => {
     const _locale = localeName.value;
     return demoTitle('count-down', '倒计时');
 });
 function updateValue(key: string, value: DemoValue) {
-    state[key] = value;
+    setDemoValue(state, key, value);
     if (key === 'cTimestamp') {
         restSeconds.value = durationSeconds.value;
         finished.value = durationSeconds.value === 0;

@@ -14,7 +14,7 @@
                 <snake-picker
                     v-model="pickerShow"
                     :list="currentList"
-                    :mode="String(state.slMode)"
+                    :mode="state.slMode"
                     :item-height="Number(state.slItemHeight)"
                     :visible-item-count="Number(state.slVisibleCount)"
                     :immediate-change="Boolean(state.slImmediateChange)"
@@ -83,8 +83,9 @@
 
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
-import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
+import { demoTitle, localizeDemoControls, useDemoLocale } from '../../../common/demo-i18n';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
+import { demoState, setDemoValue } from '../../../common/demo-state';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
@@ -175,7 +176,7 @@ const englishLabels: Record<string, string> = {
     北京: 'Beijing',
     天津: 'Tianjin'
 };
-const controls: DemoControl[] = [
+const controls = [
     {
         key: 'slMode',
         label: '选择模式',
@@ -211,31 +212,22 @@ const controls: DemoControl[] = [
     { key: 'slTitle', label: '选择器标题', type: 'input', defaultValue: '', placeholder: '请选择' },
     { key: 'slCancelText', label: '取消按钮文字', type: 'input', defaultValue: '', placeholder: '取消' },
     { key: 'slConfirmText', label: '确认按钮文字', type: 'input', defaultValue: '', placeholder: '确认' }
-];
-const state = reactive<Record<string, DemoValue>>(
-    Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))
-);
-const localizedControls = computed(() => {
-    const _locale = localeName.value;
-    return controls.map(control => ({
-        ...control,
-        label: demoText(control.label),
-        options: control.options?.map(option => ({ ...option, label: demoText(option.label) }))
-    }));
-});
+] as const satisfies readonly DemoControl[];
+const state = demoState(controls);
+const localizedControls = computed(() => localizeDemoControls(controls));
 const title = computed(() => {
     const _locale = localeName.value;
     return demoTitle('picker', '列选择器');
 });
 const currentList = computed<PickerItem[] | PickerItem[][]>(() => {
     if (state.slEmpty) return [];
-    const mode = String(state.slMode);
+    const mode = state.slMode;
     if (mode === 'mutil-column') return mutilList.map(column => localizeOptions(column));
     if (mode === 'mutil-column-auto') return localizeOptions(cascadeList);
     return localizeOptions(singleList);
 });
 function updateValue(key: string, value: DemoValue) {
-    state[key] = value;
+    setDemoValue(state, key, value);
 }
 function localizeOptions(items: PickerItem[]): PickerItem[] {
     return items.map(item => ({

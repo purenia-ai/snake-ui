@@ -5,17 +5,17 @@
                 <text class="demo-variant-title">{{ text('实时配置') }}</text>
                 <snake-input
                     v-model="username"
-                    :type="String(state.inputType)"
-                    :border="String(state.inputBorder)"
-                    :shape="String(state.inputShape)"
-                    :size="String(state.inputSize)"
-                    :input-align="String(state.inputAlign)"
+                    :type="state.inputType"
+                    :border="state.inputBorder"
+                    :shape="state.inputShape"
+                    :size="state.inputSize"
+                    :input-align="state.inputAlign"
                     :maxlength="Number(state.inputMaxlength)"
                     :clearable="Boolean(state.inputClearable)"
                     :clear-trigger="clearTriggerValue"
                     :show-word-limit="Boolean(state.inputShowWordLimit)"
                     :disabled="Boolean(state.inputDisabled)"
-                    :show-password="String(state.inputType) === 'password'"
+                    :show-password="state.inputType === 'password'"
                     :placeholder="String(state.inputPlaceholder || text('请输入用户名'))"
                     @input="onEvent('input', $event)"
                     @change="onEvent('change', $event)"
@@ -165,8 +165,9 @@
 import { computed, reactive, ref, watch } from 'vue';
 import type { InputExpose } from '../../../uni_modules/snake-ui';
 import type { FormExpose, FormRules } from '../../../uni_modules/snake-ui/components/snake-form/types';
-import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
+import { demoText, demoTitle, localizeDemoControls, useDemoLocale } from '../../../common/demo-i18n';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
+import { demoState, setDemoValue } from '../../../common/demo-state';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
@@ -189,7 +190,7 @@ const smsCooldown = ref(0);
 const readonlyTip = ref('');
 const lastEvent = ref('');
 const inputRef = ref<InputExpose | null>(null);
-const controls: DemoControl[] = [
+const controls = [
     {
         key: 'inputType',
         label: '输入类型',
@@ -270,20 +271,11 @@ const controls: DemoControl[] = [
     { key: 'inputShowWordLimit', label: '显示字数', type: 'switch', defaultValue: false },
     { key: 'inputDisabled', label: '禁用状态', type: 'switch', defaultValue: false },
     { key: 'inputPlaceholder', label: '占位文字', type: 'input', defaultValue: '' }
-];
-const state = reactive<Record<string, DemoValue>>(
-    Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))
-);
+] as const satisfies readonly DemoControl[];
+const state = demoState(controls);
 /** 控制面板的值是 string，这里收窄成组件要求的枚举。 */
 const clearTriggerValue = computed(() => (state.inputClearTrigger === 'focus' ? 'focus' : 'always'));
-const localizedControls = computed(() => {
-    const _locale = localeName.value;
-    return controls.map(control => ({
-        ...control,
-        label: demoText(control.label),
-        options: control.options?.map(option => ({ ...option, label: demoText(option.label) }))
-    }));
-});
+const localizedControls = computed(() => localizeDemoControls(controls));
 const title = computed(() => {
     const _locale = localeName.value;
     return demoTitle('input', '输入框');
@@ -321,7 +313,7 @@ watch(localeName, () => {
     readonlyTip.value = '';
 });
 function updateValue(key: string, nextValue: DemoValue) {
-    state[key] = nextValue;
+    setDemoValue(state, key, nextValue);
 }
 function digitsOnly(value: string) {
     return value.replace(/\D/g, '');

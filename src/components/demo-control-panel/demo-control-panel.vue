@@ -62,7 +62,7 @@
 import type { DemoControl, DemoValue } from '../../common/demo-types';
 import { useDemoLocale } from '../../common/demo-i18n';
 
-const props = defineProps<{ controls: DemoControl[]; values: Record<string, DemoValue> }>();
+const props = defineProps<{ controls: readonly DemoControl[]; values: Record<string, DemoValue> }>();
 const emit = defineEmits<{ change: [key: string, value: DemoValue] }>();
 const { text } = useDemoLocale();
 

@@ -5,14 +5,14 @@
                 <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
                 <view class="demo-line-live">
                     <snake-line
-                        :direction="String(state.lineDirection)"
+                        :direction="state.lineDirection"
                         :length="
                             state.lineDirection === 'col'
                                 ? String(Math.round(Number(state.lineLength) * 1.6))
                                 : `${state.lineLength}%`
                         "
                         :color="String(state.lineColor)"
-                        :border-style="String(state.lineBorderStyle)"
+                        :border-style="state.lineBorderStyle"
                         :hair-line="Boolean(state.lineHair)"
                     />
                 </view>
@@ -21,7 +21,7 @@
                         direction="col"
                         :length="String(Math.round(Number(state.lineLength) * 1.6))"
                         :color="String(state.lineColor)"
-                        :border-style="String(state.lineBorderStyle)"
+                        :border-style="state.lineBorderStyle"
                         :hair-line="Boolean(state.lineHair)"
                     />
                     <text class="demo-line-col-text">{{ isEnglish ? 'Vertical' : '竖向线条' }}</text>
@@ -39,16 +39,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive } from 'vue';
-import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
+import { computed } from 'vue';
+import { demoTitle, localizeDemoControls, useDemoLocale } from '../../../common/demo-i18n';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
+import { demoState, setDemoValue } from '../../../common/demo-state';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 
 const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
-const controls: DemoControl[] = [
+const controls = [
     {
         key: 'lineDirection',
         label: '线条方向',
@@ -83,24 +84,15 @@ const controls: DemoControl[] = [
         ]
     },
     { key: 'lineHair', label: '半像素细线', type: 'switch', defaultValue: true }
-];
-const state = reactive<Record<string, DemoValue>>(
-    Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))
-);
-const localizedControls = computed(() => {
-    const _locale = localeName.value;
-    return controls.map(control => ({
-        ...control,
-        label: demoText(control.label),
-        options: control.options?.map(option => ({ ...option, label: demoText(option.label) }))
-    }));
-});
+] as const satisfies readonly DemoControl[];
+const state = demoState(controls);
+const localizedControls = computed(() => localizeDemoControls(controls));
 const title = computed(() => {
     const _locale = localeName.value;
     return demoTitle('line', '分隔线');
 });
 function updateValue(key: string, value: DemoValue) {
-    state[key] = value;
+    setDemoValue(state, key, value);
 }
 </script>
 

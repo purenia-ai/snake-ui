@@ -29,7 +29,7 @@
                     class="snake-drop-menu__arrow"
                     :class="{ 'snake-drop-menu__arrow--open': isActive(index) }"
                     :name="menuIcon"
-                    :size="menuIconSize"
+                    :size="menuIconSize ?? undefined"
                     :color="triggerColor(index)"
                 />
             </view>

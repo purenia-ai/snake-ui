@@ -52,8 +52,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
-import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
+import { computed, ref } from 'vue';
+import { demoTitle, localizeDemoControls, useDemoLocale } from '../../../common/demo-i18n';
+import { demoState, resetDemoState, setDemoValue } from '../../../common/demo-state';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
@@ -63,7 +64,7 @@ const { localeName, text } = useDemoLocale();
 const clickCount = ref(0);
 /** 自定义底色示例：只给背景色和文字色，细边框由组件自动取为同色。 */
 const customColorStyle = { backgroundColor: '#b94131', color: '#ffffff' };
-const controls: DemoControl[] = [
+const controls = [
     {
         key: 'type',
         label: '按钮主题',
@@ -105,19 +106,10 @@ const controls: DemoControl[] = [
     { key: 'loading', label: '加载状态', type: 'switch', defaultValue: false },
     { key: 'disabled', label: '禁用状态', type: 'switch', defaultValue: false },
     { key: 'ripple', label: '水波纹', type: 'switch', defaultValue: true }
-];
-const state = reactive<Record<string, DemoValue>>(
-    Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))
-);
+] as const satisfies readonly DemoControl[];
+const state = demoState(controls);
 const copyState = ref<'idle' | 'success' | 'error'>('idle');
-const localizedControls = computed(() => {
-    const _locale = localeName.value;
-    return controls.map(control => ({
-        ...control,
-        label: demoText(control.label),
-        options: control.options?.map(option => ({ ...option, label: demoText(option.label) }))
-    }));
-});
+const localizedControls = computed(() => localizeDemoControls(controls));
 const title = computed(() => {
     const _locale = localeName.value;
     return demoTitle('button', '按钮');
@@ -131,7 +123,7 @@ const currentCode = computed(() => {
     if (state.type !== 'default') attributes.push(`type="${String(state.type)}"`);
     if (state.buttonSize !== 'default') attributes.push(`size="${String(state.buttonSize)}"`);
     if (state.buttonShape !== 'square') attributes.push(`shape="${String(state.buttonShape)}"`);
-    for (const key of ['plain', 'loading', 'disabled', 'ripple']) {
+    for (const key of ['plain', 'loading', 'disabled', 'ripple'] as const) {
         if (state[key]) attributes.push(key);
     }
     const attributeText = attributes.length ? ` ${attributes.join(' ')}` : '';
@@ -139,12 +131,12 @@ const currentCode = computed(() => {
 });
 
 function updateValue(key: string, value: DemoValue) {
-    state[key] = value;
+    setDemoValue(state, key, value);
     copyState.value = 'idle';
 }
 
 function resetState() {
-    for (const control of controls) state[control.key] = control.defaultValue;
+    resetDemoState(state, controls);
     copyState.value = 'idle';
     clickCount.value = 0;
 }

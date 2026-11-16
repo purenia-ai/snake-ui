@@ -7,7 +7,7 @@
                         ref="qrCodeRef"
                         :text="qrText"
                         :size="sizeValue"
-                        :correct-level="String(state.cLevel)"
+                        :correct-level="state.cLevel"
                         :margin="marginValue"
                         :logo="logoSrc"
                         :color-dark="preset.dark"
@@ -60,10 +60,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
+import { computed, ref } from 'vue';
 import demoLogo from '@/static/logo.png';
-import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
+import { demoText, demoTitle, localizeDemoControls, useDemoLocale } from '../../../common/demo-i18n';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
+import { demoState, setDemoValue } from '../../../common/demo-state';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
@@ -83,7 +84,7 @@ const presetIndex = ref(0);
 const preset = computed(() => presets[presetIndex.value]);
 const presetText = 'https://m.puresnake.com';
 
-const controls: DemoControl[] = [
+const controls = [
     {
         key: 'cText',
         label: '二维码内容',
@@ -106,28 +107,19 @@ const controls: DemoControl[] = [
     },
     { key: 'cMargin', label: '留白', type: 'slider', defaultValue: 0, min: 0, max: 20, step: 2, unit: 'px' },
     { key: 'cLogo', label: '显示 Logo', type: 'switch', defaultValue: false }
-];
-const state = reactive<Record<string, DemoValue>>(
-    Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))
-);
+] as const satisfies readonly DemoControl[];
+const state = demoState(controls);
 const qrText = computed(() => String(state.cText || ''));
 const sizeValue = computed(() => Number(state.cSize) || 200);
 const marginValue = computed(() => Number(state.cMargin) || 0);
 const logoSrc = computed(() => (state.cLogo ? demoLogo : ''));
-const localizedControls = computed(() => {
-    const _locale = localeName.value;
-    return controls.map(control => ({
-        ...control,
-        label: demoText(control.label),
-        options: control.options?.map(option => ({ ...option, label: demoText(option.label) }))
-    }));
-});
+const localizedControls = computed(() => localizeDemoControls(controls));
 const title = computed(() => {
     const _locale = localeName.value;
     return demoTitle('qr-code', '二维码');
 });
 function updateValue(key: string, value: DemoValue) {
-    state[key] = value;
+    setDemoValue(state, key, value);
 }
 function cyclePreset() {
     presetIndex.value = (presetIndex.value + 1) % presets.length;

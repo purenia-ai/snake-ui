@@ -10,7 +10,8 @@ export interface DemoControl {
     label: string;
     type: 'select' | 'switch' | 'slider' | 'input';
     defaultValue: DemoValue;
-    options?: DemoOption[];
+    /** 只读：demo 页用 `as const satisfies readonly DemoControl[]` 声明控件，才能保留下拉项字面量。 */
+    options?: readonly DemoOption[];
     min?: number;
     max?: number;
     step?: number;

@@ -120,8 +120,15 @@ const tabBarStyle = computed(() => [
     props.barStyle
 ]);
 
-function itemValue(item: TabItem, key: string, fallback: 'name' | 'count') {
-    return item[key] || item[fallback];
+/**
+ * 读取标签项上的动态字段。
+ *
+ * `TabItem` 带 `Record<string, unknown>` 索引签名，`item[key] || item[fallback]` 的结果会被
+ * 收窄成 `{}` 并漏到 badge 的 value 上；这里显式校验取值类型，非字符串/数字按空值处理。
+ */
+function itemValue(item: TabItem, key: string, fallback: 'name' | 'count'): string | number {
+    const value = item[key] || item[fallback];
+    return typeof value === 'string' || typeof value === 'number' ? value : '';
 }
 
 function badgeCount(item: TabItem) {

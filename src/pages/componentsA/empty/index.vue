@@ -4,7 +4,7 @@
             <view class="demo-stack demo-empty-showcase">
                 <text class="demo-variant-title">{{ text('实时预览') }}</text>
                 <snake-empty
-                    :mode="String(state.emptyMode)"
+                    :mode="state.emptyMode"
                     :icon="state.customIcon ? '/static/logo.png' : ''"
                     :icon-size="Number(state.emptyIconSize)"
                     :text="previewText"
@@ -31,15 +31,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive } from 'vue';
-import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
+import { computed } from 'vue';
+import { demoTitle, localizeDemoControls, useDemoLocale } from '../../../common/demo-i18n';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
+import { demoState, setDemoValue } from '../../../common/demo-state';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 
 const { localeName, text } = useDemoLocale();
-const controls: DemoControl[] = [
+const controls = [
     {
         key: 'emptyMode',
         label: '空状态类型',
@@ -76,10 +77,8 @@ const controls: DemoControl[] = [
             { label: '品牌绿', value: '#06D290' }
         ]
     }
-];
-const state = reactive<Record<string, DemoValue>>(
-    Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))
-);
+] as const satisfies readonly DemoControl[];
+const state = demoState(controls);
 const previewText = computed(() => {
     const customText = String(state.text).trim();
     if (customText) return customText;
@@ -89,23 +88,15 @@ const previewText = computed(() => {
         wifi: '网络不可用',
         search: '搜索无结果'
     };
-    return text(preset[String(state.emptyMode)] || '无数据');
+    return text(preset[state.emptyMode] || '无数据');
 });
-const localizedControls = computed(() => {
-    const _locale = localeName.value;
-    return controls.map(control => ({
-        ...control,
-        label: demoText(control.label),
-        placeholder: control.placeholder ? demoText(control.placeholder) : undefined,
-        options: control.options?.map(option => ({ ...option, label: demoText(option.label) }))
-    }));
-});
+const localizedControls = computed(() => localizeDemoControls(controls));
 const title = computed(() => {
     const _locale = localeName.value;
     return demoTitle('empty', '空状态');
 });
 function updateValue(key: string, value: DemoValue) {
-    state[key] = value;
+    setDemoValue(state, key, value);
 }
 function tryAgain() {
     uni.showToast({ title: text('重试'), icon: 'none' });

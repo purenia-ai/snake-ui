@@ -9,8 +9,8 @@
                     :auto-height="Boolean(state.textareaAuto)"
                     :disabled="Boolean(state.textareaDisabled)"
                     :readonly="Boolean(state.textareaReadonly)"
-                    :border="String(state.textareaBorder)"
-                    :size="String(state.textareaSize)"
+                    :border="state.textareaBorder"
+                    :size="state.textareaSize"
                     :placeholder="text('请输入内容')"
                     :maxlength="Number(state.textareaMaxlength)"
                 />
@@ -92,10 +92,11 @@
     </DemoPage>
 </template>
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
+import { computed, ref } from 'vue';
 import type { TextareaExpose } from '../../../uni_modules/snake-ui';
-import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
+import { demoTitle, localizeDemoControls, useDemoLocale } from '../../../common/demo-i18n';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
+import { demoState, setDemoValue } from '../../../common/demo-state';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
@@ -112,7 +113,7 @@ const errorValue = ref('');
 const methodValue = ref('');
 const readonlyTip = ref('');
 const textareaRef = ref<TextareaExpose | null>(null);
-const controls: DemoControl[] = [
+const controls = [
     { key: 'textareaCount', label: '显示字数', type: 'switch', defaultValue: true },
     {
         key: 'textareaMaxlength',
@@ -149,18 +150,9 @@ const controls: DemoControl[] = [
             { label: '无边框', value: 'none' }
         ]
     }
-];
-const state = reactive<Record<string, DemoValue>>(
-    Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))
-);
-const localizedControls = computed(() => {
-    const _locale = localeName.value;
-    return controls.map(control => ({
-        ...control,
-        label: demoText(control.label),
-        options: control.options?.map(option => ({ ...option, label: demoText(option.label) }))
-    }));
-});
+] as const satisfies readonly DemoControl[];
+const state = demoState(controls);
+const localizedControls = computed(() => localizeDemoControls(controls));
 const title = computed(() => {
     const _locale = localeName.value;
     return demoTitle('textarea', '文本域');
@@ -174,7 +166,7 @@ function uppercaseCode(input: string) {
     return input.replace(/[^0-9a-z]/gi, '').toUpperCase();
 }
 function updateValue(key: string, nextValue: DemoValue) {
-    state[key] = nextValue;
+    setDemoValue(state, key, nextValue);
     if (key === 'textareaDisabled' && nextValue) state.textareaReadonly = false;
     if (key === 'textareaReadonly' && nextValue) state.textareaDisabled = false;
 }

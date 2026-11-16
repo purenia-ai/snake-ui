@@ -4,8 +4,8 @@
             <view class="demo-stack demo-loadmore-showcase">
                 <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
                 <snake-loadmore
-                    :status="String(state.loadStatus)"
-                    :icon-type="String(state.loadIcon)"
+                    :status="state.loadStatus"
+                    :icon-type="state.loadIcon"
                     :is-dot="Boolean(state.loadDot)"
                     :nomore-text="String(state.loadText)"
                     :color="String(state.loadColor)"
@@ -25,16 +25,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive } from 'vue';
-import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
+import { computed } from 'vue';
+import { demoTitle, localizeDemoControls, useDemoLocale } from '../../../common/demo-i18n';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
+import { demoState, setDemoValue } from '../../../common/demo-state';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 
 const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
-const controls: DemoControl[] = [
+const controls = [
     {
         key: 'loadStatus',
         label: '加载状态',
@@ -90,24 +91,15 @@ const controls: DemoControl[] = [
             { label: '薄荷', value: '#06D2901A' }
         ]
     }
-];
-const state = reactive<Record<string, DemoValue>>(
-    Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))
-);
-const localizedControls = computed(() => {
-    const _locale = localeName.value;
-    return controls.map(control => ({
-        ...control,
-        label: demoText(control.label),
-        options: control.options?.map(option => ({ ...option, label: demoText(option.label) }))
-    }));
-});
+] as const satisfies readonly DemoControl[];
+const state = demoState(controls);
+const localizedControls = computed(() => localizeDemoControls(controls));
 const title = computed(() => {
     const _locale = localeName.value;
     return demoTitle('loadmore', '加载更多');
 });
 function updateValue(key: string, value: DemoValue) {
-    state[key] = value;
+    setDemoValue(state, key, value);
 }
 </script>
 

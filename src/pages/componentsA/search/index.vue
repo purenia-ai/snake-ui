@@ -5,13 +5,13 @@
                 <text class="demo-variant-title">{{ text('实时预览') }}</text>
                 <snake-search
                     v-model="keyword"
-                    :shape="String(state.sShape)"
+                    :shape="state.sShape"
                     :show-action="Boolean(state.sShowAction)"
                     :clearabled="Boolean(state.sClear)"
                     :animation="Boolean(state.sAnimation)"
                     :bg-color="String(state.sBgColor)"
                     :disabled="Boolean(state.sDisabled)"
-                    :input-align="String(state.sInputAlign)"
+                    :input-align="state.sInputAlign"
                     :placeholder="String(state.sPlaceholder || text('请输入关键字'))"
                     :action-text="isEnglish ? 'Search' : '搜索'"
                     margin="8px 0"
@@ -95,10 +95,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
+import { computed, ref } from 'vue';
 import type { SearchExpose } from '../../../uni_modules/snake-ui';
-import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
+import { demoTitle, localizeDemoControls, useDemoLocale } from '../../../common/demo-i18n';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
+import { demoState, setDemoValue } from '../../../common/demo-state';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
@@ -123,7 +124,7 @@ const actionStyle = {
     fontWeight: 600,
     marginLeft: '8px'
 };
-const controls: DemoControl[] = [
+const controls = [
     {
         key: 'sShape',
         label: '搜索形状',
@@ -165,25 +166,15 @@ const controls: DemoControl[] = [
         defaultValue: '',
         placeholder: '请输入占位文字'
     }
-];
-const state = reactive<Record<string, DemoValue>>(
-    Object.fromEntries(controls.map(control => [control.key, control.defaultValue]))
-);
-const localizedControls = computed(() => {
-    const _locale = localeName.value;
-    return controls.map(control => ({
-        ...control,
-        label: demoText(control.label),
-        placeholder: control.placeholder ? demoText(control.placeholder) : undefined,
-        options: control.options?.map(option => ({ ...option, label: demoText(option.label) }))
-    }));
-});
+] as const satisfies readonly DemoControl[];
+const state = demoState(controls);
+const localizedControls = computed(() => localizeDemoControls(controls));
 const title = computed(() => {
     const _locale = localeName.value;
     return demoTitle('search', '搜索框');
 });
 function updateValue(key: string, value: DemoValue) {
-    state[key] = value;
+    setDemoValue(state, key, value);
 }
 function onSearch(value: string) {
     lastEvent.value = `${text('点击搜索')}：${value}`;

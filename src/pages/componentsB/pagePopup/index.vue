@@ -12,17 +12,18 @@
     </DemoPage>
 </template>
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { popupData } from '../../../common/fixtures';
-import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
+import { demoTitle, localizeDemoControls, useDemoLocale } from '../../../common/demo-i18n';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
+import { demoState, setDemoValue } from '../../../common/demo-state';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
 const popupRef = ref<{ open(): void } | null>(null);
-const controls: DemoControl[] = [
+const controls = [
     {
         key: 'pagePopupMode',
         label: '弹窗位置',
@@ -33,23 +34,16 @@ const controls: DemoControl[] = [
             { label: '底部', value: 'bottom' }
         ]
     }
-];
-const state = reactive<Record<string, DemoValue>>({ pagePopupMode: 'center' });
-const data = computed(() => ({ ...popupData, popupMode: String(state.pagePopupMode) }));
-const localizedControls = computed(() => {
-    const _locale = localeName.value;
-    return controls.map(control => ({
-        ...control,
-        label: demoText(control.label),
-        options: control.options?.map(option => ({ ...option, label: demoText(option.label) }))
-    }));
-});
+] as const satisfies readonly DemoControl[];
+const state = demoState(controls);
+const data = computed(() => ({ ...popupData, popupMode: state.pagePopupMode }));
+const localizedControls = computed(() => localizeDemoControls(controls));
 const title = computed(() => {
     const _locale = localeName.value;
     return demoTitle('page-popup', '页面弹窗');
 });
 function updateValue(key: string, value: DemoValue) {
-    state[key] = value;
+    setDemoValue(state, key, value);
     if (key === 'pagePopupMode') popupRef.value?.open();
 }
 </script>

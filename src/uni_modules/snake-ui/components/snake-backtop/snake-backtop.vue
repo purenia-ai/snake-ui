@@ -7,7 +7,8 @@
             @click="handleClick"
         >
             <slot>
-                <snake-icon :name="icon" :size="iconSize" :color="iconColor" />
+                <!-- iconSize 走 UnitValue，可能是 null；显式传 null 按「未设置」处理，用 snake-icon 的默认尺寸 -->
+                <snake-icon :name="icon" :size="iconSize ?? undefined" :color="iconColor" />
                 <text v-if="text" class="snake-backtop__text">{{ text }}</text>
             </slot>
         </view>

@@ -1,5 +1,6 @@
 import { computed } from 'vue';
 import { currentLocale, setLocale } from '../uni_modules/snake-ui';
+import type { DemoControl } from './demo-types';
 
 export type DemoLocaleName = 'zh-CN' | 'en-US';
 
@@ -1501,6 +1502,21 @@ export function demoText(value: string): string {
 
 export function demoTitle(kind: string, fallback: string): string {
     return currentLocale.value.name === 'en-US' ? (demoTitles[kind] ?? fallback) : fallback;
+}
+
+/**
+ * 把控件定义翻成当前语言，返回值直接交给 DemoControlPanel。
+ *
+ * 借 `demoText` 读取的 `currentLocale` 建立响应依赖，放在 computed 里即可随语言切换重算，
+ * 页面不用再自己写 `const _locale = localeName.value` 这种占位读取。
+ */
+export function localizeDemoControls(controls: readonly DemoControl[]): DemoControl[] {
+    return controls.map(control => ({
+        ...control,
+        label: demoText(control.label),
+        placeholder: control.placeholder ? demoText(control.placeholder) : undefined,
+        options: control.options?.map(option => ({ ...option, label: demoText(option.label) }))
+    }));
 }
 
 export function useDemoLocale() {
