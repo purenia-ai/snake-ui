@@ -1,5 +1,9 @@
 <template>
-    <view class="snake-checkbox-group snake-checkbox-group--clearfix" :style="customStyle" :class="customClass">
+    <view
+        class="snake-checkbox-group snake-checkbox-group--clearfix"
+        :class="[customClass, { 'is-disabled': elDisabled }]"
+        :style="customStyle"
+    >
         <slot />
     </view>
 </template>
@@ -55,6 +59,8 @@ const props = withDefaults(defineProps<CheckboxGroupProps>(), {
 
 const emit = defineEmits<CheckboxGroupEmits>();
 const formItem = inject(formItemKey, null);
+/** 合并 FormItem / Form 下发的禁用态，子项统一读取这个值。 */
+const elDisabled = computed(() => props.disabled || formItem?.disabled.value || false);
 
 // 使用组件关系 hooks 收集子 checkbox（自动注册 / 按 vnode 序排列），
 // 选中态以 modelValue 为单一数据源，子项仅派生展示
@@ -66,7 +72,7 @@ const selectedValues = computed<(string | number)[]>(() => props.modelValue ?? [
  * 子项点击入口：在 modelValue 上增删自身值，统一做 max 校验与事件派发
  */
 function toggleSelect(value: string | number) {
-    if (props.disabled) return;
+    if (elDisabled.value) return;
     let next: (string | number)[];
     if (selectedValues.value.includes(value)) {
         next = selectedValues.value.filter(item => item !== value);
@@ -87,7 +93,7 @@ function toggleSelect(value: string | number) {
  * 全选/全不选方法（禁用子项保持原状态）
  */
 function setAllChecked(checked: boolean) {
-    if (props.disabled) {
+    if (elDisabled.value) {
         console.warn('snake-checkbox-group 已禁用，无法操作');
         return;
     }
@@ -116,8 +122,8 @@ function validateSelection() {
     return true;
 }
 
-// 向子 checkbox 提供上下文（props 实时联动 + 选中值增删入口）
-linkChildren({ props, toggleSelect });
+// 向子 checkbox 提供上下文（props 实时联动 + 合并后的禁用态 + 选中值增删入口）
+linkChildren({ props, disabled: elDisabled, toggleSelect });
 
 // 使用 defineExpose 暴露给外部
 defineExpose({

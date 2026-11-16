@@ -20,24 +20,24 @@ export const searchProps = {
     bgColor: { type: String, default: 'var(--snake-color-surface-muted, #f2f3f6)' },
     /** 占位提示文字。 */
     placeholder: { type: String, default: '' },
-    /** 是否启用清除控件。 */
+    /** 是否启用清除控件；启用后只要输入框有内容就显示，不依赖聚焦状态。 */
     clearabled: { type: Boolean, default: true },
     /** 是否自动聚焦。 */
     focus: { type: Boolean, default: false },
     /** 是否在搜索框右侧显示操作按钮。 */
     showAction: { type: Boolean, default: true },
-    /** 右侧操作按钮的样式，对象形式。 */
+    /** 右侧操作按钮的样式，作用于按钮本体（宽度、圆角、背景等），不会影响显隐。 */
     actionStyle: { type: [Object, Array] as PropType<StyleValue>, default: () => ({}) },
     /** 右侧操作按钮文字。 */
     actionText: { type: String, default: '' },
     /** 输入框内容水平对齐方式。 */
     inputAlign: { type: String as PropType<SearchInputAlign>, default: 'left' },
-    /** 是否禁用输入框。 */
+    /** 是否禁用输入框；禁用时输入框不可编辑、清除控件隐藏，点击组件会触发 click。 */
     disabled: { type: Boolean, default: false },
-    /** 开启 showAction 时，是否在 input 获取焦点时才显示操作按钮。 */
+    /** 开启 showAction 时，是否在 input 获取焦点时才展开操作按钮。 */
     animation: { type: Boolean, default: false },
     /** 边框颜色，只要配置了颜色，才会有边框。 */
-    borderColor: { type: String, default: 'none' },
+    borderColor: { type: String, default: '' },
     /** 双向绑定的输入值。 */
     modelValue: { type: String, default: '' },
     /** 搜索框高度，数值按 px（375 稿）处理。 */
@@ -69,15 +69,15 @@ export type SearchProps = ExtractPropTypes<typeof searchProps>;
 export type SearchEmits = {
     /** 双向绑定值更新。 */
     'update:modelValue': [value: string];
-    /** 输入事件，携带输入框内容。 */
+    /** 用户输入时触发（程序化修改 modelValue 不会再触发）。 */
     input: [value: string];
-    /** 内容变化事件，携带输入框内容。 */
+    /** 用户输入或清除时触发，语义同 input。 */
     change: [value: string];
     /** 用户确定搜索时触发。 */
     search: [value: string];
     /** 用户点击右侧操作按钮时触发。 */
     custom: [value: string];
-    /** 用户点击清除按钮时触发。 */
+    /** 用户点击清除控件时触发（此时 modelValue 已更新为空串）。 */
     clear: [];
     /** 输入框获得焦点时触发。 */
     focus: [value: string];
@@ -86,3 +86,13 @@ export type SearchEmits = {
     /** 禁用状态下点击搜索框时触发。 */
     click: [];
 };
+
+/** Search 组件通过 ref 暴露的方法。 */
+export interface SearchExpose {
+    /** 聚焦输入框，disabled 时不生效。 */
+    focus: () => void;
+    /** 让输入框失焦并收起键盘。 */
+    blur: () => void;
+    /** 清空输入内容，并同步派发 update:modelValue / input / change / clear。 */
+    clear: () => void;
+}

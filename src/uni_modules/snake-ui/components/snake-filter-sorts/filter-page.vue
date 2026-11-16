@@ -53,7 +53,7 @@
                                         custom-class="filter-page__tooltip-icon"
                                     ></snake-icon>
                                     <template #content>
-                                        <snake-parse :content="item.desc"></snake-parse>
+                                        <snake-rich-text :content="item.desc"></snake-rich-text>
                                     </template>
                                 </snake-tooltip>
                             </view>

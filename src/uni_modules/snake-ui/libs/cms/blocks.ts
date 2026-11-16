@@ -26,7 +26,7 @@ export const cmsBlocks = {
         componentName: 'snake-auxiliary-segmentation',
         standalone: true
     },
-    richtext: { version: 1, category: 'content', componentName: 'snake-rich-text', standalone: true },
+    richtext: { version: 1, category: 'content', componentName: 'snake-cms-rich-text', standalone: true },
     graphicnavigation: {
         version: 1,
         category: 'navigation',
@@ -94,9 +94,7 @@ export type CmsV2BuiltinComponent = {
     [Key in CmsBuiltinComponent]: (typeof cmsBlocks)[Key]['version'] extends 2 ? Key : never;
 }[CmsBuiltinComponent];
 
-export const cmsBuiltinComponents = new Set<CmsBuiltinComponent>(
-    Object.keys(cmsBlocks) as CmsBuiltinComponent[]
-);
+export const cmsBuiltinComponents = new Set<CmsBuiltinComponent>(Object.keys(cmsBlocks) as CmsBuiltinComponent[]);
 
 export function isCmsBuiltinComponent(component: string): component is CmsBuiltinComponent {
     return cmsBuiltinComponents.has(component as CmsBuiltinComponent);

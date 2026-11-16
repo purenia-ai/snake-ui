@@ -5,6 +5,8 @@ import type { FormSize } from '../snake-form/types';
 export type InputType = 'text' | 'number' | 'idcard' | 'digit' | 'password' | 'nickname';
 /** InputShape 类型定义。 */
 export type InputShape = 'square' | 'circle';
+/** 清空按钮的显示时机：always 有内容即显示，focus 仅在聚焦且有内容时显示。 */
+export type InputClearTrigger = 'always' | 'focus';
 /** Input 组件的公开属性。 */
 export interface InputProps {
     /** 双向绑定的当前值。 */
@@ -15,12 +17,22 @@ export interface InputProps {
     placeholder?: string;
     /** 占位文本样式。 */
     placeholderStyle?: string;
+    /** 占位文本样式类名，需要页面或全局样式自行定义。 */
+    placeholderClass?: string;
+    /** 输入框本体的附加类名。 */
+    customInputClass?: string;
     /** 允许输入的最大字符数。 */
     maxlength?: number;
     /** 是否显示清空操作。 */
     clearable?: boolean;
+    /** 清空按钮的显示时机。 */
+    clearTrigger?: InputClearTrigger;
     /** show password 配置。 */
     showPassword?: boolean;
+    /** 是否显示字数统计，需同时设置 maxlength。 */
+    showWordLimit?: boolean;
+    /** 是否强制显示错误态。 */
+    error?: boolean;
     /** prefix icon 配置。 */
     prefixIcon?: string;
     /** suffix icon 配置。 */
@@ -29,7 +41,7 @@ export interface InputProps {
     border?: 'none' | 'surround' | 'bottom';
     /** 组件形状。 */
     shape?: InputShape;
-    /** 组件尺寸。 */
+    /** 组件尺寸，决定容器高度、字号与图标大小；不传时跟随 FormItem。 */
     size?: FormSize;
     /** 内容颜色。 */
     color?: string;
@@ -41,8 +53,10 @@ export interface InputProps {
     readonly?: boolean;
     /** disabled color 配置。 */
     disabledColor?: string;
-    /** 文字尺寸，数值按 px（375 稿）处理。 */
+    /** 文字尺寸，数值按 px（375 稿）处理；不传时跟随 size 档位（small 13 / default 14 / large 16）。 */
     fontSize?: UnitValue;
+    /** 容器高度，数值按 px（375 稿）处理；不传时跟随 size 档位（32 / 40 / 48）。 */
+    height?: UnitValue;
     /** input align 配置。 */
     inputAlign?: 'left' | 'center' | 'right';
     /** formatter 配置。 */
@@ -95,3 +109,13 @@ export type InputEmits = {
     /** keyboardheightchange 事件携带的参数。 */
     keyboardheightchange: [event: unknown];
 };
+
+/** Input 组件通过 ref 暴露的方法。 */
+export interface InputExpose {
+    /** 聚焦输入框，disabled / readonly 时不生效。 */
+    focus: () => void;
+    /** 让输入框失焦并收起键盘。 */
+    blur: () => void;
+    /** 清空输入内容，有值时同步派发 update:modelValue / input / change。 */
+    clear: () => void;
+}

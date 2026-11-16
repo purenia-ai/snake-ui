@@ -18,7 +18,7 @@ const enUS: Locale = {
         modal: { title: 'Prompt', confirmText: 'Confirm', cancelText: 'Cancel' },
         network: { error: 'Network request failed', canceled: 'Request canceled' },
         search: { placeholder: 'Please enter keywords', actionText: 'Search' },
-        select: { cancelText: 'Cancel', confirmText: 'Confirm' },
+        picker: { cancelText: 'Cancel', confirmText: 'Confirm', emptyText: 'No data' },
         noNetwork: {
             tips: 'Ooops, network disconnected',
             retry: 'Retry',

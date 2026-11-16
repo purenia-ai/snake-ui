@@ -104,6 +104,7 @@ function isDisabled(option: SubsectionOption): boolean {
 function itemStyle(option: SubsectionOption, index: number) {
     const selected = index === activeIndex.value;
     return {
+        // 描边分段模式用 activeColor 做底色，选中项与按钮、标签一样用白字。
         color:
             props.mode === 'subsection' && selected
                 ? 'var(--snake-color-white, #ffffff)'

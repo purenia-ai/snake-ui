@@ -88,9 +88,12 @@ const presetSize = computed(() => {
 const currentSizeConfig = computed(() => sizeConfig[presetSize.value]);
 
 // 是否禁用，如果父组件 snake-radio-group 禁用的话，将会忽略子组件的配置
-const elDisabled = computed(() =>
-    props.disabled !== '' ? props.disabled : parentData.value.disabled !== null ? parentData.value.disabled : false
-);
+const elDisabled = computed(() => {
+    if (props.disabled !== '') return Boolean(props.disabled);
+    // 优先取 group 合并后的禁用态（含 Form / FormItem 下发），再退回 Form 自身
+    if (radioGroup.value?.disabled?.value) return true;
+    return Boolean(parentData.value.disabled || form?.disabled.value);
+});
 
 // 是否禁用 label 点击
 const elLabelDisabled = computed(() =>

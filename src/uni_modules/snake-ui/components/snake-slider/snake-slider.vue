@@ -1,5 +1,5 @@
 <template>
-    <view class="snake-slider" :class="[customClass, { 'is-disabled': disabled }]" :style="rootStyle">
+    <view class="snake-slider" :class="[customClass, { 'is-disabled': isDisabled }]" :style="rootStyle">
         <text v-if="showEdgeValue" class="snake-slider__edge">{{ minValue }}</text>
         <view class="snake-slider__main">
             <view
@@ -9,8 +9,8 @@
                 :aria-valuemin="minValue"
                 :aria-valuemax="maxValue"
                 :aria-valuenow="current"
-                :aria-disabled="disabled"
-                :tabindex="disabled ? -1 : 0"
+                :aria-disabled="isDisabled"
+                :tabindex="isDisabled ? -1 : 0"
                 @click="tap"
                 @keydown.left.prevent="adjust(-1)"
                 @keydown.down.prevent="adjust(-1)"
@@ -71,6 +71,8 @@ const props = withDefaults(defineProps<SliderProps>(), {
 });
 const emit = defineEmits<SliderEmits>();
 const formItem = inject(formItemKey, null);
+/** 禁用态：自身 disabled，或 FormItem/Form 下发的 disabled。 */
+const isDisabled = computed(() => props.disabled || formItem?.disabled.value || false);
 const instance = getCurrentInstance();
 const trackLeft = ref(0);
 const trackWidth = ref(0);
@@ -149,18 +151,18 @@ function setFromEvent(event: any, moving = false) {
     if (moving) emit('moving', next);
 }
 async function start(event: any) {
-    if (props.disabled) return;
+    if (isDisabled.value) return;
     if (!trackWidth.value) await update();
     dragging.value = true;
     setFromEvent(event);
     emit('start', current.value);
 }
 function move(event: any) {
-    if (!dragging.value || props.disabled) return;
+    if (!dragging.value || isDisabled.value) return;
     setFromEvent(event, true);
 }
 function end(event: any) {
-    if (!dragging.value || props.disabled) return;
+    if (!dragging.value || isDisabled.value) return;
     setFromEvent(event);
     dragging.value = false;
     emit('end', current.value);
@@ -168,14 +170,14 @@ function end(event: any) {
     void formItem?.notify('change');
 }
 async function tap(event: any) {
-    if (props.disabled || dragging.value) return;
+    if (isDisabled.value || dragging.value) return;
     if (!trackWidth.value) await update();
     setFromEvent(event);
     emit('change', current.value);
     void formItem?.notify('change');
 }
 function adjust(direction: -1 | 1) {
-    if (props.disabled) return;
+    if (isDisabled.value) return;
     const next = normalize(current.value + stepValue.value * direction);
     if (next === current.value) return;
     current.value = next;

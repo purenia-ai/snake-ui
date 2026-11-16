@@ -1,4 +1,4 @@
-import type { InjectionKey } from 'vue';
+import type { ComputedRef, InjectionKey } from 'vue';
 import type { UnitValue } from '../../libs/function/unit';
 import type { StyleValue } from '../../types/global';
 
@@ -40,6 +40,8 @@ export type RadioGroupEmits = {
 export interface RadioGroupContext {
     /** 父组件的响应式 props 对象，子项读取 modelValue 派生选中态。 */
     props: RadioGroupProps;
+    /** 合并后的禁用态（含 Form / FormItem 下发），子项应优先读它。 */
+    disabled: ComputedRef<boolean>;
     /** 子项点击后由 group 统一更新 v-model 并派发 change。 */
     setValue(val: string | number): void;
 }

@@ -1,12 +1,12 @@
 <template>
     <view
         class="snake-switch"
-        :class="[customClass, { 'is-disabled': disabled || loading }]"
+        :class="[customClass, { 'is-disabled': isDisabled || loading }]"
         :style="[trackStyle, customStyle]"
         role="switch"
         :aria-checked="checked"
-        :aria-disabled="disabled || loading"
-        :tabindex="disabled || loading ? -1 : 0"
+        :aria-disabled="isDisabled || loading"
+        :tabindex="isDisabled || loading ? -1 : 0"
         @click="toggle"
         @keydown.enter.prevent="toggle($event)"
         @keydown.space.prevent="toggle($event)"
@@ -44,6 +44,8 @@ const props = withDefaults(defineProps<SwitchProps>(), {
 });
 const emit = defineEmits<SwitchEmits>();
 const formItem = inject(formItemKey, null);
+/** 禁用态：自身 disabled，或 FormItem/Form 下发的 disabled。 */
+const isDisabled = computed(() => props.disabled || formItem?.disabled.value || false);
 const checked = computed(() => Object.is(props.modelValue, props.activeValue));
 const resolvedSize = computed(() => {
     const size = props.size || formItem?.size.value || 25;
@@ -64,7 +66,7 @@ const thumbStyle = computed(() => ({
 }));
 function toggle(event: unknown) {
     emit('click', event);
-    if (props.disabled || props.loading) return;
+    if (isDisabled.value || props.loading) return;
     const next = checked.value ? props.inactiveValue : props.activeValue;
     if (props.vibrateShort && typeof uni !== 'undefined' && uni.vibrateShort)
         uni.vibrateShort({ fail: () => undefined });

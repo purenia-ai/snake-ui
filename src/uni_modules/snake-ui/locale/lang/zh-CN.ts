@@ -18,7 +18,7 @@ const zhCN: Locale = {
         modal: { title: '提示', confirmText: '确认', cancelText: '取消' },
         network: { error: '网络请求失败', canceled: '请求已取消' },
         search: { placeholder: '请输入关键字', actionText: '搜索' },
-        select: { cancelText: '取消', confirmText: '确认' },
+        picker: { cancelText: '取消', confirmText: '确认', emptyText: '暂无数据' },
         noNetwork: {
             tips: '哎呀，网络信号丢失',
             retry: '重试',

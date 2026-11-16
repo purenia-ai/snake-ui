@@ -1,4 +1,4 @@
-import type { InjectionKey } from 'vue';
+import type { ComputedRef, InjectionKey } from 'vue';
 import type { UnitValue } from '../../libs/function/unit';
 import type { StyleValue } from '../../types/global';
 
@@ -44,6 +44,8 @@ export type CheckboxGroupEmits = {
 export interface CheckboxGroupContext {
     /** 父组件的响应式 props 对象，子项直接读取即可保持联动。 */
     props: CheckboxGroupProps;
+    /** 合并后的禁用态（含 Form / FormItem 下发），子项应优先读它。 */
+    disabled: ComputedRef<boolean>;
     /** 子项点击入口：在 modelValue 上增删自身值，max 校验与事件派发由 group 统一处理。 */
     toggleSelect(value: string | number): void;
 }

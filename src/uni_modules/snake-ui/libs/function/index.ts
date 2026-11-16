@@ -29,3 +29,4 @@ export * from './emitter';
 export * from './getParent';
 export * from './$parent';
 export * from './styleUtils';
+export * from './fieldSize';

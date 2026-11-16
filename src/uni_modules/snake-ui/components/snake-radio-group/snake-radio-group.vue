@@ -1,5 +1,9 @@
 <template>
-    <view class="snake-radio-group snake-radio-group--clearfix" :style="customStyle" :class="customClass">
+    <view
+        class="snake-radio-group snake-radio-group--clearfix"
+        :class="[customClass, { 'is-disabled': elDisabled }]"
+        :style="customStyle"
+    >
         <slot />
     </view>
 </template>
@@ -10,7 +14,7 @@
  * @see /components/radio
  */
 
-import { inject } from 'vue';
+import { computed, inject } from 'vue';
 import { useChildren } from '../../libs/hooks';
 import { RADIO_GROUP_KEY } from './types';
 import { formItemKey } from '../snake-form-item/types';
@@ -43,6 +47,8 @@ const props = withDefaults(defineProps<RadioGroupProps>(), {
 
 const emit = defineEmits<RadioGroupEmits>();
 const formItem = inject(formItemKey, null);
+/** 合并 FormItem / Form 下发的禁用态，子项统一读取这个值。 */
+const elDisabled = computed(() => props.disabled || formItem?.disabled.value || false);
 
 // 收集子 radio 并注册父组件上下文（linkChildren 的调用在 setValue 定义之后）
 const { linkChildren } = useChildren(RADIO_GROUP_KEY);
@@ -54,7 +60,7 @@ function getData() {
     return {
         iconSize: props.iconSize,
         labelDisabled: props.labelDisabled,
-        disabled: props.disabled,
+        disabled: elDisabled.value,
         shape: props.shape,
         activeColor: props.activeColor,
         size: props.size,
@@ -69,6 +75,7 @@ function getData() {
  * @param val 选中的 radio 的 name 值
  */
 function setValue(val: string | number) {
+    if (elDisabled.value) return;
     // 通过 emit 事件，设置父组件通过 v-model 双向绑定的值
     emit('update:modelValue', val);
     emit('change', val);
@@ -76,8 +83,8 @@ function setValue(val: string | number) {
     void formItem?.notify('change');
 }
 
-// 向子 radio 提供上下文：props（含 modelValue）实时联动 + 选中值入口
-linkChildren({ props, setValue });
+// 向子 radio 提供上下文：props（含 modelValue）实时联动 + 合并后的禁用态 + 选中值入口
+linkChildren({ props, disabled: elDisabled, setValue });
 
 defineExpose({ props, getData, setValue });
 </script>

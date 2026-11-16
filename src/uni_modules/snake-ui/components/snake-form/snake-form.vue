@@ -11,8 +11,8 @@
 
 import { computed, provide, ref, toRef } from 'vue';
 import { toast } from '../../libs/function/toast';
-import { formKey } from './types';
-import type { FormCallback, FormError, FormProps, FormRules } from './types';
+import { formKey, normalizeValidateTriggers } from './types';
+import type { FormCallback, FormError, FormField, FormProps, FormRules, FormValidateTrigger } from './types';
 
 defineOptions({ name: 'SnakeForm', options: { virtualHost: true, styleIsolation: 'shared' } });
 const props = withDefaults(defineProps<FormProps>(), {
@@ -24,31 +24,36 @@ const props = withDefaults(defineProps<FormProps>(), {
     labelWidth: 45,
     labelAlign: 'left',
     labelStyle: () => ({}),
+    asteriskPosition: 'start',
+    hideAsterisk: false,
     size: 'default',
+    disabled: false,
+    validateTrigger: () => ['change', 'blur'],
     customClass: '',
     customStyle: ''
 });
 
-interface FormField {
-    prop: string;
-    validation(trigger?: string, callback?: (message: string) => void): void;
-    resetField(): void;
-}
-
 const fields = ref<FormField[]>([]);
 const rules = ref<FormRules>(props.rules);
 const model = computed(() => props.model);
+/** 触发时机归一化为数组，字符串与数组两种写法都能用。 */
+const validateTrigger = computed<FormValidateTrigger[]>(() => normalizeValidateTriggers(props.validateTrigger));
 
 function setRules(newRules: FormRules) {
     rules.value = newRules;
 }
 
 function addField(field: FormField) {
-    if (!fields.value.includes(field)) fields.value.push(field);
+    if (fields.value.includes(field)) return;
+    fields.value.push(field);
 }
 
-function removeField(field: Pick<FormField, 'prop'>) {
-    fields.value = fields.value.filter(item => item.prop !== field.prop);
+/**
+ * 注销字段：按实例引用移除。
+ * 旧实现按 prop 过滤，会让同名字段（比如 v-for 里的临时项）互相误删。
+ */
+function removeField(field: FormField) {
+    fields.value = fields.value.filter(item => item !== field);
 }
 
 function resetFields() {
@@ -99,18 +104,22 @@ function validateField(prop: string | string[], callback?: FormCallback): Promis
     );
 }
 
-// Snake 输入控件通过注入读取表单尺寸和错误配置；字段生命周期由公开方法驱动。
+// Snake 输入控件通过注入读取表单尺寸、禁用态和错误配置；字段生命周期由公开方法驱动。
 provide(formKey, {
     model: toRef(props, 'model'),
     rules,
     size: toRef(props, 'size'),
+    disabled: toRef(props, 'disabled'),
+    validateTrigger,
     errorType: toRef(props, 'errorType'),
     borderBottom: toRef(props, 'borderBottom'),
     labelPosition: toRef(props, 'labelPosition'),
     labelWidth: toRef(props, 'labelWidth'),
     labelAlign: toRef(props, 'labelAlign'),
     labelStyle: toRef(props, 'labelStyle'),
-    register: field => addField(field as unknown as FormField),
+    asteriskPosition: toRef(props, 'asteriskPosition'),
+    hideAsterisk: toRef(props, 'hideAsterisk'),
+    register: field => addField(field),
     unregister: field => removeField(field)
 });
 

@@ -50,7 +50,7 @@ declare module 'vue' {
         SnakeNoticeBar: (typeof import('./components/snake-notice-bar/snake-notice-bar.vue'))['default'];
         SnakeOverlay: (typeof import('./components/snake-overlay/snake-overlay.vue'))['default'];
         SnakePagePopup: (typeof import('./components/snake-page-popup/snake-page-popup.vue'))['default'];
-        SnakeParse: (typeof import('./components/snake-parse/snake-parse.vue'))['default'];
+        SnakeCmsRichText: (typeof import('./components/snake-cms-rich-text/snake-cms-rich-text.vue'))['default'];
         SnakePictureAds: (typeof import('./components/snake-picture-ads/snake-picture-ads.vue'))['default'];
         SnakePopup: (typeof import('./components/snake-popup/snake-popup.vue'))['default'];
         SnakeQrCode: (typeof import('./components/snake-qr-code/snake-qr-code.vue'))['default'];
@@ -60,7 +60,7 @@ declare module 'vue' {
         SnakeRichText: (typeof import('./components/snake-rich-text/snake-rich-text.vue'))['default'];
         SnakeRootPortal: (typeof import('./components/snake-root-portal/snake-root-portal.vue'))['default'];
         SnakeSearch: (typeof import('./components/snake-search/snake-search.vue'))['default'];
-        SnakeSelect: (typeof import('./components/snake-select/snake-select.vue'))['default'];
+        SnakePicker: (typeof import('./components/snake-picker/snake-picker.vue'))['default'];
         SnakeSkeleton: (typeof import('./components/snake-skeleton/snake-skeleton.vue'))['default'];
         SnakeSkeletonItem: (typeof import('./components/snake-skeleton-item/snake-skeleton-item.vue'))['default'];
         SnakeSlider: (typeof import('./components/snake-slider/snake-slider.vue'))['default'];

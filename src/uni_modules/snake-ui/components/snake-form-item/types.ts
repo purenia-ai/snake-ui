@@ -2,7 +2,7 @@ import type { InjectionKey, Ref } from 'vue';
 import type { UnitValue } from '../../libs/function/unit';
 import type { StyleValue } from '../../types/global';
 import type { FormTrigger } from '../../libs/form';
-import type { FormLabelAlign, FormLabelPosition, FormSize } from '../snake-form/types';
+import type { FormLabelAlign, FormLabelPosition, FormSize, FormValidateTrigger } from '../snake-form/types';
 
 /** FormItem 组件的公开属性。 */
 export interface FormItemProps {
@@ -34,6 +34,14 @@ export interface FormItemProps {
     rightIconStyle?: StyleValue;
     /** 是否展示必填星号。 */
     required?: boolean;
+    /** 必填星号位置，start 在标签前，end 在标签后，空字符串表示继承 Form。 */
+    asteriskPosition?: 'start' | 'end' | '';
+    /** 是否隐藏必填星号，空字符串表示继承 Form。 */
+    hideAsterisk?: '' | boolean;
+    /** 是否禁用该表单项内的控件，空字符串表示继承 Form。 */
+    disabled?: '' | boolean;
+    /** 字段校验触发时机，空字符串表示继承 Form。 */
+    validateTrigger?: FormValidateTrigger | FormValidateTrigger[] | '';
     /** 预设尺寸或自定义字号。 */
     size?: FormSize | string;
     /** 根节点自定义类名。 */
@@ -62,6 +70,8 @@ export interface FormItemContext {
     errorVisible: Ref<boolean>;
     /** 控件尺寸。 */
     size: Ref<FormSize>;
+    /** 控件是否禁用，FormItem 已合并自身与 Form 的配置。 */
+    disabled: Ref<boolean>;
     /** 触发指定方式的校验。 */
     notify(trigger: FormTrigger): Promise<void>;
 }

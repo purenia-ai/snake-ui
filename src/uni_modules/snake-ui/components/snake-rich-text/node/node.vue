@@ -298,7 +298,7 @@ export default {
         opts: Array
     },
     inject: {
-        snakeParseRoot: {
+        snakeRichTextRoot: {
             default: null
         }
     },
@@ -323,7 +323,7 @@ export default {
         // The renderer is recursive, so $parent may be another node (or a
         // framework wrapper in Vue 3). Receive the actual parse component
         // explicitly instead of walking the component tree by name.
-        this.root = this.snakeParseRoot;
+        this.root = this.snakeRichTextRoot;
     },
     mounted() {
         // #ifdef H5 || APP-PLUS
@@ -348,13 +348,23 @@ export default {
         // #endif
     },
     beforeDestroy() {
-        // #ifdef H5 || APP-PLUS
-        if (this.observer) {
-            this.observer.disconnect();
-        }
-        // #endif
+        this.destroyObserver();
+    },
+    // Vue 3 不再调用 beforeDestroy，懒加载观察器需要在这个钩子断开
+    unmounted() {
+        this.destroyObserver();
     },
     methods: {
+        /**
+         * @description 断开懒加载观察器
+         */
+        destroyObserver() {
+            // #ifdef H5 || APP-PLUS
+            if (this.observer) {
+                this.observer.disconnect();
+            }
+            // #endif
+        },
         // #ifdef MP-WEIXIN
         toJSON() {
             return this;

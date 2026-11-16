@@ -13,6 +13,7 @@ export const lightPalette: ThemeColor = {
     primaryDeeper: '#22242E',
     primaryDisabled: '#A6EBD3',
     primaryLight: '#06D2901A',
+    // 整片主色上的前景色：品牌绿上取白字，和按钮、标签的实心主色一致；需要更高对比的主题可改墨绿 #073B2A（6.37:1）。
     primaryInk: '#FFFFFF',
     // 语义色与中性色默认主题（lightPalette）
     success: '#19BE6B',
@@ -58,7 +59,8 @@ export const darkPalette: ThemeColor = {
     primaryDeeper: '#14151F',
     primaryDisabled: '#1E3A31',
     primaryLight: '#0C2A1E',
-    primaryInk: '#26273A',
+    // 暗色下主色仍是品牌亮绿，整片主色上的前景色继续用白字。
+    primaryInk: '#FFFFFF',
     // 语义色与中性色暗色主题（darkPalette）
     success: '#4ADE80',
     successDark: '#1F9D57',

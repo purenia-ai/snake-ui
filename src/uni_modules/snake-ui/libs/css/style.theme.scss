@@ -38,33 +38,8 @@ page.snake-theme-dark,
     color: $snake-color-text;
 }
 
-// picker-view遮罩层背景色
-.snake-picker-view-mask,
-.uni-picker-view-mask {
-    background-image:
-        linear-gradient(
-            180deg,
-            rgba(var(--snake-color-surface-rgb, 255, 255, 255), 0.95),
-            rgba(var(--snake-color-surface-rgb, 255, 255, 255), 0.6)
-        ),
-        linear-gradient(
-            0deg,
-            rgba(var(--snake-color-surface-rgb, 255, 255, 255), 0.95),
-            rgba(var(--snake-color-surface-rgb, 255, 255, 255), 0.6)
-        ) !important;
-}
-
-.snake-picker-view-indicator {
-    border: rgba(var(--snake-color-surface-rgb, 255, 255, 255), 0.6) !important;
-}
-
-// picker-view指示器边框色
-.snake-picker-view-indicator::before,
-.uni-picker-view-indicator::before {
-    border-top: 1px solid var(--snake-color-border, #dcdfe6) !important;
-}
-
-.snake-picker-view-indicator::after,
-.uni-picker-view-indicator::after {
-    border-bottom: 1px solid var(--snake-color-border, #dcdfe6) !important;
-}
+/*
+ * 原生 picker-view 的遮罩与指示框样式归 snake-picker 自己维护
+ * （.snake-picker__mask / .snake-picker__indicator）：这里带 !important 的全局规则
+ * 会盖掉组件主题变量，也没有必要替原生组件做全站皮肤。
+ */

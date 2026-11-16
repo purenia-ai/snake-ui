@@ -83,7 +83,10 @@ const currentSizeConfig = computed(() => sizeConfig[presetSize.value]);
 
 // 是否禁用，如果父组件 snake-checkbox-group 禁用的话，将会忽略子组件的配置
 const isDisabled = computed(() => {
-    return props.disabled !== '' ? props.disabled : (checkboxGroup.value?.props.disabled ?? false);
+    if (props.disabled !== '') return Boolean(props.disabled);
+    // 优先取 group 合并后的禁用态（含 Form / FormItem 下发），再退回 Form 自身
+    if (checkboxGroup.value?.disabled?.value) return true;
+    return Boolean(checkboxGroup.value?.props.disabled || form?.disabled.value);
 });
 
 // 是否禁用 label 点击

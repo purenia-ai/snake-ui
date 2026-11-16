@@ -9,3 +9,4 @@ export * from './useToast';
 export * from './useModal';
 export * from './useParent';
 export * from './useChildren';
+export * from './useTouch';

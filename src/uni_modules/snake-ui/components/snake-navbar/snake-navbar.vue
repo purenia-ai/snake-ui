@@ -11,10 +11,11 @@
                         v-if="isBack"
                         class="snake-navbar__back"
                         hover-class="snake-navbar__hit--hover"
+                        :hover-stay-time="70"
                         @click="goBack"
                     >
                         <snake-icon :name="backIconName" :size="backIconSize ?? 'inherit'" :color="backIconColor" />
-                        <text v-if="backText" class="snake-navbar__back-text" :style="backTextStyle">
+                        <text v-if="backText" class="snake-navbar__back-text" :style="backTextStyleMerged">
                             {{ backText }}
                         </text>
                     </view>
@@ -45,6 +46,7 @@
 import { computed } from 'vue';
 import zIndex from '../../libs/config/zIndex';
 import { addUnit } from '../../libs/function/unit';
+import { toStyle } from '../../libs/function/style';
 import Icon from '../snake-icon/snake-icon.vue';
 import type { NavbarEmits, NavbarProps } from './types';
 
@@ -79,6 +81,27 @@ const systemInfo = uni.getSystemInfoSync();
 const statusBarHeight = computed(() => (props.safeAreaInsetTop ? Number(systemInfo.statusBarHeight) || 0 : 0));
 const navbarHeight = computed(() => Number.parseFloat(String(props.height)) || 44);
 const placeholderHeight = computed(() => navbarHeight.value + statusBarHeight.value);
+
+/**
+ * 小程序右上角胶囊浮在导航栏右侧，右侧插槽必须让出这段宽度，否则内容被胶囊压住；
+ * 标题的最大宽度同样扣掉这段，长标题才不会钻到胶囊下面。
+ * H5 / App 没有胶囊，取 0，行为与之前一致。
+ */
+function capsuleInset(): number {
+    let inset = 0;
+    // #ifdef MP-WEIXIN || MP-QQ
+    try {
+        const menu = uni.getMenuButtonBoundingClientRect();
+        const windowWidth = Number(systemInfo.windowWidth) || Number(systemInfo.screenWidth) || 0;
+        inset = menu && menu.left ? windowWidth - Number(menu.left) : 0;
+    } catch {
+        inset = 0;
+    }
+    // #endif
+    return inset > 0 ? Math.round(inset) : 0;
+}
+const capsuleWidth = capsuleInset();
+
 const backgroundStyle = computed(() =>
     typeof props.background === 'string' ? { background: props.background } : props.background
 );
@@ -87,13 +110,19 @@ const rootStyle = computed(() => [
     { zIndex: Number(props.zIndex) || zIndex.navbar },
     props.customStyle
 ]);
-const innerStyle = computed(() => ({ height: navbarHeight.value + 'px' }));
+const innerStyle = computed(() => ({
+    height: navbarHeight.value + 'px',
+    '--snake-navbar-capsule-inset': capsuleWidth + 'px',
+    ...(capsuleWidth ? { paddingRight: capsuleWidth + 'px' } : {})
+}));
 const titleStyle = computed(() => ({
     width: addUnit(props.titleWidth),
     color: props.titleColor,
     fontSize: addUnit(props.titleSize),
     fontWeight: props.titleBold ? '700' : '500'
 }));
+/** 返回辅助文字默认跟随返回图标颜色，backTextStyle 里的同名字段仍然优先。 */
+const backTextStyleMerged = computed(() => toStyle({ color: props.backIconColor }, props.backTextStyle));
 
 function goBack(event: unknown) {
     emit('back', event);
@@ -120,8 +149,18 @@ function goBack(event: unknown) {
     right: 0;
     left: 0;
 }
-.snake-navbar.has-border {
+/* 半像素底边：1px 边框在高分屏上偏粗，缩放 0.5 后与小程序原生导航栏一致。 */
+.snake-navbar.has-border::after {
+    content: ' ';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 3;
     border-bottom: 1px solid var(--snake-color-divider, #ebeef5);
+    transform: scaleY(0.5);
+    transform-origin: 0 100%;
+    pointer-events: none;
 }
 .snake-navbar__status {
     width: 100%;
@@ -149,10 +188,11 @@ function goBack(event: unknown) {
 }
 .snake-navbar__back {
     display: flex;
+    box-sizing: border-box;
     align-items: center;
     min-width: 44px;
     height: 100%;
-    padding: 0 10px;
+    padding: 0 12px;
 }
 .snake-navbar__back-text {
     overflow: hidden;
@@ -172,7 +212,7 @@ function goBack(event: unknown) {
     display: flex;
     align-items: center;
     justify-content: center;
-    max-width: calc(100% - 96px);
+    max-width: calc(100% - 96px - var(--snake-navbar-capsule-inset, 0px));
     text-align: center;
     transform: translateX(-50%);
 }
@@ -183,10 +223,12 @@ function goBack(event: unknown) {
     white-space: nowrap;
 }
 .snake-navbar__content {
-    width: calc(100% - 96px);
+    width: calc(100% - 96px - var(--snake-navbar-capsule-inset, 0px));
 }
+/* 按压反馈用前景变淡（iOS 返回键的做法）：叠一块半透明黑在彩色导航栏上会显成灰色方块。 */
 .snake-navbar__hit--hover {
-    background: rgba(0, 0, 0, 0.06);
+    opacity: 0.55;
+    transition: opacity 0.15s ease;
 }
 .snake-navbar__placeholder {
     width: 100%;
