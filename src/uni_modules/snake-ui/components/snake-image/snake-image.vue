@@ -1,8 +1,8 @@
 <template>
     <view class="snake-image" :class="customClass" :style="rootStyle" :aria-label="alt || undefined" @click="click">
+        <!-- 不写 :key：重挂由状态驱动（失败即卸载、reload 时先卸载一帧），避免与 v-if 链的编译期自动 key 撞车 -->
         <image
-            v-if="displaySrc"
-            :key="imageKey"
+            v-if="imageRendered"
             class="snake-image__image"
             :src="displaySrc"
             :alt="alt"
@@ -13,7 +13,12 @@
             @load="onLoad"
             @error="onError"
         />
-        <view v-if="isLoading && showLoading" class="snake-image__status" :style="statusStyle">
+        <view
+            v-if="isLoading && showLoading"
+            class="snake-image__status"
+            :class="{ 'snake-image__status--flow': placeholderInFlow }"
+            :style="statusStyle"
+        >
             <slot name="loading">
                 <image
                     v-if="loadingImg && !loadingImageFailed"
@@ -25,9 +30,11 @@
                 <snake-icon v-else-if="loadingIcon" :name="loadingIcon" :size="statusSize" />
             </slot>
         </view>
+        <!-- 两个占位拆成独立 v-if：语义等价（加载与失败互斥），且编译器不再给这条链分配自动 key -->
         <view
-            v-else-if="status === 'error' && showError"
+            v-if="status === 'error' && showError"
             class="snake-image__status snake-image__status--error"
+            :class="{ 'snake-image__status--flow': placeholderInFlow }"
             :style="statusStyle"
         >
             <slot name="error">
@@ -51,7 +58,7 @@
  * @see /components/image
  */
 
-import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { addUnit, unitToPx } from '../../libs/function/unit';
 import type { ImageEmits, ImageExpose, ImageProps } from './types';
 
@@ -86,7 +93,8 @@ type ImageStatus = 'idle' | 'loading' | 'success' | 'error';
 
 const status = ref<ImageStatus>(props.src ? (props.lazyLoad ? 'idle' : 'loading') : 'error');
 const shouldLoad = ref(!props.lazyLoad && Boolean(props.src));
-const imageKey = ref(0);
+/** reload 时临时卸载图片节点的瞬态标志：原生 image 只有重新挂载才会对同一地址再发一次请求。 */
+const remounting = ref(false);
 const loadingImageFailed = ref(false);
 const errorImageFailed = ref(false);
 const instance = getCurrentInstance();
@@ -97,6 +105,10 @@ const isLoading = computed(() => status.value === 'idle' || status.value === 'lo
 const displaySrc = computed(() => (shouldLoad.value ? props.src : ''));
 const previewUrls = computed(() => (props.previewUrls?.length ? props.previewUrls : [props.src]));
 const autoHeight = computed(() => props.height === 'auto' || props.height == null);
+/** 图片节点是否挂载：失败态卸载，reload 期间临时卸载；改地址则节点常驻、由原生 image 自己重新请求。 */
+const imageRendered = computed(() => Boolean(displaySrc.value) && status.value !== 'error' && !remounting.value);
+/** 图片不占用布局时（失败、懒加载待触发）占位层改走文档流撑高，避免 `height="auto"` 塌成 0。 */
+const placeholderInFlow = computed(() => autoHeight.value && !imageRendered.value);
 const rootStyle = computed(() => [
     {
         width: addUnit(props.width),
@@ -172,7 +184,6 @@ function observeViewport() {
 
 function resetLoadState() {
     disconnectObserver();
-    imageKey.value += 1;
     loadingImageFailed.value = false;
     errorImageFailed.value = false;
     if (!props.src) {
@@ -205,7 +216,11 @@ function onErrorImageError() {
     errorImageFailed.value = true;
 }
 /** 供业务在失败重试或鉴权地址刷新后重新发起当前资源请求。 */
-function reload() {
+async function reload() {
+    // 同一地址在已成功 / 加载中时节点常驻，只有先卸载一帧再挂回来才会产生新请求；全程不依赖 :key。
+    remounting.value = true;
+    await nextTick();
+    remounting.value = false;
     resetLoadState();
 }
 function click(event: unknown) {
@@ -269,6 +284,10 @@ defineExpose<ImageExpose>({ reload });
     min-height: 60px;
     color: var(--snake-image-status-color, var(--snake-color-text-muted, #909399));
     background-color: var(--snake-image-status-bg, var(--snake-color-surface-muted, #f1f1f1));
+}
+.snake-image__status--flow {
+    /* 图片节点不在渲染（失败 / 懒加载待触发）时由占位层接管高度，auto 高度不会塌成 0 */
+    position: static;
 }
 .snake-image__status--error {
     flex-direction: column;

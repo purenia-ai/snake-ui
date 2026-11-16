@@ -152,7 +152,13 @@ test('image owns viewport lazy loading and configured state artwork', async () =
     assert.match(iconfont, /\.sicon-error-circle:before/);
     assert.match(iconfont, /\.sicon-photo:before/);
     assert.match(image, /onBeforeUnmount\(disconnectObserver\)/);
-    assert.match(image, /:key="imageKey"/);
+    // 重挂由状态驱动：不写 :key，避免与 v-if 链的编译期自动 key 撞车（见 tests/snake-image.test.mjs）
+    assert.match(image, /v-if="imageRendered"/);
+    assert.match(image, /status\.value !== 'error'/);
+    assert.match(image, /const remounting = ref\(false\)/);
+    assert.match(image, /await nextTick\(\)/);
+    assert.doesNotMatch(image, /:key=/);
+    assert.doesNotMatch(image, /imageKey/);
     assert.doesNotMatch(image, /:lazy-load="lazyLoad"/);
     assert.match(image, /status\.value === 'success'/);
     assert.match(image, /defineExpose<ImageExpose>\(\{ reload \}\)/);
