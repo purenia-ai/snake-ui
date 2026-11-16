@@ -46,7 +46,9 @@ const componentDescriptions: Partial<Record<ComponentItem['link'], string>> = {
     '/components/collapse': '把长内容折叠成标题行，用于商品参数、FAQ 与售后说明。',
     '/components/grid': '把入口按等分宽度排成九宫格，用于首页金刚区与快捷入口。',
     '/components/swipe-action': '列表项左滑露出操作按钮，用于删除、收藏与取消订单。',
-    '/components/backtop': '长页面滚动后提供一键回顶入口，隐藏时不占位。'
+    '/components/backtop': '长页面滚动后提供一键回顶入口，隐藏时不占位。',
+    '/components/picker': '在底部弹层里滚动选择单列、多列或联动列，适合日期与地区。',
+    '/components/select-picker': '在底部弹层内以列表勾选，支持单选、多选、本地搜索与选择数量限制。'
 };
 
 const componentKeywords: Partial<Record<ComponentItem['link'], string[]>> = {
@@ -58,7 +60,8 @@ const componentKeywords: Partial<Record<ComponentItem['link'], string[]>> = {
     '/components/no-network': ['断网', '离线', '重试'],
     '/components/notice-bar': ['公告', '滚动通知', '消息条'],
     '/components/drop-menu': ['筛选', '下拉筛选', '菜单'],
-    '/components/config-provider': ['主题', '全局配置', '暗黑模式']
+    '/components/config-provider': ['主题', '全局配置', '暗黑模式'],
+    '/components/select-picker': ['多选', '单选', '列表选择', '复选列表', '带搜索的选择器']
 };
 
 function enrichComponent(item: ComponentDefinition): ComponentItem {
@@ -106,6 +109,7 @@ const componentGroupDefinitions: ComponentGroupDefinition[] = [
             { name: 'Slider', title: '滑动选择器', link: '/components/slider' },
             { name: 'Search', title: '搜索框', link: '/components/search' },
             { name: 'Picker', title: '列选择器', link: '/components/picker' },
+            { name: 'SelectPicker', title: '单复选选择器', link: '/components/select-picker' },
             { name: 'Upload', title: '文件上传', link: '/components/upload' },
             { name: 'VerificationCode', title: '验证码倒计时', link: '/components/verification-code' },
             { name: 'Calendar', title: '日历', link: '/components/calendar' }

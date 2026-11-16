@@ -19,6 +19,15 @@ const zhCN: Locale = {
         network: { error: '网络请求失败', canceled: '请求已取消' },
         search: { placeholder: '请输入关键字', actionText: '搜索' },
         picker: { cancelText: '取消', confirmText: '确认', emptyText: '暂无数据' },
+        selectPicker: {
+            title: '请选择',
+            confirmText: '确认',
+            closeText: '关闭',
+            filterPlaceholder: '搜索',
+            emptyText: '暂无数据',
+            noMatchText: '无匹配项',
+            minText: '至少选择 {n} 项'
+        },
         noNetwork: {
             tips: '哎呀，网络信号丢失',
             retry: '重试',

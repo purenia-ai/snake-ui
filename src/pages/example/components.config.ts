@@ -36,6 +36,7 @@ const englishDescriptions: Record<string, string> = {
     Slider: 'Choose a value by tapping or dragging.',
     Search: 'Search input with a placeholder, clear action and action button.',
     Picker: 'Choose from single, multiple or linked columns in a bottom sheet.',
+    SelectPicker: 'Pick from a bottom sheet list with single or multiple selection, search and limits.',
     Upload: 'Upload images, videos and files with OSS adapter support.',
     VerificationCode: 'Track verification code countdown state and copy across pages.',
     Calendar: 'Pick single or range dates with lunar dates and holidays.',
@@ -182,6 +183,12 @@ const componentGroups: ComponentGroup[] = [
                 '集成占位、清除与操作按钮的常用搜索输入。'
             ),
             item('/pages/componentsA/picker/index', 'Picker 列选择器', 'Picker', '单列、多列与多列联动的底部选择器。'),
+            item(
+                '/pages/componentsA/selectPicker/index',
+                'SelectPicker 单复选选择器',
+                'SelectPicker',
+                '底部弹层内列表勾选，支持单选、多选、搜索与数量限制。'
+            ),
             item(
                 '/pages/componentsA/upload/index',
                 'Upload 文件上传',

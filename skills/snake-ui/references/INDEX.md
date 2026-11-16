@@ -50,6 +50,7 @@
 - [RichText 富文本](components/rich-text.md)
 - [RootPortal 根节点传送](components/root-portal.md)
 - [Search 搜索框](components/search.md)
+- [SelectPicker 单复选选择器](components/select-picker.md)
 - [配置](components/setting.md)
 - [Skeleton 骨架屏](components/skeleton.md)
 - [Slider 滑动选择器](components/slider.md)

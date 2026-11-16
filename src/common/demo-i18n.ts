@@ -902,6 +902,7 @@ const demoTitles: Record<string, string> = {
     'circle-progress': 'Circle Progress',
     search: 'Search',
     picker: 'Picker',
+    'select-picker': 'Select Picker',
     'read-more': 'Read More',
     'no-network': 'No Network',
     text: 'Text',
@@ -1452,6 +1453,28 @@ Object.assign(englishMessages, {
     请选择收件城市: 'Please choose a delivery city',
     提交: 'Submit',
     底部安全区适配: 'Bottom safe area inset'
+});
+
+Object.assign(englishMessages, {
+    '底部弹层内以列表勾选，支持单选、多选、搜索与数量限制。':
+        'Pick rows in a bottom sheet with single or multiple selection, search and limits.',
+    单选示例: 'Single selection',
+    多选示例: 'Multiple selection',
+    至少选择一项: 'Pick at least one item',
+    '至少 1 项，最多 3 项': 'Choose 1 to 3 items',
+    打开多选列表: 'Open multi-select list',
+    选择标签: 'Choose tags',
+    异步确认: 'Async confirm',
+    '模拟 600ms 远程校验：选中上海时拦截': 'Simulated 600ms remote check: Shanghai is rejected',
+    '被拦截：请选择其他城市': 'Rejected: choose another city',
+    标题文字: 'Title text',
+    显示确认栏: 'Show confirm bar',
+    本地搜索: 'Local search',
+    最少选择数: 'Min selections',
+    最多选择数: 'Max selections',
+    列表最大高度: 'List max height',
+    定位已选项: 'Scroll to selection',
+    单复选选择器: 'Select Picker'
 });
 
 export function demoText(value: string): string {

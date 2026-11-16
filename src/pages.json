@@ -83,6 +83,7 @@
                 { "path": "cell/index", "style": { "navigationBarTitleText": "单元格" } },
                 { "path": "search/index", "style": { "navigationBarTitleText": "搜索框" } },
                 { "path": "picker/index", "style": { "navigationBarTitleText": "列选择器" } },
+                { "path": "selectPicker/index", "style": { "navigationBarTitleText": "单复选选择器" } },
                 { "path": "calendar/index", "style": { "navigationBarTitleText": "日历" } },
                 { "path": "countDown/index", "style": { "navigationBarTitleText": "倒计时" } },
                 { "path": "verificationCode/index", "style": { "navigationBarTitleText": "验证码倒计时" } },
