@@ -13,8 +13,9 @@ const toComponentDirectories = item => {
 };
 const components = componentItems.map(toDocumentName);
 const standardizedDocs = [
-    'parse',
+    'rich-text',
     'button',
+    'tag',
     'input',
     'form',
     'popup',
@@ -22,7 +23,7 @@ const standardizedDocs = [
     'checkbox',
     'radio',
     'switch',
-    'select',
+    'picker',
     'calendar',
     'overlay',
     'notice-bar',
@@ -62,11 +63,17 @@ const standardizedDocs = [
     'textarea',
     'tooltip',
     'backtop',
-    'search'
+    'search',
+    'action-sheet',
+    'steps',
+    'collapse',
+    'grid',
+    'swipe-action'
 ];
 const undocumentedCmsComponents = [
     'activity-list',
     'auxiliary-segmentation',
+    'cms-rich-text',
     'commodity-search',
     'coupon',
     'custom-module',
@@ -82,7 +89,6 @@ const undocumentedCmsComponents = [
     'notice',
     'page-popup',
     'picture-ads',
-    'rich-text',
     'videos'
 ];
 
@@ -146,13 +152,18 @@ test('high-use component docs follow the standard documentation shape', async ()
 
     for (const name of [
         'button',
+        'tag',
+        'action-sheet',
+        'collapse',
+        'grid',
+        'swipe-action',
         'input',
         'popup',
         'upload',
         'checkbox',
         'radio',
         'switch',
-        'select',
+        'picker',
         'calendar',
         'overlay',
         'notice-bar',
@@ -188,6 +199,12 @@ test('high-use component docs follow the standard documentation shape', async ()
 
     for (const name of [
         'button',
+        'tag',
+        'action-sheet',
+        'steps',
+        'collapse',
+        'grid',
+        'swipe-action',
         'input',
         'popup',
         'upload',
@@ -206,7 +223,7 @@ test('high-use component docs follow the standard documentation shape', async ()
         'index-list-panel',
         'index-anchor',
         'line-progress',
-    'circle-progress',
+        'circle-progress',
         'slider',
         'read-more',
         'transition',
@@ -241,7 +258,7 @@ test('high-use component docs follow the standard documentation shape', async ()
 });
 
 test('component registry is the complete documented component source of truth', async () => {
-    assert.equal(componentItems.length, 50);
+    assert.equal(componentItems.length, 56);
     assert.equal(new Set(componentItems.map(item => item.link)).size, componentItems.length);
 
     const packageEntry = await readFile(resolve(root, 'src/uni_modules/snake-ui/index.ts'), 'utf8');

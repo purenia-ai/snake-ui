@@ -39,7 +39,7 @@ const foundationComponents = [
     'line-progress',
     'circle-progress',
     'search',
-    'select',
+    'picker',
     'read-more',
     'no-network',
     'text',
@@ -187,9 +187,11 @@ test('component demos use one restrained shared presentation system', async () =
 
     assert.doesNotMatch(theme, /snake-demo-nav-gradient|snake-demo-page-tint|snake-demo-card-shadow/);
     assert.match(page, /demo-page-header__title/);
-    assert.match(page, /currentTheme\.value\.name === 'snake'/);
-    assert.match(page, /isDark\.value \? '#01513B' : '#007A55'/);
+    assert.match(page, /const navbarColor = computed\(\(\) => color\.primary\)/);
+    assert.match(page, /const navbarForeground = computed\(\(\) => color\.primaryInk\)/);
     assert.match(page, /backgroundColor: navbarColor\.value/);
+    // 导航栏不再硬编码品牌绿：底色/文字都来自主题令牌，切主题时整条跟着变。
+    assert.doesNotMatch(page, /#007A55|#01513B/);
     assert.doesNotMatch(
         page,
         /backgroundImage:\s*'linear-gradient\(90deg, var\(--snake-color-primary-dark\), var\(--snake-color-primary-disabled\)\)'/
@@ -357,7 +359,8 @@ test('docs use surface-aware browser chrome while retaining brand green in the p
     assert.match(frame, /preview-phone__system-status/);
     assert.match(frame, /snake-ui:preview-navbar-theme/);
     assert.match(frame, /:style="systemStatusStyle"/);
-    assert.match(frame, /background:\s*'#007A55'/);
+    assert.match(frame, /background:\s*'#06D290'/);
+    assert.match(frame, /color:\s*'#FFFFFF'/);
     assert.match(frame, /systemStatusStyle\.value = \{ background: backgroundColor, color \}/);
     assert.match(frame, /preview-phone__battery/);
     assert.match(frame, /<svg class="preview-phone__wifi" viewBox="0 0 16 16"/);
@@ -366,7 +369,8 @@ test('docs use surface-aware browser chrome while retaining brand green in the p
     assert.match(css, /\.preview-phone iframe,\s*\.preview-phone__status\s*{[^}]*border-radius:\s*0 0 25px 25px/s);
     assert.doesNotMatch(demoTheme, /snake-demo-nav-/);
     assert.match(demoPage, /:background="background"/);
-    assert.match(demoPage, /title-color="#ffffff"/);
+    assert.match(demoPage, /:title-color="navbarForeground"/);
+    assert.match(demoPage, /:back-icon-color="navbarForeground"/);
 });
 
 test('mobile preview and locale guide expose one persistent bilingual experience', async () => {
@@ -519,6 +523,7 @@ test('CMS and commerce previews expose grouped variants', async () => {
             'magicCube',
             'videos',
             'richText',
+            'cmsRichText',
             'notice',
             'auxiliarySegmentation',
             'graphicNavigation',
@@ -543,6 +548,7 @@ test('CMS and commerce previews expose grouped variants', async () => {
         'magic-cube',
         'videos',
         'rich-text',
+        'cms-rich-text',
         'notice',
         'auxiliary-segmentation',
         'graphic-navigation',

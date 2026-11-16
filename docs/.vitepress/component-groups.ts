@@ -36,12 +36,20 @@ const componentDescriptions: Partial<Record<ComponentItem['link'], string>> = {
     '/components/calendar': '选择单日、日期范围或多日期并处理可选边界。',
     '/components/icon': '使用内置图标字库或自定义图标前缀展示语义图标。',
     '/components/image': '加载、裁剪和预览图片，并提供加载失败兜底。',
+    '/components/rich-text': '渲染后台编辑的 HTML 正文，补齐图片预览、链接、表格与音视频交互。',
     '/components/qr-code': '把文本或链接渲染为可扫描的二维码，支持中心 Logo 与导出图片。',
     '/components/tooltip': '在目标元素附近展示轻量提示内容和操作说明。',
+    '/components/tag': '以短文本标记商品属性、状态与筛选结果，支持主题、镂空与关闭。',
+    '/components/action-sheet': '从底部弹出动作列表，承载客服、分享与更多操作。',
+    '/components/steps': '按流程顺序展示进度，用于订单状态、售后处理与物流轨迹。',
+    '/components/collapse': '把长内容折叠成标题行，用于商品参数、FAQ 与售后说明。',
+    '/components/grid': '把入口按等分宽度排成九宫格，用于首页金刚区与快捷入口。',
+    '/components/swipe-action': '列表项左滑露出操作按钮，用于删除、收藏与取消订单。',
     '/components/backtop': '长页面滚动后提供一键回顶入口，隐藏时不占位。'
 };
 
 const componentKeywords: Partial<Record<ComponentItem['link'], string[]>> = {
+    '/components/rich-text': ['富文本', 'HTML', '正文', '文章详情', 'mp-html', 'parse'],
     '/components/popup': ['弹窗', '抽屉', '底部面板', 'dialog', 'sheet'],
     '/components/upload': ['文件', '图片上传', '视频上传', 'OSS', '选择文件'],
     '/components/tabbar': ['底部导航', '原生 tabBar', '一级导航'],
@@ -68,9 +76,10 @@ const componentGroupDefinitions: ComponentGroupDefinition[] = [
     {
         title: '基础组件',
         items: [
-            { name: 'Parse', title: '富文本解析', link: '/components/parse' },
+            { name: 'RichText', title: '富文本', link: '/components/rich-text' },
             { name: 'ConfigProvider', title: '全局配置', link: '/components/config-provider' },
             { name: 'Button', title: '按钮', link: '/components/button' },
+            { name: 'Tag', title: '标签', link: '/components/tag' },
             { name: 'Icon', title: '图标', link: '/components/icon' },
             { name: 'Badge', title: '徽标', link: '/components/badge' },
             { name: 'Image', title: '图片', link: '/components/image' },
@@ -94,7 +103,7 @@ const componentGroupDefinitions: ComponentGroupDefinition[] = [
             { name: 'Switch', title: '开关', link: '/components/switch' },
             { name: 'Slider', title: '滑动选择器', link: '/components/slider' },
             { name: 'Search', title: '搜索框', link: '/components/search' },
-            { name: 'Select', title: '列选择器', link: '/components/select' },
+            { name: 'Picker', title: '列选择器', link: '/components/picker' },
             { name: 'Upload', title: '文件上传', link: '/components/upload' },
             { name: 'VerificationCode', title: '验证码倒计时', link: '/components/verification-code' },
             { name: 'Calendar', title: '日历', link: '/components/calendar' }
@@ -108,7 +117,9 @@ const componentGroupDefinitions: ComponentGroupDefinition[] = [
             { name: 'CircleProgress', title: '环形进度条', link: '/components/circle-progress' },
             { name: 'ReadMore', title: '阅读更多', link: '/components/read-more' },
             { name: 'Empty', title: '空状态', link: '/components/empty' },
-            { name: 'CountDown', title: '倒计时', link: '/components/count-down' }
+            { name: 'CountDown', title: '倒计时', link: '/components/count-down' },
+            { name: 'Steps', title: '步骤条', link: '/components/steps' },
+            { name: 'Collapse', title: '折叠面板', link: '/components/collapse' }
         ]
     },
     {
@@ -118,6 +129,7 @@ const componentGroupDefinitions: ComponentGroupDefinition[] = [
             { name: 'Overlay', title: '遮罩层', link: '/components/overlay' },
             { name: 'Tooltip', title: '文字提示', link: '/components/tooltip' },
             { name: 'Popup', title: '弹出层', link: '/components/popup' },
+            { name: 'ActionSheet', title: '动作面板', link: '/components/action-sheet' },
             { name: 'NoNetwork', title: '无网络提示', link: '/components/no-network' }
         ]
     },
@@ -128,7 +140,9 @@ const componentGroupDefinitions: ComponentGroupDefinition[] = [
             { name: 'Sticky', title: '吸顶', link: '/components/sticky' },
             { name: 'Backtop', title: '回到顶部', link: '/components/backtop' },
             { name: 'Line', title: '分隔线', link: '/components/line' },
-            { name: 'Cell', title: '单元格', link: '/components/cell' }
+            { name: 'Cell', title: '单元格', link: '/components/cell' },
+            { name: 'Grid', title: '宫格', link: '/components/grid' },
+            { name: 'SwipeAction', title: '滑动操作', link: '/components/swipe-action' }
         ]
     },
     {

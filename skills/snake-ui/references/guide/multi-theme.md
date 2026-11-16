@@ -60,7 +60,7 @@ app.use(SnakeUI, {
 `name` 是 `setTheme()` 使用的唯一标识。`color` 和 `darkColor` 都允许只覆盖需要定制的键。
 
 ::: tip 对比度
-`primaryInk` 是主色实心背景上的文字色。设计按钮等关键交互时，应检查文字与背景的实际对比度；亮主色通常需要深色文字。
+`primaryInk` 是整片主色上的前景色，默认白字：示例应用的导航栏取它，按钮、标签、分段控件这类实心控件的文字用 `--snake-color-white`，同样是白字。白字在品牌绿 `#06d290` 上只有 1.98:1，主色偏亮又不接受这个对比度的主题把它改成墨绿 `#073b2a`（同底色 6.37:1），整条导航栏随之换成深色字。
 :::
 
 ## 默认色板速查
@@ -69,34 +69,34 @@ app.use(SnakeUI, {
 
 ### 品牌与状态
 
-| 令牌               | 默认值      | 用途                 |
-| ------------------ | ----------- | -------------------- |
-| `primary`          | `#06d290`   | 品牌主色             |
-| `primaryDark`      | `#2ebd7c`   | 品牌深档（按压态）   |
-| `primaryDeep`      | `#26273a`   | 品牌深底             |
-| `primaryDeeper`    | `#22242e`   | 品牌最深底           |
-| `primaryDisabled`  | `#a6ebd3`   | 品牌禁用态           |
-| `primaryLight`     | `#06d2901a` | 品牌浅底（10% 透明） |
-| `primaryInk`       | `#ffffff`   | 主色实心背景上的文字 |
-| `success`          | `#19be6b`   | 成功态               |
-| `successDark`      | `#18b566`   | 成功深档             |
-| `successDisabled`  | `#71d5a1`   | 成功禁用态           |
-| `successLight`     | `#dbf1e1`   | 成功浅底             |
-| `warning`          | `#ff9900`   | 警告态               |
-| `warningDark`      | `#f29100`   | 警告深档             |
-| `warningDisabled`  | `#fcbd71`   | 警告禁用态           |
-| `warningLight`     | `#fdf6ec`   | 警告浅底             |
-| `error`            | `#fa3534`   | 错误态               |
-| `errorDark`        | `#dd6161`   | 错误深档             |
-| `errorDisabled`    | `#fab6b6`   | 错误禁用态           |
-| `errorLight`       | `#fef0f0`   | 错误浅底             |
-| `info`             | `#909399`   | 信息态               |
-| `infoDark`         | `#82848a`   | 信息深档             |
-| `infoDisabled`     | `#c8c9cc`   | 信息禁用态           |
-| `infoLight`        | `#f4f4f5`   | 信息浅底             |
-| `notice`           | `#ff9900`   | 通知栏强调色         |
-| `noticeBackground` | `#fdf6ec`   | 通知栏底色           |
-| `formError`        | `#fa3534`   | 表单校验错误色       |
+| 令牌               | 默认值      | 用途                         |
+| ------------------ | ----------- | ---------------------------- |
+| `primary`          | `#06d290`   | 品牌主色                     |
+| `primaryDark`      | `#2ebd7c`   | 品牌深档（按压态）           |
+| `primaryDeep`      | `#26273a`   | 品牌深底                     |
+| `primaryDeeper`    | `#22242e`   | 品牌最深底                   |
+| `primaryDisabled`  | `#a6ebd3`   | 品牌禁用态                   |
+| `primaryLight`     | `#06d2901a` | 品牌浅底（10% 透明）         |
+| `primaryInk`       | `#ffffff`   | 整片主色上的前景色（导航栏） |
+| `success`          | `#19be6b`   | 成功态                       |
+| `successDark`      | `#18b566`   | 成功深档                     |
+| `successDisabled`  | `#71d5a1`   | 成功禁用态                   |
+| `successLight`     | `#dbf1e1`   | 成功浅底                     |
+| `warning`          | `#ff9900`   | 警告态                       |
+| `warningDark`      | `#f29100`   | 警告深档                     |
+| `warningDisabled`  | `#fcbd71`   | 警告禁用态                   |
+| `warningLight`     | `#fdf6ec`   | 警告浅底                     |
+| `error`            | `#fa3534`   | 错误态                       |
+| `errorDark`        | `#dd6161`   | 错误深档                     |
+| `errorDisabled`    | `#fab6b6`   | 错误禁用态                   |
+| `errorLight`       | `#fef0f0`   | 错误浅底                     |
+| `info`             | `#909399`   | 信息态                       |
+| `infoDark`         | `#82848a`   | 信息深档                     |
+| `infoDisabled`     | `#c8c9cc`   | 信息禁用态                   |
+| `infoLight`        | `#f4f4f5`   | 信息浅底                     |
+| `notice`           | `#ff9900`   | 通知栏强调色                 |
+| `noticeBackground` | `#fdf6ec`   | 通知栏底色                   |
+| `formError`        | `#fa3534`   | 表单校验错误色               |
 
 ### 文本与描边
 

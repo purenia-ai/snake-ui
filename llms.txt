@@ -57,7 +57,7 @@ Snake UI is a Vue 3 component library for uni-app commerce and CMS applications.
 - Input: `docs/components/input.md`
 - Radio: `docs/components/radio.md`
 - Search: `docs/components/search.md`
-- Select: `docs/components/select.md`
+- Picker: `docs/components/picker.md`
 - Slider: `docs/components/slider.md`
 - Switch: `docs/components/switch.md`
 - Textarea: `docs/components/textarea.md`

@@ -1,8 +1,8 @@
 <template>
     <DemoPage :title="title" :desc="text('集成占位、清除与操作按钮的常用搜索输入。')">
         <DemoSection variant="preview" :title="text('演示效果')">
-            <view class="demo-stack demo-search-showcase">
-                <text class="demo-variant-title">{{ isEnglish ? 'Live preview' : '实时预览' }}</text>
+            <view class="demo-search-stack">
+                <text class="demo-variant-title">{{ text('实时预览') }}</text>
                 <snake-search
                     v-model="keyword"
                     :shape="String(state.sShape)"
@@ -19,21 +19,73 @@
                     @custom="onCustom"
                     @clear="onClear"
                 />
-                <text class="demo-variant-sub">{{ text('搜索内容') }}：{{ keyword || '—' }}</text>
-                <text class="demo-variant-sub">{{ lastEvent || text('暂无事件') }}</text>
-                <text class="demo-variant-title">{{ isEnglish ? 'Variants' : '变体示例' }}</text>
-                <snake-search
-                    :show-action="false"
-                    :placeholder="isEnglish ? 'Custom background' : '自定义背景'"
-                    bg-color="#ffffff"
-                    margin="8px 0"
-                />
+                <text class="demo-search-hint">{{ text('搜索内容') }}：{{ keyword || '—' }}</text>
+                <text class="demo-search-hint">{{ lastEvent || text('暂无事件') }}</text>
+            </view>
+        </DemoSection>
+        <DemoSection variant="preview" :title="text('形状与状态')">
+            <view class="demo-search-stack">
                 <snake-search
                     shape="square"
                     height="34"
-                    :placeholder="isEnglish ? 'Square search field' : '方形搜索框'"
-                    margin="8px 0"
+                    :show-action="false"
+                    bg-color="#ffffff"
+                    border-color="var(--snake-color-border, #e4e7ed)"
+                    :placeholder="text('方形 + 描边')"
                 />
+                <snake-search disabled :placeholder="text('禁用态：点击触发 click')" @click="onDisabledClick" />
+                <snake-search
+                    v-model="focusKeyword"
+                    animation
+                    :placeholder="text('聚焦时展开右侧按钮')"
+                    @custom="onCustom"
+                />
+            </view>
+            <text class="demo-search-hint">{{ text('有内容就显示清除按钮，失焦后也能一键清空') }}</text>
+        </DemoSection>
+        <DemoSection variant="preview" :title="text('插槽与自定义按钮')">
+            <view class="demo-search-stack">
+                <snake-search v-model="slotKeyword" :placeholder="text('左侧插槽换成扫码，右侧插槽放图标')">
+                    <template #left>
+                        <snake-icon name="scan" :size="16" color="var(--snake-color-text-secondary, #606266)" />
+                    </template>
+                    <template #right>
+                        <view class="demo-search-extra">
+                            <snake-icon name="mic" :size="16" color="var(--snake-color-text-muted, #909399)" />
+                        </view>
+                    </template>
+                </snake-search>
+                <snake-search
+                    v-model="actionKeyword"
+                    :action-text="text('取消')"
+                    :action-style="actionStyle"
+                    @custom="onCustom"
+                />
+                <snake-search
+                    v-model="hiddenKeyword"
+                    :show-action="Boolean(false)"
+                    :action-text="text('取消')"
+                    :action-style="actionStyle"
+                />
+            </view>
+            <text class="demo-search-hint">{{
+                text('actionStyle 只改按钮外观，隐显仍由 showAction / animation 控制')
+            }}</text>
+        </DemoSection>
+        <DemoSection variant="preview" :title="text('方法调用')">
+            <view class="demo-search-stack">
+                <snake-search
+                    ref="searchRef"
+                    v-model="methodKeyword"
+                    :show-action="false"
+                    :placeholder="text('通过 ref 调用 focus() / blur() / clear()')"
+                />
+                <view class="demo-search-tools">
+                    <snake-button size="small" :text="text('聚焦')" @click="callFocus" />
+                    <snake-button size="small" :text="text('失焦')" @click="callBlur" />
+                    <snake-button size="small" :text="text('清空')" @click="callClear" />
+                </view>
+                <text class="demo-search-hint">{{ text('搜索内容') }}：{{ methodKeyword || '—' }}</text>
             </view>
         </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
@@ -44,6 +96,7 @@
 
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
+import type { SearchExpose } from '../../../uni_modules/snake-ui';
 import { demoText, demoTitle, useDemoLocale } from '../../../common/demo-i18n';
 import type { DemoControl, DemoValue } from '../../../common/demo-types';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
@@ -53,7 +106,23 @@ import DemoSection from '../../../components/demo-section/demo-section.vue';
 const { localeName, text } = useDemoLocale();
 const isEnglish = computed(() => localeName.value === 'en-US');
 const keyword = ref('');
+const focusKeyword = ref('');
+const slotKeyword = ref('');
+const actionKeyword = ref('');
+const hiddenKeyword = ref('');
+const methodKeyword = ref('');
 const lastEvent = ref('');
+const searchRef = ref<SearchExpose | null>(null);
+const actionStyle = {
+    width: '56px',
+    height: '30px',
+    lineHeight: '30px',
+    borderRadius: '999px',
+    background: 'var(--snake-color-primary, #06d290)',
+    color: '#ffffff',
+    fontWeight: 600,
+    marginLeft: '8px'
+};
 const controls: DemoControl[] = [
     {
         key: 'sShape',
@@ -75,7 +144,6 @@ const controls: DemoControl[] = [
         defaultValue: '#f1f1f1',
         options: [
             { label: '默认灰', value: '#f1f1f1' },
-            { label: '白色', value: '#ffffff' },
             { label: '薄荷', value: '#06D2901A' }
         ]
     },
@@ -126,16 +194,42 @@ function onCustom(value: string) {
 function onClear() {
     lastEvent.value = text('点击清除');
 }
+function onDisabledClick() {
+    lastEvent.value = text('禁用状态下点击会触发 click');
+}
+function callFocus() {
+    searchRef.value?.focus();
+}
+function callBlur() {
+    searchRef.value?.blur();
+}
+function callClear() {
+    searchRef.value?.clear();
+}
 </script>
 
 <style scoped>
-.demo-stack {
+.demo-search-stack {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
 }
-.demo-variant-sub {
+
+.demo-search-hint {
     color: var(--snake-color-text-muted);
     font-size: 12px;
+}
+
+.demo-search-extra {
+    display: flex;
+    flex: none;
+    align-items: center;
+    padding-left: 4px;
+}
+
+.demo-search-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 </style>

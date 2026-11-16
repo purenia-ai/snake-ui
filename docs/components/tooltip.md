@@ -24,13 +24,13 @@ Tooltip 用于展示与触发元素相关的简短说明或非操作性内容。
 
 ## 富内容与受控显示
 
-`content` 插槽可承载 `snake-parse` 等内容组件；使用 `v-model` 可由页面主动控制显隐。
+`content` 插槽可承载 `snake-rich-text` 等内容组件；使用 `v-model` 可由页面主动控制显隐。
 
 ```vue
 <snake-tooltip v-model="showDetail" placement="bottom-start" :offset="10">
     <snake-icon name="info-circle" size="14px" />
     <template #content>
-        <snake-parse :content="description" />
+        <snake-rich-text :content="description" />
     </template>
 </snake-tooltip>
 ```

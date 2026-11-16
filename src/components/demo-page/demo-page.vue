@@ -5,8 +5,8 @@
             :is-back="navBack"
             :custom-back="goBack"
             :background="background"
-            title-color="#ffffff"
-            back-icon-color="#ffffff"
+            :title-color="navbarForeground"
+            :back-icon-color="navbarForeground"
             :border-bottom="false"
             title-bold
         >
@@ -17,10 +17,10 @@
                         hover-class="demo-nav__hit--hover"
                         @click="switchLocale"
                     >
-                        <text>{{ nextLocaleLabel }}</text>
+                        <text :style="{ color: navbarForeground }">{{ nextLocaleLabel }}</text>
                     </view>
                     <view v-if="navHome" class="demo-nav__hit" hover-class="demo-nav__hit--hover" @click="goHome()">
-                        <text class="demo-nav__home">{{ text('首页') }}</text>
+                        <text class="demo-nav__home" :style="{ color: navbarForeground }">{{ text('首页') }}</text>
                     </view>
                 </view>
             </template>
@@ -47,7 +47,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, toRefs, watch } from 'vue';
-import { color, currentTheme, darkMode, systemDark, themeStyle } from '../../uni_modules/snake-ui';
+import { color, darkMode, systemDark, themeStyle } from '../../uni_modules/snake-ui';
 import type { DemoTab } from '../../common/demo-types';
 import { useDemoLocale } from '../../common/demo-i18n';
 
@@ -84,9 +84,13 @@ const shellThemeStyle = computed(() => ({
     ...themeStyle.value,
     '--snake-demo-accent-text': isDark.value ? color.primary : color.primaryDeep
 }));
-const navbarColor = computed(() =>
-    currentTheme.value.name === 'snake' ? (isDark.value ? '#01513B' : '#007A55') : color.primaryDeep
-);
+
+/*
+ * 导航栏跟随主题：主色做底、`primaryInk` 做前景（默认白字，和按钮 / 标签的实心主色一致）。
+ * 主题可以按主色明度覆写 `primaryInk`，橙这类中明度主色就能保留深色字。
+ */
+const navbarColor = computed(() => color.primary);
+const navbarForeground = computed(() => color.primaryInk);
 const background = computed(() => ({ backgroundColor: navbarColor.value }));
 
 function postPreviewNavbarTheme() {
@@ -95,7 +99,7 @@ function postPreviewNavbarTheme() {
         {
             type: 'snake-ui:preview-navbar-theme',
             backgroundColor: navbarColor.value,
-            color: '#ffffff'
+            color: navbarForeground.value
         },
         '*'
     );
@@ -174,7 +178,6 @@ function switchTab(key: string | number) {
 
 .demo-nav__locale {
     min-width: 29px;
-    color: #fff;
     font-size: 12px;
     font-weight: 650;
 }
@@ -190,12 +193,12 @@ function switchTab(key: string | number) {
     transition: background-color 0.2s ease;
 }
 
+/* 白字前景：按压反馈叠黑，绿色被压深、白字反而更清楚。 */
 .demo-nav__hit--hover {
-    background: rgba(255, 255, 255, 0.16);
+    background: rgba(0, 0, 0, 0.08);
 }
 
 .demo-nav__home {
-    color: #fff;
     font-size: 13px;
     font-weight: 500;
 }

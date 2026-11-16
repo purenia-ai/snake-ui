@@ -36,7 +36,7 @@ const components = [
     'snake-line-progress',
     'snake-circle-progress',
     'snake-search',
-    'snake-select',
+    'snake-picker',
     'snake-read-more',
     'snake-no-network',
     'snake-link',
@@ -131,6 +131,7 @@ test('every Vue component explains its role and documented components expose an 
     const undocumentedCmsComponents = new Set([
         'snake-activity-list',
         'snake-auxiliary-segmentation',
+        'snake-cms-rich-text',
         'snake-commodity-search',
         'snake-coupon',
         'snake-custom-module',
@@ -146,7 +147,6 @@ test('every Vue component explains its role and documented components expose an 
         'snake-notice',
         'snake-page-popup',
         'snake-picture-ads',
-        'snake-rich-text',
         'snake-videos'
     ]);
     const directories = (await readdir(componentRoot, { withFileTypes: true }))
@@ -192,7 +192,7 @@ test('migrated controls use runtime props as the defaults source of truth', asyn
         ['snake-line-progress', 'lineProgressProps'],
         ['snake-circle-progress', 'circleProgressProps'],
         ['snake-search', 'searchProps'],
-        ['snake-select', 'selectProps'],
+        ['snake-picker', 'pickerProps'],
         ['snake-read-more', 'readMoreProps'],
         ['snake-no-network', 'noNetworkProps'],
         ['snake-link', 'linkProps'],
@@ -207,6 +207,55 @@ test('migrated controls use runtime props as the defaults source of truth', asyn
         assert.match(source, new RegExp(`defineProps\\(${exportName}\\)`));
         assert.doesNotMatch(source, /withDefaults\(defineProps/);
     }
+});
+
+test('snake-search keeps one value source and decouples action visibility', async () => {
+    const source = await readFile(new URL('components/snake-search/snake-search.vue', root), 'utf8');
+    const types = await readFile(new URL('components/snake-search/types.ts', root), 'utf8');
+
+    // 输入框绑定内部值：绑定 props.modelValue 时，父组件不处理 update 会导致清空失效。
+    assert.match(source, /:value="keyword"/);
+    assert.doesNotMatch(source, /:value="modelValue"/);
+    // 程序化同步不再回派事件：原实现把 emit 放在 watch(keyword) 里，外部赋值会触发假输入。
+    assert.doesNotMatch(source, /watch\(\s*keyword/);
+    assert.match(source, /watch\(\s*\(\) => props\.modelValue/);
+    assert.match(
+        source,
+        /function handleInput[\s\S]*?emit\('update:modelValue'[\s\S]*?emit\('input'[\s\S]*?emit\('change'/
+    );
+
+    // 清除控件有内容就显示，不再依赖聚焦；blur 抢点击的 100ms 延时一并去掉。
+    assert.match(
+        source,
+        /const showClear = computed\(\(\) => props\.clearabled && !props\.disabled && !!keyword\.value\)/
+    );
+    assert.match(source, /v-if="showClear"/);
+    assert.doesNotMatch(source, /focused/);
+    assert.doesNotMatch(source, /setTimeout/);
+
+    // 右侧按钮：外层管显隐（max-width + opacity），actionStyle 只落在内层按钮上。
+    assert.match(source, /const actionVisible = computed\(\(\) => \(props\.animation \? show\.value : true\)\)/);
+    assert.match(source, /v-if="showAction"/);
+    assert.match(source, /snake-search__action--visible/);
+    assert.match(source, /snake-search__action-inner" :style="actionStyle"/);
+    assert.match(source, /max-width:\s*0;/);
+    assert.match(source, /max-width:\s*var\(--snake-search-action-max-width, 200px\)/);
+
+    // 容器 border-box + min-width 0：配置边框不增高，窄屏可压缩。
+    assert.match(source, /\.snake-search__content\s*{[^}]*box-sizing:\s*border-box/s);
+    assert.match(source, /\.snake-search__input\s*{[^}]*min-width:\s*0/s);
+
+    // 暴露 focus / blur / clear，禁用态忽略聚焦请求。
+    assert.match(types, /export interface SearchExpose/);
+    assert.match(source, /defineExpose\(exposed\)/);
+    assert.match(source, /function focus\(\)[^}]*props\.disabled/s);
+    assert.match(source, /const exposed: SearchExpose = \{ focus, blur, clear \}/);
+
+    // 插槽与约定：addGlobalClass + #left / #right。
+    assert.match(source, /addGlobalClass: true/);
+    assert.match(source, /<slot name="left">/);
+    assert.match(source, /<slot name="right" \/>/);
+    assert.match(source, /:maxlength="maxlengthValue"/);
 });
 
 test('button ripple follows the longest-edge wave model', async () => {
@@ -249,7 +298,7 @@ test('package entry exposes precise foundation component props', async () => {
         'LineProgress',
         'CircleProgress',
         'Search',
-        'Select',
+        'Picker',
         'ReadMore',
         'NoNetwork',
         'Link',

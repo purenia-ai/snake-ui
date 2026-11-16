@@ -4,6 +4,162 @@
 
 ## components
 
+<!-- Source: docs/components/action-sheet.md -->
+
+# ActionSheet 动作面板
+
+从底部弹出的动作列表，用于客服、分享、更多操作等低频动作；支持图标、次要说明、禁用、加载与服务端决定的取消文案。
+
+## 平台兼容性
+
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
+
+## 基础用法
+
+用 `v-model` 控制显隐，`actions` 描述动作列表，选中后默认自动关闭并派发 `select`：
+
+```vue
+<snake-action-sheet v-model="visible" :actions="actions" @select="onSelect" />
+
+<script setup lang="ts">
+import { ref } from 'vue';
+import type { ActionSheetAction } from '@puresnake/snake-ui';
+
+const visible = ref(false);
+const actions: ActionSheetAction[] = [
+    { name: '联系客服', icon: 'kefu-ermai' },
+    { name: '分享给好友', icon: 'share' },
+    { name: '举报', color: 'var(--snake-color-error)' }
+];
+
+function onSelect(action: ActionSheetAction, index: number) {
+    console.log(action, index);
+}
+</script>
+```
+
+## 标题与说明
+
+`title` 与 `description` 都为空时不渲染头部：
+
+```vue
+<snake-action-sheet v-model="visible" title="更多操作" description="选择后立即生效" :actions="actions" />
+```
+
+## 禁用与加载
+
+单项的 `disabled` 与 `loading` 都会拦截 `select`。`loading` 会在文字左侧渲染 `snake-loading` 转圈并保留文案，`disabled` 则整行置灰：
+
+```vue
+<snake-action-sheet
+    v-model="visible"
+    :actions="[
+        { name: '立即预约', loading: true },
+        { name: '暂不开放', disabled: true }
+    ]"
+/>
+```
+
+## 自定义单行
+
+`action-item` 是**行内容**插槽：行容器（点击、禁用拦截、加载拦截、`closeOnClickAction` 关闭）仍由组件负责，只有行内部结构被替换。插槽对每一行都生效，所以只想改某一行时，用 `v-if` 命中它、其余行自己输出默认结构：
+
+```vue
+<snake-action-sheet v-model="visible" :actions="actions" @select="onSelect">
+    <template #action-item="{ action, index }">
+        <!-- 只改第 2 行：加一个价格 -->
+        <view v-if="index === 1" class="my-row">
+            <text>{{ action.name }}</text>
+            <text class="my-row__price">¥99</text>
+        </view>
+        <!-- 其余行照抄默认结构（与组件内置渲染一致） -->
+        <template v-else>
+            <snake-icon v-if="action.icon" :name="action.icon" :size="16" :margin-left="0" :margin-right="6" />
+            <view class="snake-action-sheet__item-text">
+                <view class="snake-action-sheet__item-name">{{ action.name }}</view>
+                <view v-if="action.subname" class="snake-action-sheet__item-subname">{{ action.subname }}</view>
+            </view>
+        </template>
+    </template>
+</snake-action-sheet>
+```
+
+> 不要依赖「插槽返回空内容时自动回落默认渲染」——H5/App 下 Vue 运行时确实会回落，但小程序端 Scoped Slot 编译成原生 `slot`，回落行为不保证一致，请显式写 `v-else`。
+
+如果**所有行**都要换结构，用 `action` 插槽更省事，但它会连行容器一起替换，此时 `select`、`closeOnClickAction`、`disabled`/`loading` 拦截都需要自己处理。
+
+## 不自动关闭
+
+需要连续选择或异步确认时关闭自动关闭，自行控制 `v-model`：
+
+```vue
+<snake-action-sheet v-model="visible" :actions="actions" :close-on-click-action="false" @select="handleSelect" />
+```
+
+## API
+
+### Props
+
+| 参数                  | 说明                                 | 类型                          | 默认值  |
+| --------------------- | ------------------------------------ | ----------------------------- | ------- |
+| `customStyle`         | 根节点自定义样式                     | `StyleValue`                  | `''`    |
+| `customClass`         | 根节点自定义类名                     | `string`                      | `''`    |
+| `modelValue`          | 是否显示面板                         | `boolean`                     | `false` |
+| `title`               | 面板标题                             | `string`                      | `''`    |
+| `description`         | 标题下方说明                         | `string`                      | `''`    |
+| `actions`             | 动作列表                             | `ActionSheetAction[]`         | `[]`    |
+| `showCancel`          | 是否显示取消按钮                     | `boolean`                     | `true`  |
+| `cancelText`          | 取消按钮文案，缺省读 `common.cancel` | `string`                      | `''`    |
+| `closeOnClickAction`  | 点击动作后是否关闭                   | `boolean`                     | `true`  |
+| `closeOnClickOverlay` | 点击遮罩是否关闭                     | `boolean`                     | `true`  |
+| `round`               | 是否圆角                             | `boolean \| number \| string` | `true`  |
+| `safeAreaInsetBottom` | 是否适配底部安全区                   | `boolean`                     | `true`  |
+| `zIndex`              | 面板层级                             | `number`                      | `0`     |
+
+### Events
+
+| 事件名              | 说明         | 回调参数                                   |
+| ------------------- | ------------ | ------------------------------------------ |
+| `update:modelValue` | 面板显隐变化 | `value: boolean`                           |
+| `select`            | 选中某个动作 | `action: ActionSheetAction, index: number` |
+| `cancel`            | 点击取消按钮 | -                                          |
+| `close`             | 面板开始关闭 | -                                          |
+| `opened`            | 打开动画结束 | -                                          |
+
+### Slots
+
+| 插槽名        | 说明                                   | 作用域参数             |
+| ------------- | -------------------------------------- | ---------------------- |
+| `action`      | 完全自定义动作区，传入后忽略 `actions` | `{ actions }`          |
+| `action-item` | 自定义单行动作内容，行容器与交互保留   | `{ action, index }`    |
+
+### Expose
+
+| 方法    | 说明                           |
+| ------- | ------------------------------ |
+| `open`  | 打开面板，需父级绑定 `v-model` |
+| `close` | 关闭面板，需父级绑定 `v-model` |
+
+## 主题变量
+
+| 变量名                             | 说明                 |
+| ---------------------------------- | -------------------- |
+| `--snake-action-sheet-bg`          | 面板底色             |
+| `--snake-action-sheet-panel-bg`    | 动作组之外的面板底色 |
+| `--snake-action-sheet-item-height` | 单项最小高度         |
+| `--snake-action-sheet-font-size`   | 单项字号             |
+| `--snake-action-sheet-title-size`  | 标题字号             |
+| `--snake-action-sheet-cancel-gap`  | 取消按钮与列表间距   |
+
+## 注意
+
+- 面板依赖 `snake-popup` 的底部模式，遮罩与滚动锁定由 Popup 负责，不要再嵌套一层 Popup。
+- `open` / `close` 只是派发 `update:modelValue`，父级未绑定 `v-model` 时不会生效。
+- `loading` 只拦截点击并渲染转圈，不会自动关闭面板；异步结束后需要业务自己把 `loading` 置回 `false` 或调用 `open()`/`close()`。
+- 用 `action` 插槽整块替换动作区时，`select` 事件与 `closeOnClickAction` 都不再生效，需要自行派发与关闭。
+
 <!-- Source: docs/components/backtop.md -->
 
 # Backtop 回到顶部
@@ -647,6 +803,131 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 
 # 更新日志
 
+## [0.1.0](https://github.com/purenia-ai/snake-ui/compare/v0.0.20...v0.1.0)（2026-11-13）
+
+### ✨ Features | 新功能
+
+- **snake-tag:** 新增标签组件：主题、尺寸、镂空、圆角、可关闭与左侧图标（`icon` 与 `icon` 插槽二选一）；默认档位 24px 高 / 12px 字号（对齐 wot-ui，`medium` / `small` / `mini` 依次 20 / 18 / 16px）；镂空描边由 `::after` 缩放 50% 绘制，`hairLine` 可关闭；实心态用 `customStyle` 自定义背景色时描边自动透明（与 `snake-button` 一致），关闭图标由原生 `view` 承载并把点击热区扩到 18px
+- **snake-action-sheet:** 新增动作面板：基于 `snake-popup` 的底部动作列表，支持标题说明、图标、`disabled`/`loading` 拦截 `select`、`common.cancel` 兜底文案，并暴露 `open` / `close`
+- **snake-action-sheet:** 新增 `action-item` 作用域插槽用于自定义单行内容（行容器、点击与关闭逻辑仍由组件负责）；`loading` 行改为渲染 `snake-loading` 转圈并保留文案，不再只做整行置灰
+- **snake-steps / snake-step:** 新增步骤条：横向与纵向排列，状态由父级 `current` 推导、可用 `status` 覆盖；已完成显示对勾、异常显示叉号并染红标题，`icon` 与 `#icon` 插槽可覆盖图形；新增 `dot` 点状模式；连接线由独立节点按指示器尺寸绘制，不做 JS 测量
+- **snake-collapse / snake-collapse-item:** 新增折叠面板：单值与数组统一归一化、手风琴模式、`max-height` 过渡；子项支持 `title` / `value` / `icon` 三类插槽
+- **snake-grid / snake-grid-item:** 新增宫格：按列数等分宽度，外框与内线分绘，`square` 用 `padding-top` 撑正方形，支持角标、禁用与点击派发；新增 `--snake-grid-item-padding` 用于给角标溢出与圆角裁剪留缓冲
+- **snake-swipe-action:** 新增滑动操作：左右两侧按钮（`actions` / `leftActions`，或 `#actions` / `#left` 插槽），方向锁定后接管横向手势、纵向手势放行给页面滚动；支持 `v-model` 停留状态、`beforeClose` 关闭前拦截、同组互斥，暴露 `open` / `close` / `refresh`；按钮区宽度按实测值展开，插槽按钮可用任意宽度
+- **libs:** 新增 `useTouch` 手势 hook：记录位移并按阈值锁定方向，供滑动类组件复用
+
+### 🐛 Bug Fixes | 修复
+
+- **snake-search:** 清除控件改为「有内容就显示」，不再依赖聚焦：原实现是 `v-if="keyword && clearabled && focused"`，输入后点空白处失焦按钮即消失，只能再点一次输入框才能清空；顺带移除了靠 100ms 延时抢点击的 blur hack
+- **snake-search:** 程序化修改 `modelValue` 不再回派 `input` / `change`：原实现在 `watch(keyword)` 里派发，父组件从外部赋值（点热词、重置表单）会触发一次假的输入事件，业务在 `@input` 里做防抖请求时会多发一次
+- **snake-search:** 右侧操作按钮的显隐与 `actionStyle` 解耦：原实现把 `actionStyle` 内联到按钮同一个节点，内联 `width` 永远压过 `.snake-search__action` 的 `width: 0`，`showAction=false` 仍会显示按钮、`animation` 永远收不起来（消费方用 `actionStyle` 传 `width` 即中招）；现在外层容器用 `max-width` + `opacity` 控制展开，`actionStyle` 落在内层按钮上
+- **snake-search:** 容器补 `box-sizing: border-box`：配置 `borderColor` 后高度多出 2px（32 → 34），与同级输入框对不齐
+- **snake-search:** 补 `defineExpose`（`focus` / `blur` / `clear`）：原实现只有内部 `clear()`，注释写着「也可通过 ref 调用」但从未暴露，`ref.clear()` 必然报错
+- **snake-search:** `maxlength` 归一：传空串等非法值不再得到 `0`（等于无法输入），统一按 `-1` 不限制处理
+- **snake-search:** `disabled` 时补原生 `:disabled` 并隐藏清除控件，禁用状态下的 `focus` 请求直接忽略；输入框与容器补 `min-width: 0`，320px 窄屏不再溢出
+- **snake-input:** 清除按钮改为「有内容就显示」，不再依赖聚焦：原实现 `clearable && focused`，输入后点空白处失焦按钮即消失，只能再点一次输入框才能清空；需要旧行为可传 `clear-trigger="focus"`
+- **snake-input:** 格式化后回写原生值：原实现只更新 `innerValue` 与 `v-model`，被 `formatter` 过滤掉的字符仍留在输入框里（实测输入 `1a2b3c4d` 后输入框显示 `1a2b3c4d`、模型却是 `123`），现在先同步原生值再异步回写格式化结果，输入框与模型始终一致
+- **snake-input:** 清除与密码图标的点击热区由 14×14 扩大到 24×整行高，并阻止冒泡——原实现点图标会连带派发根节点的 `click`
+- **snake-input / snake-textarea:** 失焦不再重复派发 `input` / `update:modelValue`：原实现每次失焦都会用当前值再派发一遍，业务在 `@input` 里做防抖请求时会多发一次；`change` 也改为「失焦且值确实变化」才派发，与文档一致
+- **snake-input / snake-textarea:** 输入法合成被失焦打断时（`compositionstart` 后直接 `blur`，`compositionend` 不再触发）`composing` 不会复位，之后的输入会被永久吞掉；现在失焦兜底复位
+- **snake-textarea:** 字数统计改为按码点计数：`String.length` 会把 emoji 与生僻字算成 2，实测输入两个 emoji 显示 `4/80`
+- **snake-input / snake-textarea:** `readonly` 的点击不可达：原生输入框被 `disabled` 后会吞掉点击（小程序端尤其明显），现在 `readonly` 渲染透明遮罩承接并派发 `click`，「点输入框打开选择器」可用；`disabled` 则彻底不派发 `click`（对齐 uView）
+- **snake-input / snake-textarea:** 补 `defineExpose`（`focus` / `blur` / `clear`）：此前无法通过 ref 聚焦或清空，下一步输入、验证码等流程只能靠用户手点
+- **snake-input / snake-textarea:** `defineOptions` 补 `addGlobalClass: true`，与库内其他组件一致
+- **snake-textarea:** `size` 属性此前完全无效：模板里拼了 `snake-textarea--small/--large` 类名，但样式表里没有对应规则，三档尺寸渲染完全一致；现在按档位缩放高度（64 / 80 / 112）与字号（13 / 14 / 16）
+- **snake-textarea:** `height` 属性此前形同虚设：默认 `60` 被样式里的 `min-height: 80px` 顶掉，实际永远 80；现在 `height` 同时写容器与原生控件的最小高度，小于档位高度也不会溢出
+- **snake-input:** `size` 此前只改最小高度，字号与图标固定 14 / 16，三档看起来差别很小；现在高度、字号、图标同表联动（32/13/14、40/14/16、48/16/18），并对齐 uView-Pro 的三档思路
+- **snake-input / snake-textarea:** 字号与高度改为 CSS 变量驱动，`size` / `height` / `fontSize` 优先级明确（档位 < 变量 < 属性）
+- **snake-input:** 占位文字与输入文本没有垂直居中：H5 下 `uni-input` 被框架样式死定在 `1.4em`（14px 字号时 19.6px），内部文本盒只有 16px 且贴顶，在 40px 行里整体偏高 1.8px；现在原生控件按档位变量定高（`--snake-input-current-height`），实测占位符、标签、输入框三者中心线完全对齐
+- **snake-form:** 新增 `disabled`，会下发到输入框、文本域、开关、滑块、单选组与复选组；输入框与文本域在禁用态下不再派发 `click`。表单项可用自身 `disabled` 覆盖
+- **snake-form:** 新增 `validateTrigger`（`change` / `blur`，可传数组）：此前校验时机写死为「有匹配 trigger 规则就跑」，想只在提交或失焦校验只能改规则；被关掉的时机仍会清掉上一次留下的错误提示
+- **snake-form:** `FormField` 协议此前是「发明」的（声明 `validate` / `reset` / `clear`，FormItem 实际注册的是 `validation` / `resetField`，中间靠 `as any` 抹平），现在契约与实际实现一致，`register` / `unregister` 不再需要类型断言
+- **snake-form:** 注销字段改为按实例引用移除：原实现按 `prop` 过滤，两个同名字段（例如 `v-for` 里暂时重复的路径）会互相误删，删掉一个另一个也失去校验
+- **snake-form-item:** 必填星号由「绝对定位 + `padding-top: 3px`」改为标签行内的 flex 项：原来星号挂在标签框外 8px，`labelAlign` 靠右、`labelPosition=top` 或标签很短时位置漂移且与文字基线不齐
+- **snake-form-item:** 错误文案行高由「等于字号」改为 1.5 倍：12px 字号配 12px 行高会把中文的上下伸展裁掉，多行提示挤在一起
+- **snake-form-item:** 标签字号与错误文案字号改由尺寸档位类名 + CSS 变量驱动（`--snake-form-label-font-size*` / `--snake-form-message-font-size*`），保留 `size` 传自定义数值时走内联字号的旧行为
+- **snake-picker:** `mutil-column` 传一维数组会直接抛错：列数按条目个数计算（4 条数据就是 4 列），而列数据只有 1 列，取第 2 列时读到 `undefined` 再取下标即报错；现在一维数组按单列处理
+- **snake-picker:** 滚动过程中点「确认」被静默丢弃（`if (moving.value) return`），用户只会觉得按钮失灵；现在先挂起，`pickend` 后自动补发确认
+- **snake-picker:** `border` 属性从未参与渲染（工具栏分隔线恒定显示，关不掉）；现在真正控制分隔线显隐，默认值不变
+- **snake-picker:** 移除从未派发过的 `click` 事件声明：文档写着「点击触发入口（兼容声明）」，但组件里没有任何 `emit('click')` 分支，监听它永远收不到回调
+- **snake-picker:** 联动模式 `children` 若成环（例如父子互相引用）会让 `while` 无限下钻；现在限制最多 20 列
+- **snake-picker:** 打开状态下 `list` / `mode` 变化不会刷新滚轮，仍停在旧列数据上；现在会重新初始化，数据异步到达也能正常显示
+- **snake-picker:** 选中行上下边线的声明是无效 CSS（`border: rgba(...)` 缺宽度与样式），iOS 与 H5 都不显示；现在改到 picker-view 原生 `::before` / `::after` 的边框色上，由 `--snake-picker-indicator-border-color` 控制——中途用 inset 阴影画的版本会和原生伪元素边框在同一位置叠成双线
+- **snake-picker:** 滚轮遮罩过重（`0.95 → 0.6` 白），紧贴选中框的一行被盖掉大半，实测「选项二」几乎看不清；现在改为「表面色 → 透明」的单层渐变，颜色跟随明暗主题，暗色模式下不再出现一层白雾
+- **snake-picker:** 全局主题表里针对原生 picker-view 的遮罩 / 指示框规则带 `!important`，把组件自己的主题变量全部盖掉（`--snake-select-mask-rgb` 之类改了没反应），其中 `.snake-picker-view-indicator` 这条选择器还少写了一段前缀、声明里没有边框宽度，属于历史遗留的无效样式；现在这些样式归组件自己维护，全局表不再抢
+- **snake-picker:** 工具栏两侧按钮被 `min-width: 75px` + `padding: 10px 15px` 撑到各 105px（390px 屏上占掉 270px），标题只剩很窄一段且 14px 看起来比选项还小；现在按钮靠 16px 内边距撑宽、44px 高垂直居中，字号 16px，标题 15px/600 用主文字色
+- **snake-picker:** 选项文字贴边：cell 只有 4px 内边距，长文案几乎顶到屏幕边缘；现在左右各 12px，并把 `max-width` 补到省略号容器上，超长文案按单行省略显示
+- **snake-form-item:** 命中触发时机但没有匹配规则时会留下过期红字：`validation(trigger)` 在规则过滤后为空时只回调空文案、不动 `validateState`，于是「提交时报错的字段，用 select / switch 确认后仍显示旧错误」；现在会先撤掉上一次的提示
+- **snake-navbar:** 微信 / QQ 小程序右上角胶囊会压住右侧插槽：现在按 `getMenuButtonBoundingClientRect()` 让出胶囊宽度，标题的最大宽度同步扣掉这段，`#right` 里的操作不再被胶囊盖住（H5 / App 取 0，行为不变）
+- **snake-navbar:** 底部分隔线由 1px 实线改为半像素（`::after` + `scaleY(0.5)`），高分屏上不再比小程序原生导航栏粗一倍；`backText` 默认跟随 `backIconColor`，此前会掉回全局文字色
+
+- **snake-rich-text:** `tagStyle` / `scrollTable` / `useAnchor` / `domain` / `previewImg` 只在解析阶段生效，运行期改动不会重新解析——示例页里「表格横向滚动」开关切了完全没反应；现在按解析相关参数快照重新解析（`tagStyle` 逐键排序后序列化，父组件每次渲染传等值对象不会重复解析）
+- **snake-rich-text:** `content` 传 `null` / `undefined` 时解析器直接抛错（接口透传字段时很常见），现在按空内容处理并落到默认插槽
+- **snake-rich-text:** 内容连续更新时上一轮的 `ready` 高度轮询不会中断，同一个实例会多次派发 `ready`；现在新的 `setContent` 会先清掉旧定时器
+- **snake-rich-text:** Vue 3 不再调用 `beforeDestroy`，mp-html 的懒加载 `IntersectionObserver` 在组件卸载后没有断开；现在补 `unmounted` 清理（`node` 子组件同步处理），并清掉 `ready` 轮询
+
+### ⚙️ Changes | 变更
+
+- **version:** 版本号进入 `0.1.0`；本批新增的 9 个组件目录（6 个公开组件 + 3 个子项）API 冻结，后续只增不改
+- **size:** 默认尺寸按 375 稿对齐 wot-ui / uView-Pro —— `snake-tag` 24px 高 / 12px 字号、`snake-collapse-item` 标题 15px 内容 14px、`snake-step` 标题 14px 描述 12px、`snake-grid-item` 文案 14px、`snake-swipe-action` 按钮 80px / 14px；`snake-action-sheet` 已落在两家区间内，未调整
+- **snake-step:** 连接线由 `::after` 伪元素改为真实节点 + `v-if` 判末，不再依赖 `:last-child`（WXSS 选择器白名单里没有伪类，小程序端会漏画最后一段）；横向等分宽度从父级 scoped 后代选择器移到子项自身的 `flex: 1 1 0`，避免跨组件作用域失效后整排挤到左侧
+- **snake-step:** `alignCenter` 补回真实语义并默认 `true`（横向本来就居中，此前该 prop 不生效）；关闭后圆点靠左、文字左对齐。标题与描述改用 `overflow-wrap: break-word`，订单号、运单号不再被逐字劈成两行；错误态标题跟随状态色；纵向最后一项去掉多余底部内边距；图标字号改由 `--snake-step-icon-size` 控制（默认 13px）
+- **snake-swipe-action:** 同组互斥改为模块级登记表（`registry.ts`）：原实现把 `activeClose` 写在 `<script setup>` 里，编译后是 `setup()` 的局部变量、每实例私有，互斥从未生效，两项可以同时停在展开态；现在触摸开始与展开时都会收起其他项
+- **snake-swipe-action:** 越界拖动重设手势原点，修复钳制后回拉出现整段死区（原实现在边界处停住，手指回拉要先走完越界距离画面才跟手）
+- **snake-swipe-action:** 左右按钮区改为 `translate3d(±100%)` 挂到可视区外，不再压在内容底下；`--snake-swipe-action-bg` 默认值由白底改为 `transparent`，内容区透明也不会透出按钮
+- **snake-swipe-action:** 插槽按钮宽度改为实测（`getRect`），props 推导值仅作兜底：原实现只用 `actions.length × buttonWidth` 当宽度，且 `handleTouchStart` 在 `actions` 为空时直接返回，只传 `#actions` 插槽时完全滑不动
+- **snake-swipe-action:** `threshold` 钳制到按钮总宽，避免阈值大于总宽时永远打不开；停留状态与位移解耦，`open` / `close` 只在状态真正变化时派发
+- **snake-search:** 新增 `#left` / `#right` 插槽：前者替换左侧搜索图标，后者挂在清除控件之后（扫码、语音等附加入口）；新增主题变量 `--snake-search-action-max-width`（右侧按钮展开上限，默认 200px）
+- **snake-input:** 新增 `clearTrigger`（`always` / `focus`）、`showWordLimit`（右侧字数统计）、`error`（外部强制错误态）三个道具，补齐 wot-ui 的对应能力
+- **snake-textarea:** 新增 `formatter` / `formatTrigger` / `trim` 与 `error`，格式化与去空格语义与 `snake-input` 对齐；新增 `clear` / `click` 事件
+- **snake-input:** 新增 `height`（覆盖档位高度）、`placeholderClass`、`customInputClass` 三个道具；`snake-textarea` 新增 `placeholderClass`、`disableDefaultPadding`
+- **libs:** 新增 `fieldSize.ts` 尺寸表，Input 与 Textarea 共用同一套高度/字号/图标数值，避免两个组件各写一份魔法数字继续漂移；两组件各补 6~11 个组件级主题变量（`--snake-input-*` / `--snake-textarea-*`）
+- **snake-form:** 新增 `asteriskPosition`（`start` / `end`）与 `hideAsterisk`，与 `disabled`、`validateTrigger` 一样支持 Form 定默认值、FormItem 覆盖（空字符串表示继承），对齐 wot-ui 的表单级默认配置
+- **snake-form-item:** 新增 14 个组件级主题变量（`--snake-form-item-padding`、`--snake-form-label-*`、`--snake-form-asterisk-color`、`--snake-form-border-color`、`--snake-form-message-*` 等），此前只能改全局色板或写 `customStyle`
+- **snake-select → snake-picker:** 组件改名（不保留旧名）：它是基于 `picker-view` 的底部滚轮，没有触发入口、没有选中值，`v-model` 只控制弹层开合——叫 `select` 与业界语义（有输入框、有值的选择控件）和库内「`snake-` + 原生标签」的约定都不符，故统一为 `snake-picker`：`snake-select` 标签、`SelectProps` / `SelectEmits` / `SelectExpose` / `SelectItem` / `SelectResult` 等类型、`snake-select__*` 类名与 `--snake-select-*` 主题变量全部改为 `picker`，文档路径改为 `/components/picker`。`select` 名称腾出，留给后续真正带触发框的选择控件
+- **snake-parse → snake-rich-text:** 组件改名（不保留旧名）：`parse` 描述的是「解析」这个动作，而组件交付的是渲染后的富文本；uni-app 原生叫 `rich-text`，wot-ui 用 `wd-rich-text`，uView-Pro 已删除 `u-parse`（文档标注「该组件已废弃」），只有 uView 2.x / uview-plus 还沿用 `up-parse`。标签改为 `snake-rich-text`，类型改为 `RichTextProps` / `RichTextEmits`，文档路径改为 `/components/rich-text`；15 个道具与 `up-parse` 同名，迁移只需换标签
+- **snake-rich-text → snake-cms-rich-text:** 原 `snake-rich-text` 是 `snake-cms` 的富文本区块薄封装（`libs/cms/blocks.ts` 里 `richtext` 指向它），名字让给渲染组件后改为 `snake-cms-rich-text`，类型改为 `CmsRichTextProps`；CMS 数据里的 `richtext` 块 key 不变，线上装修数据不受影响
+- **snake-checkbox-group / snake-radio-group:** 子项上下文新增合并后的 `disabled`，子项优先读它；即使 group 自身没写 `disabled`，Form 的禁用也能穿透到每个 checkbox / radio
+- **snake-picker:** 新增 `itemHeight`（默认 44）与 `visibleItemCount`（默认 6）：弹层高度 = 行高 × 可见行数（默认 264px，此前固定 250px、行高由框架默认 34px 决定）；补齐 `change` 事件（滚动落定即派发）、`beforeConfirm` 异步拦截（必须显式放行）、`open` / `close` 方法、`rootPortal`、`disabled`、`emptyText`
+- **snake-picker:** 无数据时渲染空态文案（此前是一块空白滚轮面板）；滑动中或等待拦截器时确认按钮置灰，拦截器等待期间不会误关弹层
+- **snake-picker:** 新增 `round`（默认 `true`）：面板圆角交给 `snake-popup` 的 `round` 绘制，与其它底部弹层同一套参数，`false` 即直角、数字/字符串按 CSS 尺寸；组件不再自建 `--snake-picker-panel-radius`
+- **snake-picker:** 视觉重做，对齐 wot-ui / uView-Pro：选中行改为「圆角浅色条 + 字重 600」，浅色条左右内缩 12px、圆角 6px、底色取 `--snake-color-background`（整块 `#f1f1f1` 通栏灰条会被当成禁用块）；浅色条画在组件自己的节点上并压在原生 picker-view 之下（直接给原生 indicator 加底色会盖住选中项文字，靠 z-index 压制在小程序端不可移植）；滚轮遮罩改为表面色 → 透明的渐变；工具栏 44px、标题 15px/600、操作按钮 16px；选中框上下 hairline 改为可选（给 `--snake-picker-indicator-border-color` 一个颜色才画）
+- **snake-picker:** 组件级主题变量由 15 个增至 22 个：新增 `--snake-picker-roller-bg`、`--snake-picker-roller-inset-x`、`--snake-picker-roller-radius`、`--snake-picker-item-active-color`、`--snake-picker-item-active-font-weight`、`--snake-picker-mask-color`、`--snake-picker-title-font-weight`、`--snake-picker-toolbar-padding-x`、`--snake-picker-item-padding-x`，移除 `--snake-picker-panel-radius` 与 `--snake-picker-mask-rgb`
+- **snake-picker:** 工具栏改为标题 `flex: 1` 居中、按钮定宽不换行，长标题不再挤压按钮
+- **snake-picker:** 接入 `snake-form-item`：跟随表单项与整表的 `disabled`，确认成功后触发 `change` 校验（「选完即校验」）
+- **locale:** 新增 `picker.emptyText`（`暂无数据` / `No data`）
+- **snake-navbar:** 返回热区的按压反馈由「44×44 叠黑色块」改为前景变淡（`opacity: 0.55` + 150ms 过渡）：彩色导航栏上不再出现一块灰色方块，`hover-stay-time` 取 70ms，抬手即恢复
+- **theme:** 主色上的前景统一为白字：`snake-button` / `snake-tag` 与 `snake-subsection` 的选中项取 `--snake-color-white`，`primaryInk` 默认白字 `#ffffff`（亮色与暗色板一致），示例导航栏因此与按钮、标签同色；需要更高对比的主题把 `primaryInk` 改成墨绿 `#073b2a`（品牌绿上 6.37:1，白字 1.98:1）即可
+- **demo:** 示例应用导航栏不再硬编码品牌绿（原 `#007A55`，暗色 `#01513B`），改为「主题主色做底 + 白字做前景」，与按钮 / 标签的实心主色一致：切主题时整条跟着品牌色走，按压反馈叠黑，文档站手机预览壳的状态栏同步
+- **docs:** 组件总览公开条目由 50 个增至 56 个，README 组件数量同步修正
+
+- **snake-rich-text:** 链接色不再用 mp-html 内置的固定蓝 `#366092`，改为跟随主色（`--snake-rich-text-link-color` → `--snake-color-primary`），与 `snake-link` 一致
+- **snake-rich-text:** 新增 5 个组件级主题变量 `--snake-rich-text-color` / `--snake-rich-text-font-size` / `--snake-rich-text-line-height` / `--snake-rich-text-link-color` / `--snake-rich-text-image-radius`；默认值全部继承原表现（链接除外，取主色），不设置变量时布局不变
+- **snake-rich-text:** `emits` 补齐 `pause` / `fullscreenchange`：此前只声明 6 个事件，实际媒体暂停与视频全屏变化也会派发，未声明的监听会被当成普通属性透传到根节点
+- **snake-rich-text:** 类型新增 `RichTextMediaEvent`，`play` / `pause` / `fullscreenchange` 的载荷统一为 `{ source, attrs }`，并透传平台 detail
+
+### ✏️ Documentation | 文档
+
+- **docs:** 新增 tag / action-sheet / steps / collapse / grid / swipe-action 文档页与总览注册，并补齐 `preview` 在线预览
+- **demo:** 新增 6 个示例页（含 `DemoControlPanel` 参数面板与中英文案），覆盖标签主题与镂空、动作面板显隐与 `action-item` 单行自定义、步骤条方向/点状模式/异常状态/自定义图标、折叠面板图标插槽/动画时长、宫格列数/等高/间距、滑动操作阈值与同组互斥
+- **docs:** steps 文档补充点状模式、对齐方式与新增主题变量（`--snake-step-dot-size` / `--snake-step-icon-size` / `--snake-step-status-color`），并把示例里不在字库中的图标名（`wallet` / `box` / `truck`）换成 `rmb` / `bag` / `car`
+- **docs:** swipe-action 文档重写：左右双向、自定义按钮区、`v-model` 受控展开、`beforeClose` 关闭前拦截、同组互斥；API 表补齐 `leftActions` / `modelValue` / `beforeClose` / `contentClick` / `refresh` 与 `--snake-swipe-action-icon-size`，示例页新增插槽按钮、受控切换与确认弹窗
+- **docs:** search 文档重写：形状与状态、插槽、右侧按钮定制、受控与方法调用，补 Slots / Expose / 主题变量表；示例页新增插槽、按钮定制与 `ref` 方法三组用例，去掉白底在白卡片上看不见的示例
+- **docs:** input 文档补充「清除与字数」「只读与点击」「Expose」，示例页重排为实时配置、清除与字数、只读禁用与错误态、密码格式化与去空格、方法与插槽、表单联动六个区块，并加上事件回显
+- **docs:** textarea 文档补充「字数与格式化」「只读与点击」「Expose」，示例页新增 emoji 字数、格式化、只读点击与 `ref` 方法四组用例
+- **docs:** input / textarea 文档补「尺寸与主题」章节与尺寸档位表，主题变量拆成尺寸变量与颜色变量两组；示例页新增尺寸档位、`height` 覆盖与 CSS 变量主题化三组用例
+- **docs:** form 文档补充「禁用」「校验时机」「必填星号」三章与 14 个主题变量表，示例页新增「禁用与主题」区块并接入禁用整表、校验时机、星号位置三个开关
+- **docs:** picker 文档重写：行高与可见行数、样式、异步校验、空态、禁用、表单联动、Methods 与 22 个主题变量；示例页新增异步校验、方法调用与表单联动区块，并把行高 / 可见行数 / 面板圆角 / `rootPortal` / 空数据接入参数面板，补 `change` 实时回显与长文案省略示例
+- **docs:** multi-theme / custom-style 把 `primaryInk` 说明为「整片主色上的前景色」（默认白字，可改墨绿提高对比），示例导航栏与按钮、标签一样用白字；navbar 文档补小程序胶囊避让与半像素底线说明
+- **docs:** color 文档重做：色卡跟着站点明暗开关切换亮 / 暗两套取值，每个语义色展开「加深 / 禁用 / 浅色」并标出令牌后缀；`primaryInk` 单列一节，给出实时对比度读数（默认 `1.98:1`，覆写墨绿 `#073B2A` 后 `6.37:1`）并说明库内组件的反白前景仍读 `--snake-color-white`；补 `primary-deep` / `primary-deeper` 两档深色的用途，文本与界面补暗色取值，遮罩与阴影改为「令牌 / 亮色 / 暗色」三列表；新增「工具类与 SCSS 变量」「对比度与可读性」两节
+- **demo:** 色彩示例页重做：品牌色补 `primaryInk` 前景示例与实时对比度读数，状态色按 `success` / `warning` / `error` / `info` 展开「基准 / 加深 / 禁用 / 浅色」四档（对齐 uView-Pro 的分组方式），文本与表面行显示 `--snake-color-*` 令牌名并支持点按复制色值；遮罩改为盖在模拟内容上、阴影改画在页面背景上，暗色下不再是一块看不见的方块
+- **docs:** rich-text 文档随改名重写：标题改为「RichText 富文本」，新增「与原生 `rich-text` 的区别」对照表与「与 uView 的关系」迁移提示，补「装修区块」说明；示例页路由由 `pages/componentsB/parse` 改为 `richText`，原 CMS 富文本区块示例移到 `cmsRichText`
+- **specs:** 新增 `specs/2026-11-13-batch1-component-apis.md`，记录第一批组件的 API 设计与四项已确认决策
+
+- **docs:** rich-text 文档补「与其他组件库的对照」（uview-plus `up-parse` / uView-Pro `u-parse` / wot-ui `wd-rich-text` 的迁移映射）、「常见问题」（H5 子路径静态资源 404、表格宽度、内容样式不生效）与 5 个主题变量表；Events 补 `pause` / `fullscreenchange`，并说明解析类参数改动会重新解析
+- **demo:** rich-text 示例页重做（分组对齐 wot-ui）：文章正文排版、三组表格（普通 / 宽表横向滚动 / 合并单元格）、图片预览与 `error-img` 兜底、音视频、链接与锚点跳转、空内容插槽、事件日志，以及 6 个参数开关；内容不再写死灰底与深色文字，改用 `tagStyle` + 主题变量，暗色模式下可直接阅读
+- **docs:** 组件总览的 rich-text 条目补描述与关键词（含旧名 `parse`，搜索旧名仍可命中）
+
 ## [0.0.20](https://github.com/purenia-ai/snake-ui/compare/v0.0.19...v0.0.20)（2026-11-11）
 
 ### 🐛 Bug Fixes | Bug 修复
@@ -655,9 +936,19 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 - **plugins:** root 插件的 JSONC 注释剥离改为字符串感知扫描，`https://…` 这类字符串内容不再被当作注释截断，修复 `pages.json` 启动解析崩溃
 - **types:** 新增 `global.d.ts` 声明全部组件的 `GlobalComponents` 类型增强，volar 3.x 编辑器不再把组件退化为 `any`
 
+- **snake-rich-text:** `tagStyle` / `scrollTable` / `useAnchor` / `domain` / `previewImg` 只在解析阶段生效，运行期改动不会重新解析——示例页里「表格横向滚动」开关切了完全没反应；现在按解析相关参数快照重新解析（`tagStyle` 逐键排序后序列化，父组件每次渲染传等值对象不会重复解析）
+- **snake-rich-text:** `content` 传 `null` / `undefined` 时解析器直接抛错（接口透传字段时很常见），现在按空内容处理并落到默认插槽
+- **snake-rich-text:** 内容连续更新时上一轮的 `ready` 高度轮询不会中断，同一个实例会多次派发 `ready`；现在新的 `setContent` 会先清掉旧定时器
+- **snake-rich-text:** Vue 3 不再调用 `beforeDestroy`，mp-html 的懒加载 `IntersectionObserver` 在组件卸载后没有断开；现在补 `unmounted` 清理（`node` 子组件同步处理），并清掉 `ready` 轮询
+
 ### ⚙️ Changes | 变更
 
 - **types（行为变更）:** 入口类型收编为源码即声明：删除 `index.d.ts`，ambient 声明并入 `index.ts`；`package.json` 移除 `types` 字段，类型改由源码解析
+
+- **snake-rich-text:** 链接色不再用 mp-html 内置的固定蓝 `#366092`，改为跟随主色（`--snake-rich-text-link-color` → `--snake-color-primary`），与 `snake-link` 一致
+- **snake-rich-text:** 新增 5 个组件级主题变量 `--snake-rich-text-color` / `--snake-rich-text-font-size` / `--snake-rich-text-line-height` / `--snake-rich-text-link-color` / `--snake-rich-text-image-radius`；默认值全部继承原表现（链接除外，取主色），不设置变量时布局不变
+- **snake-rich-text:** `emits` 补齐 `pause` / `fullscreenchange`：此前只声明 6 个事件，实际媒体暂停与视频全屏变化也会派发，未声明的监听会被当成普通属性透传到根节点
+- **snake-rich-text:** 类型新增 `RichTextMediaEvent`，`play` / `pause` / `fullscreenchange` 的载荷统一为 `{ source, attrs }`，并透传平台 detail
 
 ### ✏️ Documentation | 文档
 
@@ -710,6 +1001,11 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 - **snake-sticky:** 常驻占位结构重构：测得高度后占位层定高、内容层常驻 absolute，吸顶切换不再引起布局跳动；测量对象改为内容层，H5 端用 ResizeObserver 监听内容尺寸
 - **snake-filter-sorts:** 筛选标签固定每行 4 个（宽度改为百分比），新增 `nth-child(4n)` 规则去掉行尾右间距，四列左右对齐
 
+- **snake-rich-text:** 链接色不再用 mp-html 内置的固定蓝 `#366092`，改为跟随主色（`--snake-rich-text-link-color` → `--snake-color-primary`），与 `snake-link` 一致
+- **snake-rich-text:** 新增 5 个组件级主题变量 `--snake-rich-text-color` / `--snake-rich-text-font-size` / `--snake-rich-text-line-height` / `--snake-rich-text-link-color` / `--snake-rich-text-image-radius`；默认值全部继承原表现（链接除外，取主色），不设置变量时布局不变
+- **snake-rich-text:** `emits` 补齐 `pause` / `fullscreenchange`：此前只声明 6 个事件，实际媒体暂停与视频全屏变化也会派发，未声明的监听会被当成普通属性透传到根节点
+- **snake-rich-text:** 类型新增 `RichTextMediaEvent`，`play` / `pause` / `fullscreenchange` 的载荷统一为 `{ source, attrs }`，并透传平台 detail
+
 ### ✏️ Documentation | 文档
 
 - `color.md` 色板的 `primary-light` 修正为 token 实际值 `#06D2901A`
@@ -720,6 +1016,11 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 
 - **snake-image:** 失败态改为灰底居中图标：默认 `errorIcon` 改用 `error-circle`，占位层补 `--snake-color-surface-muted` 底色，加载/失败统一 24px 图标且不再叠加默认文案（插槽仍可自定义）；`loading-img` / `error-img` 自身加载失败时回退内置图标，空 `src` 不再提示"加载失败"，仅懒加载时重置图片 key 避免挂载即重复请求
 - **snake-sticky:** 吸顶判定重构：观察根顶边改为吸顶线加自身高度并按阈值 0 实时判定，修复吸顶块高于视口时永不触发；降级路径改用宿主 `scrollTop`（原 `onPageScroll` 注册在 H5 与小程序均不会回调），返回页恢复滚动与锚点跳转后也会即时校正
+
+- **snake-rich-text:** 链接色不再用 mp-html 内置的固定蓝 `#366092`，改为跟随主色（`--snake-rich-text-link-color` → `--snake-color-primary`），与 `snake-link` 一致
+- **snake-rich-text:** 新增 5 个组件级主题变量 `--snake-rich-text-color` / `--snake-rich-text-font-size` / `--snake-rich-text-line-height` / `--snake-rich-text-link-color` / `--snake-rich-text-image-radius`；默认值全部继承原表现（链接除外，取主色），不设置变量时布局不变
+- **snake-rich-text:** `emits` 补齐 `pause` / `fullscreenchange`：此前只声明 6 个事件，实际媒体暂停与视频全屏变化也会派发，未声明的监听会被当成普通属性透传到根节点
+- **snake-rich-text:** 类型新增 `RichTextMediaEvent`，`play` / `pause` / `fullscreenchange` 的载荷统一为 `{ source, attrs }`，并透传平台 detail
 
 ### ✏️ Documentation | 文档
 
@@ -743,6 +1044,11 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 
 - **snake-input:** 移除 `password` 属性，密码框改用 `type="password"`，保留单一入口
 - **snake-notice-bar:** 移除 `direction` 属性，垂直模式改用 `mode="vertical"`，保留单一入口
+
+- **snake-rich-text:** 链接色不再用 mp-html 内置的固定蓝 `#366092`，改为跟随主色（`--snake-rich-text-link-color` → `--snake-color-primary`），与 `snake-link` 一致
+- **snake-rich-text:** 新增 5 个组件级主题变量 `--snake-rich-text-color` / `--snake-rich-text-font-size` / `--snake-rich-text-line-height` / `--snake-rich-text-link-color` / `--snake-rich-text-image-radius`；默认值全部继承原表现（链接除外，取主色），不设置变量时布局不变
+- **snake-rich-text:** `emits` 补齐 `pause` / `fullscreenchange`：此前只声明 6 个事件，实际媒体暂停与视频全屏变化也会派发，未声明的监听会被当成普通属性透传到根节点
+- **snake-rich-text:** 类型新增 `RichTextMediaEvent`，`play` / `pause` / `fullscreenchange` 的载荷统一为 `{ source, attrs }`，并透传平台 detail
 
 ### ✏️ Documentation | 文档
 
@@ -794,6 +1100,11 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 - **snake-drop-menu:** 标题栏默认高度 20→40（迁移折半遗留）
 - **snake-line-progress:** `percent` 钳制 0-100 并容错非法输入，百分比文字取整
 
+- **snake-rich-text:** 链接色不再用 mp-html 内置的固定蓝 `#366092`，改为跟随主色（`--snake-rich-text-link-color` → `--snake-color-primary`），与 `snake-link` 一致
+- **snake-rich-text:** 新增 5 个组件级主题变量 `--snake-rich-text-color` / `--snake-rich-text-font-size` / `--snake-rich-text-line-height` / `--snake-rich-text-link-color` / `--snake-rich-text-image-radius`；默认值全部继承原表现（链接除外，取主色），不设置变量时布局不变
+- **snake-rich-text:** `emits` 补齐 `pause` / `fullscreenchange`：此前只声明 6 个事件，实际媒体暂停与视频全屏变化也会派发，未声明的监听会被当成普通属性透传到根节点
+- **snake-rich-text:** 类型新增 `RichTextMediaEvent`，`play` / `pause` / `fullscreenchange` 的载荷统一为 `{ source, attrs }`，并透传平台 detail
+
 ### ✏️ Documentation | 文档
 
 - 文档与注释全量改用中性表述，移除第三方库对照审计页与对应守卫
@@ -829,6 +1140,11 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 
 ## [0.0.6](https://github.com/purenia-ai/snake-ui/compare/v0.0.5...v0.0.6)（2026-11-02）
 
+- **snake-rich-text:** `tagStyle` / `scrollTable` / `useAnchor` / `domain` / `previewImg` 只在解析阶段生效，运行期改动不会重新解析——示例页里「表格横向滚动」开关切了完全没反应；现在按解析相关参数快照重新解析（`tagStyle` 逐键排序后序列化，父组件每次渲染传等值对象不会重复解析）
+- **snake-rich-text:** `content` 传 `null` / `undefined` 时解析器直接抛错（接口透传字段时很常见），现在按空内容处理并落到默认插槽
+- **snake-rich-text:** 内容连续更新时上一轮的 `ready` 高度轮询不会中断，同一个实例会多次派发 `ready`；现在新的 `setContent` 会先清掉旧定时器
+- **snake-rich-text:** Vue 3 不再调用 `beforeDestroy`，mp-html 的懒加载 `IntersectionObserver` 在组件卸载后没有断开；现在补 `unmounted` 清理（`node` 子组件同步处理），并清掉 `ready` 轮询
+
 ### ⚙️ Changes | 变更
 
 - **单位体系:** 全库 rpx（750 稿）迁移为 px（375 稿）：裸数字属性按 px 解释、尺寸默认值减半、`1rpx` 细线改 `1px`、`addUnit` 默认单位改 px
@@ -841,6 +1157,11 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 
 - **snake-cms:** 修复视频块从不渲染（编辑器存量 key `videoss` 与分发端 `videos` 不一致，现两者兼容）
 - **magiccube:** 修复第 5 种布局高度语义与主路径不一致
+
+- **snake-rich-text:** 链接色不再用 mp-html 内置的固定蓝 `#366092`，改为跟随主色（`--snake-rich-text-link-color` → `--snake-color-primary`），与 `snake-link` 一致
+- **snake-rich-text:** 新增 5 个组件级主题变量 `--snake-rich-text-color` / `--snake-rich-text-font-size` / `--snake-rich-text-line-height` / `--snake-rich-text-link-color` / `--snake-rich-text-image-radius`；默认值全部继承原表现（链接除外，取主色），不设置变量时布局不变
+- **snake-rich-text:** `emits` 补齐 `pause` / `fullscreenchange`：此前只声明 6 个事件，实际媒体暂停与视频全屏变化也会派发，未声明的监听会被当成普通属性透传到根节点
+- **snake-rich-text:** 类型新增 `RichTextMediaEvent`，`play` / `pause` / `fullscreenchange` 的载荷统一为 `{ source, attrs }`，并透传平台 detail
 
 ### ✏️ Documentation | 文档
 
@@ -871,12 +1192,22 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 - **snake-button:** 修复 `type="info"` 无样式、禁用态文字不可见、plain 禁用不可区分等多个状态死角
 - **exports:** 补充 `./components/snake-cms/types` 显式入口，修复 TS bundler 解析报 TS2307
 
+- **snake-rich-text:** `tagStyle` / `scrollTable` / `useAnchor` / `domain` / `previewImg` 只在解析阶段生效，运行期改动不会重新解析——示例页里「表格横向滚动」开关切了完全没反应；现在按解析相关参数快照重新解析（`tagStyle` 逐键排序后序列化，父组件每次渲染传等值对象不会重复解析）
+- **snake-rich-text:** `content` 传 `null` / `undefined` 时解析器直接抛错（接口透传字段时很常见），现在按空内容处理并落到默认插槽
+- **snake-rich-text:** 内容连续更新时上一轮的 `ready` 高度轮询不会中断，同一个实例会多次派发 `ready`；现在新的 `setContent` 会先清掉旧定时器
+- **snake-rich-text:** Vue 3 不再调用 `beforeDestroy`，mp-html 的懒加载 `IntersectionObserver` 在组件卸载后没有断开；现在补 `unmounted` 清理（`node` 子组件同步处理），并清掉 `ready` 轮询
+
 ### ⚙️ Changes | 变更
 
 - **snake-calendar:** 移除双十一内置节日；底部确定按钮占满整行
 - **snake-button:** 加载态改用内置 `snake-loading` 指示器，颜色继承文字色
 - **主题:** `--snake-color-primary-light` 修正为主色 10% 透明度，相关 fallback 同步
 - **仓库:** 迁移至 GitHub 组织 [purenia-ai/snake-ui](https://github.com/purenia-ai/snake-ui)，补 MIT LICENSE 与文档站入口
+
+- **snake-rich-text:** 链接色不再用 mp-html 内置的固定蓝 `#366092`，改为跟随主色（`--snake-rich-text-link-color` → `--snake-color-primary`），与 `snake-link` 一致
+- **snake-rich-text:** 新增 5 个组件级主题变量 `--snake-rich-text-color` / `--snake-rich-text-font-size` / `--snake-rich-text-line-height` / `--snake-rich-text-link-color` / `--snake-rich-text-image-radius`；默认值全部继承原表现（链接除外，取主色），不设置变量时布局不变
+- **snake-rich-text:** `emits` 补齐 `pause` / `fullscreenchange`：此前只声明 6 个事件，实际媒体暂停与视频全屏变化也会派发，未声明的监听会被当成普通属性透传到根节点
+- **snake-rich-text:** 类型新增 `RichTextMediaEvent`，`play` / `pause` / `fullscreenchange` 的载荷统一为 `{ source, attrs }`，并透传平台 detail
 
 ### ✏️ Documentation | 文档
 
@@ -887,6 +1218,11 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 ### 🐛 Bug Fixes | Bug 修复
 
 - **exports:** `./libs/request`、`./libs/runtime` 等深层路径提供显式入口，修复 TS / Vite 无法解析
+
+- **snake-rich-text:** 链接色不再用 mp-html 内置的固定蓝 `#366092`，改为跟随主色（`--snake-rich-text-link-color` → `--snake-color-primary`），与 `snake-link` 一致
+- **snake-rich-text:** 新增 5 个组件级主题变量 `--snake-rich-text-color` / `--snake-rich-text-font-size` / `--snake-rich-text-line-height` / `--snake-rich-text-link-color` / `--snake-rich-text-image-radius`；默认值全部继承原表现（链接除外，取主色），不设置变量时布局不变
+- **snake-rich-text:** `emits` 补齐 `pause` / `fullscreenchange`：此前只声明 6 个事件，实际媒体暂停与视频全屏变化也会派发，未声明的监听会被当成普通属性透传到根节点
+- **snake-rich-text:** 类型新增 `RichTextMediaEvent`，`play` / `pause` / `fullscreenchange` 的载荷统一为 `{ source, attrs }`，并透传平台 detail
 
 ### ✏️ Documentation | 文档
 
@@ -1092,81 +1428,384 @@ canvas 绘制的环形进度条：中心天然透明、弧端默认圆头，可�
 | `--snake-color-primary` | 激活弧默认颜色 |
 | `--snake-color-divider` | 底环默认颜色   |
 
+<!-- Source: docs/components/collapse.md -->
+
+# Collapse 折叠面板
+
+把长内容折叠成标题行，用于商品参数、FAQ、售后说明；支持多项展开与手风琴模式。
+
+## 平台兼容性
+
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
+
+## 基础用法
+
+`v-model` 绑定展开项数组，每个 `snake-collapse-item` 用 `name` 作为唯一标识：
+
+```vue
+<snake-collapse v-model="active">
+    <snake-collapse-item title="商品参数" name="spec">
+        <view>材质：棉 95%、氨纶 5%</view>
+        <view>产地：浙江</view>
+    </snake-collapse-item>
+    <snake-collapse-item title="售后说明" name="after">
+        <view>签收后 7 天内可申请无理由退货。</view>
+    </snake-collapse-item>
+</snake-collapse>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const active = ref<string[]>(['spec']);
+</script>
+```
+
+## 手风琴模式
+
+`accordion` 下 `v-model` 用单值，同时只允许展开一项：
+
+```vue
+<snake-collapse v-model="current" accordion>
+    <snake-collapse-item title="如何退换货？" name="q1" />
+    <snake-collapse-item title="运费谁承担？" name="q2" />
+</snake-collapse>
+```
+
+## 禁用与自定义
+
+`disabled` 阻止展开；`title` / `value` 插槽可放自定义内容：
+
+```vue
+<snake-collapse v-model="active">
+    <snake-collapse-item name="stock" disabled title="库存紧张，暂不可选" />
+    <snake-collapse-item name="vip">
+        <template #title>会员权益 <snake-tag type="warning" size="mini" text="NEW" /></template>
+        <template #value>查看</template>
+        <view>满 199 元包邮</view>
+    </snake-collapse-item>
+</snake-collapse>
+```
+
+## API
+
+### Props
+
+| 参数          | 说明                                 | 类型                                       | 默认值  |
+| ------------- | ------------------------------------ | ------------------------------------------ | ------- |
+| `customStyle` | 根节点自定义样式                     | `StyleValue`                               | `''`    |
+| `customClass` | 根节点自定义类名                     | `string`                                   | `''`    |
+| `modelValue`  | 展开项，手风琴模式为单值，否则为数组 | `string \| number \| (string \| number)[]` | `''`    |
+| `accordion`   | 是否手风琴模式                       | `boolean`                                  | `false` |
+| `border`      | 是否显示分割线                       | `boolean`                                  | `true`  |
+
+| 子项参数   | 说明                     | 类型               | 默认值  |
+| ---------- | ------------------------ | ------------------ | ------- |
+| `name`     | 唯一标识，缺省用子项序号 | `string \| number` | `''`    |
+| `title`    | 标题                     | `string`           | `''`    |
+| `disabled` | 是否禁用                 | `boolean`          | `false` |
+| `icon`     | 标题左侧图标名           | `string`           | `''`    |
+| `duration` | 展开动画时长（毫秒）     | `number`           | `250`   |
+| `border`   | 是否显示分割线           | `boolean`          | `true`  |
+
+### Events
+
+| 事件名              | 说明         | 回调参数                                          |
+| ------------------- | ------------ | ------------------------------------------------- |
+| `update:modelValue` | 展开值变化   | `value: string \| number \| (string \| number)[]` |
+| `change`            | 展开值变化后 | 同上                                              |
+
+### Slots
+
+| 插槽名  | 说明             |
+| ------- | ---------------- |
+| default | 折叠的内容区     |
+| title   | 自定义标题       |
+| value   | 标题右侧自定义区 |
+| icon    | 标题左侧图标     |
+
+## 主题变量
+
+| 变量名                           | 说明         |
+| -------------------------------- | ------------ |
+| `--snake-collapse-header-height` | 标题行高度   |
+| `--snake-collapse-font-size`     | 标题字号     |
+| `--snake-collapse-arrow-color`   | 箭头颜色     |
+| `--snake-collapse-bg`            | 面板底色     |
+| `--snake-collapse-border-color`  | 分割线颜色   |
+| `--snake-collapse-max-height`    | 展开最大高度 |
+
+## 注意
+
+- 展开动画用 `max-height` 过渡（默认上限 1000px），内容超长时请调大 `--snake-collapse-max-height`。
+- 手风琴与多项模式的 `v-model` 类型不同，切换模式时记得同步改绑定的初始值。
+
 <!-- Source: docs/components/color.md -->
 
 <script setup lang="ts">
-const colorGroups = [
+const INK_LIGHT = '#FFFFFF';
+const INK_DARK = '#0B1F17';
+
+interface Ramp {
+    light: string;
+    dark: string;
+}
+
+interface Step extends Ramp {
+    label: string;
+    token: string;
+}
+
+interface Family extends Ramp {
+    name: string;
+    token: string;
+    use: string;
+    steps: Step[];
+}
+
+interface Swatch {
+    name: string;
+    token: string;
+    light: string;
+    dark: string;
+}
+
+function parseColor(value: string) {
+    const match = /^#([0-9a-f]{6})([0-9a-f]{2})?$/i.exec(value.trim());
+    if (!match) return undefined;
+    const rgb = Number.parseInt(match[1], 16);
+    return { r: (rgb >> 16) & 255, g: (rgb >> 8) & 255, b: rgb & 255, alpha: match[2] ? Number.parseInt(match[2], 16) / 255 : 1 };
+}
+
+/** 相对亮度；带 alpha 的令牌按面板底色合成后再算。 */
+function luminance(value: string, panel = '#FFFFFF'): number {
+    const color = parseColor(value);
+    const base = parseColor(panel);
+    if (!color || !base) return 1;
+    const channel = (channelValue: number) => {
+        const ratio = channelValue / 255;
+        return ratio <= 0.03928 ? ratio / 12.92 : ((ratio + 0.055) / 1.055) ** 2.4;
+    };
+    const mix = (foreground: number, background: number) => foreground * color.alpha + background * (1 - color.alpha);
+    return 0.2126 * channel(mix(color.r, base.r)) + 0.7152 * channel(mix(color.g, base.g)) + 0.0722 * channel(mix(color.b, base.b));
+}
+
+/** 取对比度更高的前景色，避免色块上的文字踩到 WCAG 下限。 */
+function inkOn(value: string, panel = '#FFFFFF'): string {
+    const level = luminance(value, panel);
+    const onWhite = 1.05 / (level + 0.05);
+    const onInk = (level + 0.05) / (luminance(INK_DARK, panel) + 0.05);
+    return onWhite >= onInk ? INK_LIGHT : INK_DARK;
+}
+
+function contrast(foreground: string, background: string): string {
+    const lighter = Math.max(luminance(foreground, background), luminance(background, background)) + 0.05;
+    const darker = Math.min(luminance(foreground, background), luminance(background, background)) + 0.05;
+    return (lighter / darker).toFixed(2);
+}
+
+/** 同一块色板在明暗两套主题下的背景与前景。 */
+function paint(light: string, dark: string) {
+    return { '--light-bg': light, '--light-ink': inkOn(light), '--dark-bg': dark, '--dark-ink': inkOn(dark, '#000000') };
+}
+
+function decorate(family: Family) {
+    return {
+        ...family,
+        head: paint(family.light, family.dark),
+        steps: family.steps.map(step => ({ ...step, style: paint(step.light, step.dark) }))
+    };
+}
+
+const brands: Family[] = [
     {
-        title: '主题主色',
-        items: [{ name: 'Snake 绿', token: 'primary', value: '#06D290', dark: '#2EBD7C', disabled: '#A6EBD3', light: '#06D2901A', ink: '#FFFFFF' }]
-    },
-    {
-        title: '辅助色',
-        items: [
-            { name: 'Success', token: 'success', value: '#19BE6B', dark: '#18B566', disabled: '#71D5A1', light: '#DBF1E1', ink: '#FFFFFF' },
-            { name: 'Warning', token: 'warning', value: '#FF9900', dark: '#F29100', disabled: '#FCBD71', light: '#FDF6EC', ink: '#FFFFFF' },
-            { name: 'Error', token: 'error', value: '#FA3534', dark: '#DD6161', disabled: '#FAB6B6', light: '#FEF0F0', ink: '#FFFFFF' },
-            { name: 'Info', token: 'info', value: '#909399', dark: '#82848A', disabled: '#C8C9CC', light: '#F4F4F5', ink: '#FFFFFF' }
+        name: 'Snake 绿',
+        token: 'primary',
+        use: '主按钮、选中态、品牌标识',
+        light: '#06D290',
+        dark: '#06D290',
+        steps: [
+            { label: '加深', token: 'dark', light: '#2EBD7C', dark: '#2EE6A8' },
+            { label: '禁用', token: 'disabled', light: '#A6EBD3', dark: '#1E3A31' },
+            { label: '浅色', token: 'light', light: '#06D2901A', dark: '#0C2A1E' }
         ]
     }
 ];
 
-const neutralColors = [
-    { name: '主要文字', token: 'text', value: '#303133' },
-    { name: '常规文字', token: 'text-secondary', value: '#606266' },
-    { name: '次要文字', token: 'text-muted', value: '#909399' },
-    { name: '占位文字', token: 'text-light', value: '#C0C4CC' },
-    { name: '边框', token: 'border', value: '#DCDFE6' },
-    { name: '分割线', token: 'divider', value: '#E4E7ED' },
-    { name: '页面背景', token: 'background', value: '#F6F6F6' },
-    { name: '内容表面', token: 'surface', value: '#FFFFFF' },
-    { name: '弱表面', token: 'surface-muted', value: '#F1F1F1' }
+const semantics: Family[] = [
+    {
+        name: 'Success',
+        token: 'success',
+        use: '成功、通过、已完成',
+        light: '#19BE6B',
+        dark: '#4ADE80',
+        steps: [
+            { label: '加深', token: 'dark', light: '#18B566', dark: '#1F9D57' },
+            { label: '禁用', token: 'disabled', light: '#71D5A1', dark: '#2F4D3D' },
+            { label: '浅色', token: 'light', light: '#DBF1E1', dark: '#10291F' }
+        ]
+    },
+    {
+        name: 'Warning',
+        token: 'warning',
+        use: '警告、待处理、即将过期',
+        light: '#FF9900',
+        dark: '#FBBF24',
+        steps: [
+            { label: '加深', token: 'dark', light: '#F29100', dark: '#C88F00' },
+            { label: '禁用', token: 'disabled', light: '#FCBD71', dark: '#4A3B17' },
+            { label: '浅色', token: 'light', light: '#FDF6EC', dark: '#2B1F05' }
+        ]
+    },
+    {
+        name: 'Error',
+        token: 'error',
+        use: '错误、失败、删除等破坏性操作',
+        light: '#FA3534',
+        dark: '#FF6B6B',
+        steps: [
+            { label: '加深', token: 'dark', light: '#DD6161', dark: '#D83A3A' },
+            { label: '禁用', token: 'disabled', light: '#FAB6B6', dark: '#4F2323' },
+            { label: '浅色', token: 'light', light: '#FEF0F0', dark: '#2D1414' }
+        ]
+    },
+    {
+        name: 'Info',
+        token: 'info',
+        use: '普通提示、中性说明',
+        light: '#909399',
+        dark: '#A0A7B8',
+        steps: [
+            { label: '加深', token: 'dark', light: '#82848A', dark: '#7C8394' },
+            { label: '禁用', token: 'disabled', light: '#C8C9CC', dark: '#3B3F4C' },
+            { label: '浅色', token: 'light', light: '#F4F4F5', dark: '#1D2029' }
+        ]
+    }
 ];
+
+const swatches: Swatch[] = [
+    { name: '主要文字', token: 'text', light: '#303133', dark: '#F5F6F7' },
+    { name: '常规文字', token: 'text-secondary', light: '#606266', dark: '#CFD3DC' },
+    { name: '次要文字', token: 'text-muted', light: '#909399', dark: '#9AA1AF' },
+    { name: '占位文字', token: 'text-light', light: '#C0C4CC', dark: '#6B7082' },
+    { name: '边框', token: 'border', light: '#DCDFE6', dark: '#3A4251' },
+    { name: '分割线', token: 'divider', light: '#E4E7ED', dark: '#3A4251' },
+    { name: '页面背景', token: 'background', light: '#F6F6F6', dark: '#111827' },
+    { name: '内容表面', token: 'surface', light: '#FFFFFF', dark: '#000000' },
+    { name: '弱表面', token: 'surface-muted', light: '#F1F1F1', dark: '#1A1A1A' }
+];
+
+const brandFamilies = brands.map(decorate);
+const semanticFamilies = semantics.map(decorate);
+const inkSample = { bg: '#06D290', ink: '#FFFFFF', alt: '#073B2A' };
+const whiteContrast = contrast(inkSample.ink, inkSample.bg);
+const inkContrast = contrast(inkSample.alt, inkSample.bg);
 </script>
 
 # Color 色彩
 
-Snake UI 用统一的色彩 token 表达品牌、状态、文字与界面层级。组件优先读取 CSS 变量，因此主题或明暗模式切换时无需逐个改色。
+Snake UI 用统一的色彩 token 表达品牌、状态、文字与界面层级。组件只读 `--snake-color-*` 变量，主题或明暗模式切换时不需要逐个改色。
+
+::: tip 色值来源
+下面所有取值都来自 `src/uni_modules/snake-ui/libs/config/theme.ts` 的 `lightPalette` / `darkPalette`。改主题不用动这些常量，覆写同名令牌即可，见[多主题与暗黑模式](/guide/multi-theme)。把右上角的明暗开关切到暗色，下面的色值会整体换成 `darkPalette` 的取值，可以对照着看。
+:::
 
 ## 主题颜色
 
-`primary` 是 Snake 绿，代表品牌和主要操作；`dark`、`disabled`、`light` 分别用于按压、禁用和浅底状态。
+`primary` 是 Snake 绿，代表品牌和主要操作，派生出四个用途档位：`primary-dark` 按压态、`primary-disabled` 禁用态、`primary-light` 浅底（亮色下是带 10% 透明度的 `#06D2901A`，可直接铺在任意背景上；暗色下换成实色深绿 `#0C2A1E`）、`primary-ink` 整片主色上的前景色。
 
-<template v-for="group in colorGroups" :key="group.title">
-    <h3>{{ group.title }}</h3>
-    <div class="color-grid">
-        <div v-for="color in group.items" :key="color.token" class="color-card" :style="{ background: color.value, color: color.ink }">
-            <strong>{{ color.name }}</strong>
-            <code>--snake-color-{{ color.token }}</code>
-            <div class="color-steps">
-                <span :style="{ background: color.dark, color: '#fff' }">Dark<br>{{ color.dark }}</span>
-                <span :style="{ background: color.disabled, color: '#303133' }">Disabled<br>{{ color.disabled }}</span>
-                <span :style="{ background: color.light, color: '#303133' }">Light<br>{{ color.light }}</span>
+<div class="color-grid color-grid--brand">
+    <div v-for="family in brandFamilies" :key="family.token" class="color-card">
+        <div class="color-card__head" :style="family.head">
+            <strong>{{ family.name }}</strong>
+            <small>{{ family.use }}</small>
+            <code>--snake-color-{{ family.token }}</code>
+            <em><span class="is-light">{{ family.light }}</span><span class="is-dark">{{ family.dark }}</span></em>
+        </div>
+        <div class="color-steps">
+            <div v-for="step in family.steps" :key="step.token" class="color-step" :style="step.style">
+                <span class="color-step__label">{{ step.label }}<code>-{{ step.token }}</code></span>
+                <code class="color-step__hex"><span class="is-light">{{ step.light }}</span><span class="is-dark">{{ step.dark }}</span></code>
             </div>
         </div>
     </div>
-</template>
+</div>
 
-辅助色表达固定业务语义：成功、警告、错误和普通信息，不应仅因视觉偏好互换。
+主色另外还有两档深的：`primary-deep` 在每个主题里都是该品牌色的深色档（默认 `#26273A`），常用来当浅主色底上的强调文字；`primary-deeper` 再深一档（默认 `#22242E`），用于深色版块底色和渐变的起始色。这两档不参与「实心主色 + 前景」的搭配，所以单独说明，不在上面的色卡里。
 
-## 文本与界面
+### 主色上的前景
 
-<div class="neutral-grid">
-    <div v-for="color in neutralColors" :key="color.token" class="neutral-card">
-        <i class="neutral-card__swatch" :style="{ background: color.value }"></i>
-        <span><strong>{{ color.name }}</strong><code>--snake-color-{{ color.token }}</code><small>{{ color.value }}</small></span>
+`primary-ink` 是「整片主色上的前景色」，默认 `#FFFFFF`。业务代码里画在主色上的文字取这个令牌，而不是直接写 `white` 或 `#fff`：品牌绿上的白字对比度是 **{{ whiteContrast }}:1**，低于 WCAG AA 要求的 4.5:1；主色偏亮、需要更强可读性时把它覆写成墨绿 `#073B2A`，同一块主色上的字就变成 **{{ inkContrast }}:1**。
+
+<div class="ink-demo">
+    <div class="ink-demo__sample" :style="{ background: inkSample.bg, color: inkSample.ink }">
+        <strong>整片主色上的前景</strong>
+        <small>品牌绿 #06D290 上的 primaryInk #FFFFFF</small>
+    </div>
+    <div class="ink-demo__sample" :style="{ background: inkSample.bg, color: inkSample.alt }">
+        <strong>换成墨绿后的同一块主色</strong>
+        <small>把 primaryInk 覆写为 #073B2A</small>
+    </div>
+    <div class="ink-demo__meta">
+        <code>--snake-color-primary-ink</code>
+        <span>默认 <b>{{ whiteContrast }}:1</b>（WCAG AA 需 4.5:1）</span>
+        <span>改成 <b>#073B2A</b> → <b>{{ inkContrast }}:1</b></span>
     </div>
 </div>
 
-页面使用 `background`，卡片和面板使用 `surface`，轻量分区使用 `surface-muted`；外框使用 `border`，内容分隔使用 `divider`。Snake UI 的页面背景为 `#F6F6F6`。
+::: warning 库内组件的反白前景
+`snake-button`、`snake-tag` 这类组件内部的白字读的是 `--snake-color-white`（默认同为 `#FFFFFF`），还没有接 `primary-ink`。所以只覆写 `primaryInk` 不会改变组件里的文字颜色；要让实心主色上的组件文字一起换色，同一份主题里把 `white` 覆写成同一个值即可。
+:::
+
+## 辅助色
+
+辅助色表达固定业务语义：成功、警告、错误和普通信息，不应仅因视觉偏好互换。每个语义色同样展开四档，暗色板整体提亮基色、压低浅色底，避免在深色背景上糊成一片。
+
+<div class="color-grid">
+    <div v-for="family in semanticFamilies" :key="family.token" class="color-card">
+        <div class="color-card__head" :style="family.head">
+            <strong>{{ family.name }}</strong>
+            <small>{{ family.use }}</small>
+            <code>--snake-color-{{ family.token }}</code>
+            <em><span class="is-light">{{ family.light }}</span><span class="is-dark">{{ family.dark }}</span></em>
+        </div>
+        <div class="color-steps">
+            <div v-for="step in family.steps" :key="step.token" class="color-step" :style="step.style">
+                <span class="color-step__label">{{ step.label }}<code>-{{ step.token }}</code></span>
+                <code class="color-step__hex"><span class="is-light">{{ step.light }}</span><span class="is-dark">{{ step.dark }}</span></code>
+            </div>
+        </div>
+    </div>
+</div>
+
+## 文本与界面
+
+文字用四级灰阶区分信息层级，界面用 `background` / `surface` / `surface-muted` 区分页面、卡片与轻量分区，`border` 画外框、`divider` 分隔内容。文字令牌不参与主题派生：改主色不会连带改灰阶，它们跟着明暗模式整体反转。
+
+<div class="neutral-grid">
+    <div v-for="swatch in swatches" :key="swatch.token" class="neutral-card">
+        <i class="neutral-card__swatch" :style="{ '--light-bg': swatch.light, '--dark-bg': swatch.dark }"></i>
+        <span>
+            <strong>{{ swatch.name }}</strong>
+            <code>--snake-color-{{ swatch.token }}</code>
+            <small><span class="is-light">{{ swatch.light }}</span><span class="is-dark">{{ swatch.dark }}</span></small>
+        </span>
+    </div>
+</div>
+
+`text-muted` 只用于辅助信息，`text-light` 只用于占位符与禁用态；正文不要用它们。`surface` 在暗色下是纯黑 `#000000`、页面背景是 `#111827`，这样卡片靠底色而不是靠阴影浮起来。
 
 ## 遮罩与阴影
 
-| Token                                         | 默认值                | 用途     |
-| --------------------------------------------- | --------------------- | -------- |
-| `--snake-color-mask`                          | `rgba(0, 0, 0, 0.4)`  | 弹层遮罩 |
-| `--snake-color-shadow`                        | `rgba(0, 0, 0, 0.1)`  | 浮层阴影 |
-| `--snake-color-white` / `--snake-color-black` | `#FFFFFF` / `#000000` | 纯色对比 |
+| Token                                             | 亮色                 | 暗色                 |
+| ------------------------------------------------- | -------------------- | -------------------- |
+| `--snake-color-mask`<br><small>弹层遮罩</small>   | `rgba(0, 0, 0, 0.4)` | `rgba(0, 0, 0, 0.6)` |
+| `--snake-color-shadow`<br><small>浮层投影</small> | `rgba(0, 0, 0, 0.1)` | `rgba(0, 0, 0, 0.3)` |
+| `--snake-color-white`<br><small>反白前景</small>  | `#FFFFFF`            | `#F5F6F7`            |
+| `--snake-color-black`<br><small>纯黑对照</small>  | `#000000`            | `#F5F6F7`            |
+
+暗色下 `white` 与 `black` 都取 `#F5F6F7`，这是有意为之：`white` 多用于「反白前景」，暗色里继续当白色用会变成一块刺眼的白斑；`black` 跟随同一个基线值，避免在深色界面上直接糊成纯黑。
 
 ## 在样式与脚本中使用
 
@@ -1178,37 +1817,245 @@ Snake UI 用统一的色彩 token 表达品牌、状态、文字与界面层级�
     &:active {
         background: var(--snake-color-primary-dark);
     }
-    &:disabled {
-        background: var(--snake-color-primary-disabled);
-    }
+}
+
+.action--quiet {
+    // 10% 主色浅底 + 主色文字，比实心按钮更轻
+    background: var(--snake-color-primary-light);
+    color: var(--snake-color-primary);
 }
 ```
 
 ```ts
 import { useTheme } from '@puresnake/snake-ui';
 
-const { color } = useTheme();
-console.log(color.primary, color.text);
+const { color, isInDarkMode } = useTheme();
+
+// color 是响应式对象，主题或明暗模式切换后自动更新
+console.log(color.primary, color.primaryInk, isInDarkMode());
 ```
 
+::: tip 需要自定义透明度
+hex 令牌还有分量形式 `--snake-color-<name>-rgb`（例如 `6, 210, 144`），要自定义透明度就套进 `rgba()`：`rgba(var(--snake-color-primary-rgb, 6, 210, 144), 0.13)`。`mask` / `shadow` 本身就是 `rgba()`，没有分量形式；`-rgb` 由主题引擎在运行时补齐，静态 `theme.scss` 里只声明了组件真正用到的那十几个，其余取不到时用兜底值。
+:::
+
+## 工具类与 SCSS 变量
+
+`index.scss` 除了引入主题变量，还导出了功能色与文字色工具类：令牌名去掉 `--snake-color-` 前缀再加 `snake-` 就是前景色，末尾补 `-bg` 是背景色。手写少量样式时比重复写 `var()` 更省事。
+
+```html
+<view class="snake-success-light-bg snake-text-muted">浅绿底 + 次要文字</view>
+```
+
+SCSS 里可以用等价别名 `$snake-color-primary`（`theme.scss` 中声明为 `!default`，需要编译期覆写时用）。完整类名见 `src/uni_modules/snake-ui/libs/css/color.scss`；定位、间距等布局类工具见[内置样式](/components/common)。
+
+## 对比度与可读性
+
+- 品牌绿 `#06D290` 上的白字只有 {{ whiteContrast }}:1，这是品牌色的固有权衡：实心主色块面积大、字号粗，按钮和标签可以照常用，但**正文不要压在主色上**；需要更高对比就把 `primaryInk` 换成 `#073B2A`（{{ inkContrast }}:1）。
+- 自定义主色时先量对比度：`primaryInk` 与主色 ≥ 4.5:1 才算稳，示例页底部的读数会跟着主题实时变化。
+- 状态色不要只靠颜色区分，同时配图标或文案，色觉障碍用户才能分辨。
+- `text-light` 一类的低对比令牌只放在占位符、禁用态这类「本来就不需要读」的位置。
+
 ::: tip 多主题与暗黑模式
-通过 `--snake-color-*` 或 `color` 读取颜色，不要在业务代码复制暗色值。主题配置方式见[多主题与暗黑模式](/guide/multi-theme)。
+通过 `--snake-color-*` 或 `color` 读取颜色，不要在业务代码复制暗色值。主题配置方式见[多主题与暗黑模式](/guide/multi-theme)，读取令牌的 API 见 [useTheme](/tools/use-theme)。
 :::
 
 <style scoped>
-.color-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin: 16px 0 28px; }
-.color-card { position: relative; min-height: 148px; padding: 22px 24px 70px; overflow: hidden; border-radius: 8px; box-sizing: border-box; }
-.color-card strong, .color-card code { display: block; color: inherit; }
-.color-card code { margin-top: 5px; padding: 0; background: transparent; }
-.color-steps { position: absolute; right: 0; bottom: 0; left: 0; display: grid; grid-template-columns: repeat(3, 1fr); }
-.color-steps span { min-width: 0; padding: 10px 12px; font-size: 12px; line-height: 1.45; }
-.neutral-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; margin: 20px 0 28px; }
-.neutral-card { display: flex; align-items: center; gap: 14px; padding: 12px; border: 1px solid var(--vp-c-divider); border-radius: 8px; }
-.neutral-card__swatch { width: 50px; height: 50px; flex: none; border: 1px solid var(--vp-c-divider); border-radius: 6px; }
-.neutral-card strong, .neutral-card code, .neutral-card small { display: block; }
-.neutral-card code { margin: 3px 0; padding: 0; background: transparent; font-size: 12px; }
-.neutral-card small { color: var(--vp-c-text-2); }
-@media (max-width: 640px) { .color-grid, .neutral-grid { grid-template-columns: 1fr; } .color-steps span { padding: 9px 8px; font-size: 11px; } }
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(252px, 1fr));
+    gap: 20px;
+    margin: 16px 0 28px;
+}
+.color-grid--brand {
+    max-width: 360px;
+}
+.color-card {
+    overflow: hidden;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 10px;
+}
+.color-card__head {
+    padding: 18px 20px 16px;
+    background: var(--light-bg);
+    color: var(--light-ink);
+}
+.dark .color-card__head {
+    background: var(--dark-bg);
+    color: var(--dark-ink);
+}
+.color-card__head strong,
+.color-card__head small,
+.color-card__head code,
+.color-card__head em {
+    display: block;
+    color: inherit;
+}
+.color-card__head strong {
+    font-size: 15px;
+}
+.color-card__head small {
+    margin-top: 2px;
+    font-size: 12px;
+    opacity: 0.75;
+}
+.color-card__head code {
+    margin-top: 10px;
+    padding: 0;
+    background: transparent;
+    font-size: 12px;
+}
+.color-card__head em {
+    margin-top: 1px;
+    font-family: var(--vp-font-family-mono);
+    font-size: 12px;
+    font-style: normal;
+    opacity: 0.8;
+}
+.color-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+.color-step {
+    padding: 9px 12px 10px;
+    background: var(--light-bg);
+    color: var(--light-ink);
+    box-shadow: inset 0 0 0 1px rgba(128, 128, 128, 0.16);
+}
+.dark .color-step {
+    background: var(--dark-bg);
+    color: var(--dark-ink);
+}
+.color-step__label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+}
+.color-step__label code {
+    margin-left: 3px;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    font-size: 11px;
+    font-weight: 400;
+    opacity: 0.72;
+}
+.color-step__hex {
+    display: block;
+    margin-top: 1px;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    font-size: 11px;
+    opacity: 0.9;
+}
+.ink-demo {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 16px 0 24px;
+}
+.ink-demo__sample {
+    padding: 16px 18px;
+    border-radius: 10px;
+}
+.ink-demo__sample strong,
+.ink-demo__sample small {
+    display: block;
+}
+.ink-demo__sample strong {
+    font-size: 15px;
+}
+.ink-demo__sample small {
+    margin-top: 2px;
+    font-family: var(--vp-font-family-mono);
+    font-size: 11px;
+    opacity: 0.8;
+}
+.ink-demo__meta {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    padding: 14px 16px;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 10px;
+    font-size: 12px;
+    color: var(--vp-c-text-2);
+}
+.ink-demo__meta code {
+    padding: 0;
+    background: transparent;
+    color: var(--vp-c-text-1);
+    font-size: 12px;
+}
+.ink-demo__meta b {
+    color: var(--vp-c-text-1);
+}
+.neutral-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    margin: 20px 0 24px;
+}
+.neutral-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 10px;
+}
+.neutral-card__swatch {
+    width: 50px;
+    height: 50px;
+    flex: none;
+    background: var(--light-bg);
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 6px;
+}
+.dark .neutral-card__swatch {
+    background: var(--dark-bg);
+}
+.neutral-card strong,
+.neutral-card code,
+.neutral-card small {
+    display: block;
+}
+.neutral-card code {
+    margin: 3px 0;
+    padding: 0;
+    background: transparent;
+    font-size: 12px;
+}
+.neutral-card small {
+    font-family: var(--vp-font-family-mono);
+    font-size: 11px;
+    color: var(--vp-c-text-2);
+}
+.is-dark {
+    display: none;
+}
+.dark .is-light {
+    display: none;
+}
+.dark .is-dark {
+    display: inline;
+}
+:deep(table) code {
+    white-space: nowrap;
+}
+:deep(table) small {
+    font-size: 11px;
+    color: var(--vp-c-text-3);
+}
+@media (max-width: 640px) {
+    .color-grid,
+    .neutral-grid,
+    .ink-demo {
+        grid-template-columns: 1fr;
+    }
+}
 </style>
 
 <!-- Source: docs/components/common.md -->
@@ -1819,6 +2666,49 @@ const rules = {
 - `border`：内部输入控件边框变为错误色。
 - `none`：隐藏全部错误提示。
 
+## 禁用
+
+Form 的 `disabled` 会下发给内部控件：输入框、文本域、开关、滑块、单选组、复选组都会一起禁用（输入框与文本域在禁用态下不再派发 `click`）。单个表单项可以用自身的 `disabled` 覆盖。
+
+```vue
+<snake-form :model="model" disabled>
+  <snake-form-item label="收货人" prop="receiver" required>
+    <snake-input v-model="model.receiver" />
+  </snake-form-item>
+  <snake-form-item label="备注" prop="memo" :disabled="false">
+    <snake-input v-model="model.memo" />
+  </snake-form-item>
+</snake-form>
+```
+
+## 校验时机
+
+默认在 `change`（输入/选择）与 `blur`（失焦）时校验，且只跑规则里声明了同名 `trigger` 的规则。把 `validateTrigger` 收窄成 `'blur'`，输入过程中就不会出现红字，适合提交前才提示的场景。
+
+```vue
+<!-- 只在失焦时校验 -->
+<snake-form :model="model" :rules="rules" validate-trigger="blur" />
+<!-- 只在输入时校验 -->
+<snake-form :model="model" :rules="rules" :validate-trigger="['change']" />
+```
+
+被关掉的时机仍会清掉上一次留下的错误提示，避免用户已经改动内容、红字却一直挂着。
+
+## 必填星号
+
+`required` 只控制星号展示，不参与校验；真正的必填约束写在 `rules` 里。`asteriskPosition` 决定星号在标签前还是标签后，`hideAsterisk` 可以整体隐藏（例如标签区域很窄的表单）。三者都能在 Form 上设置默认值，再由 FormItem 覆盖。
+
+```vue
+<snake-form :model="model" asterisk-position="end">
+  <snake-form-item label="姓名" prop="name" required>
+    <snake-input v-model="model.name" />
+  </snake-form-item>
+  <snake-form-item label="备注" prop="memo" required hide-asterisk>
+    <snake-input v-model="model.memo" />
+  </snake-form-item>
+</snake-form>
+```
+
 ## 无障碍
 
 - 每个可编辑字段都应通过 `FormItem` 提供可见标签，必填状态不能只依赖颜色。
@@ -1829,19 +2719,23 @@ const rules = {
 
 ### Form Props
 
-| 参数            | 说明                                                                                                                                                                         | 类型                  | 默认值                 |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- | ---------------------- |
-| `model`         | 表单数据对象                                                                                                                                                                 | `Record<string, any>` | `{}`                   |
-| `rules`         | 表单校验规则                                                                                                                                                                 | `FormRules`           | `{}`                   |
-| `errorType`     | 错误提示方式，可选值 `message`（字段下方文字）/ `toast`（全表校验提示第一个错误）/ `border-bottom`（字段底边错误色）/ `border`（输入控件边框错误色）/ `none`（隐藏全部提示） | `FormErrorType[]`     | `['message', 'toast']` |
-| `borderBottom`  | 是否显示表单项底边                                                                                                                                                           | `boolean`             | `true`                 |
-| `labelPosition` | 标签位置，可选值 `left` / `top`                                                                                                                                              | `FormLabelPosition`   | `left`                 |
-| `labelWidth`    | 标签宽度，数字单位为 px（375 稿）                                                                                                                                            | `string \| number`    | `45`                   |
-| `labelAlign`    | 标签对齐方式，可选值 `left` / `center` / `right`                                                                                                                             | `FormLabelAlign`      | `left`                 |
-| `labelStyle`    | 标签自定义样式                                                                                                                                                               | `Record<string, any>` | `{}`                   |
-| `size`          | 表单控件尺寸，可选值 `small` / `default` / `large`                                                                                                                           | `FormSize`            | `default`              |
-| `customClass`   | 根节点自定义类名                                                                                                                                                             | `string`              | `''`                   |
-| `customStyle`   | 根节点自定义样式                                                                                                                                                             | `StyleValue`          | `''`                   |
+| 参数               | 说明                                                                                                                                                                         | 类型                                           | 默认值                 |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ---------------------- |
+| `model`            | 表单数据对象                                                                                                                                                                 | `Record<string, any>`                          | `{}`                   |
+| `rules`            | 表单校验规则                                                                                                                                                                 | `FormRules`                                    | `{}`                   |
+| `errorType`        | 错误提示方式，可选值 `message`（字段下方文字）/ `toast`（全表校验提示第一个错误）/ `border-bottom`（字段底边错误色）/ `border`（输入控件边框错误色）/ `none`（隐藏全部提示） | `FormErrorType[]`                              | `['message', 'toast']` |
+| `borderBottom`     | 是否显示表单项底边                                                                                                                                                           | `boolean`                                      | `true`                 |
+| `labelPosition`    | 标签位置，可选值 `left` / `top`                                                                                                                                              | `FormLabelPosition`                            | `left`                 |
+| `labelWidth`       | 标签宽度，数字单位为 px（375 稿）                                                                                                                                            | `string \| number`                             | `45`                   |
+| `labelAlign`       | 标签对齐方式，可选值 `left` / `center` / `right`                                                                                                                             | `FormLabelAlign`                               | `left`                 |
+| `labelStyle`       | 标签自定义样式                                                                                                                                                               | `Record<string, any>`                          | `{}`                   |
+| `size`             | 表单控件尺寸，可选值 `small` / `default` / `large`                                                                                                                           | `FormSize`                                     | `default`              |
+| `disabled`         | 是否禁用整张表单内的控件，表单项可用自身 `disabled` 覆盖                                                                                                                     | `boolean`                                      | `false`                |
+| `validateTrigger`  | 字段校验触发时机，可传单个值或数组，可选 `change` / `blur`                                                                                                                   | `FormValidateTrigger \| FormValidateTrigger[]` | `['change', 'blur']`   |
+| `asteriskPosition` | 必填星号位置，可选值 `start`（标签前）/ `end`（标签后），表单项可覆盖                                                                                                        | `'start' \| 'end'`                             | `start`                |
+| `hideAsterisk`     | 是否隐藏必填星号，仅影响展示不参与校验                                                                                                                                       | `boolean`                                      | `false`                |
+| `customClass`      | 根节点自定义类名                                                                                                                                                             | `string`                                       | `''`                   |
+| `customStyle`      | 根节点自定义样式                                                                                                                                                             | `StyleValue`                                   | `''`                   |
 
 ### Form Expose
 
@@ -1860,25 +2754,29 @@ const rules = {
 
 ### FormItem Props
 
-| 参数              | 说明                                                                                | 类型                  | 默认值    |
-| ----------------- | ----------------------------------------------------------------------------------- | --------------------- | --------- |
-| `label`           | 标签文本                                                                            | `string`              | `''`      |
-| `prop`            | 表单模型中的字段路径，支持 `profile.name`、`accounts.0.name` 等嵌套路径             | `string`              | `''`      |
-| `borderBottom`    | 是否显示底边，空字符串时继承 Form                                                   | `string \| boolean`   | `''`      |
-| `labelPosition`   | 标签位置，可选值 `left` / `top`，未设置时继承 Form                                  | `FormLabelPosition`   | `''`      |
-| `labelWidth`      | 标签宽度，数值按 px（375 稿）处理，未设置时继承 Form                                | `UnitValue`           | `''`      |
-| `labelStyle`      | 标签自定义样式，未设置时继承 Form                                                   | `Record<string, any>` | `{}`      |
-| `labelAlign`      | 标签对齐方式，可选值 `left` / `center` / `right`，未设置时继承 Form                 | `FormLabelAlign`      | `''`      |
-| `rightIcon`       | 右侧图标名称                                                                        | `string`              | `''`      |
-| `leftIcon`        | 左侧图标名称                                                                        | `string`              | `''`      |
-| `leftIconPrefix`  | 左侧图标字体前缀                                                                    | `string`              | `sicon`   |
-| `rightIconPrefix` | 右侧图标字体前缀                                                                    | `string`              | `sicon`   |
-| `leftIconStyle`   | 左侧图标样式                                                                        | `StyleValue`          | `{}`      |
-| `rightIconStyle`  | 右侧图标样式                                                                        | `StyleValue`          | `{}`      |
-| `required`        | 是否展示必填星号，仅影响展示不参与校验                                              | `boolean`             | `false`   |
-| `size`            | 预设尺寸，可选值 `small` / `default` / `large`，或自定义字号数值，未设置时继承 Form | `string`              | 继承 Form |
-| `customClass`     | 根节点自定义类名                                                                    | `string`              | `''`      |
-| `customStyle`     | 根节点自定义样式                                                                    | `StyleValue`          | `''`      |
+| 参数               | 说明                                                                                | 类型                                                 | 默认值    |
+| ------------------ | ----------------------------------------------------------------------------------- | ---------------------------------------------------- | --------- |
+| `label`            | 标签文本                                                                            | `string`                                             | `''`      |
+| `prop`             | 表单模型中的字段路径，支持 `profile.name`、`accounts.0.name` 等嵌套路径             | `string`                                             | `''`      |
+| `borderBottom`     | 是否显示底边，空字符串时继承 Form                                                   | `string \| boolean`                                  | `''`      |
+| `labelPosition`    | 标签位置，可选值 `left` / `top`，未设置时继承 Form                                  | `FormLabelPosition`                                  | `''`      |
+| `labelWidth`       | 标签宽度，数值按 px（375 稿）处理，未设置时继承 Form                                | `UnitValue`                                          | `''`      |
+| `labelStyle`       | 标签自定义样式，未设置时继承 Form                                                   | `Record<string, any>`                                | `{}`      |
+| `labelAlign`       | 标签对齐方式，可选值 `left` / `center` / `right`，未设置时继承 Form                 | `FormLabelAlign`                                     | `''`      |
+| `rightIcon`        | 右侧图标名称                                                                        | `string`                                             | `''`      |
+| `leftIcon`         | 左侧图标名称                                                                        | `string`                                             | `''`      |
+| `leftIconPrefix`   | 左侧图标字体前缀                                                                    | `string`                                             | `sicon`   |
+| `rightIconPrefix`  | 右侧图标字体前缀                                                                    | `string`                                             | `sicon`   |
+| `leftIconStyle`    | 左侧图标样式                                                                        | `StyleValue`                                         | `{}`      |
+| `rightIconStyle`   | 右侧图标样式                                                                        | `StyleValue`                                         | `{}`      |
+| `required`         | 是否展示必填星号，仅影响展示不参与校验                                              | `boolean`                                            | `false`   |
+| `asteriskPosition` | 必填星号位置，可选值 `start` / `end`，空字符串时继承 Form                           | `'start' \| 'end' \| ''`                             | `''`      |
+| `hideAsterisk`     | 是否隐藏必填星号，空字符串时继承 Form                                               | `string \| boolean`                                  | `''`      |
+| `disabled`         | 是否禁用该表单项内的控件，空字符串时继承 Form                                       | `string \| boolean`                                  | `''`      |
+| `validateTrigger`  | 字段校验触发时机，空字符串时继承 Form                                               | `FormValidateTrigger \| FormValidateTrigger[] \| ''` | `''`      |
+| `size`             | 预设尺寸，可选值 `small` / `default` / `large`，或自定义字号数值，未设置时继承 Form | `string`                                             | 继承 Form |
+| `customClass`      | 根节点自定义类名                                                                    | `string`                                             | `''`      |
+| `customStyle`      | 根节点自定义样式                                                                    | `StyleValue`                                         | `''`      |
 
 ### FormItem Slots
 
@@ -1901,14 +2799,157 @@ const rules = {
 
 ## 主题变量
 
-Form 容器没有独立视觉令牌，FormItem 直接使用以下全局变量：
+Form 容器本身不绘制视觉，FormItem 提供以下组件级变量，未覆盖时回落到全局令牌：
 
-| 变量                       | 用途               |
-| -------------------------- | ------------------ |
-| `--snake-color-text`       | 标签文字颜色       |
-| `--snake-color-text-light` | 辅助文字颜色       |
-| `--snake-color-divider`    | 表单项分隔线       |
-| `--snake-color-error`      | 必填标记和错误状态 |
+| 变量                                   | 用途                         | 默认值                                   |
+| -------------------------------------- | ---------------------------- | ---------------------------------------- |
+| `--snake-form-item-padding`            | 表单项上下内边距             | `10px 0`                                 |
+| `--snake-form-label-color`             | 标签文字颜色                 | `var(--snake-color-text, #303133)`       |
+| `--snake-form-label-font-size`         | 标签字号（默认档位）         | `14px`                                   |
+| `--snake-form-label-font-size-small`   | 标签字号（`small` 档位）     | `12px`                                   |
+| `--snake-form-label-font-size-large`   | 标签字号（`large` 档位）     | `16px`                                   |
+| `--snake-form-label-gap`               | 标签与内容的间距             | `5px`                                    |
+| `--snake-form-asterisk-color`          | 必填星号颜色                 | `var(--snake-color-error, #fa3534)`      |
+| `--snake-form-border-color`            | 表单项分隔线                 | `var(--snake-color-divider, #e4e7ed)`    |
+| `--snake-form-error-color`             | 错误态分隔线 / 边框          | `var(--snake-color-error, #fa3534)`      |
+| `--snake-form-message-color`           | 错误文案颜色                 | `var(--snake-color-error, #fa3534)`      |
+| `--snake-form-message-font-size`       | 错误文案字号（默认档位）     | `12px`                                   |
+| `--snake-form-message-font-size-small` | 错误文案字号（`small` 档位） | `10px`                                   |
+| `--snake-form-message-font-size-large` | 错误文案字号（`large` 档位） | `14px`                                   |
+| `--snake-form-right-icon-color`        | 右侧图标颜色                 | `var(--snake-color-text-light, #c0c4cc)` |
+
+```css
+.my-form {
+    --snake-form-label-color: #06d290;
+    --snake-form-item-padding: 8px 0;
+    --snake-form-asterisk-color: #ff9900;
+    --snake-form-border-color: #e6f7f0;
+}
+```
+
+尺寸档位会同时改变标签字号与错误文案字号：`small` / `default` / `large` 对应标签 `12 / 14 / 16` 与文案 `10 / 12 / 14`。
+
+<!-- Source: docs/components/grid.md -->
+
+# Grid 宫格
+
+把入口按等分宽度排成九宫格，用于首页金刚区、CMS 快捷入口与功能面板。
+
+## 平台兼容性
+
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
+
+## 基础用法
+
+`column` 控制每行列数，子项宽度自动等分：
+
+```vue
+<snake-grid :column="4">
+    <snake-grid-item icon="home" text="首页" />
+    <snake-grid-item icon="search" text="搜索" />
+    <snake-grid-item icon="share" text="分享" />
+    <snake-grid-item icon="phone" text="客服" />
+</snake-grid>
+```
+
+## 格线与间距
+
+`border` 画格线（容器画外框、子项画内线，不用 `gap` 模拟以免格线断裂）；`gutter` 控制相邻格子间距：
+
+```vue
+<snake-grid :column="3" border :gutter="8">
+    <snake-grid-item icon="home" text="首页" />
+    <snake-grid-item icon="search" text="搜索" />
+    <snake-grid-item icon="share" text="分享" />
+</snake-grid>
+```
+
+## 等高格子
+
+`square` 让每个格子撑成正方形，适合图标 + 文案的入口：
+
+```vue
+<snake-grid :column="4" square border>
+    <snake-grid-item icon="home" text="首页" />
+    <snake-grid-item icon="search" text="搜索" />
+</snake-grid>
+```
+
+## 角标与点击
+
+`badge` 在图标右上角挂角标；子项派发 `click(index, event)`，`clickable` 开启点击态：
+
+```vue
+<snake-grid :column="4" clickable @click="go">
+    <snake-grid-item icon="phone" text="消息" :badge="3" />
+    <snake-grid-item icon="home" text="首页" />
+</snake-grid>
+```
+
+## API
+
+### Props
+
+| 参数          | 说明                             | 类型               | 默认值  |
+| ------------- | -------------------------------- | ------------------ | ------- |
+| `customStyle` | 根节点自定义样式                 | `StyleValue`       | `''`    |
+| `customClass` | 根节点自定义类名                 | `string`           | `''`    |
+| `column`      | 每行列数                         | `number`           | `4`     |
+| `border`      | 是否显示格线                     | `boolean`          | `false` |
+| `gutter`      | 相邻格子间距，裸数字按 375 稿 px | `number \| string` | `0`     |
+| `square`      | 是否等宽等高                     | `boolean`          | `false` |
+| `clickable`   | 子项是否有点击态                 | `boolean`          | `false` |
+
+| 子项参数    | 说明           | 类型               | 默认值  |
+| ----------- | -------------- | ------------------ | ------- |
+| `text`      | 文案           | `string`           | `''`    |
+| `icon`      | 图标名         | `string`           | `''`    |
+| `iconColor` | 图标颜色       | `string`           | `''`    |
+| `iconSize`  | 图标尺寸       | `number \| string` | `24`    |
+| `badge`     | 右上角角标内容 | `number \| string` | `''`    |
+| `disabled`  | 是否禁用       | `boolean`          | `false` |
+
+### Events
+
+| 事件名  | 说明       | 回调参数                        |
+| ------- | ---------- | ------------------------------- |
+| `click` | 点击格子时 | `index: number, event: unknown` |
+
+### Slots
+
+| 插槽名  | 说明           |
+| ------- | -------------- |
+| default | 覆盖 `text`    |
+| icon    | 自定义图标内容 |
+
+## 主题变量
+
+| 变量名                      | 说明                       |
+| --------------------------- | -------------------------- |
+| `--snake-grid-bg`           | 容器底色                   |
+| `--snake-grid-border-color` | 格线颜色                   |
+| `--snake-grid-icon-color`   | 图标颜色                   |
+| `--snake-grid-text-size`    | 文案字号                   |
+| `--snake-grid-item-padding` | 子项内容额外留白，默认 `0` |
+
+## 注意
+
+- `gutter` 以内边距实现（相邻间距 = `gutter`），`border` 与外框一起用时间距会包在格线内侧。`--snake-grid-item-padding` 是**在 `gutter/2` 之外再加**的留白，两者相加。
+- 子项不要包在额外的 `view` 里，`snake-grid` 依赖直接子节点注册顺序计算宽度与角标。
+- 角标是绝对定位的：`snake-badge` 让徽标圆心对准图标右上角，因此徽标会**向上溢出 7px**。祖先节点若设了 `overflow: hidden`（例如给宫格做圆角卡片），首行角标会被裁掉一半。给容器留 8px 以上缓冲即可：
+
+```css
+/* 圆角卡片 + 角标共存：留出缓冲，别让徽标的 7px 溢出撞上裁剪边界 */
+.grid-card {
+    border-radius: 8px;
+    overflow: hidden;
+    --snake-grid-item-padding: 8px;
+}
+```
+
+完全不裁剪（只设 `border-radius`、不加 `overflow: hidden`）也可以，代价是有格线时子项画出的直角格线不会跟着圆角走。
 
 <!-- Source: docs/components/icon.md -->
 
@@ -2414,6 +3455,47 @@ Input 适合单行内容。多行输入使用 [Textarea](/components/textarea)�
 
 中文、日文等输入法处于候选组合阶段时不会提前同步半成品内容；组合结束后再更新 `v-model` 并触发表单校验。
 
+## 尺寸与主题
+
+`size` 同时决定容器高度、字号与清除/密码图标大小（此前只改高度、字号固定 14px）：
+
+| `size`    | 高度 | 字号 | 图标 |
+| --------- | ---- | ---- | ---- |
+| `small`   | 32px | 13px | 14px |
+| `default` | 40px | 14px | 16px |
+| `large`   | 48px | 16px | 18px |
+
+优先级从低到高：`size` 档位 → CSS 变量 → `height` / `fontSize` 属性。放在 FormItem 内且未显式传 `size` 时跟随 Form 的尺寸。
+
+```vue
+<snake-input v-model="value" size="large" border="surround" />
+<snake-input v-model="value" :height="56" border="surround" />
+<snake-input v-model="value" border="surround" custom-class="my-input" />
+<!-- .my-input { --snake-input-height: 56px; --snake-input-font-size: 16px; --snake-input-radius: 14px } -->
+```
+
+## 清除与字数
+
+清除按钮默认**有内容就显示**，失焦后也能一键清空；需要「仅聚焦时显示」时设置 `clear-trigger="focus"`。`show-word-limit` 配合 `maxlength` 在输入框右侧显示 `已输入/上限`，字数按字符计数，emoji 与生僻字只算一个。
+
+```vue
+<snake-input v-model="keyword" clearable placeholder="失焦后仍可清空" />
+<snake-input v-model="keyword" clearable clear-trigger="focus" placeholder="仅聚焦时显示清除按钮" />
+<snake-input v-model="code" show-word-limit :maxlength="6" placeholder="最多 6 位" />
+```
+
+点击清除会派发 `update:modelValue` / `input` / `change` / `clear`，点击图标不会冒泡成根节点的 `click`。
+
+## 只读与点击
+
+`readonly` 时原生输入框不可编辑，点击会**整块转发**成 `click`（原生控件被 `disabled` 后会吞掉点击，小程序端尤其明显，因此用透明遮罩承接）。常见用法是「点输入框打开选择器」。
+
+```vue
+<snake-input v-model="address" readonly placeholder="点击选择收货地址" @click="openAddressPicker" />
+```
+
+`disabled` 是彻底禁用：不再派发 `click`，清除与字数统计也会隐藏。需要外部强制错误态（不走 Form 校验）时传 `error`。
+
 ## 格式化与确认键
 
 `formatter` 应为同步且无副作用的函数；需要在每次输入时格式化使用 `format-trigger="input"`，仅在失焦时整理内容使用 `blur`。异步校验交给 Form 规则处理。
@@ -2439,55 +3521,61 @@ Input 适合单行内容。多行输入使用 [Textarea](/components/textarea)�
 
 ### Props
 
-| 参数               | 说明                                                                                         | 类型               | 默认值       |
-| ------------------ | -------------------------------------------------------------------------------------------- | ------------------ | ------------ |
-| `modelValue`       | 输入框的值（v-model）                                                                        | `string \| number` | `''`         |
-| `type`             | 输入类型，可选值 `text` / `number` / `idcard` / `digit` / `password`（密码遮罩）/ `nickname` | `InputType`        | `text`       |
-| `placeholder`      | 占位文本                                                                                     | `string`           | `请输入内容` |
-| `placeholderStyle` | 占位文本样式，仅支持 color、font-size、font-weight                                           | `string`           | `''`         |
-| `placeholderColor` | 占位文本颜色                                                                                 | `string`           | 主题占位色   |
-| `maxlength`        | 最大输入长度                                                                                 | `number`           | `140`        |
-| `clearable`        | 是否显示清空按钮（聚焦且有内容时）                                                           | `boolean`          | `false`      |
-| `showPassword`     | 是否显示密码可见切换图标                                                                     | `boolean`          | `false`      |
-| `prefixIcon`       | 前置图标名称                                                                                 | `string`           | `''`         |
-| `suffixIcon`       | 后置图标名称                                                                                 | `string`           | `''`         |
-| `border`           | 边框模式，可选值 `none`（无边框）/ `surround`（全边框）/ `bottom`（底部线）                  | `string`           | `none`       |
-| `shape`            | 形状，可选值 `square`（小圆角）/ `circle`（胶囊）                                            | `string`           | `square`     |
-| `size`             | 尺寸，可选值 `small` / `default` / `large`；在 Form 内未设置时跟随 Form                      | `string`           | `default`    |
-| `color`            | 文字颜色                                                                                     | `string`           | 主题文字色   |
-| `fontSize`         | 文字大小，数值按 px（375 稿）处理                                                            | `UnitValue`        | `14`         |
-| `inputAlign`       | 内容对齐方式，可选值 `left` / `center` / `right`                                             | `string`           | `left`       |
-| `disabled`         | 是否禁用                                                                                     | `boolean`          | `false`      |
-| `readonly`         | 是否只读                                                                                     | `boolean`          | `false`      |
-| `disabledColor`    | 禁用状态的背景色                                                                             | `string`           | 主题禁用底色 |
-| `formatter`        | 输入格式化函数，应为同步且无副作用                                                           | `Function`         | -            |
-| `formatTrigger`    | 格式化时机，可选值 `input` / `blur`                                                          | `string`           | `input`      |
-| `trim`             | 失焦时是否去除首尾空格                                                                       | `boolean`          | `false`      |
-| `focus`            | 是否自动获取焦点                                                                             | `boolean`          | `false`      |
-| `cursor`           | 聚焦时的光标位置                                                                             | `number`           | `-1`         |
-| `selectionStart`   | 光标起始位置，需与 `selectionEnd` 搭配使用                                                   | `number`           | `-1`         |
-| `selectionEnd`     | 光标结束位置，需与 `selectionStart` 搭配使用                                                 | `number`           | `-1`         |
-| `confirmType`      | 键盘右下角按钮文字，可选值 `done` / `go` / `next` / `search` / `send`                        | `string`           | `done`       |
-| `confirmHold`      | 点击确认键后是否保持键盘不收起                                                               | `boolean`          | `false`      |
-| `adjustPosition`   | 键盘弹起时是否自动上推页面                                                                   | `boolean`          | `true`       |
-| `holdKeyboard`     | 聚焦时点击页面是否保持键盘不收起                                                             | `boolean`          | `false`      |
-| `cursorSpacing`    | 光标与键盘的距离，单位 px                                                                    | `number`           | `0`          |
-| `customClass`      | 根节点自定义类名                                                                             | `string`           | `''`         |
-| `customStyle`      | 根节点自定义样式                                                                             | `StyleValue`       | `''`         |
+| 参数               | 说明                                                                                          | 类型                | 默认值       |
+| ------------------ | --------------------------------------------------------------------------------------------- | ------------------- | ------------ |
+| `modelValue`       | 输入框的值（v-model）                                                                         | `string \| number`  | `''`         |
+| `type`             | 输入类型，可选值 `text` / `number` / `idcard` / `digit` / `password`（密码遮罩）/ `nickname`  | `InputType`         | `text`       |
+| `placeholder`      | 占位文本                                                                                      | `string`            | `请输入内容` |
+| `placeholderStyle` | 占位文本样式，仅支持 color、font-size、font-weight                                            | `string`            | `''`         |
+| `placeholderClass` | 占位文本样式类名，需要在页面或全局样式中定义                                                  | `string`            | `''`         |
+| `customInputClass` | 输入框本体的附加类名                                                                          | `string`            | `''`         |
+| `placeholderColor` | 占位文本颜色                                                                                  | `string`            | 主题占位色   |
+| `maxlength`        | 最大输入长度                                                                                  | `number`            | `140`        |
+| `clearable`        | 是否显示清空按钮                                                                              | `boolean`           | `false`      |
+| `clearTrigger`     | 清空按钮显示时机，可选值 `always`（有内容即显示）/ `focus`（仅聚焦时）                        | `InputClearTrigger` | `always`     |
+| `showWordLimit`    | 是否在右侧显示字数统计，需同时设置 `maxlength`                                                | `boolean`           | `false`      |
+| `error`            | 是否强制显示错误态边框                                                                        | `boolean`           | `false`      |
+| `showPassword`     | 是否显示密码可见切换图标                                                                      | `boolean`           | `false`      |
+| `prefixIcon`       | 前置图标名称                                                                                  | `string`            | `''`         |
+| `suffixIcon`       | 后置图标名称                                                                                  | `string`            | `''`         |
+| `border`           | 边框模式，可选值 `none`（无边框）/ `surround`（全边框）/ `bottom`（底部线）                   | `string`            | `none`       |
+| `shape`            | 形状，可选值 `square`（小圆角）/ `circle`（胶囊）                                             | `string`            | `square`     |
+| `size`             | 尺寸档位，可选值 `small` / `default` / `large`，同时决定高度、字号与图标大小；不传时跟随 Form | `string`            | `default`    |
+| `height`           | 容器高度，数值按 px（375 稿）处理；覆盖 `size` 档位高度                                       | `UnitValue`         | -            |
+| `color`            | 文字颜色                                                                                      | `string`            | 主题文字色   |
+| `fontSize`         | 文字大小，数值按 px（375 稿）处理；不传时跟随 `size` 档位（13 / 14 / 16）                     | `UnitValue`         | -            |
+| `inputAlign`       | 内容对齐方式，可选值 `left` / `center` / `right`                                              | `string`            | `left`       |
+| `disabled`         | 是否禁用（禁用后不再派发 `click`）                                                            | `boolean`           | `false`      |
+| `readonly`         | 是否只读（不可编辑，点击整块派发 `click`，适合打开选择器）                                    | `boolean`           | `false`      |
+| `disabledColor`    | 禁用状态的背景色                                                                              | `string`            | 主题禁用底色 |
+| `formatter`        | 输入格式化函数，应为同步且无副作用                                                            | `Function`          | -            |
+| `formatTrigger`    | 格式化时机，可选值 `input` / `blur`                                                           | `string`            | `input`      |
+| `trim`             | 失焦时是否去除首尾空格                                                                        | `boolean`           | `false`      |
+| `focus`            | 是否自动获取焦点                                                                              | `boolean`           | `false`      |
+| `cursor`           | 聚焦时的光标位置                                                                              | `number`            | `-1`         |
+| `selectionStart`   | 光标起始位置，需与 `selectionEnd` 搭配使用                                                    | `number`            | `-1`         |
+| `selectionEnd`     | 光标结束位置，需与 `selectionStart` 搭配使用                                                  | `number`            | `-1`         |
+| `confirmType`      | 键盘右下角按钮文字，可选值 `done` / `go` / `next` / `search` / `send`                         | `string`            | `done`       |
+| `confirmHold`      | 点击确认键后是否保持键盘不收起                                                                | `boolean`           | `false`      |
+| `adjustPosition`   | 键盘弹起时是否自动上推页面                                                                    | `boolean`           | `true`       |
+| `holdKeyboard`     | 聚焦时点击页面是否保持键盘不收起                                                              | `boolean`           | `false`      |
+| `cursorSpacing`    | 光标与键盘的距离，单位 px                                                                     | `number`            | `0`          |
+| `customClass`      | 根节点自定义类名                                                                              | `string`            | `''`         |
+| `customStyle`      | 根节点自定义样式                                                                              | `StyleValue`        | `''`         |
 
 ### Events
 
-| 事件名                 | 说明               | 参数             |
-| ---------------------- | ------------------ | ---------------- |
-| `update:modelValue`    | 值更新（v-model）  | `value: string`  |
-| `input`                | 输入时触发         | `value: string`  |
-| `change`               | 失焦且值变化后触发 | `value: string`  |
-| `focus`                | 获得焦点           | 原生事件         |
-| `blur`                 | 失去焦点           | 原生事件         |
-| `confirm`              | 点击键盘确认键     | `(value, event)` |
-| `clear`                | 点击清空按钮       | -                |
-| `click`                | 点击组件           | 原生事件         |
-| `keyboardheightchange` | 键盘高度变化       | 原生事件         |
+| 事件名                 | 说明                                                   | 参数             |
+| ---------------------- | ------------------------------------------------------ | ---------------- |
+| `update:modelValue`    | 值更新（v-model）                                      | `value: string`  |
+| `input`                | 输入时触发                                             | `value: string`  |
+| `change`               | 失焦且值变化后触发                                     | `value: string`  |
+| `focus`                | 获得焦点                                               | 原生事件         |
+| `blur`                 | 失去焦点                                               | 原生事件         |
+| `confirm`              | 点击键盘确认键                                         | `(value, event)` |
+| `clear`                | 点击清空按钮                                           | -                |
+| `click`                | 点击组件（`readonly` 时由遮罩转发，`disabled` 不派发） | 原生事件         |
+| `keyboardheightchange` | 键盘高度变化                                           | 原生事件         |
 
 ### Slots
 
@@ -2496,7 +3584,48 @@ Input 适合单行内容。多行输入使用 [Textarea](/components/textarea)�
 | `prefix` | 替换输入框前置图标 |
 | `suffix` | 替换输入框后置图标 |
 
+### Expose
+
+| 方法    | 说明                                                                  |
+| ------- | --------------------------------------------------------------------- |
+| `focus` | 聚焦输入框，`disabled` / `readonly` 时不生效                          |
+| `blur`  | 让输入框失焦并收起键盘                                                |
+| `clear` | 清空输入内容，有值时同步派发 `update:modelValue` / `input` / `change` |
+
+```vue
+<snake-input ref="inputRef" v-model="code" :maxlength="6" />
+
+<script setup lang="ts">
+import { ref } from 'vue';
+import type { InputExpose } from '@puresnake/snake-ui';
+
+const inputRef = ref<InputExpose>();
+inputRef.value?.focus();
+inputRef.value?.clear();
+</script>
+```
+
 ## 主题变量
+
+### 尺寸变量
+
+`size` 档位与 `height` / `fontSize` 之外，还可以直接用变量改尺寸（变量优先级低于 `height` / `fontSize` 属性）：
+
+| 变量名                          | 用途                         | 默认值         |
+| ------------------------------- | ---------------------------- | -------------- |
+| `--snake-input-height`          | 默认高度                     | `40px`         |
+| `--snake-input-height-small`    | `size="small"` 高度          | `32px`         |
+| `--snake-input-height-large`    | `size="large"` 高度          | `48px`         |
+| `--snake-input-font-size`       | 默认字号                     | `14px`         |
+| `--snake-input-font-size-small` | `size="small"` 字号          | `13px`         |
+| `--snake-input-font-size-large` | `size="large"` 字号          | `16px`         |
+| `--snake-input-radius`          | 圆角（`circle` 除外）        | 主题圆角       |
+| `--snake-input-border-color`    | `surround` / `bottom` 边框色 | 主题分割线     |
+| `--snake-input-bg`              | 容器底色                     | `transparent`  |
+| `--snake-input-icon-color`      | 前后图标与操作图标颜色       | 主题次要文字色 |
+| `--snake-input-count-color`     | 字数统计颜色                 | 主题次要文字色 |
+
+### 颜色变量
 
 Input 复用全局主题令牌：
 
@@ -2514,7 +3643,7 @@ Input 复用全局主题令牌：
 ## 类型定义
 
 ```ts
-import type { InputProps, InputEmits } from '@puresnake/snake-ui';
+import type { InputProps, InputEmits, InputExpose, InputClearTrigger } from '@puresnake/snake-ui';
 ```
 
 <!-- Source: docs/components/install.md -->
@@ -2914,33 +4043,41 @@ Snake UI 提供覆盖基础交互、表单和商城装修场景的组件。输�
 
 `fixed` 默认开启，页面正文需为导航栏预留顶部空间；`immersive` 仅适用于内容可延伸到状态栏背景的页面。需要拦截返回时使用 `custom-back`，否则组件调用默认返回逻辑。
 
+## 小程序胶囊
+
+微信小程序的右上角胶囊浮在导航栏上。组件按 `uni.getMenuButtonBoundingClientRect()` 让出胶囊宽度：`#right` 插槽的内容整体左移，标题的最大宽度也扣掉这段，长标题与右侧操作都不会被胶囊压住。H5 与 App 没有胶囊，这段宽度为 0。
+
+## 底色与前景色
+
+默认取主题表面色做底、主题文字色做前景。需要整条品牌色时传 `background`，并同时传 `title-color` 与 `back-icon-color`（示例应用取 `--snake-color-primary-ink`，默认白字，与按钮、标签的实心主色一致；主色偏亮又需要更高对比的主题把它覆写成墨绿即可）。底部分隔线是半像素（`::after` + `scaleY(0.5)`），与小程序原生导航栏同样粗细。
+
 ## API
 
 ### Props
 
-| 参数               | 说明                                   | 类型         | 默认值       |
-| ------------------ | -------------------------------------- | ------------ | ------------ |
-| `title`            | 中间标题                               | `string`     | `''`         |
-| `height`           | 导航内容高度，数值按 px（375 稿）处理  | `UnitValue`  | `44`         |
-| `backIconColor`    | 返回图标颜色                           | `string`     | 主题文字色   |
-| `backIconName`     | 返回图标名称                           | `string`     | `arrow-left` |
-| `backIconSize`     | 返回图标尺寸，数值按 px（375 稿）处理  | `UnitValue`  | `20`         |
-| `backText`         | 返回区域辅助文字                       | `string`     | `''`         |
-| `backTextStyle`    | 返回区域辅助文字样式                   | `StyleValue` | `''`         |
-| `titleWidth`       | 标题区域宽度，数值按 px（375 稿）处理  | `UnitValue`  | `180`        |
-| `titleColor`       | 标题颜色                               | `string`     | 主题文字色   |
-| `titleSize`        | 标题字号，数值按 px（375 稿）处理      | `UnitValue`  | `16`         |
-| `titleBold`        | 标题是否加粗                           | `boolean`    | `false`      |
-| `isBack`           | 是否显示返回按钮                       | `boolean`    | `true`       |
-| `background`       | 导航栏背景样式或颜色                   | `StyleValue` | 主题表面色   |
-| `fixed`            | 是否固定在顶部                         | `boolean`    | `true`       |
-| `immersive`        | 是否允许内容沉浸到状态栏区域           | `boolean`    | `false`      |
-| `safeAreaInsetTop` | 是否包含状态栏安全区                   | `boolean`    | `true`       |
-| `borderBottom`     | 是否显示底部分隔线                     | `boolean`    | `true`       |
-| `zIndex`           | 固定定位层级                           | `UnitValue`  | `980`        |
-| `customBack`       | 自定义返回处理，传入时拦截默认返回逻辑 | `Function`   | `null`       |
-| `customClass`      | 根节点自定义类名                       | `string`     | `''`         |
-| `customStyle`      | 根节点自定义样式                       | `StyleValue` | `''`         |
+| 参数               | 说明                                         | 类型         | 默认值       |
+| ------------------ | -------------------------------------------- | ------------ | ------------ |
+| `title`            | 中间标题                                     | `string`     | `''`         |
+| `height`           | 导航内容高度，数值按 px（375 稿）处理        | `UnitValue`  | `44`         |
+| `backIconColor`    | 返回图标颜色                                 | `string`     | 主题文字色   |
+| `backIconName`     | 返回图标名称                                 | `string`     | `arrow-left` |
+| `backIconSize`     | 返回图标尺寸，数值按 px（375 稿）处理        | `UnitValue`  | `20`         |
+| `backText`         | 返回区域辅助文字（默认跟随 `backIconColor`） | `string`     | `''`         |
+| `backTextStyle`    | 返回区域辅助文字样式                         | `StyleValue` | `''`         |
+| `titleWidth`       | 标题区域宽度，数值按 px（375 稿）处理        | `UnitValue`  | `180`        |
+| `titleColor`       | 标题颜色                                     | `string`     | 主题文字色   |
+| `titleSize`        | 标题字号，数值按 px（375 稿）处理            | `UnitValue`  | `16`         |
+| `titleBold`        | 标题是否加粗                                 | `boolean`    | `false`      |
+| `isBack`           | 是否显示返回按钮                             | `boolean`    | `true`       |
+| `background`       | 导航栏背景样式或颜色                         | `StyleValue` | 主题表面色   |
+| `fixed`            | 是否固定在顶部                               | `boolean`    | `true`       |
+| `immersive`        | 是否允许内容沉浸到状态栏区域                 | `boolean`    | `false`      |
+| `safeAreaInsetTop` | 是否包含状态栏安全区                         | `boolean`    | `true`       |
+| `borderBottom`     | 是否显示底部分隔线（半像素）                 | `boolean`    | `true`       |
+| `zIndex`           | 固定定位层级                                 | `UnitValue`  | `980`        |
+| `customBack`       | 自定义返回处理，传入时拦截默认返回逻辑       | `Function`   | `null`       |
+| `customClass`      | 根节点自定义类名                             | `string`     | `''`         |
+| `customStyle`      | 根节点自定义样式                             | `StyleValue` | `''`         |
 
 ### Slots
 
@@ -3267,11 +4404,13 @@ function handleRetry() {
 
 Overlay 没有直接使用 CSS 主题变量。遮罩透明度、层级和自定义外观分别通过 `opacity`、`zIndex` 与 `customStyle` 配置。
 
-<!-- Source: docs/components/parse.md -->
+<!-- Source: docs/components/picker.md -->
 
-# Parse 富文本解析
+# Picker 列选择器
 
-`snake-parse` 用于渲染文章、商品详情等 HTML 内容。内置 HTML 解析、图片预览、链接处理、表格横向滚动、音视频与 App-NVue 支持，可独立使用。
+用于单列、多列、多列联动的选择场景，基于原生 picker-view 与 Popup 实现，底部弹出。
+
+> 0.1.0 起组件由 `snake-select` 更名为 `snake-picker`（旧名不保留）：它是底部滚轮弹层，没有触发入口也没有选中值，`v-model` 只控制开合，用 `picker` 命名才与形态和库内「`snake-` + 原生标签」的约定一致。
 
 ## 平台兼容性
 
@@ -3279,66 +4418,242 @@ Overlay 没有直接使用 CSS 主题变量。遮罩透明度、层级和自定�
 | :-: | :-: | :--------: | :----------: |
 |  √  |  √  |     √      |      √       |
 
-App-NVue 通过内置 WebView 渲染复杂内容；`iframe`、`embed` 等嵌入标签仅在 H5 与 App 上渲染。平台差异见下方“安全与兼容”。
-
 ## 基础用法
 
 ```vue
-<snake-parse :content="article" preview-img scroll-table @linktap="onLinkTap" />
+<snake-picker v-model="show" :list="list" @confirm="handleConfirm" @cancel="handleCancel" />
 ```
 
-`content` 接收 HTML 字符串；图片预览由 `preview-img` 控制，表格内容较宽时可启用 `scroll-table`。
+```ts
+// 单列
+const list = [
+    { label: '选项一', value: 'a' },
+    { label: '选项二', value: 'b' }
+];
+// 多列联动
+const cascade = [{ label: '华东', value: 'east', children: [{ label: '上海', value: 'sh' }] }];
+```
+
+## 模式与回传
+
+- `single-column` 单列；`mutil-column` 多列（list 为二维数组）；`mutil-column-auto` 多列联动（按 `childName` 级联）。
+- `confirm` / `cancel` / `change` 回调统一携带 `[{ value, label, extra? }]` 数组。
+- `change` 在滚动过程中每次落定后触发，适合做实时预览；`confirm` 只在点击确认时触发。
+- `close` 在点击遮罩等非确认/取消方式关闭时触发。
+- `preserveSelection` 为 true（默认）时，下次打开保留上次确认的选择。
+
+## 多列联动
+
+联动模式使用树形数据；每一列变化后会根据 `child-name` 生成下一列。确认结果始终按列返回。
+
+```vue
+<snake-picker v-model="show" :list="regions" mode="mutil-column-auto" @confirm="onConfirm" />
+```
+
+```ts
+const regions = [
+    {
+        label: '华东',
+        value: 'east',
+        children: [
+            { label: '上海', value: 'sh' },
+            { label: '杭州', value: 'hz' }
+        ]
+    }
+];
+
+function onConfirm(values) {
+    // values: [{ value: 'east', label: '华东' }, { value: 'sh', label: '上海' }]
+}
+```
+
+## 受控打开与默认值
+
+`v-model` 只控制弹层显示，选择结果由 `confirm`/`cancel` 接收。首次打开可用 `default-value` 指定各列下标；需要每次按默认值重置时设置 `:preserve-selection="false"`。
+
+组件实例暴露 `open()` / `close()`，适合「工具栏按钮打开选择器」的场景：
+
+```vue
+<snake-picker ref="selectRef" v-model="show" :list="list" />
+<snake-button @click="selectRef?.open()">选择</snake-button>
+```
+
+```ts
+import type { PickerExpose } from '@puresnake/snake-ui/components/snake-picker/types';
+
+const selectRef = ref<PickerExpose | null>(null);
+```
+
+## 行高与可见行数
+
+`item-height` 决定滚轮每一行的高度，`visible-item-count` 决定可见行数，弹层高度 = 两者相乘。
+
+```vue
+<snake-picker v-model="show" :list="list" :item-height="52" :visible-item-count="5" />
+```
+
+默认 `44px × 6 行`。行高在 H5 通过 `--picker-view-column-indicator-height` 生效，运行时切换会在下次打开时应用。
+
+## 样式
+
+选中行的视觉由三层叠加而成：中间一条圆角浅色条 + 选中项字重加粗，滚轮上下再盖一层「表面色 → 透明」的渐变遮罩，越靠近选中框越透明，所以相邻选项始终读得清。浅色条会跟着明暗主题取值，不用逐端适配。
+
+| 元素       | 默认表现                                                                | 覆盖方式                                                                                      |
+| ---------- | ----------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| 面板圆角   | 顶部 `--snake-radius-large`（10px），由 `round` 交给 `snake-popup` 绘制 | `:round="false"` 直角，或 `:round="24"` 自定义                                                |
+| 选中框底色 | `--snake-color-background` 极浅色条，左右内缩 12px、圆角 6px            | `--snake-picker-roller-bg` / `--snake-picker-roller-inset-x` / `--snake-picker-roller-radius` |
+| 选中项文字 | 与其它选项同色，字重加粗到 600                                          | `--snake-picker-item-active-color` / `--snake-picker-item-active-font-weight`                 |
+| 渐变遮罩   | 表面色渐变到透明，跟随明暗主题                                          | `--snake-picker-mask-color`                                                                   |
+| 工具栏     | 44px 高，标题 15px/600，操作按钮 16px，左右按钮各留 16px 内边距         | `--snake-picker-toolbar-*` / `--snake-picker-title-*`                                         |
+| 长文案     | 单行省略，选项左右各留 12px 内边距                                      | `--snake-picker-item-padding-x`                                                               |
+
+选中框上下默认**不画** hairline（色条已经有边界）。想要 iOS / uView 那种「只有两条线」的样式，把底色关掉、再给 hairline 一个颜色：
+
+```vue
+<snake-picker v-model="show" :list="list" class="line-picker" />
+```
+
+```css
+.line-picker {
+    --snake-picker-roller-bg: transparent;
+    --snake-picker-indicator-border-color: var(--snake-color-border, #dcdfe6);
+}
+```
+
+## 异步校验
+
+`before-confirm` 在关闭前执行：只有**显式** `return true` 或 resolve `true` 才会关闭并派发 `confirm`；返回 `false`、不返回值、抛错都会保持弹层打开，等待期间确认按钮置灰。
+
+```vue
+<snake-picker v-model="show" :list="list" :before-confirm="beforeConfirm" @confirm="onConfirm" />
+```
+
+```ts
+async function beforeConfirm(values) {
+    // values: [{ value, label }]
+    const ok = await checkRemote(values); // 远程校验
+    return ok; // 返回 false 时弹层保持打开
+}
+```
+
+## 空态
+
+`list` 无可用数据时不渲染滚轮，改为展示 `--snake-picker-empty-*` 样式的空态文案，默认取语言包（`暂无数据` / `No data`），可用 `empty-text` 覆盖。
+
+## 禁用
+
+`disabled` 会阻止 `open()`；放进 `snake-form-item` 后还会跟随表单项与整表的 `disabled`。
+
+## 表单联动
+
+确认成功后组件会触发 `snake-form-item` 的 `change` 校验，配合 `required` 规则即可做到「选完即校验」：
+
+```vue
+<snake-form :model="form" :rules="rules">
+    <snake-form-item label="收件城市" prop="city" required>
+        <view @click="show = true">{{ form.city || '请选择' }}</view>
+        <snake-picker v-model="show" :list="list" @confirm="onConfirm" />
+    </snake-form-item>
+</snake-form>
+```
+
+```ts
+const form = reactive({ city: '' });
+const rules = { city: [{ required: true, message: '请选择收件城市' }] };
+
+function onConfirm(values) {
+    form.city = values[0].value;
+    // 组件随后会自动触发该表单项的 change 校验
+}
+```
 
 ## API
 
 ### Props
 
-| 参数             | 说明                                 | 类型                     | 默认值  |
-| ---------------- | ------------------------------------ | ------------------------ | ------- |
-| `content`        | 要渲染的 HTML 内容                   | `string`                 | `''`    |
-| `containerStyle` | 根容器样式                           | `string`                 | `''`    |
-| `domain`         | 相对资源地址使用的主域名             | `string`                 | -       |
-| `tagStyle`       | 标签默认样式映射                     | `Record<string, string>` | -       |
-| `lazyLoad`       | 是否延迟加载图片                     | `boolean`                | `false` |
-| `loadingImg`     | 图片加载中的占位图地址               | `string`                 | `''`    |
-| `errorImg`       | 图片加载失败的占位图地址             | `string`                 | `''`    |
-| `previewImg`     | 点击图片时是否打开预览               | `boolean`                | `true`  |
-| `showImgMenu`    | 是否显示图片长按菜单                 | `boolean`                | `true`  |
-| `copyLink`       | 点击外部链接时是否复制地址           | `boolean`                | `true`  |
-| `pauseVideo`     | 播放新视频时是否暂停其他视频         | `boolean`                | `true`  |
-| `scrollTable`    | 是否让表格独立横向滚动               | `boolean`                | -       |
-| `selectable`     | 文本是否可长按选择                   | `boolean`                | -       |
-| `setTitle`       | 是否使用 HTML `title` 更新页面标题   | `boolean`                | `true`  |
-| `useAnchor`      | 是否启用锚点定位，传数字可指定偏移量 | `boolean \| number`      | -       |
+| 参数                  | 说明                                                                                          | 类型                             | 默认值          |
+| --------------------- | --------------------------------------------------------------------------------------------- | -------------------------------- | --------------- |
+| `customStyle`         | 根节点自定义样式                                                                              | `StyleValue`                     | `''`            |
+| `customClass`         | 根节点自定义类名                                                                              | `string`                         | `''`            |
+| `list`                | 列数据，`mutil-column` 模式为二维数组                                                         | `PickerItem[] \| PickerItem[][]` | `[]`            |
+| `border`              | 是否显示工具栏底部分隔线                                                                      | `boolean`                        | `true`          |
+| `round`               | 面板圆角，`true` 取 `--snake-radius-large`，数字/字符串按 CSS 尺寸，`false` 为直角            | `boolean \| number \| string`    | `true`          |
+| `modelValue`          | 双向绑定控制选择器的弹出与收起（v-model）                                                     | `boolean`                        | `false`         |
+| `cancelColor`         | 取消按钮的颜色                                                                                | `string`                         | 主题次要文字色  |
+| `confirmColor`        | 确认按钮的颜色                                                                                | `string`                         | 主题色          |
+| `zIndex`              | 弹出时的层级，`0` 表示使用弹层默认层级                                                        | `UnitValue`                      | `0`             |
+| `safeAreaInsetBottom` | 是否开启底部安全区适配                                                                        | `boolean`                        | `false`         |
+| `maskCloseAble`       | 是否允许通过点击遮罩关闭选择器                                                                | `boolean`                        | `true`          |
+| `rootPortal`          | 是否把弹层传送到页面根节点渲染，避免被祖先的 `transform`、`overflow` 裁剪                     | `boolean`                        | `false`         |
+| `disabled`            | 是否禁用选择器，禁用后无法打开                                                                | `boolean`                        | `false`         |
+| `defaultValue`        | 默认选中的下标数组                                                                            | `number[]`                       | `[0]`           |
+| `preserveSelection`   | 是否保留用户上次确认的选择                                                                    | `boolean`                        | `true`          |
+| `mode`                | 模式，可选值 `single-column`（单列）/ `mutil-column`（多列）/ `mutil-column-auto`（多列联动） | `PickerMode`                     | `single-column` |
+| `valueName`           | 自定义 value 属性名                                                                           | `string`                         | `'value'`       |
+| `labelName`           | 自定义 label 属性名                                                                           | `string`                         | `'label'`       |
+| `childName`           | 自定义多列联动模式的 children 属性名                                                          | `string`                         | `'children'`    |
+| `itemHeight`          | 每一行选项的高度，单位 px（375 设计稿）                                                       | `number`                         | `44`            |
+| `visibleItemCount`    | 可见行数，与 `itemHeight` 共同决定弹层高度                                                    | `number`                         | `6`             |
+| `beforeConfirm`       | 确认前拦截器，需显式返回 `true` 才会关闭                                                      | `PickerBeforeConfirm`            | -               |
+| `title`               | 顶部标题                                                                                      | `string`                         | `''`            |
+| `cancelText`          | 取消按钮的文字                                                                                | `string`                         | 语言包默认值    |
+| `confirmText`         | 确认按钮的文字                                                                                | `string`                         | 语言包默认值    |
+| `emptyText`           | 无选项时的空态文案                                                                            | `string`                         | 语言包默认值    |
 
 ### Events
 
-| 事件名    | 说明                     | 参数                |
-| --------- | ------------------------ | ------------------- |
-| `load`    | 内容解析并加载后触发     | -                   |
-| `ready`   | 内容布局完成后触发       | `rect`              |
-| `imgtap`  | 点击图片时触发           | `attrs`             |
-| `linktap` | 点击链接时触发           | `attrs`             |
-| `play`    | 媒体开始播放时触发       | `{ source, attrs }` |
-| `error`   | 富文本资源加载失败时触发 | `{ source, attrs }` |
+| 事件名              | 触发时机                 | 参数                         |
+| ------------------- | ------------------------ | ---------------------------- |
+| `update:modelValue` | 弹出/收起                | `boolean`                    |
+| `open`              | 弹层打开                 | -                            |
+| `change`            | 滚动过程中选中项变化     | `[{ value, label, extra? }]` |
+| `confirm`           | 点击确认按钮             | `[{ value, label, extra? }]` |
+| `cancel`            | 点击取消按钮             | `[{ value, label, extra? }]` |
+| `close`             | 点击遮罩等非按钮方式关闭 | -                            |
 
 ### Methods
 
-组件 ref 提供 `setContent(content, append)`、`getText()`、`getRect()`、`navigateTo(id, offset)`、`pauseMedia()` 和 `setPlaybackRate(rate)`。
-
-### Slots
-
-| 名称      | 说明                                     |
-| --------- | ---------------------------------------- |
-| `default` | `content` 尚未解析出节点时显示的占位内容 |
-
-## 安全与兼容
-
-解析器按标签白名单渲染，移除脚本、表单和事件属性。H5 与 App 端可渲染 `iframe`、`embed`，因此不可信 HTML 仍应在服务端完成清洗，并限制可访问的嵌入地址；小程序端会忽略这些嵌入标签。H5、App、小程序使用原生节点；App-NVue 使用内置 WebView 处理复杂内容。
+| 方法名  | 说明                                      | 参数 | 返回值 |
+| ------- | ----------------------------------------- | ---- | ------ |
+| `open`  | 打开选择器（需要绑定 `v-model` 才能生效） | -    | -      |
+| `close` | 关闭选择器                                | -    | -      |
 
 ## 主题变量
 
-Parse 没有专用的 `--snake-parse-*` 变量。可通过 `containerStyle` 设置容器样式、通过 `tagStyle` 设置标签默认样式；需要跟随全局主题时，使用[色彩令牌](/components/color)。
+| 变量                                     | 用途                                       |
+| ---------------------------------------- | ------------------------------------------ |
+| `--snake-color-primary`                  | 默认确认按钮颜色                           |
+| `--snake-color-text`                     | 当前选项文字颜色                           |
+| `--snake-color-text-secondary`           | 默认取消按钮颜色                           |
+| `--snake-color-border`                   | 可选：选中框上下 hairline 颜色（默认不画） |
+| `--snake-color-divider`                  | 工具栏分隔线颜色                           |
+| `--snake-color-surface`                  | 选择器背景、渐变遮罩颜色                   |
+| `--snake-color-background`               | 选中框底色                                 |
+| `--snake-radius-large`                   | `round` 为 `true` 时的面板圆角             |
+| `--snake-picker-panel-bg`                | 面板背景                                   |
+| `--snake-picker-body-bg`                 | 滚轮区背景                                 |
+| `--snake-picker-toolbar-height`          | 工具栏高度，默认 `44px`                    |
+| `--snake-picker-toolbar-font-size`       | 工具栏按钮字号，默认 `16px`                |
+| `--snake-picker-toolbar-padding-x`       | 工具栏按钮左右内边距，默认 `16px`          |
+| `--snake-picker-title-font-size`         | 标题字号，默认 `15px`                      |
+| `--snake-picker-title-font-weight`       | 标题字重，默认 `600`                       |
+| `--snake-picker-title-color`             | 标题颜色                                   |
+| `--snake-picker-divider-color`           | 工具栏分隔线颜色                           |
+| `--snake-picker-item-font-size`          | 选项字号，默认 `16px`                      |
+| `--snake-picker-item-color`              | 选项颜色                                   |
+| `--snake-picker-item-padding-x`          | 选项左右内边距，默认 `12px`                |
+| `--snake-picker-item-active-color`       | 选中项文字颜色                             |
+| `--snake-picker-item-active-font-weight` | 选中项字重，默认 `600`                     |
+| `--snake-picker-roller-bg`               | 选中框底色，设为 `transparent` 即关闭      |
+| `--snake-picker-roller-inset-x`          | 选中框左右内缩，默认 `12px`                |
+| `--snake-picker-roller-radius`           | 选中框圆角，默认 `6px`                     |
+| `--snake-picker-indicator-border-color`  | 可选：选中框上下 hairline 颜色             |
+| `--snake-picker-mask-color`              | 滚轮渐变遮罩颜色，默认表面色               |
+| `--snake-picker-empty-color`             | 空态文字颜色                               |
+| `--snake-picker-empty-font-size`         | 空态字号，默认 `14px`                      |
+| `--snake-picker-pending-opacity`         | 等待拦截器时确认按钮透明度                 |
+
+`confirmColor` 和 `cancelColor` 可以覆盖单个实例的操作颜色；其余变量可通过 `custom-class` 或全局主题覆盖。
 
 <!-- Source: docs/components/popup.md -->
 
@@ -3810,6 +5125,138 @@ import type { RadioGroupProps, RadioProps, RadioEmits } from '@puresnake/snake-u
 | `--snake-color-surface`        | 收起状态渐隐终点颜色 |
 | `--snake-color-text-secondary` | 正文默认颜色         |
 
+<!-- Source: docs/components/rich-text.md -->
+
+# RichText 富文本
+
+`snake-rich-text` 用于渲染文章、商品详情等 HTML 内容。内置 HTML 解析、图片预览、链接处理、表格横向滚动、音视频与 App-NVue 支持，可独立使用。
+
+## 与原生 rich-text 的区别
+
+uni-app 自带的 `<rich-text>` 只接受节点树，样式和交互都要自己维护；`snake-rich-text` 直接接收 HTML 字符串，并补齐图片预览、链接复制、表格横向滚动、音视频与锚点定位。
+
+| 场景                                 | 建议                               |
+| ------------------------------------ | ---------------------------------- |
+| 一段图文、公告正文、几行后台富文本   | 直接用原生 `<rich-text>`，无需引入 |
+| 商品详情、长文章、带表格与音视频内容 | 用 `snake-rich-text`               |
+
+## 平台兼容性
+
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
+
+App-NVue 通过内置 WebView 渲染复杂内容；`iframe`、`embed` 等嵌入标签仅在 H5 与 App 上渲染。平台差异见下方“安全与兼容”。
+
+## 基础用法
+
+```vue
+<snake-rich-text :content="article" preview-img scroll-table @linktap="onLinkTap" />
+```
+
+`content` 接收 HTML 字符串；图片预览由 `preview-img` 控制，表格内容较宽时可启用 `scroll-table`。
+
+组件根节点只透传 `containerStyle`：除链接色与图片圆角外不带排版样式，留白、最大宽度都交给外层容器，因此嵌进别的容器时不会多出一层缩进。
+
+## API
+
+### Props
+
+| 参数             | 说明                                 | 类型                     | 默认值  |
+| ---------------- | ------------------------------------ | ------------------------ | ------- |
+| `content`        | 要渲染的 HTML 内容                   | `string`                 | `''`    |
+| `containerStyle` | 根容器样式                           | `string`                 | `''`    |
+| `domain`         | 相对资源地址使用的主域名             | `string`                 | -       |
+| `tagStyle`       | 标签默认样式映射                     | `Record<string, string>` | -       |
+| `lazyLoad`       | 是否延迟加载图片                     | `boolean`                | `false` |
+| `loadingImg`     | 图片加载中的占位图地址               | `string`                 | `''`    |
+| `errorImg`       | 图片加载失败的占位图地址             | `string`                 | `''`    |
+| `previewImg`     | 点击图片时是否打开预览               | `boolean`                | `true`  |
+| `showImgMenu`    | 是否显示图片长按菜单                 | `boolean`                | `true`  |
+| `copyLink`       | 点击外部链接时是否复制地址           | `boolean`                | `true`  |
+| `pauseVideo`     | 播放新视频时是否暂停其他视频         | `boolean`                | `true`  |
+| `scrollTable`    | 是否让表格独立横向滚动               | `boolean`                | -       |
+| `selectable`     | 文本是否可长按选择                   | `boolean`                | -       |
+| `setTitle`       | 是否使用 HTML `title` 更新页面标题   | `boolean`                | `true`  |
+| `useAnchor`      | 是否启用锚点定位，传数字可指定偏移量 | `boolean \| number`      | -       |
+
+`tagStyle`、`scrollTable`、`useAnchor`、`domain`、`previewImg` 只在解析阶段生效；运行期修改这些参数时组件会重新解析当前内容，并重新触发 `load` 与 `ready`。
+
+### Events
+
+| 事件名             | 说明                     | 参数                            |
+| ------------------ | ------------------------ | ------------------------------- |
+| `load`             | 内容解析并加载后触发     | -                               |
+| `ready`            | 内容布局完成后触发       | `rect`                          |
+| `imgtap`           | 点击图片时触发           | `attrs`                         |
+| `linktap`          | 点击链接时触发           | `attrs`，含 `href` 与链接文本   |
+| `play`             | 媒体开始播放时触发       | `{ source, attrs }`             |
+| `pause`            | 媒体暂停时触发           | `{ source, attrs }`             |
+| `fullscreenchange` | 视频全屏状态变化时触发   | `{ source, attrs, fullScreen }` |
+| `error`            | 富文本资源加载失败时触发 | `{ source, attrs }`             |
+
+`source` 为媒体标签名（`video` / `audio`），`attrs` 是内容里的原始属性，`src` 为当前实际使用的地址。
+
+### Methods
+
+组件 ref 提供 `setContent(content, append)`、`getText()`、`getRect()`、`navigateTo(id, offset)`、`pauseMedia()` 和 `setPlaybackRate(rate)`。
+
+### Slots
+
+| 名称      | 说明                                     |
+| --------- | ---------------------------------------- |
+| `default` | `content` 尚未解析出节点时显示的占位内容 |
+
+## 与其他组件库的对照
+
+| 其他库                        | 本组件            | 迁移说明                                                                                                             |
+| ----------------------------- | ----------------- | -------------------------------------------------------------------------------------------------------------------- |
+| uview-plus `up-parse`         | `snake-rich-text` | 底座同为 mp-html，15 个道具逐个同名（`content`、`tagStyle`、`lazyLoad`、`selectable`、`scrollTable` 等），直接换标签 |
+| uView-Pro `u-parse`（已废弃） | `snake-rich-text` | 旧组件用 `:html`，迁移时改为 `:content`；uView-Pro 已删除该组件，无同名替代                                          |
+| wot-ui `wd-rich-text`         | `snake-rich-text` | `image-click` → `imgtap`，`link-click` → `linktap`，`enable-anchor` → `useAnchor`，`loading-image` → `loadingImg`    |
+
+与 wot-ui 的差别在于交互归属：`snake-rich-text` 保持 mp-html / uView 血统的行为，外链按 `copyLink` 复制或打开、站内路径自动 `navigateTo`、锚点自动滚动；wot-ui 只抛事件、跳转全部交给业务。需要在跳转前做埋点或改写链接时，先监听 `linktap`，再在回调里自行导航。
+
+## 安全与兼容
+
+解析器按标签白名单渲染，移除脚本、表单和事件属性。H5 与 App 端可渲染 `iframe`、`embed`，因此不可信 HTML 仍应在服务端完成清洗，并限制可访问的嵌入地址；小程序端会忽略这些嵌入标签。H5、App、小程序使用原生节点；App-NVue 使用内置 WebView 处理复杂内容。
+
+内容自带的 `<style>` 标签只支持标签、`class`、`id` 和后代选择器，不支持 `*`、属性选择器和媒体查询；需要稳定的排版时用 `tagStyle`。
+
+## 常见问题
+
+### H5 部署在子路径时图片 404
+
+内容里的 `/static/…` 是运行时字符串，不会经过构建期的路径转换。应用部署在 `/h5/`、`/snake-ui/h5/` 这类子路径时，这类地址会请求站点根目录并 404；改用完整地址，或用 `domain` 指定主域名（如 `domain="/snake-ui/h5"`）。
+
+### 表格没有横向滚动
+
+`scrollTable` 只作用于有明确宽度的表格：给表格写 `style="width:640px"` 这类固定宽度才会超出容器，`width:100%` 会跟随容器收缩。
+
+### 内容里的样式没生效
+
+组件不注入全局样式，只渲染内容自身的样式与 `tagStyle`；`tagStyle` 的优先级低于内容内联样式。后台已经把颜色写进内联样式时，需要从内容侧修正，或在服务端清洗阶段去掉这些样式。
+
+## 主题变量
+
+组件不写死正文颜色与图片样式，都可以用 CSS 变量控制；不设置时保持组件内置的默认表现（链接默认跟随主色）。
+
+| 变量                             | 说明                                                             |
+| -------------------------------- | ---------------------------------------------------------------- |
+| `--snake-rich-text-color`        | 正文颜色，默认继承父级                                           |
+| `--snake-rich-text-font-size`    | 正文字号，默认继承父级                                           |
+| `--snake-rich-text-line-height`  | 正文行高，默认继承父级                                           |
+| `--snake-rich-text-link-color`   | 链接颜色，默认跟随 `--snake-color-primary`，与 `snake-link` 一致 |
+| `--snake-rich-text-image-radius` | 内容图片圆角，默认 `0`                                           |
+
+变量声明在任意祖先节点即可，组件根节点会继承；`containerStyle`、`tagStyle` 与内容内联样式仍然优先于这些变量。需要跟随全局主题时，使用[色彩令牌](/components/color)。
+
+```vue
+<view style="--snake-rich-text-link-color: var(--snake-color-primary-deep);">
+  <snake-rich-text :content="article" />
+</view>
+```
+
 <!-- Source: docs/components/root-portal.md -->
 
 # RootPortal 根节点传送
@@ -3865,7 +5312,7 @@ import type { RadioGroupProps, RadioProps, RadioEmits } from '@puresnake/snake-u
 
 # Search 搜索框
 
-搜索组件，集成了常见搜索框所需功能，支持圆形/方形、清除控件、右侧操作按钮与聚焦动画，一键引入开箱即用。
+搜索框集成占位、清除、右侧操作按钮与聚焦展开，一键引入开箱即用；支持圆形/方形、禁用跳转、输入框内左右插槽与 `ref` 方法调用。
 
 ## 平台兼容性
 
@@ -3879,23 +5326,97 @@ import type { RadioGroupProps, RadioProps, RadioEmits } from '@puresnake/snake-u
 <snake-search v-model="keyword" placeholder="请输入关键字" @search="handleSearch" @clear="handleClear" />
 ```
 
-## 形状与操作按钮
+`search` 由键盘确认键触发，`custom` 由右侧操作按钮触发，两者都携带当前关键字。
+
+## 形状与状态
 
 ```vue
-<!-- 方形 + 隐藏操作按钮 -->
-<snake-search shape="square" :show-action="false" />
-<!-- 聚焦时才展开操作按钮 -->
-<snake-search animation action-text="搜索" />
+<!-- 方形 + 描边：配置 borderColor 才会画边框，box-sizing 已按 border-box 处理，高度不会因边框增长 -->
+<snake-search shape="square" height="34" :show-action="false" bg-color="#ffffff" border-color="#e4e7ed" />
+
+<!-- 禁用态：输入框不可编辑，点击组件派发 click，通常用于跳转真正的搜索页 -->
+<snake-search disabled placeholder="搜索商品" @click="goSearchPage" />
+
+<!-- 聚焦时才展开右侧按钮 -->
+<snake-search v-model="keyword" animation action-text="搜索" />
 ```
 
-`disabled` 为 true 时输入框不可编辑，点击组件会触发 `click`，通常用于跳转真正的搜索页。
+`disabled` 时清除控件不会显示，`focus` 请求也会被忽略。
 
-## 搜索提交与建议词
+## 清除与事件
 
-`search` 由键盘确认触发，`custom` 由右侧操作按钮触发；两者都携带当前关键字。输入联想应由业务在 `input` 中防抖请求，并在 `clear` 时清空建议列表。
+清除控件**只要有内容就显示**，不依赖聚焦状态——输入后点空白处失焦，仍然可以一键清空：
+
+- 点击清除会依次派发 `update:modelValue` / `input` / `change` / `clear`，`clear` 触发时 `modelValue` 已经是空串；
+- `ref.clear()` 与点击清除走同一套逻辑；
+- 程序化修改 `modelValue`（点热词、重置表单）只同步显示，**不会**回派 `input` / `change`。
 
 ```vue
-<snake-search v-model="keyword" @input="querySuggestions" @search="search" @custom="search" @clear="suggestions = []" />
+<snake-search v-model="keyword" placeholder="请输入关键字" @input="querySuggestions" @clear="suggestions = []" />
+```
+
+## 插槽
+
+`#left` 替换左侧搜索图标（扫码、返回箭头等），`#right` 挂在清除控件之后（语音、相机等附加入口）：
+
+```vue
+<snake-search v-model="keyword" placeholder="搜索附近门店">
+    <template #left>
+        <snake-icon name="scan" :size="16" color="var(--snake-color-text-secondary, #606266)" />
+    </template>
+    <template #right>
+        <view class="my-search-extra">
+            <snake-icon name="mic" :size="16" color="var(--snake-color-text-muted, #909399)" />
+        </view>
+    </template>
+</snake-search>
+```
+
+插槽内容直接成为输入框容器里的 flex 子项，宽度由内容决定；需要间距时给插槽根节点自己加 `padding`。
+
+## 右侧操作按钮
+
+`actionText` 定文案，`actionStyle` 只改按钮外观，显隐仍由 `showAction` / `animation` 控制——因此可以用它做胶囊按钮或「取消」：
+
+```vue
+<!-- 常驻胶囊按钮 -->
+<snake-search
+    v-model="keyword"
+    action-text="搜索"
+    :action-style="{
+        width: '56px',
+        height: '30px',
+        lineHeight: '30px',
+        borderRadius: '999px',
+        background: '#0f5f55',
+        color: '#ffffff',
+        fontWeight: 600,
+        marginLeft: '8px'
+    }"
+    @custom="handleSearch"
+/>
+
+<!-- 收起时隐藏：actionStyle 不会把按钮带出来 -->
+<snake-search :show-action="false" :action-style="{ width: '56px' }" />
+```
+
+展开宽度上限由主题变量 `--snake-search-action-max-width` 控制（默认 200px），按钮更宽时调大它。
+
+## 方法调用
+
+```vue
+<snake-search ref="searchRef" v-model="keyword" :show-action="false" />
+
+<script setup lang="ts">
+import { ref } from 'vue';
+import type { SearchExpose } from '@puresnake/snake-ui';
+
+const searchRef = ref<SearchExpose>();
+
+searchRef.value?.focus(); // 聚焦，disabled 时不生效
+searchRef.value?.blur(); // 失焦并收起键盘
+searchRef.value?.clear(); // 清空并派发 update:modelValue / input / change / clear
+</script>
 ```
 
 ## API
@@ -3908,164 +5429,74 @@ import type { RadioGroupProps, RadioProps, RadioEmits } from '@puresnake/snake-u
 | `customClass`      | 根节点自定义类名                                                                                     | `string`           | `''`           |
 | `shape`            | 搜索框形状，可选值 `round`（圆形）/ `square`（方形）                                                 | `SearchShape`      | `round`        |
 | `bgColor`          | 搜索框背景色                                                                                         | `string`           | 主题浅色表面   |
+| `borderColor`      | 边框颜色，配置后才画边框                                                                             | `string`           | `''`           |
 | `placeholder`      | 占位提示文字                                                                                         | `string`           | 语言包默认值   |
-| `clearabled`       | 是否启用清除控件                                                                                     | `boolean`          | `true`         |
-| `focus`            | 是否自动聚焦                                                                                         | `boolean`          | `false`        |
+| `clearabled`       | 是否启用清除控件，有内容即显示                                                                       | `boolean`          | `true`         |
+| `focus`            | 是否自动聚焦，之后变为 `true` 也会重新聚焦                                                           | `boolean`          | `false`        |
 | `showAction`       | 是否在搜索框右侧显示操作按钮                                                                         | `boolean`          | `true`         |
-| `actionStyle`      | 右侧操作按钮的样式                                                                                   | `StyleValue`       | `{}`           |
+| `actionStyle`      | 右侧操作按钮样式（只改外观，不影响显隐）                                                             | `StyleValue`       | `{}`           |
 | `actionText`       | 右侧操作按钮文字                                                                                     | `string`           | 语言包默认值   |
 | `inputAlign`       | 输入框内容水平对齐方式，可选值 `left` / `center` / `right`                                           | `SearchInputAlign` | `left`         |
-| `disabled`         | 是否禁用输入框                                                                                       | `boolean`          | `false`        |
-| `animation`        | 开启 `showAction` 时，是否仅在输入框聚焦时才显示操作按钮                                             | `boolean`          | `false`        |
-| `borderColor`      | 边框颜色，配置后才有边框                                                                             | `string`           | `none`         |
+| `disabled`         | 是否禁用输入框，禁用时点击组件派发 `click`                                                           | `boolean`          | `false`        |
+| `animation`        | 开启 `showAction` 时，是否仅在输入框聚焦时才展开操作按钮                                             | `boolean`          | `false`        |
 | `modelValue`       | 双向绑定的输入值（v-model）                                                                          | `string`           | `''`           |
 | `height`           | 搜索框高度，数值按 px（375 稿）处理                                                                  | `UnitValue`        | `32`           |
 | `inputStyle`       | 输入框的样式，可定义文字颜色、大小等                                                                 | `StyleValue`       | `{}`           |
-| `maxlength`        | 输入框最大能输入的长度，`-1` 为不限制                                                                | `UnitValue`        | `'-1'`         |
+| `maxlength`        | 输入框最大能输入的长度，`-1` 为不限制                                                                | `UnitValue`        | `-1`           |
 | `searchIconColor`  | 搜索图标的颜色，默认同输入框字体颜色                                                                 | `string`           | `''`           |
+| `searchIcon`       | 左侧图标名，可被 `#left` 插槽覆盖                                                                    | `string`           | `search`       |
 | `color`            | 输入框字体颜色                                                                                       | `string`           | 主题次要文字色 |
 | `placeholderColor` | placeholder 的颜色                                                                                   | `string`           | 主题占位色     |
 | `margin`           | 与上下左右元素的间距，带单位的字符串形式                                                             | `string`           | `'0'`          |
-| `searchIcon`       | 左侧输入框的图标，可为图标名称或图片路径                                                             | `string`           | `search`       |
 | `adjustPosition`   | 弹出键盘时是否自动调节高度                                                                           | `boolean`          | `true`         |
 | `type`             | 输入框类型，可选值 `text`（文本）/ `number`（数字键盘）/ `idcard`（身份证）/ `digit`（带小数点数字） | `SearchInputType`  | `'text'`       |
 
 ### Events
 
-| 事件名              | 触发时机              | 参数    |
-| ------------------- | --------------------- | ------- |
-| `update:modelValue` | 输入值变化（v-model） | `value` |
-| `input`             | 输入时触发            | `value` |
-| `change`            | 内容变化时触发        | `value` |
-| `search`            | 用户确定搜索          | `value` |
-| `custom`            | 点击右侧操作按钮      | `value` |
-| `clear`             | 点击清除按钮          | -       |
-| `focus`             | 输入框获得焦点        | `value` |
-| `blur`              | 输入框失去焦点        | `value` |
-| `click`             | 禁用状态下点击搜索框  | -       |
+| 事件名              | 触发时机                                     | 参数    |
+| ------------------- | -------------------------------------------- | ------- |
+| `update:modelValue` | 输入值变化（v-model）                        | `value` |
+| `input`             | 用户输入、点击清除时触发                     | `value` |
+| `change`            | 同 `input`                                   | `value` |
+| `search`            | 键盘确认搜索                                 | `value` |
+| `custom`            | 点击右侧操作按钮                             | `value` |
+| `clear`             | 点击清除控件或调用 `clear()`，此时值已为空串 | -       |
+| `focus`             | 输入框获得焦点                               | `value` |
+| `blur`              | 输入框失去焦点                               | `value` |
+| `click`             | `disabled` 时点击搜索框                      | -       |
+
+### Slots
+
+| 插槽名  | 说明                                     |
+| ------- | ---------------------------------------- |
+| `left`  | 替换左侧搜索图标                         |
+| `right` | 清除控件之后的附加内容，如语音、相机入口 |
+
+### Expose
+
+| 方法    | 说明                                                                |
+| ------- | ------------------------------------------------------------------- |
+| `focus` | 聚焦输入框，`disabled` 时不生效                                     |
+| `blur`  | 让输入框失焦并收起键盘                                              |
+| `clear` | 清空输入，并派发 `update:modelValue` / `input` / `change` / `clear` |
 
 ## 主题变量
 
-| 变量名                         | 说明                   |
-| ------------------------------ | ---------------------- |
-| `--snake-color-surface-muted`  | 搜索框默认背景色       |
-| `--snake-color-text-secondary` | 输入文字默认颜色       |
-| `--snake-color-text-muted`     | 占位文字和操作按钮颜色 |
-| `--snake-color-text-light`     | 清除图标颜色           |
-| `--snake-color-text`           | 右侧操作按钮激活颜色   |
+| 变量名                            | 说明                       | 默认值       |
+| --------------------------------- | -------------------------- | ------------ |
+| `--snake-color-surface-muted`     | 搜索框默认背景色           | 主题浅色表面 |
+| `--snake-color-text-secondary`    | 输入文字与搜索图标默认颜色 | `#606266`    |
+| `--snake-color-text-muted`        | 占位文字默认颜色           | `#909399`    |
+| `--snake-color-text-light`        | 清除图标颜色               | `#c0c4cc`    |
+| `--snake-color-text`              | 右侧操作按钮文字颜色       | `#303133`    |
+| `--snake-search-action-max-width` | 右侧操作按钮展开宽度上限   | `200px`      |
 
-<!-- Source: docs/components/select.md -->
+## 注意
 
-# Select 列选择器
-
-用于单列、多列、多列联动的选择场景，基于原生 picker-view 与 Popup 实现，底部弹出。
-
-## 平台兼容性
-
-| H5  | App | 微信小程序 | 支付宝小程序 |
-| :-: | :-: | :--------: | :----------: |
-|  √  |  √  |     √      |      √       |
-
-## 基础用法
-
-```vue
-<snake-select v-model="show" :list="list" @confirm="handleConfirm" @cancel="handleCancel" />
-```
-
-```ts
-// 单列
-const list = [
-    { label: '选项一', value: 'a' },
-    { label: '选项二', value: 'b' }
-];
-// 多列联动
-const cascade = [{ label: '华东', value: 'east', children: [{ label: '上海', value: 'sh' }] }];
-```
-
-## 模式与回传
-
-- `single-column` 单列；`mutil-column` 多列（list 为二维数组）；`mutil-column-auto` 多列联动（按 `childName` 级联）。
-- `confirm` / `cancel` 回调携带 `[{ value, label, extra? }]` 数组。
-- `close` 在点击遮罩等非确认/取消方式关闭时触发。
-- `preserveSelection` 为 true（默认）时，下次打开保留上次确认的选择。
-
-## 多列联动
-
-联动模式使用树形数据；每一列变化后会根据 `child-name` 生成下一列。确认结果始终按列返回。
-
-```vue
-<snake-select v-model="show" :list="regions" mode="mutil-column-auto" @confirm="onConfirm" />
-```
-
-```ts
-const regions = [
-    {
-        label: '华东',
-        value: 'east',
-        children: [
-            { label: '上海', value: 'sh' },
-            { label: '杭州', value: 'hz' }
-        ]
-    }
-];
-
-function onConfirm(values) {
-    // values: [{ value: 'east', label: '华东' }, { value: 'sh', label: '上海' }]
-}
-```
-
-## 受控打开与默认值
-
-`v-model` 只控制弹层显示，选择结果由 `confirm`/`cancel` 接收。首次打开可用 `default-value` 指定各列下标；需要每次按默认值重置时设置 `:preserve-selection="false"`。
-
-## API
-
-### Props
-
-| 参数                  | 说明                                                                                          | 类型                             | 默认值          |
-| --------------------- | --------------------------------------------------------------------------------------------- | -------------------------------- | --------------- |
-| `customStyle`         | 根节点自定义样式                                                                              | `StyleValue`                     | `''`            |
-| `customClass`         | 根节点自定义类名                                                                              | `string`                         | `''`            |
-| `list`                | 列数据，`mutil-column` 模式为二维数组                                                         | `SelectItem[] \| SelectItem[][]` | `[]`            |
-| `border`              | 是否显示边框（当前版本未参与渲染，仅作声明保留）                                              | `boolean`                        | `true`          |
-| `modelValue`          | 双向绑定控制选择器的弹出与收起（v-model）                                                     | `boolean`                        | `false`         |
-| `cancelColor`         | 取消按钮的颜色                                                                                | `string`                         | 主题次要文字色  |
-| `confirmColor`        | 确认按钮的颜色                                                                                | `string`                         | 主题色          |
-| `zIndex`              | 弹出时的层级，`0` 表示使用弹层默认层级                                                        | `UnitValue`                      | `0`             |
-| `safeAreaInsetBottom` | 是否开启底部安全区适配                                                                        | `boolean`                        | `false`         |
-| `maskCloseAble`       | 是否允许通过点击遮罩关闭选择器                                                                | `boolean`                        | `true`          |
-| `defaultValue`        | 默认选中的下标数组                                                                            | `number[]`                       | `[0]`           |
-| `preserveSelection`   | 是否保留用户上次确认的选择                                                                    | `boolean`                        | `true`          |
-| `mode`                | 模式，可选值 `single-column`（单列）/ `mutil-column`（多列）/ `mutil-column-auto`（多列联动） | `SelectMode`                     | `single-column` |
-| `valueName`           | 自定义 value 属性名                                                                           | `string`                         | `'value'`       |
-| `labelName`           | 自定义 label 属性名                                                                           | `string`                         | `'label'`       |
-| `childName`           | 自定义多列联动模式的 children 属性名                                                          | `string`                         | `'children'`    |
-| `title`               | 顶部标题                                                                                      | `string`                         | `''`            |
-| `cancelText`          | 取消按钮的文字                                                                                | `string`                         | 语言包默认值    |
-| `confirmText`         | 确认按钮的文字                                                                                | `string`                         | 语言包默认值    |
-
-### Events
-
-| 事件名              | 触发时机                 | 参数                         |
-| ------------------- | ------------------------ | ---------------------------- |
-| `update:modelValue` | 弹出/收起                | `boolean`                    |
-| `confirm`           | 点击确认按钮             | `[{ value, label, extra? }]` |
-| `cancel`            | 点击取消按钮             | `[{ value, label, extra? }]` |
-| `close`             | 点击遮罩等非按钮方式关闭 | -                            |
-| `click`             | 点击触发入口（兼容声明） | -                            |
-
-## 主题变量
-
-| 变量                           | 用途             |
-| ------------------------------ | ---------------- |
-| `--snake-color-primary`        | 默认确认按钮颜色 |
-| `--snake-color-text`           | 当前选项文字颜色 |
-| `--snake-color-text-secondary` | 默认取消按钮颜色 |
-| `--snake-color-border`         | 工具栏分隔线     |
-| `--snake-color-surface`        | 选择器背景       |
-| `--snake-color-surface-rgb`    | 滚轮遮罩渐变背景 |
-
-`confirmColor` 和 `cancelColor` 可以覆盖单个实例的操作颜色。
+- 输入框内容以组件内部值为准，`:model-value` 变化只同步显示；因此不使用 `v-model` 的「非受控」写法也能正常输入，但要拿值请监听 `input` 或使用 `v-model`。
+- `disabled` 同时用于「假输入框」场景：整块可点、派发 `click`，再跳转真正的搜索页；此时右侧操作按钮仍然可点并派发 `custom`。
+- 输入联想请在 `@input` 里做防抖，程序化赋 `modelValue` 不会触发 `input`，不会造成重复请求。
+- 清除控件与输入框是同级 flex 子项，`#right` 内容请保持 `flex: none`，否则会挤压输入区。
 
 <!-- Source: docs/components/setting.md -->
 
@@ -4375,6 +5806,147 @@ H5 中轨道可通过 Tab 聚焦，方向键按照 `step` 调整数值；触摸�
 
 <RedirectPage to="/cms/overview" />
 
+<!-- Source: docs/components/steps.md -->
+
+# Steps 步骤条
+
+按流程顺序展示进度，用于订单状态、售后处理、物流轨迹与多步表单；状态由父级 `current` 统一推导，单个步骤可用 `status` 覆盖。
+
+## 平台兼容性
+
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
+
+## 基础用法
+
+`current` 为当前进行的索引（从 0 开始）：小于它的是已完成，等于它是进行中，大于它是未开始。已完成显示对勾，进行中保留序号：
+
+```vue
+<snake-steps :current="1">
+    <snake-step title="提交订单" description="2026-11-11 10:20" />
+    <snake-step title="商家发货" description="预计 24 小时内" />
+    <snake-step title="确认收货" />
+</snake-steps>
+```
+
+## 点状模式
+
+`dot` 用实心小圆点替代序号，适合物流轨迹这类「只有节点、不强调第几步」的场景。已完成实心、进行中空心环、未开始灰色描边：
+
+```vue
+<snake-steps :current="2" dot>
+    <snake-step title="已下单" description="10:20" />
+    <snake-step title="已发货" description="10:45" />
+    <snake-step title="运输中" description="14:08" />
+    <snake-step title="已签收" />
+</snake-steps>
+```
+
+## 纵向
+
+订单详情页纵向排列，描述可放多行文本；最后一项不会留下多余空白：
+
+```vue
+<snake-steps :current="2" direction="vertical">
+    <snake-step title="已下单" description="支付成功" />
+    <snake-step title="已发货" description="顺丰 SF1234567890" />
+    <snake-step title="运输中" description="快件已到达上海转运中心" />
+    <snake-step title="待收货" />
+</snake-steps>
+```
+
+## 对齐方式
+
+横向时 `align-center` 默认开启，圆点与标题都以各自等分区域的中心对齐。电商订单流里想让文字左对齐时传 `:align-center="false"`，圆点会贴到区域左侧：
+
+```vue
+<snake-steps :current="1" :align-center="false">
+    <snake-step title="待付款" description="30 分钟内未支付将取消订单" />
+    <snake-step title="待发货" description="商家正在配货" />
+    <snake-step title="待收货" />
+</snake-steps>
+```
+
+## 自定义图标
+
+`icon` 覆盖序号与对勾（优先级高于状态图形，也不受状态影响）；需要完全自定义时用 `#icon` 插槽：
+
+```vue
+<snake-steps :current="1">
+    <snake-step title="待付款" icon="rmb" />
+    <snake-step title="待发货" icon="bag" />
+    <snake-step title="待收货" icon="car" />
+</snake-steps>
+```
+
+## 异常状态
+
+`status="error"` 让某一步显示为异常：圆点与标题转为错误色，图形替换为叉号，常用于「售后驳回」「支付失败」：
+
+```vue
+<snake-steps :current="1">
+    <snake-step title="提交申请" />
+    <snake-step title="审核未通过" status="error" description="商品已超过售后时限" />
+    <snake-step title="退款到账" />
+</snake-steps>
+```
+
+## API
+
+### Props
+
+| 参数            | 说明                                              | 类型                         | 默认值                                   |
+| --------------- | ------------------------------------------------- | ---------------------------- | ---------------------------------------- |
+| `customStyle`   | 根节点自定义样式                                  | `StyleValue`                 | `''`                                     |
+| `customClass`   | 根节点自定义类名                                  | `string`                     | `''`                                     |
+| `current`       | 当前进行到的索引，从 0 开始                       | `number`                     | `0`                                      |
+| `direction`     | 排列方向                                          | `'horizontal' \| 'vertical'` | `'horizontal'`                           |
+| `activeColor`   | 已完成与进行中的颜色                              | `string`                     | `var(--snake-color-primary, #06D290)`    |
+| `inactiveColor` | 未开始的颜色                                      | `string`                     | `var(--snake-color-text-muted, #909399)` |
+| `errorColor`    | 异常状态的颜色                                    | `string`                     | `var(--snake-color-error, #FA3534)`      |
+| `alignCenter`   | 横向时圆点与文字是否居中，关闭后靠左              | `boolean`                    | `true`                                   |
+| `dot`           | 用点状指示器替代序号圆点                          | `boolean`                    | `false`                                  |
+
+| 子项参数      | 说明                   | 类型                                         | 默认值 |
+| ------------- | ---------------------- | -------------------------------------------- | ------ |
+| `title`       | 步骤标题               | `string`                                     | `''`   |
+| `description` | 步骤描述               | `string`                                     | `''`   |
+| `icon`        | 自定义图标名，替代序号 | `string`                                     | `''`   |
+| `status`      | 显式指定状态           | `'wait' \| 'process' \| 'finish' \| 'error'` | `''`   |
+
+### Events
+
+步骤条为纯展示组件，不派发事件；需要点击切换时由业务在 `snake-step` 外层包裹可点击容器。
+
+### Slots
+
+| 组件       | 插槽名  | 说明            |
+| ---------- | ------- | --------------- |
+| snake-step | default | 步骤描述内容    |
+| snake-step | title   | 自定义标题      |
+| snake-step | icon    | 自定义序号/图标 |
+
+## 主题变量
+
+| 变量名                          | 说明                           |
+| ------------------------------- | ------------------------------ |
+| `--snake-step-circle-size`      | 序号圆点直径                   |
+| `--snake-step-dot-size`         | 点状模式圆点直径               |
+| `--snake-step-index-size`       | 序号字号                       |
+| `--snake-step-icon-size`        | 状态图标与自定义图标字号       |
+| `--snake-step-title-size`       | 标题字号                       |
+| `--snake-step-description-size` | 描述字号                       |
+| `--snake-step-line-color`       | 连接线颜色                     |
+| `--snake-step-status-color`     | 当前状态色（圆点/标题/连线源） |
+
+## 注意
+
+- 子步骤顺序由模板顺序决定，不依赖 `index` 手传；`v-for` 渲染时请给每个 `snake-step` 加 `:key`。
+- 连接线由 `snake-step` 内部渲染的独立节点绘制（不是伪元素，也不依赖 `:last-child`），父级 `snake-steps` 只负责方向；因此不能把 `snake-step` 包在额外的 `view` 里，否则会导致最后一段连线判断错位。
+- 横向各步骤等宽等分，标题与描述会按可用宽度换行；长单号、链接这类不折行的内容向整词换行，不会从中间截断。
+- `status` 只影响当前步骤的图形与配色，不会改变相邻步骤的状态推导结果。
+
 <!-- Source: docs/components/sticky.md -->
 
 # Sticky 吸顶
@@ -4508,6 +6080,223 @@ H5 中当前分段可通过 Tab 聚焦，左右方向键会循环切换，并自
 | `--snake-color-surface-muted`  | 按钮模式轨道背景色       |
 | `--snake-color-surface`        | 描边模式背景色           |
 | `--snake-color-white`          | 按钮模式激活文字默认颜色 |
+
+<!-- Source: docs/components/swipe-action.md -->
+
+# SwipeAction 滑动操作
+
+列表项左滑露出右侧按钮、右滑露出左侧按钮，用于删除、收藏、取消订单；横向手势由组件接管，纵向手势仍交给页面滚动。
+
+## 平台兼容性
+
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
+
+## 基础用法
+
+用 `actions` 描述右侧按钮，点击后派发 `click(action, side, index)`，默认点击即收起：
+
+```vue
+<snake-swipe-action :actions="actions" @click="onAction">
+    <snake-cell-item title="订单 202611110001" value="待付款" arrow />
+</snake-swipe-action>
+
+<script setup lang="ts">
+import type { SwipeActionItem } from '@puresnake/snake-ui';
+
+const actions: SwipeActionItem[] = [
+    { text: '收藏', type: 'primary' },
+    { text: '取消订单', type: 'error' }
+];
+
+function onAction(action: SwipeActionItem, side: 'left' | 'right', index: number) {
+    console.log(action.text, side, index);
+}
+</script>
+```
+
+## 左右双向
+
+`leftActions` 用于右滑露出的左侧按钮，`side` 会告诉回调命中的是哪一侧：
+
+```vue
+<snake-swipe-action :actions="actions" :left-actions="leftActions">
+    <snake-cell-item title="消息中心" value="2 条未读" arrow />
+</snake-swipe-action>
+
+<script setup lang="ts">
+const actions: SwipeActionItem[] = [{ text: '删除', type: 'error' }];
+const leftActions: SwipeActionItem[] = [{ text: '标为已读', type: 'warning' }];
+</script>
+```
+
+## 语义色与图标
+
+`type` 决定缺省背景色，`color` 可覆盖；`icon` 放在文字上方，图标颜色与文字一致：
+
+```vue
+<snake-swipe-action
+    :actions="[
+        { text: '置顶', type: 'warning', icon: 'arrow-up' },
+        { text: '删除', type: 'error', icon: 'trash' }
+    ]"
+/>
+```
+
+## 自定义按钮区
+
+需要任意宽度的按钮（两行文案、纯图标、特殊配色）时用插槽：
+
+- `#actions` 替换右侧按钮区，`#left` 替换左侧按钮区；
+- 插槽里的按钮宽度由内容决定，组件会实测后按实测值展开；
+- 点击按钮区任意位置都会收起，作用域参数 `close` 可主动收起。
+
+```vue
+<snake-swipe-action>
+    <snake-cell-item title="运费险说明" value="保障中" />
+    <template #left>
+        <view class="my-action my-action--left" @click="onPin">置顶</view>
+    </template>
+    <template #actions="{ close }">
+        <view class="my-action" @click="onRead(close)">标为已读</view>
+        <view class="my-action my-action--error" @click="close">删除</view>
+    </template>
+</snake-swipe-action>
+```
+
+自定义按钮只需负责铺满高度（默认已被拉伸到整行高），无需自己写 `height`。
+
+## 受控展开
+
+`v-model` 绑定停留状态，取值 `'close' | 'left' | 'right'`；手势引起的状态变化也会同步回去：
+
+```vue
+<snake-swipe-action v-model="openSide" :actions="actions" :left-actions="leftActions">
+    <snake-cell-item title="订单 202611110001" :value="openSide" />
+</snake-swipe-action>
+
+<snake-button text="展开左侧" @click="openSide = 'left'" />
+<snake-button text="收起" @click="openSide = 'close'" />
+
+<script setup lang="ts">
+import type { SwipeActionStatus } from '@puresnake/snake-ui';
+
+const openSide = ref<SwipeActionStatus>('close');
+</script>
+```
+
+也可以直接调实例方法，效果等价：
+
+```vue
+<snake-swipe-action ref="swipeRef" :actions="actions" />
+
+<script setup lang="ts">
+const swipeRef = ref();
+swipeRef.value?.open(); // 展开右侧；传 'left' 展开左侧
+swipeRef.value?.close();
+</script>
+```
+
+## 关闭前拦截
+
+`beforeClose` 在收起前调用，参数为触发原因（`'swipe' | 'click' | 'value'`）与当前展开的一侧。**必须明确放行**：同步返回 `true`，或返回 resolve 为 `true` 的 Promise；返回 `false`、不返回值或抛错都会保持展开。
+
+```vue
+<snake-swipe-action :actions="actions" :before-close="beforeClose" />
+
+<script setup lang="ts">
+import type { SwipeActionReason, SwipeActionSide } from '@puresnake/snake-ui';
+
+function beforeClose(reason: SwipeActionReason, position: SwipeActionSide): Promise<boolean> {
+    if (reason !== 'click') return Promise.resolve(true);
+    return new Promise(resolve => {
+        uni.showModal({
+            title: '确认取消订单？',
+            success: result => resolve(Boolean(result.confirm)),
+            fail: () => resolve(false)
+        });
+    });
+}
+</script>
+```
+
+## 同组互斥
+
+`autoClose`（默认开启）保证同一时刻只有一项停留在展开态：按住任意一行、或某一项展开时，其他已展开项都会收起。需要多行同时展开时关掉它。
+
+## API
+
+### Props
+
+| 参数          | 说明                                 | 类型                       | 默认值   |
+| ------------- | ------------------------------------ | -------------------------- | -------- |
+| `actions`     | 右侧按钮配置                         | `SwipeActionItem[]`        | `[]`     |
+| `leftActions` | 左侧按钮配置                         | `SwipeActionItem[]`        | `[]`     |
+| `modelValue`  | 停留状态，支持 v-model               | `'close' \| 'left' \| 'right'` | `'close'` |
+| `disabled`    | 是否禁用滑动                         | `boolean`                  | `false`  |
+| `autoClose`   | 展开时是否收起同组其他已展开项       | `boolean`                  | `true`   |
+| `threshold`   | 判定停留的最小位移，0 为按钮区一半   | `number`                   | `0`      |
+| `duration`    | 回弹动画时长（毫秒）                 | `number`                   | `300`    |
+| `buttonWidth` | 单个按钮宽度（px，375 稿）           | `number`                   | `80`     |
+| `beforeClose` | 关闭前拦截器，返回 `true` 才继续关闭 | `SwipeActionBeforeClose`   | -        |
+| `customStyle` | 根节点自定义样式                     | `StyleValue`               | `''`     |
+| `customClass` | 根节点自定义类名                     | `string`                   | `''`     |
+
+`SwipeActionItem` 字段：
+
+| 字段        | 说明           | 类型                                                       | 默认值      |
+| ----------- | -------------- | ---------------------------------------------------------- | ----------- |
+| `text`      | 按钮文字，必填 | `string`                                                   | -           |
+| `type`      | 语义类型       | `'primary' \| 'success' \| 'warning' \| 'error' \| 'info'` | `'primary'` |
+| `color`     | 按钮背景色     | `string`                                                   | 语义色      |
+| `textColor` | 文字与图标颜色 | `string`                                                   | `'#ffffff'` |
+| `icon`      | 图标名         | `string`                                                   | -           |
+| `disabled`  | 是否禁用       | `boolean`                                                  | `false`     |
+| `autoClose` | 点击后是否收起 | `boolean`                                                  | `true`      |
+
+### Events
+
+| 事件名            | 说明                                       | 回调参数                                               |
+| ----------------- | ------------------------------------------ | ------------------------------------------------------ |
+| `click`           | 点击操作按钮                               | `action: SwipeActionItem, side: 'left' \| 'right', index: number` |
+| `open`            | 展开后                                     | `side: 'left' \| 'right'`                              |
+| `close`           | 收起后                                     | `side: 'left' \| 'right'`（收起前展开的一侧）          |
+| `contentClick`    | 收起态点击内容区；展开态点击只收起，不派发 | -                                                      |
+| `update:modelValue` | 停留状态变化                             | `value: 'close' \| 'left' \| 'right'`                  |
+
+### Slots
+
+| 插槽名    | 说明                         | 作用域参数  |
+| --------- | ---------------------------- | ----------- |
+| default   | 被滑动的整条内容             | -           |
+| `left`    | 自定义左侧按钮区             | `{ close }` |
+| `actions` | 自定义右侧按钮区             | `{ close }` |
+
+传了插槽就会忽略同侧的 `leftActions` / `actions` 配置。
+
+### Expose
+
+| 方法      | 说明                                     |
+| --------- | ---------------------------------------- |
+| `open`    | 展开指定侧边，不传时优先展开右侧         |
+| `close`   | 收起按钮区                               |
+| `refresh` | 重新测量左右按钮区宽度（插槽内容变化后） |
+
+## 主题变量
+
+| 变量名                            | 说明           | 默认值      |
+| --------------------------------- | -------------- | ----------- |
+| `--snake-swipe-action-font-size`  | 按钮字号       | `14px`      |
+| `--snake-swipe-action-icon-size`  | 按钮图标字号   | `16px`      |
+| `--snake-swipe-action-bg`         | 内容区底色     | `transparent` |
+
+## 注意
+
+- 按钮区是**实测宽度**：props 配置按 `按钮数 × buttonWidth` 推导，插槽按钮在挂载后与手势开始时实测。插槽内容宽度在运行时变化且没有交互时可能滞后，可调用 `refresh()`。
+- 展开态点击内容区会被拦下并收起，但内容区自身子节点的点击回调已经执行，需要阻止进详情页时请在业务侧判断。
+- 手势做了方向锁定：横向位移大于纵向才接管，放在纵向 `scroll-view` 内不会抢滚动。
+- `beforeClose` 返回 `false` 时，手势回弹会停在展开态，不派发 `close`。
 
 <!-- Source: docs/components/swiper.md -->
 
@@ -4927,6 +6716,115 @@ tabsRef.value?.init();
 | `--snake-color-text`    | 未激活文字颜色     |
 | `--snake-color-error`   | 徽标默认背景色     |
 
+<!-- Source: docs/components/tag.md -->
+
+# Tag 标签
+
+行内标记，用于商品属性、订单状态、筛选结果等需要短文本强调的位置；支持主题、尺寸、镂空、圆角与可关闭。
+
+## 平台兼容性
+
+| H5  | App | 微信小程序 | 支付宝小程序 |
+| :-: | :-: | :--------: | :----------: |
+|  √  |  √  |     √      |      √       |
+
+## 基础用法
+
+`type` 决定配色，`text` 与默认插槽二选一（插槽优先）：
+
+```vue
+<snake-tag text="包邮" />
+<snake-tag type="primary" text="新品" />
+<snake-tag type="success">已发货</snake-tag>
+<snake-tag type="error" text="缺货" />
+```
+
+## 镂空与圆角
+
+`plain` 使用浅底 + 主题色描边，`round` 为全圆角；`hairLine` 控制镂空态描边是否按半像素渲染（默认开启）：
+
+```vue
+<snake-tag type="warning" plain round text="预售" />
+<snake-tag type="primary" plain :hair-line="false" text="不缩放描边" />
+```
+
+## 尺寸与图标
+
+`size` 支持 `default` / `medium` / `small` / `mini`，默认档位按 375 稿对齐 wot-ui：
+
+| `size`    | 高度 | 字号 | 左右内边距 | 图标 |
+| --------- | ---- | ---- | ---------- | ---- |
+| `default` | 24px | 12px | 8px        | 12px |
+| `medium`  | 20px | 11px | 6px        | 11px |
+| `small`   | 18px | 10px | 6px        | 10px |
+| `mini`    | 16px | 10px | 4px        | 9px  |
+
+`icon` 直接传内置图标名：
+
+```vue
+<snake-tag size="small" icon="checkmark-circle" type="success" text="已认证" />
+<snake-tag size="mini" text="12 期免息" />
+```
+
+## 可关闭标签
+
+`closable` 显示关闭图标，点击后派发 `close`，由业务决定是否移除数据：
+
+```vue
+<snake-tag type="info" closable @close="removeTag">品牌直营</snake-tag>
+```
+
+## API
+
+### Props
+
+| 参数          | 说明                       | 类型         | 默认值      |
+| ------------- | -------------------------- | ------------ | ----------- |
+| `customStyle` | 根节点自定义样式           | `StyleValue` | `''`        |
+| `customClass` | 根节点自定义类名           | `string`     | `''`        |
+| `text`        | 标签文本，被默认插槽覆盖   | `string`     | `''`        |
+| `type`        | 主题类型                   | `TagType`    | `'default'` |
+| `size`        | 尺寸                       | `TagSize`    | `'default'` |
+| `plain`       | 是否镂空                   | `boolean`    | `false`     |
+| `round`       | 是否全圆角                 | `boolean`    | `false`     |
+| `closable`    | 是否显示关闭图标           | `boolean`    | `false`     |
+| `icon`        | 左侧图标名                 | `string`     | `''`        |
+| `hairLine`    | 镂空态描边是否按半像素渲染 | `boolean`    | `true`      |
+
+### Events
+
+| 事件名  | 说明           | 回调参数         |
+| ------- | -------------- | ---------------- |
+| `click` | 点击标签时触发 | `event: unknown` |
+| `close` | 点击关闭图标   | -                |
+
+### Slots
+
+| 插槽名  | 说明                       |
+| ------- | -------------------------- |
+| default | 标签文本内容               |
+| icon    | 自定义左侧图标，覆盖 `icon` |
+
+## 主题变量
+
+| 变量名                     | 说明           |
+| -------------------------- | -------------- |
+| `--snake-tag-height`       | 标签高度       |
+| `--snake-tag-padding-x`    | 左右内边距     |
+| `--snake-tag-font-size`    | 字号           |
+| `--snake-tag-radius`       | 圆角           |
+| `--snake-tag-bg`           | 背景色         |
+| `--snake-tag-color`        | 文字与图标颜色 |
+| `--snake-tag-border-color` | 描边颜色       |
+
+## 注意
+
+- 标签只做展示，不内置选中态；需要可选中请用 `snake-checkbox` 组合。
+- 镂空态使用 `::after` 半像素描边，父级若有 `overflow: hidden` 且容器紧贴标签，描边可能被裁切 1px。
+- 改圆角请用 `--snake-tag-radius`，**不要**在 `customStyle` 里写 `border-radius`：半像素描边的伪元素是放大 2 倍再缩放的，圆角必须同步 ×2，只能从变量读取，否则描边圆角和底色圆角对不上。
+- `type` 只认 `default` / `primary` / `success` / `warning` / `error` / `info`。写成别的值（例如从别的库搬来的 `danger`）不会报错，会静默退化成接近 `default` 的外观。
+- 实心态用 `customStyle` 指定背景色时，组件会自动把描边改成透明，不会在自定义底色上留一条主题色细边；`plain` 不受影响（描边就是它的轮廓）。
+
 <!-- Source: docs/components/text.md -->
 
 # Text 文本
@@ -5054,54 +6952,142 @@ tabsRef.value?.init();
 
 中文、日文等输入法处于候选组合阶段时，组件只更新内部显示；组合结束后才同步 `v-model` 并触发表单 `change` 校验，避免半成品拼音造成误校验。
 
+## 尺寸与高度
+
+`size` 同时决定容器高度与字号（此前 `size` 只有类名没有样式，等于不生效）：
+
+| `size`    | 高度  | 字号 |
+| --------- | ----- | ---- |
+| `small`   | 64px  | 13px |
+| `default` | 80px  | 14px |
+| `large`   | 112px | 16px |
+
+`height` 覆盖 `size` 高度，并会把原生控件的最小高度一并换算（`height` 小于档位高度时不会再被 `min-height` 顶回去）；`auto-height` 时高度交给内容撑开，`height` 退化为最小高度。
+
+```vue
+<snake-textarea v-model="remark" size="large" />
+<snake-textarea v-model="remark" :height="120" />
+<snake-textarea v-model="remark" auto-height :height="60" placeholder="从 60px 起随内容长高" />
+```
+
+## 字数与格式化
+
+`count` 配合 `maxlength` 显示 `已输入/上限`，**按字符计数**：emoji 与生僻字只算一个，不会被算成两个。
+
+`formatter` 为同步无副作用的格式化函数，默认每次输入都会执行；格式化砍掉的字符会同步从输入框里清掉（不只是在 `v-model` 里消失）。只在失焦时整理内容用 `format-trigger="blur"`，去掉首尾空格用 `trim`。
+
+```vue
+<snake-textarea v-model="remark" count :maxlength="80" placeholder="最多 80 字" />
+<snake-textarea v-model="code" :formatter="value => value.replace(/[^0-9a-z]/gi, '').toUpperCase()" />
+<snake-textarea v-model="note" format-trigger="blur" trim placeholder="失焦时去空格" />
+```
+
+## 只读与点击
+
+`readonly` 时文本域不可编辑，点击会整块转发成 `click`（原生控件被 `disabled` 后会吞掉点击，因此用透明遮罩承接），适合「点文本域打开编辑页」；`disabled` 是彻底禁用，不再派发 `click`。
+
+```vue
+<snake-textarea v-model="detail" readonly auto-height placeholder="点击编辑详情" @click="openEditor" />
+```
+
 ## API
 
 ### Props
 
-| 参数               | 说明                                                                                | 类型                               | 默认值       |
-| ------------------ | ----------------------------------------------------------------------------------- | ---------------------------------- | ------------ |
-| `modelValue`       | 双向绑定的当前值（v-model）                                                         | `string \| number`                 | `''`         |
-| `placeholder`      | 输入为空时的占位文本                                                                | `string`                           | `请输入内容` |
-| `placeholderStyle` | 占位文本样式                                                                        | `string`                           | `''`         |
-| `maxlength`        | 允许输入的最大字符数                                                                | `number`                           | `140`        |
-| `height`           | 组件高度                                                                            | `UnitValue`                        | `60`         |
-| `autoHeight`       | 是否随内容自适应高度                                                                | `boolean`                          | `false`      |
-| `fixed`            | 是否使用固定定位，textarea 位于 `position: fixed` 区域内时使用                      | `boolean`                          | `false`      |
-| `count`            | 是否显示字数统计                                                                    | `boolean`                          | `false`      |
-| `disabled`         | 是否禁用交互                                                                        | `boolean`                          | `false`      |
-| `readonly`         | 是否只读                                                                            | `boolean`                          | `false`      |
-| `size`             | 尺寸，可选值 `small` / `default` / `large`；未设置时跟随 FormItem，兜底为 `default` | `FormSize`                         | -            |
-| `border`           | 边框模式，可选值 `none`（无边框）/ `surround`（全边框）/ `bottom`（底部线）         | `'none' \| 'surround' \| 'bottom'` | `surround`   |
-| `color`            | 输入文字颜色                                                                        | `string`                           | 主题文字色   |
-| `placeholderColor` | 占位文本颜色                                                                        | `string`                           | 主题占位色   |
-| `fontSize`         | 文字尺寸，数值按 px（375 稿）处理                                                   | `UnitValue`                        | `14`         |
-| `focus`            | 是否自动获取焦点                                                                    | `boolean`                          | `false`      |
-| `cursor`           | 输入框光标位置                                                                      | `number`                           | `-1`         |
-| `selectionStart`   | 文本选择区域的起始位置，需与 `selectionEnd` 搭配使用                                | `number`                           | `-1`         |
-| `selectionEnd`     | 文本选择区域的结束位置，需与 `selectionStart` 搭配使用                              | `number`                           | `-1`         |
-| `confirmType`      | 键盘右下角确认按钮类型                                                              | `string`                           | `return`     |
-| `confirmHold`      | 确认输入后是否保持键盘弹出                                                          | `boolean`                          | `false`      |
-| `adjustPosition`   | 键盘弹起时是否自动调整页面位置                                                      | `boolean`                          | `true`       |
-| `holdKeyboard`     | 点击页面时是否保持键盘弹出                                                          | `boolean`                          | `false`      |
-| `cursorSpacing`    | 光标与键盘的距离，单位 px                                                           | `number`                           | `0`          |
-| `showConfirmBar`   | 是否显示键盘上方带"完成"按钮的栏（iOS）                                             | `boolean`                          | `true`       |
-| `customClass`      | 根节点自定义类名                                                                    | `string`                           | `''`         |
-| `customStyle`      | 根节点自定义样式                                                                    | `StyleValue`                       | `''`         |
+| 参数                    | 说明                                                                                  | 类型                               | 默认值       |
+| ----------------------- | ------------------------------------------------------------------------------------- | ---------------------------------- | ------------ |
+| `modelValue`            | 双向绑定的当前值（v-model）                                                           | `string \| number`                 | `''`         |
+| `placeholder`           | 输入为空时的占位文本                                                                  | `string`                           | `请输入内容` |
+| `placeholderStyle`      | 占位文本样式                                                                          | `string`                           | `''`         |
+| `placeholderClass`      | 占位文本样式类名，需要在页面或全局样式中定义                                          | `string`                           | `''`         |
+| `maxlength`             | 允许输入的最大字符数                                                                  | `number`                           | `140`        |
+| `height`                | 组件高度，数值按 px（375 稿）处理；不传时跟随 size 档位（64 / 80 / 112）              | `UnitValue`                        | -            |
+| `autoHeight`            | 是否随内容自适应高度                                                                  | `boolean`                          | `false`      |
+| `fixed`                 | 是否使用固定定位，textarea 位于 `position: fixed` 区域内时使用                        | `boolean`                          | `false`      |
+| `count`                 | 是否显示字数统计（按字符计数，emoji 与生僻字只算一个）                                | `boolean`                          | `false`      |
+| `error`                 | 是否强制显示错误态边框                                                                | `boolean`                          | `false`      |
+| `disabled`              | 是否禁用交互（禁用后不再派发 `click`）                                                | `boolean`                          | `false`      |
+| `readonly`              | 是否只读（不可编辑，点击整块派发 `click`，适合打开编辑页）                            | `boolean`                          | `false`      |
+| `size`                  | 尺寸档位，可选值 `small` / `default` / `large`，决定高度与字号；未设置时跟随 FormItem | `FormSize`                         | -            |
+| `border`                | 边框模式，可选值 `none`（无边框）/ `surround`（全边框）/ `bottom`（底部线）           | `'none' \| 'surround' \| 'bottom'` | `surround`   |
+| `color`                 | 输入文字颜色                                                                          | `string`                           | 主题文字色   |
+| `placeholderColor`      | 占位文本颜色                                                                          | `string`                           | 主题占位色   |
+| `fontSize`              | 文字尺寸，数值按 px（375 稿）处理；不传时跟随 `size` 档位（13 / 14 / 16）             | `UnitValue`                        | -            |
+| `focus`                 | 是否自动获取焦点                                                                      | `boolean`                          | `false`      |
+| `cursor`                | 输入框光标位置                                                                        | `number`                           | `-1`         |
+| `selectionStart`        | 文本选择区域的起始位置，需与 `selectionEnd` 搭配使用                                  | `number`                           | `-1`         |
+| `selectionEnd`          | 文本选择区域的结束位置，需与 `selectionStart` 搭配使用                                | `number`                           | `-1`         |
+| `confirmType`           | 键盘右下角确认按钮类型                                                                | `string`                           | `return`     |
+| `confirmHold`           | 确认输入后是否保持键盘弹出                                                            | `boolean`                          | `false`      |
+| `adjustPosition`        | 键盘弹起时是否自动调整页面位置                                                        | `boolean`                          | `true`       |
+| `holdKeyboard`          | 点击页面时是否保持键盘弹出                                                            | `boolean`                          | `false`      |
+| `cursorSpacing`         | 光标与键盘的距离，单位 px                                                             | `number`                           | `0`          |
+| `showConfirmBar`        | 是否显示键盘上方带"完成"按钮的栏（iOS）                                               | `boolean`                          | `true`       |
+| `disableDefaultPadding` | 是否去掉 iOS 下 textarea 的默认内边距（仅微信小程序生效）                             | `boolean`                          | `false`      |
+| `formatter`             | 内容格式化函数，应为同步且无副作用                                                    | `(value: string) => string`        | -            |
+| `formatTrigger`         | 格式化时机，可选值 `input` / `blur`                                                   | `'input' \| 'blur'`                | `input`      |
+| `trim`                  | 失焦时是否去除首尾空格                                                                | `boolean`                          | `false`      |
+| `customClass`           | 根节点自定义类名                                                                      | `string`                           | `''`         |
+| `customStyle`           | 根节点自定义样式                                                                      | `StyleValue`                       | `''`         |
 
 ### Events
 
-| 事件名                 | 说明               | 参数             |
-| ---------------------- | ------------------ | ---------------- |
-| `update:modelValue`    | 值更新（v-model）  | `value: string`  |
-| `input`                | 输入时触发         | `value: string`  |
-| `change`               | 失焦且值变化后触发 | `value: string`  |
-| `focus`                | 获得焦点           | 原生事件         |
-| `blur`                 | 失去焦点           | 原生事件         |
-| `confirm`              | 点击键盘确认键     | `(value, event)` |
-| `linechange`           | 行数变化           | 原生事件         |
-| `keyboardheightchange` | 键盘高度变化       | 原生事件         |
+| 事件名                 | 说明                                                   | 参数             |
+| ---------------------- | ------------------------------------------------------ | ---------------- |
+| `update:modelValue`    | 值更新（v-model）                                      | `value: string`  |
+| `input`                | 输入时触发                                             | `value: string`  |
+| `change`               | 失焦且值变化后触发                                     | `value: string`  |
+| `focus`                | 获得焦点                                               | 原生事件         |
+| `blur`                 | 失去焦点                                               | 原生事件         |
+| `confirm`              | 点击键盘确认键                                         | `(value, event)` |
+| `linechange`           | 行数变化                                               | 原生事件         |
+| `keyboardheightchange` | 键盘高度变化                                           | 原生事件         |
+| `clear`                | 调用 `clear()` 清空                                    | -                |
+| `click`                | 点击组件（`readonly` 时由遮罩转发，`disabled` 不派发） | 原生事件         |
+
+### Expose
+
+| 方法    | 说明                                                              |
+| ------- | ----------------------------------------------------------------- |
+| `focus` | 聚焦文本域，`disabled` / `readonly` 时不生效                      |
+| `blur`  | 让文本域失焦并收起键盘                                            |
+| `clear` | 清空内容，有值时同步派发 `update:modelValue` / `input` / `change` |
+
+```vue
+<snake-textarea ref="textareaRef" v-model="remark" count :maxlength="80" />
+
+<script setup lang="ts">
+import { ref } from 'vue';
+import type { TextareaExpose } from '@puresnake/snake-ui';
+
+const textareaRef = ref<TextareaExpose>();
+textareaRef.value?.focus();
+textareaRef.value?.clear();
+</script>
+```
 
 ## 主题变量
+
+### 尺寸变量
+
+| 变量名                                 | 用途                     | 默认值           |
+| -------------------------------------- | ------------------------ | ---------------- |
+| `--snake-textarea-height`              | 默认高度                 | `80px`           |
+| `--snake-textarea-height-small`        | `size="small"` 高度      | `64px`           |
+| `--snake-textarea-height-large`        | `size="large"` 高度      | `112px`          |
+| `--snake-textarea-native-height`       | 默认档位原生控件最小高度 | `47px`           |
+| `--snake-textarea-native-height-small` | `small` 原生控件最小高度 | `31px`           |
+| `--snake-textarea-native-height-large` | `large` 原生控件最小高度 | `79px`           |
+| `--snake-textarea-font-size`           | 默认字号                 | `14px`           |
+| `--snake-textarea-font-size-small`     | `small` 字号             | `13px`           |
+| `--snake-textarea-font-size-large`     | `large` 字号             | `16px`           |
+| `--snake-textarea-padding`             | 容器内边距               | `10px 11px 21px` |
+| `--snake-textarea-radius`              | 圆角                     | 主题圆角         |
+| `--snake-textarea-border-color`        | 边框颜色                 | 主题分割线       |
+| `--snake-textarea-bg`                  | 容器底色                 | `transparent`    |
+| `--snake-textarea-count-color`         | 字数统计颜色             | 主题次要文字色   |
+
+### 颜色变量
 
 | 变量名                      | 说明             |
 | --------------------------- | ---------------- |
@@ -5138,13 +7124,13 @@ Tooltip 用于展示与触发元素相关的简短说明或非操作性内容。
 
 ## 富内容与受控显示
 
-`content` 插槽可承载 `snake-parse` 等内容组件；使用 `v-model` 可由页面主动控制显隐。
+`content` 插槽可承载 `snake-rich-text` 等内容组件；使用 `v-model` 可由页面主动控制显隐。
 
 ```vue
 <snake-tooltip v-model="showDetail" placement="bottom-start" :offset="10">
     <snake-icon name="info-circle" size="14px" />
     <template #content>
-        <snake-parse :content="description" />
+        <snake-rich-text :content="description" />
     </template>
 </snake-tooltip>
 ```
@@ -7278,7 +9264,7 @@ npm 安装时在 `App.vue` 引入完整样式：
 }
 
 .order-card__action {
-    color: var(--snake-color-primary-ink);
+    color: var(--snake-color-white);
     background: var(--snake-color-primary);
 }
 ```
@@ -7312,7 +9298,7 @@ npm 安装时在 `App.vue` 引入完整样式：
 ## 暗色模式注意事项
 
 - 业务样式优先使用语义变量，不要只覆盖亮色十六进制值。
-- 主色实心背景上的文字使用 `--snake-color-primary-ink`。
+- 实心主色背景上的文字使用 `--snake-color-white`；导航栏这类整片主色取 `--snake-color-primary-ink`（默认白字，主色偏亮时可覆写成墨绿）。
 - 图片、渐变和第三方内容不会自动适配暗色，需要单独处理。
 - 在 `light`、`dark` 和 `auto` 三种策略下检查文字、边框、禁用态和遮罩。
 - H5、小程序和 App 的样式隔离与节点结构不同，发布前在实际目标端验证。
@@ -7981,7 +9967,7 @@ app.use(SnakeUI, {
 `name` 是 `setTheme()` 使用的唯一标识。`color` 和 `darkColor` 都允许只覆盖需要定制的键。
 
 ::: tip 对比度
-`primaryInk` 是主色实心背景上的文字色。设计按钮等关键交互时，应检查文字与背景的实际对比度；亮主色通常需要深色文字。
+`primaryInk` 是整片主色上的前景色，默认白字：示例应用的导航栏取它，按钮、标签、分段控件这类实心控件的文字用 `--snake-color-white`，同样是白字。白字在品牌绿 `#06d290` 上只有 1.98:1，主色偏亮又不接受这个对比度的主题把它改成墨绿 `#073b2a`（同底色 6.37:1），整条导航栏随之换成深色字。
 :::
 
 ## 默认色板速查
@@ -7990,34 +9976,34 @@ app.use(SnakeUI, {
 
 ### 品牌与状态
 
-| 令牌               | 默认值      | 用途                 |
-| ------------------ | ----------- | -------------------- |
-| `primary`          | `#06d290`   | 品牌主色             |
-| `primaryDark`      | `#2ebd7c`   | 品牌深档（按压态）   |
-| `primaryDeep`      | `#26273a`   | 品牌深底             |
-| `primaryDeeper`    | `#22242e`   | 品牌最深底           |
-| `primaryDisabled`  | `#a6ebd3`   | 品牌禁用态           |
-| `primaryLight`     | `#06d2901a` | 品牌浅底（10% 透明） |
-| `primaryInk`       | `#ffffff`   | 主色实心背景上的文字 |
-| `success`          | `#19be6b`   | 成功态               |
-| `successDark`      | `#18b566`   | 成功深档             |
-| `successDisabled`  | `#71d5a1`   | 成功禁用态           |
-| `successLight`     | `#dbf1e1`   | 成功浅底             |
-| `warning`          | `#ff9900`   | 警告态               |
-| `warningDark`      | `#f29100`   | 警告深档             |
-| `warningDisabled`  | `#fcbd71`   | 警告禁用态           |
-| `warningLight`     | `#fdf6ec`   | 警告浅底             |
-| `error`            | `#fa3534`   | 错误态               |
-| `errorDark`        | `#dd6161`   | 错误深档             |
-| `errorDisabled`    | `#fab6b6`   | 错误禁用态           |
-| `errorLight`       | `#fef0f0`   | 错误浅底             |
-| `info`             | `#909399`   | 信息态               |
-| `infoDark`         | `#82848a`   | 信息深档             |
-| `infoDisabled`     | `#c8c9cc`   | 信息禁用态           |
-| `infoLight`        | `#f4f4f5`   | 信息浅底             |
-| `notice`           | `#ff9900`   | 通知栏强调色         |
-| `noticeBackground` | `#fdf6ec`   | 通知栏底色           |
-| `formError`        | `#fa3534`   | 表单校验错误色       |
+| 令牌               | 默认值      | 用途                         |
+| ------------------ | ----------- | ---------------------------- |
+| `primary`          | `#06d290`   | 品牌主色                     |
+| `primaryDark`      | `#2ebd7c`   | 品牌深档（按压态）           |
+| `primaryDeep`      | `#26273a`   | 品牌深底                     |
+| `primaryDeeper`    | `#22242e`   | 品牌最深底                   |
+| `primaryDisabled`  | `#a6ebd3`   | 品牌禁用态                   |
+| `primaryLight`     | `#06d2901a` | 品牌浅底（10% 透明）         |
+| `primaryInk`       | `#ffffff`   | 整片主色上的前景色（导航栏） |
+| `success`          | `#19be6b`   | 成功态                       |
+| `successDark`      | `#18b566`   | 成功深档                     |
+| `successDisabled`  | `#71d5a1`   | 成功禁用态                   |
+| `successLight`     | `#dbf1e1`   | 成功浅底                     |
+| `warning`          | `#ff9900`   | 警告态                       |
+| `warningDark`      | `#f29100`   | 警告深档                     |
+| `warningDisabled`  | `#fcbd71`   | 警告禁用态                   |
+| `warningLight`     | `#fdf6ec`   | 警告浅底                     |
+| `error`            | `#fa3534`   | 错误态                       |
+| `errorDark`        | `#dd6161`   | 错误深档                     |
+| `errorDisabled`    | `#fab6b6`   | 错误禁用态                   |
+| `errorLight`       | `#fef0f0`   | 错误浅底                     |
+| `info`             | `#909399`   | 信息态                       |
+| `infoDark`         | `#82848a`   | 信息深档                     |
+| `infoDisabled`     | `#c8c9cc`   | 信息禁用态                   |
+| `infoLight`        | `#f4f4f5`   | 信息浅底                     |
+| `notice`           | `#ff9900`   | 通知栏强调色                 |
+| `noticeBackground` | `#fdf6ec`   | 通知栏底色                   |
+| `formError`        | `#fa3534`   | 表单校验错误色               |
 
 ### 文本与描边
 

@@ -11,6 +11,10 @@
                     :border-bottom="Boolean(state.formBorder)"
                     :label-position="state.formTopLabel ? 'top' : 'left'"
                     :label-width="labelWidth"
+                    :disabled="Boolean(state.formDisabled)"
+                    :validate-trigger="validateTriggerValue"
+                    :asterisk-position="asteriskPosition"
+                    :hide-asterisk="Boolean(state.formHideAsterisk)"
                 >
                     <view class="demo-form__group">
                         <view class="demo-form__group-head">
@@ -156,6 +160,26 @@
                 </view>
             </view>
         </DemoSection>
+        <DemoSection variant="preview" :title="text('禁用与主题')">
+            <view class="demo-form demo-form-compact">
+                <snake-form
+                    :model="simpleModel"
+                    :disabled="Boolean(state.simpleDisabled)"
+                    :label-width="72"
+                    custom-class="demo-form-themed"
+                >
+                    <snake-form-item :label="text('收货人')" prop="receiver" required>
+                        <snake-input v-model="simpleModel.receiver" :placeholder="text('请输入收货人')" />
+                    </snake-form-item>
+                    <snake-form-item :label="text('联系电话')" prop="phone">
+                        <snake-input v-model="simpleModel.phone" type="number" :placeholder="text('选填')" />
+                    </snake-form-item>
+                </snake-form>
+                <text class="demo-form__control-tip">
+                    {{ text('--snake-form-* 变量可改标签色、字号、行距、分隔线与必填星号颜色。') }}
+                </text>
+            </view>
+        </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
             <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
             <text class="demo-form__control-tip">
@@ -172,7 +196,12 @@ import type { DemoControl, DemoValue } from '../../../common/demo-types';
 import DemoControlPanel from '../../../components/demo-control-panel/demo-control-panel.vue';
 import DemoPage from '../../../components/demo-page/demo-page.vue';
 import DemoSection from '../../../components/demo-section/demo-section.vue';
-import type { FormError, FormExpose, FormRules } from '../../../uni_modules/snake-ui/components/snake-form/types';
+import type {
+    FormError,
+    FormExpose,
+    FormRules,
+    FormValidateTrigger
+} from '../../../uni_modules/snake-ui/components/snake-form/types';
 
 const { localeName, text } = useDemoLocale();
 const formRef = ref<FormExpose>();
@@ -194,6 +223,11 @@ const model = reactive({
     flavor: '',
     agreement: false,
     accounts: [{ id: 1, name: '' }]
+});
+
+const simpleModel = reactive({
+    receiver: '',
+    phone: ''
 });
 
 function createFormRules(requireIntro: boolean): FormRules {
@@ -292,14 +326,43 @@ const controls: DemoControl[] = [
             { label: '底边', value: 'border-bottom' },
             { label: '输入框边框', value: 'border' }
         ]
-    }
+    },
+    { key: 'formDisabled', label: '禁用整表', type: 'switch', defaultValue: false },
+    { key: 'formHideAsterisk', label: '隐藏星号', type: 'switch', defaultValue: false },
+    {
+        key: 'formAsterisk',
+        label: '星号位置',
+        type: 'select',
+        defaultValue: 'start',
+        options: [
+            { label: '标签前', value: 'start' },
+            { label: '标签后', value: 'end' }
+        ]
+    },
+    {
+        key: 'formValidateTrigger',
+        label: '校验时机',
+        type: 'select',
+        defaultValue: 'change-blur',
+        options: [
+            { label: '输入 + 失焦', value: 'change-blur' },
+            { label: '仅失焦', value: 'blur' },
+            { label: '仅输入', value: 'change' }
+        ]
+    },
+    { key: 'simpleDisabled', label: '禁用主题示例', type: 'switch', defaultValue: false }
 ];
 const state = reactive<Record<string, DemoValue>>({
     formBorder: true,
     formTopLabel: false,
     formRequired: true,
     formSize: 'default',
-    formErrorType: 'message'
+    formErrorType: 'message',
+    formDisabled: false,
+    formHideAsterisk: false,
+    formAsterisk: 'start',
+    formValidateTrigger: 'change-blur',
+    simpleDisabled: false
 });
 const localizedControls = computed(() => {
     const _locale = localeName.value;
@@ -313,6 +376,13 @@ const formSize = computed(() => String(state.formSize) as 'small' | 'default' | 
 const formErrorType = computed(
     () => [String(state.formErrorType)] as Array<'message' | 'toast' | 'border-bottom' | 'border'>
 );
+/** 控件面板给的是字符串，这里收窄成组件契约允许的联合类型。 */
+const asteriskPosition = computed(() => (String(state.formAsterisk) === 'end' ? 'end' : 'start') as 'start' | 'end');
+const validateTriggerValue = computed<FormValidateTrigger | FormValidateTrigger[]>(() => {
+    const value = String(state.formValidateTrigger);
+    if (value === 'blur' || value === 'change') return value;
+    return ['change', 'blur'];
+});
 const title = computed(() => {
     const _locale = localeName.value;
     return demoTitle('form', '表单');
@@ -486,5 +556,25 @@ function resetForm() {
 .demo-form__control-tip {
     display: block;
     padding: 10px 12px 0;
+}
+
+.demo-form-compact {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* 组件级主题变量：只覆盖本示例内的表单，不影响其它页面 */
+.demo-form-themed {
+    padding: 4px 12px;
+    border-radius: 12px;
+    background: var(--snake-color-surface-muted, #f6f8f7);
+    --snake-form-item-padding: 8px 0;
+    --snake-form-label-color: var(--snake-color-primary, #06d290);
+    --snake-form-label-font-size: 13px;
+    --snake-form-asterisk-color: var(--snake-color-warning, #ff9900);
+    --snake-form-border-color: var(--snake-color-primary-light, #d9f7ec);
+    --snake-form-right-icon-color: var(--snake-color-text-muted, #909399);
+    --snake-form-message-font-size: 11px;
 }
 </style>

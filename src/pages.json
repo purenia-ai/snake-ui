@@ -82,7 +82,7 @@
                 { "path": "tabbar/index", "style": { "navigationBarTitleText": "底部导航栏" } },
                 { "path": "cell/index", "style": { "navigationBarTitleText": "单元格" } },
                 { "path": "search/index", "style": { "navigationBarTitleText": "搜索框" } },
-                { "path": "select/index", "style": { "navigationBarTitleText": "列选择器" } },
+                { "path": "picker/index", "style": { "navigationBarTitleText": "列选择器" } },
                 { "path": "calendar/index", "style": { "navigationBarTitleText": "日历" } },
                 { "path": "countDown/index", "style": { "navigationBarTitleText": "倒计时" } },
                 { "path": "verificationCode/index", "style": { "navigationBarTitleText": "验证码倒计时" } },
@@ -97,7 +97,13 @@
                 { "path": "checkbox/index", "style": { "navigationBarTitleText": "复选框" } },
                 { "path": "radio/index", "style": { "navigationBarTitleText": "单选框" } },
                 { "path": "switch/index", "style": { "navigationBarTitleText": "开关" } },
-                { "path": "slider/index", "style": { "navigationBarTitleText": "滑动选择器" } }
+                { "path": "slider/index", "style": { "navigationBarTitleText": "滑动选择器" } },
+                { "path": "tag/index", "style": { "navigationBarTitleText": "标签" } },
+                { "path": "actionSheet/index", "style": { "navigationBarTitleText": "动作面板" } },
+                { "path": "steps/index", "style": { "navigationBarTitleText": "步骤条" } },
+                { "path": "collapse/index", "style": { "navigationBarTitleText": "折叠面板" } },
+                { "path": "grid/index", "style": { "navigationBarTitleText": "宫格" } },
+                { "path": "swipeAction/index", "style": { "navigationBarTitleText": "滑动操作" } }
             ]
         },
         {
@@ -109,8 +115,8 @@
                 { "path": "pictureAds/index", "style": { "navigationBarTitleText": "轮播广告" } },
                 { "path": "magicCube/index", "style": { "navigationBarTitleText": "魔方布局" } },
                 { "path": "videos/index", "style": { "navigationBarTitleText": "视频" } },
-                { "path": "richText/index", "style": { "navigationBarTitleText": "富文本" } },
-                { "path": "parse/index", "style": { "navigationBarTitleText": "富文本解析" } },
+                { "path": "cmsRichText/index", "style": { "navigationBarTitleText": "富文本区块" } },
+                { "path": "richText/index", "style": { "navigationBarTitleText": "富文本渲染" } },
                 { "path": "notice/index", "style": { "navigationBarTitleText": "公告" } },
                 { "path": "auxiliarySegmentation/index", "style": { "navigationBarTitleText": "辅助分割线" } },
                 { "path": "graphicNavigation/index", "style": { "navigationBarTitleText": "图文导航" } },

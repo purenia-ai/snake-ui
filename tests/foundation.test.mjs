@@ -181,7 +181,7 @@ test('locale uses current language, Chinese fallback, and replacements', () => {
     assert.equal(storage.get('snake-ui-locale'), 'test');
     assert.equal(locale.translate('greeting', { name: 'Snake' }), 'Hello Snake');
     assert.equal(locale.translate('common.confirm'), '确定');
-    assert.equal(locale.translate('select.confirmText'), '确认');
+    assert.equal(locale.translate('picker.confirmText'), '确认');
     assert.equal(locale.translate('calendar.sat'), '六');
     assert.equal(locale.translate('missing.key'), 'missing.key');
 });

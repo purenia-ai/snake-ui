@@ -16,6 +16,25 @@
                 </snake-navbar>
             </view>
         </DemoSection>
+        <DemoSection variant="preview" :title="text('品牌色导航栏')">
+            <view class="demo-navbar-preview demo-navbar-showcase">
+                <snake-navbar
+                    :title="String(state.navbarTitle)"
+                    :is-back="Boolean(state.navbarBack)"
+                    :fixed="false"
+                    :safe-area-inset-top="false"
+                    :border-bottom="false"
+                    background="var(--snake-color-primary)"
+                    title-color="var(--snake-color-white, #ffffff)"
+                    back-icon-color="var(--snake-color-white, #ffffff)"
+                    title-bold
+                >
+                    <template #right>
+                        <text class="demo-navbar-preview__brand-action">{{ isEnglish ? 'More' : '更多' }}</text>
+                    </template>
+                </snake-navbar>
+            </view>
+        </DemoSection>
         <DemoSection variant="controls" :title="text('参数配置')">
             <DemoControlPanel :controls="localizedControls" :values="state" @change="updateValue" />
         </DemoSection>
@@ -62,6 +81,11 @@ function updateValue(key: string, value: DemoValue) {
 .demo-navbar-preview__action {
     padding: 0 12px;
     color: var(--snake-demo-accent-text);
+    font-size: 13px;
+}
+.demo-navbar-preview__brand-action {
+    padding: 0 12px;
+    color: var(--snake-color-white, #ffffff);
     font-size: 13px;
 }
 </style>

@@ -141,7 +141,7 @@ function selectOption(control: DemoControl, index: number) {
     white-space: nowrap;
 }
 .demo-control__chip--active .demo-control__chip-label {
-    color: var(--snake-color-primary-ink);
+    color: var(--snake-color-white);
     font-weight: 600;
 }
 .demo-control__slider {

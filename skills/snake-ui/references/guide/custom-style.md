@@ -45,7 +45,7 @@ npm 安装时在 `App.vue` 引入完整样式：
 }
 
 .order-card__action {
-    color: var(--snake-color-primary-ink);
+    color: var(--snake-color-white);
     background: var(--snake-color-primary);
 }
 ```
@@ -79,7 +79,7 @@ npm 安装时在 `App.vue` 引入完整样式：
 ## 暗色模式注意事项
 
 - 业务样式优先使用语义变量，不要只覆盖亮色十六进制值。
-- 主色实心背景上的文字使用 `--snake-color-primary-ink`。
+- 实心主色背景上的文字使用 `--snake-color-white`；导航栏这类整片主色取 `--snake-color-primary-ink`（默认白字，主色偏亮时可覆写成墨绿）。
 - 图片、渐变和第三方内容不会自动适配暗色，需要单独处理。
 - 在 `light`、`dark` 和 `auto` 三种策略下检查文字、边框、禁用态和遮罩。
 - H5、小程序和 App 的样式隔离与节点结构不同，发布前在实际目标端验证。

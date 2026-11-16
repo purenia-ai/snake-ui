@@ -35,7 +35,7 @@ const englishDescriptions: Record<string, string> = {
     Switch: 'Toggle boolean or custom switch values.',
     Slider: 'Choose a value by tapping or dragging.',
     Search: 'Search input with a placeholder, clear action and action button.',
-    Select: 'Choose from single, multiple or linked columns in a bottom sheet.',
+    Picker: 'Choose from single, multiple or linked columns in a bottom sheet.',
     Upload: 'Upload images, videos and files with OSS adapter support.',
     VerificationCode: 'Track verification code countdown state and copy across pages.',
     Calendar: 'Pick single or range dates with lunar dates and holidays.',
@@ -71,8 +71,8 @@ const englishDescriptions: Record<string, string> = {
     PictureAds: 'Rotate banner ads with configurable spacing, corners and timing.',
     MagicCube: 'Arrange marketing images and links in a configurable grid.',
     Videos: 'Play video content inside a CMS page.',
-    RichText: 'Render formatted text and images edited in the CMS.',
-    Parse: 'Parse and render full HTML rich text across platforms.',
+    RichTextBlock: 'Render formatted text and images edited in the CMS.',
+    RichText: 'Parse and render full HTML rich text across platforms.',
     Notice: 'Display scrolling business announcements on a CMS page.',
     AuxiliarySegmentation: 'Add spacing or dividers between CMS blocks.',
     GraphicNavigation: 'Create quick links with icons and text.',
@@ -85,6 +85,12 @@ const englishDescriptions: Record<string, string> = {
     ActivityList: 'Browse and choose campaigns or auction sessions.',
     FilterSorts: 'Open product sorting and multi-condition filters.',
     ListSwitching: 'Switch product displays between list and grid.',
+    Tag: 'Mark product traits, statuses and filters with short text labels.',
+    Steps: 'Show progress through an ordered flow.',
+    Collapse: 'Fold long content into expandable sections.',
+    ActionSheet: 'Present a bottom action list for service, sharing and more.',
+    Grid: 'Lay out entries in an evenly divided grid.',
+    SwipeAction: 'Reveal list actions on swipe.',
     Coupon: 'Show coupon status and provide a claim action.'
 };
 
@@ -143,7 +149,13 @@ const componentGroups: ComponentGroup[] = [
                 '把内容传送到页面根节点，解决复杂布局下 fixed 弹层失效的问题。'
             ),
             item('/pages/componentsA/text/index', 'Text 文本', 'Text', '价格、脱敏、日期与链接等常用文本场景。'),
-            item('/pages/componentsA/link/index', 'Link 超链接', 'Link', '跨端打开链接或复制到粘贴板。')
+            item('/pages/componentsA/link/index', 'Link 超链接', 'Link', '跨端打开链接或复制到粘贴板。'),
+            item(
+                '/pages/componentsA/tag/index',
+                'Tag 标签',
+                'Tag',
+                '以短文本标记商品属性、状态与筛选结果，支持镂空与关闭。'
+            )
         ]
     },
     {
@@ -169,7 +181,7 @@ const componentGroups: ComponentGroup[] = [
                 'Search',
                 '集成占位、清除与操作按钮的常用搜索输入。'
             ),
-            item('/pages/componentsA/select/index', 'Select 列选择器', 'Select', '单列、多列与多列联动的底部选择器。'),
+            item('/pages/componentsA/picker/index', 'Picker 列选择器', 'Picker', '单列、多列与多列联动的底部选择器。'),
             item(
                 '/pages/componentsA/upload/index',
                 'Upload 文件上传',
@@ -220,7 +232,24 @@ const componentGroups: ComponentGroup[] = [
                 '长内容先收起一部分，点击展开全文。'
             ),
             item('/pages/componentsA/empty/index', 'Empty 空状态', 'Empty', '空数据占位并提供清晰的下一步提示。'),
-            item('/pages/componentsA/countDown/index', 'CountDown 倒计时', 'Count Down', '用于活动截止等场景的倒计时。')
+            item(
+                '/pages/componentsA/countDown/index',
+                'CountDown 倒计时',
+                'Count Down',
+                '用于活动截止等场景的倒计时。'
+            ),
+            item(
+                '/pages/componentsA/steps/index',
+                'Steps 步骤条',
+                'Steps',
+                '按流程顺序展示进度，用于订单状态与物流轨迹。'
+            ),
+            item(
+                '/pages/componentsA/collapse/index',
+                'Collapse 折叠面板',
+                'Collapse',
+                '把长内容折叠成标题行，用于商品参数与常见问题。'
+            )
         ]
     },
     {
@@ -237,6 +266,12 @@ const componentGroups: ComponentGroup[] = [
                 'NoNetwork 无网络提示',
                 'NoNetwork',
                 '自动监听网络状态，断网时全屏提示并支持重试。'
+            ),
+            item(
+                '/pages/componentsA/actionSheet/index',
+                'ActionSheet 动作面板',
+                'ActionSheet',
+                '从底部弹出动作列表，承载客服、分享与更多操作。'
             )
         ]
     },
@@ -264,6 +299,13 @@ const componentGroups: ComponentGroup[] = [
                 'Cell 单元格',
                 'Cell',
                 '组合单元格条目与分组容器，用于设置和个人中心等列表场景。'
+            ),
+            item('/pages/componentsA/grid/index', 'Grid 宫格', 'Grid', '把入口按等分宽度排成九宫格，用于首页金刚区。'),
+            item(
+                '/pages/componentsA/swipeAction/index',
+                'SwipeAction 滑动操作',
+                'SwipeAction',
+                '列表项左滑露出操作按钮，用于删除、收藏与取消订单。'
             )
         ]
     },
@@ -367,16 +409,16 @@ const componentGroups: ComponentGroup[] = [
             ),
             item('/pages/componentsB/videos/index', 'Videos 视频', 'Videos', '在装修页面中承载视频播放内容。', true),
             item(
-                '/pages/componentsB/richText/index',
-                'RichText 富文本',
-                'RichText',
+                '/pages/componentsB/cmsRichText/index',
+                'RichText 富文本区块',
+                'RichTextBlock',
                 '渲染后台编辑的图文和格式化内容。',
                 true
             ),
             item(
-                '/pages/componentsB/parse/index',
-                'Parse 富文本解析',
-                'Parse',
+                '/pages/componentsB/richText/index',
+                'RichText 富文本',
+                'RichText',
                 '完整 HTML 富文本解析与跨端渲染。',
                 true
             ),

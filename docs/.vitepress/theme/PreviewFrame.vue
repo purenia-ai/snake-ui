@@ -69,8 +69,8 @@ const previewFrame = ref<HTMLIFrameElement>();
 const isDesktopPreview = ref(false);
 const isDev = import.meta.env.DEV;
 const defaultSystemStatusStyle = {
-    background: '#007A55',
-    color: '#ffffff'
+    background: '#06D290',
+    color: '#FFFFFF'
 };
 const systemStatusStyle = ref({ ...defaultSystemStatusStyle });
 let timer: ReturnType<typeof setTimeout> | undefined;

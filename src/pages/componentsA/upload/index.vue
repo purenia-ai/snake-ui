@@ -730,7 +730,7 @@ function formatFileSize(bytes?: number) {
 
 .demo-upload-outcome--active {
     border-color: var(--snake-color-primary);
-    color: var(--snake-color-primary-ink);
+    color: var(--snake-color-white);
     font-weight: 600;
     background: var(--snake-color-primary);
 }
