@@ -347,10 +347,7 @@ export default {
         }
         // #endif
     },
-    beforeDestroy() {
-        this.destroyObserver();
-    },
-    // Vue 3 不再调用 beforeDestroy，懒加载观察器需要在这个钩子断开
+    // Vue 3 的卸载钩子：懒加载观察器要在这里断开（beforeDestroy 在 Vue 3 不会执行）
     unmounted() {
         this.destroyObserver();
     },

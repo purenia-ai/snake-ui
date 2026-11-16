@@ -64,7 +64,7 @@
         "test:demo-tabbar": "node --test tests/demo-tabbar.test.mjs",
         "skill:sync": "node scripts/generate-snake-skill-references.mjs",
         "changelog:sync": "node scripts/sync-changelog.mjs",
-        "test:release": "pnpm lint && pnpm type-check && pnpm test:all && pnpm docs:build",
+        "test:release": "pnpm test:all && pnpm lint && pnpm format:check && pnpm type-check && pnpm docs:build",
         "docs:dev": "pnpm --dir docs docs:dev",
         "docs:build": "pnpm changelog:sync && pnpm --dir docs docs:build",
         "docs:dev:preview": "node scripts/dev-docs-preview.cjs",

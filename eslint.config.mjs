@@ -25,7 +25,9 @@ export default tseslint.config(
             '**/*.min.js',
             '**/*.map',
             // 第三方压缩库内联（农历换算），保持原样
-            '**/libs/util/calendar.ts'
+            '**/libs/util/calendar.ts',
+            // snake-rich-text 的 App-Plus renderjs 运行时代码是编译产物，与 *.min.js 同等对待
+            '**/components/snake-rich-text/static/**'
         ]
     },
     eslint.configs.recommended,
@@ -82,6 +84,17 @@ export default tseslint.config(
         rules: {
             '@typescript-eslint/no-empty-object-type': 'off',
             '@typescript-eslint/no-explicit-any': 'off'
+        }
+    },
+    {
+        // snake-rich-text 是贴入的 mp-html 改造版：模板与生命周期里大量使用 uni-app 条件编译
+        // （#ifdef / #ifndef），eslint 不做预处理，会把不同平台的分支判成「重复 / 不可达」，
+        // 也会把 #ifdef VUE2 里的 beforeDestroy 当成 Vue 3 的废弃写法。
+        files: ['**/components/snake-rich-text/**/*.vue'],
+        rules: {
+            'vue/no-dupe-v-else-if': 'off',
+            'vue/no-deprecated-destroyed-lifecycle': 'off',
+            'vue/no-v-text-v-html-on-component': 'off'
         }
     },
     prettier

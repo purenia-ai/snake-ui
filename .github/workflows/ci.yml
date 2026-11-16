@@ -56,8 +56,8 @@ jobs:
             - name: Tests
               run: pnpm test:all
 
-            # 待修的既有问题清完后可以再加：仓库当前有 26 个 eslint error、44 个文件未过 prettier
-            # - name: Lint
-            #   run: pnpm lint
-            # - name: Format
-            #   run: pnpm format:check
+            - name: Lint
+              run: pnpm lint
+
+            - name: Format
+              run: pnpm format:check

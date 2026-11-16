@@ -168,10 +168,7 @@ export default {
             this.setContent(this.content);
         }
     },
-    beforeDestroy() {
-        this._hook('onDetached');
-    },
-    // Vue 3 不再调用 beforeDestroy，补一个钩子保证插件清理与轮询中断执行
+    // Vue 3 的卸载钩子：插件清理与轮询中断（beforeDestroy 在 Vue 3 不会执行）
     unmounted() {
         this._hook('onDetached');
         clearTimeout(this._readyTimer);
