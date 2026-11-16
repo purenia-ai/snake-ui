@@ -303,17 +303,15 @@ test('picker owns the old select names: no snake-select leftovers anywhere', asy
     assert.match(types, /export const pickerProps =/);
     assert.match(source, /@see \/components\/picker/);
     assert.match(docs, /^# Picker 列选择器$/m);
-    assert.match(docs, /0\.1\.0 起组件由 `snake-select` 更名为 `snake-picker`/);
-    // 旧名不保留：目录、类型、类名前缀与主题变量都不得再出现 select 形态
-    // （文档里只允许改名说明那一行提到旧名）
-    for (const text of [source, types, demo]) {
+    // 旧名不保留：目录、类型、类名前缀与主题变量都不得再出现 select 形态，
+    // 文档也不写改名说明，旧名在源码 / 类型 / 示例 / 文档里一处都不出现。
+    for (const text of [source, types, demo, docs]) {
         assert.doesNotMatch(
             text,
             /snake-select|SnakeSelect|SelectProps|SelectEmits|SelectExpose|SelectItem|SelectResult/
         );
     }
-    assert.equal(docs.match(/`snake-select`/g)?.length, 1, '文档只应保留一处旧名说明');
-    assert.doesNotMatch(docs, /<snake-select|snake-select__|--snake-select-|SelectProps|SelectExpose/);
+    assert.doesNotMatch(docs, /<snake-select|snake-select__|--snake-select-/);
     assert.doesNotMatch(source, /snake-select__|--snake-select-/);
     assert.doesNotMatch(await readFile(new URL('src/pages.json', workspaceRoot), 'utf8'), /componentsA\/select/);
 });

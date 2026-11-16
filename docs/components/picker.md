@@ -6,8 +6,6 @@ preview: /pages/componentsA/picker/index
 
 用于单列、多列、多列联动的选择场景，基于原生 picker-view 与 Popup 实现，底部弹出。
 
-> 0.1.0 起组件由 `snake-select` 更名为 `snake-picker`（旧名不保留）：它是底部滚轮弹层，没有触发入口也没有选中值，`v-model` 只控制开合，用 `picker` 命名才与形态和库内「`snake-` + 原生标签」的约定一致。
-
 ## 平台兼容性
 
 | H5  | App | 微信小程序 | 支付宝小程序 |
