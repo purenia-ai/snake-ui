@@ -233,3 +233,38 @@ test('snake-image drops the image on failure and floors auto height', async () =
     assert.deepEqual(recovered, []);
     assert.ok(harness.findElement('image'), 'reload() re-mounts the image after a failure');
 });
+
+test('snake-image keeps the viewport lazy-load gate', async () => {
+    const observed = [];
+    const originalUni = globalThis.uni;
+    // 只实现 image 用到的交集观察器接口，用来驱动 shouldLoad 的两条分支。
+    globalThis.uni = {
+        createIntersectionObserver: () => ({
+            relativeToViewport: () => ({
+                observe: (selector, callback) => observed.push({ selector, callback })
+            }),
+            disconnect: () => {}
+        })
+    };
+
+    try {
+        const harness = createHarness();
+        await harness.setProps({ src: '/lazy.png', height: 'auto', lazyLoad: true, lazyThreshold: 160 });
+
+        assert.equal(observed.length, 1, 'the viewport observer should be registered once');
+        assert.equal(observed[0].selector, '.snake-image');
+        assert.equal(harness.findElement('image'), undefined, 'no image node before entering the viewport');
+        assert.match(
+            harness.classNameOf(harness.findElement('view')),
+            /snake-image__status--flow/,
+            'the idle placeholder takes part in layout so auto height cannot collapse'
+        );
+
+        observed[0].callback({ intersectionRatio: 1 });
+        await harness.setProps({});
+        assert.ok(harness.findElement('image'), 'the image mounts once the viewport threshold is crossed');
+    } finally {
+        if (originalUni === undefined) delete globalThis.uni;
+        else globalThis.uni = originalUni;
+    }
+});
