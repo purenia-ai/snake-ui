@@ -127,7 +127,8 @@ test('tabs follow legacy interaction scope while subsection keeps keyboard navig
     ]);
     for (const marker of ['role="tablist"', 'role="tab"', 'aria-selected', '@keydown.left', '@keydown.right'])
         assert.doesNotMatch(tabs, new RegExp(marker.replace('.', '\\.')));
-    for (const marker of [/role="tablist"/, /role="tab"/, /aria-selected/, /@keydown\.left/, /@keydown\.right/])
+    // 分段控件是"从互斥集合里选一个"，按 radiogroup 播报，不是页签
+    for (const marker of [/role="radiogroup"/, /role="radio"\s/, /aria-checked/, /@keydown\.left/, /@keydown\.right/])
         assert.match(subsection, marker);
 });
 

@@ -39,6 +39,10 @@ export interface SubsectionProps {
     bgColor?: string;
     /** button color 配置。 */
     buttonColor?: string;
+    /** 切换分段时是否触发一次短震动；H5 不支持，其余平台按系统能力生效。 */
+    vibrateShort?: boolean;
+    /** 禁用整组分段：不再响应点击与键盘，视觉上整体变淡。 */
+    disabled?: boolean;
     /** 根节点自定义类名。 */
     customClass?: string;
     /** 根节点自定义样式。 */

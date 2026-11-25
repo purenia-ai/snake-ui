@@ -598,8 +598,8 @@ const englishMessages: Record<string, string> = {
     点击方案应用到上方二维码: 'Tap a preset to apply it above',
     导出失败: 'Export failed',
     自定义范围: 'Custom range',
-    按钮模式: 'Button mode',
-    分段模式: 'Subsection mode',
+    胶囊滑块: 'Capsule slider',
+    描边分段: 'Outlined segments',
     状态总览: 'All states',
     开: 'On',
     关: 'Off',
@@ -788,8 +788,8 @@ Object.assign(englishMessages, {
     '用于图片或内容轮播，支持自动播放、标题和指示器。':
         'A carousel with autoplay, titles and multiple indicator styles.',
     '标签页用于在同层级内容之间快速切换。': 'Tabs switch quickly between peer content sections.',
-    '在少量互斥选项之间快速切换，支持按钮和描边分段模式。':
-        'Switches between a few exclusive options in button or outlined mode.',
+    '在少量互斥选项之间快速切换，提供胶囊滑块与描边分段两种模式。':
+        'Switches between a few exclusive options as a capsule slider or outlined segments.',
     '点击后在默认、升序和降序状态之间循环切换。': 'Cycles through default, ascending and descending states.',
     '下拉菜单容器保证同一时间只展开一个菜单项。': 'The menu container keeps only one dropdown open at a time.',
     '下拉菜单项提供触发按钮、内容面板和关闭事件。':
@@ -1538,6 +1538,22 @@ Object.assign(englishMessages, {
     车牌号: 'Plate number',
     输入车牌: 'Enter plate',
     请输入车牌号: 'Enter the license plate'
+});
+
+Object.assign(englishMessages, {
+    项数与禁用: 'Item count and disabled',
+    两项: 'Two items',
+    五项: 'Five items',
+    禁用项: 'Disabled item',
+    整组禁用: 'Disabled group',
+    切换震动: 'Vibration on switch',
+    '选中项走 v-model:current 双向绑定，被禁用的分段跳过':
+        'v-model:current drives the selection; disabled segments are skipped',
+    切换内容: 'Switch content',
+    订单状态: 'Order status',
+    字号: 'Font size',
+    未激活颜色: 'Inactive color',
+    中灰: 'Mid gray'
 });
 
 export function demoText(value: string): string {

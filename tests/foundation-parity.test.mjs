@@ -79,13 +79,33 @@ test('subsection exposes animated button and outlined selection modes', async ()
 
     assert.match(entry, /export \* from '\.\/components\/snake-subsection\/types'/);
     assert.match(declarations, /export const SnakeSubsection:/);
-    for (const prop of ['list', 'current', 'mode', 'activeColor', 'inactiveColor', 'animation', 'buttonColor']) {
+    for (const prop of [
+        'list',
+        'current',
+        'mode',
+        'activeColor',
+        'inactiveColor',
+        'animation',
+        'buttonColor',
+        'vibrateShort'
+    ]) {
         assert.match(types, new RegExp(`${prop}\\?`));
     }
     assert.match(source, /snake-subsection--\$\{mode\}/);
     assert.match(source, /translateX\(\$\{activeIndex\.value \* 100\}%\)/);
     assert.match(source, /emit\('update:current', index\)/);
     assert.match(source, /emit\('change', index\)/);
+    // 选中态内部兜底：只传 :current 不监听事件时点击也要生效，父级回写 current 时以 prop 为准
+    assert.match(source, /const innerIndex = ref\(normalizeIndex\(props\.current\)\)/);
+    assert.match(source, /innerIndex\.value = index/);
+    assert.match(source, /watch\(\s*\(\) => \[props\.current, props\.list\.length\]/);
+    // 切换震动与整组禁用
+    assert.match(types, /disabled\?: boolean/);
+    assert.match(source, /uni\.vibrateShort/);
+    assert.match(source, /if \(props\.disabled\) return/);
+    // 胶囊滑块模式没有描边：占位透明边框要收掉，内容区才和描边模式等高
+    assert.match(source, /borderWidth: props\.mode === 'subsection' \? '1px' : '0'/);
+    assert.match(source, /fontSize: 15/);
     assert.doesNotMatch(source, legacyRuntimePattern);
 });
 

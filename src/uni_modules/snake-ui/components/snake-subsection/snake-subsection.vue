@@ -1,16 +1,21 @@
 <template>
-    <view :class="['snake-subsection', `snake-subsection--${mode}`, customClass]" :style="rootStyle" role="tablist">
+    <view
+        :class="['snake-subsection', `snake-subsection--${mode}`, { 'is-disabled': disabled }, customClass]"
+        :style="rootStyle"
+        role="radiogroup"
+        :aria-disabled="disabled"
+    >
         <view v-if="list.length" class="snake-subsection__slider" :style="sliderStyle" />
         <view
             v-for="(option, index) in list"
             :key="index"
             class="snake-subsection__item"
-            :class="{ 'is-disabled': isDisabled(option) }"
+            :class="{ 'is-disabled': isItemDisabled(option) }"
             :style="itemStyle(option, index)"
-            role="tab"
-            :aria-selected="index === activeIndex"
-            :aria-disabled="isDisabled(option)"
-            :tabindex="isDisabled(option) ? -1 : index === activeIndex ? 0 : -1"
+            role="radio"
+            :aria-checked="index === activeIndex"
+            :aria-disabled="isItemDisabled(option)"
+            :tabindex="isItemDisabled(option) ? -1 : index === activeIndex ? 0 : -1"
             @click="select(option, index)"
             @keydown.left.prevent="selectAdjacent(index, -1)"
             @keydown.right.prevent="selectAdjacent(index, 1)"
@@ -23,11 +28,11 @@
 <script setup lang="ts">
 /**
  * @component Subsection
- * @description 用于在少量互斥选项之间快速切换，支持按钮式滑块和描边分段两种模式。
+ * @description 用于在少量互斥选项之间快速切换，提供胶囊滑块与描边分段两种模式。
  * @see /components/subsection
  */
 
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { addUnit } from '../../libs/function/unit';
 import type { SubsectionEmits, SubsectionItem, SubsectionOption, SubsectionProps } from './types';
 
@@ -45,27 +50,47 @@ const props = withDefaults(defineProps<SubsectionProps>(), {
     mode: 'button',
     activeColor: 'var(--snake-color-primary, #06d290)',
     inactiveColor: 'var(--snake-color-text-secondary, #606266)',
-    fontSize: 14,
+    fontSize: 15,
     height: 35,
     animation: true,
     bold: true,
     bgColor: 'var(--snake-color-surface-muted, #f4f6f5)',
     buttonColor: 'var(--snake-color-surface, #ffffff)',
+    vibrateShort: false,
+    disabled: false,
     customClass: '',
     customStyle: ''
 });
 
 const emit = defineEmits<SubsectionEmits>();
 
-const activeIndex = computed(() => {
+/** 越界与非法值统一夹到有效区间，避免 current 传错时滑块跑到容器外。 */
+function normalizeIndex(value: number | string): number {
     if (!props.list.length) return 0;
-    return Math.max(0, Math.min(props.list.length - 1, Number(props.current) || 0));
-});
+    return Math.max(0, Math.min(props.list.length - 1, Number(value) || 0));
+}
+
+/**
+ * 选中态内部兜底：父级更新 `current` 时以 prop 为准，
+ * 父级只用 `:current` 而不监听事件时，点击也能真正切过去。
+ */
+const innerIndex = ref(normalizeIndex(props.current));
+
+watch(
+    () => [props.current, props.list.length],
+    () => {
+        innerIndex.value = normalizeIndex(props.current);
+    }
+);
+
+const activeIndex = computed(() => innerIndex.value);
 
 const rootStyle = computed(() => [
     {
         height: addUnit(props.height),
         padding: props.mode === 'button' ? '3px' : '0',
+        // 胶囊滑块模式没有描边：把常驻的 1px 透明占位边框收掉，内容区才和描边模式一样高
+        borderWidth: props.mode === 'subsection' ? '1px' : '0',
         borderColor: props.mode === 'subsection' ? props.activeColor : 'transparent',
         backgroundColor: props.mode === 'button' ? props.bgColor : 'transparent'
     },
@@ -97,8 +122,13 @@ function optionName(option: SubsectionOption): string {
     return typeof option === 'string' ? option : option.name;
 }
 
-function isDisabled(option: SubsectionOption): boolean {
+function isOptionDisabled(option: SubsectionOption): boolean {
     return typeof option === 'object' && Boolean((option as SubsectionItem).disabled);
+}
+
+/** 整组禁用或单项禁用都会拦掉交互。 */
+function isItemDisabled(option: SubsectionOption): boolean {
+    return props.disabled || isOptionDisabled(option);
 }
 
 function itemStyle(option: SubsectionOption, index: number) {
@@ -117,21 +147,33 @@ function itemStyle(option: SubsectionOption, index: number) {
             props.mode === 'subsection' && index < props.list.length - 1 ? props.activeColor : 'transparent',
         fontSize: addUnit(props.fontSize),
         fontWeight: selected && props.bold ? '600' : '400',
-        opacity: isDisabled(option) ? 0.45 : 1
+        opacity: isItemDisabled(option) ? 0.45 : 1
     };
 }
 
 function select(option: SubsectionOption, index: number) {
-    if (isDisabled(option) || index === activeIndex.value) return;
+    if (isItemDisabled(option) || index === activeIndex.value) return;
+    // 先落到内部状态再通知：父级不更新 current 时点击也有反馈，父级更新时以 prop 为准。
+    innerIndex.value = index;
     emit('update:current', index);
     emit('change', index);
+    vibrate();
+}
+
+/** 切换时的短震动是可选的轻反馈，平台不支持时静默，不影响选中。 */
+function vibrate(): void {
+    if (!props.vibrateShort) return;
+    // #ifndef H5
+    uni.vibrateShort({ fail: () => {} });
+    // #endif
 }
 
 function selectAdjacent(index: number, direction: -1 | 1) {
+    if (props.disabled) return;
     for (let offset = 1; offset <= props.list.length; offset += 1) {
         const target = (index + direction * offset + props.list.length) % props.list.length;
         const option = props.list[target];
-        if (option && !isDisabled(option)) {
+        if (option && !isItemDisabled(option)) {
             select(option, target);
             return;
         }
@@ -176,6 +218,7 @@ function selectAdjacent(index: number, direction: -1 | 1) {
         opacity 0.2s ease;
 }
 
+.snake-subsection.is-disabled,
 .snake-subsection__item.is-disabled {
     cursor: not-allowed;
 }
