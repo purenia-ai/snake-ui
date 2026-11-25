@@ -269,13 +269,13 @@ defineExpose({ scrollTo, update });
 }
 .snake-index-list-panel__key {
     display: flex;
-    min-width: 22px;
-    min-height: 17px;
+    width: 18px;
+    height: 18px;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
     font-size: 10px;
-    line-height: 17px;
+    line-height: 18px;
 }
 .snake-index-list-panel__key.is-active {
     font-weight: 700;
