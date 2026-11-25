@@ -36,6 +36,8 @@ const componentDescriptions: Partial<Record<ComponentItem['link'], string>> = {
     '/components/calendar': '选择单日、日期范围或多日期并处理可选边界。',
     '/components/icon': '使用内置图标字库或自定义图标前缀展示语义图标。',
     '/components/image': '加载、裁剪和预览图片，并提供加载失败兜底。',
+    '/components/image-cropper': '选图后按比例裁剪，支持拖动、双指缩放与 90° 旋转，导出临时文件。',
+    '/components/avatar': '展示用户或品牌头像，图片失败降级为文字或图标，也可叠成头像组并折叠为 +N。',
     '/components/skeleton': '在首次加载时用结构占位替代内容，避免列表与详情页闪白。',
     '/components/rich-text': '渲染后台编辑的 HTML 正文，补齐图片预览、链接、表格与音视频交互。',
     '/components/qr-code': '把文本或链接渲染为可扫描的二维码，支持中心 Logo 与导出图片。',
@@ -63,7 +65,9 @@ const componentKeywords: Partial<Record<ComponentItem['link'], string[]>> = {
     '/components/drop-menu': ['筛选', '下拉筛选', '菜单'],
     '/components/config-provider': ['主题', '全局配置', '暗黑模式'],
     '/components/select-picker': ['多选', '单选', '列表选择', '复选列表', '带搜索的选择器'],
-    '/components/keyboard': ['数字键盘', '金额输入', '身份证', '验证码', '密码', 'number pad']
+    '/components/keyboard': ['数字键盘', '金额输入', '身份证', '验证码', '密码', 'number pad'],
+    '/components/image-cropper': ['图片裁剪', '头像裁剪', '裁剪比例', '旋转', 'crop'],
+    '/components/avatar': ['用户头像', '头像组', '首字母兜底', '参与人', 'avatar group']
 };
 
 function enrichComponent(item: ComponentDefinition): ComponentItem {
@@ -90,6 +94,8 @@ const componentGroupDefinitions: ComponentGroupDefinition[] = [
             { name: 'Icon', title: '图标', link: '/components/icon' },
             { name: 'Badge', title: '徽标', link: '/components/badge' },
             { name: 'Image', title: '图片', link: '/components/image' },
+            { name: 'ImageCropper', title: '图片裁剪', link: '/components/image-cropper' },
+            { name: 'Avatar', title: '头像', link: '/components/avatar' },
             { name: 'QrCode', title: '二维码', link: '/components/qr-code' },
             { name: 'Loading', title: '加载', link: '/components/loading' },
             { name: 'Skeleton', title: '骨架屏', link: '/components/skeleton' },

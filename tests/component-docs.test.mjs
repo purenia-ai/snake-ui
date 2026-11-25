@@ -60,6 +60,8 @@ const standardizedDocs = [
     'icon',
     'badge',
     'image',
+    'image-cropper',
+    'avatar',
     'text',
     'link',
     'textarea',
@@ -260,7 +262,7 @@ test('high-use component docs follow the standard documentation shape', async ()
 });
 
 test('component registry is the complete documented component source of truth', async () => {
-    assert.equal(componentItems.length, 58);
+    assert.equal(componentItems.length, 60);
     assert.equal(new Set(componentItems.map(item => item.link)).size, componentItems.length);
 
     const packageEntry = await readFile(resolve(root, 'src/uni_modules/snake-ui/index.ts'), 'utf8');

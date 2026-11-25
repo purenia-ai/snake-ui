@@ -58,6 +58,8 @@
                 { "path": "icon/index", "style": { "navigationBarTitleText": "图标" } },
                 { "path": "badge/index", "style": { "navigationBarTitleText": "徽标" } },
                 { "path": "image/index", "style": { "navigationBarTitleText": "图片" } },
+                { "path": "imageCropper/index", "style": { "navigationBarTitleText": "图片裁剪" } },
+                { "path": "avatar/index", "style": { "navigationBarTitleText": "头像" } },
                 { "path": "qrCode/index", "style": { "navigationBarTitleText": "二维码" } },
                 { "path": "loadmore/index", "style": { "navigationBarTitleText": "加载更多" } },
                 { "path": "noticeBar/index", "style": { "navigationBarTitleText": "通知栏" } },

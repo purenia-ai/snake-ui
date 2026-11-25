@@ -880,6 +880,8 @@ const demoTitles: Record<string, string> = {
     skeleton: 'Skeleton',
     icon: 'Icon',
     image: 'Image',
+    'image-cropper': 'Image Cropper',
+    avatar: 'Avatar',
     loadmore: 'Load More',
     'notice-bar': 'Notice Bar',
     overlay: 'Overlay',
@@ -1615,6 +1617,62 @@ Object.assign(englishMessages, {
         'Pause keeps the remaining time, so Start continues from there; Reset returns to the seconds above and restarts right away while autoplay is on',
     '隐藏的单位会折算进下一级：关掉天后小时累加，关掉小时后分钟累加':
         'A hidden unit folds into the next one: no days adds them to hours, no hours adds them to minutes'
+});
+
+Object.assign(englishMessages, {
+    图标: 'Icon',
+    插槽: 'Slot',
+    头像组: 'Avatar group',
+    内置占位: 'Built-in placeholder',
+    已点击: 'Clicked',
+    形状与尺寸: 'Shapes and sizes',
+    内容与兜底: 'Content and fallbacks',
+    加载失败回退: 'Load failure fallback',
+    文字兜底: 'Text fallback',
+    图标兜底: 'Icon fallback',
+    按控件配置: 'Follows the controls',
+    后压前: 'Last on top',
+    前压后: 'First on top',
+    形状: 'Shape',
+    头像尺寸: 'Avatar size',
+    模拟加载失败: 'Simulate load failure',
+    最多显示数量: 'Max visible count',
+    真实总数: 'Real total',
+    层级方向: 'Stacking order',
+    点击头像试试: 'Tap the avatar',
+    '图片加载失败，已降级': 'Image failed, fallback applied',
+    '图片来自本地静态资源；打开“模拟加载失败”后换成不存在的地址，头像会自动降级':
+        'The image comes from local static assets; turning on "Simulate load failure" points it at a missing file so the avatar falls back',
+    '没有图片时按 文字 → 图标 → 内置人像图标 的顺序兜底':
+        'Without an image the order is text, then icon, then the built-in person icon',
+    '三个头像的地址都不存在：有文字用文字，有图标用图标，都没有就退到内置的人像图标':
+        'All three point at a missing file: text wins when present, then the icon, otherwise the built-in person icon',
+    '超出 max-count 折叠成 +N；只渲染部分子项时要传 total，否则只能数到已渲染的数量':
+        'Anything past max-count collapses into +N; pass total when you render only some children, otherwise it can only count what is rendered',
+    '展示用户或品牌头像，图片加载失败时降级为文字或图标，也可以叠成头像组并折叠。':
+        'Show user or brand avatars, fall back to text or an icon when the image fails, and stack them into a collapsible group.'
+});
+
+Object.assign(englishMessages, {
+    裁剪比例: 'Crop ratio',
+    最大放大倍数: 'Max zoom',
+    导出倍数: 'Export scale',
+    导出格式: 'Export format',
+    禁用旋转: 'Disable rotation',
+    实例方法: 'Instance methods',
+    尚未裁剪: 'Not cropped yet',
+    点击选择并裁剪: 'Tap to pick and crop',
+    重新裁剪: 'Crop again',
+    用示例图: 'Use sample image',
+    '旋转 90°': 'Rotate 90°',
+    '全屏图片裁剪：拖拽、双指缩放、90° 旋转，确认后导出临时文件。':
+        'Full-screen cropper with drag, pinch zoom and 90° rotation; confirm to export a temp file.',
+    '确认后回填的地址就是导出结果：H5 为 base64，小程序为临时文件路径':
+        'The preview address is the export result: base64 on H5, a temp file path in mini programs',
+    '比例只决定裁剪框形状；图片始终会被拉到铺满裁剪框，超出部分靠拖动和缩放取舍':
+        'The ratio only shapes the crop box; the image always covers it, and you choose the rest by dragging and zooming',
+    'setRotate 与 reset 通过 ref 调用，只在裁剪器打开时看得出效果':
+        'Call setRotate and reset through a ref; they are only visible while the cropper is open'
 });
 
 export function demoText(value: string): string {

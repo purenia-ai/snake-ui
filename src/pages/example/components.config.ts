@@ -21,6 +21,8 @@ const englishDescriptions: Record<string, string> = {
     Icon: 'A versatile icon set with customizable size and color.',
     Badge: 'Hang count or dot badges on the corner of any content.',
     Image: 'Display images with lazy loading, placeholders, rounded corners and fit modes.',
+    ImageCropper: 'Crop a picked image with drag, pinch zoom and rotation, then export a temp file.',
+    Avatar: 'Show user or brand avatars with image, text and icon fallbacks, plus overlapping groups.',
     Loading: 'Show consistent loading states for components and pages.',
     Skeleton: 'Preview page structure while content loads.',
     Transition: 'Create consistent enter and leave animations across platforms.',
@@ -128,6 +130,18 @@ const componentGroups: ComponentGroup[] = [
                 'Image 图片',
                 'Image',
                 '图片展示，支持视口懒加载、占位、圆角与自适应模式。'
+            ),
+            item(
+                '/pages/componentsA/imageCropper/index',
+                'ImageCropper 图片裁剪',
+                'ImageCropper',
+                '选图后按比例裁剪，支持拖动、双指缩放与 90° 旋转，导出临时文件。'
+            ),
+            item(
+                '/pages/componentsA/avatar/index',
+                'Avatar 头像',
+                'Avatar',
+                '展示用户或品牌头像，支持图片、文字与图标兜底，可叠成头像组并折叠。'
             ),
             item(
                 '/pages/componentsA/qrCode/index',

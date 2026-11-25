@@ -5,6 +5,7 @@
 ## components
 
 - [ActionSheet 动作面板](components/action-sheet.md)
+- [Avatar 头像](components/avatar.md)
 - [Backtop 回到顶部](components/backtop.md)
 - [Badge 徽标](components/badge.md)
 - [ButtonSort 排序按钮](components/button-sort.md)
@@ -24,6 +25,7 @@
 - [Form 表单](components/form.md)
 - [Grid 宫格](components/grid.md)
 - [Icon 图标](components/icon.md)
+- [ImageCropper 图片裁剪](components/image-cropper.md)
 - [Image 图片](components/image.md)
 - [IndexAnchor 索引锚点](components/index-anchor.md)
 - [IndexListPanel 容器索引列表](components/index-list-panel.md)

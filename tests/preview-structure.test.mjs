@@ -13,6 +13,8 @@ const foundationComponents = [
     'empty',
     'icon',
     'image',
+    'image-cropper',
+    'avatar',
     'loadmore',
     'notice-bar',
     'overlay',
