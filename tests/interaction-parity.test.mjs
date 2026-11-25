@@ -147,6 +147,10 @@ test('drop menu performs real measurement and both index list modes handle touch
     ]);
     assert.match(menu, /createSelectorQuery/);
     assert.match(menu, /boundingClientRect/);
+    // 层级只下发给遮罩：根节点若带 z-index 会自成层叠上下文，遮罩被封顶在同一档，
+    // 同屏堆叠时被 DOM 更靠后的兄弟菜单栏压住，看上去「盖不住」
+    assert.match(menu, /:z-index="props\.zIndex"/);
+    assert.doesNotMatch(menu, /zIndex: props\.zIndex/);
     for (const name of ['modelValue', 'options', 'disabled']) assert.match(item, new RegExp(`${name}\\?`));
     for (const source of [list, panel]) {
         assert.match(source, /@touchstart\.stop\.prevent="touchSelect"/);

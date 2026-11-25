@@ -2,7 +2,7 @@
     <view
         class="snake-drop-menu"
         :class="[customClass, { 'snake-drop-menu--border': borderBottom }]"
-        :style="[{ height: addUnit(height, 'px'), zIndex: props.zIndex }, customStyle]"
+        :style="[{ height: addUnit(height, 'px') }, customStyle]"
     >
         <snake-overlay
             :show="overlayShow"
@@ -186,6 +186,11 @@ provide(dropMenuKey, {
 defineExpose<DropMenuExpose>({ updateDropMenuRect, close, open, highlight });
 </script>
 <style scoped>
+/*
+ * 根节点刻意不带 z-index：一旦带上，每个菜单栏都自成层叠上下文，
+ * 面板/遮罩只能封顶在同一档，同屏堆叠时会被 DOM 更靠后的兄弟菜单栏压住（遮罩看着盖不住）。
+ * 层级统一交给 panel 与 overlay 的 fixed 定位。
+ */
 .snake-drop-menu {
     position: relative;
     display: flex;
