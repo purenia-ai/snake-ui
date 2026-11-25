@@ -105,6 +105,37 @@ test('countdown clears timers on unmount and exposes explicit destroy', async ()
     assert.match(types, /destroy:\s*\(\) => void/);
 });
 
+test('countdown counts against wall clock and supports pause, resume and reset', async () => {
+    const [source, types] = await Promise.all([
+        read('components/snake-count-down/snake-count-down.vue'),
+        read('components/snake-count-down/types.ts')
+    ]);
+    // 记结束时刻再用当前时间反推剩余量：定时器被节流后下一轮自动追平，不会越走越慢
+    assert.match(source, /endAt = Date\.now\(\) \+ remaining/);
+    assert.match(source, /const remaining = endAt - Date\.now\(\)/);
+    assert.doesNotMatch(source, /seconds\.value--/);
+    // timestamp 变化不替 autoplay=false 的调用方起表
+    assert.match(source, /if \(wasRunning \|\| props\.autoplay\) start\(\)/);
+    // 隐藏的单位折算给下一级，只留分秒也不会丢掉小时数
+    assert.match(source, /const dayNum = props\.showDays \? Math\.floor\(rest \/ 86400\) : 0/);
+    assert.match(source, /const hourNum = props\.showHours \? Math\.floor\(rest \/ 3600\) : 0/);
+    assert.match(source, /const minuteNum = props\.showMinutes \? Math\.floor\(rest \/ 60\) : 0/);
+    // 数字块用 min-width：时分进位到三位时能撑开；等宽数字避免每秒抖动
+    assert.match(source, /style\.minWidth = uni\.\$snake\.addUnit\(props\.height\)/);
+    assert.doesNotMatch(source, /style\.width = /);
+    assert.match(source, /font-variant-numeric: tabular-nums/);
+    // 起表前先清一遍：重复 setInterval 只会有句柄被清掉，等于漏一个定时器
+    assert.match(source, /if \(running\) return;[\s\S]{0,160}?clearTimer\(\);/);
+    // 句柄用 !== null 判断，运行时返回 0 也不会漏清
+    assert.match(source, /if \(timer !== null\)/);
+    // 暂停保留剩余时间，重设按 autoplay 决定是否重新起表
+    assert.match(source, /function pause\(\)[\s\S]*?remainMs = Math\.max\(0, endAt - Date\.now\(\)\)/);
+    assert.match(source, /function reset\(\)[\s\S]*?if \(props\.autoplay\) start\(\)/);
+    assert.match(source, /defineExpose<CountDownExpose>\(\{[\s\S]*?pause[\s\S]*?reset[\s\S]*?destroy/);
+    assert.match(types, /pause:\s*\(\) => void/);
+    assert.match(types, /reset:\s*\(\) => void/);
+});
+
 test('link renders its text prop directly on Toutiao mini program', async () => {
     const source = await read('components/snake-link/snake-link.vue');
     assert.match(source, /#ifdef MP-TOUTIAO[\s\S]*?\{\{ text \}\}[\s\S]*?#endif/);

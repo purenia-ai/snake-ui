@@ -23,7 +23,7 @@ export const countDownProps = {
     fontSize: { type: [Number, String] as PropType<number | string>, default: 15 },
     /** 倒计时数字背景颜色。 */
     bgColor: { type: String, default: 'var(--snake-color-surface, #fff)' },
-    /** 数字块高度（宽度同值），单位 px（375 稿）。 */
+    /** 数字块高度（宽度不小于该值），单位 px（375 稿）。 */
     height: { type: [Number, String] as PropType<number | string>, default: 'auto' },
     /** 是否显示数字边框。 */
     showBorder: { type: Boolean, default: false },
@@ -31,11 +31,11 @@ export const countDownProps = {
     borderColor: { type: String, default: 'var(--snake-color-text, #22292f)' },
     /** 是否显示秒。 */
     showSeconds: { type: Boolean, default: true },
-    /** 是否显示分钟。 */
+    /** 是否显示分钟；关闭后分钟数折算到秒。 */
     showMinutes: { type: Boolean, default: true },
-    /** 是否显示小时。 */
+    /** 是否显示小时；关闭后小时数折算到分钟。 */
     showHours: { type: Boolean, default: true },
-    /** 是否显示天。 */
+    /** 是否显示天；关闭后天数折算到小时。 */
     showDays: { type: Boolean, default: true },
     /** 天数为 0 时是否隐藏天部分。 */
     hideZeroDay: { type: Boolean, default: false }
@@ -66,7 +66,7 @@ export interface CountDownProps {
     fontSize?: number | string;
     /** 倒计时数字背景颜色。 */
     bgColor?: string;
-    /** 数字块高度（宽度同值），单位 px（375 稿）。 */
+    /** 数字块高度（宽度不小于该值），单位 px（375 稿）。 */
     height?: number | string;
     /** 是否显示数字边框。 */
     showBorder?: boolean;
@@ -74,11 +74,11 @@ export interface CountDownProps {
     borderColor?: string;
     /** 是否显示秒。 */
     showSeconds?: boolean;
-    /** 是否显示分钟。 */
+    /** 是否显示分钟；关闭后分钟数折算到秒。 */
     showMinutes?: boolean;
-    /** 是否显示小时。 */
+    /** 是否显示小时；关闭后小时数折算到分钟。 */
     showHours?: boolean;
-    /** 是否显示天。 */
+    /** 是否显示天；关闭后天数折算到小时。 */
     showDays?: boolean;
     /** 天数为 0 时是否隐藏天部分。 */
     hideZeroDay?: boolean;
@@ -86,18 +86,22 @@ export interface CountDownProps {
 
 /** CountDown 组件的事件契约。 */
 export type CountDownEmits = {
-    /** 倒计时结束时触发。 */
+    /** 倒计时归零或提前结束时触发。 */
     end: [];
-    /** 每秒触发一次，参数为剩余秒数。 */
+    /** 开始计时与每秒更新时触发，参数为剩余秒数。 */
     change: [seconds: number];
 };
 
 /** CountDown 组件暴露的方法。 */
 export interface CountDownExpose {
-    /** 开始倒计时。 */
+    /** 开始倒计时；暂停后再次调用会从剩余时间继续。 */
     start: () => void;
-    /** 结束倒计时。 */
+    /** 暂停倒计时，保留剩余时间。 */
+    pause: () => void;
+    /** 重设到 timestamp 指定的时长，autoplay 为真时立即开始。 */
+    reset: () => void;
+    /** 提前结束并触发 end 事件。 */
     end: () => void;
-    /** 主动停止倒计时，不触发 end 事件。 */
+    /** 静默停止倒计时，不触发 end 事件，也不复位显示。 */
     destroy: () => void;
 }
