@@ -109,6 +109,35 @@ test('subsection exposes animated button and outlined selection modes', async ()
     assert.doesNotMatch(source, legacyRuntimePattern);
 });
 
+test('button sort owns its state, honours a controlled model and exposes both cycle modes', async () => {
+    const [types, source] = await Promise.all([
+        read('components/snake-button-sort/types.ts'),
+        read('components/snake-button-sort/snake-button-sort.vue')
+    ]);
+
+    for (const prop of ['modelValue', 'allowReset', 'descFirst', 'activeColor', 'customClass', 'customStyle']) {
+        assert.match(types, new RegExp(`${prop}\\?`));
+    }
+    // 受控优先 + 内部兜底：只监听 change 的老用法仍然可用
+    assert.match(source, /props\.modelValue \?\? innerValue\.value/);
+    assert.match(source, /if \(props\.modelValue === undefined\) innerValue\.value = next/);
+    assert.match(source, /emit\('update:modelValue', next\)/);
+    assert.match(source, /emit\('change', \{ value: next \}\)/);
+    // 两种循环：descFirst 决定首次方向，allowReset 决定能否回到未排序
+    assert.match(source, /if \(current === ''\) return props\.descFirst \? 'desc' : 'asc'/);
+    assert.match(source, /if \(!props\.allowReset\) return current === 'asc' \? 'desc' : 'asc'/);
+    // 排序中标题与箭头一起走激活色
+    assert.match(source, /var\(--snake-sort-active, var\(--snake-color-primary, #06d290\)\)/);
+    assert.match(source, /const labelStyle = computed\(\(\) => \(\{\s*\.\.\.\(props\.titleColor && !isActive\.value/);
+    // 排序栏里撑满整行高，键盘也能触发
+    assert.match(source, /align-self: stretch/);
+    assert.match(source, /role="button"/);
+    assert.match(source, /:aria-pressed="isActive"/);
+    assert.match(source, /@keydown\.enter\.prevent="toggle"/);
+    assert.match(source, /@keydown\.space\.prevent="toggle"/);
+    assert.doesNotMatch(source, legacyRuntimePattern);
+});
+
 test('image, overlay, popup and sticky expose behavioral APIs', async () => {
     const [image, overlay, popup, sticky] = await Promise.all([
         read('components/snake-image/types.ts'),

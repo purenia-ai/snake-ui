@@ -1556,6 +1556,20 @@ Object.assign(englishMessages, {
     中灰: 'Mid gray'
 });
 
+Object.assign(englishMessages, {
+    商品排序: 'Product sorting',
+    当前排序: 'Current sort',
+    '切到其他列会把价格排序清空，箭头随之复位':
+        'Switching to another column clears the price sort, so the arrows reset',
+    循环方式: 'Cycle order',
+    三态循环: 'Tri-state cycle',
+    两态切换: 'Two-state toggle',
+    降序优先: 'Descending first',
+    销量: 'Sales',
+    标题颜色: 'Title color',
+    允许回到未排序: 'Allow reset'
+});
+
 export function demoText(value: string): string {
     return currentLocale.value.name === 'en-US' ? (englishMessages[value] ?? value) : value;
 }
