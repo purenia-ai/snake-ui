@@ -1595,6 +1595,28 @@ Object.assign(englishMessages, {
         'The sort item runs beforeToggle: a simulated 600ms permission check, and resolve(false) keeps it closed. The buttons sit above the bar so an open panel never covers them'
 });
 
+Object.assign(englishMessages, {
+    剩余: 'Left',
+    开始: 'Start',
+    暂停: 'Pause',
+    重设: 'Reset',
+    计时中: 'Counting',
+    已暂停: 'Paused',
+    待开始: 'Ready',
+    分隔符与单位: 'Separators and units',
+    隐藏天: 'No days',
+    只留分秒: 'Minutes and seconds',
+    数字块样式: 'Digit block styles',
+    纯文字: 'Plain text',
+    浅色块: 'Soft block',
+    实心块: 'Solid block',
+    数字字号: 'Digit font size',
+    '暂停后再点开始会接着剩余时间走；重设回到上面配置的剩余秒数，自动开始打开时重设即重新起表':
+        'Pause keeps the remaining time, so Start continues from there; Reset returns to the seconds above and restarts right away while autoplay is on',
+    '隐藏的单位会折算进下一级：关掉天后小时累加，关掉小时后分钟累加':
+        'A hidden unit folds into the next one: no days adds them to hours, no hours adds them to minutes'
+});
+
 export function demoText(value: string): string {
     return currentLocale.value.name === 'en-US' ? (englishMessages[value] ?? value) : value;
 }
