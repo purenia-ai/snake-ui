@@ -1570,6 +1570,31 @@ Object.assign(englishMessages, {
     允许回到未排序: 'Allow reset'
 });
 
+Object.assign(englishMessages, {
+    排序: 'Sort',
+    配件: 'Accessories',
+    有货: 'In stock',
+    包邮: 'Free shipping',
+    新品: 'New arrivals',
+    高级筛选: 'Advanced filters',
+    当前分类: 'Current category',
+    标题与状态: 'Title and states',
+    展开控制: 'Open control',
+    标题字号: 'Title font size',
+    菜单栏高度: 'Bar height',
+    再点标题收起: 'Tap opened title to collapse',
+    允许展开: 'Allow opening',
+    展开第一项: 'Open first item',
+    高亮第二项: 'Highlight second item',
+    取消高亮: 'Clear highlight',
+    收起: 'Collapse',
+    展开被拦截: 'Opening was blocked',
+    '传了 title 就固定显示它，选中项记在面板里；disabled 的标题栏置灰且不可点':
+        'A fixed title stays put and the selection lives in the panel; a disabled trigger is dimmed and not clickable',
+    '排序项走 beforeToggle，展开前模拟 600ms 权限校验；resolve(false) 时不展开；控制按钮放在菜单栏上方，面板展开时才点得到':
+        'The sort item runs beforeToggle: a simulated 600ms permission check, and resolve(false) keeps it closed. The buttons sit above the bar so an open panel never covers them'
+});
+
 export function demoText(value: string): string {
     return currentLocale.value.name === 'en-US' ? (englishMessages[value] ?? value) : value;
 }
