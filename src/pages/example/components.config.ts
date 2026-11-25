@@ -184,6 +184,12 @@ const componentGroups: ComponentGroup[] = [
             ),
             item('/pages/componentsA/picker/index', 'Picker 列选择器', 'Picker', '单列、多列与多列联动的底部选择器。'),
             item(
+                '/pages/componentsA/keyboard/index',
+                'Keyboard 虚拟键盘',
+                'Keyboard',
+                '底部虚拟键盘，输入数字、金额与身份证号，支持随机顺序与长按删除。'
+            ),
+            item(
                 '/pages/componentsA/selectPicker/index',
                 'SelectPicker 单复选选择器',
                 'SelectPicker',

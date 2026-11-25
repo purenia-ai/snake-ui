@@ -24,6 +24,7 @@ const standardizedDocs = [
     'radio',
     'switch',
     'picker',
+    'keyboard',
     'select-picker',
     'calendar',
     'overlay',
@@ -259,7 +260,7 @@ test('high-use component docs follow the standard documentation shape', async ()
 });
 
 test('component registry is the complete documented component source of truth', async () => {
-    assert.equal(componentItems.length, 57);
+    assert.equal(componentItems.length, 58);
     assert.equal(new Set(componentItems.map(item => item.link)).size, componentItems.length);
 
     const packageEntry = await readFile(resolve(root, 'src/uni_modules/snake-ui/index.ts'), 'utf8');

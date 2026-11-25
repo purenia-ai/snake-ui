@@ -71,6 +71,7 @@ export * from './components/snake-circle-progress/types';
 export * from './components/snake-search/types';
 export * from './components/snake-picker/types';
 export * from './components/snake-select-picker/types';
+export * from './components/snake-keyboard/types';
 export * from './components/snake-read-more/types';
 export * from './components/snake-no-network/types';
 export * from './components/snake-link/types';

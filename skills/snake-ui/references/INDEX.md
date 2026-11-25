@@ -31,6 +31,7 @@
 - [Input 输入框](components/input.md)
 - [安装](components/install.md)
 - [组件总览](components/intro.md)
+- [Keyboard 虚拟键盘](components/keyboard.md)
 - [LineProgress 线形进度条](components/line-progress.md)
 - [Line 分隔线](components/line.md)
 - [Link 超链接](components/link.md)

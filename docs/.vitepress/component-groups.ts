@@ -48,6 +48,7 @@ const componentDescriptions: Partial<Record<ComponentItem['link'], string>> = {
     '/components/swipe-action': '列表项左滑露出操作按钮，用于删除、收藏与取消订单。',
     '/components/backtop': '长页面滚动后提供一键回顶入口，隐藏时不占位。',
     '/components/picker': '在底部弹层里滚动选择单列、多列或联动列，适合日期与地区。',
+    '/components/keyboard': '用底部虚拟键盘输入数字、金额与身份证号，支持随机顺序与长按删除。',
     '/components/select-picker': '在底部弹层内以列表勾选，支持单选、多选、本地搜索与选择数量限制。'
 };
 
@@ -61,7 +62,8 @@ const componentKeywords: Partial<Record<ComponentItem['link'], string[]>> = {
     '/components/notice-bar': ['公告', '滚动通知', '消息条'],
     '/components/drop-menu': ['筛选', '下拉筛选', '菜单'],
     '/components/config-provider': ['主题', '全局配置', '暗黑模式'],
-    '/components/select-picker': ['多选', '单选', '列表选择', '复选列表', '带搜索的选择器']
+    '/components/select-picker': ['多选', '单选', '列表选择', '复选列表', '带搜索的选择器'],
+    '/components/keyboard': ['数字键盘', '金额输入', '身份证', '验证码', '密码', 'number pad']
 };
 
 function enrichComponent(item: ComponentDefinition): ComponentItem {
@@ -109,6 +111,7 @@ const componentGroupDefinitions: ComponentGroupDefinition[] = [
             { name: 'Slider', title: '滑动选择器', link: '/components/slider' },
             { name: 'Search', title: '搜索框', link: '/components/search' },
             { name: 'Picker', title: '列选择器', link: '/components/picker' },
+            { name: 'Keyboard', title: '虚拟键盘', link: '/components/keyboard' },
             { name: 'SelectPicker', title: '单复选选择器', link: '/components/select-picker' },
             { name: 'Upload', title: '文件上传', link: '/components/upload' },
             { name: 'VerificationCode', title: '验证码倒计时', link: '/components/verification-code' },

@@ -19,6 +19,7 @@ const enUS: Locale = {
         network: { error: 'Network request failed', canceled: 'Request canceled' },
         search: { placeholder: 'Please enter keywords', actionText: 'Search' },
         picker: { cancelText: 'Cancel', confirmText: 'Confirm', emptyText: 'No data' },
+        keyboard: { confirmText: 'Done', deleteText: 'Delete', closeText: 'Hide keyboard' },
         selectPicker: {
             title: 'Select',
             confirmText: 'Confirm',
