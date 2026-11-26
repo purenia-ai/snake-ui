@@ -1,5 +1,11 @@
 # 更新日志
 
+## [0.1.3](https://github.com/purenia-ai/snake-ui/compare/v0.1.2...v0.1.3)（2026-11-26）
+
+### ⚙️ Changes | 变更
+
+- **version:** 版本号进入 `0.1.3`
+
 ## [0.1.2](https://github.com/purenia-ai/snake-ui/compare/v0.1.1...v0.1.2)（2026-11-26）
 
 ### ✨ Features | 新功能
