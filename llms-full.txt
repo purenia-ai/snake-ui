@@ -1020,6 +1020,22 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 
 # 更新日志
 
+## [0.1.2](https://github.com/purenia-ai/snake-ui/compare/v0.1.1...v0.1.2)（2026-11-26）
+
+### 🐛 Bug Fixes | 修复
+
+- **snake-textarea:** 原生 `<textarea>` 不再用百分比高度。`height: 100%` 在 iOS 小程序里会被算成整页高度，页面被异常拉长；同层渲染未生效时这层原生视图盖在整个 WebView 之上（`z-index` 无法覆盖），底部 `position: fixed` 的按钮点击会被吞掉，且开发者工具与安卓端都复现不出来。现在固定高度按档位高度扣掉容器上下内边距与边框给出确定值，`auto-height` 用 `height: auto` 加档位下限
+- **snake-textarea:** `height` 小于档位高度时不再被档位的 `min-height` 顶回去
+
+### ⚙️ Changes | 变更
+
+- **snake-textarea（行为变更）:** `--snake-textarea-native-height` / `--snake-textarea-native-height-small` / `--snake-textarea-native-height-large` 收窄为「仅 `auto-height` 时的原生控件下限」，固定高度档位不再引用；默认值与换算结果不变（80 / 64 / 112 减 33 分别等于 47 / 31 / 79），默认视觉无变化
+- **version:** 版本号进入 `0.1.2`
+
+### ✏️ Documentation | 文档
+
+- 「尺寸与高度」只保留用法，百分比高度的成因与 `height - 33px` 的换算移入源码注释
+
 ## [0.1.1](https://github.com/purenia-ai/snake-ui/compare/v0.1.0...v0.1.1)（2026-11-16）
 
 ### ✨ Features | 新功能
@@ -8052,7 +8068,7 @@ tabsRef.value?.init();
 
 ## 尺寸与高度
 
-`size` 同时决定容器高度与字号（此前 `size` 只有类名没有样式，等于不生效）：
+`size` 同时决定容器高度与字号：
 
 | `size`    | 高度  | 字号 |
 | --------- | ----- | ---- |
@@ -8060,7 +8076,7 @@ tabsRef.value?.init();
 | `default` | 80px  | 14px |
 | `large`   | 112px | 16px |
 
-`height` 覆盖 `size` 高度，并会把原生控件的最小高度一并换算（`height` 小于档位高度时不会再被 `min-height` 顶回去）；`auto-height` 时高度交给内容撑开，`height` 退化为最小高度。
+`height` 覆盖 `size` 高度，也可以比档位高度更小；`auto-height` 时高度由内容撑开，`height` 退化为最小高度。
 
 ```vue
 <snake-textarea v-model="remark" size="large" />
@@ -8168,22 +8184,22 @@ textareaRef.value?.clear();
 
 ### 尺寸变量
 
-| 变量名                                 | 用途                     | 默认值           |
-| -------------------------------------- | ------------------------ | ---------------- |
-| `--snake-textarea-height`              | 默认高度                 | `80px`           |
-| `--snake-textarea-height-small`        | `size="small"` 高度      | `64px`           |
-| `--snake-textarea-height-large`        | `size="large"` 高度      | `112px`          |
-| `--snake-textarea-native-height`       | 默认档位原生控件最小高度 | `47px`           |
-| `--snake-textarea-native-height-small` | `small` 原生控件最小高度 | `31px`           |
-| `--snake-textarea-native-height-large` | `large` 原生控件最小高度 | `79px`           |
-| `--snake-textarea-font-size`           | 默认字号                 | `14px`           |
-| `--snake-textarea-font-size-small`     | `small` 字号             | `13px`           |
-| `--snake-textarea-font-size-large`     | `large` 字号             | `16px`           |
-| `--snake-textarea-padding`             | 容器内边距               | `10px 11px 21px` |
-| `--snake-textarea-radius`              | 圆角                     | 主题圆角         |
-| `--snake-textarea-border-color`        | 边框颜色                 | 主题分割线       |
-| `--snake-textarea-bg`                  | 容器底色                 | `transparent`    |
-| `--snake-textarea-count-color`         | 字数统计颜色             | 主题次要文字色   |
+| 变量名                                 | 用途                                  | 默认值           |
+| -------------------------------------- | ------------------------------------- | ---------------- |
+| `--snake-textarea-height`              | 默认高度                              | `80px`           |
+| `--snake-textarea-height-small`        | `size="small"` 高度                   | `64px`           |
+| `--snake-textarea-height-large`        | `size="large"` 高度                   | `112px`          |
+| `--snake-textarea-native-height`       | `auto-height` 时默认档位原生控件下限  | `47px`           |
+| `--snake-textarea-native-height-small` | `auto-height` 时 `small` 原生控件下限 | `31px`           |
+| `--snake-textarea-native-height-large` | `auto-height` 时 `large` 原生控件下限 | `79px`           |
+| `--snake-textarea-font-size`           | 默认字号                              | `14px`           |
+| `--snake-textarea-font-size-small`     | `small` 字号                          | `13px`           |
+| `--snake-textarea-font-size-large`     | `large` 字号                          | `16px`           |
+| `--snake-textarea-padding`             | 容器内边距                            | `10px 11px 21px` |
+| `--snake-textarea-radius`              | 圆角                                  | 主题圆角         |
+| `--snake-textarea-border-color`        | 边框颜色                              | 主题分割线       |
+| `--snake-textarea-bg`                  | 容器底色                              | `transparent`    |
+| `--snake-textarea-count-color`         | 字数统计颜色                          | 主题次要文字色   |
 
 ### 颜色变量
 

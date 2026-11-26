@@ -6,6 +6,22 @@ triggers: ['changelog', 'snake-changelog', '更新日志']
 
 # 更新日志
 
+## [0.1.2](https://github.com/purenia-ai/snake-ui/compare/v0.1.1...v0.1.2)（2026-11-26）
+
+### 🐛 Bug Fixes | 修复
+
+- **snake-textarea:** 原生 `<textarea>` 不再用百分比高度。`height: 100%` 在 iOS 小程序里会被算成整页高度，页面被异常拉长；同层渲染未生效时这层原生视图盖在整个 WebView 之上（`z-index` 无法覆盖），底部 `position: fixed` 的按钮点击会被吞掉，且开发者工具与安卓端都复现不出来。现在固定高度按档位高度扣掉容器上下内边距与边框给出确定值，`auto-height` 用 `height: auto` 加档位下限
+- **snake-textarea:** `height` 小于档位高度时不再被档位的 `min-height` 顶回去
+
+### ⚙️ Changes | 变更
+
+- **snake-textarea（行为变更）:** `--snake-textarea-native-height` / `--snake-textarea-native-height-small` / `--snake-textarea-native-height-large` 收窄为「仅 `auto-height` 时的原生控件下限」，固定高度档位不再引用；默认值与换算结果不变（80 / 64 / 112 减 33 分别等于 47 / 31 / 79），默认视觉无变化
+- **version:** 版本号进入 `0.1.2`
+
+### ✏️ Documentation | 文档
+
+- 「尺寸与高度」只保留用法，百分比高度的成因与 `height - 33px` 的换算移入源码注释
+
 ## [0.1.1](https://github.com/purenia-ai/snake-ui/compare/v0.1.0...v0.1.1)（2026-11-16）
 
 ### ✨ Features | 新功能
