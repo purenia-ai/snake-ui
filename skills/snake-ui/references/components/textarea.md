@@ -24,7 +24,7 @@ triggers: ['textarea', 'snake-textarea', 'Textarea', '文本域']
 
 ## 尺寸与高度
 
-`size` 同时决定容器高度与字号（此前 `size` 只有类名没有样式，等于不生效）：
+`size` 同时决定容器高度与字号：
 
 | `size`    | 高度  | 字号 |
 | --------- | ----- | ---- |
@@ -32,7 +32,7 @@ triggers: ['textarea', 'snake-textarea', 'Textarea', '文本域']
 | `default` | 80px  | 14px |
 | `large`   | 112px | 16px |
 
-`height` 覆盖 `size` 高度，并会把原生控件的最小高度一并换算（`height` 小于档位高度时不会再被 `min-height` 顶回去）；`auto-height` 时高度交给内容撑开，`height` 退化为最小高度。
+`height` 覆盖 `size` 高度，也可以比档位高度更小；`auto-height` 时高度由内容撑开，`height` 退化为最小高度。
 
 ```vue
 <snake-textarea v-model="remark" size="large" />
@@ -140,22 +140,22 @@ textareaRef.value?.clear();
 
 ### 尺寸变量
 
-| 变量名                                 | 用途                     | 默认值           |
-| -------------------------------------- | ------------------------ | ---------------- |
-| `--snake-textarea-height`              | 默认高度                 | `80px`           |
-| `--snake-textarea-height-small`        | `size="small"` 高度      | `64px`           |
-| `--snake-textarea-height-large`        | `size="large"` 高度      | `112px`          |
-| `--snake-textarea-native-height`       | 默认档位原生控件最小高度 | `47px`           |
-| `--snake-textarea-native-height-small` | `small` 原生控件最小高度 | `31px`           |
-| `--snake-textarea-native-height-large` | `large` 原生控件最小高度 | `79px`           |
-| `--snake-textarea-font-size`           | 默认字号                 | `14px`           |
-| `--snake-textarea-font-size-small`     | `small` 字号             | `13px`           |
-| `--snake-textarea-font-size-large`     | `large` 字号             | `16px`           |
-| `--snake-textarea-padding`             | 容器内边距               | `10px 11px 21px` |
-| `--snake-textarea-radius`              | 圆角                     | 主题圆角         |
-| `--snake-textarea-border-color`        | 边框颜色                 | 主题分割线       |
-| `--snake-textarea-bg`                  | 容器底色                 | `transparent`    |
-| `--snake-textarea-count-color`         | 字数统计颜色             | 主题次要文字色   |
+| 变量名                                 | 用途                                  | 默认值           |
+| -------------------------------------- | ------------------------------------- | ---------------- |
+| `--snake-textarea-height`              | 默认高度                              | `80px`           |
+| `--snake-textarea-height-small`        | `size="small"` 高度                   | `64px`           |
+| `--snake-textarea-height-large`        | `size="large"` 高度                   | `112px`          |
+| `--snake-textarea-native-height`       | `auto-height` 时默认档位原生控件下限  | `47px`           |
+| `--snake-textarea-native-height-small` | `auto-height` 时 `small` 原生控件下限 | `31px`           |
+| `--snake-textarea-native-height-large` | `auto-height` 时 `large` 原生控件下限 | `79px`           |
+| `--snake-textarea-font-size`           | 默认字号                              | `14px`           |
+| `--snake-textarea-font-size-small`     | `small` 字号                          | `13px`           |
+| `--snake-textarea-font-size-large`     | `large` 字号                          | `16px`           |
+| `--snake-textarea-padding`             | 容器内边距                            | `10px 11px 21px` |
+| `--snake-textarea-radius`              | 圆角                                  | 主题圆角         |
+| `--snake-textarea-border-color`        | 边框颜色                              | 主题分割线       |
+| `--snake-textarea-bg`                  | 容器底色                              | `transparent`    |
+| `--snake-textarea-count-color`         | 字数统计颜色                          | 主题次要文字色   |
 
 ### 颜色变量
 

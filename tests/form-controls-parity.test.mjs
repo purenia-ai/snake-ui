@@ -355,17 +355,26 @@ test('input and textarea keep the native value in sync and expose ref methods', 
         assert.match(source, /getFieldSizeConfig/);
         assert.doesNotMatch(source, /font-size: 14px/);
     }
-    // textarea 的 size 此前只有类名没有样式，必须存在对应规则
-    assert.match(textarea, /\.snake-textarea--small\s*\{[^}]*min-height:\s*var\(--snake-textarea-height-small/s);
+    // textarea 的 size 此前只有类名没有样式，必须存在对应规则：
+    // 档位高度经 --snake-textarea-current-height 统一下发，容器与原生控件读同一个值
+    assert.match(
+        textarea,
+        /\.snake-textarea--small\s*\{[^}]*--snake-textarea-current-height:\s*var\(--snake-textarea-height-small/s
+    );
     assert.match(
         textarea,
         /\.snake-textarea--large \.snake-textarea__native\s*\{[^}]*font-size:\s*var\(--snake-textarea-font-size-large/s
     );
-    // height 覆盖：容器与原生控件一起写，低于档位高度也不会溢出
+    // height 覆盖：容器与原生控件一起按 height 换算，低于档位高度也不会溢出
+    assert.match(textarea, /Math\.max\(unitToPx\(props\.height\) - TEXTAREA_PADDING_Y, TEXTAREA_NATIVE_MIN_HEIGHT\)/);
     assert.match(
         textarea,
-        /minHeight: props\.height\s*\?\s*addUnit\(Math\.max\(unitToPx\(props\.height\) - TEXTAREA_PADDING_Y/
+        /const height = props\.autoHeight \? 'auto' : props\.height \? addUnit\(nativeHeight\.value\)/
     );
+    // 原生 textarea 只拿确定高度，不能用百分比：iOS 小程序会把 100% 算成整页高度，
+    // 既拉长页面，又让这层原生浮层盖住 position: fixed 的底部按钮
+    assert.match(textarea, /height:\s*calc\(var\(--snake-textarea-current-height\) - 33px\)/);
+    assert.doesNotMatch(textarea.replace(/\/\*[\s\S]*?\*\//g, ''), /\.snake-textarea__native\s*\{[^}]*height:\s*100%/s);
     // 组件级主题变量
     for (const variable of [
         '--snake-input-height',

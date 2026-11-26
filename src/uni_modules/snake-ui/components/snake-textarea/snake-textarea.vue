@@ -134,11 +134,18 @@ const currentLength = computed(() => Array.from(innerValue.value).length);
 const rootClass = computed(() => [
     `snake-textarea--${props.border}`,
     `snake-textarea--${size.value}`,
-    { 'is-focused': focused.value, 'is-error': isError.value, 'is-disabled': isDisabled.value }
+    {
+        'is-focused': focused.value,
+        'is-error': isError.value,
+        'is-disabled': isDisabled.value,
+        // auto-height 时原生控件改为「随内容撑开 + 档位下限」，尺寸规则挂在类上
+        'snake-textarea--auto-height': props.autoHeight
+    }
 ]);
 /**
- * 高度：autoHeight 时交给内容撑开；显式传 height 时同时写 root 的 height/min-height
- * 与原生控件的 min-height，否则会被 size 档位的 min-height 顶掉（此前 height=60 永远显示 80）。
+ * 容器高度：autoHeight 时交给内容撑开；显式传 height 时写 root 的 height 与 min-height，
+ * 后者用来盖掉档位自身的 min-height（此前 height=60 永远显示 80）。
+ * 容器与原生控件各由自己的规则给出高度，同一个元素上没有第二个来源，见 nativeStyle 与样式注释。
  */
 const rootStyle = computed(() => [
     {
@@ -148,13 +155,22 @@ const rootStyle = computed(() => [
     props.customStyle
 ]);
 /** 原生控件高度 = 目标高度 - 上下内边距，保证任何 height 都不会溢出容器。 */
-const nativeStyle = computed(() => ({
-    color: props.color,
-    fontSize: props.fontSize ? addUnit(props.fontSize) : undefined,
-    minHeight: props.height
-        ? addUnit(Math.max(unitToPx(props.height) - TEXTAREA_PADDING_Y, TEXTAREA_NATIVE_MIN_HEIGHT))
-        : undefined
-}));
+const nativeHeight = computed(() => Math.max(unitToPx(props.height) - TEXTAREA_PADDING_Y, TEXTAREA_NATIVE_MIN_HEIGHT));
+/**
+ * 原生控件尺寸：固定高度已由样式按档位换算出确定值，脚本只在 auto-height 与显式
+ * height 时内联覆盖。原生组件不能吃百分比高度（iOS 小程序会算成整页高度，见样式注释）。
+ */
+const nativeStyle = computed(() => {
+    const height = props.autoHeight ? 'auto' : props.height ? addUnit(nativeHeight.value) : undefined;
+    // auto-height 的下限写在样式里，显式 height 要连它一起覆盖，否则会被档位顶回去
+    const minHeight = props.autoHeight && props.height ? addUnit(nativeHeight.value) : undefined;
+    return {
+        color: props.color,
+        fontSize: props.fontSize ? addUnit(props.fontSize) : undefined,
+        height,
+        minHeight
+    };
+});
 
 /** 读取输入类事件的 detail.value，跨端事件对象结构不同，统一按 unknown 收窄。 */
 function readEventValue(event: unknown): string | undefined {
@@ -284,20 +300,26 @@ defineExpose(exposed);
 
 <style scoped>
 .snake-textarea {
+    /* 当前档位的整体高度，原生控件高度也由它换算，主题变量改一处即同步 */
+    --snake-textarea-current-height: var(--snake-textarea-height, 80px);
+    /* 原生控件的下限，只在 auto-height 时生效 */
+    --snake-textarea-current-native-height: var(--snake-textarea-native-height, 47px);
     position: relative;
     box-sizing: border-box;
     width: 100%;
-    min-height: var(--snake-textarea-height, 80px);
+    min-height: var(--snake-textarea-current-height);
     padding: var(--snake-textarea-padding, 10px 11px 21px);
     border-radius: var(--snake-textarea-radius, var(--snake-radius-md, 6px));
     background-color: var(--snake-textarea-bg, transparent);
     transition: border-color 0.2s;
 }
 .snake-textarea--small {
-    min-height: var(--snake-textarea-height-small, 64px);
+    --snake-textarea-current-height: var(--snake-textarea-height-small, 64px);
+    --snake-textarea-current-native-height: var(--snake-textarea-native-height-small, 31px);
 }
 .snake-textarea--large {
-    min-height: var(--snake-textarea-height-large, 112px);
+    --snake-textarea-current-height: var(--snake-textarea-height-large, 112px);
+    --snake-textarea-current-native-height: var(--snake-textarea-native-height-large, 79px);
 }
 .snake-textarea--surround {
     border: 1px solid var(--snake-textarea-border-color, var(--snake-color-divider, #dcdfe6));
@@ -319,17 +341,25 @@ defineExpose(exposed);
 .snake-textarea__native {
     box-sizing: border-box;
     width: 100%;
-    height: 100%;
-    min-height: var(--snake-textarea-native-height, 47px);
+    /* 不能写 height: 100%：原生组件在 iOS 小程序里百分比会被算成整页高度，页面被撑长；
+       同层渲染未生效时这层原生视图盖在整个 WebView 之上（z-index 对它无效），底部
+       position: fixed 的按钮会被吞掉点击。所以这里给确定值：档位高度扣掉上下内边距与
+       边框（10 + 21 + 1×2 = 33，即脚本里的 TEXTAREA_PADDING_Y；改 padding 主题变量后
+       要同步改这两个数）。固定高度只由 height 决定，元素上不放 min-height，
+       显式 height 才不会被档位顶回去。 */
+    height: calc(var(--snake-textarea-current-height) - 33px);
     font-size: var(--snake-textarea-font-size, 14px);
     line-height: 1.55;
 }
+/* auto-height：高度交给内容，档位高度退化为下限，显式 height 由脚本内联覆盖 */
+.snake-textarea--auto-height .snake-textarea__native {
+    height: auto;
+    min-height: var(--snake-textarea-current-native-height);
+}
 .snake-textarea--small .snake-textarea__native {
-    min-height: var(--snake-textarea-native-height-small, 31px);
     font-size: var(--snake-textarea-font-size-small, 13px);
 }
 .snake-textarea--large .snake-textarea__native {
-    min-height: var(--snake-textarea-native-height-large, 79px);
     font-size: var(--snake-textarea-font-size-large, 16px);
 }
 .snake-textarea__mask {
