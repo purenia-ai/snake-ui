@@ -1022,6 +1022,12 @@ Cell 组件由 `CellItem` 和 `CellGroup` 组成：前者用于展示单条信�
 
 ## [0.1.2](https://github.com/purenia-ai/snake-ui/compare/v0.1.1...v0.1.2)（2026-11-26）
 
+### ✨ Features | 新功能
+
+- **snake-avatar:** 新增头像组件：内容按「默认插槽 → `src`（加载失败即跳过）→ `text` → `icon` → 内置 `account` 图标」的固定优先级回退，`text` 原样渲染、不替你截首字符；`size` 同时决定宽高与字号（字号默认取其 0.4 倍），另有 `shape` / `radius` / `fit` / `bgColor` / `color`
+- **snake-avatar-group:** 新增头像组：默认叠层排列（`overlap` 调间距、`cascading` 决定谁压在上面），超出 `maxCount` 折叠为 `+N`，总人数可用 `total` 显式给出、折叠文案走 `collapseText`
+- **snake-image-cropper:** 新增全屏裁剪层：拖拽移动、双指缩放、90° 旋转，`v-model` 控制显隐，确认后用离屏 canvas 导出临时文件；App 端限 vue 页面（nvue 无传统 canvas），鸿蒙与小红书小程序只用标准 canvas API、未实测
+
 ### 🐛 Bug Fixes | 修复
 
 - **snake-textarea:** 原生 `<textarea>` 不再用百分比高度。`height: 100%` 在 iOS 小程序里会被算成整页高度，页面被异常拉长；同层渲染未生效时这层原生视图盖在整个 WebView 之上（`z-index` 无法覆盖），底部 `position: fixed` 的按钮点击会被吞掉，且开发者工具与安卓端都复现不出来。现在固定高度按档位高度扣掉容器上下内边距与边框给出确定值，`auto-height` 用 `height: auto` 加档位下限
