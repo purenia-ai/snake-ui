@@ -27,6 +27,7 @@ after(async () => {
 
 const normalize = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/cms/normalize.ts');
 const blocks = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/cms/blocks.ts');
+const sanitize = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/cms/sanitize.ts');
 const commerceModule = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/cms/use-commerce.ts');
 const runtime = await server.ssrLoadModule('/src/uni_modules/snake-ui/libs/runtime/index.ts');
 const v2Shared = await server.ssrLoadModule('/src/uni_modules/snake-ui/components/snake-cms/blocks/v2/shared.ts');
@@ -126,6 +127,24 @@ test('CMS block catalog is the source of built-in identities and public componen
     assert.equal(Object.values(blocks.cmsBlocks).filter(block => block.version === 2).length, 14);
 });
 
+test('CMS blocks are wired to the component names declared in the block catalog', async () => {
+    const source = await readFile(resolve('src/uni_modules/snake-ui/components/snake-cms/snake-cms.vue'), 'utf8');
+    // v1 块直接用清单里的组件名渲染；v2 块用去掉 snake- 前缀的本地别名渲染。
+    const unwired = Object.entries(blocks.cmsBlocks)
+        .filter(([, block]) => {
+            const alias = block.componentName.replace(/^snake-/, '');
+            return !source.includes(`<${block.componentName}`) && !source.includes(`<${alias}`);
+        })
+        .map(([name]) => name);
+
+    assert.deepEqual(unwired, []);
+});
+
+test('CMS rich text renders both envelopes through the single CmsRichText block', () => {
+    assert.equal(blocks.cmsBlocks.richtext.componentName, 'snake-cms-rich-text');
+    assert.equal(blocks.cmsBlocks['v2.richtext'].componentName, 'snake-cms-rich-text');
+});
+
 test('CMS normalizes v1 and v2 components without collapsing their data envelopes', () => {
     const result = normalize.normalizeCmsComponents([
         { component: 'images', setStyle: { imageList: [{ src: 'legacy.png' }] } },
@@ -164,15 +183,15 @@ test('CMS v2 normalization fills defaults, coerces primitives, and drops undecla
     assert.equal(props.internalOnly, undefined);
 });
 
-test('CMS rich text sanitizer removes executable markup and inline event handlers', () => {
+test('CMS rich text sanitizer removes executable markup and keeps layout styles', () => {
     const dirty =
         '<p onclick="run()" style="color:red">safe</p><script>alert(1)</script><a href=javascript:run()>x</a>';
-    const clean = v2Shared.sanitizeRichText(dirty);
+    const clean = sanitize.sanitizeRichText(dirty);
     assert.equal(clean.includes('onclick'), false);
     assert.equal(clean.includes('<script'), false);
     assert.equal(clean.includes('javascript:'), false);
     assert.equal(clean.includes('alert(1)'), false);
-    assert.equal(clean.includes('style='), false);
+    assert.equal(clean.includes('style="color:red"'), true);
     assert.equal(clean.includes('safe'), true);
 });
 
@@ -287,14 +306,23 @@ test('CMS v2 commerce builds requests from props.query without reading legacy se
     assert.equal(requests[0].genderFilter, 'male');
 });
 
-test('every CMS v2 catalog entry has a static snake-cms branch and internal renderer', async () => {
+test('every CMS v2 catalog entry has a static snake-cms branch and a renderer file', async () => {
     const cmsRoot = resolve(import.meta.dirname, '../src/uni_modules/snake-ui/components/snake-cms');
+    const publicRoot = resolve(import.meta.dirname, '../src/uni_modules/snake-ui/components');
     const source = await readFile(join(cmsRoot, 'snake-cms.vue'), 'utf8');
     const v2Blocks = Object.entries(blocks.cmsBlocks).filter(([, definition]) => definition.version === 2);
+    const exists = path =>
+        readFile(path, 'utf8').then(
+            () => true,
+            () => false
+        );
 
     for (const [type, definition] of v2Blocks) {
         assert.ok(source.includes(`item.component === '${type}'`), `${type}: static branch`);
-        await readFile(join(cmsRoot, 'blocks/v2', `${definition.componentName.slice('snake-'.length)}.vue`), 'utf8');
+        const internal = join(cmsRoot, 'blocks/v2', `${definition.componentName.slice('snake-'.length)}.vue`);
+        const shared = join(publicRoot, definition.componentName, `${definition.componentName}.vue`);
+        // v2 块可以带自己的渲染器，也可以直接复用公开组件（如 v2.richtext 复用 CmsRichText）。
+        assert.ok((await exists(internal)) || (await exists(shared)), `${type}: renderer file`);
     }
 });
 

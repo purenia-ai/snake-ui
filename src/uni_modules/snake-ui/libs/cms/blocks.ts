@@ -76,12 +76,7 @@ export const cmsBlocks = {
     },
     'v2.notice': { version: 2, category: 'content', componentName: 'snake-cms-v2-notice', standalone: false },
     'v2.popup': { version: 2, category: 'navigation', componentName: 'snake-cms-v2-popup', standalone: false },
-    'v2.richtext': {
-        version: 2,
-        category: 'content',
-        componentName: 'snake-cms-v2-richtext',
-        standalone: false
-    },
+    'v2.richtext': { version: 2, category: 'content', componentName: 'snake-cms-rich-text', standalone: false },
     'v2.search': { version: 2, category: 'navigation', componentName: 'snake-cms-v2-search', standalone: false },
     'v2.video': { version: 2, category: 'content', componentName: 'snake-cms-v2-video', standalone: false }
 } as const satisfies Record<string, CmsBlockDefinition>;

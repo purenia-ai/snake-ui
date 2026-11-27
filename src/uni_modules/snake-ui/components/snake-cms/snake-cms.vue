@@ -6,7 +6,7 @@
                 v-else-if="item.component === 'auxiliarysegmentation'"
                 :datas="item.setStyle"
             />
-            <snake-rich-text v-else-if="item.component === 'richtext'" :datas="item.setStyle" />
+            <snake-cms-rich-text v-else-if="item.component === 'richtext'" :datas="item.setStyle" />
             <snake-graphic-navigation v-else-if="item.component === 'graphicnavigation'" :datas="item.setStyle" />
             <snake-images v-else-if="item.component === 'images'" :datas="item.setStyle" />
             <snake-picture-ads v-else-if="item.component === 'pictureads'" :datas="item.setStyle" />
@@ -190,7 +190,11 @@
                 :link-service="linkService"
                 :page-info="pageInfo"
             />
-            <cms-v2-richtext v-else-if="item.component === 'v2.richtext'" :data="item.props" />
+            <snake-cms-rich-text
+                v-else-if="item.component === 'v2.richtext'"
+                :content="item.props?.content"
+                :background-color="item.props?.style?.backgroundColor || '#FFFFFF'"
+            />
             <template v-else-if="item.component === 'v2.search'">
                 <snake-sticky
                     v-if="searchStickyEnabled(item.props)"
@@ -248,7 +252,6 @@ import MagicCube from '../snake-magic-cube/snake-magic-cube.vue';
 import Notice from '../snake-notice/snake-notice.vue';
 import PagePopup from '../snake-page-popup/snake-page-popup.vue';
 import PictureAds from '../snake-picture-ads/snake-picture-ads.vue';
-import RichText from '../snake-rich-text/snake-rich-text.vue';
 import FloatingBubble from '../snake-floating-bubble/snake-floating-bubble.vue';
 import Videos from '../snake-videos/snake-videos.vue';
 import CmsV2Carousel from './blocks/v2/cms-v2-carousel.vue';
@@ -262,7 +265,6 @@ import CmsV2Images from './blocks/v2/cms-v2-images.vue';
 import CmsV2Magiccube from './blocks/v2/cms-v2-magiccube.vue';
 import CmsV2Notice from './blocks/v2/cms-v2-notice.vue';
 import CmsV2Popup from './blocks/v2/cms-v2-popup.vue';
-import CmsV2Richtext from './blocks/v2/cms-v2-richtext.vue';
 import CmsV2Search from './blocks/v2/cms-v2-search.vue';
 import CmsV2Video from './blocks/v2/cms-v2-video.vue';
 import { searchStickyEnabled } from './blocks/v2/shared';

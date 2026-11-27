@@ -74,15 +74,3 @@ export async function openV2Link(
     if (external ? !/^https?:\/\//i.test(url) : /^(?:javascript|vbscript|data):/i.test(url)) return;
     await service.open({ type: external ? 'external' : 'navigate', url, extraData }, { pageInfo });
 }
-
-export function sanitizeRichText(input: unknown): string {
-    if (typeof input !== 'string') return '';
-    return input
-        .replace(/<(script|style|iframe|object|embed|form)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, '')
-        .replace(/<\/?(?:script|style|iframe|object|embed|form|meta|link)\b[^>]*>/gi, '')
-        .replace(/\s(?:on\w+|srcdoc|style)\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, '')
-        .replace(
-            /\s(?:href|src)\s*=\s*(?:"\s*(?:javascript|vbscript|data\s*:\s*text\/html)[^"]*"|'\s*(?:javascript|vbscript|data\s*:\s*text\/html)[^']*'|(?:javascript|vbscript|data\s*:\s*text\/html)[^\s>]*)/gi,
-            ''
-        );
-}
