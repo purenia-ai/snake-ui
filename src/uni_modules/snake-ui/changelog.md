@@ -1,5 +1,15 @@
 # 更新日志
 
+## [0.1.4](https://github.com/purenia-ai/snake-ui/compare/v0.1.3...v0.1.4)（2026-11-27）
+
+### 🐛 Bug Fixes | 修复
+
+- **snake-cms:** 富文本块渲染空白——CMS 数据里的 `setStyle.myValue` 没有传给渲染组件，纯富文本页（协议页等）整页空白；现在正常渲染
+
+### ⚙️ Changes | 变更
+
+- **version:** 版本号进入 `0.1.4`
+
 ## [0.1.3](https://github.com/purenia-ai/snake-ui/compare/v0.1.2...v0.1.3)（2026-11-26）
 
 ### ⚙️ Changes | 变更
